@@ -97,7 +97,7 @@ This appendix mirrors the **10995** package-qualified class symbols across **90*
 - **`native`** (1): `SLPackage`
 - **`net`** (8): `SLDnsResolver`, `SLEndpoint`, `SLHttpRequest`, `SLHttpResponse`, `SLSocket`, `SLTcpConnection`, `SLUdpSocket`, `SLUri`
 - **`nordshrift`** (11): `DynamiteConnector`, `MySQLConnector`, `NordshriftCompilerBridge`, `NordshriftSource`, `NordshriftSymbol`, `NordshriftSymbolResolver`, `NordshriftSymbolTable`, `PermissibleConnector`, `PostgreSQLConnector`, `SLPackage`, `SQLConnector`
-- **`opcodes`** — 119 classes (facade `opcodes.SLGovConcept`); see `lib/LIBRARY.SYMBOLS.md` for the full list.
+- **`opcodes`** — 171 classes (facade `opcodes.SLGovConcept`); see `lib/LIBRARY.SYMBOLS.md` for the full list.
 - **`os`** — 85 classes (facade `os.SLArchitectureSet`); see `lib/LIBRARY.SYMBOLS.md` for the full list.
 - **`politico`** (1): `SLPackage`
 - **`process`** (16): `SLAtomic`, `SLBarrier`, `SLCondition`, `SLExecutor`, `SLMutex`, `SLProcessBuilder`, `SLProcessEnvironment`, `SLProcessGroup`, `SLProcessHandle`, `SLProcessInfo`, `SLProcessScheduler`, `SLProcessSignal`, `SLSemaphore`, `SLThreadGroup`, `SLThreadLocal`, `SLThreadState`

@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11697
+library-source-files: 11749
 library-packages: 108
 module-facade-symbols: 75
-total-symbol-records: 11772
+total-symbol-records: 11824
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -11042,10 +11042,12 @@ opcodes	SLOpBestScore.sleela	lib/opcodes/SLOpBestScore.sleela	source
 opcodes	SLOpBestStat.sleela	lib/opcodes/SLOpBestStat.sleela	source
 opcodes	SLOpBestWeight.sleela	lib/opcodes/SLOpBestWeight.sleela	source
 opcodes	SLOpCall.sleela	lib/opcodes/SLOpCall.sleela	source
+opcodes	SLOpCheckcast.sleela	lib/opcodes/SLOpCheckcast.sleela	source
 opcodes	SLOpConnect.sleela	lib/opcodes/SLOpConnect.sleela	source
 opcodes	SLOpConst.sleela	lib/opcodes/SLOpConst.sleela	source
 opcodes	SLOpDiv.sleela	lib/opcodes/SLOpDiv.sleela	source
 opcodes	SLOpDup.sleela	lib/opcodes/SLOpDup.sleela	source
+opcodes	SLOpDup2.sleela	lib/opcodes/SLOpDup2.sleela	source
 opcodes	SLOpEq.sleela	lib/opcodes/SLOpEq.sleela	source
 opcodes	SLOpFifoMk.sleela	lib/opcodes/SLOpFifoMk.sleela	source
 opcodes	SLOpFileclose.sleela	lib/opcodes/SLOpFileclose.sleela	source
@@ -11053,10 +11055,34 @@ opcodes	SLOpFileopen.sleela	lib/opcodes/SLOpFileopen.sleela	source
 opcodes	SLOpFileread.sleela	lib/opcodes/SLOpFileread.sleela	source
 opcodes	SLOpFileunlink.sleela	lib/opcodes/SLOpFileunlink.sleela	source
 opcodes	SLOpFilewrite.sleela	lib/opcodes/SLOpFilewrite.sleela	source
+opcodes	SLOpGcHint.sleela	lib/opcodes/SLOpGcHint.sleela	source
 opcodes	SLOpGe.sleela	lib/opcodes/SLOpGe.sleela	source
 opcodes	SLOpGetfield.sleela	lib/opcodes/SLOpGetfield.sleela	source
 opcodes	SLOpGt.sleela	lib/opcodes/SLOpGt.sleela	source
 opcodes	SLOpHalt.sleela	lib/opcodes/SLOpHalt.sleela	source
+opcodes	SLOpIcAdvance.sleela	lib/opcodes/SLOpIcAdvance.sleela	source
+opcodes	SLOpIcBackend.sleela	lib/opcodes/SLOpIcBackend.sleela	source
+opcodes	SLOpIcCols.sleela	lib/opcodes/SLOpIcCols.sleela	source
+opcodes	SLOpIcCount.sleela	lib/opcodes/SLOpIcCount.sleela	source
+opcodes	SLOpIcCreate.sleela	lib/opcodes/SLOpIcCreate.sleela	source
+opcodes	SLOpIcDestroy.sleela	lib/opcodes/SLOpIcDestroy.sleela	source
+opcodes	SLOpIcExcite.sleela	lib/opcodes/SLOpIcExcite.sleela	source
+opcodes	SLOpIcGpuavail.sleela	lib/opcodes/SLOpIcGpuavail.sleela	source
+opcodes	SLOpIcHasrend.sleela	lib/opcodes/SLOpIcHasrend.sleela	source
+opcodes	SLOpIcIntensity.sleela	lib/opcodes/SLOpIcIntensity.sleela	source
+opcodes	SLOpIcMeashz.sleela	lib/opcodes/SLOpIcMeashz.sleela	source
+opcodes	SLOpIcMigrate.sleela	lib/opcodes/SLOpIcMigrate.sleela	source
+opcodes	SLOpIcOpenwin.sleela	lib/opcodes/SLOpIcOpenwin.sleela	source
+opcodes	SLOpIcPolicy.sleela	lib/opcodes/SLOpIcPolicy.sleela	source
+opcodes	SLOpIcPresent.sleela	lib/opcodes/SLOpIcPresent.sleela	source
+opcodes	SLOpIcRows.sleela	lib/opcodes/SLOpIcRows.sleela	source
+opcodes	SLOpIcRun.sleela	lib/opcodes/SLOpIcRun.sleela	source
+opcodes	SLOpIcSetparams.sleela	lib/opcodes/SLOpIcSetparams.sleela	source
+opcodes	SLOpIcSetpolicy.sleela	lib/opcodes/SLOpIcSetpolicy.sleela	source
+opcodes	SLOpIcShouldclose.sleela	lib/opcodes/SLOpIcShouldclose.sleela	source
+opcodes	SLOpIcStep.sleela	lib/opcodes/SLOpIcStep.sleela	source
+opcodes	SLOpIcTimestep.sleela	lib/opcodes/SLOpIcTimestep.sleela	source
+opcodes	SLOpInstanceof.sleela	lib/opcodes/SLOpInstanceof.sleela	source
 opcodes	SLOpJmp.sleela	lib/opcodes/SLOpJmp.sleela	source
 opcodes	SLOpJmpf.sleela	lib/opcodes/SLOpJmpf.sleela	source
 opcodes	SLOpJoinall.sleela	lib/opcodes/SLOpJoinall.sleela	source
@@ -11067,6 +11093,7 @@ opcodes	SLOpLoadl.sleela	lib/opcodes/SLOpLoadl.sleela	source
 opcodes	SLOpLock.sleela	lib/opcodes/SLOpLock.sleela	source
 opcodes	SLOpLt.sleela	lib/opcodes/SLOpLt.sleela	source
 opcodes	SLOpMod.sleela	lib/opcodes/SLOpMod.sleela	source
+opcodes	SLOpModiumScan.sleela	lib/opcodes/SLOpModiumScan.sleela	source
 opcodes	SLOpMul.sleela	lib/opcodes/SLOpMul.sleela	source
 opcodes	SLOpMunClose.sleela	lib/opcodes/SLOpMunClose.sleela	source
 opcodes	SLOpMunConnect.sleela	lib/opcodes/SLOpMunConnect.sleela	source
@@ -11084,10 +11111,32 @@ opcodes	SLOpNewstruct.sleela	lib/opcodes/SLOpNewstruct.sleela	source
 opcodes	SLOpNop.sleela	lib/opcodes/SLOpNop.sleela	source
 opcodes	SLOpNot.sleela	lib/opcodes/SLOpNot.sleela	source
 opcodes	SLOpOr.sleela	lib/opcodes/SLOpOr.sleela	source
+opcodes	SLOpOsCapability.sleela	lib/opcodes/SLOpOsCapability.sleela	source
+opcodes	SLOpOsChdir.sleela	lib/opcodes/SLOpOsChdir.sleela	source
+opcodes	SLOpOsCwd.sleela	lib/opcodes/SLOpOsCwd.sleela	source
+opcodes	SLOpOsExists.sleela	lib/opcodes/SLOpOsExists.sleela	source
+opcodes	SLOpOsFilesize.sleela	lib/opcodes/SLOpOsFilesize.sleela	source
+opcodes	SLOpOsGetenv.sleela	lib/opcodes/SLOpOsGetenv.sleela	source
+opcodes	SLOpOsHostname.sleela	lib/opcodes/SLOpOsHostname.sleela	source
+opcodes	SLOpOsIsdir.sleela	lib/opcodes/SLOpOsIsdir.sleela	source
+opcodes	SLOpOsKill.sleela	lib/opcodes/SLOpOsKill.sleela	source
+opcodes	SLOpOsMkdir.sleela	lib/opcodes/SLOpOsMkdir.sleela	source
+opcodes	SLOpOsPclose.sleela	lib/opcodes/SLOpOsPclose.sleela	source
+opcodes	SLOpOsPid.sleela	lib/opcodes/SLOpOsPid.sleela	source
+opcodes	SLOpOsPlatform.sleela	lib/opcodes/SLOpOsPlatform.sleela	source
+opcodes	SLOpOsRemove.sleela	lib/opcodes/SLOpOsRemove.sleela	source
+opcodes	SLOpOsRename.sleela	lib/opcodes/SLOpOsRename.sleela	source
+opcodes	SLOpOsRun.sleela	lib/opcodes/SLOpOsRun.sleela	source
+opcodes	SLOpOsSetenv.sleela	lib/opcodes/SLOpOsSetenv.sleela	source
+opcodes	SLOpOsSpawn.sleela	lib/opcodes/SLOpOsSpawn.sleela	source
+opcodes	SLOpOsTempdir.sleela	lib/opcodes/SLOpOsTempdir.sleela	source
+opcodes	SLOpOsUsername.sleela	lib/opcodes/SLOpOsUsername.sleela	source
+opcodes	SLOpOsWait.sleela	lib/opcodes/SLOpOsWait.sleela	source
 opcodes	SLOpPipe.sleela	lib/opcodes/SLOpPipe.sleela	source
 opcodes	SLOpPipepeer.sleela	lib/opcodes/SLOpPipepeer.sleela	source
 opcodes	SLOpPop.sleela	lib/opcodes/SLOpPop.sleela	source
 opcodes	SLOpPrint.sleela	lib/opcodes/SLOpPrint.sleela	source
+opcodes	SLOpRanMem.sleela	lib/opcodes/SLOpRanMem.sleela	source
 opcodes	SLOpRecv.sleela	lib/opcodes/SLOpRecv.sleela	source
 opcodes	SLOpRet.sleela	lib/opcodes/SLOpRet.sleela	source
 opcodes	SLOpSend.sleela	lib/opcodes/SLOpSend.sleela	source
@@ -11096,6 +11145,7 @@ opcodes	SLOpSockclose.sleela	lib/opcodes/SLOpSockclose.sleela	source
 opcodes	SLOpSockread.sleela	lib/opcodes/SLOpSockread.sleela	source
 opcodes	SLOpSockwrite.sleela	lib/opcodes/SLOpSockwrite.sleela	source
 opcodes	SLOpSpawn.sleela	lib/opcodes/SLOpSpawn.sleela	source
+opcodes	SLOpSsend.sleela	lib/opcodes/SLOpSsend.sleela	source
 opcodes	SLOpStoreg.sleela	lib/opcodes/SLOpStoreg.sleela	source
 opcodes	SLOpStorel.sleela	lib/opcodes/SLOpStorel.sleela	source
 opcodes	SLOpStructpack.sleela	lib/opcodes/SLOpStructpack.sleela	source
@@ -11115,7 +11165,9 @@ opcodes	SLOpTimePrecisionMs.sleela	lib/opcodes/SLOpTimePrecisionMs.sleela	source
 opcodes	SLOpTimeSetLocation.sleela	lib/opcodes/SLOpTimeSetLocation.sleela	source
 opcodes	SLOpTimeUtcMs.sleela	lib/opcodes/SLOpTimeUtcMs.sleela	source
 opcodes	SLOpTimeUtcNs.sleela	lib/opcodes/SLOpTimeUtcNs.sleela	source
+opcodes	SLOpUiCall.sleela	lib/opcodes/SLOpUiCall.sleela	source
 opcodes	SLOpUnlock.sleela	lib/opcodes/SLOpUnlock.sleela	source
+opcodes	SLOpVmSelect.sleela	lib/opcodes/SLOpVmSelect.sleela	source
 opcodes	SLOpcodeBase.sleela	lib/opcodes/SLOpcodeBase.sleela	source
 opcodes	SLOpcodeStream.sleela	lib/opcodes/SLOpcodeStream.sleela	source
 opcodes	SLGovConcept.sleela	lib/opcodes/governance/SLGovConcept.sleela	source

@@ -408,9 +408,9 @@ sub-families, and the new `.sldocument` ordered-document format. All counts are
 
 | Group | `.sleela` files | Notes |
 |---|---:|---|
-| Opcode classes (`SLOp*`) | 103 | one per canonical opcode, codes 0–102; the base 98 are `OP_NOP`..`OP_AUDIO_PLATFORM` |
+| Opcode classes (`SLOp*`) | 155 | one per canonical opcode, codes 0–154 (the full ISA); the base 98 are `OP_NOP`..`OP_AUDIO_PLATFORM` |
 | `SLOpcodeBase`, `SLOpcodeStream` | 2 | single-opcode contract + verbatim ordered stream |
-| **`/lib/opcodes` top level** | **105** | see `lib/opcodes/OPCODES.md` |
+| **`/lib/opcodes` top level** | **157** | see `lib/opcodes/OPCODES.md` |
 
 ### `/lib/opcodes/governance` — Registrar · Listener · Event Observer
 
