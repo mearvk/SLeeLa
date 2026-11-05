@@ -9,7 +9,7 @@ struct SyntaxVersion { int major=0, minor=0; std::string str() const { return st
 // Supported source-syntax range the toolchain drives: 1.0 .. 3.0. Features
 // introduced in later minors are still gated individually (a 1.0 source that
 // uses, e.g., network built-ins errors with "requires #sleela 1.1"), but the
-// floor itself is 1.0 so the runtime can drive the whole 1.0 .. 2.9 range.
+// floor itself is 1.0 so the runtime can drive the whole 1.0 .. 3.0 range.
 // Syntax 2.3 adds the philosophers Guide-chain expression
 // (`new T(...) :: Guide :: Guide ...`, section 17 of SLEELA.syntax).
 // Syntax 2.4 adds the `author`/`authorial` document marker: a document so
@@ -65,8 +65,9 @@ struct SyntaxVersion { int major=0, minor=0; std::string str() const { return st
 // a mismatch is a semantic error. Below 2.9 the duplicate-field rejection stands
 // (the historical rule), so this only relaxes duplicates for genuine 2.9 use
 // (section 26 of SLEELA.syntax).
-inline SyntaxVersion minSupportedSyntax(){return SyntaxVersion{1,0};} // Syntax 3.0 consolidates the established 1.x/2.x surface. It does not
+// Syntax 3.0 consolidates the established 1.x/2.x surface. It does not
 // remove older source compatibility or relax feature-specific minimum gates.
+inline SyntaxVersion minSupportedSyntax(){return SyntaxVersion{1,0};}
 inline SyntaxVersion maxSupportedSyntax(){return SyntaxVersion{3,0};} inline SyntaxVersion defaultSyntaxVersion(){return maxSupportedSyntax();}
 enum class VersionStatus{OkDeclared,OkAssumed,TooNew,TooOld,Malformed};
 struct VersionResolution{ VersionStatus status=VersionStatus::OkAssumed; SyntaxVersion declared; bool pragmaPresent=false; std::string raw; std::string message; bool accepted()const{return status==VersionStatus::OkDeclared||status==VersionStatus::OkAssumed;} bool isError()const{return !accepted();} bool isWarning()const{return status==VersionStatus::OkAssumed;} };
