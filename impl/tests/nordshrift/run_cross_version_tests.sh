@@ -32,7 +32,7 @@ if ! grep -Eq "TooOld|older than this compiler|NSS-E-SRC-002" <<<"${OLD_OUTPUT}"
   exit 1
 fi
 if [[ ${CURRENT_RC} -ne 0 ]]; then
-  echo "FAIL: supported in-range syntax (2.5) was rejected"
+  echo "FAIL: supported in-range syntax (3.0) was rejected"
   exit 1
 fi
 if ! grep -Eq "0 error\(s\)|OK: target-language" <<<"${CURRENT_OUTPUT}"; then
