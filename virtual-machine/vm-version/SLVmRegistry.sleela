@@ -15,8 +15,9 @@
  *
  * Family: vm. Composes SLVmVersion001..010, SLVmRuntime.
  *
- * [SYNC syntax-2.4 2026-10-25] Syntax header raised 2.1 -> 2.4 to match the
- * authoritative current level in impl/frontend/version.h (max supported 2.4).
+ * [VERSION NOTE 2026-11-05] This registry retains its #sleela 2.4 source
+ * declaration for compatibility. Syntax 3.0 is the current normative language
+ * edition; the shared frontend accepts 1.0..3.0 and preserves per-file gates.
  */
 #sleela 2.4
 class SLVmRegistry {
