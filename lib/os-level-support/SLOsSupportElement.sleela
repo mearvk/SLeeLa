@@ -1,0 +1,71 @@
+< SLeeLa Standard Library Definition.
+  Definition: A typed-by-convention catalogue element connecting a SLeeLa source
+  term, capability group, VM-facing operation, native ABI symbol, platform
+  backend and effect classification. This is declarative metadata; it does not
+  itself perform native calls or grant operating-system authority. >
+#sleela 2.5
+material;
+
+class SLOsSupportElement {
+  String elementName = "";
+  String groupTerm = "";
+  String vmElementTerm = "";
+  String vmOpcodeTerm = "";
+  String portableSymbol = "";
+  String nativeSymbol = "";
+  String platformTerm = "CommonBackend";
+  String effectTerm = "ReadOnlyQuery";
+  String implementationStatus = "Planned";
+  String resultTerm = "StatusAndValue";
+  int argumentCount = 0;
+  int capabilityRequired = 0;
+
+  void configure(String name, String group, String vmTerm,
+                 String opcode, String portable, String native,
+                 String platform, String effect, String status,
+                 int arity, int capability) {
+    elementName = name;
+    groupTerm = group;
+    vmElementTerm = vmTerm;
+    vmOpcodeTerm = opcode;
+    portableSymbol = portable;
+    nativeSymbol = native;
+    platformTerm = platform;
+    effectTerm = effect;
+    implementationStatus = status;
+    argumentCount = arity;
+    capabilityRequired = capability;
+  }
+
+  String getElementName() { return elementName; }
+  String getGroupTerm() { return groupTerm; }
+  String getVMElementTerm() { return vmElementTerm; }
+  String getVMOpcodeTerm() { return vmOpcodeTerm; }
+  String getPortableSymbol() { return portableSymbol; }
+  String getNativeSymbol() { return nativeSymbol; }
+  String getPlatformTerm() { return platformTerm; }
+  String getEffectTerm() { return effectTerm; }
+  String getImplementationStatus() { return implementationStatus; }
+  String getResultTerm() { return resultTerm; }
+  int getArgumentCount() { return argumentCount; }
+  int getCapabilityRequired() { return capabilityRequired; }
+
+  void setResultTerm(String value) { resultTerm = value; }
+
+  boolean isReadOnly() {
+    return effectTerm == "ReadOnlyQuery" ||
+           effectTerm == "ReadOnlyEnumeration";
+  }
+
+  boolean isStateChanging() {
+    return effectTerm == "StateChangingOperation";
+  }
+
+  boolean isPlatformSpecific() {
+    return platformTerm != "CommonBackend";
+  }
+
+  boolean isImplemented() {
+    return implementationStatus == "Implemented";
+  }
+}
