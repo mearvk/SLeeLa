@@ -25,7 +25,7 @@
 
    Family: vm. Composes SLVmConfig, SLVmRuntime. Premium sibling of SLVmVersion.
 
-   [VERSION NOTE 2026-11-05] This unit retains #sleela 2.5 because its
+   [VERSION NOTE 2026-11-05] This unit retains #sleela 3.0 because its
    material; document marker requires that feature gate. The current normative
    language edition is Syntax 3.0; the shared frontend accepts 1.0..3.0. The
    source pragma is intentionally not relabelled merely to match the edition. >>
@@ -49,7 +49,7 @@ class SLVmPremiumVersion {
   < metaScienceRating: maturity/robustness on a 1..10 scale >
   int metaScienceRating = 9;
   < metaNationalSchedule: a real, citable instrument or "none" >
-  String metaNationalSchedule = "SLeeLa SLEELA.syntax 2.4; sleela-virtual-machine LANGUAGE.SPEC";
+  String metaNationalSchedule = "SLeeLa SLEELA.syntax 3.0; sleela-virtual-machine LANGUAGE.SPEC";
 
   String getMetaVersion() { return metaVersion; }
   void setMetaVersion(String v) { metaVersion = v; }
