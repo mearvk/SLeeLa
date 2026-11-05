@@ -1,14 +1,32 @@
 < SLeeLa Standard Library Definition.
-  Definition: Native OS-support binding API note.
-  These names describe the user-mode runtime contract; this facade does not
-  install OS hooks, launch processes, or grant privileges. >
+  Definition: OS-support package entry point and source-level component index.
+  General taxonomy, VM bridge contract, portable ABI catalogue and per-OS backend
+  catalogues are maintained as separate source classes. The host OS remains the
+  authority for permissions and actual system operations. >
 #sleela 2.5
 material;
 
 class SLOsSupportRuntime {
   String packageName = "os-level-support";
-  String boundary = "in-process callbacks and cooperative task queue";
+  String boundary = "user-mode OS services through the SLeeLa VM bridge";
+  String catalogClass = "SLOsSupportCatalog";
+  String elementClass = "SLOsSupportElement";
+  String vmBridgeClass = "SLOsSupportVMBridge";
+  String windowsBackendClass = "SLOsSupportWindows";
+  String linuxBackendClass = "SLOsSupportLinux";
+  String macOSBackendClass = "SLOsSupportMacOS";
+  String existingVMBridge = "SleelaVMSystemCallBridge";
+  String nativeImplementation = "impl/core/sleela_os.c";
 
   String getPackageName() { return packageName; }
   String getBoundary() { return boundary; }
+  String getCatalogClass() { return catalogClass; }
+  String getElementClass() { return elementClass; }
+  String getVMBridgeClass() { return vmBridgeClass; }
+  String getExistingVMBridge() { return existingVMBridge; }
+  String getNativeImplementation() { return nativeImplementation; }
+
+  String getWindowsBackendClass() { return windowsBackendClass; }
+  String getLinuxBackendClass() { return linuxBackendClass; }
+  String getMacOSBackendClass() { return macOSBackendClass; }
 }
