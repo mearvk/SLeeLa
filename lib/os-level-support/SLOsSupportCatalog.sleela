@@ -1,0 +1,170 @@
+< SLeeLa Standard Library Definition.
+  Definition: Canonical taxonomy, grouping terms, and portable OS-support API catalogue.
+  All lists are descriptive catalogues. Native operations are performed only by
+  a registered VM/native bridge and the host OS permission model. >
+#sleela 2.5
+material;
+
+class SLOsSupportCatalog {
+  String catalogVersion = "1.0.0";
+  String packageName = "os-level-support";
+  String commonNamespace = "osls";
+  String runtimeNamespace = "osls_runtime";
+  String loaderNamespace = "sl_native";
+
+  String getCatalogVersion() { return catalogVersion; }
+  String getPackageName() { return packageName; }
+
+  < Canonical capability groups; terms are stable grouping identifiers. >
+  SLList getGroupTerms() {
+    SLList out = new SLList();
+    out.add("HostIdentity");
+    out.add("ProcessInspection");
+    out.add("Environment");
+    out.add("FileSystem");
+    out.add("PathManagement");
+    out.add("VolumeStorage");
+    out.add("CPUArchitecture");
+    out.add("MemoryManagement");
+    out.add("TimeClock");
+    out.add("TimeZoneCalendar");
+    out.add("NetworkInterfaces");
+    out.add("NetworkConfiguration");
+    out.add("SocketIO");
+    out.add("Scheduling");
+    out.add("TimersAndWait");
+    out.add("RuntimeEvents");
+    out.add("CooperativeTasks");
+    out.add("DynamicModules");
+    out.add("CapabilityDiscovery");
+    out.add("ErrorDiagnostics");
+    out.add("SecurityBoundary");
+    out.add("VMInterop");
+    out.add("PlatformExtensions");
+    return out;
+  }
+
+  < Existing portable C ABI functions, alphabetically. >
+  SLList getCommonOSLSFunctions() {
+    SLList out = new SLList();
+    out.add("osls_cron_next_after");
+    out.add("osls_cron_validate");
+    out.add("osls_enumerate_environment");
+    out.add("osls_enumerate_processes");
+    out.add("osls_get_cpu_info");
+    out.add("osls_get_environment_value");
+    out.add("osls_get_file_info");
+    out.add("osls_get_network_interfaces");
+    out.add("osls_get_process_info");
+    out.add("osls_get_system_info");
+    out.add("osls_get_timezone_info");
+    out.add("osls_list_directory");
+    return out;
+  }
+
+  < Current in-process runtime API, alphabetically. >
+  SLList getRuntimeFunctions() {
+    SLList out = new SLList();
+    out.add("osls_runtime_create");
+    out.add("osls_runtime_destroy");
+    out.add("osls_runtime_emit");
+    out.add("osls_runtime_pending");
+    out.add("osls_runtime_post");
+    out.add("osls_runtime_run_one");
+    out.add("osls_runtime_subscribe");
+    out.add("osls_runtime_unsubscribe");
+    return out;
+  }
+
+  < Current native module loader API, alphabetically. >
+  SLList getModuleFunctions() {
+    SLList out = new SLList();
+    out.add("sl_native_abi_version");
+    out.add("sl_native_close");
+    out.add("sl_native_loader_error");
+    out.add("sl_native_open");
+    out.add("sl_native_run");
+    out.add("sl_native_run_module");
+    out.add("sl_native_status_string");
+    return out;
+  }
+
+  < Proposed portable additions; these are not current exported symbols. >
+  SLList getPlannedCommonFunctions() {
+    SLList out = new SLList();
+    out.add("osls_close");
+    out.add("osls_copy_file");
+    out.add("osls_create_directory");
+    out.add("osls_file_read");
+    out.add("osls_file_write");
+    out.add("osls_flush_file");
+    out.add("osls_get_available_memory");
+    out.add("osls_get_capabilities");
+    out.add("osls_get_disk_space");
+    out.add("osls_get_memory_info");
+    out.add("osls_get_native_error");
+    out.add("osls_get_path_info");
+    out.add("osls_get_runtime_info");
+    out.add("osls_get_socket_info");
+    out.add("osls_get_system_load");
+    out.add("osls_get_volume_info");
+    out.add("osls_move_file");
+    out.add("osls_network_resolve");
+    out.add("osls_open_file");
+    out.add("osls_open_socket");
+    out.add("osls_path_join");
+    out.add("osls_path_normalize");
+    out.add("osls_path_resolve");
+    out.add("osls_read_file");
+    out.add("osls_remove_directory");
+    out.add("osls_remove_file");
+    out.add("osls_rename_file");
+    out.add("osls_sleep");
+    out.add("osls_socket_accept");
+    out.add("osls_socket_bind");
+    out.add("osls_socket_close");
+    out.add("osls_socket_connect");
+    out.add("osls_socket_listen");
+    out.add("osls_socket_receive");
+    out.add("osls_socket_send");
+    out.add("osls_socket_set_option");
+    out.add("osls_socket_wait");
+    out.add("osls_timer_cancel");
+    out.add("osls_timer_create");
+    out.add("osls_timer_wait");
+    out.add("osls_write_file");
+    return out;
+  }
+
+  < Terms used to organize native backends and normalized VM values. >
+  SLList getBackendTerms() {
+    SLList out = new SLList();
+    out.add("LinuxBackend");
+    out.add("WindowsBackend");
+    out.add("MacOSBackend");
+    out.add("CommonBackendContract");
+    out.add("NativeSymbol");
+    out.add("PortableOperation");
+    out.add("CapabilityRecord");
+    out.add("NativeErrorRecord");
+    out.add("PermissionOutcome");
+    out.add("UnsupportedOutcome");
+    out.add("VMValue");
+    out.add("VMCallDescriptor");
+    return out;
+  }
+
+  < Operations must be categorized before a backend call is dispatched. >
+  SLList getOperationClassTerms() {
+    SLList out = new SLList();
+    out.add("ReadOnlyQuery");
+    out.add("ReadOnlyEnumeration");
+    out.add("ProcessLocalOperation");
+    out.add("StateChangingOperation");
+    out.add("BlockingOperation");
+    out.add("AsynchronousOperation");
+    out.add("PermissionSensitiveOperation");
+    out.add("UnsupportedOperation");
+    return out;
+  }
+}
