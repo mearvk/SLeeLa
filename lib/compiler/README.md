@@ -128,3 +128,12 @@ The intended native path is `.sleela compiler source -> validated compiler IR ->
 ## Compiler construction examples
 
 The four-stage learning path for implementing a compiler in SLeeLa source is available under [`examples/`](examples/README.md): **Novice**, **Mid**, **Senior**, and **Very Senior**. Each level includes a SLeeLa scaffold, exercises, validation goals, and appropriate safety/reproducibility guidance. These examples are educational scaffolds and do not imply that full self-hosting or complete language coverage has already been verified.
+
+## Language edition 3.0
+
+The compiler package follows the normative SLeeLa syntax **3.0** edition.
+The shared native compiler gate accepts declared source syntax **1.0–3.0**;
+older pragmas remain supported, and historical feature-specific gates (for
+example, syntax 2.9 `@mix`) remain authoritative. The compiler's implementation
+release number is independent of the language syntax edition. See the root
+[`SLEELA.syntax`](../../SLEELA.syntax) and the [generated API reference](../../docs/api/index.html).
