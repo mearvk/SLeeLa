@@ -1,28 +1,35 @@
 # SLeeLa API documentation
 
-The `/api` tree contains versioned API documentation and native API references.
+The repository maintains three complementary API documentation surfaces:
 
-## SLeeLa language API
+- [Current generated SleelaDoc site](../sleeladoc-api/index.html) — browsable
+  reference generated from the live `/lib` tree.
+- [Contributor API site](../docs/api/index.html) — the documentation-facing
+  entry point, generated from the same source inventory.
+- [SLeeLa language API editions](sleela/README.md) — versioned language API
+  snapshots. The current edition is [SLeeLa 3.0](sleela/3.0/README.md).
 
-- [SLeeLa 2.9 — standard-library API](sleela/2.9/README.md): generated HTML reference for the `/lib` tree, including package, class, field, and method documentation.
-- [SLeeLa API editions](sleela/README.md): version index.
+Native C and C++ API references are catalogued under [`native/`](native/).
+The historical SLeeLa 2.1, 2.6, 2.8, and 2.9 material remains available and
+is not rewritten as part of the 3.0 edition.
 
-## Native API
+## Build
 
-Native C and C++ API references are maintained under [`/api/native`](native/).
-
-## Rebuilding the 2.9 HTML reference
-
-From the repository root, run:
-
-```sh
-python3 tools/generate-sleeladoc-api.py --out api/sleela/2.9
-```
-
-The generator reads the current `/lib` source tree and extracts the SleelaDoc file headers and comments. To build the latest working documentation site instead of the versioned snapshot, run:
+From the repository root:
 
 ```sh
-python3 tools/generate-sleeladoc-api.py
+make api-docs
 ```
 
-The versioned snapshot is committed so it can be browsed directly from the repository without running a generator.
+This generates the live site, the contributor-facing site, and a new immutable
+3.0 snapshot under `api/sleela/3.0/version-NNN/`. The first build uses
+`version-001`; subsequent snapshots must use the next unused number:
+
+```sh
+API_SNAPSHOT=version-002 make api-docs
+```
+
+All three destinations are generated from the same `/lib` source tree using
+`tools/generate-sleeladoc-api.py`. The generator records each source unit's
+actual `#sleela` declaration; publishing syntax 3.0 does not relabel older
+source units or remove their compatibility history.
