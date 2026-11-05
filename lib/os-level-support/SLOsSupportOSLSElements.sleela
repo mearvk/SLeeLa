@@ -155,4 +155,126 @@ class SLOsSupportOSLSElements {
     e.setResultTerm("JsonStringWithStatus");
     return e;
   }
+
+  << Read-only inspection functions registered in revision 1.1 (operation IDs
+     12..24). All are read-only or pure computation, so they bind under the
+     same host-read capability as the original twelve. State-changing families
+     (file mutation, sockets, timers, process control) are intentionally NOT
+     registered here; see SLOsSupportCatalog.getStateChangingPlannedFunctions. >>
+  SLOsSupportElement getMemoryInfo() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("getMemoryInfo", "MemoryManagement", "OSMemory", "OP_OSLS_CALL:155/12",
+      "osls_get_memory_info", "osls_get_memory_info", "CommonBackend",
+      "ReadOnlyQuery", "Implemented", 0, 0);
+    e.setResultTerm("JsonStringWithStatus");
+    return e;
+  }
+
+  SLOsSupportElement getAvailableMemory() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("getAvailableMemory", "MemoryManagement", "OSMemory", "OP_OSLS_CALL:155/13",
+      "osls_get_available_memory", "osls_get_available_memory", "CommonBackend",
+      "ReadOnlyQuery", "Implemented", 0, 0);
+    e.setResultTerm("JsonStringWithStatus");
+    return e;
+  }
+
+  SLOsSupportElement getDiskSpace() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("getDiskSpace", "VolumeStorage", "OSVolume", "OP_OSLS_CALL:155/14",
+      "osls_get_disk_space", "osls_get_disk_space", "CommonBackend",
+      "ReadOnlyQuery", "Implemented", 1, 0);
+    e.setResultTerm("JsonStringWithStatus");
+    return e;
+  }
+
+  SLOsSupportElement getVolumeInfo() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("getVolumeInfo", "VolumeStorage", "OSVolume", "OP_OSLS_CALL:155/15",
+      "osls_get_volume_info", "osls_get_volume_info", "CommonBackend",
+      "ReadOnlyQuery", "Implemented", 1, 0);
+    e.setResultTerm("JsonStringWithStatus");
+    return e;
+  }
+
+  SLOsSupportElement getSystemLoad() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("getSystemLoad", "CPUArchitecture", "OSCPU", "OP_OSLS_CALL:155/16",
+      "osls_get_system_load", "osls_get_system_load", "CommonBackend",
+      "ReadOnlyQuery", "Implemented", 0, 0);
+    e.setResultTerm("JsonStringWithStatus");
+    return e;
+  }
+
+  SLOsSupportElement getCapabilities() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("getCapabilities", "CapabilityDiscovery", "OSCapabilities", "OP_OSLS_CALL:155/17",
+      "osls_get_capabilities", "osls_get_capabilities", "CommonBackend",
+      "ReadOnlyQuery", "Implemented", 0, 0);
+    e.setResultTerm("JsonStringWithStatus");
+    return e;
+  }
+
+  SLOsSupportElement getRuntimeInfo() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("getRuntimeInfo", "VMInterop", "OSRuntime", "OP_OSLS_CALL:155/18",
+      "osls_get_runtime_info", "osls_get_runtime_info", "CommonBackend",
+      "ReadOnlyQuery", "Implemented", 0, 0);
+    e.setResultTerm("JsonStringWithStatus");
+    return e;
+  }
+
+  SLOsSupportElement getNativeError() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("getNativeError", "ErrorDiagnostics", "OSError", "OP_OSLS_CALL:155/19",
+      "osls_get_native_error", "osls_get_native_error", "CommonBackend",
+      "ReadOnlyQuery", "Implemented", 0, 0);
+    e.setResultTerm("JsonStringWithStatus");
+    return e;
+  }
+
+  SLOsSupportElement pathNormalize() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("pathNormalize", "PathManagement", "OSPath", "OP_OSLS_CALL:155/20",
+      "osls_path_normalize", "osls_path_normalize", "CommonBackend",
+      "ReadOnlyQuery", "Implemented", 1, 0);
+    e.setResultTerm("JsonStringWithStatus");
+    return e;
+  }
+
+  SLOsSupportElement pathJoin() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("pathJoin", "PathManagement", "OSPath", "OP_OSLS_CALL:155/21",
+      "osls_path_join", "osls_path_join", "CommonBackend",
+      "ReadOnlyQuery", "Implemented", 2, 0);
+    e.setResultTerm("JsonStringWithStatus");
+    return e;
+  }
+
+  SLOsSupportElement pathResolve() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("pathResolve", "PathManagement", "OSPath", "OP_OSLS_CALL:155/22",
+      "osls_path_resolve", "osls_path_resolve", "CommonBackend",
+      "ReadOnlyQuery", "Implemented", 1, 0);
+    e.setResultTerm("JsonStringWithStatus");
+    return e;
+  }
+
+  SLOsSupportElement getPathInfo() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("getPathInfo", "PathManagement", "OSPath", "OP_OSLS_CALL:155/23",
+      "osls_get_path_info", "osls_get_path_info", "CommonBackend",
+      "ReadOnlyQuery", "Implemented", 1, 0);
+    e.setResultTerm("JsonStringWithStatus");
+    return e;
+  }
+
+  SLOsSupportElement networkResolve() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("networkResolve", "NetworkConfiguration", "OSNetwork", "OP_OSLS_CALL:155/24",
+      "osls_network_resolve", "osls_network_resolve", "CommonBackend",
+      "ReadOnlyQuery", "Implemented", 1, 0);
+    e.setResultTerm("JsonStringWithStatus");
+    return e;
+  }
 }

@@ -39,21 +39,21 @@ These are the common, OS-neutral function families. The same conceptual operatio
 | Filesystem metadata | Query file type, size, timestamps, and readable/writable/executable indicators | **Implemented** — `osls_get_file_info`; access indicators are observations, not guarantees that a later operation will succeed |
 | Directory inspection | List directory entry names | **Implemented** — `osls_list_directory` |
 | Filesystem operations | Open, read, write, append, create, truncate, flush, close, copy, move/rename, remove, create/remove directory, inspect links, and query available space | **Planned** — add explicit handles, error mapping, permissions and race-safe semantics before exposing these operations |
-| Path handling | Normalize paths, resolve relative paths, join/split components, inspect roots/volumes, and query canonical paths where supported | **Planned** |
-| CPU and machine information | Logical/physical processor counts, architecture, vendor/model, cache-line information, and total/available memory | **Partial** — `osls_get_cpu_info`; several fields are currently reported as unknown or approximated on some platforms |
-| Memory information | Total, available, used and page-size information; process working-set/resident memory where available | **Partial** — total memory is included in `osls_get_cpu_info`; a dedicated memory API is planned |
+| Path handling | Normalize paths, resolve relative paths, join/split components, inspect roots/volumes, and query canonical paths where supported | **Implemented** — `osls_path_normalize`, `osls_path_join` (pure computation), `osls_path_resolve` (canonical, read-only), `osls_get_path_info` (normalized/root/absolute/exists) |
+| CPU and machine information | Logical/physical processor counts, architecture, vendor/model, cache-line information, and total/available memory | **Implemented** — `osls_get_cpu_info` now populates vendor/model (CPUID on Windows, `/proc/cpuinfo` on Linux, sysctl on macOS) and cache-line size on all three; `osls_get_system_load` adds load averages (POSIX; Windows reports -1) |
+| Memory information | Total, available, used and page-size information; process working-set/resident memory where available | **Implemented** — `osls_get_memory_info`, `osls_get_available_memory` (total/available/used/page-size on Linux/Windows/macOS); per-process working-set remains planned |
 | Time and clock | Wall-clock time, monotonic time, high-resolution counter, clock frequency/resolution, and UTC/local conversion | **Partial** — system wall-clock and monotonic nanoseconds are returned by `osls_get_system_info` |
 | Timezone and calendar | Timezone identifier/abbreviation, UTC offset, daylight-saving state, local-time conversion, and calendar data | **Implemented with portability limits** — `osls_get_timezone_info`; identifier fidelity differs by platform |
-| Network interface inspection | Enumerate interfaces and report names, link state, loopback status, MAC address, IPv4 and IPv6 addresses | **Partial** — `osls_get_network_interfaces`; current Windows implementation returns `OSLS_UNSUPPORTED`, and address-family details require completion |
-| Network configuration inspection | Read DNS resolver configuration, routes, interface addresses, gateways, MTU and interface statistics | **Planned** — read-only inspection APIs |
+| Network interface inspection | Enumerate interfaces and report names, link state, loopback status, MAC address, IPv4 and IPv6 addresses | **Implemented** — `osls_get_network_interfaces`; Windows now uses IP Helper `GetAdaptersAddresses` (names, MAC, IPv4/IPv6, up/loopback) instead of returning `OSLS_UNSUPPORTED`; POSIX uses `getifaddrs` |
+| Network configuration inspection | Read DNS resolver configuration, routes, interface addresses, gateways, MTU and interface statistics | **Partial** — `osls_network_resolve` performs read-only hostname/service resolution (no connection); routes, gateways, MTU and statistics remain planned |
 | Socket and network I/O | Create/close sockets; bind/listen/accept/connect; send/receive; poll readiness; resolve hostnames; inspect socket endpoints | **Planned** — portable Winsock/POSIX facade with explicit nonblocking and timeout semantics |
 | Scheduling expressions | Validate five-field cron expressions and calculate the next local-time occurrence | **Implemented** — `osls_cron_validate`, `osls_cron_next_after`; calculation only, not OS schedule installation |
 | Timers and waiting | Monotonic timers, deadlines, sleep, waitable events and cancellation primitives | **Planned** — distinguish process-local timers from OS-managed persistent schedules |
 | Runtime event hooks | Register/unregister callbacks, emit in-process events, and dispatch event payloads | **Implemented** — `osls_runtime_subscribe`, `osls_runtime_unsubscribe`, `osls_runtime_emit`; these are library callbacks, not operating-system hooks |
 | Cooperative task queue | Post callbacks, run one queued task, and inspect pending task count | **Implemented** — `osls_runtime_post`, `osls_runtime_run_one`, `osls_runtime_pending`; caller pumps the queue |
 | Dynamic module loading | Open a trusted shared library, verify the declared ABI version, resolve the declared entry point, call it and close it | **Implemented** — `sl_native_open`, `sl_native_run_module`, `sl_native_close`; native code runs in-process and is not sandboxed |
-| OS and runtime capabilities | Query whether an operation is available, permitted, and supported by the current backend | **Planned** — capability discovery must be separate from attempting the operation |
-| Error and status reporting | Stable portable status codes plus native error detail for diagnostics | **Partial** — base status enums exist; consistent native-error capture and per-operation detail are planned |
+| OS and runtime capabilities | Query whether an operation is available, permitted, and supported by the current backend | **Implemented** — `osls_get_capabilities` and `osls_get_runtime_info` (backend, ABI version, registered operation count, capability mask), separate from attempting the operation |
+| Error and status reporting | Stable portable status codes plus native error detail for diagnostics | **Implemented** — base status enums plus `osls_get_native_error` (native errno/GetLastError code and message); per-operation threading of native detail remains a refinement |
 
 
 ## 3. Common cross-platform API
@@ -288,7 +288,7 @@ Any future operation that writes files, changes settings, starts a process, or m
 
 ## 10. Implementation priorities
 
-1. **Complete and correct the existing common API:** finish Windows network-interface enumeration; improve CPU vendor/model/topology fields; improve process metadata consistency; validate timezone identifiers and timestamp semantics.
+1. **Complete and correct the existing common API:** *(revision 1.1)* Windows network-interface enumeration is now implemented via IP Helper; CPU vendor/model and cache-line fields are now populated on all three platforms; the Windows timezone identifier now uses the real time-zone key name. Remaining: improve process metadata consistency and validate timestamp semantics across platforms.
 2. **Add capability and error reporting:** expose backend capabilities and native diagnostic codes consistently.
 3. **Complete common read-only inspection:** dedicated memory, path, volume, mount, route, DNS, socket and interface-statistics APIs.
 4. **Add event facilities:** filesystem notifications and portable wait/timer abstractions with OS-specific backends.
@@ -312,6 +312,30 @@ The current root C API is declared in `osls.h` and implemented across `osls.c` a
 - `osls_get_network_interfaces`
 - `osls_cron_validate`
 - `osls_cron_next_after`
+
+Revision 1.1 adds the following read-only inspection functions, all registered
+through `OP_OSLS_CALL` operation IDs 12..24 under the same host-read capability:
+
+- `osls_get_memory_info`
+- `osls_get_available_memory`
+- `osls_get_disk_space`
+- `osls_get_volume_info`
+- `osls_get_system_load`
+- `osls_get_capabilities`
+- `osls_get_runtime_info`
+- `osls_get_native_error`
+- `osls_path_normalize`
+- `osls_path_join`
+- `osls_path_resolve`
+- `osls_get_path_info`
+- `osls_network_resolve`
+
+The remaining planned functions (file open/read/write/close, copy/move/remove,
+directory create/remove, sockets, timers, and `osls_sleep`) are **state-changing
+or handle/stream operations**. By the authority boundary in section 9 they are
+deliberately **not** registered through the read-only `OP_OSLS_CALL` path; each
+must be specified with its own explicitly granted capability before it is
+exposed, and must never be reachable under the default host-read capability.
 
 The runtime callback/task API is declared in `runtime/osls_runtime.h`. The native shared-module API is declared in `loader/native_loader.h`. Their presence does not imply sandboxing, OS syscall interception, persistent scheduling, or process creation.
 

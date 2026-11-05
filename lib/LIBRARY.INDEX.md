@@ -1,11 +1,31 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.56  
+**Revision:** 0.57  
 **Packages:** 111  
 **SLeeLa source units:** 11870  
 **Module-facade symbols:** 76  
 **Total symbol records:** 11946  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.57 grows the registered **`osls_*`** VM surface from **12 to 25**
+> read-only operations (OP_OSLS_CALL IDs 0–24) — no new opcode (155 stays
+> frozen; the typed registry grew). The 13 added calls are all read-only or
+> pure computation and bind under the existing host-read capability:
+> `osls_get_memory_info`, `osls_get_available_memory`, `osls_get_disk_space`,
+> `osls_get_volume_info`, `osls_get_system_load`, `osls_get_capabilities`,
+> `osls_get_runtime_info`, `osls_get_native_error`, `osls_path_normalize`,
+> `osls_path_join`, `osls_path_resolve`, `osls_get_path_info`,
+> `osls_network_resolve`. `SLOsSupportOSLSElements` gains the 13 matching element
+> factories, `SLOsSupportNative` the 13 wrappers, and `SLOsSupportCatalog` now
+> separates `getRegisteredInspectionFunctions` (live) from
+> `getStateChangingPlannedFunctions` (28 file/socket/timer/process operations
+> that stay out of the read-only path by design, per DESIGNATE.md §9). Native
+> C: new `os-level-support/osls_extended2.c`; and the long-standing per-platform
+> unevenness in the original twelve is fixed — Windows network enumeration (IP
+> Helper), CPU vendor/model + cache-line on all three platforms, and the real
+> Windows timezone key name. No new `.sleela` files, so the counts above are
+> unchanged. See `os-level-support/DESIGNATE.md` §11 and
+> `lib/os-level-support/README.md`.
 
 > Revision 0.56 indexes the **`os-level-support`** package (`lib/os-level-support/`)
 > in `LIBRARY.SYMBOLS.md` for the first time — the 20 source classes plus two

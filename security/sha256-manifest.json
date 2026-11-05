@@ -515,7 +515,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "39c29aa13f8a81b964bca504dffc2ff4324f4ba643c758a01ffddec20d50345f"
+      "sha256": "925141ca21a7d62bbf0d9e59c42778dd2357bbe5a0f2acc2e51c5e0fdf7d811d"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -627,7 +627,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "bf92380eb5440476d8710a62dc563998f7d61a40b259ca890c167d74641f95c6"
+      "sha256": "196051a5c30a7a368e71025ee192d7b8465a0c64feabe7a07d49ffd5eee1f08e"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -46627,7 +46627,7 @@
     },
     {
       "path": "lib/os-level-support/SLOsSupportCatalog.sleela",
-      "sha256": "b51745487e56334fef397ea23685fae99c041f560fd05b64bcb98841a68d2246"
+      "sha256": "42a18136e4664559df7946b22ff0afe380385753c1d8e2c7ff2602c49dc76f89"
     },
     {
       "path": "lib/os-level-support/SLOsSupportElement.sleela",
@@ -46651,11 +46651,11 @@
     },
     {
       "path": "lib/os-level-support/SLOsSupportNative.sleela",
-      "sha256": "c8e67916ba5781ddd84d8c4aa6d006b85e1c3684777b7bc149b5509293ad28a9"
+      "sha256": "bd13e7f7474358d0107c91610d83aef357091c0e5deadbd6e3d14ab561cec364"
     },
     {
       "path": "lib/os-level-support/SLOsSupportOSLSElements.sleela",
-      "sha256": "761e6b09593f786a608d0b0cbf41253da8eb4b55dbe9941a98f778625aa898f7"
+      "sha256": "c9cd9f1555ddf241715259c09f0dd5f193784d9e39dae13f5b7d7be14dad5de5"
     },
     {
       "path": "lib/os-level-support/SLOsSupportPlatform.sleela",
@@ -46671,7 +46671,7 @@
     },
     {
       "path": "lib/os-level-support/SLOsSupportVMBridge.sleela",
-      "sha256": "3c8a6ab26e80ffc8f8df247cf365c76554ab34a1914e47bced60da37970b3d50"
+      "sha256": "0ae80e3f46192c829744d4730fe61da01c5d38a1ca58eab8d26f9d0eefa281ba"
     },
     {
       "path": "lib/os-level-support/SLOsSupportVMElements.sleela",
@@ -46699,7 +46699,7 @@
     },
     {
       "path": "lib/os-level-support/examples/SLOsSupportConsistencyExample.sleela",
-      "sha256": "bb68d832a24d6a4a688a80a83d64cb14e5295460bb136804688346718aab3bf3"
+      "sha256": "dac2ad85e5d5021c69c47aba9c58a72b0d5e09a6d094ecf50e5db8cafb9c0b27"
     },
     {
       "path": "lib/os-level-support/include/sleela_os_support.h",
@@ -49271,7 +49271,7 @@
     },
     {
       "path": "os-level-support/osls.h",
-      "sha256": "3ca243cd181aaf35579cb0a335a116285137cec02bb45e312d7976ba2a94e77c"
+      "sha256": "b909556a4ef0f28bcd8ef7c16509024ebededf870ea83dfc30bcf0ace3a86f2a"
     },
     {
       "path": "os-level-support/osls.hpp",
@@ -49279,15 +49279,19 @@
     },
     {
       "path": "os-level-support/osls_extended.c",
-      "sha256": "a647adcb87e55a032a6cb1aac42f0dbde8041f9398307eb8a4cf9bbfb3888b8b"
+      "sha256": "0b044f8aad427279a0eec498932107247e4046292a382c86535752120d6442c7"
+    },
+    {
+      "path": "os-level-support/osls_extended2.c",
+      "sha256": "091c568c038c64057f789d399771e248803d8292101558b4f2be70615872c14c"
     },
     {
       "path": "os-level-support/osls_vm_bridge.c",
-      "sha256": "f341bedfb72b16d290c22dd6722d4645fbc7634f4fd1bc77f9ea7f4a46960b42"
+      "sha256": "dc22f9a978cd4f5a8cf9d913de6dbd9ac77d051850e3d1b322e9075f2ab03d3c"
     },
     {
       "path": "os-level-support/osls_vm_bridge.h",
-      "sha256": "a3799bdfc1a8e9dfa16f596327c497c9b71bc6752382a06d8d2a3034dc5dde3d"
+      "sha256": "caa92da7aeb5b22ebd7395d889fbf3f716073967267234cee15f42a9653a222e"
     },
     {
       "path": "os-level-support/runtime/osls_runtime.c",
@@ -49311,7 +49315,7 @@
     },
     {
       "path": "os-level-support/test_osls.c",
-      "sha256": "8b24059365aaa8a3075185edf032c9b8954d7ca80bed35e359ce1a9cc0877f6c"
+      "sha256": "96c5cee34c6db76b4433920fe10a1d540a5b010d020675e1fbe662b4a2ac3904"
     },
     {
       "path": "os-level-support/test_osls_vm_bridge.c",

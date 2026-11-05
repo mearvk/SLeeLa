@@ -94,9 +94,28 @@ class SLOsSupportConsistencyExample {
     checkElement("cronValidate", osls.cronValidate(), 1);
     checkElement("cronNextAfter", osls.cronNextAfter(), 2);
 
-    < 2. Native symbols match the catalogue's common OSLS function list (12). >
+    < 1b. The 13 read-only functions registered in revision 1.1 (ids 12..24). >
+    checkElement("getMemoryInfo", osls.getMemoryInfo(), 0);
+    checkElement("getAvailableMemory", osls.getAvailableMemory(), 0);
+    checkElement("getDiskSpace", osls.getDiskSpace(), 1);
+    checkElement("getVolumeInfo", osls.getVolumeInfo(), 1);
+    checkElement("getSystemLoad", osls.getSystemLoad(), 0);
+    checkElement("getCapabilities", osls.getCapabilities(), 0);
+    checkElement("getRuntimeInfo", osls.getRuntimeInfo(), 0);
+    checkElement("getNativeError", osls.getNativeError(), 0);
+    checkElement("pathNormalize", osls.pathNormalize(), 1);
+    checkElement("pathJoin", osls.pathJoin(), 2);
+    checkElement("pathResolve", osls.pathResolve(), 1);
+    checkElement("getPathInfo", osls.getPathInfo(), 1);
+    checkElement("networkResolve", osls.networkResolve(), 1);
+
+    < 2. The catalogue lists 12 original + 13 newly-registered inspection calls. >
     SLList common = catalog.getCommonOSLSFunctions();
     check("catalogue lists 12 common functions", common.length() == 12);
+    SLList registered = catalog.getRegisteredInspectionFunctions();
+    check("catalogue lists 13 registered inspection functions", registered.length() == 13);
+    SLList stillPlanned = catalog.getStateChangingPlannedFunctions();
+    check("catalogue lists 28 state-changing planned functions", stillPlanned.length() == 28);
 
     < 3. Core status describe() round-trips the osls_status space. >
     check("core OK", coreStatus.describe(0) == "OSLS_OK");
@@ -112,6 +131,17 @@ class SLOsSupportConsistencyExample {
     check("getFileInfo -> SLFileInfo", typed.recordClassFor("oslsGetFileInfo") == "SLFileInfo");
     check("cronValidate is scalar", typed.recordClassFor("oslsCronValidate") == "StatusScalar");
     check("getCPUInfo returns record", typed.returnsTypedRecord("oslsGetCPUInfo"));
+
+    < 6. Live VM dispatch: the new read-only builtins return a JSON String. >
+    SLOsSupportNative nativeApi = new SLOsSupportNative();
+    print("live memoryInfo:");
+    print(nativeApi.memoryInfo());
+    print("live runtimeInfo (operationCount should be 25):");
+    print(nativeApi.runtimeInfo());
+    print("live pathNormalize('/a/b/../c'):");
+    print(nativeApi.pathNormalize("/a/b/../c"));
+    print("live pathJoin('/usr','bin'):");
+    print(nativeApi.pathJoin("/usr", "bin"));
 
     if (failures == 0) {
       print("OSLS CONSISTENCY: ALL CHECKS PASSED");

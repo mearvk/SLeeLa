@@ -103,6 +103,80 @@ typedef struct osls_timezone_info {
     int is_dst;
 } osls_timezone_info;
 
+typedef struct osls_memory_info {
+    uint64_t total_bytes;
+    uint64_t available_bytes;
+    uint64_t used_bytes;
+    uint64_t page_size_bytes;
+} osls_memory_info;
+
+typedef struct osls_disk_space {
+    char path[OSLS_PATH_MAX];
+    uint64_t total_bytes;
+    uint64_t free_bytes;
+    uint64_t available_bytes; /* free space usable by the caller */
+} osls_disk_space;
+
+typedef struct osls_volume_info {
+    char path[OSLS_PATH_MAX];
+    char filesystem[64];
+    uint64_t total_bytes;
+    uint64_t available_bytes;
+    uint64_t block_size;
+    int is_read_only;
+} osls_volume_info;
+
+typedef struct osls_system_load {
+    /* Load averages scaled by 1000 (e.g. 1500 == 1.50). A value of -1 means the
+     * platform does not expose that window. */
+    int64_t load_average_1min_milli;
+    int64_t load_average_5min_milli;
+    int64_t load_average_15min_milli;
+    uint32_t logical_cores;
+} osls_system_load;
+
+typedef struct osls_runtime_info {
+    char backend[64];        /* "linux" | "windows" | "macos" | "unknown" */
+    char abi_version[32];    /* OSLS ABI version string */
+    uint32_t operation_count; /* registered VM operation count */
+    uint64_t capabilities;    /* capability bits this backend can satisfy */
+} osls_runtime_info;
+
+typedef struct osls_native_error {
+    int32_t code;            /* native errno / GetLastError value, 0 if none */
+    char message[256];       /* human-readable native message, or "" */
+} osls_native_error;
+
+typedef struct osls_path_info {
+    char input[OSLS_PATH_MAX];
+    char normalized[OSLS_PATH_MAX];
+    char root[64];           /* "/" on POSIX, e.g. "C:\\" on Windows */
+    int is_absolute;
+    int exists;              /* best-effort existence check */
+} osls_path_info;
+
+/* Read-only memory, storage and load inspection. */
+OSLS_API osls_status osls_get_memory_info(osls_memory_info *out_info);
+OSLS_API osls_status osls_get_available_memory(uint64_t *out_bytes);
+OSLS_API osls_status osls_get_disk_space(const char *path, osls_disk_space *out_info);
+OSLS_API osls_status osls_get_volume_info(const char *path, osls_volume_info *out_info);
+OSLS_API osls_status osls_get_system_load(osls_system_load *out_info);
+
+/* Backend capability and diagnostic discovery. */
+OSLS_API osls_status osls_get_capabilities(uint64_t *out_capabilities);
+OSLS_API osls_status osls_get_runtime_info(osls_runtime_info *out_info);
+OSLS_API osls_status osls_get_native_error(osls_native_error *out_error);
+
+/* Path handling. normalize/join are pure string computation; resolve and
+ * path-info consult the filesystem read-only. */
+OSLS_API osls_status osls_path_normalize(const char *path, char *out_buffer, size_t out_capacity);
+OSLS_API osls_status osls_path_join(const char *left, const char *right, char *out_buffer, size_t out_capacity);
+OSLS_API osls_status osls_path_resolve(const char *path, char *out_buffer, size_t out_capacity);
+OSLS_API osls_status osls_get_path_info(const char *path, osls_path_info *out_info);
+
+/* Read-only hostname/service resolution (DNS lookup; no connection is made). */
+OSLS_API osls_status osls_network_resolve(const char *host, char *out_buffer, size_t out_capacity);
+
 /* Read-only information about the current host and process. */
 OSLS_API osls_status osls_get_system_info(osls_system_info *out_info);
 /* Process inspection is limited to the caller's own process (pid 0 means self).

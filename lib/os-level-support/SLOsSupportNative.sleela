@@ -64,4 +64,19 @@ class SLOsSupportNative {
   String nextCronAfter(String expression, long epochSeconds) {
     return oslsCronNextAfter(expression, epochSeconds);
   }
+
+  << Read-only inspection added in revision 1.1 (operation IDs 12..24). >>
+  String memoryInfo() { return oslsGetMemoryInfo(); }
+  String availableMemory() { return oslsGetAvailableMemory(); }
+  String diskSpace(String path) { return oslsGetDiskSpace(path); }
+  String volumeInfo(String path) { return oslsGetVolumeInfo(path); }
+  String systemLoad() { return oslsGetSystemLoad(); }
+  String capabilities() { return oslsGetCapabilities(); }
+  String runtimeInfo() { return oslsGetRuntimeInfo(); }
+  String nativeError() { return oslsGetNativeError(); }
+  String pathNormalize(String path) { return oslsPathNormalize(path); }
+  String pathJoin(String left, String right) { return oslsPathJoin(left, right); }
+  String pathResolve(String path) { return oslsPathResolve(path); }
+  String pathInfo(String path) { return oslsGetPathInfo(path); }
+  String networkResolve(String host) { return oslsNetworkResolve(host); }
 }

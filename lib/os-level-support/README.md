@@ -13,7 +13,7 @@ catalogues**.
 | SLOsSupportCatalog.sleela | Canonical capability groups, common API names, runtime/module functions, planned portable functions, and grouping terms |
 | SLOsSupportElement.sleela | Reusable element descriptor: group, VM term/opcode, portable symbol, native symbol, backend, effect, status and arity |
 | SLOsSupportVMElements.sleela | Factory methods for the 21 existing OP_OS operations, mapped to VM opcodes and slos_* backend symbols |
-| SLOsSupportOSLSElements.sleela | Factory methods for the 12 registered osls_* C ABI calls, mapped to OP_OSLS_CALL (155) and operation IDs 0–11 |
+| SLOsSupportOSLSElements.sleela | Factory methods for the 25 registered osls_* C ABI calls, mapped to OP_OSLS_CALL (155) and operation IDs 0–24 (the original 12 plus 13 read-only inspection calls added in revision 1.1: memory, disk, volume, system load, capabilities, runtime-info, native-error, path normalize/join/resolve/info, and hostname resolution) |
 | SLOsSupportVMBridge.sleela | VM dispatch stages, status/marshalling vocabulary and current VM opcode mapping |
 | examples/SLOsSupportCatalogExample.sleela | Example that enumerates common groups, VM bindings, and each platform's native API catalogue |
 | SLOsSupportLinux.sleela | Linux grouping terms and alphabetized POSIX/Linux native symbols |
@@ -97,7 +97,12 @@ executable suffixes, capability groups and native extension symbol lists.
 SLOsSupportPlatform detects the host and selects a backend identifier.
 It fails closed for an unknown platform.
 
-The common OSLS API is registered and callable through the VM. The separate
+The common OSLS API is registered and callable through the VM: **25** read-only
+operations (IDs 0–24) as of revision 1.1. State-changing and handle/stream
+families (file mutation, sockets, timers, process control, `osls_sleep`) are
+intentionally **not** registered through this read-only path — see
+`SLOsSupportCatalog.getStateChangingPlannedFunctions` and DESIGNATE.md §9; each
+needs its own explicitly granted capability before exposure. The separate
 nativeExtensionRegistered checks on each platform facade still return false.
 Linux procfs/sysfs, netlink, epoll, inotify and cgroups; Windows Win32/IP Helper,
 SCM/Registry and Winsock; and macOS Mach/Dispatch/IOKit/FSEvents/SystemConfiguration
