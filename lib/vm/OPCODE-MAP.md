@@ -8,7 +8,7 @@ This is the human-readable support map for the canonical source-defined SLeeLa I
 
 > Sync note: the source registry, native enum, and map now cover the appended
 > `OP_IC_*` group (126–147), `OP_VM_SELECT` (148), `OP_MODIUM_SCAN` (149),
-> and opcodes 150–154. The coverage checks compare the ordered source records
+> and opcodes 150–155. OP_OSLS_CALL (155) dispatches the typed osls_* ABI binding table. The coverage checks compare the ordered source records
 > against the native enum; CI remains the final build-level verification.
 > `OP_VM_SELECT` (148) is the service-exit seam the Sleela VM selector
 > (`virtual-machine/vm-version/SLVmRegistry` + the `SLVmVersionNNN` manifests)
@@ -172,6 +172,7 @@ This is the human-readable support map for the canonical source-defined SLeeLa I
 152 | `OP_CHECKCAST` | Implemented | `impl/core/sleela_core.c`
 153 | `OP_INSTANCEOF` | Implemented | `impl/core/sleela_core.c`
 154 | `OP_DUP2` | Implemented | `impl/core/sleela_core.c`
+155 | `OP_OSLS_CALL` | Implemented | `impl/core/sleela_core.c` (`os-level-support/osls_vm_bridge.c`) — typed OSLS ABI registry; JSON result marshalling
 
 
 The operating-system opcodes (`OP_OS_*`) are the host System Call API: the `os*`
@@ -220,4 +221,3 @@ A source opcode is not considered supported merely because it appears in the sou
 > (step 3), this map (step 4), and reflected in the SLVM/1–11 runtime-services
 > contract (step 6) via `RUNTIME-SERVICES.md`.
 
-155 | `OP_OSLS_CALL` | Implemented | `impl/core/sleela_core.c` (`os-level-support/osls_vm_bridge.c`) — typed OSLS ABI registry; JSON result marshalling
