@@ -203,3 +203,10 @@ See [`NORDSHRIFT-COMPLETE.md`](NORDSHRIFT-COMPLETE.md) for the complete applicat
 The canonical base-class definitions remain in [`../../api/sleela-complete/`](../../api/sleela-complete/), with the module matrix in [`../../api/sleela-complete/MODULE-MATRIX.md`](../../api/sleela-complete/MODULE-MATRIX.md). Native Memory Manager and Reflection foundations are documented under [`../../api/native/memory/`](../../api/native/memory/) and [`../../api/native/reflection/`](../../api/native/reflection/).
 
 Nordshrift Complete is an **authoring-level completeness** designation. It does not claim that every native backend or platform implementation is production-complete.
+
+## SLeeLa language syntax 3.0
+
+Nordshrift 2.7.1-dev uses the shared Sleelvac frontend and now reports support
+for the consolidated SLeeLa syntax **3.0** edition (source range 1.0–3.0).
+The Nordshrift product version and the independent NS-SST-0001 sheet-format
+version remain separate from the SLeeLa language syntax version.
