@@ -1,0 +1,40 @@
+< SLeeLa Standard Library Definition.
+  Definition: Runtime selector for the OS-specific source facade. It selects
+  only the matching platform class; it does not load native code or elevate
+  privileges. Unsupported platforms fail closed. >
+#sleela 2.5
+material;
+
+class SLOsSupportPlatform {
+  String selectedBackend = "UnsupportedBackend";
+  int selectedPlatform = 0;
+
+  String detect() {
+    String host = osPlatform();
+    if (host == "Linux") {
+      selectedBackend = "LinuxBackend";
+      selectedPlatform = 1;
+    } else if (host == "Windows") {
+      selectedBackend = "WindowsBackend";
+      selectedPlatform = 2;
+    } else if (host == "macOS") {
+      selectedBackend = "MacOSBackend";
+      selectedPlatform = 3;
+    } else {
+      selectedBackend = "UnsupportedBackend";
+      selectedPlatform = 0;
+    }
+    return selectedBackend;
+  }
+
+  String getSelectedBackend() { return selectedBackend; }
+  int getSelectedPlatform() { return selectedPlatform; }
+  boolean isSupported() { return selectedPlatform != 0; }
+  boolean isLinux() { return selectedPlatform == 1; }
+  boolean isWindows() { return selectedPlatform == 2; }
+  boolean isMacOS() { return selectedPlatform == 3; }
+
+  < Portable VM bridge calls are independent of the selected source facade. >
+  String platform() { return osPlatform(); }
+  boolean capability(int capabilityId) { return osCapability(capabilityId) == 1; }
+}
