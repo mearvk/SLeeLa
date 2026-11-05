@@ -55,7 +55,112 @@ These are the common, OS-neutral function families. The same conceptual operatio
 | OS and runtime capabilities | Query whether an operation is available, permitted, and supported by the current backend | **Planned** — capability discovery must be separate from attempting the operation |
 | Error and status reporting | Stable portable status codes plus native error detail for diagnostics | **Partial** — base status enums exist; consistent native-error capture and per-operation detail are planned |
 
-## 3. Linux-specific function families
+
+## 3. Common cross-platform API
+
+This is the shared SLeeLa OS-level-support API intended to present one stable C interface across Linux, Windows, and macOS. Platform backends translate these operations to the appropriate native functions. The names below are portable SLeeLa API names, not Win32, Linux, or Darwin symbols.
+
+### 3.1 Existing common C API — alphabetical
+
+These functions are declared in the current public headers. Their implementation status is described in the common catalogue and must be checked per platform.
+
+- `osls_cron_next_after` — calculate the next matching local-time minute
+- `osls_cron_validate` — validate a five-field cron expression
+- `osls_enumerate_environment` — enumerate the current process environment
+- `osls_enumerate_processes` — enumerate processes within the documented visibility policy; currently self-only
+- `osls_get_cpu_info` — retrieve CPU and machine summary information
+- `osls_get_environment_value` — read one environment variable
+- `osls_get_file_info` — retrieve file metadata
+- `osls_get_network_interfaces` — enumerate network interfaces
+- `osls_get_process_info` — retrieve process metadata within the documented visibility policy; currently self-only
+- `osls_get_system_info` — retrieve host identity, process ID, wall-clock and monotonic time, and working directory
+- `osls_get_timezone_info` — retrieve timezone information
+- `osls_list_directory` — list directory entry names
+
+### 3.2 Existing common runtime API — alphabetical
+
+These functions are declared in `runtime/osls_runtime.h`. They are library-managed, in-process callbacks and cooperative task dispatch; they are not OS hooks, threads, or background workers.
+
+- `osls_runtime_create` — create a runtime instance
+- `osls_runtime_destroy` — destroy a runtime instance
+- `osls_runtime_emit` — emit an in-process event
+- `osls_runtime_pending` — return the queued task count
+- `osls_runtime_post` — enqueue a callback for later caller-driven execution
+- `osls_runtime_run_one` — execute at most one queued callback
+- `osls_runtime_subscribe` — subscribe a callback to an in-process event kind
+- `osls_runtime_unsubscribe` — remove an event subscription
+
+### 3.3 Existing shared-module API — alphabetical
+
+These functions are declared in `loader/native_loader.h`. They provide shared-library loading and ABI entry-point handling. Loading a module executes native code in the current process and does not create a sandbox.
+
+- `sl_native_abi_version` — plugin-exported ABI version function
+- `sl_native_close` — close a loaded native module
+- `sl_native_loader_error` — retrieve the loader diagnostic string
+- `sl_native_open` — load a shared library and resolve its declared entry point
+- `sl_native_run` — plugin-exported entry point
+- `sl_native_run_module` — invoke the loaded module entry point
+- `sl_native_status_string` — convert a loader status to a diagnostic string
+
+### 3.4 Planned common API extensions — alphabetical
+
+The following names are proposed portable API additions for the common capability catalogue. They are design designations, not current exported symbols. Final signatures, ownership rules, buffer conventions, and ABI versioning must be specified before implementation.
+
+- `osls_close` — close a library-owned file or resource handle
+- `osls_copy_file` — copy a file
+- `osls_create_directory` — create a directory
+- `osls_file_read` — read bytes from an open file handle
+- `osls_file_write` — write bytes to an open file handle
+- `osls_flush_file` — flush buffered file data
+- `osls_get_available_memory` — retrieve available physical memory
+- `osls_get_capabilities` — query supported and permitted backend capabilities
+- `osls_get_disk_space` — retrieve total and available space for a path or volume
+- `osls_get_memory_info` — retrieve total, available, and page-size information
+- `osls_get_native_error` — retrieve the native error detail associated with the last failed operation
+- `osls_get_path_info` — retrieve normalized path and root/volume information
+- `osls_get_runtime_info` — retrieve OSLS backend and API version information
+- `osls_get_socket_info` — retrieve local/peer endpoint information for a socket handle
+- `osls_get_system_load` — retrieve system load information where a meaningful platform equivalent exists
+- `osls_get_volume_info` — retrieve volume name, filesystem type, and capacity metadata
+- `osls_make_directory` — create a directory (alias candidate; choose one canonical name before ABI freeze)
+- `osls_move_file` — move or rename a file
+- `osls_network_resolve` — resolve a host or service name
+- `osls_open_file` — open a file and return an opaque library-owned handle
+- `osls_open_socket` — create a socket using portable address-family and type values
+- `osls_path_join` — join path components using host-platform rules
+- `osls_path_normalize` — normalize a path without claiming filesystem existence
+- `osls_path_resolve` — resolve a path where the platform permits canonical resolution
+- `osls_read_file` — read a file using a documented buffer/size contract
+- `osls_remove_directory` — remove an empty directory
+- `osls_remove_file` — remove a file
+- `osls_rename_file` — rename a file
+- `osls_socket_accept` — accept an incoming connection
+- `osls_socket_bind` — bind a socket to a local endpoint
+- `osls_socket_close` — close a socket handle
+- `osls_socket_connect` — connect a socket to a remote endpoint
+- `osls_socket_listen` — listen for incoming connections
+- `osls_socket_receive` — receive socket data
+- `osls_socket_send` — send socket data
+- `osls_socket_set_option` — set an explicitly supported socket option
+- `osls_socket_wait` — wait for socket readiness with a timeout
+- `osls_sleep` — sleep for a specified duration using a monotonic clock
+- `osls_timer_cancel` — cancel a library-managed timer
+- `osls_timer_create` — create a process-local timer
+- `osls_timer_wait` — wait for a timer or deadline
+- `osls_write_file` — write a file using a documented buffer/size contract
+
+**API consistency rules:**
+
+1. Use the `osls_` prefix for portable OS-support functions; keep `osls_runtime_` for runtime queue/event operations and `sl_native_` for native module loading.
+2. Keep common API names and result semantics identical on all three platforms. Platform-only capabilities must use an explicitly platform-qualified extension namespace.
+3. Use UTF-8 strings at the public C ABI boundary; perform native encoding conversion inside the backend.
+4. Use opaque handles for open files, sockets, and timers. Define whether each handle is thread-safe and which function releases it.
+5. Distinguish invalid arguments, not found, unsupported, access denied, buffer too small, timeout, and native system failure. Preserve the native error separately from the portable status.
+6. Do not expose platform-specific structs, handles, constants, or calling conventions in the common header.
+7. Do not finalize duplicate aliases such as `osls_create_directory` and `osls_make_directory`; choose one canonical exported name before freezing the ABI.
+8. Mark each function as implemented, partial, or planned in the implementation matrix, and test it on Linux, Windows 10+, and macOS.
+
+## 4. Linux-specific function families
 
 Linux-specific functions belong in a Linux backend or a clearly named Linux extension. They must not leak Linux-only types into the common C ABI.
 
@@ -81,7 +186,7 @@ Linux implementation notes:
 - Do not assume that root-only information is available to an ordinary user.
 - Do not add kernel modules, syscall interception, ptrace control, or privileged configuration mutation to this library.
 
-## 4. Windows-specific function families
+## 5. Windows-specific function families
 
 Windows-specific functions belong in a Windows backend or a clearly named Windows extension. Use documented Win32 APIs and preserve Windows access-control behavior.
 
@@ -107,7 +212,7 @@ Windows implementation notes:
 - A process handle or token must be opened with the minimum required access rights and closed deterministically.
 - Do not add service installation, driver installation, token privilege elevation, registry writes, process injection, or security-control bypass.
 
-## 5. macOS-specific function families
+## 6. macOS-specific function families
 
 macOS-specific functions belong in a Darwin/macOS backend or a clearly named macOS extension. Prefer documented Apple APIs and respect privacy/TCC and sandbox restrictions.
 
@@ -131,7 +236,7 @@ macOS implementation notes:
 - Do not rely on undocumented private frameworks or unstable kernel interfaces.
 - Do not add kernel extensions, system extensions, launch daemons, privileged helpers, or persistent background installation as part of this user-mode library.
 
-## 6. Platform capability comparison
+## 7. Platform capability comparison
 
 The following matrix describes the intended backend coverage, not a claim that every backend is complete today.
 
@@ -153,7 +258,7 @@ The following matrix describes the intended backend coverage, not a claim that e
 
 A cell identifies a likely native implementation family. It does not promise identical output, identical permissions, or identical semantics across operating systems.
 
-## 7. C ABI and C++ facade requirements
+## 8. C ABI and C++ facade requirements
 
 1. Keep the C ABI authoritative and usable from C and C++.
 2. Use fixed-width integer types for ABI-visible numeric fields.
@@ -166,7 +271,7 @@ A cell identifies a likely native implementation family. It does not promise ide
 9. Define time units, epoch, monotonic-clock semantics, path rules, and whether timestamps represent creation, metadata change, or modification.
 10. Document whether each function is read-only, process-local, system-wide, blocking, asynchronous, or permission-sensitive.
 
-## 8. Security and authority boundaries
+## 9. Security and authority boundaries
 
 The OS-level-support library is a user-mode portability layer. Its functions report host state or perform explicitly requested, ordinary user-mode operations. They do not confer authority.
 
@@ -181,7 +286,7 @@ The following are out of scope for this library and must not be added as implied
 
 Any future operation that writes files, changes settings, starts a process, or modifies a service must be separately specified, explicitly invoked by the caller, permission-checked by the OS, and documented as a state-changing operation. It must not be hidden behind a read/query API.
 
-## 9. Implementation priorities
+## 10. Implementation priorities
 
 1. **Complete and correct the existing common API:** finish Windows network-interface enumeration; improve CPU vendor/model/topology fields; improve process metadata consistency; validate timezone identifiers and timestamp semantics.
 2. **Add capability and error reporting:** expose backend capabilities and native diagnostic codes consistently.
@@ -191,7 +296,7 @@ Any future operation that writes files, changes settings, starts a process, or m
 6. **Add tests on all three operating systems:** compile-time coverage, runtime tests, unavailable-permission tests, Unicode paths, large buffers, missing facilities, and error mapping.
 7. **Publish an implementation matrix:** each function must identify its header, backend source, supported platforms, tests, permission requirements and current status before being described as complete.
 
-## 10. Current public API reference
+## 11. Current public API reference
 
 The current root C API is declared in `osls.h` and implemented across `osls.c` and `osls_extended.c`:
 
@@ -211,11 +316,11 @@ The current root C API is declared in `osls.h` and implemented across `osls.c` a
 The runtime callback/task API is declared in `runtime/osls_runtime.h`. The native shared-module API is declared in `loader/native_loader.h`. Their presence does not imply sandboxing, OS syscall interception, persistent scheduling, or process creation.
 
 
-## 11. Alphabetical native operating-system function index
+## 12. Alphabetical native operating-system function index
 
 This index names native functions and documented system interfaces that may implement the capability families above. Names are grouped by operating system and sorted alphabetically within each group. It is an implementation reference, not a promise that every function is currently called by SLeeLa or is available on every supported OS release. Prefer documented, user-mode APIs; check availability, permissions, and return status at runtime.
 
-### 11.1 Windows — Win32 and documented system APIs
+### 12.1 Windows — Win32 and documented system APIs
 
 The following Win32 and Windows API names are listed alphabetically. Related API families are included where they are relevant to the designated support surface.
 
@@ -297,7 +402,7 @@ The following Win32 and Windows API names are listed alphabetically. Related API
 - Service Control Manager (SCM) — read-only service enumeration and status queries
 - Winsock 2 — socket operations and name resolution, including `accept`, `bind`, `closesocket`, `connect`, `getaddrinfo`, `getsockname`, `getsockopt`, `listen`, `recv`, `select`, `send`, `setsockopt`, `shutdown`, `socket`, and `WSAStartup`
 
-### 11.2 Linux — POSIX, libc, and Linux system interfaces
+### 12.2 Linux — POSIX, libc, and Linux system interfaces
 
 The following function names are listed alphabetically. Some are libc/POSIX interfaces and some are Linux-specific interfaces or system calls. Prefer libc wrappers over issuing raw system calls directly.
 
@@ -377,7 +482,7 @@ The following function names are listed alphabetically. Some are libc/POSIX inte
 - sysfs — read-only device, CPU, memory and power metadata (for example, `/sys/devices/system/cpu`)
 - systemd D-Bus interfaces — optional, read-only service and session metadata when available
 
-### 11.3 macOS — Darwin, POSIX, Mach, and Apple system APIs
+### 12.3 macOS — Darwin, POSIX, Mach, and Apple system APIs
 
 The following function names are listed alphabetically. Availability and permissions vary by macOS release, sandbox profile and privacy authorization.
 
