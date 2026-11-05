@@ -7,26 +7,14 @@
 **Total symbol records:** 11911  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
-> Revision 0.54 completes the **`opcodes`** wrapper family so it covers the
-> **entire** canonical VM ISA. The family previously shipped single-opcode
-> classes only for codes **0–102** (103 wrappers); the canonical ISA in
-> `lib/vm/InstructionSet.sleela` had since grown to **156 opcodes (codes
-> 0–155)**. This revision adds the **53** missing `SLOp*` wrapper classes for
-> codes **103–155**: the operating-system system calls (`SLOpOs*`, 103–123), the
-> GC/system ops (`SLOpGcHint` 124, `SLOpRanMem` 125), the idea-canvas
-> native-bridge ops (`SLOpIc*`, 126–147), `SLOpVmSelect` (148), `SLOpModiumScan`
-> (149), and the tail ops `SLOpUiCall` (150), `SLOpSsend` (151), `SLOpCheckcast`
-> (152), `SLOpInstanceof` (153),  `SLOpDup2` (154), and `SLOpOslsCall` (155). Each new class extends
-> `SLOpcodeBase`, carries exactly one `CODE`/`MNEMONIC`, honours the
-> fetch-then-execute-one contract, and carries the Metadata Class metapattern —
-> so `SLOpcodeStream` can now sequence any opcode in the set. The wrapper
-> count is now **156** (`SLOp*`), one-for-one with the native enum/dispatch and
-> the `lib/vm/OPCODE-MAP.md` table. See `opcodes/OPCODES.md`.
->
-> Fifty-three new source classes (11783 → **11836** sources; 11836 → **11911**
-> total records). Counts reconciled to the live `/lib` tree by
-> `tools/generate-library-symbols.py` and verified by
-> `test-suites/test-library-inventory.sh` (expected totals updated to match).
+> Revision 0.55 appends **`OP_OSLS_CALL` (155)** to the canonical ISA and
+> adds its `SLOpOslsCall` wrapper. The native VM dispatch now reaches the
+> registered `osls_*` ABI table through typed operation IDs 0–11, with bounded
+> JSON result marshalling. The opcode wrapper family now contains **156**
+> `SLOp*` classes for codes **0–155**, one-for-one with the native enum and
+> dispatch. The OSLS source facade and platform-specific source facades are
+> indexed alongside the wrapper. See `opcodes/OPCODES.md` and
+> `os-level-support/README.md`.
 
 > Revision 0.53 adds the new **`sleeladoc`** package (`lib/sleeladoc/`): the
 > SLeeLa-side **SleelaDoc extractor** — the Javadoc-tool analogue. It reads
