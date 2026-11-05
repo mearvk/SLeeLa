@@ -194,11 +194,11 @@ class SLOsSupportVMBridge {
     out.add("FileSystem|makeDir|osMakeDir|OP_OS_MKDIR=116|Implemented|StateChangingOperation");
     out.add("FileSystem|remove|osRemove|OP_OS_REMOVE=117|Implemented|StateChangingOperation");
     out.add("FileSystem|rename|osRename|OP_OS_RENAME=118|Implemented|StateChangingOperation");
-    out.add("ProcessInspection|run|osRun|OP_OS_RUN=119|Implemented|StateChangingOperation");
-    out.add("ProcessInspection|spawn|osSpawn|OP_OS_SPAWN=120|Implemented|StateChangingOperation");
-    out.add("ProcessInspection|waitFor|osWait|OP_OS_WAIT=121|Implemented|BlockingOperation");
-    out.add("ProcessInspection|kill|osKill|OP_OS_KILL=122|Implemented|StateChangingOperation");
-    out.add("ProcessInspection|closeProcess|osProcessClose|OP_OS_PCLOSE=123|Implemented|StateChangingOperation");
+    out.add("ProcessControl|run|osRun|OP_OS_RUN=119|Implemented|StateChangingOperation");
+    out.add("ProcessControl|spawn|osSpawn|OP_OS_SPAWN=120|Implemented|StateChangingOperation");
+    out.add("ProcessControl|waitFor|osWait|OP_OS_WAIT=121|Implemented|BlockingOperation");
+    out.add("ProcessControl|kill|osKill|OP_OS_KILL=122|Implemented|StateChangingOperation");
+    out.add("ProcessControl|closeProcess|osProcessClose|OP_OS_PCLOSE=123|Implemented|StateChangingOperation");
     return out;
   }
 
@@ -209,6 +209,7 @@ class SLOsSupportVMBridge {
     out.add("PathManagement");
     out.add("FileSystem");
     out.add("ProcessInspection");
+    out.add("ProcessControl");
     out.add("CapabilityDiscovery");
     return out;
   }
