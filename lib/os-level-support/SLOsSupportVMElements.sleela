@@ -35,7 +35,7 @@ class SLOsSupportVMElements {
     SLOsSupportElement e = new SLOsSupportElement();
     e.configure("setEnv", "Environment", "OSEnvironment", "OP_OS_SETENV:106",
       "osSetEnv", "slos_setenv", "CommonBackend", "StateChangingOperation", "Implemented", 2, 0);
-    e.setResultTerm("StatusCode");
+    e.setResultTerm("Boolean");
     return e;
   }
 
@@ -51,7 +51,7 @@ class SLOsSupportVMElements {
     SLOsSupportElement e = new SLOsSupportElement();
     e.configure("changeDir", "PathManagement", "OSPath", "OP_OS_CHDIR:108",
       "osChangeDir", "slos_chdir", "CommonBackend", "StateChangingOperation", "Implemented", 1, 0);
-    e.setResultTerm("StatusCode");
+    e.setResultTerm("Boolean");
     return e;
   }
 
@@ -83,7 +83,7 @@ class SLOsSupportVMElements {
     SLOsSupportElement e = new SLOsSupportElement();
     e.configure("processId", "ProcessInspection", "OSProcess", "OP_OS_PID:112",
       "osProcessId", "slos_process_id", "CommonBackend", "ReadOnlyQuery", "Implemented", 0, 0);
-    e.setResultTerm("UInt64");
+    e.setResultTerm("VMInt");
     return e;
   }
 
@@ -107,7 +107,7 @@ class SLOsSupportVMElements {
     SLOsSupportElement e = new SLOsSupportElement();
     e.configure("fileSize", "FileSystem", "OSFileSystem", "OP_OS_FILESIZE:115",
       "osFileSize", "slos_file_size", "CommonBackend", "ReadOnlyQuery", "Implemented", 1, 0);
-    e.setResultTerm("Int64Bytes");
+    e.setResultTerm("VMIntBytes");
     return e;
   }
 
@@ -115,7 +115,7 @@ class SLOsSupportVMElements {
     SLOsSupportElement e = new SLOsSupportElement();
     e.configure("makeDir", "FileSystem", "OSFileSystem", "OP_OS_MKDIR:116",
       "osMakeDir", "slos_mkdir", "CommonBackend", "StateChangingOperation", "Implemented", 1, 0);
-    e.setResultTerm("StatusCode");
+    e.setResultTerm("Boolean");
     return e;
   }
 
@@ -123,7 +123,7 @@ class SLOsSupportVMElements {
     SLOsSupportElement e = new SLOsSupportElement();
     e.configure("remove", "FileSystem", "OSFileSystem", "OP_OS_REMOVE:117",
       "osRemove", "slos_remove", "CommonBackend", "StateChangingOperation", "Implemented", 1, 0);
-    e.setResultTerm("StatusCode");
+    e.setResultTerm("Boolean");
     return e;
   }
 
@@ -131,7 +131,7 @@ class SLOsSupportVMElements {
     SLOsSupportElement e = new SLOsSupportElement();
     e.configure("rename", "FileSystem", "OSFileSystem", "OP_OS_RENAME:118",
       "osRename", "slos_rename", "CommonBackend", "StateChangingOperation", "Implemented", 2, 0);
-    e.setResultTerm("StatusCode");
+    e.setResultTerm("Boolean");
     return e;
   }
 
@@ -163,7 +163,7 @@ class SLOsSupportVMElements {
     SLOsSupportElement e = new SLOsSupportElement();
     e.configure("kill", "ProcessControl", "OSProcess", "OP_OS_KILL:122",
       "osKill", "slos_kill", "CommonBackend", "StateChangingOperation", "Implemented", 1, 0);
-    e.setResultTerm("StatusCode");
+    e.setResultTerm("Boolean");
     return e;
   }
 
