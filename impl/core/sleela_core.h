@@ -9,6 +9,7 @@
 #define SLEELA_VM_ABI_MINOR 1u
 #define SLEELA_ARTIFACT_FORMAT_VERSION 2u
 #include <stdint.h>
+#include "../../os-level-support/osls_vm_bridge.h"
 #include <stddef.h>
 #include "../../runtime/garbage_collector.h"
 #ifdef __cplusplus
@@ -275,6 +276,9 @@ SLVM* slvm_new(void);
 /* True when Sleela source values use the bounded VM-owned memory/handle model. */
 int slvm_memory_safe_mode(const SLVM* vm);
 void slvm_set_audio_native_renderer(SLVM* vm, SLAudioNativeRenderFn fn, void* user);
+/* Set the host capabilities available to OSLS bindings before execution.
+ * The default is read-only host inspection; pass 0 to deny OSLS access. */
+int slvm_set_osls_capabilities(SLVM* vm, uint64_t capabilities);
 void slvm_free(SLVM* vm);
 SLResult slcore_exchange(SLVM* vm, SLExchangeOp op, SLExchangeArg* arg);
 int slvm_add_const_int(SLVM* vm, int64_t v);
