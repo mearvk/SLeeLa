@@ -11,11 +11,11 @@
       ("^[ \t]*#\\(?:sleela\\|schema\\)\\>.*$" . font-lock-builtin-face)
       ;; Document markers -- contextual words recognised only at document scope
       ;; (author/authorial = syntax 2.4; material and memory = syntax 2.5;
-      ;; determine = syntax 2.6).
+      ;; determine/object/field = syntax 2.6; pure/gasoline = syntax 3.0).
       ;; Anchored to a line that is only the word and an optional ';', so an
       ;; ordinary identifier named e.g. 'material' or 'memory' elsewhere is NOT
-      ;; highlighted, mirroring the compiler (SLEELA.syntax sections 18, 19, 20).
-      ("^[ \t]*\\(authorial\\|author\\|material\\|memory\\|determine\\)[ \t]*;?[ \t]*$" 1 font-lock-builtin-face)
+      ;; highlighted, mirroring the compiler (SLEELA.syntax sections 18, 19, 20, 23, 24, 29).
+      ("^[ \t]*\\(authorial\\|author\\|material\\|memory\\|determine\\|object\\|field\\|pure\\|gasoline\\)[ \t]*;?[ \t]*$" 1 font-lock-builtin-face)
       (,(regexp-opt keywords 'words) . font-lock-keyword-face)
       ("\\_<\\(String\\|SLString\\|Integer\\|Int\\|Long\\|Float\\|Double\\|Boolean\\|Character\\|Byte\\|Short\\|Void\\|Object\\|List\\|Map\\|Set\\|Array\\)\\_>" . font-lock-type-face)
       ("@[A-Za-z_][A-Za-z0-9_]*" . font-lock-preprocessor-face)

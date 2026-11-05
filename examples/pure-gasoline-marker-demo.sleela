@@ -1,0 +1,34 @@
+#sleela 3.0
+<< pure-gasoline-marker-demo.sleela -- the runnable reference for the syntax 3.0
+   `pure` and `gasoline` document markers (SLEELA.syntax section 29).
+
+   The bare top-level words `pure;` and `gasoline;` are a pair of Preonems that
+   mean NEARLY THE SAME THING: each claims this document is steered by, and
+   stands on, its OWN honesty. `pure` -- clean and unmixed, true to itself;
+   `gasoline` -- the same, in the sense of a refined, usable grade. A document
+   may carry either or both; the standings compose with the other markers.
+
+   The markers are DECLARATIVE ONLY: siblings to author/authorial (section 18),
+   material (section 19), memory (section 20), determine (section 23), and
+   object/field (section 24). They change nothing about parsing, typing,
+   dispatch, or codegen -- they record standing, not behaviour. Gated to
+   #sleela 3.0.
+
+   This demo carries both markers to show they compose. Run it to see it
+   compiles exactly as the same document without the markers would:
+     sleela run examples/pure-gasoline-marker-demo.sleela >>
+
+pure;
+gasoline;
+
+class PureGasolineDocument {
+  String standing = "steered by its own honesty";
+
+  void main() {
+    print("pure -- clean, unmixed, true to itself");
+    print("gasoline -- a refined, usable grade of the same");
+    print("the two mean nearly the same thing and compose");
+    print("standing: " + standing);
+    print("done");
+  }
+}

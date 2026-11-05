@@ -525,7 +525,7 @@ int main(int argc, char** argv) {
     if (cmd == "version" || cmd == "--version" || cmd == "-v") {
         std::cout << kVersion << "\n";
         // Nordshrift delegates the #sleela syntax gate to the shared front end,
-        // so report the exact range it drives (currently 1.0 .. 2.5).
+        // so report the exact range it drives (currently 1.0 .. 3.0).
         std::cout << "SLeeLa source syntax: "
                   << sleela::minSupportedSyntax().str() << " .. "
                   << sleela::maxSupportedSyntax().str()

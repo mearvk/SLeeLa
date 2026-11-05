@@ -1,0 +1,3 @@
+#sleela 3.0
+gasoline;
+class GasolineMarker { void main() { print("gasoline document"); } }

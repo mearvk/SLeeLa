@@ -67,6 +67,16 @@ struct SyntaxVersion { int major=0, minor=0; std::string str() const { return st
 // (section 26 of SLEELA.syntax).
 // Syntax 3.0 consolidates the established 1.x/2.x surface. It does not
 // remove older source compatibility or relax feature-specific minimum gates.
+// Syntax 3.0 also adds the `pure` and `gasoline` document markers: a pair of
+// bare, contextual, declarative-only Preonem words (siblings to
+// author/authorial, material, memory, determine, object, field) that mean
+// NEARLY THE SAME THING -- each claims the document is steered by, and stands
+// on, its OWN honesty: `pure` as clean and unmixed, `gasoline` as a refined,
+// usable grade of the same. Declarative only: NO effect on parsing, typing, or
+// codegen. They mark the document's standing by its own honesty and compose
+// with the other markers. Contextual, not reserved keywords, so `pure` and
+// `gasoline` stay ordinary identifiers anywhere else (and in any document
+// below 3.0) (section 29 of SLEELA.syntax).
 inline SyntaxVersion minSupportedSyntax(){return SyntaxVersion{1,0};}
 inline SyntaxVersion maxSupportedSyntax(){return SyntaxVersion{3,0};} inline SyntaxVersion defaultSyntaxVersion(){return maxSupportedSyntax();}
 enum class VersionStatus{OkDeclared,OkAssumed,TooNew,TooOld,Malformed};
