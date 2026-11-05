@@ -234,6 +234,8 @@ int osls_vm_call_authorized(int operation, const osls_vm_value *args, size_t arg
     int written;
     size_t i;
     if (result) { result->type = 0; result->utf8 = NULL; result->length = 0; }
+    if (out && cap) out[0] = 0;
+    if (!out || cap < 32) return -1;
     if (!binding || !binding->invoke || !binding->native_symbol || !*binding->native_symbol)
         return -1;
     if ((binding->required_capabilities & granted_capabilities) != binding->required_capabilities)
@@ -243,7 +245,6 @@ int osls_vm_call_authorized(int operation, const osls_vm_value *args, size_t arg
         if (args[i].type != binding->argument_types[i]) return -1;
         if (args[i].type == OSLS_VM_ARG_UTF8 && !args[i].value.utf8) return -1;
     }
-    if (!out || cap < 32) return -1;
     out[0] = 0;
     written = binding->invoke(args, arg_count, out, cap);
     if (written < 0) return -1;
