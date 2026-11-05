@@ -211,3 +211,21 @@ The Challenge Manager supplies Basic, Moderate, and Advanced declared diagnostic
 ## Build integration
 
 The package build is available with `make -C lib/vm` and from the repository root with `make vm`. The Compiler Manager contract is reviewed before VM package objects are considered ready for assembly; the build does not silently change the declared VM inventory.
+
+## Language edition and VM conformance — Syntax 3.0
+
+All SLeeLa VM source and artifact interfaces are governed by the repository
+root [`SLEELA.syntax`](../../SLEELA.syntax). Syntax **3.0** is the current
+normative language edition. The shared compiler accepts source pragmas from
+**1.0 through 3.0**; each source file retains its declared `#sleela X.Y`
+edition and each feature retains its historical minimum-version gate.
+
+The VM must consume the compiler's versioned artifact and source metadata
+without relabelling older source as 3.0. The VM product/generation number
+(SLVM/1 through SLVM/11, or another VM release identifier) is independent of
+the language syntax edition. The per-generation
+[`LANGUAGE.SPEC.md`](../../sleela-virtual-machine/001/LANGUAGE.SPEC.md)
+files state the shared conformance contract; a specification alone does not
+prove every syntax feature or runtime operation is implemented by every VM
+generation. Validate the selected VM against the compiler-produced artifacts
+and applicable conformance tests before claiming end-to-end support.
