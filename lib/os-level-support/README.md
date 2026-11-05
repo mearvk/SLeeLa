@@ -57,7 +57,7 @@ operation to its OP_OS opcode and the corresponding slos_* C backend symbol.
 They do **not** create a second VM syscall path or duplicate opcode numbers.
 
 The root C library under os-level-support/ now has a VM-callable adapter:
-os-level-support/osls_vm_bridge.c registers all 12 declared osls_* APIs with stable operation IDs 0–11. Each registry row contains a callable native invocation function, native symbol identity, argument type vector, result type, and required capability mask. The compiler lowers the osls... source built-ins to append-only opcode OP_OSLS_CALL=155. The VM resolves the registry entry, validates arity and each stack value's type, enforces the host-read capability, invokes the registered function pointer, and marshals records and collections into bounded JSON Strings containing an OSLS status code. Native pointers and C struct layouts never cross the VM
+os-level-support/osls_vm_bridge.c registers all 12 declared osls_* APIs with stable operation IDs 0–11. Each registry row contains a callable native invocation function, native symbol identity, argument type vector, result type, and required capability mask. The compiler lowers the osls... source built-ins to append-only opcode OP_OSLS_CALL=155. The VM resolves the registry entry, validates arity and each stack value's type, enforces the VM-local host-read capability (host embeddings may revoke it with `slvm_set_osls_capabilities`; read-only inspection is the default), invokes the registered function pointer, and marshals records and collections into bounded JSON Strings containing an OSLS status code. Native pointers and C struct layouts never cross the VM
 boundary. SLOsSupportOSLSElements now records these real bindings rather than
 UNREGISTERED.
 
