@@ -30,6 +30,7 @@
 #    include <sys/sysinfo.h>
 #    include <sys/utsname.h>
 #  elif defined(__APPLE__)
+#    include <mach-o/dyld.h>
 #    include <net/if_dl.h>
 #    include <mach/mach.h>
 #    include <sys/sysctl.h>
