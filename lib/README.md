@@ -15,7 +15,7 @@ SLeeLa is treated as a Turing-complete language whose front end should be expres
 
 The library uses one SLeeLa source file per front-end object. This makes the object inventory measurable and gives the project a path toward a roughly 2,000-object standard library without hiding declarations inside aggregate files.
 
-Families: `core/`, `collections/`, `text/`, `xml/`, `sleeladoc/`, `io/`, `vm/`, `os/`, `net/`, `wifi/`, `security/`, `opcodes/`, `sldocument/`, `coorenagraph/`, `moral-capacitor/`.
+Families: `core/`, `collections/`, `text/`, `xml/`, `sleeladoc/`, `io/`, `vm/`, `os/`, `os-level-support/`, `net/`, `wifi/`, `security/`, `opcodes/`, `sldocument/`, `coorenagraph/`, `moral-capacitor/`.
 
 ### Moral Capacitor™ — the ethical gate for every family
 
@@ -76,7 +76,11 @@ layout, permission/ACL vs. mode-bit models, signals vs. `TerminateProcess`), the
   XDG / the FHS roots on Linux). Each has `isHost()` so a program can branch
   safely.
 
-See [`os/OS.md`](os/OS.md) for the full host OS surface, and the repository
+See [`os/OS.md`](os/OS.md) for the full host OS surface. The companion
+[`os-level-support/`](os-level-support/README.md) package supplies the shared
+OS capability vocabulary, portable API catalogue, VM element descriptors, and
+Linux/Windows/macOS native symbol groupings. It maps the existing `OP_OS_*`
+VM bridge rather than defining a parallel syscall path. See the repository
 [`README.md`](../README.md#status--platform-support) platform table (each OS is
 built in CI: `build-linux.yml`, `build-macos.yml`, `build-windows.yml`).
 
