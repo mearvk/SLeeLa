@@ -27,7 +27,7 @@ Wrapper™ (.sleela source)
      ---- slcore_exchange(): the executable "exchange" API ----
 ```
 
-The current compiler compatibility line is **2.6-dev**. The compiler lives in [`impl/frontend/`](impl/frontend/) and owns **no execution
+The current normative language edition is **SLeeLa syntax 3.0**. The native Sleela/Sleelvac frontend accepts source syntax **1.0–3.0**; its product release number is tracked separately. The compiler lives in [`impl/frontend/`](impl/frontend/) and owns **no execution
 logic**: it walks the AST and drives the C core purely through the builder
 helpers over `slcore_exchange`. The same front end is reused by **Nordshrift**
 (the `.sst` transpiler driver) to parse the sources it transpiles.
@@ -93,22 +93,25 @@ class Hello {
 
 The compiler resolves a declared version to one of: **accept**, **warn**
 (no pragma → assume the floor), or **reject**. On a compiler whose supported
-range is `1.0 .. 1.0`:
+range is `1.0 .. 3.0`:
 
 | Declared `#sleela` | Result | Rationale |
 |--------------------|--------|-----------|
-| `1.3`     | **accepted** | current supported syntax |
-| `1.4`     | **rejected** (too new) | MINOR ahead of the supported max |
-| `2.0`     | **rejected** (too new) | MAJOR ahead → breaking grammar unsupported |
-| `1.2`     | **rejected** (too old) | below the supported floor |
-| `one.zero`| **rejected** (malformed) | not a numeric `MAJOR.MINOR` |
-| *(none)*  | **accepted, with warning** | assumed `1.3` for backward compatibility |
+| `1.0` | **accepted** | supported floor |
+| `1.3` | **accepted** | earlier syntax remains compatible |
+| `2.9` | **accepted** | historical `@mix` feature gate still applies |
+| `3.0` | **accepted** | current normative edition |
+| `3.1` | **rejected** (too new) | above the supported ceiling |
+| `0.9` | **rejected** (too old) | below the supported floor |
+| `one.zero` | **rejected** (malformed) | not a numeric `MAJOR.MINOR` |
+| *(none)* | **accepted, with warning** | defaults to 3.0 |
+
 
 A rejected source exits non-zero with a descriptive diagnostic, e.g.:
 
 ```
-sleela: prog.sleela: error: source declares Sleela syntax 2.0, which exceeds
-this compiler's supported range (1.3 .. 1.3). Upgrade the compiler or lower
+sleela: prog.sleela: error: source declares Sleela syntax 3.1, which exceeds
+this compiler's supported range (1.0 .. 3.0). Upgrade the compiler or lower
 the #sleela pragma.
 ```
 
@@ -117,9 +120,9 @@ the #sleela pragma.
 The range is defined in [`impl/frontend/version.h`](impl/frontend/version.h):
 
 ```cpp
-inline SyntaxVersion minSupportedSyntax() { return SyntaxVersion{1, 3}; }
-inline SyntaxVersion maxSupportedSyntax() { return SyntaxVersion{1, 3}; }
-inline SyntaxVersion defaultSyntaxVersion() { return minSupportedSyntax(); }
+inline SyntaxVersion minSupportedSyntax() { return SyntaxVersion{1, 0}; }
+inline SyntaxVersion maxSupportedSyntax() { return SyntaxVersion{3, 0}; }
+inline SyntaxVersion defaultSyntaxVersion() { return maxSupportedSyntax(); }
 ```
 
 To widen support, raise `maxSupportedSyntax()` (and, when an old grammar is
@@ -136,22 +139,22 @@ the current values are:
 
 | Component | Version | Meaning | Source of truth |
 |-----------|---------|---------|-----------------|
-| **Sleela toolchain / implementation** (`sleela` CLI) | **0.3.0-dev** | The C/C++ front end + core in `impl/`. Pre-1.0. | `impl/frontend/driver.cpp` |
-| **Sleela language syntax** | **1.3** (range `1.3 .. 1.3`) | The grammar version a `.sleela` file declares via `#sleela`. | `impl/frontend/version.h` |
-| **Nordshrift** (`.sst` transpiler driver) | **2.6-dev** | Reuses this front end; enforces the same syntax rules. | `impl/nordshrift/nordshrift.cpp` |
+| **Sleela toolchain / implementation** (`sleela` CLI) | **0.3.30-dev** | The C/C++ front end + core in `impl/`. Pre-1.0. | `impl/frontend/driver.cpp` |
+| **Sleela language syntax** | **3.0** (range `1.0 .. 3.0`) | The grammar version a `.sleela` file declares via `#sleela`. | `impl/frontend/version.h` |
+| **Nordshrift** (`.sst` transpiler driver) | **2.7.1-dev** | Reuses this front end; enforces the same syntax rules. | `impl/nordshrift/nordshrift.cpp` |
 | **NS-SST-0001** (`.sst` format spec) | **1.0.0** (Normative) | The `.sst` control-sheet format. | `SST.model` |
 | **SL-META-0001** (metadocument) | **1.0.0** (Pre-Normative) | The governing language metadocument, incl. §4.4. | `src/Sleela.manifest` |
 
-> **In short:** the compiler here is the **0.3.0-dev** toolchain, implementing
-> **Sleela language syntax 1.3**. Syntax is versioned independently of the
-> implementation: the `0.3.0-dev` toolchain implements syntax `1.3`.
+> **In short:** the compiler/runtime product release is **0.3.30-dev** and the
+> current language edition is **SLeeLa syntax 3.0**. These are independent
+> version tracks; Nordshrift delegates to the same frontend compatibility gate.
 
 Query the live values:
 
 ```sh
 ./build/sleela version
-#  Sleela 0.3.0-dev (C/C++ core; SHEET.sheet conducted methods; .xclass input)
-#    supported .sleela syntax: 1.3 .. 1.3 (declare per-file with '#sleela 1.3')
+#  SLeeLa Language/Runtime 0.3.30-dev
+#    supported .sleela syntax: 1.0 .. 3.0 (declare per-file with '#sleela X.Y')
 ```
 
 ---
