@@ -57,18 +57,12 @@ operation to its OP_OS opcode and the corresponding slos_* C backend symbol.
 They do **not** create a second VM syscall path or duplicate opcode numbers.
 
 The root C library under os-level-support/ now has a VM-callable adapter:
-os-level-support/osls_vm_bridge.c registers all 12 declared osls_* APIs
-with stable operation IDs 0–11. The compiler lowers the osls... source
-built-ins to append-only opcode OP_OSLS_CALL=155. The VM validates each
-operation argument types and arity, dispatches through the binding table, and
-marshals records and collections into bounded JSON Strings containing an
-OSLS status code. Native pointers and C struct layouts never cross the VM
+os-level-support/osls_vm_bridge.c registers all 12 declared osls_* APIs with stable operation IDs 0–11. Each registry row contains a callable native invocation function, native symbol identity, argument type vector, result type, and required capability mask. The compiler lowers the osls... source built-ins to append-only opcode OP_OSLS_CALL=155. The VM resolves the registry entry, validates arity and each stack value's type, enforces the host-read capability, invokes the registered function pointer, and marshals records and collections into bounded JSON Strings containing an OSLS status code. Native pointers and C struct layouts never cross the VM
 boundary. SLOsSupportOSLSElements now records these real bindings rather than
 UNREGISTERED.
 
 The CMake package and the SLeeLa VM Makefile both compile the adapter and the
-existing OSLS platform implementation. test_osls_vm_bridge exercises the
-native registry; make -C impl test-osls-vm exercises the VM built-ins.
+existing OSLS platform implementation. test_osls_vm_bridge exercises native symbol resolution, callable entries, typed argument/result marshalling, denied capabilities, invalid signatures, and bounded-result failures; make -C impl test-osls-vm exercises the VM built-ins and verifies runtime rejection of an invalid argument type.
 Windows network-interface enumeration currently reports OSLS_UNSUPPORTED;
 unsupported or unavailable platform details remain explicit status results.
 ## OS-specific source support
