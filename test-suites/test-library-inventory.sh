@@ -3,9 +3,9 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 LIB="$ROOT/lib"
 EXPECTED_PACKAGES=109
-EXPECTED_SOURCES=11781
+EXPECTED_SOURCES=11784
 EXPECTED_FACADES=77
-EXPECTED_SYMBOLS=11858
+EXPECTED_SYMBOLS=11861
 # Filesystem truth: /lib is the single source of truth for the class vocabulary.
 # A "package" is a top-level lib/ directory that contains at least one .sleela
 # source -- this matches tools/generate-library-symbols.py (which derives

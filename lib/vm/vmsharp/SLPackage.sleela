@@ -62,6 +62,8 @@ class VMSharpPackage {
   String networkStackClass = "VMSharpNetworkStack";
   String repoAcquisitionClass = "VMSharpRepoAcquisition";
   String osCreatorRunClass = "VMSharpOSCreatorRun";
+  String installWizardClass = "VMSharpInstallWizard";
+  String installOptionClass = "VMSharpInstallOption";
 
   String getPackageName() { return packageName; }
   String getManifestClass() { return manifestClass; }
@@ -72,4 +74,6 @@ class VMSharpPackage {
   String getNetworkStackClass() { return networkStackClass; }
   String getRepoAcquisitionClass() { return repoAcquisitionClass; }
   String getOSCreatorRunClass() { return osCreatorRunClass; }
+  String getInstallWizardClass() { return installWizardClass; }
+  String getInstallOptionClass() { return installOptionClass; }
 }

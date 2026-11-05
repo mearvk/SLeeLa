@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11781
+library-source-files: 11784
 library-packages: 109
 module-facade-symbols: 77
-total-symbol-records: 11858
+total-symbol-records: 11861
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -11768,12 +11768,15 @@ vm	SLPackage.sleela	lib/vm/vmsharp/SLPackage.sleela	facade
 vm	VMSharp.sleela	lib/vm/vmsharp/VMSharp.sleela	source
 vm	VMSharpBootloader.sleela	lib/vm/vmsharp/VMSharpBootloader.sleela	source
 vm	VMSharpIncludedApp.sleela	lib/vm/vmsharp/VMSharpIncludedApp.sleela	source
+vm	VMSharpInstallOption.sleela	lib/vm/vmsharp/VMSharpInstallOption.sleela	source
 vm	VMSharpInstallPlan.sleela	lib/vm/vmsharp/VMSharpInstallPlan.sleela	source
+vm	VMSharpInstallWizard.sleela	lib/vm/vmsharp/VMSharpInstallWizard.sleela	source
 vm	VMSharpLevy.sleela	lib/vm/vmsharp/VMSharpLevy.sleela	source
 vm	VMSharpNetworkStack.sleela	lib/vm/vmsharp/VMSharpNetworkStack.sleela	source
 vm	VMSharpOSCreatorRun.sleela	lib/vm/vmsharp/VMSharpOSCreatorRun.sleela	source
 vm	VMSharpRepoAcquisition.sleela	lib/vm/vmsharp/VMSharpRepoAcquisition.sleela	source
 vm	VMSharpDemo.sleela	lib/vm/vmsharp/examples/VMSharpDemo.sleela	source
+vm	VMSharpInstallWizardDemo.sleela	lib/vm/vmsharp/examples/VMSharpInstallWizardDemo.sleela	source
 vm	VMSharpOSCreatorDemo.sleela	lib/vm/vmsharp/examples/VMSharpOSCreatorDemo.sleela	source
 web-server-technology	SLDualStackBinding.sleela	lib/web-server-technology/SLDualStackBinding.sleela	source
 web-server-technology	SLEnvelopment.sleela	lib/web-server-technology/SLEnvelopment.sleela	source
