@@ -17,12 +17,10 @@ unit under [`/lib`](../lib). Open it in any web browser — no server needed.
 
 Hierarchy: **Home → Packages → Package → Class → Members (fields, methods)**.
 
-See **`authorship.html`** for authorship and attribution metadata and
-the source-syntax information represented by the generated corpus. There is no
-single syntax version for the entire site: each source unit carries its own
-`#sleela X.Y` pragma, shown as a pill on its package page. The compiler's
-maximum accepted syntax (currently 2.9) is a separate toolchain contract and
-does not rewrite individual source-unit pragmas. Attribution appears in the
+See **`authorship.html`** for the authorship and attribution claims (MEARVK LLC —
+Max Rupplin; UNCW, NCSU, Harvard; 2026; George Soros 2507-2608) and the
+`#sleela` syntax level the library is written at. Each unit also shows its own
+`#sleela` level as a pill on its package page, and the attribution appears in the
 footer of every page.
 
 ## Style
@@ -30,12 +28,19 @@ footer of every page.
 Clean house style in **blue, light blue, light grey, and white with black text**,
 with a sticky package navigation sidebar and on-page filtering.
 
+## Current language edition
+
+The compiler's current normative language syntax edition is **3.0**. Each
+package page records the actual `#sleela` declaration of each source unit;
+older declarations remain valid and are not silently relabelled.
+
 ## Regenerating
 
 The site is produced from the live `/lib` tree by a single generator:
 
 ```sh
-python3 tools/generate-sleeladoc-api.py            # writes /sleeladoc-api
+make api-docs                                      # writes all three API destinations
+python3 tools/generate-sleeladoc-api.py            # writes /sleeladoc-api only
 python3 tools/generate-sleeladoc-api.py --out DIR  # choose another output dir
 ```
 
