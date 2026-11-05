@@ -159,8 +159,8 @@ the same opcode stream.
      -> SLSleelaVM             execute the canonical Turing-complete opcode substrate
 ```
 
-The native substrate (`impl/core/sleela_core.h` `SLOp`) defines **155 opcodes**
-(codes 0..154), which `SLSleelaOpcode` organizes as a **double shelf** of three
+The native substrate (`impl/core/sleela_core.h` `SLOp`) defines **156 opcodes**
+(codes 0..155), which `SLSleelaOpcode` organizes as a **double shelf** of three
 contiguous tiers — all acceptable, each carrying its own iteration flag for the
 professional monitoring/storage layer:
 
@@ -168,10 +168,10 @@ professional monitoring/storage layer:
 |---|---|---|---|
 | 1 — base computational/service core | 0..48 | `TIER_BASE` | arithmetic, control flow, call/return, threads, sockets, pipes, files |
 | 2 — substrate extensions | 49..97 | `TIER_SUBSTRATE` | time services, structs, Synchro / Munction / Best-of |
-| 3 — host-facing services | 98..154 | `TIER_HOST` | arrays, OS syscalls, GC hint, `ran::`, Idea realtime canvas, VM-select / Modium, UI bridge, structural send, type checks, stack duplication |
+| 3 — host-facing services | 98..155 | `TIER_HOST` | arrays, OS syscalls, GC hint, `ran::`, Idea realtime canvas, VM-select / Modium, UI bridge, structural send, type checks, stack duplication, OSLS typed native binding |
 
 `SLSleelaOpcode` exposes the shelf bounds (`BASE_COUNT` 49, `SUBSTRATE_COUNT`
-98, `NATIVE_COUNT` 150) and `tier(op)` / `tierName(op)` so each opcode can be
+98, `NATIVE_COUNT` 156) and `tier(op)` / `tierName(op)` so each opcode can be
 tagged and each shelf iterated under its own flag; the tiers never gate
 execution. Every CPU instruction and OS syscall lowers onto the base
 computational core (plus structs); the mapping is **conservative** — it mirrors
