@@ -8,6 +8,12 @@ A Windows-style hierarchical **registry** for SLeeLa: a tree of keys (like
 hex id, SHA-256 hash, and an **originality seal**. A new install seeds a
 baseline registry that is reviewable from a terminal.
 
+## Architecture and compatibility
+
+- [Registry 3.0 architecture](REGISTRY-3.0-ARCHITECTURE.md) — canonical design and staged delivery contract.
+- Current native C ABI and C++ facade remain the compatibility implementation; SLREG 1 remains supported until the separately tested SLREG 2 migration ships.
+- Modium remains responsible for storage mechanics and integrity checks. Registry catalogs region identities and relationships; it never claims or writes a device as a side effect of lookup or review.
+
 ## Files
 
 | File | Role |
