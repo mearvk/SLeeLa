@@ -20,6 +20,7 @@ class SLOsSupportCatalog {
     SLList out = new SLList();
     out.add("HostIdentity");
     out.add("ProcessInspection");
+    out.add("ProcessControl");
     out.add("Environment");
     out.add("FileSystem");
     out.add("PathManagement");
