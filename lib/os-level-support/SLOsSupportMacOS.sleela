@@ -1,0 +1,122 @@
+< SLeeLa Standard Library Definition.
+  Definition: macOS/Darwin-specific backend grouping terms and native symbol catalogue.
+  Names cover POSIX, BSD sockets, Mach and documented Apple APIs.
+  Availability remains subject to macOS version, sandbox and privacy authorization. >
+#sleela 2.5
+material;
+
+class SLOsSupportMacOS {
+  String platformName = "macOS";
+  String backendTerm = "MacOSBackend";
+
+  String getPlatformName() { return platformName; }
+  String getBackendTerm() { return backendTerm; }
+
+  SLList getGroupTerms() {
+    SLList out = new SLList();
+    out.add("MacOSIdentity");
+    out.add("MacOSProcessMetadata");
+    out.add("MacOSCPUAndMemory");
+    out.add("MacOSSystemConfiguration");
+    out.add("MacOSFileSystemAndVolumes");
+    out.add("MacOSFilesystemEvents");
+    out.add("MacOSNetwork");
+    out.add("MacOSUserAndSystemServices");
+    out.add("MacOSPowerAndBattery");
+    out.add("MacOSHardwareMetadata");
+    out.add("MacOSPrivacyAndSandbox");
+    out.add("MacOSClockAndNotifications");
+    return out;
+  }
+
+  < Darwin/POSIX/Mach function names, alphabetically. >
+  SLList getMacOSFunctions() {
+    SLList out = new SLList();
+    out.add("accept");
+    out.add("bind");
+    out.add("clock_getres");
+    out.add("clock_gettime");
+    out.add("close");
+    out.add("connect");
+    out.add("dispatch_after");
+    out.add("dispatch_source_create");
+    out.add("dlclose");
+    out.add("dlopen");
+    out.add("dlsym");
+    out.add("fcntl");
+    out.add("fstat");
+    out.add("fstatfs");
+    out.add("getaddrinfo");
+    out.add("getcwd");
+    out.add("getifaddrs");
+    out.add("getnameinfo");
+    out.add("getpeername");
+    out.add("getpid");
+    out.add("getppid");
+    out.add("getsockname");
+    out.add("getsockopt");
+    out.add("gettimeofday");
+    out.add("host_info");
+    out.add("host_page_size");
+    out.add("host_statistics64");
+    out.add("kevent");
+    out.add("kqueue");
+    out.add("listen");
+    out.add("lstat");
+    out.add("mach_absolute_time");
+    out.add("mach_host_self");
+    out.add("mach_msg");
+    out.add("mach_port_deallocate");
+    out.add("mach_task_self");
+    out.add("mach_timebase_info");
+    out.add("mach_vm_region");
+    out.add("mmap");
+    out.add("munmap");
+    out.add("open");
+    out.add("opendir");
+    out.add("proc_pidinfo");
+    out.add("proc_pidpath");
+    out.add("read");
+    out.add("readlink");
+    out.add("recv");
+    out.add("recvfrom");
+    out.add("select");
+    out.add("send");
+    out.add("sendto");
+    out.add("stat");
+    out.add("statfs");
+    out.add("sysctl");
+    out.add("sysctlbyname");
+    out.add("uname");
+    out.add("write");
+    return out;
+  }
+
+  SLList getAdditionalFrameworks() {
+    SLList out = new SLList();
+    out.add("BSDSockets");
+    out.add("CoreFoundation");
+    out.add("Dispatch");
+    out.add("FSEvents");
+    out.add("IOKit");
+    out.add("Mach");
+    out.add("SystemConfiguration");
+    out.add("vnode-kqueue");
+    return out;
+  }
+
+  SLList getPlatformTerms() {
+    SLList out = new SLList();
+    out.add("BSD");
+    out.add("CoreFoundation");
+    out.add("Darwin");
+    out.add("Dispatch");
+    out.add("FSEvents");
+    out.add("IOKit");
+    out.add("Mach");
+    out.add("MacOSBackend");
+    out.add("POSIX");
+    out.add("SystemConfiguration");
+    return out;
+  }
+}
