@@ -8,9 +8,25 @@ class OSLSVMBindingsTest {
     String process = oslsProcessInfo(0);
     String file = oslsGetFileInfo(".");
     String cron = oslsCronValidate("* * * * *");
+    String cronNext = oslsCronNextAfter("* * * * *", 0);
+    String environment = oslsGetEnvironmentValue("PATH");
+    String environmentList = oslsEnumerateEnvironment();
+    String processList = oslsEnumerateProcesses();
+    String directory = oslsListDirectory(".");
+    String cpu = oslsGetCPUInfo();
+    String timezone = oslsGetTimezoneInfo();
+    String network = oslsGetNetworkInterfaces();
     print(system);
     print(process);
     print(file);
     print(cron);
+    print(cronNext);
+    print(environment);
+    print(environmentList);
+    print(processList);
+    print(directory);
+    print(cpu);
+    print(timezone);
+    print(network);
   }
 }
