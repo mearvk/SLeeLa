@@ -43,6 +43,7 @@ DEFAULT_SOURCE_DIRS = [
     "wifi-common",
     "ballum",
     "http-1.0",
+    "os-level-support",
 ]
 # The SLeeLa standard library the runtime loads and executes. Every *.sleela
 # library class plus its native C/C++ helpers is a trusted input (a program's
