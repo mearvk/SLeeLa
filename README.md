@@ -21,6 +21,7 @@ that standing is kept (recorded faithfully, e.g. in each class's Metadata
 - [Virtual machines & Modium — hands-on user guide](virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [CPU stack in SLeeLa source](lib/cpu/CPU.md) — a full gates→ALU→cores→OS→programs machine, a roster of 130+ CPU profiles, and adjustable [voltages, variable clocks, and expert timings](lib/cpu/TIMING.md) you can [run at spec and overclock](lib/cpu/components/README.md)
 - [Documentation index](docs/README.md)
+- [CSPML data source and Salt & Salary research reference](CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — external U.S. place, socioeconomic, workforce, education, and public-school data provenance and integration guidance.
 - [Generated API documentation](docs/api/README.md) — current HTML reference, versioned API edition, and regeneration instructions
 - [API catalogue](api/README.md)
 - [Recursion stanchion — C and C++ prototypes](recursion/stanchion/README.md) — primitive-specialized examples for Boolean, Byte, Character, Integer, Long, Float, and Double, alongside generic, applied, scientific, and teaching recursion patterns.
