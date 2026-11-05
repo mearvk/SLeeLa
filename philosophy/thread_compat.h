@@ -6,10 +6,10 @@
  * "Best available" threading, auto-selected at compile time so the same
  * source builds consistently across Windows XP+ / 7+ / 10+, Linux and macOS:
  *
- *   1. C11 <threads.h>  when the toolchain advertises it (ISO C "best").
- *   2. Win32 CreateThread / CRITICAL_SECTION on Windows (covers XP, which
- *      predates both C11 threads and the Vista+ thread pool / cond-vars).
- *   3. POSIX pthreads everywhere else (Linux, macOS, BSD).
+ *   1. Win32 CreateThread / CRITICAL_SECTION on Windows (covers XP+).
+ *   2. POSIX pthreads on macOS (the Apple SDK does not consistently ship
+ *      <threads.h>) and as the portable fallback.
+ *   3. C11 <threads.h> on non-Apple, non-Windows toolchains when available.
  *
  * Only the small surface the signal toss needs is wrapped: one worker
  * thread, a mutex, and a monotonic millisecond sleep. The API is C-linkage
