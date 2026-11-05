@@ -10,7 +10,7 @@
          control flow, call/return, threads, sockets, pipes, files;
        - shelf 2, substrate extensions (codes 49..97): time services, structs,
          Synchro / Munction / Best-of;
-       - shelf 3, host-facing services (codes 98..154): arrays, OS syscalls, GC
+       - shelf 3, host-facing services (codes 98..155): arrays, OS syscalls, GC
          hint, `ran::`, Idea realtime canvas, VM-select / Modium, UI bridge,
          structural send, runtime type checks, and two-entry stack duplication.
      All three shelves are acceptable opcodes; the tiers (BASE_COUNT /
@@ -112,10 +112,10 @@ class SLSleelaOpcode {
   static final int BASE_COUNT      = 49;
   < end of shelf 2 (substrate), exclusive >
   static final int SUBSTRATE_COUNT = 98;
-  < end of shelf 3 (full native enum), exclusive. Includes host-facing services through OP_DUP2 (154) >
+  < end of shelf 3 (full native enum), exclusive. Includes host-facing services through OP_OSLS_CALL (155) >
   < OP_UI_CALL (150), OP_SSEND (151), OP_CHECKCAST (152), OP_INSTANCEOF (153), >
-  < and OP_DUP2 (154): the real opcodes are 0..154, so the count is 155. >
-  static final int NATIVE_COUNT    = 155;
+  < and OP_DUP2 (154): the real opcodes are 0..155, so the count is 156. >
+  static final int NATIVE_COUNT    = 156;
 
   < OP_SSEND (151): the ::: structural-offload send. A host-shelf service opcode >
   < that frames a String source element-by-element into a receiver reach. >
@@ -124,6 +124,7 @@ class SLSleelaOpcode {
   static final int OP_CHECKCAST = 152;
   static final int OP_INSTANCEOF = 153;
   static final int OP_DUP2 = 154;
+  static final int OP_OSLS_CALL = 155;
 
   < Tier ids the monitoring/storage layer pivots on (the "iteration flags"). >
   < not a native opcode (out of range) >
