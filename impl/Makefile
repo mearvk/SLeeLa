@@ -825,6 +825,7 @@ $(BUILD):
 test: verify-security test-osls-vm test-java-runtime test-java-authorship test-system-monitor test-sleela test-class-dispatch test-design-activity test-regex test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-common-rails test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-astrophysics test-sociology test-unsigned-integer test-runtime test-memmgr
 test-osls-vm: $(SLEELA_BIN)
 	@cd $(CURDIR)/.. && $(CURDIR)/$(SLEELA_BIN) run impl/tests/osls_vm/osls_vm_bindings.sleela
+	@cd $(CURDIR)/.. && bash impl/tests/osls_vm/run_osls_vm_negative.sh $(CURDIR)/$(SLEELA_BIN)
 
 test-thread-platform: $(THREAD_PLATFORM_SMOKE)
 	@echo "=== OS-aware threading backend ==="; SLEELA_THREAD_PLATFORM=auto $(THREAD_PLATFORM_SMOKE)
