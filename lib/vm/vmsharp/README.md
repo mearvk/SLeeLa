@@ -88,6 +88,34 @@ Run the first-brush demo:
 
     SLEELA_SHEET=./SHEET.sheet impl/build/sleela run lib/vm/vmsharp/examples/VMSharpOSCreatorDemo.sleela
 
+## Install screens (the wizard)
+
+`VMSharpInstallWizard` is the finish-level set of install **screens** that lead
+the user to either install VMSharp as a **limited Desktop** or install an OS
+**from `OS.Sensitivity.III`**. Each screen renders to text; the two primary
+choices are selectable `VMSharpInstallOption` components.
+
+| Screen | Content |
+|---|---|
+| 1. welcome | Title + owner |
+| 2. cpu-admission | x86/x64 · AMD/Intel admission report — **gates the rest** |
+| 3. mode-select | `(A)` Limited Desktop · `(B)` Install from OS.Sensitivity.III |
+| 4a. desktop | (path A) mode, step count, readiness |
+| 4b. os-sensitivity | (path B) repo, reachability, clone command, OS Creator command + provenance |
+| 5. levy-disclosure | the USD 380 fee disclosure |
+| 6. confirm | fail-closed point of user confirmation |
+
+**Fail-closed throughout:** `choose()` refuses any selection unless the CPU is
+admitted; `canConfirm()` is true only when the CPU is admitted **and** the chosen
+path's plan is ready — Limited Desktop once chosen, and the OS.Sensitivity.III
+path only when the repo is reachable **and** acquired **and** the install target
+is designated. Choosing path B pre-designates the source (the repo itself); only
+the target remains for the user.
+
+Run the wizard demo (walks both paths + the unadmitted-CPU refusal):
+
+    SLEELA_SHEET=./SHEET.sheet impl/build/sleela run lib/vm/vmsharp/examples/VMSharpInstallWizardDemo.sleela
+
 ## Honesty boundary
 
 Every class here is a **declarative model**. VMSharp source:

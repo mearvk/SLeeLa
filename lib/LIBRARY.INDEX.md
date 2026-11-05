@@ -2,9 +2,9 @@
 
 **Revision:** 0.58  
 **Packages:** 111  
-**SLeeLa source units:** 11880  
+**SLeeLa source units:** 11883  
 **Module-facade symbols:** 77  
-**Total symbol records:** 11957  
+**Total symbol records:** 11960  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.58 adds **VMSharp™** under the `vm` package (`lib/vm/vmsharp/`): a
@@ -36,7 +36,14 @@
 > `github.com/mearvk/OS.Sensitivity.III` for install instructions/data/code, with
 > a fail-closed gate — the OS Creator runs only after the repo is reachable AND
 > acquired) plus `examples/VMSharpOSCreatorDemo`; these reach nothing, clone
-> nothing, and build nothing. Authored for the User MEARVK LLC
+> nothing, and build nothing. The fine finish adds the **install screens**:
+> **`VMSharpInstallWizard`** (welcome → CPU-admission gate → mode-select →
+> desktop/OS.Sensitivity.III path screens → fee disclosure → fail-closed
+> confirm) and the selectable **`VMSharpInstallOption`** component, plus
+> `examples/VMSharpInstallWizardDemo`; the wizard renders text screens and
+> drives the plan objects, and confirmation is gated on an admitted CPU and a
+> ready plan (OS path: reachable AND acquired AND target designated). Authored
+> for the User MEARVK LLC
 > (Max Rupplin 2026; George Soros a Kindness 2507+), respectful of United States
 > law and of the persons and groupings of peoples it concerns. Every class
 > carries the Metadata Class metapattern. Counts reconciled by
