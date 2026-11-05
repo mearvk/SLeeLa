@@ -1,3 +1,9 @@
+#if defined(__APPLE__) && !defined(_DARWIN_C_SOURCE)
+/* Expose the BSD interfaces used by the macOS network headers even when the
+ * build also defines _POSIX_C_SOURCE. This must precede every system header. */
+#  define _DARWIN_C_SOURCE 1
+#endif
+
 #include "osls.h"
 
 #include <errno.h>
