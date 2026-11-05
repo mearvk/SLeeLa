@@ -1,14 +1,14 @@
 # Sleela — Language Syntax Specification
 
     Language:        Sleela
-    Syntax version:  2.9  (1.3..1.11 baseline carried forward)
-    Compiler:        Sleelvac(TM) 0.3.30-dev  (version gate accepts syntax 1.0 .. 2.9)
+    Syntax version:  3.0  (1.3..2.9 language surface consolidated)
+    Compiler:        Sleelvac(TM) 0.3.30-dev  (version gate accepts syntax 1.0 .. 3.0)
     Surface:         Java-like
     Core:            Turing-complete, thread-friendly C/C++ execution core
     Companion:       SHEET.sheet (system-object catalog), SST.model (NS-SST-0001),
                      lib/LIBRARY.SYMBOLS.md (authoritative /lib class vocabulary),
                      markdown/EXTENDS.md (the two `extends` meanings, syntax 1.10)
-    Status:          Normative for the syntax 1.3..2.9 surface
+    Status:          Normative for the syntax 1.0..3.0 compatibility surface
 
     Versioning note: two distinct version numbers apply and must not be
     conflated. The **syntax version** (MAJOR.MINOR, declared per file with
@@ -2095,3 +2095,42 @@ annotation, not a reserved word; it reserves no identifier elsewhere.
   same-named instance fields that carry `@mix` under `#sleela 2.9`, applies
   top-down 1,2,3,… indexing by default, and validates that a manual
   `@mix(...)` index count matches the number of fields in the group.
+
+
+--------------------------------------------------------------------------------
+## 29. Syntax 3.0 — consolidated language edition
+
+Syntax **3.0** is the current normative edition of the SLeeLa language
+specification. It consolidates the established language surface from syntax
+1.0 through 2.9 into a single maintained contract for Sleela, Sleelvac,
+Nordshrift, the compiler, and the decompiler.
+
+### 29.1 Compatibility
+
+- The compiler accepts declared syntax versions from **1.0 through 3.0**.
+- A source file may continue to declare an earlier syntax version. The pragma
+  records the syntax contract the file claims; it is not automatically rewritten
+  when a newer specification is published.
+- Feature-specific gates remain in force. For example, `@mix` remains a
+  syntax-2.9 feature and still requires `#sleela 2.9` or later.
+- The language syntax edition is independent of the release versions of
+  `sleela`, `sleelvac`, and `nordshrift`, and independent of the NS-SST
+  control-sheet specification version.
+
+### 29.2 Grammar changes
+
+This edition is a specification consolidation and compatibility milestone.
+It introduces no additional reserved words, operators, or grammar productions
+solely by virtue of the 3.0 version number. Existing productions and their
+feature-specific minimum versions remain authoritative. A future 3.0.x patch
+may clarify wording without changing the grammar; a new syntax capability
+requires an explicit normative section and matching compiler implementation.
+
+### 29.3 Implementation status
+
+- **Implemented:** the compiler version resolver accepts the range 1.0..3.0
+  and defaults unversioned source to 3.0 with the existing warning.
+- **Preserved:** historical syntax feature gates, parser/semantic behavior,
+  and older source declarations.
+- **Not implied:** a source file declaring 3.0 does not gain unsupported
+  compiler, VM, decompiler, operating-system, or native execution capabilities.
