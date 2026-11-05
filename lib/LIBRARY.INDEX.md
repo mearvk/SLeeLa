@@ -2,9 +2,9 @@
 
 **Revision:** 0.58  
 **Packages:** 109  
-**SLeeLa source units:** 11777  
+**SLeeLa source units:** 11781  
 **Module-facade symbols:** 77  
-**Total symbol records:** 11854  
+**Total symbol records:** 11858  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.58 adds **VMSharp™** under the `vm` package (`lib/vm/vmsharp/`): a
@@ -28,7 +28,15 @@
 > install target still passes the fail-closed gate. Declarative models only: no
 > firmware flashed, no disk written, no funds moved, nothing cloned/compiled/run
 > here; a real bootable image and a real build are produced only by the pinned
-> OS Creator toolchain. Authored for the User MEARVK LLC (Max Rupplin 2026;
+> OS Creator toolchain. VMSharp can also **reach a GitHub repo over a networking
+> stack, acquire it, and run the OS Creator** against it: **`VMSharpNetworkStack`**
+> (HTTPS/TCP reach + OSLS `oslsNetworkResolve`), **`VMSharpRepoAcquisition`**
+> (clone / tarball / zip with the exact command/URL for each), and
+> **`VMSharpOSCreatorRun`** (the first-brush orchestrator targeting
+> `github.com/mearvk/OS.Sensitivity.III` for install instructions/data/code, with
+> a fail-closed gate — the OS Creator runs only after the repo is reachable AND
+> acquired) plus `examples/VMSharpOSCreatorDemo`; these reach nothing, clone
+> nothing, and build nothing. Authored for the User MEARVK LLC (Max Rupplin 2026;
 > George Soros a Kindness 2507+), respectful of United States law and of the
 > persons and groupings of peoples it concerns. Every class carries the Metadata
 > Class metapattern. Counts reconciled by `tools/generate-library-symbols.py`

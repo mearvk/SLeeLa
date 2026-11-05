@@ -1,0 +1,148 @@
+<< lib/vm/vmsharp/VMSharpRepoAcquisition.sleela
+   SLeeLa Standard Library Definition.
+   Definition: VMSharp(TM) repository-acquisition MODEL. Given a GitHub repo
+   reference (owner/repo at a branch), it describes the three supported ways to
+   acquire the repo over the VMSharp network stack:
+     1. CLONE   -- a git clone (shallow by default) of the repository.
+     2. TARBALL -- download the branch as a .tar.gz (GitHub codeload).
+     3. ZIP     -- download the branch as a .zip (GitHub codeload).
+   For each method it produces the exact command or URL that the host would run
+   or fetch. Its clone command matches the shape of the operating-system
+   family's SLDistroSource (the zero-payload repo reference) and SLDistroFetch
+   (the shallow-clone command builder); VMSharp mirrors that shape here and keeps
+   acquisition self-contained rather than linking that family's native net path.
+
+   Honesty boundary: this class computes acquisition commands/URLs. It clones
+   nothing, downloads nothing, and unpacks nothing; the real transfer is done by
+   the host under the VMSharp OS, honoring the user's confirmation and the
+   VMSharpLevy disclosure. Authored for the User MEARVK LLC, respectful of
+   United States law and of the persons and groupings of peoples it concerns.
+   Family: vm. >>
+#sleela 3.0
+material;
+class VMSharpRepoAcquisition {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 38006;
+  String metaAuthor = "Max Rupplin 2026; George Soros a Kindness 2507+";
+  String metaDate = "2026-11-05";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "VMSharp";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "United States";
+  String metaBirthDate = "2026-11-05";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 7;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  int METHOD_CLONE = 1;
+  int METHOD_TARBALL = 2;
+  int METHOD_ZIP = 3;
+
+  String owner = "";
+  String repo = "";
+  String branch = "";
+  int method = 1;
+
+  void configure(String repoOwner, String repoName, String repoBranch) {
+    owner = repoOwner; repo = repoName; branch = repoBranch; method = METHOD_CLONE;
+  }
+
+  void useClone()   { method = METHOD_CLONE; }
+  void useTarball() { method = METHOD_TARBALL; }
+  void useZip()     { method = METHOD_ZIP; }
+
+  String getOwner() { return owner; }
+  String getRepo() { return repo; }
+  String getBranch() { return branch; }
+  int getMethod() { return method; }
+  String getMethodName() {
+    if (method == METHOD_CLONE) { return "clone"; }
+    if (method == METHOD_TARBALL) { return "tarball"; }
+    if (method == METHOD_ZIP) { return "zip"; }
+    return "unknown";
+  }
+
+  < The https clone URL for this repo. >
+  String cloneUrl() { return "https://github.com/" + owner + "/" + repo + ".git"; }
+
+  << GitHub codeload tarball URL for the branch:
+     https://codeload.github.com/<owner>/<repo>/tar.gz/refs/heads/<branch> >>
+  String tarballUrl() {
+    return "https://codeload.github.com/" + owner + "/" + repo
+         + "/tar.gz/refs/heads/" + branch;
+  }
+
+  << GitHub codeload zip URL for the branch:
+     https://codeload.github.com/<owner>/<repo>/zip/refs/heads/<branch> >>
+  String zipUrl() {
+    return "https://codeload.github.com/" + owner + "/" + repo
+         + "/zip/refs/heads/" + branch;
+  }
+
+  << The acquisition command for the selected method into destination dir dest.
+     CLONE reuses the operating-system family's SLDistroSource/SLDistroFetch so
+     the shallow-clone form matches the repo's own tooling. TARBALL and ZIP use
+     the host fetch+unpack a real installer would run. >>
+  String acquisitionCommand(String dest) {
+    if (method == METHOD_CLONE) {
+      << Shallow clone of THIS repo. The command shape matches the operating-
+         system family's SLDistroSource/SLDistroFetch shallow-clone tooling
+         (MODE_SHALLOW: git clone --depth 1 --branch <b> <url> <dest>), which the
+         host runs under the VMSharp OS; VMSharp keeps the acquisition self-
+         contained here rather than linking that family's native net path. >>
+      return "git clone --depth 1 --branch " + branch + " " + cloneUrl() + " " + dest;
+    }
+    if (method == METHOD_TARBALL) {
+      return "curl -L " + tarballUrl() + " -o " + dest + ".tar.gz && tar -xzf "
+           + dest + ".tar.gz -C " + dest;
+    }
+    if (method == METHOD_ZIP) {
+      return "curl -L " + zipUrl() + " -o " + dest + ".zip && unzip "
+           + dest + ".zip -d " + dest;
+    }
+    return "";
+  }
+
+  < The resource URL the network stack would reach for the selected method. >
+  String resourceUrl() {
+    if (method == METHOD_CLONE) { return cloneUrl(); }
+    if (method == METHOD_TARBALL) { return tarballUrl(); }
+    if (method == METHOD_ZIP) { return zipUrl(); }
+    return "";
+  }
+
+  < A one-line acquisition summary. >
+  String summary() {
+    return "acquire " + owner + "/" + repo + "@" + branch
+         + " via " + getMethodName() + " -> " + resourceUrl();
+  }
+}

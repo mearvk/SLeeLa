@@ -67,12 +67,34 @@ is still designated and confirmed through the plan's fail-closed gate, so even a
 quiet install never writes a target on assumption. The Java National GUI app is a
 Swing desktop app, so it builds with a JDK and runs on the VMSharp Desktop.
 
+## Reaching a repo and running the OS Creator (first brush)
+
+VMSharp can reach a GitHub repository over its networking stack, acquire it, and
+run the project's **OS Creator** pointed at that repo for installation
+instructions, data, and code. Three classes model this path:
+
+| Class | Responsibility |
+|---|---|
+| `VMSharpNetworkStack` | The transport (HTTPS/TCP/IP, port 443), host resolution (via the OSLS `oslsNetworkResolve` read-only call), reachability, and the ordered reach procedural (resolve → connect → TLS → request → receive) |
+| `VMSharpRepoAcquisition` | Acquire a repo three ways — **clone** (`git clone --depth 1`), **tarball** (`codeload .../tar.gz/refs/heads/<branch>`), **zip** (`codeload .../zip/refs/heads/<branch>`); produces the exact command/URL. Clone shape matches the operating-system family's `SLDistroSource`/`SLDistroFetch` |
+| `VMSharpOSCreatorRun` | Wires network reach → acquisition → OS Creator, targeting [`mearvk/OS.Sensitivity.III`](https://github.com/mearvk/OS.Sensitivity.III). Emits the acquisition command, a provenance line, the `sleela os-creator --source … --emit iso` invocation, and a 9-step run plan |
+
+**Fail-closed gate:** `VMSharpOSCreatorRun.osCreatorReady()` is true only after the
+repo is **reachable** *and* **acquired** — the OS Creator never runs on an
+unreached or unacquired source. `markAcquired()` itself requires reachability
+first.
+
+Run the first-brush demo:
+
+    SLEELA_SHEET=./SHEET.sheet impl/build/sleela run lib/vm/vmsharp/examples/VMSharpOSCreatorDemo.sleela
+
 ## Honesty boundary
 
 Every class here is a **declarative model**. VMSharp source:
 
 - flashes **no** firmware and writes **no** boot sector or partition table;
 - performs **no** download, disk write, partitioning, or install;
+- opens **no** socket, makes **no** connection, and clones/fetches/unpacks **nothing**;
 - moves **no** funds.
 
 A real bootable, self-installing image is produced only by the project's pinned
