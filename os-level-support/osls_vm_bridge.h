@@ -3,6 +3,10 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum {
     OSLS_VM_SYSTEM_INFO = 0,
     OSLS_VM_PROCESS_INFO = 1,
@@ -77,4 +81,7 @@ int osls_vm_call_typed(int operation, const osls_vm_value *args, size_t arg_coun
  * use osls_vm_call_typed so argument and result tags are checked explicitly. */
 int osls_vm_call(int operation, const char *text_argument,
                  int64_t integer_argument, char *out_json, size_t out_capacity);
+#ifdef __cplusplus
+}
+#endif
 #endif
