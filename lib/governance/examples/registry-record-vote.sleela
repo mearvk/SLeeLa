@@ -1,0 +1,33 @@
+#sleela 3.0
+<<
+@vote
+id: "registry-record-model-2026-01"
+title: "Adopt the Registry 3.0 record model"
+proposal: "Approve the versioned identity and relationship record model."
+source: "registry/REGISTRY-3.0-ARCHITECTURE.md"
+source_digest: "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+electorate: "RegistryMaintainers"
+eligibility_rule: "registry-maintainer-v1"
+opens_utc: "2026-11-05T15:00:00Z"
+closes_utc: "2026-11-12T21:00:00Z"
+ballot: "manual-paper"
+secrecy: "secret"
+options: "approve,reject,abstain"
+counting_rule: "strict-majority"
+quorum_min_ballots: 5
+quorum_min_participation_percent: 50
+abstain_counts_for_quorum: true
+abstain_in_approval_denominator: false
+tie_result: "not-adopted"
+invalid_ballot: "exclude-and-record-count"
+tellers_required: 2
+challenge_hours: 72
+result_publication: "aggregate-only"
+>>
+material;
+class SLRegistryRecordModelVoteDocument {
+  String proposalId = "registry-record-model-2026-01";
+  String sourceDigest = "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
+  String voteMethod = "manual-paper";
+  String secrecy = "secret";
+}

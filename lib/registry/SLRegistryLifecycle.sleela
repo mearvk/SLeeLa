@@ -1,0 +1,41 @@
+<< Lifecycle transition vocabulary. The native engine validates every edge. >>
+#sleela 3.0
+material;
+class SLRegistryLifecycle {
+  String state;
+
+  void configure(String initialState) { state = initialState; }
+
+  boolean permits(String next) {
+    if (state == "draft") {
+      return next == "discovered" || next == "registered" || next == "rejected";
+    }
+    if (state == "discovered") {
+      return next == "inspected" || next == "registered" || next == "offline"
+          || next == "quarantined" || next == "rejected";
+    }
+    if (state == "inspected") {
+      return next == "registered" || next == "verified" || next == "quarantined";
+    }
+    if (state == "registered") {
+      return next == "verified" || next == "offline" || next == "quarantined"
+          || next == "deprecated";
+    }
+    if (state == "verified") {
+      return next == "available" || next == "offline" || next == "quarantined"
+          || next == "deprecated";
+    }
+    if (state == "available") {
+      return next == "offline" || next == "quarantined" || next == "deprecated";
+    }
+    if (state == "offline") {
+      return next == "discovered" || next == "inspected" || next == "verified"
+          || next == "quarantined" || next == "retired";
+    }
+    if (state == "quarantined") {
+      return next == "verified" || next == "rejected" || next == "retired";
+    }
+    if (state == "deprecated" || state == "rejected") { return next == "retired"; }
+    return false;
+  }
+}

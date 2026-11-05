@@ -1,0 +1,27 @@
+name: Registry 3.0 Cross-Platform Verification
+on:
+  push:
+    branches: [master, main]
+    paths: ["registry/**", "lib/registry/**", "lib/governance/**", ".github/workflows/registry-v3.yml", "build-registry.sh"]
+  pull_request:
+    branches: [master, main]
+    paths: ["registry/**", "lib/registry/**", "lib/governance/**", ".github/workflows/registry-v3.yml", "build-registry.sh"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  registry-v3:
+    name: Registry 3.0 (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: cmake -S registry -B build/registry-v3 -DBUILD_TESTING=ON
+      - name: Build
+        run: cmake --build build/registry-v3 --config Release --parallel 2
+      - name: Test
+        run: ctest --test-dir build/registry-v3 -C Release --output-on-failure

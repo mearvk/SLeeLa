@@ -1,6 +1,6 @@
 # SLeeLa Registry 3.0 — Unified Registry Architecture
 
-*Status: architecture baseline and compatibility contract. The existing native C/C++ store and SLeeLa object model remain the compatibility implementation until the 3.0 record engine and migration tests are shipped.*
+*Status: architecture baseline and compatibility contract. The first native Registry 3.0 record engine, SLREG 2 persistence/migration path, C++ facade, CLI, and focused tests are now present in the source tree. VM-facing compiler/runtime bindings, authenticated Modium verifier attestations, durable append-only audit events, and full cross-platform CI results remain separate verification items.*
 
 ## 1. Purpose
 
@@ -253,3 +253,20 @@ A stage is complete only when its code and tests exist and the relevant checks h
 
 ---
 Core invariant: Registry is the shared map of what SLeeLa knows exists; Modium verifies and stores; resolvers locate; policy authorizes; runtimes execute. No one subsystem silently assumes another subsystem's authority.
+
+
+## 15. Implementation snapshot (2026-11-05)
+
+The first implementation slice is present in the repository:
+
+- Native record schema and API: registry/v3/sleela_registry_v3.h and registry/v3/sleela_registry_v3.c.
+- Versioned persistence and migration: SLREG 2 save/load plus explicit SLREG 1 to SLREG 2 conversion.
+- C++ RAII facade and separate native CLI: registry/v3/sleela_registry_v3.hpp and registry/v3/sleela-registry3.c.
+- Focused C/C++ tests: registry/tests/ and registry/CMakeLists.txt.
+- SLeeLa source shapes: lib/registry/SLRegistryRecord.sleela, SLRegistryIdentity.sleela, SLRegistryRelationship.sleela, SLRegistryLifecycle.sleela, SLRegistryResolver.sleela, and SLRegistryReview.sleela.
+- Modium registration accepts metadata for an already-inspected resource and starts it unverified. It does not operate on a device.
+- The legacy SLeeLa key/value mirror uses growable String indexes for key paths and value names. The first eight object references remain a legacy display window, not the authoritative record limit.
+
+The focused build/test route is make -C registry test; the root convenience target is make registry-test. The master registry materialization script builds and tests this package before writing the baseline SLREG 1 table.
+
+**Not yet complete:** the native C record API is not a compiler opcode or an SLVM/OSLS service binding. Modium verifier identity is not cryptographically authenticated by the in-process setter. Record revision numbers protect updates within the API, but a persistent multi-process transaction lock and append-only mutation-event ledger have not yet been implemented. The new workflow must be observed to completion on its Linux/macOS/Windows matrix before cross-platform PASS is claimed. The source-document @vote annotation is inert documentation; no compiler parser or automatic voting service is claimed.

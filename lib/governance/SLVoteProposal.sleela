@@ -1,0 +1,64 @@
+<< Source model for a frozen, manual SLeeLa governance proposal.
+   The @vote documentation annotation is not executable source syntax yet. >>
+#sleela 3.0
+material;
+class SLVoteProposal {
+  String proposalId;
+  String title;
+  String proposalText;
+  String sourcePath;
+  String sourceDigest;
+  String electorate;
+  String eligibilityRule;
+  String opensUtc;
+  String closesUtc;
+  String ballotMethod;
+  String secrecy;
+  String countingRule;
+  String tieResult;
+  String resultPublication;
+  SLList options;
+  int quorumMinimum;
+  int quorumParticipationPercent;
+  int tellersRequired;
+  int challengeHours;
+  boolean abstainCountsForQuorum;
+  boolean abstainInApprovalDenominator;
+
+  void configure(String id, String proposalTitle, String frozenDigest) {
+    proposalId = id;
+    title = proposalTitle;
+    sourceDigest = frozenDigest;
+    options = new SLList();
+    ballotMethod = "manual-paper";
+    secrecy = "secret";
+    countingRule = "strict-majority";
+    tieResult = "not-adopted";
+    resultPublication = "aggregate-only";
+    quorumMinimum = 1;
+    quorumParticipationPercent = 0;
+    tellersRequired = 2;
+    challengeHours = 72;
+    abstainCountsForQuorum = true;
+    abstainInApprovalDenominator = false;
+  }
+
+  boolean hasFrozenSource() {
+    return sourceDigest != null && sourceDigest != "";
+  }
+
+  boolean hasWindowFields() {
+    return opensUtc != null && closesUtc != null
+        && opensUtc != "" && closesUtc != "";
+  }
+
+  boolean hasElectorate() {
+    return electorate != null && electorate != ""
+        && eligibilityRule != null && eligibilityRule != "";
+  }
+
+  boolean manualSecretProfile() {
+    return ballotMethod == "manual-paper" && secrecy == "secret"
+        && tellersRequired >= 2 && resultPublication == "aggregate-only";
+  }
+}

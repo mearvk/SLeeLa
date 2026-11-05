@@ -1,0 +1,43 @@
+<< Canonical identity-bearing Registry 3.0 record envelope.
+   The native registry/v3 engine owns persistence, relationships, revisions
+   and validation. This SLeeLa class is the source-level record shape.
+   References are stable IDs; they are not permissions. >>
+#sleela 3.0
+material;
+class SLRegistryRecord {
+  String id;
+  String nameSpace;
+  String kind;
+  String schemaVersion;
+  String name;
+  String state;
+  String locator;
+  String version;
+  String contentDigest;
+  String payloadKind;
+  String payload;
+  String integrityStatus;
+  long revision;
+  long capacityBytes;
+  String ownerLabel;
+  String formatVersion;
+  String deviceSeal;
+  SLList aliases;
+  SLList relationshipIds;
+
+  void configure(String recordId, String ns, String recordKind, String displayName) {
+    id = recordId;
+    nameSpace = ns;
+    kind = recordKind;
+    name = displayName;
+    schemaVersion = "1";
+    state = "draft";
+    integrityStatus = "unverified";
+    revision = 1;
+    aliases = new SLList();
+    relationshipIds = new SLList();
+  }
+
+  boolean identified() { return id != null && id != ""; }
+  boolean hasIntegrityEvidence() { return integrityStatus == "intact"; }
+}

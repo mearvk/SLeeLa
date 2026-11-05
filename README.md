@@ -470,6 +470,10 @@ status should be checked in each package's own documentation and tests.
 - **Coorenagraph** — `lib/coorenagraph/`: ethical reasoning, moral vocabulary,
   deliberation, and related concepts; see its package README and source files.
 
+### D–G
+
+- **Governance source models** — [lib/governance](lib/governance/README.md) defines declarative SLeeLa source shapes for proposals, anonymous manual ballots, and aggregate tallies. The proposed @vote annotation and manual process are documented in [registry/DEMOCRATIC-VOTING-SYNTAX.md](registry/DEMOCRATIC-VOTING-SYNTAX.md); current compilers treat it as inert comment metadata.
+
 ### H–I
 
 - **HTTP 1.0–8.0** — `lib/http-1.0/` through the available versioned HTTP
