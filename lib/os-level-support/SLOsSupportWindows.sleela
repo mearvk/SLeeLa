@@ -140,14 +140,14 @@ class SLOsSupportWindows {
 
   SLList getPlatformTerms() {
     SLList out = new SLList();
-    out.add("WindowsBackend");
-    out.add("Win32");
-    out.add("Kernel32");
-    out.add("Userenv");
     out.add("IPHelper");
-    out.add("Winsock2");
-    out.add("ServiceControlManager");
+    out.add("Kernel32");
     out.add("RegistryReadOnly");
+    out.add("ServiceControlManager");
+    out.add("Userenv");
+    out.add("Win32");
+    out.add("WindowsBackend");
+    out.add("Winsock2");
     return out;
   }
 }
