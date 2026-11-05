@@ -123,7 +123,8 @@ int osls_vm_call(int op, const char *arg, int64_t number, char *out, size_t cap)
         osls_environment_entry v[128]; size_t n = 0; rc = osls_enumerate_environment(v, 128, &n);
         status(&j, rc); fmt(&j,",\"count\":%llu,\"items\":[",(unsigned long long)n);
         if (rc == OSLS_OK) for (size_t i=0;i<n;i++) {
-            if (i) raw(&j,","); raw(&j,"{\"name\":"); str(&j,v[i].name);
+            if (i) raw(&j,",");
+            raw(&j,"{\"name\":"); str(&j,v[i].name);
             raw(&j,",\"value\":"); str(&j,v[i].value); raw(&j,"}");
         }
         raw(&j,"]"); finish(&j); break;
@@ -170,7 +171,8 @@ int osls_vm_call(int op, const char *arg, int64_t number, char *out, size_t cap)
         osls_network_interface v[64]; size_t n = 0; rc = osls_get_network_interfaces(v, 64, &n);
         status(&j, rc); fmt(&j,",\"count\":%llu,\"items\":[",(unsigned long long)n);
         if (rc == OSLS_OK) for (size_t i=0;i<n;i++) {
-            if (i) raw(&j,","); raw(&j,"{\"name\":"); str(&j,v[i].name);
+            if (i) raw(&j,",");
+            raw(&j,"{\"name\":"); str(&j,v[i].name);
             raw(&j,",\"macAddress\":"); str(&j,v[i].mac_address);
             raw(&j,",\"ipv4\":"); str(&j,v[i].ipv4); raw(&j,",\"ipv6\":"); str(&j,v[i].ipv6);
             field_bool(&j,"isUp",v[i].is_up); field_bool(&j,"isLoopback",v[i].is_loopback); raw(&j,"}");
