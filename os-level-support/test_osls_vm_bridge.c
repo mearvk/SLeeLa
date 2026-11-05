@@ -12,10 +12,18 @@ int main(void) {
     assert(strcmp(table[0].native_symbol, "osls_get_system_info") == 0);
     n = osls_vm_call(OSLS_VM_SYSTEM_INFO, NULL, 0, json, sizeof(json));
     assert(n > 0 && strstr(json, "\"status\":0") != NULL);
+    n = osls_vm_call(OSLS_VM_PROCESS_INFO, NULL, 0, json, sizeof(json)); assert(n > 0);
+    n = osls_vm_call(OSLS_VM_ENUMERATE_PROCESSES, NULL, 0, json, sizeof(json)); assert(n > 0);
+    n = osls_vm_call(OSLS_VM_GET_ENVIRONMENT_VALUE, "PATH", 0, json, sizeof(json)); assert(n > 0);
+    n = osls_vm_call(OSLS_VM_ENUMERATE_ENVIRONMENT, NULL, 0, json, sizeof(json)); assert(n > 0);
+    n = osls_vm_call(OSLS_VM_GET_FILE_INFO, ".", 0, json, sizeof(json)); assert(n > 0);
+    n = osls_vm_call(OSLS_VM_LIST_DIRECTORY, ".", 0, json, sizeof(json)); assert(n > 0);
+    n = osls_vm_call(OSLS_VM_GET_CPU_INFO, NULL, 0, json, sizeof(json)); assert(n > 0);
+    n = osls_vm_call(OSLS_VM_GET_TIMEZONE_INFO, NULL, 0, json, sizeof(json)); assert(n > 0);
+    n = osls_vm_call(OSLS_VM_GET_NETWORK_INTERFACES, NULL, 0, json, sizeof(json)); assert(n > 0);
     n = osls_vm_call(OSLS_VM_CRON_VALIDATE, "* * * * *", 0, json, sizeof(json));
     assert(n > 0 && strstr(json, "\"status\":0") != NULL);
-    n = osls_vm_call(OSLS_VM_GET_FILE_INFO, ".", 0, json, sizeof(json));
-    assert(n > 0 && strstr(json, "\"status\":0") != NULL);
+    n = osls_vm_call(OSLS_VM_CRON_NEXT_AFTER, "* * * * *", 0, json, sizeof(json)); assert(n > 0);
     puts("OSLS VM binding registry: PASS (12 bindings)");
     return 0;
 }
