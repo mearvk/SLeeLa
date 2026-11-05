@@ -1,0 +1,42 @@
+name: API documentation build
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - "lib/**/*.sleela"
+      - "tools/generate-sleeladoc-api.py"
+      - "tools/build-api-docs.sh"
+      - "SLEELA.syntax"
+      - ".github/workflows/api-docs.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-api-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Generate API documentation
+        run: make api-docs
+      - name: Commit generated documentation
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add sleeladoc-api docs/api api/sleela/3.0
+          if git diff --cached --quiet; then
+            echo "Generated API documentation is already current."
+          else
+            git commit -m "Build SLeeLa syntax 3.0 API documentation"
+            git push origin "${{ github.ref_name }}"
+          fi
