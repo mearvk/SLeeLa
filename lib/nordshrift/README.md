@@ -32,3 +32,11 @@ Nordshrift consumes SST declarations as symbols through `NordshriftSymbol`, `Nor
 - `tutorials/02-symbol-resolution.md`
 - `tutorials/03-library-bridge.md`
 - `tutorials/04-invalid-symbols.md`
+
+## Language edition 3.0
+
+Nordshrift uses the shared Sleelvac frontend and therefore accepts the same
+SLeeLa source syntax range: **1.0–3.0**. The current normative edition is 3.0;
+NS-SST-0001 remains a separately versioned control-sheet specification. The
+Nordshrift product release number and NS-SST version are not language syntax
+versions. See [`SLEELA.syntax`](../../SLEELA.syntax).
