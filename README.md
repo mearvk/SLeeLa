@@ -184,7 +184,7 @@ the registry core, seeds the baseline table into the portable text store
 `registry/build/sleela.sleelareg`, and exports the MySQL table script
 `registry/build/registry.sql` (via `sleela registry export`). Review it with
 `sleela registry` or `registry/build/sleela-registry review`. See the
-[registry guide](registry/README.md).
+[registry guide](registry/README.md) and [Registry 3.0 architecture](registry/REGISTRY-3.0-ARCHITECTURE.md).
 
 Consult the build and testing guides for prerequisites and platform-specific steps. A successful build of one component does not prove every library or platform is release-ready.
 
