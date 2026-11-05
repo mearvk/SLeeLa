@@ -557,6 +557,80 @@ The following function names are listed alphabetically. Availability and permiss
 
 **Index maintenance rule:** Keep each operating-system list alphabetized whenever entries are added. Distinguish function names from API families and pseudo-filesystem interfaces; identify any state-changing call explicitly, and do not describe a candidate API as implemented until the corresponding backend and tests exist.
 
+
+## 13. SLeeLa source catalogue and VM element model
+
+The SLeeLa source representation for this inventory lives in `lib/os-level-support/`.
+It separates capability vocabulary, reusable element descriptors, the existing VM
+system-call bridge, the richer portable C ABI, and the three platform symbol lists.
+
+| SLeeLa source element | Responsibility |
+|---|---|
+| `SLOsSupportCatalog.sleela` | Canonical common capability groups and portable API/function catalogues |
+| `SLOsSupportElement.sleela` | One binding descriptor: group, VM element/opcode, portable symbol, native symbol, backend, effect, status, result and arity |
+| `SLOsSupportVMBridge.sleela` | VM dispatch vocabulary, status and marshalling terms, and the current opcode map |
+| `SLOsSupportVMElements.sleela` | Factory methods for the 21 existing VM OS-call elements |
+| `SLOsSupportOSLSElements.sleela` | Factory methods for the 12 current `osls_*` C ABI elements |
+| `SLOsSupportLinux.sleela` | Linux groups and alphabetized POSIX/Linux native symbol catalogue |
+| `SLOsSupportWindows.sleela` | Windows groups and alphabetized Win32/Winsock native symbol catalogue |
+| `SLOsSupportMacOS.sleela` | macOS groups and alphabetized Darwin/POSIX/Mach native symbol catalogue |
+| `examples/SLOsSupportCatalogExample.sleela` | Source example enumerating groups, VM mappings and OS-specific catalogues |
+
+### 13.1 Canonical grouping terms
+
+The shared catalogue uses these semantic group identifiers:
+
+- `HostIdentity`
+- `ProcessInspection`
+- `ProcessControl`
+- `Environment`
+- `FileSystem`
+- `PathManagement`
+- `VolumeStorage`
+- `CPUArchitecture`
+- `MemoryManagement`
+- `TimeClock`
+- `TimeZoneCalendar`
+- `NetworkInterfaces`
+- `NetworkConfiguration`
+- `SocketIO`
+- `Scheduling`
+- `TimersAndWait`
+- `RuntimeEvents`
+- `CooperativeTasks`
+- `DynamicModules`
+- `CapabilityDiscovery`
+- `ErrorDiagnostics`
+- `SecurityBoundary`
+- `VMInterop`
+- `PlatformExtensions`
+
+The platform classes add qualified group terms such as `LinuxCPUTopology`,
+`WindowsServices`, and `MacOSFilesystemEvents`. Use the shared term when the
+operation is semantically portable; use a qualified term only for a genuine
+platform-specific facility.
+
+### 13.2 Existing VM path and separate osls adapter
+
+The current VM already exposes the OS system-call family through
+`SleelaVMSystemCallBridge.sleela`, the `OP_OS_*` opcodes 103–123, and the
+native host implementation in `impl/core/sleela_os.h` /
+`impl/core/sleela_os.c`. The SLeeLa source element factories map these VM
+operations to their current `slos_*` backend symbols and mark them implemented.
+
+The root library's `osls_*` inspection ABI is a separate API. Its source
+element factories describe group, symbol, arity, result and native implementation
+status, but deliberately set the VM opcode to `UNREGISTERED`. A separate host
+adapter, explicit ABI marshalling, error translation, and Linux/Windows/macOS
+integration tests are required before these functions may be invoked directly
+from SLeeLa source. The source catalogue does not itself perform an OS call.
+
+All element effects must remain explicit: read-only query, read-only enumeration,
+process-local operation, blocking operation, or state-changing operation.
+Permission decisions remain with the host OS. Existing process launch/termination,
+environment mutation, directory changes and filesystem mutation must not be
+silently triggered by catalogue lookup or element construction.
+
 ---
 
 **Designation:** Linux, Windows, and macOS are the required target platforms. Common behavior belongs in the portable API; genuine OS differences belong in platform backends or explicitly named extensions. All status labels in this document must be updated as implementation and cross-platform tests are completed.
