@@ -1,10 +1,10 @@
 << lib/opcodes/SLOpOslsCall.sleela
    SLeeLa Standard Library Definition.
-   Definition: Defines SLOpOsPlatform, the single-opcode class for OP_OSLS_CALL (canonical code 103).
+   Definition: Defines SLOpOslsCall, the single-opcode class for OP_OSLS_CALL (canonical code 155).
    
-   This class carries exactly ONE opcode: OP_OS_PLATFORM.
-   Semantics: report the host operating-system platform identity.
-   Membership: operating-system system-call group (codes 103-123) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela).
+   This class carries exactly ONE opcode: OP_OSLS_CALL.
+   Semantics: dispatch a validated operation ID through the registered osls_* ABI table.
+   Membership: host-facing OSLS native binding group (code 155) of the canonical SLeeLa ISA.
    
    step() honours the family contract: it first calls the VM to advance to the
    next instruction, then executes precisely this one opcode and returns the
@@ -14,13 +14,13 @@
 #sleela 2.5
 material;
 < Unified SLeeLa standard-library front-end object. >
-class SLOpOsPlatform extends SLOpcodeBase {
+class SLOpOslsCall extends SLOpcodeBase {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
      or catalog can read and (where appropriate) override this record.
      Values are faithful to the subject's real origin where publicly known. >>
   String metaVersion = "1.0.0";
-  int metaId = 10200;
+  int metaId = 10355;
   String metaAuthor = "Kiro Agent";
   String metaDate = "2026-11-03";
   String metaCopyright = "SLeeLa project";
@@ -57,7 +57,7 @@ class SLOpOsPlatform extends SLOpcodeBase {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   static final int CODE = 155;
-  static final String MNEMONIC = "OP_OS_PLATFORM";
+  static final String MNEMONIC = "OP_OSLS_CALL";
 
   void prepare() { configure(CODE, MNEMONIC); }
 }
