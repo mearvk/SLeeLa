@@ -16,7 +16,7 @@ SLVM/1 is an ordered architectural layer, not a separate SLeeLa language.
 
 ## Opcode support and unsupported-opcode handling
 
-This generation consumes the canonical source ISA in `/lib/vm/InstructionSet.sleela`. The canonical source registry and native `SLOp` enum contain **155 ordered opcodes** (codes 0..154). OP_OSLS_CALL (155) dispatches the 12 typed osls_* inspection bindings through the shared Core archive. The repository inventory CI checks source-to-enum parity; runtime dispatch coverage remains a separate implementation requirement.
+This generation consumes the canonical source ISA in `/lib/vm/InstructionSet.sleela`. The pre-OSLS ISA contains **155 ordered opcodes** (codes 0..154), including the existing OS-call range 103–123. The append-only OSLS extension adds `OP_OSLS_CALL` at code 155, yielding **156 total opcodes** (codes 0..155). Compile-time assertions lock the original opcode values and the new extension boundary; the VM dispatches the 12 typed OSLS bindings through the callable native registry. The repository inventory CI checks source-to-enum parity; runtime dispatch coverage remains a separate implementation requirement.
 
 The tail of that ISA is the operating-system System Call API (`OP_OS_*`, codes 103-123): the `os*` built-ins (`osRun`/`osSpawn`/`osGetEnv`/`osExists`/...) serviced by `impl/core/sleela_os.c` on Windows, Linux, and macOS. Because this generation consumes the one shared ISA, the host system-call surface is available here exactly as in the base VM; a spawned process is a VM-local bounded handle governed by the same resource-ownership and teardown rules as sockets and files.
 
