@@ -1,0 +1,23 @@
+< SLeeLa Standard Library Definition.
+  Definition: VM-callable wrappers over the registered osls_* native ABI.
+  Record and collection results are JSON Strings with an OSLS status field;
+  native pointers and C struct layouts never cross into VM values. >
+#sleela 2.5
+material;
+
+class SLOsSupportNative {
+  String systemInfo() { return oslsSystemInfo(); }
+  String processInfo(int pid) { return oslsProcessInfo(pid); }
+  String enumerateProcesses() { return oslsEnumerateProcesses(); }
+  String environmentValue(String name) { return oslsGetEnvironmentValue(name); }
+  String enumerateEnvironment() { return oslsEnumerateEnvironment(); }
+  String fileInfo(String path) { return oslsGetFileInfo(path); }
+  String listDirectory(String path) { return oslsListDirectory(path); }
+  String cpuInfo() { return oslsGetCPUInfo(); }
+  String timezoneInfo() { return oslsGetTimezoneInfo(); }
+  String networkInterfaces() { return oslsGetNetworkInterfaces(); }
+  String validateCron(String expression) { return oslsCronValidate(expression); }
+  String nextCronAfter(String expression, int epochSeconds) {
+    return oslsCronNextAfter(expression, epochSeconds);
+  }
+}
