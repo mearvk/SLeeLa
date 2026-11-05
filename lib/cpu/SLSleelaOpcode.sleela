@@ -4,7 +4,7 @@
      the Turing-complete substrate that the whole CPU model reduces to. The
      codes and mnemonics mirror the native enum exactly (impl/core/sleela_core.h
      `SLOp` and lib/vm/InstructionSet.sleela). The native enum currently defines
-     155 opcodes (codes 0..154), dispatched one-at-a-time by the native VM, and
+     156 opcodes (codes 0..155), dispatched one-at-a-time by the native VM, and
      organized here as a DOUBLE SHELF of three contiguous tiers:
        - shelf 1, base computational/service core (codes 0..48): arithmetic,
          control flow, call/return, threads, sockets, pipes, files;
@@ -12,7 +12,7 @@
          Synchro / Munction / Best-of;
        - shelf 3, host-facing services (codes 98..155): arrays, OS syscalls, GC
          hint, `ran::`, Idea realtime canvas, VM-select / Modium, UI bridge,
-         structural send, runtime type checks, and two-entry stack duplication.
+         structural send, runtime type checks, stack duplication, and the typed OSLS native binding.
      All three shelves are acceptable opcodes; the tiers (BASE_COUNT /
      SUBSTRATE_COUNT / NATIVE_COUNT and the TIER_* flags) do not gate execution,
      they let the professional monitoring/storage layer tag and iterate each
