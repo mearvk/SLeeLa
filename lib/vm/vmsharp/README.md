@@ -152,6 +152,32 @@ VMSharp files plus a `VMSHARP.BOOT.DESCRIPTOR`, not an invented kernel/bootloade
 binary. A real bootable VMSharp image is produced only by the pinned OS Creator
 toolchain.
 
+## Filesystem choice + initial disk layout
+
+When VMSharp installs an OS (the OS.Sensitivity.III path), `VMSharpDiskLayout`
+chooses the **root filesystem** and produces the **initial hard-drive manifest**
+and partitioning plan:
+
+- **Filesystem choice:** `chooseRootFilesystem(fs)` accepts **EXT4** (default) or
+  a similar rootable filesystem (`xfs`, `btrfs`, `zfs`, `f2fs`, `ntfs`, `apfs`);
+  an unrootable/unknown choice is refused. The rootable set and `mkfs` tools are
+  faithful to the operating-system family's `SLFilesystemCatalog`.
+- **Partition manifest** (`partitionManifest()`): a GPT table with
+  `1|esp|fat32|512MiB|/boot/efi`, `2|root|<fs>|rest|/`, `3|swap|swap|<n>GiB|none`.
+- **Partition + mkfs plan** (`partitionPlan()`): the ordered commands —
+  `parted … mklabel gpt` → `mkpart ESP/root` → `mkfs.vfat` / `mkfs.ext4` (or the
+  chosen fs) / `mkswap` → `mount`. `useGpt()` / `useMsdos()` selects the table.
+
+**Fail-closed:** the partition plan refuses to produce commands until a target
+disk is designated (`designateTarget("/dev/sda")`) — no disk is auto-selected —
+and `VMSharpOSCreatorRun.osCreatorReady()` now also requires the disk layout to
+be ready (rootable fs + FAT ESP + designated target). The install wizard surfaces
+this as a disk-layout screen (`diskLayoutScreen(rootFs, targetDisk)`).
+
+**Honesty boundary:** the layout reads no disk, writes no partition table, and
+runs no `mkfs`. Partitioning is a state-changing operation performed by the host
+under the VMSharp OS, behind the same explicit-designation gate as the rest.
+
 ## Honesty boundary
 
 Every class here is a **declarative model**. VMSharp source:

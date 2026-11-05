@@ -1,0 +1,205 @@
+<< lib/vm/vmsharp/VMSharpDiskLayout.sleela
+   SLeeLa Standard Library Definition.
+   Definition: VMSharp(TM) initial hard-drive MANIFEST and partitioning MODEL.
+   When VMSharp installs an OS (the Download-and-Designate path), it chooses a
+   root filesystem -- EXT4 by default, or a similar rootable filesystem -- and
+   lays out the initial disk: a GPT/UEFI table with an EFI System Partition
+   (FAT32), a root partition in the chosen filesystem, and a swap partition.
+   This class validates the filesystem choice, builds the ordered partition
+   manifest, and emits the partitioning + mkfs plan (the commands a real
+   partitioner would run).
+
+   The filesystem facts (which filesystems are rootable, which may hold the EFI
+   System Partition, and the mkfs tool for each) are faithful to the operating-
+   system family's SLFilesystemCatalog; VMSharp mirrors the subset it needs here
+   so the disk layout stays self-contained and runnable.
+
+   Honesty boundary: declarative model and plan only. It reads no disk, writes
+   no partition table, and runs no mkfs; the real partitioning is a STATE-
+   CHANGING operation performed by the host under the VMSharp OS, gated behind
+   explicit user designation of the target device (the same fail-closed gate the
+   installer and the USB Makefiles enforce). Authored for the User MEARVK LLC,
+   respectful of United States law and of the persons and groupings of peoples
+   it concerns. Family: vm. >>
+#sleela 3.0
+material;
+class VMSharpDiskLayout {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 38016;
+  String metaAuthor = "Max Rupplin 2026; George Soros a Kindness 2507+";
+  String metaDate = "2026-11-05";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "VMSharp";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "United States";
+  String metaBirthDate = "2026-11-05";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 7;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "UEFI Specification; GPT (UEFI 2.x); ext4 on-disk format";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- the choice ---- >
+  String rootFilesystem = "ext4";
+  String espFilesystem = "fat32";
+  < rootSizeGiB 0 means use the remaining space after ESP and swap. >
+  int rootSizeGiB = 0;
+  int swapSizeGiB = 4;
+  int espSizeMiB = 512;
+  < partitionTable: gpt (UEFI) or msdos (BIOS). >
+  String partitionTable = "gpt";
+  String targetDevice = "";
+  boolean deviceDesignated = false;
+
+  void configure() {
+    rootFilesystem = "ext4";
+    espFilesystem = "fat32";
+    rootSizeGiB = 0;
+    swapSizeGiB = 4;
+    espSizeMiB = 512;
+    partitionTable = "gpt";
+    targetDevice = "";
+    deviceDesignated = false;
+  }
+
+  << Is this filesystem rootable (may hold the OS root)? Faithful to
+     SLFilesystemCatalog.rootable for the common desktop/server filesystems. >>
+  boolean rootable(String fs) {
+    return fs == "ext4" || fs == "ext3" || fs == "xfs" || fs == "btrfs"
+        || fs == "zfs"  || fs == "f2fs" || fs == "ntfs" || fs == "refs"
+        || fs == "apfs" || fs == "hfs+" || fs == "ufs";
+  }
+
+  < May this filesystem hold the EFI System Partition (must be FAT)? >
+  boolean efiSystemPartition(String fs) {
+    return fs == "fat32" || fs == "vfat" || fs == "fat16";
+  }
+
+  << The mkfs-style tool that formats a filesystem. Faithful to
+     SLFilesystemCatalog.mkfsTool for the filesystems VMSharp offers. >>
+  String mkfsTool(String fs) {
+    if (fs == "ext4") { return "mkfs.ext4"; }
+    if (fs == "ext3") { return "mkfs.ext3"; }
+    if (fs == "xfs")  { return "mkfs.xfs"; }
+    if (fs == "btrfs"){ return "mkfs.btrfs"; }
+    if (fs == "f2fs") { return "mkfs.f2fs"; }
+    if (fs == "zfs")  { return "zpool create"; }
+    if (fs == "ntfs") { return "mkfs.ntfs"; }
+    if (fs == "apfs") { return "newfs_apfs"; }
+    if (fs == "fat32" || fs == "vfat") { return "mkfs.vfat"; }
+    return "n/a";
+  }
+
+  << Choose the root filesystem. Accepts EXT4 or a similar rootable filesystem;
+     an unrootable or unknown choice is refused and the root stays unchanged.
+     Returns true when the choice was accepted. >>
+  boolean chooseRootFilesystem(String fs) {
+    if (!rootable(fs)) { return false; }
+    rootFilesystem = fs;
+    return true;
+  }
+  String getRootFilesystem() { return rootFilesystem; }
+
+  < A newline menu of the root filesystems VMSharp offers (EXT4 default first). >
+  String rootChoices() { return "ext4\nxfs\nbtrfs\nzfs\nf2fs\nntfs\napfs"; }
+
+  void setRootSizeGiB(int g) { rootSizeGiB = g; }
+  void setSwapSizeGiB(int g) { swapSizeGiB = g; }
+  void setEspSizeMiB(int m) { espSizeMiB = m; }
+  void useGpt() { partitionTable = "gpt"; }
+  void useMsdos() { partitionTable = "msdos"; }
+  String getPartitionTable() { return partitionTable; }
+
+  << Designate the target disk to partition (e.g. /dev/sda). Recording a
+     designation does NOT touch the disk; partitioning is the guarded,
+     host-performed step gated on this designation (fail-closed). >>
+  void designateTarget(String device) {
+    targetDevice = device;
+    deviceDesignated = device != "";
+  }
+  String getTargetDevice() { return targetDevice; }
+  boolean isTargetDesignated() { return deviceDesignated; }
+
+  < ---- the initial hard-drive manifest ---- >
+  << The ordered partition manifest: ESP (FAT32), root (chosen filesystem), and
+     swap. Each entry is "number|role|filesystem|size|mountpoint". Sizes are
+     "<n>MiB"/"<n>GiB" or "rest" for the remaining space. This is the manifest a
+     real partitioner realizes. >>
+  SLList partitionManifest() {
+    SLList out = new SLList();
+    out.add("1|esp|" + espFilesystem + "|" + espSizeMiB + "MiB|/boot/efi");
+    String rootSize = "rest";
+    if (rootSizeGiB > 0) { rootSize = rootSizeGiB + "GiB"; }
+    out.add("2|root|" + rootFilesystem + "|" + rootSize + "|/");
+    out.add("3|swap|swap|" + swapSizeGiB + "GiB|none");
+    return out;
+  }
+  int partitionCount() { SLList m = partitionManifest(); return m.length(); }
+
+  << The ordered partitioning + mkfs plan the host would run on the designated
+     device. Built only when a target is designated; otherwise it returns a
+     single refusal line (fail-closed). These are the steps a real installer
+     runs; this model lists and gates them. >>
+  SLList partitionPlan() {
+    SLList out = new SLList();
+    if (!deviceDesignated) {
+      out.add("REFUSED: designate a target device first (no disk is auto-selected)");
+      return out;
+    }
+    out.add("parted " + targetDevice + " mklabel " + partitionTable);
+    out.add("parted " + targetDevice + " mkpart ESP " + espFilesystem + " 1MiB " + (espSizeMiB + 1) + "MiB");
+    out.add("parted " + targetDevice + " set 1 esp on");
+    String rootEnd = "100%";
+    out.add("parted " + targetDevice + " mkpart root " + rootFilesystem + " " + (espSizeMiB + 1) + "MiB " + rootEnd);
+    out.add(mkfsTool(espFilesystem) + " " + targetDevice + "1");
+    out.add(mkfsTool(rootFilesystem) + " " + targetDevice + "2");
+    out.add("mkswap " + targetDevice + "3");
+    out.add("mount " + targetDevice + "2 /mnt");
+    out.add("mkdir -p /mnt/boot/efi && mount " + targetDevice + "1 /mnt/boot/efi");
+    return out;
+  }
+  int partitionPlanSteps() { SLList p = partitionPlan(); return p.length(); }
+
+<< Is the layout ready to realize? Needs a rootable filesystem, a FAT ESP, and
+   a designated target device -- fail-closed. >>
+  boolean isReady() {
+    if (!rootable(rootFilesystem)) { return false; }
+    if (!efiSystemPartition(espFilesystem)) { return false; }
+    return deviceDesignated;
+  }
+
+  < A one-line layout summary. >
+  String summary() {
+    return "VMSharp disk layout: table=" + partitionTable
+         + " esp=" + espFilesystem + "(" + espSizeMiB + "MiB)"
+         + " root=" + rootFilesystem + " swap=" + swapSizeGiB + "GiB"
+         + " target=" + targetDevice + " ready=" + isReady();
+  }
+}

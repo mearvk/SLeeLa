@@ -80,12 +80,34 @@ class VMSharpOSCreatorDemo {
     print("  cmd: " + run.acquisitionCommand());
 
     print("");
+    print("== initial hard drive: filesystem + partitioning ==");
+    VMSharpDiskLayout disk = run.diskLayout();
+    print("default root filesystem: " + disk.getRootFilesystem());
+    print("choose xfs: " + disk.chooseRootFilesystem("xfs"));
+    print("choose ext4 (default): " + disk.chooseRootFilesystem("ext4"));
+    print("choose bogus-fs (refused): " + disk.chooseRootFilesystem("bogus-fs"));
+    print("partition plan before target (fail-closed):");
+    SLList pp0 = disk.partitionPlan();
+    print("  " + pp0.get(0));
+    disk.designateTarget("/dev/sda");
+    print("target designated: " + disk.getTargetDevice());
+    print("partition manifest:");
+    SLList man = disk.partitionManifest();
+    int m = 0;
+    while (m < man.length()) { print("  " + man.get(m)); m = m + 1; }
+    print("partition + mkfs plan:");
+    SLList pp = disk.partitionPlan();
+    int k = 0;
+    while (k < pp.length()) { print("  " + pp.get(k)); k = k + 1; }
+    print(disk.summary());
+
+    print("");
     print("== OS Creator readiness gate ==");
     acq.useClone();
     print("os-creator ready before acquire (should be false): " + run.osCreatorReady());
     boolean ok = run.markAcquired();
     print("marked acquired (needs reachable first): " + ok);
-    print("os-creator ready after acquire: " + run.osCreatorReady());
+    print("os-creator ready after acquire + disk ready: " + run.osCreatorReady());
     print(run.provenanceLine());
     print("os-creator cmd: " + run.osCreatorCommand());
 

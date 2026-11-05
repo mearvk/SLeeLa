@@ -75,6 +75,7 @@ class VMSharpOSCreatorRun {
 
   VMSharpNetworkStack netStack;
   VMSharpRepoAcquisition acq;
+  VMSharpDiskLayout disk;
   boolean reachable;
   boolean acquired;
 
@@ -82,12 +83,16 @@ class VMSharpOSCreatorRun {
     netStack = new VMSharpNetworkStack();
     acq = new VMSharpRepoAcquisition();
     acq.configure(targetOwner, targetRepo, targetBranch);
+    disk = new VMSharpDiskLayout();
+    disk.configure();
     reachable = false;
     acquired = false;
   }
 
   VMSharpNetworkStack network() { return netStack; }
   VMSharpRepoAcquisition acquisition() { return acq; }
+  < The initial hard-drive layout (filesystem choice + partition manifest). >
+  VMSharpDiskLayout diskLayout() { return disk; }
   String getTargetRepo() { return targetOwner + "/" + targetRepo; }
   String getTargetHost() { return targetHost; }
 
@@ -132,8 +137,10 @@ class VMSharpOSCreatorRun {
   }
 
 << The OS Creator step is ready only after the repo is reachable AND acquired
-   -- fail-closed: no build on an unreached or unacquired source. >>
-  boolean osCreatorReady() { return reachable && acquired; }
+   AND the initial disk layout is ready (rootable filesystem + FAT ESP + a
+   designated target device) -- fail-closed: no build on an unreached or
+   unacquired source, and no install onto an unprepared or undesignated disk. >>
+  boolean osCreatorReady() { return reachable && acquired && disk.isReady(); }
 
   << The ordered run plan for the whole first-brush path. A VMSharp Desktop
      session walks these steps; this model lists and gates them. >>
@@ -144,6 +151,9 @@ class VMSharpOSCreatorRun {
     out.add("reach-over-network-stack");
     out.add("acquire-repo-" + acq.getMethodName());
     out.add("verify-acquired-tree");
+    out.add("choose-root-filesystem-" + disk.getRootFilesystem());
+    out.add("designate-target-disk");
+    out.add("partition-and-format-disk");
     out.add("build-os-model");
     out.add("point-os-creator-at-source");
     out.add("os-creator-readiness-gate");

@@ -87,6 +87,10 @@ class VMSharpInstallWizardDemo {
     print("confirm before acquire + target:");
     print(wizB.confirmScreen());
     print("");
+    < choose the root filesystem and lay out the initial hard drive >
+    print("...choose filesystem + partition the disk...");
+    print(wizB.diskLayoutScreen("ext4", "/dev/sda"));
+    print("");
     < now acquired, and designate the install target through the plan gate >
     print("...after acquire and target designation...");
     String screen2 = wizB.osSensitivityScreen("140.82.112.3,140.82.113.3", true);

@@ -2,9 +2,9 @@
 
 **Revision:** 0.58  
 **Packages:** 109  
-**SLeeLa source units:** 11786  
+**SLeeLa source units:** 11787  
 **Module-facade symbols:** 77  
-**Total symbol records:** 11863  
+**Total symbol records:** 11864  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.58 adds **VMSharp™** under the `vm` package (`lib/vm/vmsharp/`): a
@@ -50,6 +50,12 @@
 > stages the files; `make install` is fail-closed (requires explicit
 > `USB_DEVICE` + `I_UNDERSTAND_THIS_ERASES=yes`, never auto-selects a disk,
 > stages to a git-ignored `build/`). No firmware binary is fabricated.
+> **`VMSharpDiskLayout`** lets VMSharp choose the root filesystem (EXT4 default,
+> or xfs/btrfs/zfs/f2fs/ntfs/apfs; unrootable choices refused, faithful to
+> `SLFilesystemCatalog`) and produce the initial hard-drive manifest (GPT: FAT32
+> ESP + root + swap) and the `parted`/`mkfs` partition plan — fail-closed until a
+> target disk is designated, and `VMSharpOSCreatorRun.osCreatorReady()` now also
+> requires the disk layout ready. It reads no disk and runs no mkfs.
 > Authored for the User MEARVK LLC (Max Rupplin 2026;
 > George Soros a Kindness 2507+), respectful of United States law and of the
 > persons and groupings of peoples it concerns. Every class carries the Metadata
