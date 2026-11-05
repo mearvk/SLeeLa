@@ -57,6 +57,12 @@ jobs:
         timeout-minutes: 3
         run: make -C impl test-osls-vm
 
+      - name: Run full VM regression suite
+        timeout-minutes: 20
+        env:
+          SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
+        run: make -C impl test
+
       - name: Test native Wi-Fi manager contract
         timeout-minutes: 3
         run: make -C wifi-common test
@@ -147,6 +153,12 @@ jobs:
       - name: Check out source
         uses: actions/checkout@v4
 
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
       - name: Regenerate trusted source manifest
         run: python3 tools/generate-sha256-manifest.py --root . --output security/sha256-manifest.json
 
@@ -168,6 +180,12 @@ jobs:
       - name: Test OSLS VM compiler and runtime dispatch
         timeout-minutes: 3
         run: make -C impl test-osls-vm
+
+      - name: Run full VM regression suite
+        timeout-minutes: 20
+        env:
+          SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
+        run: make -C impl test
 
       - name: Test native Wi-Fi manager contract
         timeout-minutes: 3
