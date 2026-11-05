@@ -36,6 +36,12 @@ normative specifications from implementation notes and live validation results.
   the `lib/ui` standard layout model's per-component quality axes and how
   `SLLayoutDriver` realizes each onto native widgets.
 
+## API documentation
+
+- [Generated API site](api/index.html) — HTML reference generated from `/lib`.
+- [API documentation build guide](api/README.md) — build destinations, versioned snapshots, and the `make api-docs` command.
+- [Versioned API catalogue](../api/README.md) — native APIs and language editions.
+
 ## Architecture and virtual machines
 
 - [SLVM/6 architecture](ARCHITECTURE.md) — architecture, implementation
