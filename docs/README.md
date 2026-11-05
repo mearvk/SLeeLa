@@ -8,18 +8,23 @@ normative specifications from implementation notes and live validation results.
 ## Language and compiler
 
 - [Language syntax specification](../SLEELA.syntax) — checked-in grammar and
-  documented syntax range. The current source snapshot documents **1.3–1.8**:
-  the compiler version gate (`impl/frontend/version.{h,cpp}`) accepts 1.3–1.8
-  and defaults to 1.8, the grammar defines the 1.8 features in §12 (inferred
-  `let` locals and constructor arguments), and the regression fixtures in
-  [`tests/sleela-syntax-1.8/`](../tests/sleela-syntax-1.8/) exercise them.
-  Constructor overload resolution and `this(...)`/base delegation are **not**
-  part of verified 1.8 and are rejected explicitly.
+  documented syntax range. The current normative edition is **3.0**; the compiler
+  version gate (`impl/frontend/version.{h,cpp}`) accepts source syntax **1.0–3.0**
+  and defaults unversioned source to 3.0 with a warning. Earlier syntax declarations
+  remain valid, and feature-specific minimum gates remain in force. Syntax 3.0
+  consolidates the established 1.x/2.x grammar without claiming new grammar
+  productions merely from the edition bump.
 - [Compiler documentation](../markdown/COMPILER.md) — pipeline and version-aware
   behavior.
 - [Source and file format](../markdown/SOURCE.md) — `.sleela` source contract.
 - [Library symbol inventory](../lib/LIBRARY.SYMBOLS.md) — canonical library
   vocabulary.
+
+## API documentation
+
+- [Generated API site](api/index.html) — HTML reference generated from `/lib`.
+- [API documentation build guide](api/README.md) — build destinations, versioned snapshots, and the `make api-docs` command.
+- [Versioned API catalogue](../api/README.md) — native APIs and language editions.
 
 ## Architecture and virtual machines
 
