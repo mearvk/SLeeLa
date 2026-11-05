@@ -212,3 +212,13 @@ compatibility. A reconstructed file must not be labelled as syntax 3.0 unless
 its emitted constructs satisfy that edition; the decompiler preserves uncertainty
 rather than inventing unsupported source semantics. See the root
 [`SLEELA.syntax`](../../SLEELA.syntax) and [API guide](../../decompiler/API.md).
+
+### Source-version preservation
+
+For SLeeLa input, the decompiler treats the source pragma and artifact metadata
+as evidence. Syntax **3.0** is the current reconstruction edition, not a
+license to upgrade historical source automatically. Preserve the original
+declared source version when reconstructing an identifiable source file; use a
+3.0 declaration only when the emitted constructs are valid under Syntax 3.0
+and their individual feature gates. If the original version cannot be
+established, report that uncertainty rather than inventing a version.
