@@ -1,117 +1,117 @@
 < SLeeLa Standard Library Definition.
   Definition: Element factories for the common osls_* C ABI.
   These elements describe existing root-library exports and their capability
-  groups. They deliberately carry UNREGISTERED as the VM opcode until a real
-  host adapter, ABI marshaller and integration tests register them with the VM. >
+  groups. They bind through OP_OSLS_CALL (155) to a typed native registry;
+  all record/collection results are returned as bounded JSON Strings. >
 #sleela 2.5
 material;
 
 class SLOsSupportOSLSElements {
   SLOsSupportElement cronNextAfter() {
     SLOsSupportElement e = new SLOsSupportElement();
-    e.configure("cronNextAfter", "Scheduling", "OSScheduler", "UNREGISTERED",
+    e.configure("cronNextAfter", "Scheduling", "OSScheduler", "OP_OSLS_CALL:155/11",
       "osls_cron_next_after", "osls_cron_next_after", "CommonBackend",
-      "ReadOnlyQuery", "Implemented", 3, 0);
-    e.setResultTerm("StatusAndInt64Epoch");
+      "ReadOnlyQuery", "Implemented", 2, 0);
+    e.setResultTerm("JsonStringWithStatus");
     return e;
   }
 
   SLOsSupportElement cronValidate() {
     SLOsSupportElement e = new SLOsSupportElement();
-    e.configure("cronValidate", "Scheduling", "OSScheduler", "UNREGISTERED",
+    e.configure("cronValidate", "Scheduling", "OSScheduler", "OP_OSLS_CALL:155/10",
       "osls_cron_validate", "osls_cron_validate", "CommonBackend",
       "ReadOnlyQuery", "Implemented", 1, 0);
-    e.setResultTerm("StatusCode");
+    e.setResultTerm("JsonStringWithStatus");
     return e;
   }
 
   SLOsSupportElement enumerateEnvironment() {
     SLOsSupportElement e = new SLOsSupportElement();
-    e.configure("enumerateEnvironment", "Environment", "OSEnvironment", "UNREGISTERED",
+    e.configure("enumerateEnvironment", "Environment", "OSEnvironment", "OP_OSLS_CALL:155/4",
       "osls_enumerate_environment", "osls_enumerate_environment", "CommonBackend",
-      "ReadOnlyEnumeration", "Implemented", 3, 0);
-    e.setResultTerm("StatusAndEnvironmentRecords");
+      "ReadOnlyEnumeration", "Implemented", 0, 0);
+    e.setResultTerm("JsonStringWithStatus");
     return e;
   }
 
   SLOsSupportElement enumerateProcesses() {
     SLOsSupportElement e = new SLOsSupportElement();
-    e.configure("enumerateProcesses", "ProcessInspection", "OSProcess", "UNREGISTERED",
+    e.configure("enumerateProcesses", "ProcessInspection", "OSProcess", "OP_OSLS_CALL:155/2",
       "osls_enumerate_processes", "osls_enumerate_processes", "CommonBackend",
-      "ReadOnlyEnumeration", "Partial", 3, 0);
-    e.setResultTerm("StatusAndProcessRecords");
+      "ReadOnlyEnumeration", "Implemented", 0, 0);
+    e.setResultTerm("JsonStringWithStatus");
     return e;
   }
 
   SLOsSupportElement getCPUInfo() {
     SLOsSupportElement e = new SLOsSupportElement();
-    e.configure("getCPUInfo", "CPUArchitecture", "OSCPU", "UNREGISTERED",
+    e.configure("getCPUInfo", "CPUArchitecture", "OSCPU", "OP_OSLS_CALL:155/7",
       "osls_get_cpu_info", "osls_get_cpu_info", "CommonBackend",
-      "ReadOnlyQuery", "Partial", 1, 0);
-    e.setResultTerm("StatusAndCPURecord");
+      "ReadOnlyQuery", "Implemented", 0, 0);
+    e.setResultTerm("JsonStringWithStatus");
     return e;
   }
 
   SLOsSupportElement getEnvironmentValue() {
     SLOsSupportElement e = new SLOsSupportElement();
-    e.configure("getEnvironmentValue", "Environment", "OSEnvironment", "UNREGISTERED",
+    e.configure("getEnvironmentValue", "Environment", "OSEnvironment", "OP_OSLS_CALL:155/3",
       "osls_get_environment_value", "osls_get_environment_value", "CommonBackend",
-      "ReadOnlyQuery", "Implemented", 3, 0);
-    e.setResultTerm("StatusAndUtf8String");
+      "ReadOnlyQuery", "Implemented", 1, 0);
+    e.setResultTerm("JsonStringWithStatus");
     return e;
   }
 
   SLOsSupportElement getFileInfo() {
     SLOsSupportElement e = new SLOsSupportElement();
-    e.configure("getFileInfo", "FileSystem", "OSFileSystem", "UNREGISTERED",
+    e.configure("getFileInfo", "FileSystem", "OSFileSystem", "OP_OSLS_CALL:155/5",
       "osls_get_file_info", "osls_get_file_info", "CommonBackend",
-      "ReadOnlyQuery", "Implemented", 2, 0);
-    e.setResultTerm("StatusAndFileRecord");
+      "ReadOnlyQuery", "Implemented", 1, 0);
+    e.setResultTerm("JsonStringWithStatus");
     return e;
   }
 
   SLOsSupportElement getNetworkInterfaces() {
     SLOsSupportElement e = new SLOsSupportElement();
-    e.configure("getNetworkInterfaces", "NetworkInterfaces", "OSNetwork", "UNREGISTERED",
+    e.configure("getNetworkInterfaces", "NetworkInterfaces", "OSNetwork", "OP_OSLS_CALL:155/9",
       "osls_get_network_interfaces", "osls_get_network_interfaces", "CommonBackend",
-      "ReadOnlyEnumeration", "Partial", 3, 0);
-    e.setResultTerm("StatusAndInterfaceRecords");
+      "ReadOnlyEnumeration", "Implemented", 0, 0);
+    e.setResultTerm("JsonStringWithStatus");
     return e;
   }
 
   SLOsSupportElement getProcessInfo() {
     SLOsSupportElement e = new SLOsSupportElement();
-    e.configure("getProcessInfo", "ProcessInspection", "OSProcess", "UNREGISTERED",
+    e.configure("getProcessInfo", "ProcessInspection", "OSProcess", "OP_OSLS_CALL:155/1",
       "osls_get_process_info", "osls_get_process_info", "CommonBackend",
-      "ReadOnlyQuery", "Partial", 2, 0);
-    e.setResultTerm("StatusAndProcessRecord");
+      "ReadOnlyQuery", "Implemented", 1, 0);
+    e.setResultTerm("JsonStringWithStatus");
     return e;
   }
 
   SLOsSupportElement getSystemInfo() {
     SLOsSupportElement e = new SLOsSupportElement();
-    e.configure("getSystemInfo", "HostIdentity", "OSHost", "UNREGISTERED",
+    e.configure("getSystemInfo", "HostIdentity", "OSHost", "OP_OSLS_CALL:155/0",
       "osls_get_system_info", "osls_get_system_info", "CommonBackend",
-      "ReadOnlyQuery", "Implemented", 1, 0);
-    e.setResultTerm("StatusAndSystemRecord");
+      "ReadOnlyQuery", "Implemented", 0, 0);
+    e.setResultTerm("JsonStringWithStatus");
     return e;
   }
 
   SLOsSupportElement getTimezoneInfo() {
     SLOsSupportElement e = new SLOsSupportElement();
-    e.configure("getTimezoneInfo", "TimeZoneCalendar", "OSTimeZone", "UNREGISTERED",
+    e.configure("getTimezoneInfo", "TimeZoneCalendar", "OSTimeZone", "OP_OSLS_CALL:155/8",
       "osls_get_timezone_info", "osls_get_timezone_info", "CommonBackend",
-      "ReadOnlyQuery", "Partial", 1, 0);
-    e.setResultTerm("StatusAndTimeZoneRecord");
+      "ReadOnlyQuery", "Implemented", 0, 0);
+    e.setResultTerm("JsonStringWithStatus");
     return e;
   }
 
   SLOsSupportElement listDirectory() {
     SLOsSupportElement e = new SLOsSupportElement();
-    e.configure("listDirectory", "FileSystem", "OSFileSystem", "UNREGISTERED",
+    e.configure("listDirectory", "FileSystem", "OSFileSystem", "OP_OSLS_CALL:155/6",
       "osls_list_directory", "osls_list_directory", "CommonBackend",
-      "ReadOnlyEnumeration", "Implemented", 4, 0);
-    e.setResultTerm("StatusAndUtf8EntryBuffer");
+      "ReadOnlyEnumeration", "Implemented", 1, 0);
+    e.setResultTerm("JsonStringWithStatus");
     return e;
   }
 }

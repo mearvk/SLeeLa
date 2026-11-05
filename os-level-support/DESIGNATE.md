@@ -610,7 +610,7 @@ The platform classes add qualified group terms such as `LinuxCPUTopology`,
 operation is semantically portable; use a qualified term only for a genuine
 platform-specific facility.
 
-### 13.2 Existing VM path and separate osls adapter
+### 13.2 Existing VM path and registered osls adapter
 
 The current VM already exposes the OS system-call family through
 `SleelaVMSystemCallBridge.sleela`, the `OP_OS_*` opcodes 103–123, and the
@@ -618,12 +618,17 @@ native host implementation in `impl/core/sleela_os.h` /
 `impl/core/sleela_os.c`. The SLeeLa source element factories map these VM
 operations to their current `slos_*` backend symbols and mark them implemented.
 
-The root library's `osls_*` inspection ABI is a separate API. Its source
-element factories describe group, symbol, arity, result and native implementation
-status, but deliberately set the VM opcode to `UNREGISTERED`. A separate host
-adapter, explicit ABI marshalling, error translation, and Linux/Windows/macOS
-integration tests are required before these functions may be invoked directly
-from SLeeLa source. The source catalogue does not itself perform an OS call.
+The root library's `osls_*` inspection ABI is now registered through
+`os-level-support/osls_vm_bridge.c` and append-only opcode `OP_OSLS_CALL` (155).
+Twelve stable operation IDs bind the declared APIs. The compiler lowers the
+`osls...` built-ins to that opcode; the VM checks each operation's arity and
+value types, then returns a bounded JSON String containing native status and
+result. Raw pointers and C record layouts do not cross into VM values. The
+CMake package and SLeeLa VM Makefile compile the adapter and platform
+implementation. CMake's `osls_vm_bridge_test` and `make -C impl test-osls-vm`
+exercise the native registry and VM dispatch respectively. Platform-specific
+extension catalogues remain separate and unregistered until their own native
+bindings and cross-platform tests are added.
 
 All element effects must remain explicit: read-only query, read-only enumeration,
 process-local operation, blocking operation, or state-changing operation.

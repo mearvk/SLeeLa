@@ -20,6 +20,7 @@
 #include "sleela_bestof.h"
 #include "sleela_audio_mixer.h"
 #include "sleela_os.h"
+#include "../../os-level-support/osls_vm_bridge.h"
 #include "sleela_memmgr.h"
 #include "sleela_idea_canvas.h"
 #include "sleela_ui_vm.h"
@@ -153,8 +154,9 @@ struct SLVM {
     SLBestOf* bestof[SL_BESTOF_MAX];
     pthread_mutex_t idea_canvas_mtx;
     void* idea_canvas[SL_IDEA_CANVAS_MAX];   /* Idea System(TM) realtime canvases */
-    SLStructType struct_types[SL_MAX_STRUCT_TYPES];
+    SLStructType* struct_types;  /* grown base-2 from SL_STRUCT_TYPES_INIT, capped at SL_MAX_STRUCT_TYPES */
     int nstruct_types;
+    int struct_typecap;          /* current allocated capacity of struct_types */
     SLStructInstance* structs;   /* SL_MAX_STRUCTS instances, lazily allocated */
     int nstruct_live;
 
@@ -301,11 +303,64 @@ int slvm_declare_global(SLVM* vm, const char* name) {
     return vm->nglobal++;
 }
 
+/* Group a non-negative long with thousands separators into `out` (1234567 ->
+ * "1,234,567") for the VM's own diagnostic lines. System-side presentation
+ * only; the user print(...) path (value_to_text) does NOT use this. */
+static const char* sl_group_ll(long long v, char* out, size_t cap) {
+    char tmp[32]; long long a = v < 0 ? -v : v;
+    int n = snprintf(tmp, sizeof tmp, "%lld", a);
+    size_t o = 0;
+    if (v < 0 && o + 1 < cap) out[o++] = '-';
+    for (int i = 0; i < n; ++i) {
+        if (i > 0 && (n - i) % 3 == 0 && o + 1 < cap) out[o++] = ',';
+        if (o + 1 < cap) out[o++] = tmp[i];
+    }
+    out[o < cap ? o : cap - 1] = 0;
+    return out;
+}
+
 int slvm_declare_struct(SLVM* vm, const char* name, const char* const* field_names, int nfields) {
     if (!vm || !name || nfields < 0 || nfields > SL_MAX_STRUCT_FIELDS) return -1;
-    if (vm->nstruct_types >= SL_MAX_STRUCT_TYPES) return -1;
+    /* Diagnostic trace (env SLEELA_TRACE_LAYOUTS=1): report the live table state
+     * on every registration. Catches a corrupt nstruct_types/struct_typecap --
+     * e.g. a stale sleela_core.o whose slvm_new left them uninitialized -- by
+     * showing the actual counts at the exact call that fails. Written to BOTH
+     * stderr and stdout and flushed, so it cannot be swallowed by redirection. */
+    int sl_trace = (getenv("SLEELA_TRACE_LAYOUTS") != NULL);
+    if (sl_trace) {
+        char gnt[32], gtc[32], gmx[32];
+        fprintf(stderr, "[trace-declare_struct] name='%s' nstruct_types=%s struct_typecap=%s MAX=%s\n",
+                name, sl_group_ll(vm->nstruct_types, gnt, sizeof gnt),
+                sl_group_ll(vm->struct_typecap, gtc, sizeof gtc),
+                sl_group_ll(SL_MAX_STRUCT_TYPES, gmx, sizeof gmx));
+        fflush(stderr);
+    }
     for (int i = 0; i < vm->nstruct_types; i++)
         if (strcmp(vm->struct_types[i].name, name) == 0) return i; /* idempotent */
+    /* Grow the layout table on demand: 256 -> 512 -> ... -> 65536 (base-2),
+     * never past the SL_MAX_STRUCT_TYPES hard ceiling. New slots are zeroed so
+     * a partially-filled table never carries stale name/field pointers. */
+    if (vm->nstruct_types >= vm->struct_typecap) {
+        if (vm->struct_typecap >= SL_MAX_STRUCT_TYPES) {
+            /* ALWAYS report the refusal (not gated): a layout-table overflow
+             * must never be silent, so this prints even without the trace env. */
+            char gnt[32], gtc[32], gmx[32];
+            fprintf(stderr, "[sleela-vm] layout-table REFUSED '%s': nstruct_types=%s struct_typecap=%s MAX=%s "
+                            "(if this fires at a tiny count, the running VM core is stale/mismatched)\n",
+                    name, sl_group_ll(vm->nstruct_types, gnt, sizeof gnt),
+                    sl_group_ll(vm->struct_typecap, gtc, sizeof gtc),
+                    sl_group_ll(SL_MAX_STRUCT_TYPES, gmx, sizeof gmx));
+            fflush(stderr);
+            return -1; /* at the ceiling */
+        }
+        int newcap = vm->struct_typecap ? vm->struct_typecap * 2 : SL_STRUCT_TYPES_INIT;
+        if (newcap > SL_MAX_STRUCT_TYPES) newcap = SL_MAX_STRUCT_TYPES;
+        SLStructType* grown = (SLStructType*)realloc(vm->struct_types, (size_t)newcap * sizeof(SLStructType));
+        if (!grown) return -1; /* out of memory: fail closed, keep the old table */
+        memset(grown + vm->struct_typecap, 0, (size_t)(newcap - vm->struct_typecap) * sizeof(SLStructType));
+        vm->struct_types = grown;
+        vm->struct_typecap = newcap;
+    }
     int idx = vm->nstruct_types++;
     SLStructType* st = &vm->struct_types[idx];
     st->name = strdup(name);
@@ -457,6 +512,7 @@ void slvm_free(SLVM* vm) {
         free(vm->struct_types[i].name);
         for (int j = 0; j < vm->struct_types[i].nfields; j++) free(vm->struct_types[i].fields[j]);
     }
+    free(vm->struct_types);   /* the growable layout table itself */
     free(vm->structs);
     pthread_mutex_destroy(&vm->struct_mtx);
     if (vm->arrays) {
@@ -1762,6 +1818,20 @@ static SLResult run_thread(SLThread* t) {
                 if(targetTag==SL_INT && value.type==SL_INT128) {
                     PUSH(slval_int((int64_t)value.as.i128)); break;
                 }
+                /* Java-style narrowing from double to an integer: `(int)d`
+                 * truncates toward zero (C's double->int64_t conversion has the
+                 * same rule). Without this a cast of a double to an int target
+                 * -- e.g. `(int) uiWidgetGetValue(slider)` feeding an int param,
+                 * or any `int n = (int) someDouble;` -- fell through to the
+                 * fail-closed tag check below and aborted with "runtime value
+                 * tag does not match target", even though double->int is a
+                 * well-defined narrowing. Mirror the int128 narrowing above. */
+                if(targetTag==SL_INT && value.type==SL_DOUBLE) {
+                    PUSH(slval_int((int64_t)value.as.d)); break;
+                }
+                if(targetTag==SL_INT128 && value.type==SL_DOUBLE) {
+                    PUSH(slval_int128((sl_int128_t)value.as.d)); break;
+                }
                 /* Java-style widening to double: an integer stored into, cast
                  * to, or passed as a double becomes a double (so `double d = 3;`
                  * then `d / 2` is 1.5, not integer 1). An already-double value
@@ -1943,6 +2013,51 @@ static SLResult run_thread(SLThread* t) {
             SLOSProcess p=os_proc_take(vm,(int)hv.as.i);
             if(p!=SLOS_INVALID_PROCESS) slos_release(p);
             PUSH(slval_null());
+        } break;
+
+        /* ---- OSLS typed native binding table (append-only opcode 155) ---- */
+        case OP_OSLS_CALL: {
+            const char *text_arg = NULL;
+            int64_t integer_arg = 0;
+            SLValue first, second;
+            switch (in.a) {
+                case OSLS_VM_PROCESS_INFO:
+                    first = POP();
+                    if (first.type != SL_INT) TERR("oslsProcessInfo(pid) requires an integer pid");
+                    integer_arg = first.as.i;
+                    break;
+                case OSLS_VM_GET_ENVIRONMENT_VALUE:
+                case OSLS_VM_GET_FILE_INFO:
+                case OSLS_VM_LIST_DIRECTORY:
+                case OSLS_VM_CRON_VALIDATE:
+                    first = POP();
+                    if (first.type != SL_STR) TERR("OSLS binding requires a String argument");
+                    text_arg = slvm_str(vm, first.as.s);
+                    break;
+                case OSLS_VM_CRON_NEXT_AFTER:
+                    second = POP();
+                    first = POP();
+                    if (first.type != SL_STR || second.type != SL_INT)
+                        TERR("oslsCronNextAfter(expression, epoch) requires String and integer arguments");
+                    text_arg = slvm_str(vm, first.as.s);
+                    integer_arg = second.as.i;
+                    break;
+                default:
+                    if (in.a < 0 || in.a >= OSLS_VM_OPERATION_COUNT)
+                        TERR("OSLS binding id is not registered");
+                    break;
+            }
+            {
+                char *json = (char *)malloc(65536);
+                int written;
+                if (!json) TERR("OSLS binding could not allocate its result buffer");
+                written = osls_vm_call(in.a, text_arg, integer_arg, json, 65536);
+                if (written < 0) { free(json); TERR("OSLS native binding failed or exceeded its result buffer"); }
+                {
+                    SLValue out; out.type = SL_STR; out.as.s = intern(vm, json);
+                    free(json); PUSH(out);
+                }
+            }
         } break;
 
         default: log_unsupported_opcode(vm, in.op); TERR("unsupported opcode");

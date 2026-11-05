@@ -47,7 +47,11 @@ CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra $(THREADFLAG)
 # a class of stale-object bugs (e.g. editing a struct layout in a shared header
 # while a dependent object was compiled against the old layout -> ABI mismatch).
 DEPFLAGS := -MMD -MP
-CPPFLAGS += -Ifrontend $(SUBJECT_INCLUDES) -I../bash $(DEPFLAGS)
+# -I the native CommonRails "heritage" printing layer so the front end's
+# common_rails_banner.hpp adapter (and thus the compiler/Nordshrift) can route
+# their banners through the one shared professional-printing surface.
+COMMON_RAILS_INC := -I../common-rails/heritage/printing/cpp
+CPPFLAGS += -Ifrontend $(SUBJECT_INCLUDES) -I../bash $(COMMON_RAILS_INC) $(DEPFLAGS)
 LDFLAGS ?= $(THREADFLAG)
 LIBS ?= $(PLATFORM_LIBS)
 BUILD := build
@@ -99,6 +103,16 @@ CATALOG_OBJ := $(BUILD)/sheet_catalog.o
 XCLASS_OBJ := $(BUILD)/xclass_loader.o
 LANGIN_OBJ := $(BUILD)/langin.o
 CORE_OBJ := $(BUILD)/sleela_core.o
+OSLS_DIR := ../os-level-support
+OSLS_CORE_OBJ := $(BUILD)/osls_core.o
+OSLS_EXT_OBJ := $(BUILD)/osls_extended.o
+OSLS_VM_OBJ := $(BUILD)/osls_vm_bridge.o
+OSLS_OBJS := $(OSLS_CORE_OBJ) $(OSLS_EXT_OBJ) $(OSLS_VM_OBJ)
+ifeq ($(PLATFORM),windows)
+  OSLS_DEFS := -D_CRT_SECURE_NO_WARNINGS
+else
+  OSLS_DEFS := -D_POSIX_C_SOURCE=200809L -D_DEFAULT_SOURCE
+endif
 THREAD_OBJ := $(BUILD)/sleela_thread.o
 IO_OBJ := $(BUILD)/sleela_io.o
 NET_OBJ := $(BUILD)/sleela_net.o
@@ -158,6 +172,23 @@ else
   endif
 endif
 SLUI_BACKEND_OBJ := $(BUILD)/slui/backend.o
+# Optional system image codecs for the SleelaUI Image widget (and Button icons).
+# JPEG is always available via bundled NanoJPEG; PNG (libpng) and AVIF (libavif)
+# are compiled in when pkg-config finds them, mirroring user-interface/Makefile.
+# Without these, Image still decodes JPEG; with them, a gallery can show PNG too.
+SLUI_IMAGE_CFLAGS :=
+SLUI_IMAGE_LIBS :=
+SLUI_PNG_LIBS := $(shell pkg-config --libs libpng 2>/dev/null)
+SLUI_AVIF_LIBS := $(shell pkg-config --libs libavif 2>/dev/null)
+ifneq ($(strip $(SLUI_PNG_LIBS)),)
+  SLUI_IMAGE_CFLAGS += -DSLUI_HAVE_LIBPNG $(shell pkg-config --cflags libpng 2>/dev/null)
+  SLUI_IMAGE_LIBS += $(SLUI_PNG_LIBS)
+endif
+ifneq ($(strip $(SLUI_AVIF_LIBS)),)
+  SLUI_IMAGE_CFLAGS += -DSLUI_HAVE_LIBAVIF $(shell pkg-config --cflags libavif 2>/dev/null)
+  SLUI_IMAGE_LIBS += $(SLUI_AVIF_LIBS)
+endif
+SLUI_LIBS += $(SLUI_IMAGE_LIBS)
 # Shared native Wi-Fi manager plus the selected platform provider. The VM bridge
 # calls this C API directly; the same source is used by the C++ wrapper.
 WIFI_DIR := ../wifi-common
@@ -314,6 +345,11 @@ NS_EMIT_OBJ := $(BUILD)/ns_sleela_emit.o $(BUILD)/ns_lowering.o
 # Preferred-router policy (used by the native HTTP servers the `sleela` binary
 # links). Lives under ../preferred-routers.
 PREFERRED_ROUTER_OBJ := $(BUILD)/preferred_router.o
+# Native CommonRails "heritage" printing engine (ostream-based, no deps). The
+# front end's common_rails_banner.hpp forwards to it, so the compiler and
+# Nordshrift share the /lib/common-rails PrintRail look. Lives under
+# ../common-rails/heritage/printing/cpp.
+COMMON_RAILS_OBJ := $(BUILD)/common_rails_printing.o
 VERIFY_TOOL := ../tools/verify-before-execution.py
 # Generator for the trusted manifest (consumed by regen-manifest/check-manifest).
 GENERATE_TOOL := ../tools/generate-sha256-manifest.py
@@ -337,9 +373,9 @@ ifeq ($(OS),Windows_NT)
 else
   PYTHON ?= python3
 endif
-ALL_OBJECTS := $(CORE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) $(AUDIO_MIXER_OBJ) $(AI_OBJ) $(DESIGN_ACTIVITY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(VM_CONFIG_OBJ) $(CONFIG_LOCATION_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(DRIVER_SLEELVAC_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(NS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(SYNCHRO_SMOKE) $(MUNCTION_SMOKE) $(BESTOF_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE)
+ALL_OBJECTS := $(CORE_OBJ) $(OSLS_OBJS) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) $(AUDIO_MIXER_OBJ) $(AI_OBJ) $(DESIGN_ACTIVITY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(VM_CONFIG_OBJ) $(CONFIG_LOCATION_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(DRIVER_SLEELVAC_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(NS_OBJ) $(COMMON_RAILS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(SYNCHRO_SMOKE) $(MUNCTION_SMOKE) $(BESTOF_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE)
 
-.PHONY: all install install-all uninstall uninstall-all sleelvac libslcore test-platform stage package build-verified rebuild-verified clean test test-java-runtime test-sleela test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security regen-manifest check-manifest build-runtime test-runtime test-memmgr test-memmgr-grades test-system-monitor test-media test-audio-mixer test-ai test-regex test-astrophysics test-sociology test-design-activity test-unsigned-integer
+.PHONY: all install install-all uninstall uninstall-all sleelvac libslcore test-platform test-osls-vm stage package build-verified rebuild-verified clean test test-java-runtime test-sleela test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-common-rails test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security regen-manifest check-manifest build-runtime test-runtime test-memmgr test-memmgr-grades test-system-monitor test-media test-audio-mixer test-ai test-regex test-astrophysics test-sociology test-design-activity test-unsigned-integer
 
 all: verify-security $(SLEELA_BIN) $(SLEELAVC_BIN) $(NORDSHRIFT_BIN) $(SLCORE_LIB) stage
 
@@ -439,12 +475,12 @@ $(ALL_OBJECTS): | verify-security
 # shares the whole front end with `sleela` but links its own driver object
 # (compiled with -DSLEELA_PRODUCT_SLEELVAC), so its `version` identity is fixed
 # at compile time and `sleela version` can never surface the Sleelvac banner.
-$(SLEELAVC_BIN): $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(VM_CONFIG_OBJ) $(FE_OBJ) $(LEDGER_CORE_OBJ) $(DRIVER_SLEELVAC_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ) $(PREFERRED_ROUTER_OBJ) $(NGHTTP2_LIB)
+$(SLEELAVC_BIN): $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(OSLS_OBJS) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(VM_CONFIG_OBJ) $(FE_OBJ) $(LEDGER_CORE_OBJ) $(DRIVER_SLEELVAC_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ) $(PREFERRED_ROUTER_OBJ) $(COMMON_RAILS_OBJ) $(NGHTTP2_LIB)
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $(filter-out $(NGHTTP2_LIB),$^) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS) $(NGHTTP2_LIB)
 
 sleelvac: $(SLEELAVC_BIN)
 
-$(SLEELA_BIN): $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(VM_CONFIG_OBJ) $(FE_OBJ) $(LEDGER_CORE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ) $(PREFERRED_ROUTER_OBJ) $(NGHTTP2_LIB)
+$(SLEELA_BIN): $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(OSLS_OBJS) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(VM_CONFIG_OBJ) $(FE_OBJ) $(LEDGER_CORE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ) $(PREFERRED_ROUTER_OBJ) $(COMMON_RAILS_OBJ) $(NGHTTP2_LIB)
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $(filter-out $(NGHTTP2_LIB),$^) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS) $(NGHTTP2_LIB)
 $(AUDIO_NATIVE_OBJ): core/sleela_audio_bridge.cpp core/sleela_audio_bridge.h ../audio/cpp/include/sleela_audio.hpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) -Icore -I.. -c $< -o $@
@@ -452,7 +488,7 @@ $(AUDIO_NATIVE_OBJ): core/sleela_audio_bridge.cpp core/sleela_audio_bridge.h ../
 $(AUDIO_CPP_OBJ): ../audio/cpp/src/sleela_audio.cpp ../audio/cpp/include/sleela_audio.hpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) -I../audio/cpp/include -c $< -o $@
 
-$(NORDSHRIFT_BIN): $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(NS_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(CATALOG_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
+$(NORDSHRIFT_BIN): $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(NS_OBJ) $(CORE_OBJ) $(OSLS_OBJS) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(CATALOG_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(COMMON_RAILS_OBJ)
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
 $(THREAD_PLATFORM_SMOKE): core/thread_platform_smoke.c $(THREAD_OBJ) | $(BUILD)
 	$(CC) $(CFLAGS) -Icore core/thread_platform_smoke.c $(THREAD_OBJ) -o $@ $(LDFLAGS) $(LIBS)
@@ -463,9 +499,9 @@ $(THREAD_SMOKE_OBJ): core/thread_smoke.c | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c $< -o $@
 $(SOCKET_SMOKE_OBJ): core/socket_smoke.c | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c $< -o $@
-$(THREAD_SMOKE): $(THREAD_SMOKE_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(PLATFORM_OBJ) $(TERMINAL_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(MEMMGR_G2_OBJ) $(MEMMGR_G3_OBJ) $(GC_OBJ)
+$(THREAD_SMOKE): $(THREAD_SMOKE_OBJ) $(CORE_OBJ) $(OSLS_OBJS) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(PLATFORM_OBJ) $(TERMINAL_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(MEMMGR_G2_OBJ) $(MEMMGR_G3_OBJ) $(GC_OBJ)
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
-$(SOCKET_SMOKE): $(SOCKET_SMOKE_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(PLATFORM_OBJ) $(TERMINAL_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(MEMMGR_G2_OBJ) $(MEMMGR_G3_OBJ) $(GC_OBJ)
+$(SOCKET_SMOKE): $(SOCKET_SMOKE_OBJ) $(CORE_OBJ) $(OSLS_OBJS) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(PLATFORM_OBJ) $(TERMINAL_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(MEMMGR_G2_OBJ) $(MEMMGR_G3_OBJ) $(GC_OBJ)
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
 $(SYNCHRO_SMOKE): core/synchro_smoke.c $(SYNCHRO_OBJ) | $(BUILD)
 	$(CC) $(CFLAGS) -Icore core/synchro_smoke.c $(SYNCHRO_OBJ) -o $@ $(LDFLAGS) $(LIBS)
@@ -514,7 +550,7 @@ $(IDEA_CANVAS_CTX_OBJ): $(IDEA_CANVAS_CTX_SRC) $(IDEA_CANVAS_DIR)/idea_canvas_ct
 # ---- SleelaUI toolkit objects + the ui* VM bridge --------------------------
 $(BUILD)/slui/%.o: $(SLUI_DIR)/src/%.cpp | $(BUILD)
 	@mkdir -p $(dir $@)
-	$(CXX) $(CXXFLAGS) $(DEPFLAGS) -I$(SLUI_DIR)/include -I$(SLUI_DIR)/src $(SLUI_BACKEND_DEF) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(DEPFLAGS) -I$(SLUI_DIR)/include -I$(SLUI_DIR)/src $(SLUI_BACKEND_DEF) $(SLUI_IMAGE_CFLAGS) -c $< -o $@
 $(SLUI_NANOJPEG_OBJ): $(SLUI_DIR)/src/nanojpeg.c $(SLUI_DIR)/src/nanojpeg.h | $(BUILD)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -Wno-shift-negative-value -I$(SLUI_DIR)/src -c $< -o $@
@@ -559,7 +595,7 @@ else
 $(BALLUM_BACKEND_OBJ): $(BALLUM_BACKEND_SRC) $(BALLUM_DIR)/include/sleela_ballum/ballum_manager.h | $(BUILD)
 	$(CC) $(CFLAGS) $(BALLUM_INC) $(BALLUM_BACKEND_DEF) -c $< -o $@
 endif
-$(BESTOF_OBJ): core/sleela_bestof.c core/sleela_bestof.h | $(BUILD)
+$(BESTOF_OBJ): core/sleela_bestof.c core/sleela_bestof.h ../os-level-support/osls_vm_bridge.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_bestof.c -o $@
 $(PATH_OBJ): core/sleela_path.c core/sleela_path.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_path.c -o $@
@@ -641,7 +677,14 @@ $(SECURITY_OBJ): ../runtime/security_supervisor.c ../runtime/security_supervisor
 	$(CC) $(CFLAGS) -c ../runtime/security_supervisor.c -o $@
 $(PARAMETERS_OBJ): ../runtime/Parameters.c ../runtime/Parameters.h | $(BUILD)
 	$(CC) $(CFLAGS) -c ../runtime/Parameters.c -o $@
-$(CORE_OBJ): $(CORE_SRC) core/sleela_core.c core/sleela_core.h ../runtime/garbage_collector.h core/sleela_thread.h core/pthread.h core/sleela_synchro.h core/sleela_munction.h core/sleela_bestof.h | $(BUILD)
+$(OSLS_CORE_OBJ): $(OSLS_DIR)/osls.c $(OSLS_DIR)/osls.h | $(BUILD)
+	$(CC) $(CFLAGS) $(OSLS_DEFS) -I$(OSLS_DIR) -c $< -o $@
+$(OSLS_EXT_OBJ): $(OSLS_DIR)/osls_extended.c $(OSLS_DIR)/osls.h | $(BUILD)
+	$(CC) $(CFLAGS) $(OSLS_DEFS) -I$(OSLS_DIR) -c $< -o $@
+$(OSLS_VM_OBJ): $(OSLS_DIR)/osls_vm_bridge.c $(OSLS_DIR)/osls_vm_bridge.h $(OSLS_DIR)/osls.h | $(BUILD)
+	$(CC) $(CFLAGS) $(OSLS_DEFS) -I$(OSLS_DIR) -c $< -o $@
+
+$(CORE_OBJ): $(CORE_SRC) core/sleela_core.c core/sleela_core.h ../runtime/garbage_collector.h core/sleela_thread.h core/pthread.h core/sleela_synchro.h core/sleela_munction.h core/sleela_bestof.h ../os-level-support/osls_vm_bridge.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c $(CORE_SRC) -o $@
 
 # The reusable Core archive contains the engine, OS abstractions, GC, and
@@ -650,7 +693,7 @@ $(CORE_OBJ): $(CORE_SRC) core/sleela_core.c core/sleela_core.h ../runtime/garbag
 # so include SleelaUI plus its Wi-Fi and Ballum VM bridges, managers, image/effect
 # helpers, and the selected native backend here. Platform link libraries are
 # propagated to each final runner separately by the VM-family Makefiles.
-SLCORE_OBJS := $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) \
+SLCORE_OBJS := $(CORE_OBJ) $(OSLS_OBJS) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) \
   $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) \
   $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(PLATFORM_OBJ) $(TIME_OBJ) \
   $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SLUI_OBJS)
@@ -668,6 +711,9 @@ $(FINANCIAL_OBJ): subjects/finance/financial.cpp subjects/finance/financial.h | 
 # objects that report the old range.
 $(BUILD)/%.o: frontend/%.cpp frontend/version.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+# The native CommonRails printing engine, compiled from the heritage C++ layer.
+$(COMMON_RAILS_OBJ): ../common-rails/heritage/printing/cpp/CommonRailsPrinting.cpp ../common-rails/heritage/printing/cpp/CommonRailsPrinting.hpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(COMMON_RAILS_INC) -c $< -o $@
 $(BUILD)/native_api.o: subjects/native/native_api.cpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 $(BUILD)/math_native.o: subjects/math/math_native.cpp | $(BUILD)
@@ -776,7 +822,10 @@ $(BUILD)/driver_sleelvac.o: frontend/driver.cpp frontend/compiler.h frontend/art
 $(BUILD):
 	mkdir -p $(BUILD)
 
-test: verify-security test-java-runtime test-java-authorship test-system-monitor test-sleela test-class-dispatch test-design-activity test-regex test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-astrophysics test-sociology test-unsigned-integer test-runtime test-memmgr
+test: verify-security test-osls-vm test-java-runtime test-java-authorship test-system-monitor test-sleela test-class-dispatch test-design-activity test-regex test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-common-rails test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-astrophysics test-sociology test-unsigned-integer test-runtime test-memmgr
+test-osls-vm: $(SLEELA_BIN)
+	@cd $(CURDIR)/.. && $(CURDIR)/$(SLEELA_BIN) run impl/tests/osls_vm/osls_vm_bindings.sleela
+
 test-thread-platform: $(THREAD_PLATFORM_SMOKE)
 	@echo "=== OS-aware threading backend ==="; SLEELA_THREAD_PLATFORM=auto $(THREAD_PLATFORM_SMOKE)
 test-threads: $(THREAD_SMOKE)
@@ -807,6 +856,13 @@ test-nordshrift-compat: $(NORDSHRIFT_BIN)
 
 test-nordshrift-e2e: $(NORDSHRIFT_BIN) $(SLEELA_BIN)
 	@cd $(CURDIR)/.. && bash impl/tests/nordshrift/run_end_to_end_tests.sh $(CURDIR)/$(NORDSHRIFT_BIN) $(CURDIR)/$(SLEELA_BIN)
+# CommonRails cross-engine conformance: the Sleela PrintRail class and the
+# native C++ heritage printing engine must render the progress square
+# byte-identically, and each engine's single-line output is pinned to a
+# fixture. Guards against the two implementations of the shared contract
+# drifting apart.
+test-common-rails: $(SLEELA_BIN)
+	@cd $(CURDIR)/.. && bash impl/tests/common_rails/run_common_rails_conformance_tests.sh
 test-runtime-artifact-abi: $(SLEELA_BIN)
 	@cd $(CURDIR)/.. && bash impl/tests/version/run_artifact_abi_tests.sh $(CURDIR)/$(SLEELA_BIN)
 

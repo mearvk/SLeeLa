@@ -64,11 +64,11 @@ class SLOpcodeBase {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  < codes 0..154; 0..97 are the base 98, 98..102 the array extension, >
-  < 103..154 the OS/GC/idea-canvas/tail groups (the full canonical ISA) >
-  static final int CANONICAL_COUNT = 155;
+  < codes 0..155; 0..97 are the base 98, 98..102 the array extension, >
+  < 103..155 the OS/GC/idea-canvas/tail/OSLS groups (the full canonical ISA) >
+  static final int CANONICAL_COUNT = 156;
 
-  < canonical opcode number, 0..154 >
+  < canonical opcode number, 0..155 >
   int code;
   < canonical mnemonic, e.g. "OP_ADD" >
   String mnemonic;

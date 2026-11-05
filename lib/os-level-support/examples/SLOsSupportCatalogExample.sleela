@@ -24,6 +24,7 @@ class SLOsSupportCatalogExample {
     SLOsSupportWindowsSource windowsSource = new SLOsSupportWindowsSource();
     SLOsSupportMacOSSource macSource = new SLOsSupportMacOSSource();
     SLOsSupportPlatform platform = new SLOsSupportPlatform();
+    SLOsSupportNative native = new SLOsSupportNative();
 
     printList("Capability groups", catalog.getGroupTerms());
     printList("Common OSLS API", catalog.getCommonOSLSFunctions());
@@ -48,9 +49,11 @@ class SLOsSupportCatalogExample {
     print("VM platform element:");
     print(platformElement.getVMOpcodeTerm());
     print(platformElement.getNativeSymbol());
-    print("OSLS system-info element (not yet VM-registered):");
+    print("OSLS system-info element (registered):");
     print(systemInfoElement.getVMOpcodeTerm());
     print(systemInfoElement.getNativeSymbol());
+    print("OSLS system information JSON:");
+    print(native.systemInfo());
 
     print("Core VM OS opcode bridge implemented:");
     print(vm.isCoreOSOpcodeBridgeImplemented());

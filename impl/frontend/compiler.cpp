@@ -13,6 +13,8 @@
 #include <vector>
 #include <set>
 #include <functional>
+#include <cstdio>
+#include <cstdlib>
 #include "library_index.h"
 #include "../core/sleela_ui_ids.h"
 #include "../core/sleela_ui_vm.h"
@@ -20,6 +22,16 @@
 namespace sleela {
 
 namespace {
+
+// Group a non-negative integer with thousands separators for the compiler's own
+// diagnostic text (e.g. the layout-limit message). System-side presentation
+// only; it never touches a running program's print(...) output.
+static std::string groupDigits(long long v){
+    std::string s=std::to_string(v<0?-v:v);
+    std::string out; int n=(int)s.size();
+    for(int i=0;i<n;++i){ if(i>0 && (n-i)%3==0) out.push_back(','); out.push_back(s[(size_t)i]); }
+    return v<0 ? "-"+out : out;
+}
 
 struct MethodCtx {
     std::map<std::string, int> locals;
@@ -46,6 +58,23 @@ public:
     // of viewpoint: Degree 2 + static extension(2) = Viewpoint Degree 4.
     static constexpr int kStaticExtensionViewpointDegree = 4;
     int run() {
+        // Diagnostic (opt-in via SLEELA_DEBUG_LAYOUTS): report how many class /
+        // struct layouts this program will register with the VM, how many are
+        // library-merged vs the user's own, and whether any class name repeats.
+        // The VM caps distinct layouts at SL_MAX_STRUCT_TYPES; a program that
+        // overflows it almost always did so because the /lib identifier-scan
+        // resolver pulled a large transitive closure, not because the user
+        // wrote that many classes. This makes the cause visible without a
+        // debugger: compare "local" (your classes) against "library" (pulled).
+        if(std::getenv("SLEELA_DEBUG_LAYOUTS")){
+            std::map<std::string,int> dupc; int dups=0, lib=0, local=0;
+            for(const auto& c:prog_.classes){ if(++dupc[c.name]==2) ++dups; if(c.fromLibrary) ++lib; else ++local; }
+            fprintf(stderr,
+                "[debug-layouts] classes=%zu (local=%d library=%d) structs=%zu "
+                "distinct-class-names=%zu duplicate-named-classes=%d limit=%s\n",
+                prog_.classes.size(), local, lib, prog_.structs.size(),
+                dupc.size(), dups, groupDigits(SL_MAX_STRUCT_TYPES).c_str());
+        }
         validateJavaCompatibilityMetadata(prog_);
         library::Index libraryIndex = library::Index::discover();
         library::validateImports(prog_.imports, libraryIndex);
@@ -88,7 +117,12 @@ public:
         // Struct declarations: register each layout with the VM and record a
         // compiler-side layout (type index + ordered field names -> offsets).
         for(const auto& st:prog_.structs){
-            if(st.fields.size()>128) throw std::runtime_error("Semantic error: struct '"+st.name+"' exceeds 128 fields");
+            // The VM admits at most SL_MAX_STRUCT_FIELDS (64) named fields per
+            // layout; slvm_declare_struct() rejects more by returning -1 BEFORE
+            // any diagnostic, which the generic registration error below would
+            // then misreport as a layout-COUNT overflow. Check the real cap here
+            // so the message names the true cause and the offending count.
+            if(st.fields.size()>SL_MAX_STRUCT_FIELDS) throw std::runtime_error("Semantic error: struct '"+st.name+"' declares "+std::to_string(st.fields.size())+" fields, but the VM admits at most "+std::to_string(SL_MAX_STRUCT_FIELDS)+" fields per struct/class layout. Reduce the field count (for example, group related fields into an array or a nested struct).");
             if(structLayout_.count(st.name)) throw std::runtime_error("Semantic error: duplicate struct '"+st.name+"'");
             if(syntax_<SyntaxVersion{1,2}) throw std::runtime_error("Semantic error: struct declarations require #sleela 1.2");
             StructLayout layout; layout.name=st.name;
@@ -99,7 +133,7 @@ public:
                 layout.fieldOffset[f.name]=(int)i; layout.fieldType.push_back(f.type); fieldNames.push_back(f.name.c_str());
             }
             layout.typeIndex=slvm_declare_struct(vm_,st.name.c_str(),fieldNames.empty()?nullptr:fieldNames.data(),(int)fieldNames.size());
-            if(layout.typeIndex<0) throw std::runtime_error("Semantic error: could not register struct '"+st.name+"' (too many struct types?)");
+            if(layout.typeIndex<0) throw std::runtime_error("Semantic error: could not register struct '"+st.name+"'. A 'layout' is one distinct class/struct type registered with the VM; the program exceeds the "+groupDigits(SL_MAX_STRUCT_TYPES)+" distinct class+struct types the VM admits.");
             structLayout_[st.name]=layout;
         }
         // Class instances share the VM's managed struct allocator, but each
@@ -141,9 +175,22 @@ public:
                 if(layout.fieldOffset.count(f.name)) throw std::runtime_error("Semantic error: duplicate instance field '"+f.name+"' in class '"+cls.name+"'");
                 layout.fieldOffset[f.name]=(int)layout.fieldType.size(); layout.fieldType.push_back(f.type); names.push_back(f.name.c_str());
             }
-            if(layout.fieldType.size()>128) throw std::runtime_error("Semantic error: class '"+cls.name+"' exceeds 128 instance fields");
+            // The VM admits at most SL_MAX_STRUCT_FIELDS (64) instance fields
+            // per layout. slvm_declare_struct() rejects an over-wide layout by
+            // returning -1 at its FIRST guard -- before the layout-table growth
+            // path and its diagnostics -- so the generic registration error
+            // below would misreport a too-many-FIELDS class as a too-many-
+            // LAYOUTS (65,536) overflow. (This was the earlier 'exceeds 128
+            // instance fields' check, whose 128 did not match the VM's real 64
+            // cap, letting 65..128-field classes slip through to that confusing
+            // error.) Check the true cap here, naming the class, its field
+            // count, and a concrete remedy.
+            if(layout.fieldType.size()>SL_MAX_STRUCT_FIELDS) throw std::runtime_error("Semantic error: class '"+cls.name+"' has "+std::to_string(layout.fieldType.size())+" instance fields, but the VM admits at most "+std::to_string(SL_MAX_STRUCT_FIELDS)+" fields per class/struct layout. Reduce the field count -- for example, pack a group of related fields into a single array field reached through accessor methods (methods cost no layout slot), or split the class.");
             layout.typeIndex=slvm_declare_struct(vm_,cls.name.c_str(),names.empty()?nullptr:names.data(),(int)names.size());
-            if(layout.typeIndex<0) throw std::runtime_error("Semantic error: could not register class layout '"+cls.name+"'");
+            // With the field-cap pre-check above, a -1 here is a genuine
+            // layout-COUNT overflow (too many distinct class+struct types), not
+            // a too-wide single layout.
+            if(layout.typeIndex<0) throw std::runtime_error("Semantic error: could not register class layout '"+cls.name+"'. A 'layout' is one distinct class/struct type registered with the VM (not bytes); the program defines/pulls more than the "+groupDigits(SL_MAX_STRUCT_TYPES)+" distinct class+struct types the VM admits. (If this fires with only a handful of classes, the running sleelvac's VM core is stale/mismatched -- rebuild with 'rm -rf impl/build && make all' and reinstall.)");
             structLayout_[cls.name]=layout;
         }
         if(inheritance) {
@@ -781,6 +828,7 @@ private:
             {"uiBackendName",SLUI_FN_BACKEND_NAME},{"uiVersion",SLUI_FN_VERSION},
             {"uiWindowCreate",SLUI_FN_WINDOW_CREATE},{"uiWindowShow",SLUI_FN_WINDOW_SHOW},{"uiWindowHide",SLUI_FN_WINDOW_HIDE},
             {"uiWindowRoot",SLUI_FN_WINDOW_ROOT},{"uiWindowSetTitle",SLUI_FN_WINDOW_SET_TITLE},
+            {"uiWindowClosed",SLUI_FN_WINDOW_CLOSED},
             {"uiWindowSetTheme",SLUI_FN_WINDOW_SET_THEME},{"uiWindowRedraw",SLUI_FN_WINDOW_REDRAW},
             {"uiWindowSetBuffering",SLUI_FN_WINDOW_SET_BUFFERING},{"uiWindowBuffering",SLUI_FN_WINDOW_BUFFERING},
             {"uiWindowSetMinSize",SLUI_FN_WINDOW_SET_MIN_SIZE},{"uiWindowSetMaxSize",SLUI_FN_WINDOW_SET_MAX_SIZE},
@@ -808,6 +856,7 @@ private:
             {"uiWidgetSuggested",SLUI_FN_WIDGET_SET_SUGGESTED},{"uiWidgetDestructive",SLUI_FN_WIDGET_SET_DESTRUCT},
             {"uiWidgetSetText",SLUI_FN_WIDGET_SET_TEXT},{"uiWidgetSetIcon",SLUI_FN_WIDGET_SET_ICON},
             {"uiPopupCreate",SLUI_FN_POPUP_CREATE},{"uiPopupSetOpen",SLUI_FN_POPUP_SET_OPEN},{"uiPopupIsOpen",SLUI_FN_POPUP_IS_OPEN},
+            {"uiPopupSetAnchor",SLUI_FN_POPUP_SET_ANCHOR},{"uiPopupAnchorTo",SLUI_FN_POPUP_ANCHOR_TO},
             {"uiWifiOpenSettings",SLUI_FN_WIFI_OPEN_SETTINGS},
             {"uiWifiScan",SLUI_FN_WIFI_SCAN},{"uiWifiNetworkCount",SLUI_FN_WIFI_NETWORK_COUNT},
             {"uiWifiNetworkSsid",SLUI_FN_WIFI_NETWORK_SSID},{"uiWifiNetworkBssid",SLUI_FN_WIFI_NETWORK_BSSID},
@@ -1061,6 +1110,30 @@ private:
         if(n=="osWait"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: osWait(process) takes one argument");emitExpr(c.args[0].get());emit(OP_OS_WAIT);return true;}
         if(n=="osKill"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: osKill(process) takes one argument");emitExpr(c.args[0].get());emit(OP_OS_KILL);return true;}
         if(n=="osProcessClose"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: osProcessClose(process) takes one argument");emitExpr(c.args[0].get());emit(OP_OS_PCLOSE);return true;}
+
+        // ---- OSLS native ABI calls (syntax 2.5). Every call is dispatched
+        // through the registered typed binding table; record/array results
+        // cross the VM boundary as bounded JSON Strings.
+        static const std::map<std::string,int> oslsIds = {
+            {"oslsSystemInfo",0},{"oslsProcessInfo",1},{"oslsEnumerateProcesses",2},
+            {"oslsGetEnvironmentValue",3},{"oslsEnumerateEnvironment",4},
+            {"oslsGetFileInfo",5},{"oslsListDirectory",6},{"oslsGetCPUInfo",7},
+            {"oslsGetTimezoneInfo",8},{"oslsGetNetworkInterfaces",9},
+            {"oslsCronValidate",10},{"oslsCronNextAfter",11}
+        };
+        {
+            auto osls = oslsIds.find(n);
+            if (osls != oslsIds.end()) {
+                if (syntax_ < SyntaxVersion{2,5})
+                    throw std::runtime_error("Semantic error: OSLS native bindings require #sleela 2.5");
+                static const int arity[] = {0,1,0,1,0,1,1,0,0,0,1,2};
+                if ((int)c.args.size() != arity[osls->second])
+                    throw std::runtime_error("Semantic error: OSLS binding has the wrong argument count");
+                emitArgs(c);
+                emit(OP_OSLS_CALL, osls->second);
+                return true;
+            }
+        }
 
         if(n=="bestOfNew"){if(!c.args.empty())throw std::runtime_error("Semantic error: bestOfNew() takes no arguments");emit(OP_BEST_NEW);return true;}
         if(n=="bestOfWeight"){if(c.args.size()!=3)throw std::runtime_error("Semantic error: bestOfWeight(handle, axis, weight) takes three arguments");emitArgs(c);emit(OP_BEST_WEIGHT);return true;}

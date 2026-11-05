@@ -1,9 +1,7 @@
 < SLeeLa Standard Library Definition.
   Definition: VM-facing OSLS binding and marshalling contract.
-  The existing OP_OS_* VM system-call bridge is already implemented and catalogued
-  here. This class also describes the separate osls_* C ABI adapter, which remains
-  unregistered until the VM host supplies its native symbol table, marshalling,
-  backend integration and cross-platform tests. >
+  The existing OP_OS_* VM system-call bridge and the typed osls_* ABI adapter
+  are registered here. OSLS records cross the VM boundary as bounded JSON Strings. >
 #sleela 2.5
 material;
 
@@ -13,7 +11,7 @@ class SLOsSupportVMBridge {
   String nativeNamespace = "osls";
   String runtimeNamespace = "osls_runtime";
   String moduleNamespace = "sl_native";
-  String dispatchBoundary = "SleelaVMSystemCallBridge / OP_OS_* VM-exit";
+  String dispatchBoundary = "SleelaVMSystemCallBridge / OP_OS_* and OP_OSLS_CALL";
 
   String getBridgeVersion() { return bridgeVersion; }
   String getVMNamespace() { return vmNamespace; }
@@ -140,14 +138,17 @@ class SLOsSupportVMBridge {
     out.add("ExplicitPermissionFailure");
     out.add("DeterministicHandleOwnership");
     out.add("CallbackLifetimeIsBounded");
+    out.add("TypedBindingIdValidation");
+    out.add("BoundedJSONResultMarshalling");
+    out.add("NoRawNativePointersInVMValues");
     return out;
   }
 
-  < Existing VM OS system calls are dispatched through OP_OS_* (103..123)
-    and impl/core/sleela_os.c on Linux, Windows and macOS. The separate osls_*
-    metadata C ABI has not yet been registered as an additional VM native module. >
+  < Existing VM OS system calls are dispatched through OP_OS_* (103..123).
+    The 12 osls_* calls are now registered through OP_OSLS_CALL (155), with
+    typed argument validation and bounded JSON result marshalling. >
   boolean isCoreOSOpcodeBridgeImplemented() { return true; }
-  boolean isOSLSAbiAdapterRegistered() { return false; }
+  boolean isOSLSAbiAdapterRegistered() { return true; }
 
   SLList getCoreOSOpcodeTerms() {
     SLList out = new SLList();
@@ -172,6 +173,7 @@ class SLOsSupportVMBridge {
     out.add("OP_OS_WAIT=121");
     out.add("OP_OS_KILL=122");
     out.add("OP_OS_PCLOSE=123");
+    out.add("OP_OSLS_CALL=155");
     return out;
   }
 
@@ -180,6 +182,18 @@ class SLOsSupportVMBridge {
   SLList getExistingVMElementBindings() {
     SLList out = new SLList();
     out.add("HostIdentity|platform|osPlatform|OP_OS_PLATFORM=103|Implemented|ReadOnlyQuery");
+    out.add("OSLS|systemInfo|oslsSystemInfo|OP_OSLS_CALL=155/id0|Implemented|ReadOnlyQuery");
+    out.add("OSLS|processInfo|oslsProcessInfo|OP_OSLS_CALL=155/id1|Implemented|ReadOnlyQuery");
+    out.add("OSLS|enumerateProcesses|oslsEnumerateProcesses|OP_OSLS_CALL=155/id2|Implemented|ReadOnlyEnumeration");
+    out.add("OSLS|getEnvironmentValue|oslsGetEnvironmentValue|OP_OSLS_CALL=155/id3|Implemented|ReadOnlyQuery");
+    out.add("OSLS|enumerateEnvironment|oslsEnumerateEnvironment|OP_OSLS_CALL=155/id4|Implemented|ReadOnlyEnumeration");
+    out.add("OSLS|getFileInfo|oslsGetFileInfo|OP_OSLS_CALL=155/id5|Implemented|ReadOnlyQuery");
+    out.add("OSLS|listDirectory|oslsListDirectory|OP_OSLS_CALL=155/id6|Implemented|ReadOnlyEnumeration");
+    out.add("OSLS|getCPUInfo|oslsGetCPUInfo|OP_OSLS_CALL=155/id7|Implemented|ReadOnlyQuery");
+    out.add("OSLS|getTimezoneInfo|oslsGetTimezoneInfo|OP_OSLS_CALL=155/id8|Implemented|ReadOnlyQuery");
+    out.add("OSLS|getNetworkInterfaces|oslsGetNetworkInterfaces|OP_OSLS_CALL=155/id9|Implemented|ReadOnlyEnumeration");
+    out.add("OSLS|cronValidate|oslsCronValidate|OP_OSLS_CALL=155/id10|Implemented|ReadOnlyQuery");
+    out.add("OSLS|cronNextAfter|oslsCronNextAfter|OP_OSLS_CALL=155/id11|Implemented|ReadOnlyQuery");
     out.add("CapabilityDiscovery|supports|osCapability|OP_OS_CAPABILITY=104|Implemented|ReadOnlyQuery");
     out.add("Environment|getEnv|osGetEnv|OP_OS_GETENV=105|Implemented|ReadOnlyQuery");
     out.add("Environment|setEnv|osSetEnv|OP_OS_SETENV=106|Implemented|StateChangingOperation");
@@ -212,6 +226,10 @@ class SLOsSupportVMBridge {
     out.add("ProcessInspection");
     out.add("ProcessControl");
     out.add("CapabilityDiscovery");
+    out.add("CPUArchitecture");
+    out.add("TimeZoneCalendar");
+    out.add("NetworkInterfaces");
+    out.add("Scheduling");
     return out;
   }
 }
