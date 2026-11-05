@@ -20,6 +20,10 @@ class SLOsSupportCatalogExample {
     SLOsSupportLinux linux = new SLOsSupportLinux();
     SLOsSupportWindows windows = new SLOsSupportWindows();
     SLOsSupportMacOS mac = new SLOsSupportMacOS();
+    SLOsSupportLinuxSource linuxSource = new SLOsSupportLinuxSource();
+    SLOsSupportWindowsSource windowsSource = new SLOsSupportWindowsSource();
+    SLOsSupportMacOSSource macSource = new SLOsSupportMacOSSource();
+    SLOsSupportPlatform platform = new SLOsSupportPlatform();
 
     printList("Capability groups", catalog.getGroupTerms());
     printList("Common OSLS API", catalog.getCommonOSLSFunctions());
@@ -27,6 +31,17 @@ class SLOsSupportCatalogExample {
     printList("Linux native API", linux.getLinuxFunctions());
     printList("Windows native API", windows.getWin32Functions());
     printList("macOS native API", mac.getMacOSFunctions());
+    print("Detected source backend:");
+    print(platform.detect());
+    print("Linux facade matches host:");
+    print(linuxSource.isCurrentPlatform());
+    print("Windows facade matches host:");
+    print(windowsSource.isCurrentPlatform());
+    print("macOS facade matches host:");
+    print(macSource.isCurrentPlatform());
+    printList("Linux extension bindings (catalogued, not registered)", linuxSource.getNativeExtensionSymbols());
+    printList("Windows extension bindings (catalogued, not registered)", windowsSource.getNativeExtensionSymbols());
+    printList("macOS extension bindings (catalogued, not registered)", macSource.getNativeExtensionSymbols());
 
     SLOsSupportElement platformElement = vmElements.platform();
     SLOsSupportElement systemInfoElement = oslsElements.getSystemInfo();
