@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11771
+library-source-files: 11776
 library-packages: 109
-module-facade-symbols: 76
-total-symbol-records: 11847
+module-facade-symbols: 77
+total-symbol-records: 11853
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -11764,6 +11764,12 @@ vm	SLVmTelemetry.sleela	lib/vm/src/sleela/SLVmTelemetry.sleela	source
 vm	SLVmVersion.sleela	lib/vm/src/sleela/SLVmVersion.sleela	source
 vm	basic-vm.sleela	lib/vm/tutorials/examples/basic-vm.sleela	source
 vm	startup-and-memory-guard.sleela	lib/vm/tutorials/examples/startup-and-memory-guard.sleela	source
+vm	SLPackage.sleela	lib/vm/vmsharp/SLPackage.sleela	facade
+vm	VMSharp.sleela	lib/vm/vmsharp/VMSharp.sleela	source
+vm	VMSharpBootloader.sleela	lib/vm/vmsharp/VMSharpBootloader.sleela	source
+vm	VMSharpInstallPlan.sleela	lib/vm/vmsharp/VMSharpInstallPlan.sleela	source
+vm	VMSharpLevy.sleela	lib/vm/vmsharp/VMSharpLevy.sleela	source
+vm	VMSharpDemo.sleela	lib/vm/vmsharp/examples/VMSharpDemo.sleela	source
 web-server-technology	SLDualStackBinding.sleela	lib/web-server-technology/SLDualStackBinding.sleela	source
 web-server-technology	SLEnvelopment.sleela	lib/web-server-technology/SLEnvelopment.sleela	source
 web-server-technology	SLPackage.sleela	lib/web-server-technology/SLPackage.sleela	facade
