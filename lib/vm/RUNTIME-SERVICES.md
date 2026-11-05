@@ -97,7 +97,7 @@ Any unrecoverable lifecycle violation moves to `QUARANTINED` rather than reopeni
 
 The sequence is idempotent: repeated shutdown requests observe the current state and do not execute destruction twice.
 
-## Mapping to the 155-opcode ISA
+## Mapping to the 156-opcode ISA
 
 The existing ISA already contains direct primitives for:
 
@@ -106,9 +106,9 @@ The existing ISA already contains direct primitives for:
 - pipes/FIFOs: `PIPE`, `PIPEPEER`, `FIFO_MK`;
 - files: `FILEOPEN`, `FILEREAD`, `FILEWRITE`, `FILECLOSE`, `FILEUNLINK`;
 - asynchronous/synchronization facilities: `SYN_*`, `MUN_*`;
-- OS system calls: `OS_PLATFORM`, `OS_CAPABILITY`, `OS_GETENV`, `OS_SETENV`, `OS_CWD`, `OS_CHDIR`, `OS_HOSTNAME`, `OS_USERNAME`, `OS_TEMPDIR`, `OS_PID`, `OS_EXISTS`, `OS_ISDIR`, `OS_FILESIZE`, `OS_MKDIR`, `OS_REMOVE`, `OS_RENAME`, `OS_RUN`, `OS_SPAWN`, `OS_WAIT`, `OS_KILL`, `OS_PCLOSE` (the `OP_OS_*` group, codes 103–123).
+- OS system calls: `OS_PLATFORM`, `OS_CAPABILITY`, `OS_GETENV`, `OS_SETENV`, `OS_CWD`, `OS_CHDIR`, `OS_HOSTNAME`, `OS_USERNAME`, `OS_TEMPDIR`, `OS_PID`, `OS_EXISTS`, `OS_ISDIR`, `OS_FILESIZE`, `OS_MKDIR`, `OS_REMOVE`, `OS_RENAME`, `OS_RUN`, `OS_SPAWN`, `OS_WAIT`, `OS_KILL`, `OS_PCLOSE` (the `OP_OS_*` group, codes 103–123), plus OSLS metadata/inspection bindings through `OP_OSLS_CALL` (155).
 
-The OS process opcodes (`OS_SPAWN`/`OS_WAIT`/`OS_KILL`/`OS_PCLOSE`) reuse the same resource-ownership discipline as sockets and files: a spawned child is a VM-local bounded handle with an explicit terminal lifecycle, reaped on wait/close and released during teardown. GC, cancellation, ownership, deadlines, resource epochs, and teardown remain runtime services rather than one opcode per concept. This avoids bloating the ISA while allowing the native implementation and every VM generation to evolve.
+The OSLS call opcode dispatches 12 typed `osls_*` functions through a stable operation-ID table and returns bounded JSON Strings; C pointers and native record layouts never enter VM values. The OS process opcodes (`OS_SPAWN`/`OS_WAIT`/`OS_KILL`/`OS_PCLOSE`) reuse the same resource-ownership discipline as sockets and files: a spawned child is a VM-local bounded handle with an explicit terminal lifecycle, reaped on wait/close and released during teardown. GC, cancellation, ownership, deadlines, resource epochs, and teardown remain runtime services rather than one opcode per concept. This avoids bloating the ISA while allowing the native implementation and every VM generation to evolve.
 
 ## Generation responsibilities
 
