@@ -115,6 +115,11 @@ class SleelaVMSystemCallBridge {
     out.add("ProcessInspection");
     out.add("ProcessControl");
     out.add("CapabilityDiscovery");
+    out.add("OSLSInspection");
+    out.add("CPUArchitecture");
+    out.add("TimeZoneCalendar");
+    out.add("NetworkInterfaces");
+    out.add("Scheduling");
     return out;
   }
 
@@ -142,6 +147,7 @@ class SleelaVMSystemCallBridge {
     out.add("OP_OS_WAIT=121");
     out.add("OP_OS_KILL=122");
     out.add("OP_OS_PCLOSE=123");
+    out.add("OP_OSLS_CALL=155");
     return out;
   }
 
@@ -151,6 +157,23 @@ class SleelaVMSystemCallBridge {
     adapter registers and tests its symbols. >
   boolean coreOSOpcodeBridgeImplemented() { return true; }
   boolean oslsCAbiAdapterRegistered() { return false; }
+
+  < OSLS read-only host inspection: the VM returns status-bearing JSON Strings,
+    never raw native pointers or C record layouts. >
+  String oslsSystemInfoJSON() { calls = calls + 1; return oslsSystemInfo(); }
+  String oslsProcessInfoJSON(int pid) { calls = calls + 1; return oslsProcessInfo(pid); }
+  String oslsEnumerateProcessesJSON() { calls = calls + 1; return oslsEnumerateProcesses(); }
+  String oslsGetEnvironmentValueJSON(String name) { calls = calls + 1; return oslsGetEnvironmentValue(name); }
+  String oslsEnumerateEnvironmentJSON() { calls = calls + 1; return oslsEnumerateEnvironment(); }
+  String oslsGetFileInfoJSON(String path) { calls = calls + 1; return oslsGetFileInfo(path); }
+  String oslsListDirectoryJSON(String path) { calls = calls + 1; return oslsListDirectory(path); }
+  String oslsGetCPUInfoJSON() { calls = calls + 1; return oslsGetCPUInfo(); }
+  String oslsGetTimezoneInfoJSON() { calls = calls + 1; return oslsGetTimezoneInfo(); }
+  String oslsGetNetworkInterfacesJSON() { calls = calls + 1; return oslsGetNetworkInterfaces(); }
+  String oslsCronValidateJSON(String expression) { calls = calls + 1; return oslsCronValidate(expression); }
+  String oslsCronNextAfterJSON(String expression, int epochSeconds) {
+    calls = calls + 1; return oslsCronNextAfter(expression, epochSeconds);
+  }
 
   int callCount() { return calls; }
 }
