@@ -2,7 +2,9 @@
 
 *Idea System(TM) / Idea(TM). From Author; distributive.*
 
-The Sleela object-oriented mirror of the native registry core
+The SLeeLa 3.0 architecture contract is [REGISTRY-3.0-ARCHITECTURE.md](../../registry/REGISTRY-3.0-ARCHITECTURE.md). The classes below remain the compatibility object model while the record-oriented 3.0 model is implemented in staged, testable increments.
+
+The SLeeLa object-oriented mirror of the native registry core
 ([`/registry`](../../registry/README.md)), so a program can model, seed, and
 review the registry from Sleela.
 
