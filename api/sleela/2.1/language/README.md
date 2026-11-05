@@ -1,6 +1,6 @@
 # SLeeLa Language API and Version Contracts
 
-This directory documents the language-facing contracts that affect API consumers. The normative grammar remains [`../../SLEELA.syntax`](../../SLEELA.syntax); compiler behavior and the runtime implementation are authoritative over explanatory documentation.
+This directory documents the language-facing contracts that affect API consumers. The normative grammar remains [`../../../../SLEELA.syntax`](../../SLEELA.syntax); compiler behavior and the runtime implementation are authoritative over explanatory documentation.
 
 ## Versioned contracts
 
@@ -18,3 +18,12 @@ The feature is a request to the runtime, not a promise that every allocation is 
 ## Documentation status
 
 The matrix marks evidence and implementation boundaries explicitly. Do not promote a planned API to implemented status based only on a design document, class name, or placeholder declaration.
+
+
+## Current syntax edition: 3.0
+
+The current normative language edition is **3.0**. The compiler accepts source
+syntax 1.0–3.0 and defaults unversioned source to 3.0 with a warning. Earlier
+source declarations remain valid; historical feature-specific minimum gates
+remain in force. See the [syntax version matrix](SYNTAX-VERSION-MATRIX.md)
+and the [SLeeLa 3.0 API edition](../../3.0/README.md).
