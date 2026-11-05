@@ -16,7 +16,7 @@
  *
  * Family: vm. Composes SLVmPremiumVersion, SLVmConfig, SLVmRuntime.
  */
-#sleela 2.4
+#sleela 3.0
 class SLVmPremiumVersion009 extends SLVmPremiumVersion {
   void configure() {
     base(9, "slvm-9", "Authority", "filesystem and OS adaptation", "sleela-virtual-machine/009", "filesystem substrate");
