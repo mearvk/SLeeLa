@@ -11,6 +11,7 @@ class SLOsSupportRuntime {
   String boundary = "user-mode OS services through the SLeeLa VM bridge";
   String catalogClass = "SLOsSupportCatalog";
   String elementClass = "SLOsSupportElement";
+  String vmElementsClass = "SLOsSupportVMElements";
   String vmBridgeClass = "SLOsSupportVMBridge";
   String windowsBackendClass = "SLOsSupportWindows";
   String linuxBackendClass = "SLOsSupportLinux";
@@ -22,6 +23,7 @@ class SLOsSupportRuntime {
   String getBoundary() { return boundary; }
   String getCatalogClass() { return catalogClass; }
   String getElementClass() { return elementClass; }
+  String getVMElementsClass() { return vmElementsClass; }
   String getVMBridgeClass() { return vmBridgeClass; }
   String getExistingVMBridge() { return existingVMBridge; }
   String getNativeImplementation() { return nativeImplementation; }
