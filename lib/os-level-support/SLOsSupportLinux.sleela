@@ -32,8 +32,8 @@ class SLOsSupportLinux {
   < POSIX/libc and Linux function names, alphabetically. >
   SLList getLinuxFunctions() {
     SLList out = new SLList();
-    out.add("access");
     out.add("accept");
+    out.add("access");
     out.add("bind");
     out.add("clock_getres");
     out.add("clock_gettime");
@@ -115,15 +115,15 @@ class SLOsSupportLinux {
 
   SLList getPlatformTerms() {
     SLList out = new SLList();
-    out.add("LinuxBackend");
-    out.add("POSIX");
-    out.add("libc");
-    out.add("procfs");
-    out.add("sysfs");
-    out.add("netlink");
+    out.add("cgroup");
     out.add("epoll");
     out.add("inotify");
-    out.add("cgroup");
+    out.add("libc");
+    out.add("LinuxBackend");
+    out.add("netlink");
+    out.add("POSIX");
+    out.add("procfs");
+    out.add("sysfs");
     out.add("systemd");
     return out;
   }
