@@ -28,12 +28,19 @@ footer of every page.
 Clean house style in **blue, light blue, light grey, and white with black text**,
 with a sticky package navigation sidebar and on-page filtering.
 
+## Current language edition
+
+The compiler's current normative language syntax edition is **3.0**. Each
+package page records the actual `#sleela` declaration of each source unit;
+older declarations remain valid and are not silently relabelled.
+
 ## Regenerating
 
 The site is produced from the live `/lib` tree by a single generator:
 
 ```sh
-python3 tools/generate-sleeladoc-api.py            # writes /sleeladoc-api
+make api-docs                                      # writes all three API destinations
+python3 tools/generate-sleeladoc-api.py            # writes /sleeladoc-api only
 python3 tools/generate-sleeladoc-api.py --out DIR  # choose another output dir
 ```
 
