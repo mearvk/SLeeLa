@@ -41,7 +41,7 @@ places in the codebase. The authoritative user-facing guide is
   - `010` idea-vm-010 — consolidated runtime
 - **Select:** `sleela vm select 10` / `sleela vm run native program.sleela`.
 - **SLeeLa-side classes:** `lib/vm/src/sleela/` (`SLVmVersion`, `SLVmModium`,
-  `SLVmResult`, `SLVmReport`, `SLVmRuntime`, … — all `#sleela 2.5` + `material;`).
+  `SLVmResult`, `SLVmReport`, `SLVmRuntime`, … — shared VM library types retain their own source declarations and feature gates. The premium manifest base and premium registry now declare `#sleela 3.0`; the eleven premium generation manifests also declare `#sleela 3.0`.
 
 ## 3. The 11 premium VMs (`sleela-virtual-machine/{001..011}`)
 
@@ -87,5 +87,5 @@ places in the codebase. The authoritative user-facing guide is
   paths (`select 10` vs `select premium 11`).
 - `MODIUM.json` resolution manifests live with the escalating VMs
   (`virtual-machine/vm-version/NNN/MODIUM.json`) and are syntax-agnostic; the
-  SLeeLa-side VM classes under `lib/vm/**` carry `#sleela 2.5` + `material;`
+  SLeeLa-side shared VM classes under `lib/vm/**` retain their individual source declarations and feature gates; the premium manifest family is aligned to Syntax 3.0.
   (the `vm` package facade is `lib/vm/SLPackage.sleela`).
