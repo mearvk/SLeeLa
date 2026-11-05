@@ -204,6 +204,22 @@ typedef enum {
      * requires updating the validator's upper bound again. KEEP LAST. */
     OP__COUNT
 } SLOp;
+
+#if defined(__cplusplus)
+static_assert(OP_OS_PLATFORM == 103, "legacy OS opcode range must begin at 103");
+static_assert(OP_OS_PCLOSE == 123, "legacy OS opcode range must end at 123");
+static_assert(OP_GC_HINT == 124, "legacy opcode 124 must remain OP_GC_HINT");
+static_assert(OP_DUP2 == 154, "the pre-OSLS ISA must remain 155 opcodes (0..154)");
+static_assert(OP_OSLS_CALL == 155, "OSLS must be the first append-only opcode");
+static_assert(OP__COUNT == 156, "the extended ISA must contain 156 opcodes");
+#else
+_Static_assert(OP_OS_PLATFORM == 103, "legacy OS opcode range must begin at 103");
+_Static_assert(OP_OS_PCLOSE == 123, "legacy OS opcode range must end at 123");
+_Static_assert(OP_GC_HINT == 124, "legacy opcode 124 must remain OP_GC_HINT");
+_Static_assert(OP_DUP2 == 154, "the pre-OSLS ISA must remain 155 opcodes (0..154)");
+_Static_assert(OP_OSLS_CALL == 155, "OSLS must be the first append-only opcode");
+_Static_assert(OP__COUNT == 156, "the extended ISA must contain 156 opcodes");
+#endif
 /* GC-hint aggressiveness bands for OP_GC_HINT (operand a). */
 #define SL_GC_HINT_MAX  100   /* clamp ceiling for the 0..100 aggressiveness scale */
 #define SL_GC_HINT_FULL 100   /* at this level the hint requests a full collection */
