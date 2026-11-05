@@ -620,7 +620,7 @@ operations to their current `slos_*` backend symbols and mark them implemented.
 
 The root library's `osls_*` inspection ABI is now registered through
 `os-level-support/osls_vm_bridge.c` and append-only opcode `OP_OSLS_CALL` (155).
-Twelve stable operation IDs bind the declared APIs. The compiler lowers the
+Twelve stable operation IDs bind the declared APIs through a callable native function-pointer registry. Each entry includes the native symbol, typed argument vector, JSON UTF-8 result type, and required host-read capability. The compiler lowers the
 `osls...` built-ins to that opcode; the VM checks each operation's arity and
 value types, then returns a bounded JSON String containing native status and
 result. Raw pointers and C record layouts do not cross into VM values. The
