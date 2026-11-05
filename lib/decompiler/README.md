@@ -202,3 +202,13 @@ The package uses LANGUAGE.FORMAT.REFERENCE.md as the decompiler-side native refe
 The decompiler also maintains `EXECUTABLE.LIBRARY.SOURCE.REFERENCE.md`, which maps executables, shared/dynamic/static libraries, object files, managed artifacts, WebAssembly, LLVM bitcode, and raw images backward through format, architecture, OS/ABI, producer, language, version, and source references.
 
 The mapping is evidence-based rather than a claim of exact original source. Debug information, symbols, provenance, compiler fingerprints, runtime metadata, and object-member analysis are used to strengthen the reference.
+
+## Language edition 3.0
+
+The SLeeLa decompiler contract is aligned with the normative SLeeLa syntax
+**3.0** edition. Its SLeeLa source reconstruction target names syntax 3.0 as the
+current edition while preserving source-version evidence and older syntax
+compatibility. A reconstructed file must not be labelled as syntax 3.0 unless
+its emitted constructs satisfy that edition; the decompiler preserves uncertainty
+rather than inventing unsupported source semantics. See the root
+[`SLEELA.syntax`](../../SLEELA.syntax) and [API guide](../../decompiler/API.md).
