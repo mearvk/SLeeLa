@@ -2,9 +2,9 @@
 
 **Revision:** 0.58  
 **Packages:** 109  
-**SLeeLa source units:** 11784  
+**SLeeLa source units:** 11786  
 **Module-facade symbols:** 77  
-**Total symbol records:** 11861  
+**Total symbol records:** 11863  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.58 adds **VMSharp™** under the `vm` package (`lib/vm/vmsharp/`): a
@@ -41,7 +41,15 @@
 > desktop/OS.Sensitivity.III path screens → fee disclosure → fail-closed
 > confirm) and the selectable **`VMSharpInstallOption`** component, plus
 > `examples/VMSharpInstallWizardDemo`; confirmation is gated on an admitted CPU
-> and a ready plan (OS path: reachable AND acquired AND target designated).
+> and a ready plan (OS path: reachable AND acquired AND target designated). It
+> also adds **USB boot media**: **`VMSharpUsbMedia`** (make → make install →
+> firmware loads from USB → VMSharp starts in a configured option; engineering-
+> preference knob `sequitur` | `iq` | `havingness`), `examples/VMSharpUsbMediaDemo`,
+> and **real per-OS Makefiles** under `lib/vm/vmsharp/usb/` (brand-detecting
+> dispatcher + `Makefile.linux`/`Makefile.windows`/`Makefile.macos`). `make`
+> stages the files; `make install` is fail-closed (requires explicit
+> `USB_DEVICE` + `I_UNDERSTAND_THIS_ERASES=yes`, never auto-selects a disk,
+> stages to a git-ignored `build/`). No firmware binary is fabricated.
 > Authored for the User MEARVK LLC (Max Rupplin 2026;
 > George Soros a Kindness 2507+), respectful of United States law and of the
 > persons and groupings of peoples it concerns. Every class carries the Metadata

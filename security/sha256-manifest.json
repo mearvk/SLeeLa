@@ -48375,7 +48375,7 @@
     },
     {
       "path": "lib/vm/vmsharp/SLPackage.sleela",
-      "sha256": "75632a60deffa0a5de62e68d5db66db37a172480f0e5e3159338d4f04d1065fa"
+      "sha256": "b77a9d4e76214352175533232c67013e0fa5c28f9f249152a0734e4f9231b9f9"
     },
     {
       "path": "lib/vm/vmsharp/VMSharp.sleela",
@@ -48418,6 +48418,10 @@
       "sha256": "7b15840bbd668f8923055441f5bade21b3e331c2a002026bb432d427334732ca"
     },
     {
+      "path": "lib/vm/vmsharp/VMSharpUsbMedia.sleela",
+      "sha256": "61dd087f2652daa8215b133bbb2c04dcf54055e38d2daf48b3789825d627b347"
+    },
+    {
       "path": "lib/vm/vmsharp/examples/VMSharpDemo.sleela",
       "sha256": "3e74f1d2e3fc0662d2d9f594bec3b998e57dac985d39881e51badd7b60fa1d98"
     },
@@ -48428,6 +48432,10 @@
     {
       "path": "lib/vm/vmsharp/examples/VMSharpOSCreatorDemo.sleela",
       "sha256": "47021fa41ce72145243264edb64ee638baae67b7a96f5edf9c3d4986de848ce1"
+    },
+    {
+      "path": "lib/vm/vmsharp/examples/VMSharpUsbMediaDemo.sleela",
+      "sha256": "7c6c21a274fe3773e3cad5c4898dfdfb80376da66b5e770fab72a73e8315cc01"
     },
     {
       "path": "lib/web-server-technology/SLDualStackBinding.sleela",

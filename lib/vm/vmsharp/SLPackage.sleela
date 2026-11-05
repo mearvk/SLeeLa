@@ -64,6 +64,8 @@ class VMSharpPackage {
   String osCreatorRunClass = "VMSharpOSCreatorRun";
   String installWizardClass = "VMSharpInstallWizard";
   String installOptionClass = "VMSharpInstallOption";
+  String usbMediaClass = "VMSharpUsbMedia";
+  String usbMakefiles = "usb/Makefile (dispatch), usb/Makefile.linux, usb/Makefile.windows, usb/Makefile.macos";
 
   String getPackageName() { return packageName; }
   String getManifestClass() { return manifestClass; }
@@ -76,4 +78,6 @@ class VMSharpPackage {
   String getOSCreatorRunClass() { return osCreatorRunClass; }
   String getInstallWizardClass() { return installWizardClass; }
   String getInstallOptionClass() { return installOptionClass; }
+  String getUsbMediaClass() { return usbMediaClass; }
+  String getUsbMakefiles() { return usbMakefiles; }
 }

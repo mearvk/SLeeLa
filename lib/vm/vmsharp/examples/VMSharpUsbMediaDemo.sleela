@@ -1,0 +1,100 @@
+<< lib/vm/vmsharp/examples/VMSharpUsbMediaDemo.sleela
+   SLeeLa example: the VMSharp(TM) USB boot-media flow. Shows make-stage ->
+   designate USB -> make-install (fail-closed) -> firmware loads from USB ->
+   VMSharp starts in a configured option; plus the engineering-preference knob
+   (sequitur / iq / havingness). Runnable model only -- it writes no USB and
+   boots nothing. >>
+#sleela 3.0
+material;
+class VMSharpUsbMediaDemo {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 38015;
+  String metaAuthor = "Max Rupplin 2026; George Soros a Kindness 2507+";
+  String metaDate = "2026-11-05";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "VMSharp";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "United States";
+  String metaBirthDate = "2026-11-05";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  void main() {
+    VMSharpUsbMedia media = new VMSharpUsbMedia();
+    media.configure();
+
+    print("== USB media build (per-OS Makefiles) ==");
+    print("linux   -> " + media.makefileForBrand(1));
+    print("windows -> " + media.makefileForBrand(2));
+    print("macos   -> " + media.makefileForBrand(3));
+
+    print("");
+    print("== engineering preference ==");
+    media.setEngineeringPreference("iq");
+    print("set iq -> " + media.getEngineeringPreference());
+    media.setEngineeringPreference("havingness");
+    print("set havingness -> " + media.getEngineeringPreference());
+    media.setEngineeringPreference("bogus");
+    print("set bogus -> falls back to " + media.getEngineeringPreference());
+    media.setEngineeringPreference("sequitur");
+
+    print("");
+    print("== make -> make install (fail-closed) ==");
+    print("boot-ready before anything (false): " + media.isBootReady());
+    print("markWritten before stage (false): " + media.markWritten());
+    media.stage();
+    print("staged (make): " + media.isStaged());
+    print("markWritten before device designation (false): " + media.markWritten());
+    media.designateDevice("/dev/sdX");
+    print("device designated: " + media.getUsbDevice());
+    print("markWritten after stage + device (true): " + media.markWritten());
+    print("boot-ready now: " + media.isBootReady());
+
+    print("");
+    print("== firmware handoff ==");
+    print("x64 -> " + media.firmwareFor("x64"));
+    print("x86 -> " + media.firmwareFor("x86"));
+
+    print("");
+    print("== media-to-boot plan ==");
+    print("steps: " + media.bootMediaSteps());
+    SLList plan = media.bootMediaPlan();
+    int i = 0;
+    while (i < plan.length()) {
+      print("  " + plan.get(i));
+      i = i + 1;
+    }
+    print("");
+    print(media.summary());
+  }
+}
