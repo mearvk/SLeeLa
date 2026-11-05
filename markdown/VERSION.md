@@ -12,8 +12,8 @@ This increment extends the arbitrary-width unsigned integer foundation for sourc
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
-**Sleela Language Syntax:** 1.7 (supported range 1.3 .. 1.7)  
-**Compiler Compatibility Gate:** 2.9-dev  
+**Sleela Language Syntax:** 3.0 (supported range 1.0 .. 3.0)  
+**Compiler Compatibility Gate:** 3.0  
 **Java Authorship Transition Gate:** 1.19-dev
 **Edition:** SLeeLa Complete / Native Foundation  
 **Status:** Active Development  
@@ -314,3 +314,14 @@ Library expansion and inventory recount. Advanced the active development line to
 **Java Authorship Transition Gate:** 1.19-dev
 
 **SLeeLa — MEARVK LLC — 2026**
+
+
+## Language syntax 3.0 edition
+
+The normative SLeeLa language specification is now **3.0**. The native
+compiler gate accepts declared source syntax 1.0 through 3.0 and defaults
+unversioned source to 3.0 with a warning. The edition consolidates the
+established 1.x/2.x language surface; feature-specific minimum syntax gates
+remain in force. The runtime/compiler product release (0.3.30-dev), Nordshrift
+product release (2.7.1-dev), and NS-SST-0001 format version are independent
+version tracks.
