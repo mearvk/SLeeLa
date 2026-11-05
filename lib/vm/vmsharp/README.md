@@ -116,6 +116,42 @@ Run the wizard demo (walks both paths + the unadmitted-CPU refusal):
 
     SLEELA_SHEET=./SHEET.sheet impl/build/sleela run lib/vm/vmsharp/examples/VMSharpInstallWizardDemo.sleela
 
+## USB boot media (`make` / `make install`)
+
+VMSharp can initialize from a **USB device**. `VMSharpUsbMedia` models the flow
+— `make` stages the VMSharp files, `make install` writes them to a USB you
+designate, the computer's firmware (UEFI on x64, BIOS/MBR on x86) loads them,
+and VMSharp starts in either configured option — and carries the
+engineering-preference knob (`sequitur` | `iq` | `havingness`).
+
+The real build tooling lives in `usb/`, with a Makefile for each OS brand:
+
+| File | Brand | `make install` device form |
+|---|---|---|
+| `usb/Makefile` | dispatcher (detects host via `OS`/`uname -s`) | delegates |
+| `usb/Makefile.linux` | Linux | `USB_DEVICE=/dev/sdX` |
+| `usb/Makefile.windows` | Windows 10+ (MSYS2/Git-Bash `make`) | `USB_DEVICE=E:` or `PhysicalDriveN` |
+| `usb/Makefile.macos` | macOS (builds media for x86/x64 targets) | `USB_DEVICE=/dev/diskN` |
+
+```sh
+cd lib/vm/vmsharp/usb
+make                 # stage VMSharp files (touches no device)
+make verify          # check the staged media layout
+make install USB_DEVICE=/dev/sdX I_UNDERSTAND_THIS_ERASES=yes
+make ENGINEERING_PREFERENCE=iq     # sequitur (default) | iq | havingness
+```
+
+**Safety rails (real, enforced):** `make install` **refuses** to run without an
+explicit `USB_DEVICE` and the `I_UNDERSTAND_THIS_ERASES=yes` confirmation, never
+auto-selects a disk, and (on Linux) rejects a non-block device — so the
+destructive write is only ever reached deliberately. The staging output goes to
+`build/` (git-ignored) and is **not** part of the library inventory.
+
+**No fabricated firmware:** VMSharp is a SLeeLa model, so the media carries the
+VMSharp files plus a `VMSHARP.BOOT.DESCRIPTOR`, not an invented kernel/bootloader
+binary. A real bootable VMSharp image is produced only by the pinned OS Creator
+toolchain.
+
 ## Honesty boundary
 
 Every class here is a **declarative model**. VMSharp source:

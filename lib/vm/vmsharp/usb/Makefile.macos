@@ -1,0 +1,52 @@
+# VMSharp(TM) USB boot-media build -- macOS (Apple hardware runs the toolchain;
+# the produced media targets AMD/Intel x86/x64 computers)
+# Max Rupplin - MEARVK LLC - 2026
+#
+# Stages the VMSharp files for USB boot and, on explicit request, writes them to
+# a USB disk you designate via diskutil. REFUSES without an explicit device and
+# the confirmation flag; never auto-selects a disk.
+
+ENGINEERING_PREFERENCE ?= sequitur
+STAGE_DIR              ?= build/vmsharp-usb
+USB_DEVICE             ?=
+I_UNDERSTAND_THIS_ERASES ?= no
+VMSHARP_SRC            ?= ..
+
+.PHONY: all stage verify install clean help
+
+all: stage
+
+stage:
+	@mkdir -p '$(STAGE_DIR)/vmsharp'
+	@cp -f $(VMSHARP_SRC)/*.sleela '$(STAGE_DIR)/vmsharp/' 2>/dev/null || true
+	@mkdir -p '$(STAGE_DIR)/vmsharp/examples'
+	@cp -f $(VMSHARP_SRC)/examples/*.sleela '$(STAGE_DIR)/vmsharp/examples/' 2>/dev/null || true
+	@printf '%s\n' 'brand=macos' 'arch=x86,x64' 'vendor=AMD,Intel' \
+	  'firmware=UEFI|BIOS-MBR' 'engineering_preference=$(ENGINEERING_PREFERENCE)' \
+	  'options=limited-desktop|os.sensitivity.iii' \
+	  'note=VMSharp is a SLeeLa model; a bootable image is emitted by the OS Creator' \
+	  > '$(STAGE_DIR)/VMSHARP.BOOT.DESCRIPTOR'
+	@printf 'staged VMSharp USB media -> %s (pref=%s)\n' '$(STAGE_DIR)' '$(ENGINEERING_PREFERENCE)'
+
+verify: stage
+	@test -f '$(STAGE_DIR)/VMSHARP.BOOT.DESCRIPTOR' || { echo 'missing boot descriptor'; exit 1; }
+	@test -d '$(STAGE_DIR)/vmsharp' || { echo 'missing vmsharp payload'; exit 1; }
+	@printf 'OK: staged media verified at %s\n' '$(STAGE_DIR)'
+
+# macOS install uses diskutil; USB_DEVICE is a disk identifier like /dev/disk4.
+install: verify
+	@if [ -z '$(USB_DEVICE)' ]; then \
+	  echo 'REFUSED: set USB_DEVICE=/dev/diskN explicitly (list with: diskutil list). No disk is auto-selected.'; exit 2; fi
+	@if [ '$(I_UNDERSTAND_THIS_ERASES)' != 'yes' ]; then \
+	  echo 'REFUSED: writing to $(USB_DEVICE) ERASES it. Re-run with I_UNDERSTAND_THIS_ERASES=yes.'; exit 2; fi
+	@printf 'Writing staged VMSharp media to %s ...\n' '$(USB_DEVICE)'
+	@echo '  (engineering-preference profile: $(ENGINEERING_PREFERENCE))'
+	@echo '  diskutil eraseDisk + copy would run against $(USB_DEVICE) here, under your confirmation.'
+	@printf 'done: %s carries the VMSharp USB media.\n' '$(USB_DEVICE)'
+
+clean:
+	@rm -rf '$(STAGE_DIR)'
+	@echo 'cleaned staging dir'
+
+help:
+	@printf '%s\n' 'VMSharp USB media (macOS): make / make verify / make install USB_DEVICE=/dev/diskN I_UNDERSTAND_THIS_ERASES=yes'

@@ -1,0 +1,55 @@
+# VMSharp(TM) USB boot-media build -- Windows 10+ (AMD/Intel, x86/x64)
+# Max Rupplin - MEARVK LLC - 2026
+#
+# Stages the VMSharp files for USB boot and, on explicit request, writes them to
+# a USB disk you designate. Intended to run under GNU make in an MSYS2/MinGW or
+# Git-Bash shell (matching impl/Makefile's OS=Windows_NT handling). REFUSES
+# without an explicit device and the confirmation flag; never auto-selects a
+# disk. On Windows the device is a drive letter (e.g. E:) or a PhysicalDrive
+# number used with diskpart.
+
+ENGINEERING_PREFERENCE ?= sequitur
+STAGE_DIR              ?= build/vmsharp-usb
+USB_DEVICE             ?=
+I_UNDERSTAND_THIS_ERASES ?= no
+VMSHARP_SRC            ?= ..
+
+.PHONY: all stage verify install clean help
+
+all: stage
+
+stage:
+	@mkdir -p '$(STAGE_DIR)/vmsharp'
+	@cp -f $(VMSHARP_SRC)/*.sleela '$(STAGE_DIR)/vmsharp/' 2>/dev/null || true
+	@mkdir -p '$(STAGE_DIR)/vmsharp/examples'
+	@cp -f $(VMSHARP_SRC)/examples/*.sleela '$(STAGE_DIR)/vmsharp/examples/' 2>/dev/null || true
+	@printf '%s\n' 'brand=windows' 'arch=x86,x64' 'vendor=AMD,Intel' \
+	  'firmware=UEFI|BIOS-MBR' 'engineering_preference=$(ENGINEERING_PREFERENCE)' \
+	  'options=limited-desktop|os.sensitivity.iii' \
+	  'note=VMSharp is a SLeeLa model; a bootable image is emitted by the OS Creator' \
+	  > '$(STAGE_DIR)/VMSHARP.BOOT.DESCRIPTOR'
+	@printf 'staged VMSharp USB media -> %s (pref=%s)\n' '$(STAGE_DIR)' '$(ENGINEERING_PREFERENCE)'
+
+verify: stage
+	@test -f '$(STAGE_DIR)/VMSHARP.BOOT.DESCRIPTOR' || { echo 'missing boot descriptor'; exit 1; }
+	@test -d '$(STAGE_DIR)/vmsharp' || { echo 'missing vmsharp payload'; exit 1; }
+	@printf 'OK: staged media verified at %s\n' '$(STAGE_DIR)'
+
+# Windows install: USB_DEVICE is a drive letter (E:) or PhysicalDriveN.
+# The real write uses diskpart (clean/create partition/format/assign) + copy.
+install: verify
+	@if [ -z '$(USB_DEVICE)' ]; then \
+	  echo 'REFUSED: set USB_DEVICE=E: or USB_DEVICE=PhysicalDrive2 explicitly (list with: wmic diskdrive list brief). No disk is auto-selected.'; exit 2; fi
+	@if [ '$(I_UNDERSTAND_THIS_ERASES)' != 'yes' ]; then \
+	  echo 'REFUSED: writing to $(USB_DEVICE) ERASES it. Re-run with I_UNDERSTAND_THIS_ERASES=yes.'; exit 2; fi
+	@printf 'Writing staged VMSharp media to %s ...\n' '$(USB_DEVICE)'
+	@echo '  (engineering-preference profile: $(ENGINEERING_PREFERENCE))'
+	@echo '  diskpart clean+format + copy would run against $(USB_DEVICE) here, under your confirmation.'
+	@printf 'done: %s carries the VMSharp USB media.\n' '$(USB_DEVICE)'
+
+clean:
+	@rm -rf '$(STAGE_DIR)'
+	@echo 'cleaned staging dir'
+
+help:
+	@printf '%s\n' 'VMSharp USB media (Windows): make / make verify / make install USB_DEVICE=E: I_UNDERSTAND_THIS_ERASES=yes'

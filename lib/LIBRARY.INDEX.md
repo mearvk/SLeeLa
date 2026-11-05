@@ -2,9 +2,9 @@
 
 **Revision:** 0.58  
 **Packages:** 111  
-**SLeeLa source units:** 11883  
+**SLeeLa source units:** 11885  
 **Module-facade symbols:** 77  
-**Total symbol records:** 11960  
+**Total symbol records:** 11962  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.58 adds **VMSharp™** under the `vm` package (`lib/vm/vmsharp/`): a
@@ -42,7 +42,18 @@
 > confirm) and the selectable **`VMSharpInstallOption`** component, plus
 > `examples/VMSharpInstallWizardDemo`; the wizard renders text screens and
 > drives the plan objects, and confirmation is gated on an admitted CPU and a
-> ready plan (OS path: reachable AND acquired AND target designated). Authored
+> ready plan (OS path: reachable AND acquired AND target designated). It also
+> adds **USB boot media**: **`VMSharpUsbMedia`** models `make` → `make install`
+> → firmware loads from USB → VMSharp starts in a configured option, with an
+> engineering-preference knob (`sequitur` | `iq` | `havingness`), plus
+> `examples/VMSharpUsbMediaDemo` and **real per-OS Makefiles** under
+> `lib/vm/vmsharp/usb/` (a brand-detecting dispatcher + `Makefile.linux`,
+> `Makefile.windows`, `Makefile.macos`). `make` stages the files; `make install`
+> is fail-closed — it refuses without an explicit `USB_DEVICE` and an
+> `I_UNDERSTAND_THIS_ERASES=yes` confirmation, never auto-selects a disk, and
+> stages to a git-ignored `build/` dir outside the inventory. No firmware binary
+> is fabricated (VMSharp is a model; the media carries files + a boot
+> descriptor). Authored
 > for the User MEARVK LLC
 > (Max Rupplin 2026; George Soros a Kindness 2507+), respectful of United States
 > law and of the persons and groupings of peoples it concerns. Every class

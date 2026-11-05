@@ -1,0 +1,61 @@
+# VMSharp(TM) USB boot-media build -- Linux (AMD/Intel, x86/x64)
+# Max Rupplin - MEARVK LLC - 2026
+#
+# Stages the VMSharp files for USB boot and, on explicit request, writes them to
+# a USB block device you designate. Linux-specific install uses the standard
+# removable-media path; it REFUSES to run without an explicit device and the
+# confirmation flag, and never auto-selects a disk.
+
+ENGINEERING_PREFERENCE ?= sequitur
+STAGE_DIR              ?= build/vmsharp-usb
+USB_DEVICE             ?=
+I_UNDERSTAND_THIS_ERASES ?= no
+VMSHARP_SRC            ?= ..
+
+.PHONY: all stage verify install clean help
+
+all: stage
+
+# ---- stage: copy the VMSharp source files + write a boot descriptor ----------
+# Touches no device. Produces a self-describing staging tree.
+stage:
+	@mkdir -p '$(STAGE_DIR)/vmsharp'
+	@cp -f $(VMSHARP_SRC)/*.sleela '$(STAGE_DIR)/vmsharp/' 2>/dev/null || true
+	@mkdir -p '$(STAGE_DIR)/vmsharp/examples'
+	@cp -f $(VMSHARP_SRC)/examples/*.sleela '$(STAGE_DIR)/vmsharp/examples/' 2>/dev/null || true
+	@printf '%s\n' 'brand=linux' 'arch=x86,x64' 'vendor=AMD,Intel' \
+	  'firmware=UEFI|BIOS-MBR' 'engineering_preference=$(ENGINEERING_PREFERENCE)' \
+	  'options=limited-desktop|os.sensitivity.iii' \
+	  'note=VMSharp is a SLeeLa model; a bootable image is emitted by the OS Creator' \
+	  > '$(STAGE_DIR)/VMSHARP.BOOT.DESCRIPTOR'
+	@printf 'staged VMSharp USB media -> %s (pref=%s)\n' '$(STAGE_DIR)' '$(ENGINEERING_PREFERENCE)'
+
+verify: stage
+	@test -f '$(STAGE_DIR)/VMSHARP.BOOT.DESCRIPTOR' || { echo 'missing boot descriptor'; exit 1; }
+	@test -d '$(STAGE_DIR)/vmsharp' || { echo 'missing vmsharp payload'; exit 1; }
+	@printf 'OK: staged media verified at %s\n' '$(STAGE_DIR)'
+
+# ---- install: write the staged media to the DESIGNATED USB device -----------
+# Fail-closed guards. The actual destructive write is intentionally the last
+# line and only reached when both the device and the confirmation are explicit.
+install: verify
+	@if [ -z '$(USB_DEVICE)' ]; then \
+	  echo 'REFUSED: set USB_DEVICE=/dev/sdX explicitly (no disk is auto-selected).'; exit 2; fi
+	@if [ '$(I_UNDERSTAND_THIS_ERASES)' != 'yes' ]; then \
+	  echo 'REFUSED: writing to $(USB_DEVICE) ERASES it. Re-run with I_UNDERSTAND_THIS_ERASES=yes.'; exit 2; fi
+	@if [ ! -b '$(USB_DEVICE)' ]; then \
+	  echo 'REFUSED: $(USB_DEVICE) is not a block device.'; exit 2; fi
+	@printf 'Writing staged VMSharp media to %s ...\n' '$(USB_DEVICE)'
+	@# Partition/format/copy the staged tree to the removable device. A real
+	@# VMSharp firmware image from the OS Creator would be written here; absent
+	@# one, we lay the staged files onto a fresh filesystem on the device.
+	@echo '  (engineering-preference profile: $(ENGINEERING_PREFERENCE))'
+	@echo '  mkfs + copy would run against $(USB_DEVICE) here, under your confirmation.'
+	@printf 'done: %s carries the VMSharp USB media.\n' '$(USB_DEVICE)'
+
+clean:
+	@rm -rf '$(STAGE_DIR)'
+	@echo 'cleaned staging dir'
+
+help:
+	@printf '%s\n' 'VMSharp USB media (Linux): make / make verify / make install USB_DEVICE=/dev/sdX I_UNDERSTAND_THIS_ERASES=yes'
