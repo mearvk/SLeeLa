@@ -19,6 +19,10 @@ catalogues**.
 | SLOsSupportLinux.sleela | Linux grouping terms and alphabetized POSIX/Linux native symbols |
 | SLOsSupportWindows.sleela | Windows grouping terms and alphabetized Win32/Winsock symbols |
 | SLOsSupportMacOS.sleela | macOS grouping terms and alphabetized Darwin/POSIX/Mach symbols |
+| SLOsSupportLinuxSource.sleela | Linux source facade with VM-backed portable calls and gated Linux extension metadata |
+| SLOsSupportWindowsSource.sleela | Windows source facade with VM-backed portable calls and gated Win32/Winsock extension metadata |
+| SLOsSupportMacOSSource.sleela | macOS source facade with VM-backed portable calls and gated Darwin/Mach/framework extension metadata |
+| SLOsSupportPlatform.sleela | Runtime platform selector for the Linux, Windows and macOS source facades |
 
 ## Canonical grouping vocabulary
 
@@ -61,7 +65,7 @@ SLOsSupportOSLSElements class gives each current osls_* export a source element
 with group, native symbol, arity, result contract and implementation status;
 its VM opcode field is deliberately UNREGISTERED.
 
-## Status and execution rules
+## OS-specific source support\n\nThe three `*Source.sleela` classes are executable source-level facades for the\nportable operations already exposed by the VM (`osHostName`, `osUserName`,\n`osCurrentDir`, `osTempDir`, environment access, path existence/type and file\nsize). Their platform-specific metadata includes path separator, line ending,\nexecutable suffix, platform capability groups and native extension symbol lists.\n`SLOsSupportPlatform` detects the host through `osPlatform()` and selects a\nbackend identifier. It fails closed for an unknown platform.\n\nThe facades do not pretend that every listed native extension is callable: their\n`nativeExtensionRegistered` checks currently return false. Linux procfs/sysfs,\nnetlink, epoll, inotify and cgroups; Windows Win32/IP Helper/SCM/Registry/Winsock;\nand macOS Mach/Dispatch/IOKit/FSEvents/SystemConfiguration need explicit native\nbindings, ABI marshalling, platform builds and tests before dispatch.\n\n## Status and execution rules
 
 - Existing VM OP_OS_* operations are implemented by the current VM bridge.
 - Existing osls_* functions are declared in the root native library; they are
