@@ -90,9 +90,9 @@ until their own native binding implementations are added.
 ## Status and execution rules
 
 - Existing VM OP_OS_* operations are implemented by the current VM bridge.
-- Existing osls_* functions are declared in the root native library; they are
-  not automatically VM-callable merely because they appear in the catalogue.
-- Proposed osls_* extensions are catalogued as planned, not exported APIs.
+- The 12 existing osls_* inspection functions are VM-callable through
+  OP_OSLS_CALL=155 and the typed operation-ID registry.
+- Proposed osls_* extensions remain catalogued as planned, not exported APIs.
 - Native symbol lists are backend references, not a claim that every symbol is
   called by SLeeLa today.
 - State-changing operations (environment changes, directory changes, file
