@@ -71,6 +71,7 @@ static bool builtin(const std::string&n){
  "arrayNew","arrayLength","arrayGet","arraySet","arrayPush",
  "osPlatform","osCapability","osGetEnv","osSetEnv","osCurrentDir","osChangeDir","osHostName","osUserName","osTempDir","osProcessId",
  "osExists","osIsDir","osFileSize","osMakeDir","osRemove","osRename","osRun","osSpawn","osWait","osKill","osProcessClose",
+ "oslsSystemInfo","oslsProcessInfo","oslsEnumerateProcesses","oslsGetEnvironmentValue","oslsEnumerateEnvironment","oslsGetFileInfo","oslsListDirectory","oslsGetCPUInfo","oslsGetTimezoneInfo","oslsGetNetworkInterfaces","oslsCronValidate","oslsCronNextAfter",
  "conduct","role","insight","congruent","route","sysdepth","degreemax",
  "ideaCanvasCreate","ideaCanvasDestroy","ideaCanvasCols","ideaCanvasRows","ideaCanvasCount",
  "ideaCanvasSetParams","ideaCanvasExcite","ideaCanvasStep","ideaCanvasAdvance","ideaCanvasTimestep",
