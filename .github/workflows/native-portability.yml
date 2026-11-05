@@ -60,6 +60,12 @@ jobs:
         timeout-minutes: 3
         run: make -C impl test-osls-vm
 
+      - name: Run full VM regression suite
+        timeout-minutes: 20
+        env:
+          SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
+        run: make -C impl test
+
       - name: Train and verify the CPU neural network with XOR
         timeout-minutes: 3
         run: make -C tests ai-neural-nets-xor
@@ -182,6 +188,12 @@ jobs:
       - name: Test OSLS VM compiler and runtime dispatch
         timeout-minutes: 3
         run: make -C impl test-osls-vm
+
+      - name: Run full VM regression suite
+        timeout-minutes: 20
+        env:
+          SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
+        run: make -C impl test
 
       - name: Test clean-glyph character recognition and transcript writer
         timeout-minutes: 3
