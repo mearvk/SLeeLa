@@ -405,20 +405,20 @@ The following function names are listed alphabetically. Availability and permiss
 - `getsockname`
 - `getsockopt`
 - `gettimeofday`
+- `host_info`
 - `host_page_size`
 - `host_statistics64`
-- `host_info`
 - `kqueue`
 - `kevent`
 - `mach_absolute_time`
 - `mach_host_self`
+- `mach_msg`
 - `mach_port_deallocate`
 - `mach_task_self`
 - `mach_timebase_info`
 - `mach_vm_region` — query permitted virtual-memory region metadata only; no memory modification or inspection of unrelated processes
 - `listen`
 - `lstat`
-- `mach_msg`
 - `mmap`
 - `munmap`
 - `open`
@@ -441,13 +441,13 @@ The following function names are listed alphabetically. Availability and permiss
 
 **Additional macOS frameworks and interfaces (alphabetical):**
 
+- BSD sockets — portable socket and name-resolution interfaces
 - Core Foundation — system configuration and property-list types where appropriate
 - Dispatch (Grand Central Dispatch) — timers, queues and event sources
+- FSEvents — filesystem change notification streams
 - I/O Kit — read-only device and power-source metadata
 - Mach — monotonic clock, host statistics and permitted task/port metadata
 - SystemConfiguration — network service, interface and DNS configuration inspection
-- FSEvents — filesystem change notification streams
-- BSD sockets — portable socket and name-resolution interfaces
 - vnode/kqueue — filesystem and descriptor event notification
 
 **Index maintenance rule:** Keep each operating-system list alphabetized whenever entries are added. Distinguish function names from API families and pseudo-filesystem interfaces; identify any state-changing call explicitly, and do not describe a candidate API as implemented until the corresponding backend and tests exist.
