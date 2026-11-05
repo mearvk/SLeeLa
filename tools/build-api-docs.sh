@@ -7,7 +7,17 @@ ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
 PYTHON="${PYTHON:-python3}"
-SNAPSHOT="${API_SNAPSHOT:-version-001}"
+if [ -n "${API_SNAPSHOT:-}" ]; then
+  SNAPSHOT="$API_SNAPSHOT"
+else
+  NEXT=1
+  for existing in api/sleela/3.0/version-[0-9][0-9][0-9]; do
+    [ -d "$existing" ] || continue
+    number="${existing##*version-}"
+    if [ "$number" -ge "$NEXT" ]; then NEXT=$((number + 1)); fi
+  done
+  SNAPSHOT="$(printf 'version-%03d' "$NEXT")"
+fi
 case "$SNAPSHOT" in
   version-[0-9][0-9][0-9]) ;;
   *) echo "API_SNAPSHOT must use version-NNN (for example version-002)." >&2; exit 2 ;;
