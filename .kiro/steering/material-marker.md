@@ -5,8 +5,8 @@ inclusion: always
 # The `material` document marker (syntax 2.5)
 
 Syntax **2.5** adds a bare, contextual, **declarative-only** document marker
-**`material`** — a sibling to the 2.4 `author`/`authorial` marker. It is the
-current spec ceiling (`maxSupportedSyntax()` = `2.5`). The normative definition
+**`material`** — a sibling to the 2.4 `author`/`authorial` marker. Its introduction gate is `#sleela 2.5`; the current compiler maximum is
+`maxSupportedSyntax()` = `3.0`. The normative definition
 is [`SLEELA.syntax` §19](../../SLEELA.syntax).
 
 ## What it means
@@ -32,14 +32,13 @@ settled, is edited deliberately, as settled Source.
 
 ## Implementation (end-to-end, mirrors the `author` pattern)
 
-- `impl/frontend/version.h` — `maxSupportedSyntax()` = `{2,5}`.
+- `impl/frontend/version.h` — current `maxSupportedSyntax()` = `{3,0}`; this marker remains gated to 2.5.
 - `impl/frontend/ast.h` — `Program.materialMarked`.
 - `impl/frontend/parser.cpp` — `parseProgram()` recognises the contextual
   top-level `material` word and sets the flag.
 - `impl/frontend/semantic.cpp` — `collect()` gates it to 2.5; no other effect.
 - `impl/tests/version/` — fixtures `material_2_5.sleela` (accepted) and
-  `material_too_early.sleela` (rejected at 2.4); `minor_ahead.sleela` is now
-  `#sleela 2.6` (one above the ceiling).
+  `material_too_early.sleela` (rejected at 2.4); `minor_ahead.sleela` is expected to declare `#sleela 3.1` (one above the current ceiling).
 
 ## Placement convention (standing rule)
 
@@ -91,13 +90,12 @@ Times**, and into **International Progress** with that bearing **indicated as
 Contrary or Secondary**. It is expected to be declarative (like `material`) and
 to compose with the other markers.
 
-This is **direction, not shipped behavior**: the compiler ceiling is still 2.5
-and a `#sleela 2.8` file is rejected as too-new. When 2.8 is implemented, follow
-the `material` end-to-end pattern below. Authoritative note:
-`docs/TECH-NOTE-2.8-OBJECT-MARKER-AND-PUBLIC-EXCHANGE.md`; matrix row in
-`api/language/SYNTAX-VERSION-MATRIX.md`. (Courtesy record from that note: Oracle
-and Larry Ellison are welcomed in Durham, NC — entourage welcomed and permitted;
-no technical dependency.)
+This is historical planning text. The current normative specification defines
+`object` and `field` in `SLEELA.syntax` §26 (introduced at syntax 2.6, with the
+object reification standing specified at 2.8). The current compiler ceiling is
+3.0; consult the normative section and current tests before asserting the exact
+implemented behavior. The earlier public-exchange technical note remains a
+historical design record, not the authority for the current syntax ceiling.
 
 ## Spec-bump hygiene
 
