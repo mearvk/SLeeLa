@@ -23,7 +23,7 @@ catalogues**.
 
 The catalog uses stable terms such as:
 
-- HostIdentity, ProcessInspection, Environment
+- HostIdentity, ProcessInspection, ProcessControl, Environment
 - FileSystem, PathManagement, VolumeStorage
 - CPUArchitecture, MemoryManagement, TimeClock, TimeZoneCalendar
 - NetworkInterfaces, NetworkConfiguration, SocketIO
