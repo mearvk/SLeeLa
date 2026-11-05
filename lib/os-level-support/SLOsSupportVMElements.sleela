@@ -1,0 +1,177 @@
+< SLeeLa Standard Library Definition.
+  Definition: Factory catalogue for concrete VM OS-call elements.
+  Each factory returns an SLOsSupportElement with its canonical grouping term,
+  SLeeLa built-in, OP_OS opcode, native slos_* backend symbol, effect and status.
+  These records describe the existing VM bridge; they do not bypass its dispatcher. >
+#sleela 2.5
+material;
+
+class SLOsSupportVMElements {
+  SLOsSupportElement platform() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("platform", "HostIdentity", "OSHost", "OP_OS_PLATFORM:103",
+      "osPlatform", "slos_platform_name", "CommonBackend", "ReadOnlyQuery", "Implemented", 0, 0);
+    e.setResultTerm("Utf8String");
+    return e;
+  }
+
+  SLOsSupportElement capability() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("capability", "CapabilityDiscovery", "OSCapabilities", "OP_OS_CAPABILITY:104",
+      "osCapability", "slos_capability", "CommonBackend", "ReadOnlyQuery", "Implemented", 1, 0);
+    e.setResultTerm("Boolean");
+    return e;
+  }
+
+  SLOsSupportElement getEnv() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("getEnv", "Environment", "OSEnvironment", "OP_OS_GETENV:105",
+      "osGetEnv", "slos_getenv", "CommonBackend", "ReadOnlyQuery", "Implemented", 1, 0);
+    e.setResultTerm("Utf8String");
+    return e;
+  }
+
+  SLOsSupportElement setEnv() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("setEnv", "Environment", "OSEnvironment", "OP_OS_SETENV:106",
+      "osSetEnv", "slos_setenv", "CommonBackend", "StateChangingOperation", "Implemented", 2, 0);
+    e.setResultTerm("StatusCode");
+    return e;
+  }
+
+  SLOsSupportElement currentDir() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("currentDir", "PathManagement", "OSPath", "OP_OS_CWD:107",
+      "osCurrentDir", "slos_cwd", "CommonBackend", "ReadOnlyQuery", "Implemented", 0, 0);
+    e.setResultTerm("Utf8Path");
+    return e;
+  }
+
+  SLOsSupportElement changeDir() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("changeDir", "PathManagement", "OSPath", "OP_OS_CHDIR:108",
+      "osChangeDir", "slos_chdir", "CommonBackend", "StateChangingOperation", "Implemented", 1, 0);
+    e.setResultTerm("StatusCode");
+    return e;
+  }
+
+  SLOsSupportElement hostName() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("hostName", "HostIdentity", "OSHost", "OP_OS_HOSTNAME:109",
+      "osHostName", "slos_hostname", "CommonBackend", "ReadOnlyQuery", "Implemented", 0, 0);
+    e.setResultTerm("Utf8String");
+    return e;
+  }
+
+  SLOsSupportElement userName() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("userName", "HostIdentity", "OSHost", "OP_OS_USERNAME:110",
+      "osUserName", "slos_username", "CommonBackend", "ReadOnlyQuery", "Implemented", 0, 0);
+    e.setResultTerm("Utf8String");
+    return e;
+  }
+
+  SLOsSupportElement tempDir() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("tempDir", "PathManagement", "OSPath", "OP_OS_TEMPDIR:111",
+      "osTempDir", "slos_tempdir", "CommonBackend", "ReadOnlyQuery", "Implemented", 0, 0);
+    e.setResultTerm("Utf8Path");
+    return e;
+  }
+
+  SLOsSupportElement processId() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("processId", "ProcessInspection", "OSProcess", "OP_OS_PID:112",
+      "osProcessId", "slos_process_id", "CommonBackend", "ReadOnlyQuery", "Implemented", 0, 0);
+    e.setResultTerm("UInt64");
+    return e;
+  }
+
+  SLOsSupportElement exists() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("exists", "FileSystem", "OSFileSystem", "OP_OS_EXISTS:113",
+      "osExists", "slos_exists", "CommonBackend", "ReadOnlyQuery", "Implemented", 1, 0);
+    e.setResultTerm("Boolean");
+    return e;
+  }
+
+  SLOsSupportElement isDir() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("isDir", "FileSystem", "OSFileSystem", "OP_OS_ISDIR:114",
+      "osIsDir", "slos_is_dir", "CommonBackend", "ReadOnlyQuery", "Implemented", 1, 0);
+    e.setResultTerm("Boolean");
+    return e;
+  }
+
+  SLOsSupportElement fileSize() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("fileSize", "FileSystem", "OSFileSystem", "OP_OS_FILESIZE:115",
+      "osFileSize", "slos_file_size", "CommonBackend", "ReadOnlyQuery", "Implemented", 1, 0);
+    e.setResultTerm("Int64Bytes");
+    return e;
+  }
+
+  SLOsSupportElement makeDir() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("makeDir", "FileSystem", "OSFileSystem", "OP_OS_MKDIR:116",
+      "osMakeDir", "slos_mkdir", "CommonBackend", "StateChangingOperation", "Implemented", 1, 0);
+    e.setResultTerm("StatusCode");
+    return e;
+  }
+
+  SLOsSupportElement remove() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("remove", "FileSystem", "OSFileSystem", "OP_OS_REMOVE:117",
+      "osRemove", "slos_remove", "CommonBackend", "StateChangingOperation", "Implemented", 1, 0);
+    e.setResultTerm("StatusCode");
+    return e;
+  }
+
+  SLOsSupportElement rename() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("rename", "FileSystem", "OSFileSystem", "OP_OS_RENAME:118",
+      "osRename", "slos_rename", "CommonBackend", "StateChangingOperation", "Implemented", 2, 0);
+    e.setResultTerm("StatusCode");
+    return e;
+  }
+
+  SLOsSupportElement run() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("run", "ProcessControl", "OSProcess", "OP_OS_RUN:119",
+      "osRun", "slos_run", "CommonBackend", "StateChangingOperation", "Implemented", 1, 0);
+    e.setResultTerm("ExitCode");
+    return e;
+  }
+
+  SLOsSupportElement spawn() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("spawn", "ProcessControl", "OSProcess", "OP_OS_SPAWN:120",
+      "osSpawn", "slos_spawn", "CommonBackend", "StateChangingOperation", "Implemented", 1, 0);
+    e.setResultTerm("OpaqueVMProcessHandle");
+    return e;
+  }
+
+  SLOsSupportElement waitFor() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("waitFor", "ProcessControl", "OSProcess", "OP_OS_WAIT:121",
+      "osWait", "slos_wait", "CommonBackend", "BlockingOperation", "Implemented", 1, 0);
+    e.setResultTerm("ExitCode");
+    return e;
+  }
+
+  SLOsSupportElement kill() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("kill", "ProcessControl", "OSProcess", "OP_OS_KILL:122",
+      "osKill", "slos_kill", "CommonBackend", "StateChangingOperation", "Implemented", 1, 0);
+    e.setResultTerm("StatusCode");
+    return e;
+  }
+
+  SLOsSupportElement closeProcess() {
+    SLOsSupportElement e = new SLOsSupportElement();
+    e.configure("closeProcess", "ProcessControl", "OSProcess", "OP_OS_PCLOSE:123",
+      "osProcessClose", "slos_release", "CommonBackend", "StateChangingOperation", "Implemented", 1, 0);
+    e.setResultTerm("Void");
+    return e;
+  }
+}
