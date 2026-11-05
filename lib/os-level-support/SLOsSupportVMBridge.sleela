@@ -1,11 +1,52 @@
-< SLeeLa Standard Library Definition.
+<< SLeeLa Standard Library Definition.
   Definition: VM-facing OSLS binding and marshalling contract.
   The existing OP_OS_* VM system-call bridge and the typed osls_* ABI adapter
-  are registered here. OSLS records cross the VM boundary as bounded JSON Strings. >
+  are registered here. OSLS records cross the VM boundary as bounded JSON Strings. >>
 #sleela 2.5
 material;
 
 class SLOsSupportVMBridge {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override each record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "mearvk";
+  String metaDate = "2026-11-05";
+  String metaCopyright = "Copyright mearvk LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "mearvk LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-05";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String value) { metaVersion = value; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int value) { metaId = value; }
+  String getMetaAuthor() { return metaAuthor; }
+  void setMetaAuthor(String value) { metaAuthor = value; }
+  String getMetaDate() { return metaDate; }
+  void setMetaDate(String value) { metaDate = value; }
+  String getMetaCopyright() { return metaCopyright; }
+  void setMetaCopyright(String value) { metaCopyright = value; }
+  String getMetaTrademark() { return metaTrademark; }
+  void setMetaTrademark(String value) { metaTrademark = value; }
+  String getMetaCorporation() { return metaCorporation; }
+  void setMetaCorporation(String value) { metaCorporation = value; }
+  String getMetaOrigin() { return metaOrigin; }
+  void setMetaOrigin(String value) { metaOrigin = value; }
+  String getMetaBirthDate() { return metaBirthDate; }
+  void setMetaBirthDate(String value) { metaBirthDate = value; }
+  int getMetaScienceRating() { return metaScienceRating; }
+  void setMetaScienceRating(int value) { metaScienceRating = value; }
+  String getMetaNationalSchedule() { return metaNationalSchedule; }
+  void setMetaNationalSchedule(String value) { metaNationalSchedule = value; }
   String bridgeVersion = "1.0.0";
   String vmNamespace = "std.os";
   String nativeNamespace = "osls";
@@ -144,9 +185,9 @@ class SLOsSupportVMBridge {
     return out;
   }
 
-  < Existing VM OS system calls are dispatched through OP_OS_* (103..123).
-    The 12 osls_* calls are now registered through OP_OSLS_CALL (155), with
-    typed argument validation and bounded JSON result marshalling. >
+<< Existing VM OS system calls are dispatched through OP_OS_* (103..123).
+   The 12 osls_* calls are now registered through OP_OSLS_CALL (155), with
+   typed argument validation and bounded JSON result marshalling. >>
   boolean isCoreOSOpcodeBridgeImplemented() { return true; }
   boolean isOSLSAbiAdapterRegistered() { return true; }
 
@@ -177,8 +218,8 @@ class SLOsSupportVMBridge {
     return out;
   }
 
-  < Portable grouping + current VM operation + source built-in + opcode.
-    The delimiter is a catalogue convention, not a runtime wire format. >
+<< Portable grouping + current VM operation + source built-in + opcode.
+   The delimiter is a catalogue convention, not a runtime wire format. >>
   SLList getExistingVMElementBindings() {
     SLList out = new SLList();
     out.add("HostIdentity|platform|osPlatform|OP_OS_PLATFORM=103|Implemented|ReadOnlyQuery");
@@ -194,6 +235,19 @@ class SLOsSupportVMBridge {
     out.add("OSLS|getNetworkInterfaces|oslsGetNetworkInterfaces|OP_OSLS_CALL=155/id9|Implemented|ReadOnlyEnumeration");
     out.add("OSLS|cronValidate|oslsCronValidate|OP_OSLS_CALL=155/id10|Implemented|ReadOnlyQuery");
     out.add("OSLS|cronNextAfter|oslsCronNextAfter|OP_OSLS_CALL=155/id11|Implemented|ReadOnlyQuery");
+    out.add("OSLS|getMemoryInfo|oslsGetMemoryInfo|OP_OSLS_CALL=155/id12|Implemented|ReadOnlyQuery");
+    out.add("OSLS|getAvailableMemory|oslsGetAvailableMemory|OP_OSLS_CALL=155/id13|Implemented|ReadOnlyQuery");
+    out.add("OSLS|getDiskSpace|oslsGetDiskSpace|OP_OSLS_CALL=155/id14|Implemented|ReadOnlyQuery");
+    out.add("OSLS|getVolumeInfo|oslsGetVolumeInfo|OP_OSLS_CALL=155/id15|Implemented|ReadOnlyQuery");
+    out.add("OSLS|getSystemLoad|oslsGetSystemLoad|OP_OSLS_CALL=155/id16|Implemented|ReadOnlyQuery");
+    out.add("OSLS|getCapabilities|oslsGetCapabilities|OP_OSLS_CALL=155/id17|Implemented|ReadOnlyQuery");
+    out.add("OSLS|getRuntimeInfo|oslsGetRuntimeInfo|OP_OSLS_CALL=155/id18|Implemented|ReadOnlyQuery");
+    out.add("OSLS|getNativeError|oslsGetNativeError|OP_OSLS_CALL=155/id19|Implemented|ReadOnlyQuery");
+    out.add("OSLS|pathNormalize|oslsPathNormalize|OP_OSLS_CALL=155/id20|Implemented|ReadOnlyQuery");
+    out.add("OSLS|pathJoin|oslsPathJoin|OP_OSLS_CALL=155/id21|Implemented|ReadOnlyQuery");
+    out.add("OSLS|pathResolve|oslsPathResolve|OP_OSLS_CALL=155/id22|Implemented|ReadOnlyQuery");
+    out.add("OSLS|getPathInfo|oslsGetPathInfo|OP_OSLS_CALL=155/id23|Implemented|ReadOnlyQuery");
+    out.add("OSLS|networkResolve|oslsNetworkResolve|OP_OSLS_CALL=155/id24|Implemented|ReadOnlyQuery");
     out.add("CapabilityDiscovery|supports|osCapability|OP_OS_CAPABILITY=104|Implemented|ReadOnlyQuery");
     out.add("Environment|getEnv|osGetEnv|OP_OS_GETENV=105|Implemented|ReadOnlyQuery");
     out.add("Environment|setEnv|osSetEnv|OP_OS_SETENV=106|Implemented|StateChangingOperation");

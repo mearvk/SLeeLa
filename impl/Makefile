@@ -106,10 +106,11 @@ CORE_OBJ := $(BUILD)/sleela_core.o
 OSLS_DIR := ../os-level-support
 OSLS_CORE_OBJ := $(BUILD)/osls_core.o
 OSLS_EXT_OBJ := $(BUILD)/osls_extended.o
+OSLS_EXT2_OBJ := $(BUILD)/osls_extended2.o
 OSLS_VM_OBJ := $(BUILD)/osls_vm_bridge.o
 OSLS_VM_CAP_SMOKE := $(BUILD)/osls_vm_capability_smoke
 OSLS_VM_CAP_SMOKE_OBJ := $(BUILD)/osls_vm_capability_test.o
-OSLS_OBJS := $(OSLS_CORE_OBJ) $(OSLS_EXT_OBJ) $(OSLS_VM_OBJ)
+OSLS_OBJS := $(OSLS_CORE_OBJ) $(OSLS_EXT_OBJ) $(OSLS_EXT2_OBJ) $(OSLS_VM_OBJ)
 ifeq ($(PLATFORM),windows)
   OSLS_DEFS := -D_CRT_SECURE_NO_WARNINGS
 else
@@ -682,6 +683,8 @@ $(PARAMETERS_OBJ): ../runtime/Parameters.c ../runtime/Parameters.h | $(BUILD)
 $(OSLS_CORE_OBJ): $(OSLS_DIR)/osls.c $(OSLS_DIR)/osls.h | $(BUILD)
 	$(CC) $(CFLAGS) $(OSLS_DEFS) -I$(OSLS_DIR) -c $< -o $@
 $(OSLS_EXT_OBJ): $(OSLS_DIR)/osls_extended.c $(OSLS_DIR)/osls.h | $(BUILD)
+	$(CC) $(CFLAGS) $(OSLS_DEFS) -I$(OSLS_DIR) -c $< -o $@
+$(OSLS_EXT2_OBJ): $(OSLS_DIR)/osls_extended2.c $(OSLS_DIR)/osls.h $(OSLS_DIR)/osls_vm_bridge.h | $(BUILD)
 	$(CC) $(CFLAGS) $(OSLS_DEFS) -I$(OSLS_DIR) -c $< -o $@
 $(OSLS_VM_OBJ): $(OSLS_DIR)/osls_vm_bridge.c $(OSLS_DIR)/osls_vm_bridge.h $(OSLS_DIR)/osls.h | $(BUILD)
 	$(CC) $(CFLAGS) $(OSLS_DEFS) -I$(OSLS_DIR) -c $< -o $@

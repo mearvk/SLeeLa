@@ -1119,14 +1119,22 @@ private:
             {"oslsGetEnvironmentValue",3},{"oslsEnumerateEnvironment",4},
             {"oslsGetFileInfo",5},{"oslsListDirectory",6},{"oslsGetCPUInfo",7},
             {"oslsGetTimezoneInfo",8},{"oslsGetNetworkInterfaces",9},
-            {"oslsCronValidate",10},{"oslsCronNextAfter",11}
+            {"oslsCronValidate",10},{"oslsCronNextAfter",11},
+            {"oslsGetMemoryInfo",12},{"oslsGetAvailableMemory",13},
+            {"oslsGetDiskSpace",14},{"oslsGetVolumeInfo",15},
+            {"oslsGetSystemLoad",16},{"oslsGetCapabilities",17},
+            {"oslsGetRuntimeInfo",18},{"oslsGetNativeError",19},
+            {"oslsPathNormalize",20},{"oslsPathJoin",21},
+            {"oslsPathResolve",22},{"oslsGetPathInfo",23},
+            {"oslsNetworkResolve",24}
         };
         {
             auto osls = oslsIds.find(n);
             if (osls != oslsIds.end()) {
                 if (syntax_ < SyntaxVersion{2,5})
                     throw std::runtime_error("Semantic error: OSLS native bindings require #sleela 2.5");
-                static const int arity[] = {0,1,0,1,0,1,1,0,0,0,1,2};
+                static const int arity[] = {0,1,0,1,0,1,1,0,0,0,1,2,
+                                            0,0,1,1,0,0,0,0,1,2,1,1,1};
                 if ((int)c.args.size() != arity[osls->second])
                     throw std::runtime_error("Semantic error: OSLS binding has the wrong argument count");
                 emitArgs(c);

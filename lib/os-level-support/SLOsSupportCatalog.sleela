@@ -1,11 +1,52 @@
-< SLeeLa Standard Library Definition.
+<< SLeeLa Standard Library Definition.
   Definition: Canonical taxonomy, grouping terms, and portable OS-support API catalogue.
   All lists are descriptive catalogues. Native operations are performed only by
-  a registered VM/native bridge and the host OS permission model. >
+  a registered VM/native bridge and the host OS permission model. >>
 #sleela 2.5
 material;
 
 class SLOsSupportCatalog {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override each record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "mearvk";
+  String metaDate = "2026-11-05";
+  String metaCopyright = "Copyright mearvk LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "mearvk LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-05";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String value) { metaVersion = value; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int value) { metaId = value; }
+  String getMetaAuthor() { return metaAuthor; }
+  void setMetaAuthor(String value) { metaAuthor = value; }
+  String getMetaDate() { return metaDate; }
+  void setMetaDate(String value) { metaDate = value; }
+  String getMetaCopyright() { return metaCopyright; }
+  void setMetaCopyright(String value) { metaCopyright = value; }
+  String getMetaTrademark() { return metaTrademark; }
+  void setMetaTrademark(String value) { metaTrademark = value; }
+  String getMetaCorporation() { return metaCorporation; }
+  void setMetaCorporation(String value) { metaCorporation = value; }
+  String getMetaOrigin() { return metaOrigin; }
+  void setMetaOrigin(String value) { metaOrigin = value; }
+  String getMetaBirthDate() { return metaBirthDate; }
+  void setMetaBirthDate(String value) { metaBirthDate = value; }
+  int getMetaScienceRating() { return metaScienceRating; }
+  void setMetaScienceRating(int value) { metaScienceRating = value; }
+  String getMetaNationalSchedule() { return metaNationalSchedule; }
+  void setMetaNationalSchedule(String value) { metaNationalSchedule = value; }
   String catalogVersion = "1.0.0";
   String packageName = "os-level-support";
   String commonNamespace = "osls";
@@ -90,15 +131,12 @@ class SLOsSupportCatalog {
     return out;
   }
 
-  < Proposed portable additions; these are not current exported symbols. >
-  SLList getPlannedCommonFunctions() {
+  << Read-only inspection functions registered and VM-callable since revision
+     1.1 through OP_OSLS_CALL operation IDs 12..24. These WERE planned; they are
+     now exported and reachable, joining the original twelve (ids 0..11) for 25
+     registered osls_* calls in total. >>
+  SLList getRegisteredInspectionFunctions() {
     SLList out = new SLList();
-    out.add("osls_close");
-    out.add("osls_copy_file");
-    out.add("osls_create_directory");
-    out.add("osls_file_read");
-    out.add("osls_file_write");
-    out.add("osls_flush_file");
     out.add("osls_get_available_memory");
     out.add("osls_get_capabilities");
     out.add("osls_get_disk_space");
@@ -106,16 +144,33 @@ class SLOsSupportCatalog {
     out.add("osls_get_native_error");
     out.add("osls_get_path_info");
     out.add("osls_get_runtime_info");
-    out.add("osls_get_socket_info");
     out.add("osls_get_system_load");
     out.add("osls_get_volume_info");
-    out.add("osls_move_file");
     out.add("osls_network_resolve");
-    out.add("osls_open_file");
-    out.add("osls_open_socket");
     out.add("osls_path_join");
     out.add("osls_path_normalize");
     out.add("osls_path_resolve");
+    return out;
+  }
+
+  << State-changing and handle/stream functions that remain PLANNED and are
+     deliberately NOT registered through the read-only OP_OSLS_CALL path. Per
+     DESIGNATE.md section 9 each of these mutates host state, opens an opaque
+     handle, or blocks, so it must be specified with its own explicitly granted
+     capability (not the default host-read) and invoked as a distinct
+     state-changing operation. Listing one here never makes it callable. >>
+  SLList getStateChangingPlannedFunctions() {
+    SLList out = new SLList();
+    out.add("osls_close");
+    out.add("osls_copy_file");
+    out.add("osls_create_directory");
+    out.add("osls_file_read");
+    out.add("osls_file_write");
+    out.add("osls_flush_file");
+    out.add("osls_get_socket_info");
+    out.add("osls_move_file");
+    out.add("osls_open_file");
+    out.add("osls_open_socket");
     out.add("osls_read_file");
     out.add("osls_remove_directory");
     out.add("osls_remove_file");

@@ -1,11 +1,36 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.55  
+**Revision:** 0.57  
 **Packages:** 109  
-**SLeeLa source units:** 11836  
-**Module-facade symbols:** 75  
-**Total symbol records:** 11911  
+**SLeeLa source units:** 11771  
+**Module-facade symbols:** 76  
+**Total symbol records:** 11847  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.57 brings the **`os-level-support`** package to its curated, stable
+> form and indexes it in `LIBRARY.SYMBOLS.md` for the first time. The registered
+> **`osls_*`** VM surface grows from **12 to 25** read-only operations
+> (OP_OSLS_CALL IDs 0–24; opcode 155 stays frozen — the typed registry grew, the
+> ISA did not). The 13 added calls are all read-only or pure computation and bind
+> under the existing host-read capability: `osls_get_memory_info`,
+> `osls_get_available_memory`, `osls_get_disk_space`, `osls_get_volume_info`,
+> `osls_get_system_load`, `osls_get_capabilities`, `osls_get_runtime_info`,
+> `osls_get_native_error`, `osls_path_normalize`, `osls_path_join`,
+> `osls_path_resolve`, `osls_get_path_info`, `osls_network_resolve`. Native C adds
+> `os-level-support/osls_extended2.c`; the long-standing per-platform unevenness in
+> the original twelve is fixed (Windows network enumeration via IP Helper, CPU
+> vendor/model + cache-line on all three platforms, real Windows timezone key
+> name). Every `lib/os-level-support` class carries the Metadata Class metapattern;
+> `SLOsSupportStatus` (core `osls_status`) is split from the new
+> `SLOsRuntimeStatus` (runtime space); `SLOsSupportTyped` pairs each record call
+> with its `lib/systems` record shape; `SLOsSupportCatalog` separates
+> `getRegisteredInspectionFunctions` (live) from `getStateChangingPlannedFunctions`
+> (28 file/socket/timer/process operations kept off the read-only path by design,
+> per DESIGNATE.md §9); and a runnable `SLOsSupportConsistencyExample` guards
+> factory/registry/status/typed-binding agreement. Counts reconciled to the live
+> `/lib` tree by `tools/generate-library-symbols.py` and verified by
+> `test-suites/test-library-inventory.sh`. See `os-level-support/DESIGNATE.md` and
+> `lib/os-level-support/README.md`.
 
 > Revision 0.55 appends **`OP_OSLS_CALL` (155)** to the canonical ISA and
 > adds its `SLOpOslsCall` wrapper. The native VM dispatch now reaches the

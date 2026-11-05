@@ -13,7 +13,7 @@ catalogues**.
 | SLOsSupportCatalog.sleela | Canonical capability groups, common API names, runtime/module functions, planned portable functions, and grouping terms |
 | SLOsSupportElement.sleela | Reusable element descriptor: group, VM term/opcode, portable symbol, native symbol, backend, effect, status and arity |
 | SLOsSupportVMElements.sleela | Factory methods for the 21 existing OP_OS operations, mapped to VM opcodes and slos_* backend symbols |
-| SLOsSupportOSLSElements.sleela | Factory methods for the 12 registered osls_* C ABI calls, mapped to OP_OSLS_CALL (155) and operation IDs 0–11 |
+| SLOsSupportOSLSElements.sleela | Factory methods for the 25 registered osls_* C ABI calls, mapped to OP_OSLS_CALL (155) and operation IDs 0–24 (the original 12 plus 13 read-only inspection calls added in revision 1.1: memory, disk, volume, system load, capabilities, runtime-info, native-error, path normalize/join/resolve/info, and hostname resolution) |
 | SLOsSupportVMBridge.sleela | VM dispatch stages, status/marshalling vocabulary and current VM opcode mapping |
 | examples/SLOsSupportCatalogExample.sleela | Example that enumerates common groups, VM bindings, and each platform's native API catalogue |
 | SLOsSupportLinux.sleela | Linux grouping terms and alphabetized POSIX/Linux native symbols |
@@ -23,7 +23,29 @@ catalogues**.
 | SLOsSupportWindowsSource.sleela | Windows source facade with VM-backed portable calls and gated Win32/Winsock extension metadata |
 | SLOsSupportMacOSSource.sleela | macOS source facade with VM-backed portable calls and gated Darwin/Mach/framework extension metadata |
 | SLOsSupportPlatform.sleela | Runtime platform selector for the Linux, Windows and macOS source facades |
-| SLOsSupportNative.sleela | Source facade for the 12 VM-callable OSLS functions; returns JSON Strings with OSLS status |
+| SLOsSupportNative.sleela | Source facade for the 12 VM-callable OSLS functions; returns JSON Strings with OSLS status. PID and epoch arguments are `long` (int64) to match the C ABI |
+| SLOsSupportTyped.sleela | Typed-result binding catalogue: pairs each record-returning OSLS call with the `lib/systems` record class that models its JSON fields (SLSystemInfo, SLProcessInfo, SLFileInfo, SLCPUInfo, SLTimezoneInfo, SLNetworkInterface) |
+| SLOsSupportStatus.sleela | Core status values for the `osls_*` ABI, matching `osls_status` in `os-level-support/osls.h` (OK, INVALID_ARGUMENT, BUFFER_TOO_SMALL, SYSTEM_ERROR, NOT_FOUND, UNSUPPORTED) |
+| SLOsRuntimeStatus.sleela | In-process runtime status values, matching `slosh_status` / `osls_runtime_status` (adds OUT_OF_MEMORY, CAPACITY, BUSY, CALLBACK_FAILED) — a distinct space from the core ABI |
+| SLOsEvent / SLOsSubscription / SLOsTaskQueue.sleela | Descriptive contract records for the in-process runtime event, subscription and cooperative task queue |
+| examples/SLOsSupportConsistencyExample.sleela | Runnable round-trip guard: asserts the 12 OSLS element factories agree with the native registry, the core/runtime status maps round-trip, and the typed bindings name a known record class |
+
+## Two status spaces (do not conflate)
+
+The OSLS subsystem has two distinct status enums, and the SLeeLa catalogue now
+models them with two distinct classes:
+
+- **Core ABI** — `osls_status` in `os-level-support/osls.h`: `OK=0`,
+  `INVALID_ARGUMENT=1`, `BUFFER_TOO_SMALL=2`, `SYSTEM_ERROR=3`, `NOT_FOUND=4`,
+  `UNSUPPORTED=5`. This is what the registered `OP_OSLS_CALL` path returns.
+  Modelled by **`SLOsSupportStatus`** and by `SLOsSupportVMBridge.getStatusTerms()`.
+- **In-process runtime** — `slosh_status` / `osls_runtime_status`: `OK=0`,
+  `INVALID_ARGUMENT=1`, `OUT_OF_MEMORY=2`, `CAPACITY=3`, `NOT_FOUND=4`, `BUSY=5`,
+  `CALLBACK_FAILED=6`. Modelled by **`SLOsRuntimeStatus`**, and consistent with
+  the `SLOsEvent` / `SLOsSubscription` / `SLOsTaskQueue` runtime records.
+
+The two spaces share only `OK`, `INVALID_ARGUMENT` and `NOT_FOUND`; the rest
+differ, so a value from one must never be interpreted with the other.
 
 ## Canonical grouping vocabulary
 
@@ -75,7 +97,12 @@ executable suffixes, capability groups and native extension symbol lists.
 SLOsSupportPlatform detects the host and selects a backend identifier.
 It fails closed for an unknown platform.
 
-The common OSLS API is registered and callable through the VM. The separate
+The common OSLS API is registered and callable through the VM: **25** read-only
+operations (IDs 0–24) as of revision 1.1. State-changing and handle/stream
+families (file mutation, sockets, timers, process control, `osls_sleep`) are
+intentionally **not** registered through this read-only path — see
+`SLOsSupportCatalog.getStateChangingPlannedFunctions` and DESIGNATE.md §9; each
+needs its own explicitly granted capability before exposure. The separate
 nativeExtensionRegistered checks on each platform facade still return false.
 Linux procfs/sysfs, netlink, epoll, inotify and cgroups; Windows Win32/IP Helper,
 SCM/Registry and Winsock; and macOS Mach/Dispatch/IOKit/FSEvents/SystemConfiguration

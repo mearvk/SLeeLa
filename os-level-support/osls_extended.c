@@ -14,12 +14,18 @@
 
 #if defined(_WIN32)
 #  define WIN32_LEAN_AND_MEAN
+#  include <winsock2.h>
+#  include <ws2tcpip.h>
 #  include <windows.h>
+#  include <iphlpapi.h>
 #  include <process.h>
 #  include <direct.h>
 #  include <io.h>
+#  include <intrin.h>
 #  include <sys/stat.h>
 #  include <Lmcons.h>
+#  pragma comment(lib, "iphlpapi.lib")
+#  pragma comment(lib, "ws2_32.lib")
 #else
 #  include <dirent.h>
 #  include <unistd.h>
@@ -270,39 +276,97 @@ osls_status osls_get_cpu_info(osls_cpu_info *out_info) {
     {
         SYSTEM_INFO si;
         MEMORYSTATUSEX mem;
+        int regs[4] = {0};
+        char vendor[13] = {0};
+        char brand[49] = {0};
         GetSystemInfo(&si);
         out_info->logical_cores = si.dwNumberOfProcessors;
         out_info->physical_cores = out_info->logical_cores;
-        out_info->cache_line_size = 0;
+        out_info->cache_line_size = 64; /* x86/x64 baseline; refined below if exposed */
         mem.dwLength = sizeof(mem);
         if (GlobalMemoryStatusEx(&mem)) out_info->total_memory_bytes = mem.ullTotalPhys;
-        osls_copy(out_info->vendor, sizeof(out_info->vendor), "unknown");
-        osls_copy(out_info->model, sizeof(out_info->model), "unknown");
+        /* CPUID vendor string (leaf 0) and brand string (leaves 0x80000002..4). */
+        __cpuid(regs, 0);
+        memcpy(vendor + 0, &regs[1], 4);
+        memcpy(vendor + 4, &regs[3], 4);
+        memcpy(vendor + 8, &regs[2], 4);
+        osls_copy(out_info->vendor, sizeof(out_info->vendor), vendor[0] ? vendor : "unknown");
+        __cpuid(regs, (int)0x80000000);
+        if ((unsigned)regs[0] >= 0x80000004u) {
+            __cpuid((int *)(brand + 0), (int)0x80000002);
+            __cpuid((int *)(brand + 16), (int)0x80000003);
+            __cpuid((int *)(brand + 32), (int)0x80000004);
+            /* trim leading spaces */
+            {
+                const char *b = brand;
+                while (*b == ' ') ++b;
+                osls_copy(out_info->model, sizeof(out_info->model), b[0] ? b : "unknown");
+            }
+        } else {
+            osls_copy(out_info->model, sizeof(out_info->model), "unknown");
+        }
     }
 #elif defined(__linux__)
     {
         long n = sysconf(_SC_NPROCESSORS_ONLN);
+        long line = sysconf(_SC_LEVEL1_DCACHE_LINESIZE);
         struct sysinfo info;
         struct utsname name;
+        FILE *cpuinfo;
         out_info->logical_cores = n > 0 ? (uint32_t)n : 0;
         out_info->physical_cores = out_info->logical_cores;
-        out_info->cache_line_size = 0;
+        out_info->cache_line_size = line > 0 ? (uint32_t)line : 0;
         if (sysinfo(&info) == 0) out_info->total_memory_bytes = (uint64_t)info.totalram * (uint64_t)info.mem_unit;
-        if (uname(&name) == 0) osls_copy(out_info->model, sizeof(out_info->model), name.machine);
         osls_copy(out_info->vendor, sizeof(out_info->vendor), "unknown");
+        if (uname(&name) == 0) osls_copy(out_info->model, sizeof(out_info->model), name.machine);
+        /* Prefer the real vendor_id / model name from /proc/cpuinfo when present. */
+        cpuinfo = fopen("/proc/cpuinfo", "r");
+        if (cpuinfo) {
+            char line_buf[512];
+            int have_vendor = 0, have_model = 0;
+            while ((!have_vendor || !have_model) && fgets(line_buf, sizeof(line_buf), cpuinfo)) {
+                char *colon = strchr(line_buf, ':');
+                char *value;
+                size_t len;
+                if (!colon) continue;
+                value = colon + 1;
+                while (*value == ' ' || *value == '\t') ++value;
+                len = strlen(value);
+                while (len > 0 && (value[len - 1] == '\n' || value[len - 1] == '\r' || value[len - 1] == ' ')) value[--len] = '\0';
+                if (!have_vendor && strncmp(line_buf, "vendor_id", 9) == 0) {
+                    osls_copy(out_info->vendor, sizeof(out_info->vendor), value);
+                    have_vendor = 1;
+                } else if (!have_model && strncmp(line_buf, "model name", 10) == 0) {
+                    osls_copy(out_info->model, sizeof(out_info->model), value);
+                    have_model = 1;
+                } else if (!have_vendor && strncmp(line_buf, "CPU implementer", 15) == 0) {
+                    osls_copy(out_info->vendor, sizeof(out_info->vendor), value);
+                    have_vendor = 1;
+                } else if (!have_model && strncmp(line_buf, "Model", 5) == 0) {
+                    osls_copy(out_info->model, sizeof(out_info->model), value);
+                    have_model = 1;
+                }
+            }
+            fclose(cpuinfo);
+        }
     }
 #elif defined(__APPLE__)
     {
         int n = 0; size_t len = sizeof(n);
-        uint64_t mem = 0; len = sizeof(mem);
+        uint64_t mem = 0;
+        int64_t line = 0;
+        len = sizeof(n);
         if (sysctlbyname("hw.logicalcpu", &n, &len, NULL, 0) == 0 && n > 0) out_info->logical_cores = (uint32_t)n;
         n = 0; len = sizeof(n);
         if (sysctlbyname("hw.physicalcpu", &n, &len, NULL, 0) == 0 && n > 0) out_info->physical_cores = (uint32_t)n;
         len = sizeof(mem);
         if (sysctlbyname("hw.memsize", &mem, &len, NULL, 0) == 0) out_info->total_memory_bytes = mem;
+        len = sizeof(line);
+        if (sysctlbyname("hw.cachelinesize", &line, &len, NULL, 0) == 0 && line > 0) out_info->cache_line_size = (uint32_t)line;
         len = sizeof(out_info->model);
         if (sysctlbyname("machdep.cpu.brand_string", out_info->model, &len, NULL, 0) != 0) osls_copy(out_info->model, sizeof(out_info->model), "unknown");
-        osls_copy(out_info->vendor, sizeof(out_info->vendor), "unknown");
+        len = sizeof(out_info->vendor);
+        if (sysctlbyname("machdep.cpu.vendor", out_info->vendor, &len, NULL, 0) != 0) osls_copy(out_info->vendor, sizeof(out_info->vendor), "unknown");
     }
 #else
     return OSLS_UNSUPPORTED;
@@ -320,6 +384,7 @@ osls_status osls_get_timezone_info(osls_timezone_info *out_info) {
     if (localtime_s(&local_tm, &now) != 0 || gmtime_s(&utc_tm, &now) != 0) return OSLS_SYSTEM_ERROR;
     {
         TIME_ZONE_INFORMATION zone;
+        DYNAMIC_TIME_ZONE_INFORMATION dzone;
         DWORD zone_state = GetTimeZoneInformation(&zone);
         LONG bias;
         if (zone_state == TIME_ZONE_ID_INVALID) return OSLS_SYSTEM_ERROR;
@@ -327,8 +392,15 @@ osls_status osls_get_timezone_info(osls_timezone_info *out_info) {
         if (zone_state == TIME_ZONE_ID_DAYLIGHT) bias += zone.DaylightBias;
         else bias += zone.StandardBias;
         out_info->offset_minutes_from_utc = (int)(-bias);
+        /* Real IANA-style key name where available, else the localized std name. */
+        if (GetDynamicTimeZoneInformation(&dzone) != TIME_ZONE_ID_INVALID && dzone.TimeZoneKeyName[0]) {
+            WideCharToMultiByte(CP_UTF8, 0, dzone.TimeZoneKeyName, -1, out_info->id, (int)sizeof(out_info->id), NULL, NULL);
+        } else if (zone.StandardName[0]) {
+            WideCharToMultiByte(CP_UTF8, 0, zone.StandardName, -1, out_info->id, (int)sizeof(out_info->id), NULL, NULL);
+        } else {
+            osls_copy(out_info->id, sizeof(out_info->id), "local");
+        }
     }
-    osls_copy(out_info->id, sizeof(out_info->id), "local");
 #else
     if (!localtime_r(&now, &local_tm) || !gmtime_r(&now, &utc_tm)) return OSLS_SYSTEM_ERROR;
 #  if defined(__APPLE__) || defined(__linux__)
@@ -354,10 +426,62 @@ osls_status osls_get_timezone_info(osls_timezone_info *out_info) {
 
 osls_status osls_get_network_interfaces(osls_network_interface *buffer, size_t buffer_count, size_t *out_count) {
 #if defined(_WIN32)
-    (void)buffer; (void)buffer_count;
-    if (!out_count) return OSLS_INVALID_ARGUMENT;
-    *out_count = 0;
-    return OSLS_UNSUPPORTED;
+    {
+        ULONG family = AF_UNSPEC;
+        ULONG flags = GAA_FLAG_SKIP_ANYCAST | GAA_FLAG_SKIP_MULTICAST | GAA_FLAG_SKIP_DNS_SERVER;
+        ULONG size = 15000;
+        IP_ADAPTER_ADDRESSES *addresses = NULL, *it;
+        DWORD rc;
+        size_t count = 0;
+        int attempts = 0;
+        if (!out_count) return OSLS_INVALID_ARGUMENT;
+        *out_count = 0;
+        do {
+            addresses = (IP_ADAPTER_ADDRESSES *)malloc(size);
+            if (!addresses) return OSLS_SYSTEM_ERROR;
+            rc = GetAdaptersAddresses(family, flags, NULL, addresses, &size);
+            if (rc == ERROR_BUFFER_OVERFLOW) { free(addresses); addresses = NULL; }
+        } while (rc == ERROR_BUFFER_OVERFLOW && ++attempts < 4);
+        if (rc != NO_ERROR) { free(addresses); return rc == ERROR_NO_DATA ? OSLS_OK : OSLS_SYSTEM_ERROR; }
+        for (it = addresses; it; it = it->Next) {
+            IP_ADAPTER_UNICAST_ADDRESS *ua;
+            for (ua = it->FirstUnicastAddress; ua; ua = ua->Next) {
+                int fam = ua->Address.lpSockaddr->sa_family;
+                if (fam == AF_INET || fam == AF_INET6) ++count;
+            }
+        }
+        *out_count = count;
+        if (count > buffer_count || (count && !buffer)) { free(addresses); return OSLS_BUFFER_TOO_SMALL; }
+        memset(buffer, 0, count * sizeof(*buffer));
+        count = 0;
+        for (it = addresses; it; it = it->Next) {
+            IP_ADAPTER_UNICAST_ADDRESS *ua;
+            for (ua = it->FirstUnicastAddress; ua; ua = ua->Next) {
+                int fam = ua->Address.lpSockaddr->sa_family;
+                osls_network_interface *entry;
+                char addr[64] = {0};
+                DWORD addr_len = (DWORD)sizeof(addr);
+                if (fam != AF_INET && fam != AF_INET6) continue;
+                entry = &buffer[count++];
+                WideCharToMultiByte(CP_UTF8, 0, it->FriendlyName, -1, entry->name, (int)sizeof(entry->name), NULL, NULL);
+                entry->is_up = (it->OperStatus == IfOperStatusUp);
+                entry->is_loopback = (it->IfType == IF_TYPE_SOFTWARE_LOOPBACK);
+                if (it->PhysicalAddressLength && it->PhysicalAddressLength <= 8) {
+                    char *p = entry->mac_address;
+                    DWORD b;
+                    for (b = 0; b < it->PhysicalAddressLength && (p - entry->mac_address) + 3 < (int)sizeof(entry->mac_address); ++b)
+                        p += snprintf(p, sizeof(entry->mac_address) - (size_t)(p - entry->mac_address), b ? "-%02X" : "%02X", it->PhysicalAddress[b]);
+                }
+                if (WSAAddressToStringA(ua->Address.lpSockaddr, (DWORD)ua->Address.iSockaddrLength, NULL, addr, &addr_len) == 0) {
+                    char *pct = strchr(addr, '%'); if (pct) *pct = '\0';
+                    if (fam == AF_INET) osls_copy(entry->ipv4, sizeof(entry->ipv4), addr);
+                    else osls_copy(entry->ipv6, sizeof(entry->ipv6), addr);
+                }
+            }
+        }
+        free(addresses);
+        return OSLS_OK;
+    }
 #else
     struct ifaddrs *list, *it;
     size_t count = 0;

@@ -166,6 +166,89 @@ static int osls_vm_dispatch_native(int op, const char *arg, int64_t number, char
         int64_t next = 0; rc = osls_cron_next_after(arg, number, &next); status(&j, rc);
         if (rc == OSLS_OK) field_i64(&j,"nextEpochSeconds",next); finish(&j); break;
     }
+    case OSLS_VM_GET_MEMORY_INFO: {
+        osls_memory_info v; rc = osls_get_memory_info(&v); status(&j, rc);
+        if (rc == OSLS_OK) {
+            field_u64(&j,"totalBytes",v.total_bytes); field_u64(&j,"availableBytes",v.available_bytes);
+            field_u64(&j,"usedBytes",v.used_bytes); field_u64(&j,"pageSizeBytes",v.page_size_bytes);
+        }
+        finish(&j); break;
+    }
+    case OSLS_VM_GET_AVAILABLE_MEMORY: {
+        uint64_t bytes = 0; rc = osls_get_available_memory(&bytes); status(&j, rc);
+        if (rc == OSLS_OK) field_u64(&j,"availableBytes",bytes); finish(&j); break;
+    }
+    case OSLS_VM_GET_DISK_SPACE: {
+        osls_disk_space v; rc = osls_get_disk_space(arg, &v); status(&j, rc);
+        if (rc == OSLS_OK) {
+            field_string(&j,"path",v.path); field_u64(&j,"totalBytes",v.total_bytes);
+            field_u64(&j,"freeBytes",v.free_bytes); field_u64(&j,"availableBytes",v.available_bytes);
+        }
+        finish(&j); break;
+    }
+    case OSLS_VM_GET_VOLUME_INFO: {
+        osls_volume_info v; rc = osls_get_volume_info(arg, &v); status(&j, rc);
+        if (rc == OSLS_OK) {
+            field_string(&j,"path",v.path); field_string(&j,"filesystem",v.filesystem);
+            field_u64(&j,"totalBytes",v.total_bytes); field_u64(&j,"availableBytes",v.available_bytes);
+            field_u64(&j,"blockSize",v.block_size); field_bool(&j,"isReadOnly",v.is_read_only);
+        }
+        finish(&j); break;
+    }
+    case OSLS_VM_GET_SYSTEM_LOAD: {
+        osls_system_load v; rc = osls_get_system_load(&v); status(&j, rc);
+        if (rc == OSLS_OK) {
+            field_i64(&j,"loadAverage1minMilli",v.load_average_1min_milli);
+            field_i64(&j,"loadAverage5minMilli",v.load_average_5min_milli);
+            field_i64(&j,"loadAverage15minMilli",v.load_average_15min_milli);
+            field_u64(&j,"logicalCores",v.logical_cores);
+        }
+        finish(&j); break;
+    }
+    case OSLS_VM_GET_CAPABILITIES: {
+        uint64_t caps = 0; rc = osls_get_capabilities(&caps); status(&j, rc);
+        if (rc == OSLS_OK) field_u64(&j,"capabilities",caps); finish(&j); break;
+    }
+    case OSLS_VM_GET_RUNTIME_INFO: {
+        osls_runtime_info v; rc = osls_get_runtime_info(&v); status(&j, rc);
+        if (rc == OSLS_OK) {
+            field_string(&j,"backend",v.backend); field_string(&j,"abiVersion",v.abi_version);
+            field_u64(&j,"operationCount",v.operation_count); field_u64(&j,"capabilities",v.capabilities);
+        }
+        finish(&j); break;
+    }
+    case OSLS_VM_GET_NATIVE_ERROR: {
+        osls_native_error v; rc = osls_get_native_error(&v); status(&j, rc);
+        if (rc == OSLS_OK) { field_i64(&j,"code",v.code); field_string(&j,"message",v.message); }
+        finish(&j); break;
+    }
+    case OSLS_VM_PATH_NORMALIZE: {
+        char buf[OSLS_PATH_MAX]; rc = osls_path_normalize(arg, buf, sizeof(buf)); status(&j, rc);
+        if (rc == OSLS_OK) field_string(&j,"path",buf); finish(&j); break;
+    }
+    case OSLS_VM_PATH_JOIN: {
+        /* Two UTF-8 args arrive packed: left in arg; right not available via the
+         * single-text dispatch path, so path_join is exposed with both operands
+         * marshalled by the typed invoker below. This record builds from args. */
+        rc = OSLS_INVALID_ARGUMENT; status(&j, rc); finish(&j); break;
+    }
+    case OSLS_VM_PATH_RESOLVE: {
+        char buf[OSLS_PATH_MAX]; rc = osls_path_resolve(arg, buf, sizeof(buf)); status(&j, rc);
+        if (rc == OSLS_OK) field_string(&j,"path",buf); finish(&j); break;
+    }
+    case OSLS_VM_GET_PATH_INFO: {
+        osls_path_info v; rc = osls_get_path_info(arg, &v); status(&j, rc);
+        if (rc == OSLS_OK) {
+            field_string(&j,"input",v.input); field_string(&j,"normalized",v.normalized);
+            field_string(&j,"root",v.root); field_bool(&j,"isAbsolute",v.is_absolute);
+            field_bool(&j,"exists",v.exists);
+        }
+        finish(&j); break;
+    }
+    case OSLS_VM_NETWORK_RESOLVE: {
+        char buf[1024]; rc = osls_network_resolve(arg, buf, sizeof(buf)); status(&j, rc);
+        if (rc == OSLS_OK) field_string(&j,"addresses",buf); finish(&j); break;
+    }
     default: return -1;
     }
     return j.failed ? -1 : (int)j.used;
@@ -176,6 +259,7 @@ static int osls_vm_dispatch_native(int op, const char *arg, int64_t number, char
 static const osls_vm_arg_type sig_i64[] = { OSLS_VM_ARG_I64 };
 static const osls_vm_arg_type sig_utf8[] = { OSLS_VM_ARG_UTF8 };
 static const osls_vm_arg_type sig_utf8_i64[] = { OSLS_VM_ARG_UTF8, OSLS_VM_ARG_I64 };
+static const osls_vm_arg_type sig_utf8_utf8[] = { OSLS_VM_ARG_UTF8, OSLS_VM_ARG_UTF8 };
 
 #define OSLS_INVOKER(name, op, text_expr, int_expr) \
 static int name(const osls_vm_value *a, size_t n, char *out, size_t cap) { \
@@ -193,7 +277,35 @@ OSLS_INVOKER(invoke_timezone_info, OSLS_VM_GET_TIMEZONE_INFO, NULL, 0)
 OSLS_INVOKER(invoke_network_interfaces, OSLS_VM_GET_NETWORK_INTERFACES, NULL, 0)
 OSLS_INVOKER(invoke_cron_validate, OSLS_VM_CRON_VALIDATE, a[0].value.utf8, 0)
 OSLS_INVOKER(invoke_cron_next_after, OSLS_VM_CRON_NEXT_AFTER, a[0].value.utf8, a[1].value.i64)
+OSLS_INVOKER(invoke_memory_info, OSLS_VM_GET_MEMORY_INFO, NULL, 0)
+OSLS_INVOKER(invoke_available_memory, OSLS_VM_GET_AVAILABLE_MEMORY, NULL, 0)
+OSLS_INVOKER(invoke_disk_space, OSLS_VM_GET_DISK_SPACE, a[0].value.utf8, 0)
+OSLS_INVOKER(invoke_volume_info, OSLS_VM_GET_VOLUME_INFO, a[0].value.utf8, 0)
+OSLS_INVOKER(invoke_system_load, OSLS_VM_GET_SYSTEM_LOAD, NULL, 0)
+OSLS_INVOKER(invoke_capabilities, OSLS_VM_GET_CAPABILITIES, NULL, 0)
+OSLS_INVOKER(invoke_runtime_info, OSLS_VM_GET_RUNTIME_INFO, NULL, 0)
+OSLS_INVOKER(invoke_native_error, OSLS_VM_GET_NATIVE_ERROR, NULL, 0)
+OSLS_INVOKER(invoke_path_normalize, OSLS_VM_PATH_NORMALIZE, a[0].value.utf8, 0)
+OSLS_INVOKER(invoke_path_resolve, OSLS_VM_PATH_RESOLVE, a[0].value.utf8, 0)
+OSLS_INVOKER(invoke_path_info, OSLS_VM_GET_PATH_INFO, a[0].value.utf8, 0)
+OSLS_INVOKER(invoke_network_resolve, OSLS_VM_NETWORK_RESOLVE, a[0].value.utf8, 0)
 #undef OSLS_INVOKER
+
+/* path_join carries two UTF-8 operands, which the shared single-text dispatch
+ * cannot express, so it has a bespoke invoker that builds its own JSON. */
+static int invoke_path_join(const osls_vm_value *a, size_t n, char *out, size_t cap) {
+    char buf[OSLS_PATH_MAX];
+    osls_status rc;
+    json_out j;
+    (void)n;
+    if (!out || cap < 32) return -1;
+    out[0] = 0; j.p = out; j.cap = cap; j.used = 0; j.failed = 0;
+    rc = osls_path_join(a[0].value.utf8, a[1].value.utf8, buf, sizeof(buf));
+    status(&j, rc);
+    if (rc == OSLS_OK) field_string(&j, "path", buf);
+    finish(&j);
+    return j.failed ? -1 : (int)j.used;
+}
 
 static const osls_vm_binding bindings[] = {
     {0,"oslsSystemInfo","osls_get_system_info",0,NULL,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"()","JSON system record",invoke_system_info},
@@ -207,7 +319,20 @@ static const osls_vm_binding bindings[] = {
     {8,"oslsGetTimezoneInfo","osls_get_timezone_info",0,NULL,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"()","JSON timezone record",invoke_timezone_info},
     {9,"oslsGetNetworkInterfaces","osls_get_network_interfaces",0,NULL,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"()","JSON interface array",invoke_network_interfaces},
     {10,"oslsCronValidate","osls_cron_validate",1,sig_utf8,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"(expression:utf8)","JSON status",invoke_cron_validate},
-    {11,"oslsCronNextAfter","osls_cron_next_after",2,sig_utf8_i64,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"(expression:utf8, epoch:int64)","JSON status/epoch",invoke_cron_next_after}
+    {11,"oslsCronNextAfter","osls_cron_next_after",2,sig_utf8_i64,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"(expression:utf8, epoch:int64)","JSON status/epoch",invoke_cron_next_after},
+    {12,"oslsGetMemoryInfo","osls_get_memory_info",0,NULL,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"()","JSON memory record",invoke_memory_info},
+    {13,"oslsGetAvailableMemory","osls_get_available_memory",0,NULL,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"()","JSON status/availableBytes",invoke_available_memory},
+    {14,"oslsGetDiskSpace","osls_get_disk_space",1,sig_utf8,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"(path:utf8)","JSON disk-space record",invoke_disk_space},
+    {15,"oslsGetVolumeInfo","osls_get_volume_info",1,sig_utf8,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"(path:utf8)","JSON volume record",invoke_volume_info},
+    {16,"oslsGetSystemLoad","osls_get_system_load",0,NULL,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"()","JSON system-load record",invoke_system_load},
+    {17,"oslsGetCapabilities","osls_get_capabilities",0,NULL,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"()","JSON status/capabilities",invoke_capabilities},
+    {18,"oslsGetRuntimeInfo","osls_get_runtime_info",0,NULL,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"()","JSON runtime-info record",invoke_runtime_info},
+    {19,"oslsGetNativeError","osls_get_native_error",0,NULL,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"()","JSON native-error record",invoke_native_error},
+    {20,"oslsPathNormalize","osls_path_normalize",1,sig_utf8,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"(path:utf8)","JSON status/path",invoke_path_normalize},
+    {21,"oslsPathJoin","osls_path_join",2,sig_utf8_utf8,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"(left:utf8, right:utf8)","JSON status/path",invoke_path_join},
+    {22,"oslsPathResolve","osls_path_resolve",1,sig_utf8,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"(path:utf8)","JSON status/path",invoke_path_resolve},
+    {23,"oslsGetPathInfo","osls_get_path_info",1,sig_utf8,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"(path:utf8)","JSON path-info record",invoke_path_info},
+    {24,"oslsNetworkResolve","osls_network_resolve",1,sig_utf8,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"(host:utf8)","JSON status/addresses",invoke_network_resolve}
 };
 
 const osls_vm_binding *osls_vm_binding_table(size_t *out_count) {

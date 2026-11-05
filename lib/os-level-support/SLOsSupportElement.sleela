@@ -1,12 +1,53 @@
-< SLeeLa Standard Library Definition.
+<< SLeeLa Standard Library Definition.
   Definition: A typed-by-convention catalogue element connecting a SLeeLa source
   term, capability group, VM-facing operation, native ABI symbol, platform
   backend and effect classification. This is declarative metadata; it does not
-  itself perform native calls or grant operating-system authority. >
+  itself perform native calls or grant operating-system authority. >>
 #sleela 2.5
 material;
 
 class SLOsSupportElement {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override each record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "mearvk";
+  String metaDate = "2026-11-05";
+  String metaCopyright = "Copyright mearvk LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "mearvk LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-05";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String value) { metaVersion = value; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int value) { metaId = value; }
+  String getMetaAuthor() { return metaAuthor; }
+  void setMetaAuthor(String value) { metaAuthor = value; }
+  String getMetaDate() { return metaDate; }
+  void setMetaDate(String value) { metaDate = value; }
+  String getMetaCopyright() { return metaCopyright; }
+  void setMetaCopyright(String value) { metaCopyright = value; }
+  String getMetaTrademark() { return metaTrademark; }
+  void setMetaTrademark(String value) { metaTrademark = value; }
+  String getMetaCorporation() { return metaCorporation; }
+  void setMetaCorporation(String value) { metaCorporation = value; }
+  String getMetaOrigin() { return metaOrigin; }
+  void setMetaOrigin(String value) { metaOrigin = value; }
+  String getMetaBirthDate() { return metaBirthDate; }
+  void setMetaBirthDate(String value) { metaBirthDate = value; }
+  int getMetaScienceRating() { return metaScienceRating; }
+  void setMetaScienceRating(int value) { metaScienceRating = value; }
+  String getMetaNationalSchedule() { return metaNationalSchedule; }
+  void setMetaNationalSchedule(String value) { metaNationalSchedule = value; }
   String elementName = "";
   String groupTerm = "";
   String vmElementTerm = "";
@@ -21,7 +62,7 @@ class SLOsSupportElement {
   int capabilityRequired = 0;
 
   void configure(String name, String group, String vmTerm,
-                 String opcode, String portable, String native,
+                 String opcode, String portable, String nativeSym,
                  String platform, String effect, String status,
                  int arity, int capability) {
     elementName = name;
@@ -29,7 +70,7 @@ class SLOsSupportElement {
     vmElementTerm = vmTerm;
     vmOpcodeTerm = opcode;
     portableSymbol = portable;
-    nativeSymbol = native;
+    nativeSymbol = nativeSym;
     platformTerm = platform;
     effectTerm = effect;
     implementationStatus = status;

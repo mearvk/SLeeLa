@@ -1,13 +1,57 @@
-< SLeeLa Standard Library Definition.
+<< SLeeLa Standard Library Definition.
   Definition: VM-callable wrappers over the registered osls_* native ABI.
   Record and collection results are JSON Strings with an OSLS status field;
-  native pointers and C struct layouts never cross into VM values. >
+  native pointers and C struct layouts never cross into VM values. Process IDs
+  and epoch seconds are 64-bit (long) to match the int64_t C ABI; a 32-bit int
+  would truncate large PIDs and post-2038 timestamps. >>
 #sleela 2.5
 material;
 
 class SLOsSupportNative {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override each record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "mearvk";
+  String metaDate = "2026-11-05";
+  String metaCopyright = "Copyright mearvk LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "mearvk LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-05";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String value) { metaVersion = value; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int value) { metaId = value; }
+  String getMetaAuthor() { return metaAuthor; }
+  void setMetaAuthor(String value) { metaAuthor = value; }
+  String getMetaDate() { return metaDate; }
+  void setMetaDate(String value) { metaDate = value; }
+  String getMetaCopyright() { return metaCopyright; }
+  void setMetaCopyright(String value) { metaCopyright = value; }
+  String getMetaTrademark() { return metaTrademark; }
+  void setMetaTrademark(String value) { metaTrademark = value; }
+  String getMetaCorporation() { return metaCorporation; }
+  void setMetaCorporation(String value) { metaCorporation = value; }
+  String getMetaOrigin() { return metaOrigin; }
+  void setMetaOrigin(String value) { metaOrigin = value; }
+  String getMetaBirthDate() { return metaBirthDate; }
+  void setMetaBirthDate(String value) { metaBirthDate = value; }
+  int getMetaScienceRating() { return metaScienceRating; }
+  void setMetaScienceRating(int value) { metaScienceRating = value; }
+  String getMetaNationalSchedule() { return metaNationalSchedule; }
+  void setMetaNationalSchedule(String value) { metaNationalSchedule = value; }
+
   String systemInfo() { return oslsSystemInfo(); }
-  String processInfo(int pid) { return oslsProcessInfo(pid); }
+  String processInfo(long pid) { return oslsProcessInfo(pid); }
   String enumerateProcesses() { return oslsEnumerateProcesses(); }
   String environmentValue(String name) { return oslsGetEnvironmentValue(name); }
   String enumerateEnvironment() { return oslsEnumerateEnvironment(); }
@@ -17,7 +61,22 @@ class SLOsSupportNative {
   String timezoneInfo() { return oslsGetTimezoneInfo(); }
   String networkInterfaces() { return oslsGetNetworkInterfaces(); }
   String validateCron(String expression) { return oslsCronValidate(expression); }
-  String nextCronAfter(String expression, int epochSeconds) {
+  String nextCronAfter(String expression, long epochSeconds) {
     return oslsCronNextAfter(expression, epochSeconds);
   }
+
+  << Read-only inspection added in revision 1.1 (operation IDs 12..24). >>
+  String memoryInfo() { return oslsGetMemoryInfo(); }
+  String availableMemory() { return oslsGetAvailableMemory(); }
+  String diskSpace(String path) { return oslsGetDiskSpace(path); }
+  String volumeInfo(String path) { return oslsGetVolumeInfo(path); }
+  String systemLoad() { return oslsGetSystemLoad(); }
+  String capabilities() { return oslsGetCapabilities(); }
+  String runtimeInfo() { return oslsGetRuntimeInfo(); }
+  String nativeError() { return oslsGetNativeError(); }
+  String pathNormalize(String path) { return oslsPathNormalize(path); }
+  String pathJoin(String left, String right) { return oslsPathJoin(left, right); }
+  String pathResolve(String path) { return oslsPathResolve(path); }
+  String pathInfo(String path) { return oslsGetPathInfo(path); }
+  String networkResolve(String host) { return oslsNetworkResolve(host); }
 }
