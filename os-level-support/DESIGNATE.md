@@ -610,7 +610,7 @@ The platform classes add qualified group terms such as `LinuxCPUTopology`,
 operation is semantically portable; use a qualified term only for a genuine
 platform-specific facility.
 
-### 13.2 Existing VM path and separate osls adapter
+### 13.2 Existing VM path and registered osls adapter
 
 The current VM already exposes the OS system-call family through
 `SleelaVMSystemCallBridge.sleela`, the `OP_OS_*` opcodes 103–123, and the
