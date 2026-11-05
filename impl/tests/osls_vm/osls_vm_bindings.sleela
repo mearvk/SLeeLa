@@ -1,0 +1,16 @@
+< SLeeLa VM integration test: OSLS native calls return bounded JSON records. >
+#sleela 2.5
+material;
+
+class OSLSVMBindingsTest {
+  void main() {
+    String system = oslsSystemInfo();
+    String process = oslsProcessInfo(0);
+    String file = oslsGetFileInfo(".");
+    String cron = oslsCronValidate("* * * * *");
+    print(system);
+    print(process);
+    print(file);
+    print(cron);
+  }
+}
