@@ -20,6 +20,7 @@
 #include "sleela_bestof.h"
 #include "sleela_audio_mixer.h"
 #include "sleela_os.h"
+#include "../../os-level-support/osls_vm_bridge.h"
 #include "sleela_memmgr.h"
 #include "sleela_idea_canvas.h"
 #include "sleela_ui_vm.h"
@@ -2012,6 +2013,51 @@ static SLResult run_thread(SLThread* t) {
             SLOSProcess p=os_proc_take(vm,(int)hv.as.i);
             if(p!=SLOS_INVALID_PROCESS) slos_release(p);
             PUSH(slval_null());
+        } break;
+
+        /* ---- OSLS typed native binding table (append-only opcode 155) ---- */
+        case OP_OSLS_CALL: {
+            const char *text_arg = NULL;
+            int64_t integer_arg = 0;
+            SLValue first, second;
+            switch (in.a) {
+                case OSLS_VM_PROCESS_INFO:
+                    first = POP();
+                    if (first.type != SL_INT) TERR("oslsProcessInfo(pid) requires an integer pid");
+                    integer_arg = first.as.i;
+                    break;
+                case OSLS_VM_GET_ENVIRONMENT_VALUE:
+                case OSLS_VM_GET_FILE_INFO:
+                case OSLS_VM_LIST_DIRECTORY:
+                case OSLS_VM_CRON_VALIDATE:
+                    first = POP();
+                    if (first.type != SL_STR) TERR("OSLS binding requires a String argument");
+                    text_arg = slvm_str(vm, first.as.s);
+                    break;
+                case OSLS_VM_CRON_NEXT_AFTER:
+                    second = POP();
+                    first = POP();
+                    if (first.type != SL_STR || second.type != SL_INT)
+                        TERR("oslsCronNextAfter(expression, epoch) requires String and integer arguments");
+                    text_arg = slvm_str(vm, first.as.s);
+                    integer_arg = second.as.i;
+                    break;
+                default:
+                    if (in.a < 0 || in.a >= OSLS_VM_OPERATION_COUNT)
+                        TERR("OSLS binding id is not registered");
+                    break;
+            }
+            {
+                char *json = (char *)malloc(65536);
+                int written;
+                if (!json) TERR("OSLS binding could not allocate its result buffer");
+                written = osls_vm_call(in.a, text_arg, integer_arg, json, 65536);
+                if (written < 0) { free(json); TERR("OSLS native binding failed or exceeded its result buffer"); }
+                {
+                    SLValue out; out.type = SL_STR; out.as.s = intern(vm, json);
+                    free(json); PUSH(out);
+                }
+            }
         } break;
 
         default: log_unsupported_opcode(vm, in.op); TERR("unsupported opcode");
