@@ -1,0 +1,11 @@
+< SLeeLa Standard Library Definition.
+  Definition: Single-opcode wrapper for OP_OSLS_CALL (155), the typed
+  dispatch point for the registered osls_* C ABI binding table. >
+#sleela 2.5
+material;
+
+class SLOpOslsCall {
+  static final int CODE = 155;
+  static final String MNEMONIC = "OP_OSLS_CALL";
+  void prepare() { configure(CODE, MNEMONIC); }
+}
