@@ -1,0 +1,70 @@
+< SLeeLa Standard Library Definition.
+  Definition: macOS source-level facade. Portable calls use the existing OP_OS_*
+  VM bridge; Darwin, Mach, Dispatch, IOKit, FSEvents and SystemConfiguration
+  extensions require explicit native bindings and Apple privacy authorization. >
+#sleela 2.5
+material;
+
+class SLOsSupportMacOSSource {
+  String backendTerm = "MacOSBackend";
+  String platformName = "macOS";
+  String pathSeparator = "/";
+  String lineEnding = "\n";
+  String executableSuffix = "";
+
+  String getBackendTerm() { return backendTerm; }
+  String getPlatformName() { return platformName; }
+  String getPathSeparator() { return pathSeparator; }
+  String getLineEnding() { return lineEnding; }
+  String getExecutableSuffix() { return executableSuffix; }
+  boolean isCurrentPlatform() { return osPlatform() == "macOS"; }
+
+  < Portable operations: routed through the existing VM bridge. >
+  String hostName() { return osHostName(); }
+  String userName() { return osUserName(); }
+  String currentDirectory() { return osCurrentDir(); }
+  String temporaryDirectory() { return osTempDir(); }
+  String environmentValue(String key) { return osGetEnv(key); }
+  boolean setEnvironmentValue(String key, String value) { return osSetEnv(key, value) == 0; }
+  boolean pathExists(String path) { return osExists(path) == 1; }
+  boolean isDirectory(String path) { return osIsDir(path) == 1; }
+  int fileSize(String path) { return osFileSize(path); }
+
+  SLList getExtensionGroups() {
+    SLList out = new SLList();
+    out.add("MacOSIdentity");
+    out.add("MacOSProcessMetadata");
+    out.add("MacOSCPUAndMemory");
+    out.add("MacOSSystemConfiguration");
+    out.add("MacOSFileSystemAndVolumes");
+    out.add("MacOSFilesystemEvents");
+    out.add("MacOSNetwork");
+    out.add("MacOSUserAndSystemServices");
+    out.add("MacOSPowerAndBattery");
+    out.add("MacOSHardwareMetadata");
+    out.add("MacOSPrivacyAndSandbox");
+    out.add("MacOSClockAndNotifications");
+    return out;
+  }
+
+  SLList getNativeExtensionSymbols() {
+    SLList out = new SLList();
+    out.add("dispatch_after");
+    out.add("dispatch_source_create");
+    out.add("FSEvents");
+    out.add("host_statistics64");
+    out.add("IOKit");
+    out.add("kevent");
+    out.add("kqueue");
+    out.add("mach_absolute_time");
+    out.add("mach_vm_region");
+    out.add("proc_pidinfo");
+    out.add("SystemConfiguration");
+    out.add("sysctlbyname");
+    return out;
+  }
+
+  boolean nativeExtensionRegistered(String symbol) { return false; }
+  String applicationSupportRoot() { return osGetEnv("HOME"); }
+  String temporaryPath() { return osTempDir(); }
+}
