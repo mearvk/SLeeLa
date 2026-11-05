@@ -134,3 +134,17 @@ The repository now includes api/sleela/2.1/include/sleela/api.hpp, with the corr
 The model includes Type, Field, Variable, and FunctionSignature for reusable type/signature information; CallingConvention and Method for ABI and function evidence; CStruct, CUnion, and CEnum for C declarations; CppClass and CppNamespace for C++ class and namespace reconstruction; vtable-address and RTTI evidence on CppClass; Artifact, Address, Instruction, BasicBlock, and ControlFlowGraph for native-analysis context; ReconstructionUnit as the language-neutral collection consumed by source backends; and Provenance and EvidenceKind so recovered declarations can distinguish observed, decoded, derived, inferred, hypothesized, unknown, unsupported, and conflicting information.
 
 This is an API foundation rather than a claim that every construct can already be recovered from every binary. The decompiler must populate these objects from actual analysis evidence and preserve uncertainty.
+
+
+## SLeeLa syntax 3.0 source target
+
+The SLeeLa source-output target is aligned with the normative syntax **3.0**
+edition. The compiler gate accepts declared source syntax 1.0–3.0. When
+reconstructing SLeeLa, the decompiler should preserve a known original source
+version when evidence supports it; otherwise it must label the selected target
+version explicitly and avoid claiming that reconstructed source is byte-for-byte
+or semantically identical to the original. Syntax 3.0 does not make unsupported
+instructions, source constructs, or native behavior recoverable.
+
+Normative grammar: [`SLEELA.syntax`](../SLEELA.syntax). Generated standard-library
+API: [`docs/api/index.html`](../docs/api/index.html).
