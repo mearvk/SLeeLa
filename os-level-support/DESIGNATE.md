@@ -406,8 +406,8 @@ The following Win32 and Windows API names are listed alphabetically. Related API
 
 The following function names are listed alphabetically. Some are libc/POSIX interfaces and some are Linux-specific interfaces or system calls. Prefer libc wrappers over issuing raw system calls directly.
 
-- `access`
 - `accept`
+- `access`
 - `bind`
 - `clock_getres`
 - `clock_gettime`
@@ -488,8 +488,8 @@ The following function names are listed alphabetically. Availability and permiss
 
 - `accept`
 - `bind`
-- `clock_gettime`
 - `clock_getres`
+- `clock_gettime`
 - `close`
 - `connect`
 - `dispatch_after`
@@ -513,8 +513,10 @@ The following function names are listed alphabetically. Availability and permiss
 - `host_info`
 - `host_page_size`
 - `host_statistics64`
-- `kqueue`
 - `kevent`
+- `kqueue`
+- `listen`
+- `lstat`
 - `mach_absolute_time`
 - `mach_host_self`
 - `mach_msg`
@@ -522,8 +524,6 @@ The following function names are listed alphabetically. Availability and permiss
 - `mach_task_self`
 - `mach_timebase_info`
 - `mach_vm_region` — query permitted virtual-memory region metadata only; no memory modification or inspection of unrelated processes
-- `listen`
-- `lstat`
 - `mmap`
 - `munmap`
 - `open`
