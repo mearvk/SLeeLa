@@ -28,6 +28,8 @@ typedef enum {
     OSLS_VM_RESULT_JSON_UTF8 = 1
 } osls_vm_result_type;
 
+#define OSLS_VM_CAP_HOST_READ UINT64_C(0x0000000000000001)
+
 typedef struct {
     osls_vm_arg_type type;
     union {
@@ -52,6 +54,7 @@ typedef struct {
     unsigned argument_count;
     const osls_vm_arg_type *argument_types;
     osls_vm_result_type result_type;
+    uint64_t required_capabilities;
     const char *argument_contract;
     const char *result_contract;
     osls_vm_invoke_fn invoke;
@@ -64,6 +67,9 @@ const osls_vm_binding *osls_vm_binding_table(size_t *out_count);
 const osls_vm_binding *osls_vm_binding_by_id(int operation);
 const osls_vm_binding *osls_vm_binding_by_symbol(const char *native_symbol);
 
+int osls_vm_call_authorized(int operation, const osls_vm_value *args, size_t arg_count,
+                            uint64_t granted_capabilities, char *out_json,
+                            size_t out_capacity, osls_vm_result *out_result);
 int osls_vm_call_typed(int operation, const osls_vm_value *args, size_t arg_count,
                        char *out_json, size_t out_capacity, osls_vm_result *out_result);
 
