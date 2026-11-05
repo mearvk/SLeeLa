@@ -40,8 +40,11 @@ to run Java source files:
 - **Output fix** — corrected a JavaFX diagnostic that printed a literal `\n`
   instead of a newline.
 
-The supported source-syntax range is unchanged (1.0 .. 2.5); this is a
-tool-release increment, not a grammar edition bump.
+At the time of this 0.3.30 tool-release increment, the supported source-
+syntax range was 1.0 .. 2.5. The language edition has since advanced to
+Syntax 3.0; the current compiler gate accepts 1.0 .. 3.0. This historical note
+records the state at that earlier increment, not the current syntax range.
+Tool-release and language-syntax versions remain independent.
 
 ## 0.3.29 Development Increment
 

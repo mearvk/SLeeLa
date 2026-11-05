@@ -35,7 +35,7 @@ Lexer with source locations, integer literals, identifiers and line comments; re
 
 ## Scope
 
-This is an experimental subset, not full SLeeLa 1.10 support. Classes, methods, inheritance, imports, strings, unsigned integer families, character sets, and the full grammar are not implemented here. The authoritative grammar and compatibility gate remain SLEELA.syntax and impl/frontend/version.{h,cpp}. Do not replace sleelvac with this prototype before feature-parity tests. See ARCHITECTURE.md and API.md.
+This is an experimental subset, not full SLeeLa Syntax 3.0 support. Classes, methods, inheritance, imports, strings, unsigned integer families, character sets, and the full grammar are not implemented here. The authoritative grammar and compatibility gate remain SLEELA.syntax and impl/frontend/version.{h,cpp}. Do not replace sleelvac with this prototype before feature-parity tests. See ARCHITECTURE.md and API.md.
 
 ## Native C/C++ source emission (experimental subset)
 

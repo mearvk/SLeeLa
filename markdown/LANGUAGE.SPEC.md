@@ -4,6 +4,8 @@
 
 This is the engineering specification companion to SL-META-0001. It separates normative intent from implementation status.
 
+**Current normative language edition:** SLeeLa Syntax **3.0**. The shared compiler frontend accepts source declarations **1.0–3.0** and defaults an unversioned source unit to 3.0 with a warning. Syntax 3.0 consolidates the established 1.x/2.x language surface; historical feature-specific minimum-version gates remain in force. The authoritative grammar is [`SLEELA.syntax`](../SLEELA.syntax), and the accepted range is implemented by [`impl/frontend/version.h`](../impl/frontend/version.h). Compiler/tool release versions and the native ABI are versioned independently.
+
 ## Compilation contract
 
 SOURCE → VERSION RESOLUTION → LEX → PARSE → AST → SEMANTIC CHECK → LOWER → BYTECODE/CORE → EXECUTE
