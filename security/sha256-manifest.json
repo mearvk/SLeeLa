@@ -48803,7 +48803,7 @@
     },
     {
       "path": "lib/vm/vmsharp/SLPackage.sleela",
-      "sha256": "5fc8ff910ea797b3a64b541c835e05daf62593ebb6ee88eaa0ff80fdb04e00d8"
+      "sha256": "02dec9e0452c927ece9146e001b7c9c0c3245d2085a007bda60c63122f070aed"
     },
     {
       "path": "lib/vm/vmsharp/VMSharp.sleela",
@@ -48826,8 +48826,24 @@
       "sha256": "3213110c9153f6e91d2d2f4c7921979b8d9112ed890dddfe1cff812b2fbc1f22"
     },
     {
+      "path": "lib/vm/vmsharp/VMSharpNetworkStack.sleela",
+      "sha256": "db57324b5c40f7701fc345a8153beb7ddad46d1e648470fe37017b1ad0fb7761"
+    },
+    {
+      "path": "lib/vm/vmsharp/VMSharpOSCreatorRun.sleela",
+      "sha256": "78dbd782a6e707a12d1279e538bfabc2e5df2e1abeb874125e2dddb26a9d0ef1"
+    },
+    {
+      "path": "lib/vm/vmsharp/VMSharpRepoAcquisition.sleela",
+      "sha256": "7b15840bbd668f8923055441f5bade21b3e331c2a002026bb432d427334732ca"
+    },
+    {
       "path": "lib/vm/vmsharp/examples/VMSharpDemo.sleela",
       "sha256": "3e74f1d2e3fc0662d2d9f594bec3b998e57dac985d39881e51badd7b60fa1d98"
+    },
+    {
+      "path": "lib/vm/vmsharp/examples/VMSharpOSCreatorDemo.sleela",
+      "sha256": "47021fa41ce72145243264edb64ee638baae67b7a96f5edf9c3d4986de848ce1"
     },
     {
       "path": "lib/web-server-technology/SLDualStackBinding.sleela",
