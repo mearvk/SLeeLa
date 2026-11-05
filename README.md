@@ -21,6 +21,8 @@ that standing is kept (recorded faithfully, e.g. in each class's Metadata
 - [Virtual machines & Modium — hands-on user guide](virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [CPU stack in SLeeLa source](lib/cpu/CPU.md) — a full gates→ALU→cores→OS→programs machine, a roster of 130+ CPU profiles, and adjustable [voltages, variable clocks, and expert timings](lib/cpu/TIMING.md) you can [run at spec and overclock](lib/cpu/components/README.md)
 - [Documentation index](docs/README.md)
+- [Generated API documentation](docs/api/README.md) — current HTML reference, versioned API edition, and regeneration instructions
+- [API catalogue](api/README.md)
 - [Recursion stanchion — C and C++ prototypes](recursion/stanchion/README.md) — primitive-specialized examples for Boolean, Byte, Character, Integer, Long, Float, and Double, alongside generic, applied, scientific, and teaching recursion patterns.
 - [Platform support and validation matrix](docs/PLATFORM-SUPPORT.md)
 - [Brand guide](docs/BRAND-GUIDE.md)
@@ -48,7 +50,7 @@ Recent additions to the language, drivers, and standard library:
   filesystem at runtime and lists the real **folders (then files, as natural
   motion)**, bounded by user-overridable caps of **6 MB / 6000 files / 6
   minutes**. The `lib/sleeladoc` units are maintained at the current edition,
-  **`#sleela 2.9`**. See [`man/man1/sleela.1`](man/man1/sleela.1) and
+  **`#sleela 3.0`**. See [`man/man1/sleela.1`](man/man1/sleela.1) and
   [`lib/sleeladoc/README.md`](lib/sleeladoc/README.md).
 - **SleelaDoc — a Javadoc-style documentation solution, with a generated HTML
   site.** **SleelaDoc** is SLeeLa's in-source doc-comment convention
@@ -101,7 +103,7 @@ Recent additions to the language, drivers, and standard library:
   position every one stays an ordinary identifier (so `field` never disturbs a
   class member or a `.field` access). See [`SLEELA.syntax`](SLEELA.syntax)
   §18–§20, §23, and §26.
-- **Nordshrift at syntax 2.5 with full library reach.** Nordshrift resolves
+- **Nordshrift at syntax 3.0 with full library reach.** Nordshrift resolves
   through the same recursive `/lib` index as the compiler, reaching every
   package and `.sleela` unit; `nordshrift check` reports the whole-tree counts.
 - **Recursion stanchion.** The [`recursion/stanchion/`](recursion/stanchion/README.md) directory now includes dedicated C and C++ reference prototypes for the seven documented primitive contracts, plus generic, applied, scientific, and teaching examples. These are reference sources; compile and test them before treating them as verified.
@@ -216,7 +218,7 @@ interactive deployment workflow and all installation options, see
 [Quick and Safe Install](install/README.md).
 
 ## V. Language and Runtime
-The authoritative grammar is [`SLEELA.syntax`](SLEELA.syntax). The current repository documents syntax **2.9**; compiler/tool version and source syntax version are distinct. The 2.9 surface adds **`@mix` consequent fields** (§28) — a class may declare multiple same-named instance fields when each carries `@mix`, understood as one indexed group (top-down `1,2,3,…` or manual `@mix(1,2,3,...)` whose index count must match the group). It carries forward the base-2 signed/unsigned wide-integer families `int32`..`int16777216` (§24) and `uint32`..`uint16777216` (§25) over the earlier `long`/`int64`/`int128` (§21); **keyword supporter documents** (§22); and the **Preonems** — the declarative-only document markers `author`/`authorial` (§18), `material`/`memory` (§19–§20), `determine` (§23), and `object`/`field` (§26), collectively titled the Preonems (§26.1). Constructor overload resolution and `this(...)`/base-constructor delegation are explicitly outside the verified syntax 1.8 contract. Consult the grammar and implementation notes before relying on a feature.
+The authoritative grammar is [`SLEELA.syntax`](SLEELA.syntax). The current repository documents syntax **3.0**; compiler/tool version and source syntax version are distinct. Syntax 3.0 consolidates the 1.0–2.9 language surface into the current normative edition, preserving all feature-specific minimum gates. The prior 2.9 surface adds **`@mix` consequent fields** (§28) — a class may declare multiple same-named instance fields when each carries `@mix`, understood as one indexed group (top-down `1,2,3,…` or manual `@mix(1,2,3,...)` whose index count must match the group). It carries forward the base-2 signed/unsigned wide-integer families `int32`..`int16777216` (§24) and `uint32`..`uint16777216` (§25) over the earlier `long`/`int64`/`int128` (§21); **keyword supporter documents** (§22); and the **Preonems** — the declarative-only document markers `author`/`authorial` (§18), `material`/`memory` (§19–§20), `determine` (§23), and `object`/`field` (§26), collectively titled the Preonems (§26.1). Constructor overload resolution and `this(...)`/base-constructor delegation are explicitly outside the verified syntax 1.8 contract. Consult the grammar and implementation notes before relying on a feature. SleelaDoc's nine source units now declare `#sleela 3.0`; the shared compiler gate accepts source syntax 1.0–3.0. The new API build is produced by `make api-docs`.
 
 The repository includes a native C/C++ implementation, SLVM generation references, standard-library modules, tests, examples, and platform integrations. Implementation and validation status varies by module; consult its specification and current CI results rather than assuming uniform completeness.
 
