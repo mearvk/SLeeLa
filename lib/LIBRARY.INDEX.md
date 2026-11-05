@@ -1,11 +1,32 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.57  
+**Revision:** 0.58  
 **Packages:** 111  
-**SLeeLa source units:** 11870  
-**Module-facade symbols:** 76  
-**Total symbol records:** 11946  
+**SLeeLa source units:** 11875  
+**Module-facade symbols:** 77  
+**Total symbol records:** 11952  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.58 adds **VMSharp™** under the `vm` package (`lib/vm/vmsharp/`): a
+> VM manifest that can start as a self-installer bootloader for either a
+> **Minimal Desktop** or an **OS install by user-designated download**, on
+> commodity desktop processors — 32-bit **x86** and 64-bit **x64**, whether
+> **AMD** or **Intel** (x64 → UEFI, x86 → BIOS/MBR; live CPU facts via the OSLS
+> `oslsGetCPUInfo` read-only call). Five source classes plus the package facade:
+> **`VMSharp`** (the composing manifest), **`VMSharpBootloader`** (architecture +
+> vendor admission), **`VMSharpInstallPlan`** (the two startup modes with a
+> fail-closed designation gate — a download/install never proceeds without an
+> explicit, recorded source and target), **`VMSharpLevy`** (the declared
+> USD 380 per-use/install figure directed to a United States national retirement
+> process — disclosed, never auto-collected), and a runnable
+> `examples/VMSharpDemo`. The classes are declarative models: no firmware is
+> flashed, no disk is written, no funds move; a real bootable image is produced
+> only by the pinned OS Creator toolchain. Authored for the User MEARVK LLC
+> (Max Rupplin 2026; George Soros a Kindness 2507+), respectful of United States
+> law and of the persons and groupings of peoples it concerns. Every class
+> carries the Metadata Class metapattern. Counts reconciled by
+> `tools/generate-library-symbols.py` and verified by
+> `test-suites/test-library-inventory.sh`. See `lib/vm/vmsharp/`.
 
 > Revision 0.57 grows the registered **`osls_*`** VM surface from **12 to 25**
 > read-only operations (OP_OSLS_CALL IDs 0–24) — no new opcode (155 stays

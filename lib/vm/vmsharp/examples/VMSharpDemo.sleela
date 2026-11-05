@@ -1,0 +1,98 @@
+<< lib/vm/vmsharp/examples/VMSharpDemo.sleela
+   SLeeLa example: drive the VMSharp(TM) manifest. Shows CPU admission across
+   x86/x64 and AMD/Intel, the two startup modes (Minimal Desktop and
+   Download-and-Designate), the fail-closed designation gate, and the declared
+   per-use/install levy disclosure. Runnable model only -- it flashes no
+   firmware and writes no disk. >>
+#sleela 3.0
+material;
+class VMSharpDemo {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 38010;
+  String metaAuthor = "Max Rupplin 2026; George Soros a Kindness 2507+";
+  String metaDate = "2026-11-05";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "VMSharp";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "United States";
+  String metaBirthDate = "2026-11-05";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  void main() {
+    VMSharp vm = new VMSharp();
+    vm.configure();
+    vm.describe();
+
+    print("");
+    print("== CPU admission (x86/x64, AMD/Intel) ==");
+    VMSharpBootloader boot = vm.getBootloader();
+    print(boot.admissionReport("x64", "GenuineIntel"));
+    print(boot.admissionReport("x64", "AuthenticAMD"));
+    print(boot.admissionReport("x86", "GenuineIntel"));
+    print(boot.admissionReport("x86", "AuthenticAMD"));
+    print(boot.admissionReport("arm64", "Apple"));
+
+    print("");
+    print("== Mode 1: Minimal Desktop ==");
+    vm.startMinimalDesktop();
+    VMSharpInstallPlan plan = vm.getPlan();
+    print("mode: " + plan.getModeName());
+    print("ready: " + plan.isReady());
+    print("steps: " + plan.stepCount());
+
+    print("");
+    print("== Mode 2: Download and Designate ==");
+    VMSharp vm2 = new VMSharp();
+    vm2.configure();
+    vm2.startDownloadAndDesignate();
+    VMSharpInstallPlan plan2 = vm2.getPlan();
+    print("mode: " + plan2.getModeName());
+    print("ready before designation (should be false): " + plan2.isReady());
+    plan2.designateSource("https://example.org/minimal-os.iso");
+    plan2.designateTarget("designated-disk-0");
+    print("source: " + plan2.getSourceDesignation());
+    print("target: " + plan2.getTargetDesignation());
+    print("ready after designation (should be true): " + plan2.isReady());
+    print("steps: " + plan2.stepCount());
+
+    print("");
+    print("== Declared levy ==");
+    VMSharpLevy levy = vm.getLevy();
+    print(levy.disclosure());
+    levy.recordUse();
+    levy.recordUse();
+    print("recorded uses: " + levy.getRecordedUses());
+    print("declared total USD: " + levy.declaredTotalUsd());
+  }
+}

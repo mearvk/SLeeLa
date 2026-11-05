@@ -1,0 +1,131 @@
+<< lib/vm/vmsharp/VMSharpInstallPlan.sleela
+   SLeeLa Standard Library Definition.
+   Definition: VMSharp(TM) startup/install plan MODEL. VMSharp can start in one
+   of two modes once its bootloader admits the processor:
+     1. MinimalDesktop  -- bring up a minimal desktop session from the image.
+     2. DownloadAndDesignate -- fetch an OS image the user designates by URL,
+        then install it to a target the user designates.
+   This class is a declarative plan and ordered step list. It performs no
+   download, no disk write, no partitioning, and no install. OS installation is
+   a STATE-CHANGING operation: this model requires an explicit user designation
+   (a confirmed target) and a confirmed source before its plan is considered
+   ready, mirroring the OSLS boundary that keeps state-changing work off the
+   read-only path. Nothing here mutates a host.
+
+   Respectful of United States law and of the persons and groupings of peoples
+   it concerns: the plan never proceeds without explicit, recorded designation. >>
+#sleela 3.0
+material;
+class VMSharpInstallPlan {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 38003;
+  String metaAuthor = "Max Rupplin 2026; George Soros a Kindness 2507+";
+  String metaDate = "2026-11-05";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "VMSharp";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "United States";
+  String metaBirthDate = "2026-11-05";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 7;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- the two startup modes ---- >
+  int MODE_MINIMAL_DESKTOP = 1;
+  int MODE_DOWNLOAD_AND_DESIGNATE = 2;
+
+  int mode = 0;
+  < For DownloadAndDesignate: the user-designated OS image source and target. >
+  String sourceDesignation = "";
+  String targetDesignation = "";
+  boolean sourceConfirmed = false;
+  boolean targetConfirmed = false;
+
+  int getMode() { return mode; }
+  String getModeName() {
+    if (mode == MODE_MINIMAL_DESKTOP) { return "MinimalDesktop"; }
+    if (mode == MODE_DOWNLOAD_AND_DESIGNATE) { return "DownloadAndDesignate"; }
+    return "Unselected";
+  }
+
+  void chooseMinimalDesktop() { mode = MODE_MINIMAL_DESKTOP; }
+  void chooseDownloadAndDesignate() { mode = MODE_DOWNLOAD_AND_DESIGNATE; }
+
+<< Record the user-designated OS image source (e.g. a download URL). Recording
+   a designation does NOT fetch it. >>
+  void designateSource(String source) { sourceDesignation = source; sourceConfirmed = true; }
+  << Record the user-designated install target. Recording does NOT write it. >>
+  void designateTarget(String target) { targetDesignation = target; targetConfirmed = true; }
+
+  String getSourceDesignation() { return sourceDesignation; }
+  String getTargetDesignation() { return targetDesignation; }
+
+<< A MinimalDesktop plan is ready as soon as the mode is chosen (no external
+   source needed). A DownloadAndDesignate plan is ready only when BOTH the
+   source and the target have been explicitly designated and confirmed. This
+   is the fail-closed gate: an install never proceeds on assumption. >>
+  boolean isReady() {
+    if (mode == MODE_MINIMAL_DESKTOP) { return true; }
+    if (mode == MODE_DOWNLOAD_AND_DESIGNATE) {
+      return sourceConfirmed && targetConfirmed;
+    }
+    return false;
+  }
+
+<< The ordered, human-readable step list for the selected mode. These are the
+   steps a real installer WOULD take; this model only lists and gates them. >>
+  SLList steps() {
+    SLList out = new SLList();
+    if (mode == MODE_MINIMAL_DESKTOP) {
+      out.add("admit-cpu");
+      out.add("load-minimal-desktop-image");
+      out.add("mount-read-only-root");
+      out.add("start-desktop-session");
+      return out;
+    }
+    if (mode == MODE_DOWNLOAD_AND_DESIGNATE) {
+      out.add("admit-cpu");
+      out.add("require-source-designation");
+      out.add("require-target-designation");
+      out.add("confirm-state-changing-install");
+      out.add("download-designated-image");
+      out.add("verify-image-integrity");
+      out.add("write-designated-target");
+      out.add("install-bootloader-entry");
+      out.add("first-boot-handoff");
+      return out;
+    }
+    return out;
+  }
+
+  int stepCount() { SLList s = steps(); return s.length(); }
+}
