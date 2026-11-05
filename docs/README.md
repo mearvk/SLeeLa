@@ -7,14 +7,15 @@ normative specifications from implementation notes and live validation results.
 
 ## Language and compiler
 
-- [Language syntax specification](../SLEELA.syntax) — normative grammar for
-  the documented **1.3–2.9** source-syntax range. The compiler gate in
-  `impl/frontend/version.{h,cpp}` accepts syntax **1.0–2.9** and defaults
-  to its maximum; individual features remain subject to their own version
-  gates. The current edition adds `@mix` consequent fields (§28); the
-  `prestige` marker in §27 is explicitly future-facing and is not an
-  implemented feature. The compiler/tool release number is independent of the
-  source syntax edition. See the [syntax version matrix](../api/sleela/2.1/language/SYNTAX-VERSION-MATRIX.md)
+- [Language syntax specification](../SLEELA.syntax) — normative SLeeLa
+  **Syntax 3.0** grammar. The shared compiler gate in
+  `impl/frontend/version.{h,cpp}` accepts source syntax **1.0–3.0** and
+  defaults unversioned source to 3.0 with a warning. Syntax 3.0 consolidates
+  the established 1.x/2.x language surface while preserving each feature's
+  original minimum-version gate. The `@mix` consequent-field feature remains
+  gated at 2.9 (§28); the `prestige` marker in §27 remains a future proposal,
+  not an implemented feature. Compiler/tool release numbers are independent
+  of source syntax. See the [syntax version matrix](../api/sleela/2.1/language/SYNTAX-VERSION-MATRIX.md)
   for feature history and implementation boundaries. Constructor overload
   resolution and `this(...)`/base delegation remain outside the verified
   implementation and are rejected explicitly.
@@ -26,12 +27,12 @@ normative specifications from implementation notes and live validation results.
 - [Generated API documentation](../sleeladoc-api/index.html) — the live
   SleelaDoc HTML site for the whole `/lib` tree (Home → Package → Class →
   Members), regenerated from source by `tools/generate-sleeladoc-api.py`.
-  Per-edition snapshots live under [`api/sleela/`](../api/sleela/); the **2.9**
-  edition is captured as immutable, dated snapshots in numbered subfolders —
-  [`version-001`](../api/sleela/2.9/version-001/index.html) (initial 2.9 set)
-  and [`version-002`](../api/sleela/2.9/version-002/index.html), which adds the
-  expanded `lib/ui` component-quality API (see the note below). Each later
-  regeneration adds the next `version-NNN/` folder.
+  Per-edition snapshots live under [`api/sleela/`](../api/sleela/); the
+  current **3.0** edition is captured as immutable snapshots in numbered
+  subfolders, with [`version-003`](../api/sleela/3.0/version-003/index.html)
+  as the latest snapshot. Earlier 3.0 snapshots remain available alongside
+  the preserved 2.9 and older editions. Each later regeneration adds the next
+  unused `version-NNN/` folder.
 - [UI component quality — visibility, margin, and icon](UI-COMPONENT-QUALITY.md) —
   the `lib/ui` standard layout model's per-component quality axes and how
   `SLLayoutDriver` realizes each onto native widgets.
