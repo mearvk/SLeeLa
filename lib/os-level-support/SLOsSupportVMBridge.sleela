@@ -12,7 +12,7 @@ class SLOsSupportVMBridge {
   String nativeNamespace = "osls";
   String runtimeNamespace = "osls_runtime";
   String moduleNamespace = "sl_native";
-  String dispatchBoundary = "VM native-call registry";
+  String dispatchBoundary = "SleelaVMSystemCallBridge / OP_OS_* VM-exit";
 
   String getBridgeVersion() { return bridgeVersion; }
   String getVMNamespace() { return vmNamespace; }
@@ -23,6 +23,7 @@ class SLOsSupportVMBridge {
   SLList getBridgeStages() {
     SLList out = new SLList();
     out.add("SLeeLaSourceCall");
+    out.add("VMOpcodeOrNativeBindingSelection");
     out.add("VMTypeCheck");
     out.add("VMCallDescriptorLookup");
     out.add("ArgumentValidation");
@@ -141,7 +142,46 @@ class SLOsSupportVMBridge {
     return out;
   }
 
-  < This flag is deliberately false until an actual VM native-call registrar
-    and ABI marshaller are connected and tested on all three operating systems. >
-  boolean isNativeDispatcherImplemented() { return false; }
+  < Existing VM OS system calls are dispatched through OP_OS_* (103..123)
+    and impl/core/sleela_os.c on Linux, Windows and macOS. The separate osls_*
+    metadata C ABI has not yet been registered as an additional VM native module. >
+  boolean isCoreOSOpcodeBridgeImplemented() { return true; }
+  boolean isOSLSAbiAdapterRegistered() { return false; }
+
+  SLList getCoreOSOpcodeTerms() {
+    SLList out = new SLList();
+    out.add("OP_OS_PLATFORM=103");
+    out.add("OP_OS_CAPABILITY=104");
+    out.add("OP_OS_GETENV=105");
+    out.add("OP_OS_SETENV=106");
+    out.add("OP_OS_CWD=107");
+    out.add("OP_OS_CHDIR=108");
+    out.add("OP_OS_HOSTNAME=109");
+    out.add("OP_OS_USERNAME=110");
+    out.add("OP_OS_TEMPDIR=111");
+    out.add("OP_OS_PID=112");
+    out.add("OP_OS_EXISTS=113");
+    out.add("OP_OS_ISDIR=114");
+    out.add("OP_OS_FILESIZE=115");
+    out.add("OP_OS_MKDIR=116");
+    out.add("OP_OS_REMOVE=117");
+    out.add("OP_OS_RENAME=118");
+    out.add("OP_OS_RUN=119");
+    out.add("OP_OS_SPAWN=120");
+    out.add("OP_OS_WAIT=121");
+    out.add("OP_OS_KILL=122");
+    out.add("OP_OS_PCLOSE=123");
+    return out;
+  }
+
+  SLList getCoreOSBridgeGroups() {
+    SLList out = new SLList();
+    out.add("HostIdentity");
+    out.add("Environment");
+    out.add("PathManagement");
+    out.add("FileSystem");
+    out.add("ProcessInspection");
+    out.add("CapabilityDiscovery");
+    return out;
+  }
 }
