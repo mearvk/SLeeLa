@@ -135,6 +135,7 @@ struct SLVM {
     int entry;
     SLValue last_result;
     char err[256];
+    uint64_t osls_capabilities;
 
     pthread_mutex_t intern_mtx;
     pthread_mutex_t global_mtx;
@@ -408,6 +409,12 @@ void slvm_set_audio_native_renderer(SLVM* vm, SLAudioNativeRenderFn fn, void* us
     pthread_mutex_unlock((pthread_mutex_t*)&vm->audio_mtx);
 }
 
+int slvm_set_osls_capabilities(SLVM* vm, uint64_t capabilities) {
+    if (!vm || (capabilities & ~OSLS_VM_CAP_HOST_READ) != 0) return -1;
+    vm->osls_capabilities = capabilities;
+    return 0;
+}
+
 int slvm_memory_safe_mode(const SLVM* vm) {
     /* Sleela source never receives native pointers. Globals, locals, files,
      * sockets, threads, reaches, probes, and struct instances are VM-owned
@@ -423,6 +430,7 @@ SLVM* slvm_new(void) {
     vm->cur_func = -1;
     vm->entry = -1;
     vm->last_result = slval_null();
+    vm->osls_capabilities = OSLS_VM_CAP_HOST_READ;
     pthread_mutex_init(&vm->intern_mtx, NULL);
     pthread_mutex_init(&vm->global_mtx, NULL);
     pthread_mutex_init(&vm->print_mtx, NULL);
@@ -2048,7 +2056,7 @@ static SLResult run_thread(SLThread* t) {
             json = (char *)malloc(65536);
             if (!json) TERR("OSLS binding could not allocate its result buffer");
             written = osls_vm_call_authorized(in.a, args, arg_count,
-                                               OSLS_VM_CAP_HOST_READ,
+                                               vm->osls_capabilities,
                                                json, 65536, &result);
             if (written < 0 || result.type != OSLS_VM_RESULT_JSON_UTF8 ||
                 result.utf8 != json || result.length != (size_t)written) {
