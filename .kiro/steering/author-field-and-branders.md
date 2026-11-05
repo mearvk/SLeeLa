@@ -6,9 +6,9 @@ inclusion: always
 
 The authoritative design is
 [`markdown/AUTHOR-FIELD-AND-BRANDER.design.md`](../../markdown/AUTHOR-FIELD-AND-BRANDER.design.md).
-Status: **shipped.** Syntax 2.4 is implemented and is no longer the ceiling —
-`maxSupportedSyntax()` is now `2.5` (the `material` document marker, section 19;
-see `material-marker.md`). The `author`/`authorial` marker is live in the
+Status: **shipped.** The `author`/`authorial` marker remains gated at syntax
+2.4. The current compiler maximum is `maxSupportedSyntax()` = `3.0`; the
+language edition and an individual feature's introduction gate are distinct. The `author`/`authorial` marker is live in the
 lexer/parser/semantic analyzer and the originated/wiki emitters, and
 `SLEELA.syntax` §18 is normative for it.
 
