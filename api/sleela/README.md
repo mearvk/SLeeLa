@@ -4,15 +4,18 @@ This directory holds versioned SLeeLa language API documentation.
 
 | Edition | Documentation | Notes |
 |---|---|---|
-| [2.9](2.9/README.md) | [HTML API home](2.9/index.html) | Current documented snapshot; includes the Philosophy package and its module organization. |
+| [3.0](3.0/README.md) | [API edition home](3.0/README.md) | Current normative language edition; new API snapshot generated from the live `/lib` tree. |
+| [2.9](2.9/README.md) | [Historical API reference](2.9/index.html) | Previous API edition; preserved. |
 | [2.8](2.8/) | Directory | Earlier API edition. |
 | [2.6](2.6/) | Directory | Earlier API edition. |
 | [2.1](2.1/) | Directory | Earlier API edition. |
 
-The 2.9 HTML reference is generated from `/lib` with:
+The current 3.0 API snapshot is generated with:
 
 ```sh
-python3 tools/generate-sleeladoc-api.py --out api/sleela/2.9
+make api-docs
 ```
 
-See [the API documentation overview](../README.md) for the overall documentation layout.
+The generator reads current `/lib` source comments and declarations. Each
+unit's `#sleela` pragma is shown as authored; earlier source pragmas remain
+valid and are not silently rewritten.
