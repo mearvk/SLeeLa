@@ -1,0 +1,72 @@
+< SLeeLa Standard Library Definition.
+  Definition: Windows source-level facade. Portable calls use the existing OP_OS_*
+  VM bridge; Win32, IP Helper, Registry, SCM and Winsock extensions require
+  explicit native bindings and remain subject to Windows access controls. >
+#sleela 2.5
+material;
+
+class SLOsSupportWindowsSource {
+  String backendTerm = "WindowsBackend";
+  String platformName = "Windows";
+  String minimumTarget = "Windows 10";
+  String pathSeparator = "\\";
+  String lineEnding = "\r\n";
+  String executableSuffix = ".exe";
+
+  String getBackendTerm() { return backendTerm; }
+  String getPlatformName() { return platformName; }
+  String getMinimumTarget() { return minimumTarget; }
+  String getPathSeparator() { return pathSeparator; }
+  String getLineEnding() { return lineEnding; }
+  String getExecutableSuffix() { return executableSuffix; }
+  boolean isCurrentPlatform() { return osPlatform() == "Windows"; }
+
+  < Portable operations: routed through the existing VM bridge. >
+  String hostName() { return osHostName(); }
+  String userName() { return osUserName(); }
+  String currentDirectory() { return osCurrentDir(); }
+  String temporaryDirectory() { return osTempDir(); }
+  String environmentValue(String key) { return osGetEnv(key); }
+  boolean setEnvironmentValue(String key, String value) { return osSetEnv(key, value) == 0; }
+  boolean pathExists(String path) { return osExists(path) == 1; }
+  boolean isDirectory(String path) { return osIsDir(path) == 1; }
+  int fileSize(String path) { return osFileSize(path); }
+
+  SLList getExtensionGroups() {
+    SLList out = new SLList();
+    out.add("WindowsIdentity");
+    out.add("WindowsProcess");
+    out.add("WindowsCPUAndMemory");
+    out.add("WindowsFileSystemAndVolumes");
+    out.add("WindowsDirectoryNotifications");
+    out.add("WindowsNetwork");
+    out.add("WindowsEventsAndWaits");
+    out.add("WindowsServices");
+    out.add("WindowsRegistryReadOnly");
+    out.add("WindowsUserAndSession");
+    out.add("WindowsPowerAndBattery");
+    out.add("WindowsSecurityContext");
+    return out;
+  }
+
+  SLList getNativeExtensionSymbols() {
+    SLList out = new SLList();
+    out.add("CreateIoCompletionPort");
+    out.add("CreateWaitableTimerW");
+    out.add("GetNativeSystemInfo");
+    out.add("GetProcessTimes");
+    out.add("GetSystemTimes");
+    out.add("GetVolumeInformationW");
+    out.add("GlobalMemoryStatusEx");
+    out.add("IPHelper:GetAdaptersAddresses");
+    out.add("ReadDirectoryChangesW");
+    out.add("RegistryReadOnly");
+    out.add("ServiceControlManager");
+    out.add("Winsock2");
+    return out;
+  }
+
+  boolean nativeExtensionRegistered(String symbol) { return false; }
+  String systemDirectory() { return osGetEnv("SystemRoot"); }
+  String temporaryPath() { return osTempDir(); }
+}
