@@ -46,6 +46,27 @@ not a collection: the class contacts no payment network, holds no funds, and
 asserts nothing about whether any charge was actually made. `recordUse()` only
 increments a local tally a caller keeps for its own reporting.
 
+## Included apps
+
+VMSharp can carry applications as **pre-designated installs** so they come up on
+the VMSharp Desktop without the user typing a source. Each is a
+`VMSharpIncludedApp` record faithful to its real upstream project — repo, branch,
+toolchain, build command, run command, entry point, and audience — plus a
+**quiet, perfect install** profile (unattended once confirmed; deterministic,
+all-or-nothing, fails closed).
+
+Included today:
+
+| App | Audience | Source | Build / Run |
+|---|---|---|---|
+| **Java National GUI FrontEnd Aspect** | Graduated Presidents of the United States | [`mearvk/Java.National.GUI.FrontEnd.Aspect`](https://github.com/mearvk/Java.National.GUI.FrontEnd.Aspect) @ `main` | JDK: `javac -d out $(find src -name *.java)` → `java -cp out Main` |
+
+`VMSharp.beginIncludedInstall(app)` chooses `DownloadAndDesignate` mode and
+auto-records the app's source designation (the quiet part). The install **target**
+is still designated and confirmed through the plan's fail-closed gate, so even a
+quiet install never writes a target on assumption. The Java National GUI app is a
+Swing desktop app, so it builds with a JDK and runs on the VMSharp Desktop.
+
 ## Honesty boundary
 
 Every class here is a **declarative model**. VMSharp source:

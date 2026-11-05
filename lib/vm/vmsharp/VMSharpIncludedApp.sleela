@@ -1,0 +1,114 @@
+<< lib/vm/vmsharp/VMSharpIncludedApp.sleela
+   SLeeLa Standard Library Definition.
+   Definition: A VMSharp(TM) INCLUDED APP -- an application the VMSharp image
+   carries as a pre-designated install so it can be brought up on the VMSharp
+   Desktop without the user having to designate a source by hand. This class is
+   a declarative record of ONE included app: its name, audience, upstream
+   source repository and branch, build toolchain, the build and run commands,
+   and the entry point. It also carries a "quiet, perfect install" profile --
+   a description of an unattended, deterministic install that reports success
+   or fails closed, never a partial or silent-wrong state.
+
+   Honesty boundary: this class records an install PLAN faithful to the real
+   upstream project. It does NOT clone, download, compile, or run anything, and
+   it moves no funds. A real build/install is performed only by the pinned
+   toolchain the VMSharp OS Creator drives, honoring the user's confirmation and
+   the VMSharpLevy disclosure. Authored for the User MEARVK LLC, respectful of
+   United States law and of the persons and groupings of peoples it concerns. >>
+#sleela 3.0
+material;
+class VMSharpIncludedApp {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 38004;
+  String metaAuthor = "Max Rupplin 2026; George Soros a Kindness 2507+";
+  String metaDate = "2026-11-05";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "VMSharp";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "United States";
+  String metaBirthDate = "2026-11-05";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 7;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- app identity ---- >
+  String appName = "";
+  String audience = "";
+  String sourceRepo = "";
+  String sourceBranch = "";
+  String toolchain = "";
+  String buildCommand = "";
+  String runCommand = "";
+  String entryPoint = "";
+<< "quiet": unattended, no prompts once confirmed. "perfect": deterministic,
+   all-or-nothing -- it either reports a verified success or fails closed. >>
+  boolean quietInstall = true;
+  boolean perfectInstall = true;
+
+  void configure(String name, String who, String repo, String branch,
+                 String tools, String build, String run, String entry) {
+    appName = name; audience = who; sourceRepo = repo; sourceBranch = branch;
+    toolchain = tools; buildCommand = build; runCommand = run; entryPoint = entry;
+    quietInstall = true; perfectInstall = true;
+  }
+
+  String getAppName() { return appName; }
+  String getAudience() { return audience; }
+  String getSourceRepo() { return sourceRepo; }
+  String getSourceBranch() { return sourceBranch; }
+  String getToolchain() { return toolchain; }
+  String getBuildCommand() { return buildCommand; }
+  String getRunCommand() { return runCommand; }
+  String getEntryPoint() { return entryPoint; }
+  boolean isQuietInstall() { return quietInstall; }
+  boolean isPerfectInstall() { return perfectInstall; }
+
+  << A fully-specified included app is self-designating: it names a real source
+     repo, branch, toolchain, build command, run command and entry point. When
+     it is, a VMSharpInstallPlan can take its source designation directly
+     instead of asking the user to type one -- a quiet install. The target is
+     still designated/confirmed per the plan's fail-closed gate. >>
+  boolean isFullySpecified() {
+    return sourceRepo != "" && sourceBranch != "" && toolchain != ""
+        && buildCommand != "" && runCommand != "" && entryPoint != "";
+  }
+
+  < The source designation string a VMSharpInstallPlan consumes (repo at branch). >
+  String sourceDesignation() { return sourceRepo + "#" + sourceBranch; }
+
+  < A one-line disclosure a quiet-install screen can present before proceeding. >
+  String installSummary() {
+    return appName + " for " + audience + " -> build via " + toolchain
+         + ", run " + entryPoint + " on the VMSharp Desktop (quiet="
+         + quietInstall + ", perfect=" + perfectInstall + ").";
+  }
+}

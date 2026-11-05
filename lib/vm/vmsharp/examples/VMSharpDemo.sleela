@@ -87,6 +87,24 @@ class VMSharpDemo {
     print("steps: " + plan2.stepCount());
 
     print("");
+    print("== Included app: quiet install for Graduated US Presidents ==");
+    VMSharp vm3 = new VMSharp();
+    vm3.configure();
+    print("included apps: " + vm3.includedAppCount());
+    VMSharpIncludedApp app = vm3.includedApp(0);
+    print(app.installSummary());
+    print("source repo: " + app.getSourceRepo());
+    print("build: " + app.getBuildCommand());
+    print("run: " + app.getRunCommand());
+    boolean began = vm3.beginIncludedInstall(app);
+    VMSharpInstallPlan plan3 = vm3.getPlan();
+    print("quiet install began (source auto-designated): " + began);
+    print("source designated: " + plan3.getSourceDesignation());
+    print("ready before target (target gate still holds): " + plan3.isReady());
+    plan3.designateTarget("vmsharp-desktop-apps");
+    print("ready after target designated: " + plan3.isReady());
+
+    print("");
     print("== Declared levy ==");
     VMSharpLevy levy = vm.getLevy();
     print(levy.disclosure());

@@ -2,9 +2,9 @@
 
 **Revision:** 0.58  
 **Packages:** 109  
-**SLeeLa source units:** 11776  
+**SLeeLa source units:** 11777  
 **Module-facade symbols:** 77  
-**Total symbol records:** 11853  
+**Total symbol records:** 11854  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.58 adds **VMSharp™** under the `vm` package (`lib/vm/vmsharp/`): a
@@ -18,9 +18,16 @@
 > fail-closed designation gate — a download/install never proceeds without an
 > explicit, recorded source and target), **`VMSharpLevy`** (the declared
 > USD 380 per-use/install figure directed to a United States national retirement
-> process — disclosed, never auto-collected), and a runnable
-> `examples/VMSharpDemo`. Declarative models only: no firmware flashed, no disk
-> written, no funds moved; a real bootable image is produced only by the pinned
+> process — disclosed, never auto-collected), **`VMSharpIncludedApp`** (an app
+> the image carries as a pre-designated install), and a runnable
+> `examples/VMSharpDemo`. The first included app is the **Java National GUI
+> FrontEnd Aspect** (`github.com/mearvk/Java.National.GUI.FrontEnd.Aspect` @
+> `main`), included for **Graduated Presidents of the United States**: a Java
+> Swing app built with a JDK (`javac`→`out/`, run `java -cp out Main`) that runs
+> on the VMSharp Desktop; its quiet install auto-designates the source while the
+> install target still passes the fail-closed gate. Declarative models only: no
+> firmware flashed, no disk written, no funds moved, nothing cloned/compiled/run
+> here; a real bootable image and a real build are produced only by the pinned
 > OS Creator toolchain. Authored for the User MEARVK LLC (Max Rupplin 2026;
 > George Soros a Kindness 2507+), respectful of United States law and of the
 > persons and groupings of peoples it concerns. Every class carries the Metadata

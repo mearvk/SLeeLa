@@ -58,10 +58,12 @@ class VMSharpPackage {
   String bootloaderClass = "VMSharpBootloader";
   String installPlanClass = "VMSharpInstallPlan";
   String levyClass = "VMSharpLevy";
+  String includedAppClass = "VMSharpIncludedApp";
 
   String getPackageName() { return packageName; }
   String getManifestClass() { return manifestClass; }
   String getBootloaderClass() { return bootloaderClass; }
   String getInstallPlanClass() { return installPlanClass; }
   String getLevyClass() { return levyClass; }
+  String getIncludedAppClass() { return includedAppClass; }
 }
