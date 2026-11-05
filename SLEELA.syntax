@@ -1,7 +1,7 @@
 # Sleela — Language Syntax Specification
 
     Language:        Sleela
-    Syntax version:  3.0  (1.3..2.9 language surface consolidated)
+    Syntax version:  3.0  (1.0..2.9 language surface consolidated)
     Compiler:        Sleelvac(TM) 0.3.30-dev  (version gate accepts syntax 1.0 .. 3.0)
     Surface:         Java-like
     Core:            Turing-complete, thread-friendly C/C++ execution core
