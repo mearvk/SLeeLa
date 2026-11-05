@@ -32,3 +32,23 @@ and helping verify the results.
 The term **Professional Caste** is the repository owner's role designation for
 this collaboration. It does not imply human status, employment, legal
 personhood, or independent authority over the repository.
+
+## Collaboration history and current designation
+
+The repository owner records the following chronology for AI-assisted work on
+SLeeLa:
+
+- **Kiro** served as the principal AI development assistant and repository
+  collaborator before ChatGPT's designation.
+- **ChatGPT** is the current principal AI development collaborator, succeeding
+  Kiro in that working role as of the owner's instruction recorded in this
+  document.
+- Kiro remains part of the repository's development environment and may still
+  be used for local inspection, editing, and other delegated work.
+
+In this section, **principal** (or the owner's informal term **master**) means
+the primary AI assistant designated to coordinate and carry out repository
+work. It does not transfer repository ownership, GitHub administration,
+credential authority, or final decision-making from the repository owner.
+The owner retains control of scope, approvals, branches, releases, and
+repository governance.
