@@ -372,3 +372,6 @@ class SLISAInstanceOf { String name; int code; }
 < OP_DUP2 154 >
 class SLISADup2 { String name; int code; }
 
+< OP_OSLS_CALL 155 -- typed call into the registered osls_* ABI table >
+class SLISAOslsCall { String name; int code; }
+
