@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   posix:
@@ -35,10 +35,24 @@ jobs:
           distribution: temurin
           java-version: '21'
 
+      - name: Regenerate trusted source manifest
+        run: python3 tools/generate-sha256-manifest.py --root . --output security/sha256-manifest.json
+
       - name: Build native runtime and static core
         env:
           SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
         run: make -C impl clean all
+
+      - name: Build and test OSLS native registry
+        timeout-minutes: 5
+        run: |
+          cmake -S os-level-support -B build/osls -DBUILD_TESTING=ON
+          cmake --build build/osls --config Release
+          ctest --test-dir build/osls -C Release --output-on-failure
+
+      - name: Test OSLS VM compiler and runtime dispatch
+        timeout-minutes: 3
+        run: make -C impl test-osls-vm
 
       - name: Test native Wi-Fi manager contract
         timeout-minutes: 3
@@ -98,6 +112,17 @@ jobs:
           SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
         run: make -C impl test-network
 
+      - name: Commit manifest after successful platform verification
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add security/sha256-manifest.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Refresh verified source manifest after OSLS validation"
+            git push
+          fi
+
   windows:
     name: Native runtime (Windows 10+ / MinGW-w64)
     runs-on: windows-latest
@@ -119,10 +144,24 @@ jobs:
       - name: Check out source
         uses: actions/checkout@v4
 
+      - name: Regenerate trusted source manifest
+        run: python3 tools/generate-sha256-manifest.py --root . --output security/sha256-manifest.json
+
       - name: Build native runtime and static core
         env:
           SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
         run: make -C impl clean all
+
+      - name: Build and test OSLS native registry
+        timeout-minutes: 5
+        run: |
+          cmake -S os-level-support -B build/osls -DBUILD_TESTING=ON
+          cmake --build build/osls --config Release
+          ctest --test-dir build/osls -C Release --output-on-failure
+
+      - name: Test OSLS VM compiler and runtime dispatch
+        timeout-minutes: 3
+        run: make -C impl test-osls-vm
 
       - name: Test native Wi-Fi manager contract
         timeout-minutes: 3
@@ -175,3 +214,14 @@ jobs:
         env:
           SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
         run: make -C impl test-network
+
+      - name: Commit manifest after successful platform verification
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add security/sha256-manifest.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Refresh verified source manifest after OSLS validation"
+            git push
+          fi
