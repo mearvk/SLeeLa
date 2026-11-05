@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11885
+library-source-files: 11886
 library-packages: 111
 module-facade-symbols: 77
-total-symbol-records: 11962
+total-symbol-records: 11963
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -11866,6 +11866,7 @@ vm	startup-and-memory-guard.sleela	lib/vm/tutorials/examples/startup-and-memory-
 vm	SLPackage.sleela	lib/vm/vmsharp/SLPackage.sleela	facade
 vm	VMSharp.sleela	lib/vm/vmsharp/VMSharp.sleela	source
 vm	VMSharpBootloader.sleela	lib/vm/vmsharp/VMSharpBootloader.sleela	source
+vm	VMSharpDiskLayout.sleela	lib/vm/vmsharp/VMSharpDiskLayout.sleela	source
 vm	VMSharpIncludedApp.sleela	lib/vm/vmsharp/VMSharpIncludedApp.sleela	source
 vm	VMSharpInstallOption.sleela	lib/vm/vmsharp/VMSharpInstallOption.sleela	source
 vm	VMSharpInstallPlan.sleela	lib/vm/vmsharp/VMSharpInstallPlan.sleela	source

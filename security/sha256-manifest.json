@@ -48803,7 +48803,7 @@
     },
     {
       "path": "lib/vm/vmsharp/SLPackage.sleela",
-      "sha256": "b77a9d4e76214352175533232c67013e0fa5c28f9f249152a0734e4f9231b9f9"
+      "sha256": "53ef4c8e52503cc07852029a85d0b17efb6de9aa576f0120dd75934f5dbb46e8"
     },
     {
       "path": "lib/vm/vmsharp/VMSharp.sleela",
@@ -48812,6 +48812,10 @@
     {
       "path": "lib/vm/vmsharp/VMSharpBootloader.sleela",
       "sha256": "4f128014065798ab88ed9bd9b6e43937e914aacf48e64f2aa594bdd75f196b1c"
+    },
+    {
+      "path": "lib/vm/vmsharp/VMSharpDiskLayout.sleela",
+      "sha256": "6da186a5fc2204ddfe50781464b081dd9c8a6ed6300d62c110d4d7240c303213"
     },
     {
       "path": "lib/vm/vmsharp/VMSharpIncludedApp.sleela",
@@ -48827,7 +48831,7 @@
     },
     {
       "path": "lib/vm/vmsharp/VMSharpInstallWizard.sleela",
-      "sha256": "f33b9657a8b653c2c78b4f3c462af14f10aa52d2007f24c2de9d314120600d08"
+      "sha256": "a1dc66c19898fafc0de71e9dfbad77c86934efaa15f4bc8c9527cc10c6efaf16"
     },
     {
       "path": "lib/vm/vmsharp/VMSharpLevy.sleela",
@@ -48839,7 +48843,7 @@
     },
     {
       "path": "lib/vm/vmsharp/VMSharpOSCreatorRun.sleela",
-      "sha256": "78dbd782a6e707a12d1279e538bfabc2e5df2e1abeb874125e2dddb26a9d0ef1"
+      "sha256": "bd84f9277672b0869e45fc2624f86c98f8bb5a174ab8db861bca935be4a33e10"
     },
     {
       "path": "lib/vm/vmsharp/VMSharpRepoAcquisition.sleela",
@@ -48855,11 +48859,11 @@
     },
     {
       "path": "lib/vm/vmsharp/examples/VMSharpInstallWizardDemo.sleela",
-      "sha256": "1d2e47d132341391d3a14d4e5e043c824b7dbe8b615b8ead290310610153e1e7"
+      "sha256": "fa45614c62858e2a4a44aebc5571b43f793e0b636343462939c641bb082d0308"
     },
     {
       "path": "lib/vm/vmsharp/examples/VMSharpOSCreatorDemo.sleela",
-      "sha256": "47021fa41ce72145243264edb64ee638baae67b7a96f5edf9c3d4986de848ce1"
+      "sha256": "b9cd6ddcb81cf036f64badd7cab59329ce9c27dfe8f3a574f4bec977fb6b6db2"
     },
     {
       "path": "lib/vm/vmsharp/examples/VMSharpUsbMediaDemo.sleela",

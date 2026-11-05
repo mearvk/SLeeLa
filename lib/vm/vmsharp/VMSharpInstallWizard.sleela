@@ -219,6 +219,28 @@ class VMSharpInstallWizard {
     return s;
   }
 
+  < ---- Screen 4c: disk layout (filesystem choice + partition manifest) ---- >
+  << Choose the root filesystem (EXT4 default, or a similar rootable one) and
+     designate the target disk, then render the initial hard-drive manifest and
+     the partition/format plan. Choosing an unrootable filesystem is refused;
+     the plan is fail-closed until a target disk is designated. >>
+  String diskLayoutScreen(String rootFs, String targetDisk) {
+    VMSharpDiskLayout disk = creatorRun.diskLayout();
+    boolean okFs = disk.chooseRootFilesystem(rootFs);
+    if (targetDisk != "") { disk.designateTarget(targetDisk); }
+    String s = "-- Initial hard drive: filesystem + partitioning --\n";
+    s = s + "root filesystem choice accepted: " + okFs + " (" + disk.getRootFilesystem() + ")\n";
+    s = s + "available root filesystems: " + disk.rootChoices() + "\n";
+    s = s + "partition table: " + disk.getPartitionTable() + "\n";
+    s = s + "partition manifest:\n";
+    SLList man = disk.partitionManifest();
+    int i = 0;
+    while (i < man.length()) { s = s + "  " + man.get(i) + "\n"; i = i + 1; }
+    s = s + "partition plan steps: " + disk.partitionPlanSteps() + "\n";
+    s = s + "layout ready: " + disk.isReady();
+    return s;
+  }
+
   < ---- Screen 5: levy disclosure ---- >
   String levyScreen() {
     VMSharpLevy levy = vm.getLevy();
