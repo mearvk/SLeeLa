@@ -4,7 +4,7 @@ Max Rupplin - MEARVK LLC - 2026
 
 This is the human-readable support map for the canonical source-defined SLeeLa ISA in `lib/vm/InstructionSet.sleela`.
 
-**Verified target state:** 155 source ISA entries, 155 native `SLOp` entries, and 155 native dispatch cases. The VM coverage check compares source order, explicit numeric annotations, and one native dispatch case per opcode. The tail groups are the array ops (98–102), the operating-system system calls (103–123, `OP_OS_*`), the GC/system ops (124 `OP_GC_HINT`, 125 `OP_RAN_MEM`), the idea-canvas native-bridge ops (126–147, `OP_IC_*`, from `idea/realtime`), the VM-selection service op (148, `OP_VM_SELECT`), the Modium file-resolution scan op (149, `OP_MODIUM_SCAN`), `OP_UI_CALL` (150), `OP_SSEND` (151), and runtime type/stack ops `OP_CHECKCAST` (152), `OP_INSTANCEOF` (153), and `OP_DUP2` (154) — all appended to the end of the enum so earlier opcode numbers are unchanged.
+**Verified target state:** 156 source ISA entries, 156 native `SLOp` entries, and 156 native dispatch cases. The VM coverage check compares source order, explicit numeric annotations, and one native dispatch case per opcode. The tail groups are the array ops (98–102), the operating-system system calls (103–123, `OP_OS_*`), the GC/system ops (124 `OP_GC_HINT`, 125 `OP_RAN_MEM`), the idea-canvas native-bridge ops (126–147, `OP_IC_*`, from `idea/realtime`), the VM-selection service op (148, `OP_VM_SELECT`), the Modium file-resolution scan op (149, `OP_MODIUM_SCAN`), `OP_UI_CALL` (150), `OP_SSEND` (151), and runtime type/stack ops `OP_CHECKCAST` (152), `OP_INSTANCEOF` (153), `OP_DUP2` (154), and `OP_OSLS_CALL` (155) — all appended to the end of the enum so earlier opcode numbers are unchanged.
 
 > Sync note: the source registry, native enum, and map now cover the appended
 > `OP_IC_*` group (126–147), `OP_VM_SELECT` (148), `OP_MODIUM_SCAN` (149),
@@ -219,3 +219,5 @@ A source opcode is not considered supported merely because it appears in the sou
 > `InstructionSet.sleela` (step 1), the native `SLOp` enum (step 2) and dispatch
 > (step 3), this map (step 4), and reflected in the SLVM/1–11 runtime-services
 > contract (step 6) via `RUNTIME-SERVICES.md`.
+
+155 | `OP_OSLS_CALL` | Implemented | `impl/core/sleela_core.c` (`os-level-support/osls_vm_bridge.c`) — typed OSLS ABI registry; JSON result marshalling
