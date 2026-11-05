@@ -12,6 +12,7 @@ catalogues**.
 | SLPackage.sleela | Package entry point and component names |
 | SLOsSupportCatalog.sleela | Canonical capability groups, common API names, runtime/module functions, planned portable functions, and grouping terms |
 | SLOsSupportElement.sleela | Reusable element descriptor: group, VM term/opcode, portable symbol, native symbol, backend, effect, status and arity |
+| SLOsSupportVMElements.sleela | Factory methods for the 21 existing OP_OS operations, mapped to VM opcodes and slos_* backend symbols |
 | SLOsSupportVMBridge.sleela | VM dispatch stages, status/marshalling vocabulary and current VM opcode mapping |
 | SLOsSupportLinux.sleela | Linux grouping terms and alphabetized POSIX/Linux native symbols |
 | SLOsSupportWindows.sleela | Windows grouping terms and alphabetized Win32/Winsock symbols |
@@ -31,7 +32,7 @@ The catalog uses stable terms such as:
 
 These are source-level grouping identifiers, not native function names. Use them
 as the semantic group of an OS-support element; use the platform catalogues for
-native symbols and SLOsSupportElement to describe an individual binding.
+native symbols and SLOsSupportElement to describe an individual binding. SLOsSupportVMElements supplies ready-made descriptors for the current VM OS calls.
 
 ## VM integration boundary
 
@@ -44,8 +45,9 @@ The SLeeLa VM already has an OS system-call path:
   on Linux/macOS.
 
 The new source catalogues now reference that existing VM bridge and enumerate
-its exact opcode names and numbers. They do **not** create a second VM syscall
-path or duplicate opcode numbers.
+its exact opcode names and numbers. SLOsSupportVMElements maps each existing VM
+operation to its OP_OS opcode and the corresponding slos_* C backend symbol.
+They do **not** create a second VM syscall path or duplicate opcode numbers.
 
 The richer root C library under os-level-support/ has its own osls_* metadata
 and inspection ABI. The source model explicitly distinguishes the existing
@@ -87,6 +89,6 @@ are actually run.
 
 - os-level-support/DESIGNATE.md — complete common and OS-specific function inventory.
 - os-level-support/osls.h — portable C metadata/inspection API.
-- lib/vm/SleelaVMSystemCallBridge.sleela — existing VM system-call facade.
+- lib/vm/SleelaVMSystemCallBridge.sleela — existing VM system-call facade and OSLS grouping integration.
 - lib/vm/SLVMNativeBinding.sleela — explicit native binding lifecycle model.
 - impl/core/sleela_os.h / impl/core/sleela_os.c — existing host OS backend.
