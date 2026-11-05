@@ -13,6 +13,7 @@ catalogues**.
 | SLOsSupportCatalog.sleela | Canonical capability groups, common API names, runtime/module functions, planned portable functions, and grouping terms |
 | SLOsSupportElement.sleela | Reusable element descriptor: group, VM term/opcode, portable symbol, native symbol, backend, effect, status and arity |
 | SLOsSupportVMElements.sleela | Factory methods for the 21 existing OP_OS operations, mapped to VM opcodes and slos_* backend symbols |
+| SLOsSupportOSLSElements.sleela | Factory methods for the 12 common osls_* C ABI exports; VM opcode remains UNREGISTERED until an adapter is implemented |
 | SLOsSupportVMBridge.sleela | VM dispatch stages, status/marshalling vocabulary and current VM opcode mapping |
 | examples/SLOsSupportCatalogExample.sleela | Example that enumerates common groups, VM bindings, and each platform's native API catalogue |
 | SLOsSupportLinux.sleela | Linux grouping terms and alphabetized POSIX/Linux native symbols |
@@ -33,7 +34,7 @@ The catalog uses stable terms such as:
 
 These are source-level grouping identifiers, not native function names. Use them
 as the semantic group of an OS-support element; use the platform catalogues for
-native symbols and SLOsSupportElement to describe an individual binding. SLOsSupportVMElements supplies ready-made descriptors for the current VM OS calls.
+native symbols and SLOsSupportElement to describe an individual binding. SLOsSupportVMElements supplies ready-made descriptors for the current VM OS calls. SLOsSupportOSLSElements supplies descriptors for the richer root osls_* API while explicitly marking its VM binding as unregistered.
 
 ## VM integration boundary
 
@@ -55,7 +56,10 @@ and inspection ABI. The source model explicitly distinguishes the existing
 OP_OS_* bridge from a future osls_* VM adapter:
 coreOSOpcodeBridgeImplemented() is true, while
 oslsCAbiAdapterRegistered() is false until a real host registration,
-marshalling implementation and cross-platform tests are added.
+marshalling implementation and cross-platform tests are added. The new
+SLOsSupportOSLSElements class gives each current osls_* export a source element
+with group, native symbol, arity, result contract and implementation status;
+its VM opcode field is deliberately UNREGISTERED.
 
 ## Status and execution rules
 
