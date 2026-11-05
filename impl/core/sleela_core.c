@@ -2015,48 +2015,52 @@ static SLResult run_thread(SLThread* t) {
             PUSH(slval_null());
         } break;
 
-        /* ---- OSLS typed native binding table (append-only opcode 155) ---- */
+        /* ---- OSLS typed native registry (append-only opcode 155) ---- */
         case OP_OSLS_CALL: {
-            const char *text_arg = NULL;
-            int64_t integer_arg = 0;
-            SLValue first, second;
-            switch (in.a) {
-                case OSLS_VM_PROCESS_INFO:
-                    first = POP();
-                    if (first.type != SL_INT) TERR("oslsProcessInfo(pid) requires an integer pid");
-                    integer_arg = first.as.i;
-                    break;
-                case OSLS_VM_GET_ENVIRONMENT_VALUE:
-                case OSLS_VM_GET_FILE_INFO:
-                case OSLS_VM_LIST_DIRECTORY:
-                case OSLS_VM_CRON_VALIDATE:
-                    first = POP();
-                    if (first.type != SL_STR) TERR("OSLS binding requires a String argument");
-                    text_arg = slvm_str(vm, first.as.s);
-                    break;
-                case OSLS_VM_CRON_NEXT_AFTER:
-                    second = POP();
-                    first = POP();
-                    if (first.type != SL_STR || second.type != SL_INT)
-                        TERR("oslsCronNextAfter(expression, epoch) requires String and integer arguments");
-                    text_arg = slvm_str(vm, first.as.s);
-                    integer_arg = second.as.i;
-                    break;
-                default:
-                    if (in.a < 0 || in.a >= OSLS_VM_OPERATION_COUNT)
-                        TERR("OSLS binding id is not registered");
-                    break;
+            const osls_vm_binding *binding = osls_vm_binding_by_id(in.a);
+            osls_vm_value args[2];
+            osls_vm_result result;
+            size_t arg_count, i;
+            char *json;
+            int written;
+            if (!binding || !binding->invoke)
+                TERR("OSLS native symbol is not registered");
+            arg_count = binding->argument_count;
+            if (arg_count > sizeof(args) / sizeof(args[0]))
+                TERR("OSLS binding signature exceeds the VM marshalling limit");
+            for (i = arg_count; i > 0; --i) {
+                SLValue value = POP();
+                osls_vm_arg_type expected = binding->argument_types[i - 1];
+                if (expected == OSLS_VM_ARG_UTF8) {
+                    if (value.type != SL_STR)
+                        TERR("OSLS binding argument type mismatch: expected String");
+                    args[i - 1].type = OSLS_VM_ARG_UTF8;
+                    args[i - 1].value.utf8 = slvm_str(vm, value.as.s);
+                } else if (expected == OSLS_VM_ARG_I64) {
+                    if (value.type != SL_INT)
+                        TERR("OSLS binding argument type mismatch: expected integer");
+                    args[i - 1].type = OSLS_VM_ARG_I64;
+                    args[i - 1].value.i64 = value.as.i;
+                } else {
+                    TERR("OSLS binding contains an unsupported argument type");
+                }
+            }
+            json = (char *)malloc(65536);
+            if (!json) TERR("OSLS binding could not allocate its result buffer");
+            written = osls_vm_call_authorized(in.a, args, arg_count,
+                                               OSLS_VM_CAP_HOST_READ,
+                                               json, 65536, &result);
+            if (written < 0 || result.type != OSLS_VM_RESULT_JSON_UTF8 ||
+                result.utf8 != json || result.length != (size_t)written) {
+                free(json);
+                TERR("OSLS native invocation, capability check, or result marshalling failed");
             }
             {
-                char *json = (char *)malloc(65536);
-                int written;
-                if (!json) TERR("OSLS binding could not allocate its result buffer");
-                written = osls_vm_call(in.a, text_arg, integer_arg, json, 65536);
-                if (written < 0) { free(json); TERR("OSLS native binding failed or exceeded its result buffer"); }
-                {
-                    SLValue out; out.type = SL_STR; out.as.s = intern(vm, json);
-                    free(json); PUSH(out);
-                }
+                SLValue out;
+                out.type = SL_STR;
+                out.as.s = intern(vm, result.utf8);
+                free(json);
+                PUSH(out);
             }
         } break;
 
