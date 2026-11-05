@@ -73,11 +73,39 @@ class VMSharp {
   VMSharpBootloader bootloader;
   VMSharpInstallPlan plan;
   VMSharpLevy levy;
+<< Included apps the image carries as pre-designated installs (object array;
+   SLList holds only Strings, so included-app objects live in a typed array). >>
+  VMSharpIncludedApp[] includedApps;
+  int includedCount;
 
   void configure() {
     bootloader = new VMSharpBootloader();
     plan = new VMSharpInstallPlan();
     levy = new VMSharpLevy();
+    includedApps = new VMSharpIncludedApp[8];
+    includedCount = 0;
+    loadIncludedApps();
+  }
+
+  << Register the apps VMSharp ships as included installs. Faithful to each real
+     upstream project: the Java National GUI FrontEnd Aspect is a Java Swing
+     desktop app (entry class Main, plain src/ layout, no Maven/Gradle), so it
+     builds with a JDK (javac the src tree to out/) and runs with java -cp out
+     Main on the VMSharp Desktop. It is included for Graduated Presidents of the
+     United States. >>
+  void loadIncludedApps() {
+    VMSharpIncludedApp nationalGui = new VMSharpIncludedApp();
+    nationalGui.configure(
+      "Java National GUI FrontEnd Aspect",
+      "Graduated Presidents of the United States",
+      "https://github.com/mearvk/Java.National.GUI.FrontEnd.Aspect",
+      "main",
+      "JDK (javac/java)",
+      "javac -d out $(find src -name *.java)",
+      "java -cp out Main",
+      "Main");
+    includedApps[includedCount] = nationalGui;
+    includedCount = includedCount + 1;
   }
 
   String getId() { return id; }
@@ -87,6 +115,26 @@ class VMSharp {
   VMSharpBootloader getBootloader() { return bootloader; }
   VMSharpInstallPlan getPlan() { return plan; }
   VMSharpLevy getLevy() { return levy; }
+  int includedAppCount() { return includedCount; }
+  < The included app at index i (0-based), or null if out of range. >
+  VMSharpIncludedApp includedApp(int i) {
+    if (i < 0 || i >= includedCount) { return null; }
+    return includedApps[i];
+  }
+
+  << Begin a quiet install of an included app. Because an included app is a
+     fully-specified, pre-designated source, this chooses DownloadAndDesignate
+     mode and records the app's source designation for the user -- no source
+     typing. The install TARGET is still designated and confirmed through the
+     plan's fail-closed gate, so even a quiet install never writes a target on
+     assumption. Returns true when the source was accepted. >>
+  boolean beginIncludedInstall(VMSharpIncludedApp app) {
+    if (!app.isFullySpecified()) { return false; }
+    plan.chooseDownloadAndDesignate();
+    String src = app.sourceDesignation();
+    plan.designateSource(src);
+    return true;
+  }
 
   < Can VMSharp boot on the given processor? Delegates to the bootloader model. >
   boolean canBootOn(String arch, String vendor) {
