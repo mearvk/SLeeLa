@@ -1,0 +1,217 @@
+< SLeeLa Standard Library Definition.
+  Definition: VM-facing OSLS binding and marshalling contract.
+  The existing OP_OS_* VM system-call bridge is already implemented and catalogued
+  here. This class also describes the separate osls_* C ABI adapter, which remains
+  unregistered until the VM host supplies its native symbol table, marshalling,
+  backend integration and cross-platform tests. >
+#sleela 2.5
+material;
+
+class SLOsSupportVMBridge {
+  String bridgeVersion = "1.0.0";
+  String vmNamespace = "std.os";
+  String nativeNamespace = "osls";
+  String runtimeNamespace = "osls_runtime";
+  String moduleNamespace = "sl_native";
+  String dispatchBoundary = "SleelaVMSystemCallBridge / OP_OS_* VM-exit";
+
+  String getBridgeVersion() { return bridgeVersion; }
+  String getVMNamespace() { return vmNamespace; }
+  String getNativeNamespace() { return nativeNamespace; }
+  String getDispatchBoundary() { return dispatchBoundary; }
+
+  < Stable conceptual stages of a VM-to-host operation. >
+  SLList getBridgeStages() {
+    SLList out = new SLList();
+    out.add("SLeeLaSourceCall");
+    out.add("VMOpcodeOrNativeBindingSelection");
+    out.add("VMTypeCheck");
+    out.add("VMCallDescriptorLookup");
+    out.add("ArgumentValidation");
+    out.add("UTF8AndBufferMarshalling");
+    out.add("NativeABIDispatch");
+    out.add("PlatformBackendDispatch");
+    out.add("HostOSPermissionCheck");
+    out.add("NativeResultNormalization");
+    out.add("VMValueConstruction");
+    out.add("VMExceptionOrStatusPropagation");
+    return out;
+  }
+
+  < VM-visible operation groups. >
+  SLList getVMElementTerms() {
+    SLList out = new SLList();
+    out.add("OSHost");
+    out.add("OSProcess");
+    out.add("OSEnvironment");
+    out.add("OSFileSystem");
+    out.add("OSPath");
+    out.add("OSVolume");
+    out.add("OSCPU");
+    out.add("OSMemory");
+    out.add("OSClock");
+    out.add("OSTimeZone");
+    out.add("OSNetwork");
+    out.add("OSSocket");
+    out.add("OSScheduler");
+    out.add("OSTimer");
+    out.add("OSRuntime");
+    out.add("OSModule");
+    out.add("OSCapabilities");
+    out.add("OSError");
+    return out;
+  }
+
+  < Portable status mapping; numeric values match osls_status in osls.h. >
+  SLList getStatusTerms() {
+    SLList out = new SLList();
+    out.add("OSLS_OK=0");
+    out.add("OSLS_INVALID_ARGUMENT=1");
+    out.add("OSLS_BUFFER_TOO_SMALL=2");
+    out.add("OSLS_SYSTEM_ERROR=3");
+    out.add("OSLS_NOT_FOUND=4");
+    out.add("OSLS_UNSUPPORTED=5");
+    return out;
+  }
+
+  < ABI data types that the VM marshaller must understand explicitly. >
+  SLList getMarshallerTerms() {
+    SLList out = new SLList();
+    out.add("Int32");
+    out.add("UInt32");
+    out.add("Int64");
+    out.add("UInt64");
+    out.add("SizeT");
+    out.add("Utf8String");
+    out.add("Utf8Buffer");
+    out.add("FixedWidthRecord");
+    out.add("OpaqueHandle");
+    out.add("CallbackToken");
+    out.add("BorrowedPayload");
+    out.add("StatusCode");
+    return out;
+  }
+
+  < The currently declared C ABI entry points available for registration. >
+  SLList getRegisteredSymbolCandidates() {
+    SLList out = new SLList();
+    out.add("osls_cron_next_after");
+    out.add("osls_cron_validate");
+    out.add("osls_enumerate_environment");
+    out.add("osls_enumerate_processes");
+    out.add("osls_get_cpu_info");
+    out.add("osls_get_environment_value");
+    out.add("osls_get_file_info");
+    out.add("osls_get_network_interfaces");
+    out.add("osls_get_process_info");
+    out.add("osls_get_system_info");
+    out.add("osls_get_timezone_info");
+    out.add("osls_list_directory");
+    out.add("osls_runtime_create");
+    out.add("osls_runtime_destroy");
+    out.add("osls_runtime_emit");
+    out.add("osls_runtime_pending");
+    out.add("osls_runtime_post");
+    out.add("osls_runtime_run_one");
+    out.add("osls_runtime_subscribe");
+    out.add("osls_runtime_unsubscribe");
+    out.add("sl_native_abi_version");
+    out.add("sl_native_close");
+    out.add("sl_native_loader_error");
+    out.add("sl_native_open");
+    out.add("sl_native_run");
+    out.add("sl_native_run_module");
+    out.add("sl_native_status_string");
+    return out;
+  }
+
+  < Mandatory guardrails for VM/native dispatch. >
+  SLList getDispatchRules() {
+    SLList out = new SLList();
+    out.add("NoImplicitPrivilegeElevation");
+    out.add("NoKernelOrSyscallInterception");
+    out.add("NoUnapprovedCrossProcessAccess");
+    out.add("NoImplicitProcessLaunch");
+    out.add("NoImplicitFilesystemMutation");
+    out.add("NoTrustBasedExecutionAuthorization");
+    out.add("NativeModuleRunsInProcess");
+    out.add("HostOSRemainsAuthority");
+    out.add("ExplicitCapabilityCheck");
+    out.add("ExplicitPermissionFailure");
+    out.add("DeterministicHandleOwnership");
+    out.add("CallbackLifetimeIsBounded");
+    return out;
+  }
+
+  < Existing VM OS system calls are dispatched through OP_OS_* (103..123)
+    and impl/core/sleela_os.c on Linux, Windows and macOS. The separate osls_*
+    metadata C ABI has not yet been registered as an additional VM native module. >
+  boolean isCoreOSOpcodeBridgeImplemented() { return true; }
+  boolean isOSLSAbiAdapterRegistered() { return false; }
+
+  SLList getCoreOSOpcodeTerms() {
+    SLList out = new SLList();
+    out.add("OP_OS_PLATFORM=103");
+    out.add("OP_OS_CAPABILITY=104");
+    out.add("OP_OS_GETENV=105");
+    out.add("OP_OS_SETENV=106");
+    out.add("OP_OS_CWD=107");
+    out.add("OP_OS_CHDIR=108");
+    out.add("OP_OS_HOSTNAME=109");
+    out.add("OP_OS_USERNAME=110");
+    out.add("OP_OS_TEMPDIR=111");
+    out.add("OP_OS_PID=112");
+    out.add("OP_OS_EXISTS=113");
+    out.add("OP_OS_ISDIR=114");
+    out.add("OP_OS_FILESIZE=115");
+    out.add("OP_OS_MKDIR=116");
+    out.add("OP_OS_REMOVE=117");
+    out.add("OP_OS_RENAME=118");
+    out.add("OP_OS_RUN=119");
+    out.add("OP_OS_SPAWN=120");
+    out.add("OP_OS_WAIT=121");
+    out.add("OP_OS_KILL=122");
+    out.add("OP_OS_PCLOSE=123");
+    return out;
+  }
+
+  < Portable grouping + current VM operation + source built-in + opcode.
+    The delimiter is a catalogue convention, not a runtime wire format. >
+  SLList getExistingVMElementBindings() {
+    SLList out = new SLList();
+    out.add("HostIdentity|platform|osPlatform|OP_OS_PLATFORM=103|Implemented|ReadOnlyQuery");
+    out.add("CapabilityDiscovery|supports|osCapability|OP_OS_CAPABILITY=104|Implemented|ReadOnlyQuery");
+    out.add("Environment|getEnv|osGetEnv|OP_OS_GETENV=105|Implemented|ReadOnlyQuery");
+    out.add("Environment|setEnv|osSetEnv|OP_OS_SETENV=106|Implemented|StateChangingOperation");
+    out.add("PathManagement|currentDir|osCurrentDir|OP_OS_CWD=107|Implemented|ReadOnlyQuery");
+    out.add("PathManagement|changeDir|osChangeDir|OP_OS_CHDIR=108|Implemented|StateChangingOperation");
+    out.add("HostIdentity|hostName|osHostName|OP_OS_HOSTNAME=109|Implemented|ReadOnlyQuery");
+    out.add("HostIdentity|userName|osUserName|OP_OS_USERNAME=110|Implemented|ReadOnlyQuery");
+    out.add("FileSystem|tempDir|osTempDir|OP_OS_TEMPDIR=111|Implemented|ReadOnlyQuery");
+    out.add("ProcessInspection|processId|osProcessId|OP_OS_PID=112|Implemented|ReadOnlyQuery");
+    out.add("FileSystem|exists|osExists|OP_OS_EXISTS=113|Implemented|ReadOnlyQuery");
+    out.add("FileSystem|isDir|osIsDir|OP_OS_ISDIR=114|Implemented|ReadOnlyQuery");
+    out.add("FileSystem|fileSize|osFileSize|OP_OS_FILESIZE=115|Implemented|ReadOnlyQuery");
+    out.add("FileSystem|makeDir|osMakeDir|OP_OS_MKDIR=116|Implemented|StateChangingOperation");
+    out.add("FileSystem|remove|osRemove|OP_OS_REMOVE=117|Implemented|StateChangingOperation");
+    out.add("FileSystem|rename|osRename|OP_OS_RENAME=118|Implemented|StateChangingOperation");
+    out.add("ProcessControl|run|osRun|OP_OS_RUN=119|Implemented|StateChangingOperation");
+    out.add("ProcessControl|spawn|osSpawn|OP_OS_SPAWN=120|Implemented|StateChangingOperation");
+    out.add("ProcessControl|waitFor|osWait|OP_OS_WAIT=121|Implemented|BlockingOperation");
+    out.add("ProcessControl|kill|osKill|OP_OS_KILL=122|Implemented|StateChangingOperation");
+    out.add("ProcessControl|closeProcess|osProcessClose|OP_OS_PCLOSE=123|Implemented|StateChangingOperation");
+    return out;
+  }
+
+  SLList getCoreOSBridgeGroups() {
+    SLList out = new SLList();
+    out.add("HostIdentity");
+    out.add("Environment");
+    out.add("PathManagement");
+    out.add("FileSystem");
+    out.add("ProcessInspection");
+    out.add("ProcessControl");
+    out.add("CapabilityDiscovery");
+    return out;
+  }
+}
