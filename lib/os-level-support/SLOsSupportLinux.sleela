@@ -1,0 +1,130 @@
+< SLeeLa Standard Library Definition.
+  Definition: Linux-specific OS backend grouping terms and native symbol catalogue.
+  Names cover POSIX/libc and Linux interfaces; prefer libc wrappers over raw syscalls.
+  Procfs/sysfs and service-manager interfaces are optional and permission-dependent. >
+#sleela 2.5
+material;
+
+class SLOsSupportLinux {
+  String platformName = "Linux";
+  String backendTerm = "LinuxBackend";
+
+  String getPlatformName() { return platformName; }
+  String getBackendTerm() { return backendTerm; }
+
+  SLList getGroupTerms() {
+    SLList out = new SLList();
+    out.add("LinuxKernelAndDistribution");
+    out.add("LinuxProcessMetadata");
+    out.add("LinuxResourceLimits");
+    out.add("LinuxMemoryAndLoad");
+    out.add("LinuxCPUTopology");
+    out.add("LinuxFileSystemAndMounts");
+    out.add("LinuxDeviceMetadata");
+    out.add("LinuxNetwork");
+    out.add("LinuxEventNotification");
+    out.add("LinuxResourceControls");
+    out.add("LinuxServicesAndSessions");
+    out.add("LinuxClockAndPower");
+    return out;
+  }
+
+  < POSIX/libc and Linux function names, alphabetically. >
+  SLList getLinuxFunctions() {
+    SLList out = new SLList();
+    out.add("accept");
+    out.add("access");
+    out.add("bind");
+    out.add("clock_getres");
+    out.add("clock_gettime");
+    out.add("close");
+    out.add("closedir");
+    out.add("connect");
+    out.add("dup");
+    out.add("epoll_create1");
+    out.add("epoll_ctl");
+    out.add("epoll_wait");
+    out.add("execve");
+    out.add("fstat");
+    out.add("fstatvfs");
+    out.add("ftruncate");
+    out.add("getaddrinfo");
+    out.add("getcwd");
+    out.add("getegid");
+    out.add("geteuid");
+    out.add("getgid");
+    out.add("gethostname");
+    out.add("getifaddrs");
+    out.add("getnameinfo");
+    out.add("getpid");
+    out.add("getppid");
+    out.add("getpriority");
+    out.add("getrlimit");
+    out.add("getsockname");
+    out.add("getsockopt");
+    out.add("gettimeofday");
+    out.add("getuid");
+    out.add("inotify_add_watch");
+    out.add("inotify_init1");
+    out.add("inotify_rm_watch");
+    out.add("ioctl");
+    out.add("listen");
+    out.add("lseek");
+    out.add("lstat");
+    out.add("mmap");
+    out.add("munmap");
+    out.add("nanosleep");
+    out.add("open");
+    out.add("opendir");
+    out.add("poll");
+    out.add("pread");
+    out.add("pwrite");
+    out.add("read");
+    out.add("readlink");
+    out.add("recv");
+    out.add("recvfrom");
+    out.add("rename");
+    out.add("select");
+    out.add("send");
+    out.add("sendto");
+    out.add("setenv");
+    out.add("setrlimit");
+    out.add("setsockopt");
+    out.add("shutdown");
+    out.add("socket");
+    out.add("stat");
+    out.add("statvfs");
+    out.add("sysconf");
+    out.add("sysinfo");
+    out.add("uname");
+    out.add("unsetenv");
+    out.add("write");
+    return out;
+  }
+
+  SLList getAdditionalInterfaces() {
+    SLList out = new SLList();
+    out.add("cgroup-v1");
+    out.add("cgroup-v2");
+    out.add("netlink-NETLINK_ROUTE");
+    out.add("procfs");
+    out.add("sysfs");
+    out.add("systemd-DBus");
+    return out;
+  }
+
+  SLList getPlatformTerms() {
+    SLList out = new SLList();
+    out.add("cgroup");
+    out.add("epoll");
+    out.add("inotify");
+    out.add("libc");
+    out.add("LinuxBackend");
+    out.add("netlink");
+    out.add("POSIX");
+    out.add("procfs");
+    out.add("sysfs");
+    out.add("systemd");
+    return out;
+  }
+}
