@@ -174,6 +174,34 @@ class SLOsSupportVMBridge {
     return out;
   }
 
+  < Portable grouping + current VM operation + source built-in + opcode.
+    The delimiter is a catalogue convention, not a runtime wire format. >
+  SLList getExistingVMElementBindings() {
+    SLList out = new SLList();
+    out.add("HostIdentity|platform|osPlatform|OP_OS_PLATFORM=103|Implemented|ReadOnlyQuery");
+    out.add("CapabilityDiscovery|supports|osCapability|OP_OS_CAPABILITY=104|Implemented|ReadOnlyQuery");
+    out.add("Environment|getEnv|osGetEnv|OP_OS_GETENV=105|Implemented|ReadOnlyQuery");
+    out.add("Environment|setEnv|osSetEnv|OP_OS_SETENV=106|Implemented|StateChangingOperation");
+    out.add("PathManagement|currentDir|osCurrentDir|OP_OS_CWD=107|Implemented|ReadOnlyQuery");
+    out.add("PathManagement|changeDir|osChangeDir|OP_OS_CHDIR=108|Implemented|StateChangingOperation");
+    out.add("HostIdentity|hostName|osHostName|OP_OS_HOSTNAME=109|Implemented|ReadOnlyQuery");
+    out.add("HostIdentity|userName|osUserName|OP_OS_USERNAME=110|Implemented|ReadOnlyQuery");
+    out.add("FileSystem|tempDir|osTempDir|OP_OS_TEMPDIR=111|Implemented|ReadOnlyQuery");
+    out.add("ProcessInspection|processId|osProcessId|OP_OS_PID=112|Implemented|ReadOnlyQuery");
+    out.add("FileSystem|exists|osExists|OP_OS_EXISTS=113|Implemented|ReadOnlyQuery");
+    out.add("FileSystem|isDir|osIsDir|OP_OS_ISDIR=114|Implemented|ReadOnlyQuery");
+    out.add("FileSystem|fileSize|osFileSize|OP_OS_FILESIZE=115|Implemented|ReadOnlyQuery");
+    out.add("FileSystem|makeDir|osMakeDir|OP_OS_MKDIR=116|Implemented|StateChangingOperation");
+    out.add("FileSystem|remove|osRemove|OP_OS_REMOVE=117|Implemented|StateChangingOperation");
+    out.add("FileSystem|rename|osRename|OP_OS_RENAME=118|Implemented|StateChangingOperation");
+    out.add("ProcessInspection|run|osRun|OP_OS_RUN=119|Implemented|StateChangingOperation");
+    out.add("ProcessInspection|spawn|osSpawn|OP_OS_SPAWN=120|Implemented|StateChangingOperation");
+    out.add("ProcessInspection|waitFor|osWait|OP_OS_WAIT=121|Implemented|BlockingOperation");
+    out.add("ProcessInspection|kill|osKill|OP_OS_KILL=122|Implemented|StateChangingOperation");
+    out.add("ProcessInspection|closeProcess|osProcessClose|OP_OS_PCLOSE=123|Implemented|StateChangingOperation");
+    return out;
+  }
+
   SLList getCoreOSBridgeGroups() {
     SLList out = new SLList();
     out.add("HostIdentity");
