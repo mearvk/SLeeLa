@@ -17,6 +17,10 @@ class SLOsSupportRuntime {
   String windowsBackendClass = "SLOsSupportWindows";
   String linuxBackendClass = "SLOsSupportLinux";
   String macOSBackendClass = "SLOsSupportMacOS";
+  String linuxSourceClass = "SLOsSupportLinuxSource";
+  String windowsSourceClass = "SLOsSupportWindowsSource";
+  String macOSSourceClass = "SLOsSupportMacOSSource";
+  String platformSelectorClass = "SLOsSupportPlatform";
   String existingVMBridge = "SleelaVMSystemCallBridge";
   String nativeImplementation = "impl/core/sleela_os.c";
 
@@ -33,4 +37,8 @@ class SLOsSupportRuntime {
   String getWindowsBackendClass() { return windowsBackendClass; }
   String getLinuxBackendClass() { return linuxBackendClass; }
   String getMacOSBackendClass() { return macOSBackendClass; }
+  String getLinuxSourceClass() { return linuxSourceClass; }
+  String getWindowsSourceClass() { return windowsSourceClass; }
+  String getMacOSSourceClass() { return macOSSourceClass; }
+  String getPlatformSelectorClass() { return platformSelectorClass; }
 }
