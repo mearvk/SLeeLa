@@ -9,6 +9,8 @@
 #include <fstream>
 #include <sstream>
 #include <map>
+#include <filesystem>
+#include <system_error>
 
 namespace sleela::frontend {
 
@@ -142,21 +144,14 @@ private:
     Counters counters_;
 };
 
-// mkdir -p for a single path component chain (POSIX). Returns true if the
-// directory exists after the call.
+// Create a directory tree using the host filesystem semantics. This handles
+// POSIX separators, Windows drive roots, and existing directories uniformly.
 bool ensureDir(const std::string& path) {
     if (path.empty()) return true;
-    std::string acc;
-    for (size_t i = 0; i < path.size(); ++i) {
-        acc.push_back(path[i]);
-        bool atSep = (path[i] == '/');
-        bool atEnd = (i + 1 == path.size());
-        if ((atSep || atEnd) && acc != "/" && !acc.empty()) {
-            std::string dir = atSep ? acc.substr(0, acc.size() - 1) : acc;
-            if (!dir.empty() && mkdir(dir.c_str(), 0755) != 0 && errno != EEXIST) return false;
-        }
-    }
-    return true;
+    std::error_code ec;
+    std::filesystem::create_directories(std::filesystem::path(path), ec);
+    if (ec) return false;
+    return std::filesystem::is_directory(std::filesystem::path(path), ec) && !ec;
 }
 
 bool fileExists(const std::string& path) {
