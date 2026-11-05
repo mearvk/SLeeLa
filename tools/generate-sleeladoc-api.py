@@ -578,6 +578,9 @@ def render_index(packages, pkg_units, out_dir, totals):
                 f'<strong>{totals["classes"]}</strong> classes and structs. '
                 f'Start at a package, open a unit, and read its fields and methods '
                 f'with plain explanations.</div>')
+    body.append('<p class="lead"><strong>Current language edition: SLeeLa syntax 3.0.</strong> '
+                'Each unit retains and displays its own declared <code>#sleela</code> version; '
+                'older declarations remain supported and are not silently relabelled.</p>')
     body.append('<p>New here? Read the <a href="glossary.html">Glossary</a> first — '
                 'it defines the reading level these pages are written for '
                 '(<strong>Student 2</strong>) and the core SLeeLa terms.</p>')
