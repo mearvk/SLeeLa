@@ -5,8 +5,10 @@ if [[ $# -ne 1 ]]; then
   exit 2
 fi
 sleela_bin="$1"
-tmp="$(mktemp --suffix=.sleela)"
-log="$(mktemp)"
+tmp_base="$(mktemp "${TMPDIR:-/tmp}/sleela-osls.XXXXXX")"
+tmp="${tmp_base}.sleela"
+mv "$tmp_base" "$tmp"
+log="$(mktemp "${TMPDIR:-/tmp}/sleela-osls-log.XXXXXX")"
 cleanup() { rm -f "$tmp" "$log"; }
 trap cleanup EXIT
 cat >"$tmp" <<'SLEELA'
