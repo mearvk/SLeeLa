@@ -22,11 +22,16 @@ extern "C" {
 
 /* ---- Backend selection ------------------------------------------------- */
 #if !defined(SL_THREAD_BACKEND)
-#  if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L) && \
-      !defined(__STDC_NO_THREADS__)
-#    define SL_THREAD_BACKEND 1 /* C11 threads */
-#  elif defined(_WIN32)
+   /* Prefer native platform APIs where C11 threads are absent or incomplete.
+    * MinGW/MSYS2 and the Apple SDKs may advertise C11 language mode without
+    * shipping a usable <threads.h>. */
+#  if defined(_WIN32)
 #    define SL_THREAD_BACKEND 2 /* Win32 */
+#  elif defined(__APPLE__)
+#    define SL_THREAD_BACKEND 3 /* pthreads */
+#  elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L) && \
+        !defined(__STDC_NO_THREADS__)
+#    define SL_THREAD_BACKEND 1 /* C11 threads */
 #  else
 #    define SL_THREAD_BACKEND 3 /* pthreads */
 #  endif
