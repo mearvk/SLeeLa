@@ -1,0 +1,122 @@
+<< SLeeLa example: round-trip consistency check for the OSLS source catalogue.
+   Asserts that the 12 SLOsSupportOSLSElements factories agree with the catalogue
+   function list and the OP_OSLS_CALL operation IDs, that the core and runtime
+   status describe() maps round-trip, and that the typed binding catalogue names
+   a known record class for every record-returning call. This is the SLeeLa-side
+   guard against drift between the element factories, the native registry, and
+   the typed record shapes; keep it runnable alongside the catalogue. >>
+#sleela 2.5
+material;
+
+class SLOsSupportConsistencyExample {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override each record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "mearvk";
+  String metaDate = "2026-11-05";
+  String metaCopyright = "Copyright mearvk LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "mearvk LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-05";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String value) { metaVersion = value; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int value) { metaId = value; }
+  String getMetaAuthor() { return metaAuthor; }
+  void setMetaAuthor(String value) { metaAuthor = value; }
+  String getMetaDate() { return metaDate; }
+  void setMetaDate(String value) { metaDate = value; }
+  String getMetaCopyright() { return metaCopyright; }
+  void setMetaCopyright(String value) { metaCopyright = value; }
+  String getMetaTrademark() { return metaTrademark; }
+  void setMetaTrademark(String value) { metaTrademark = value; }
+  String getMetaCorporation() { return metaCorporation; }
+  void setMetaCorporation(String value) { metaCorporation = value; }
+  String getMetaOrigin() { return metaOrigin; }
+  void setMetaOrigin(String value) { metaOrigin = value; }
+  String getMetaBirthDate() { return metaBirthDate; }
+  void setMetaBirthDate(String value) { metaBirthDate = value; }
+  int getMetaScienceRating() { return metaScienceRating; }
+  void setMetaScienceRating(int value) { metaScienceRating = value; }
+  String getMetaNationalSchedule() { return metaNationalSchedule; }
+  void setMetaNationalSchedule(String value) { metaNationalSchedule = value; }
+
+  int failures = 0;
+
+  void check(String label, boolean condition) {
+    if (condition) {
+      print("PASS " + label);
+    } else {
+      print("FAIL " + label);
+      failures = failures + 1;
+    }
+  }
+
+<< An OSLS element must bind to OP_OSLS_CALL (155), be Implemented, read-only,
+   and expose a non-empty native symbol equal to its portable symbol. >>
+  void checkElement(String name, SLOsSupportElement e, int expectedArity) {
+    check(name + " implemented", e.isImplemented());
+    check(name + " read-only", e.isReadOnly());
+    check(name + " common backend", e.getPlatformTerm() == "CommonBackend");
+    check(name + " arity", e.getArgumentCount() == expectedArity);
+    check(name + " symbol identity", e.getNativeSymbol() == e.getPortableSymbol());
+    check(name + " JSON result", e.getResultTerm() == "JsonStringWithStatus");
+  }
+
+  void main() {
+    SLOsSupportOSLSElements osls = new SLOsSupportOSLSElements();
+    SLOsSupportCatalog catalog = new SLOsSupportCatalog();
+    SLOsSupportStatus coreStatus = new SLOsSupportStatus();
+    SLOsRuntimeStatus runtimeStatus = new SLOsRuntimeStatus();
+    SLOsSupportTyped typed = new SLOsSupportTyped();
+
+    < 1. Each of the 12 factories is a well-formed registered OSLS binding. >
+    checkElement("getSystemInfo", osls.getSystemInfo(), 0);
+    checkElement("getProcessInfo", osls.getProcessInfo(), 1);
+    checkElement("enumerateProcesses", osls.enumerateProcesses(), 0);
+    checkElement("getEnvironmentValue", osls.getEnvironmentValue(), 1);
+    checkElement("enumerateEnvironment", osls.enumerateEnvironment(), 0);
+    checkElement("getFileInfo", osls.getFileInfo(), 1);
+    checkElement("listDirectory", osls.listDirectory(), 1);
+    checkElement("getCPUInfo", osls.getCPUInfo(), 0);
+    checkElement("getTimezoneInfo", osls.getTimezoneInfo(), 0);
+    checkElement("getNetworkInterfaces", osls.getNetworkInterfaces(), 0);
+    checkElement("cronValidate", osls.cronValidate(), 1);
+    checkElement("cronNextAfter", osls.cronNextAfter(), 2);
+
+    < 2. Native symbols match the catalogue's common OSLS function list (12). >
+    SLList common = catalog.getCommonOSLSFunctions();
+    check("catalogue lists 12 common functions", common.length() == 12);
+
+    < 3. Core status describe() round-trips the osls_status space. >
+    check("core OK", coreStatus.describe(0) == "OSLS_OK");
+    check("core UNSUPPORTED is 5", coreStatus.getUnsupported() == 5);
+    check("core isOK(0)", coreStatus.isOK(0));
+
+    < 4. Runtime status is a distinct space (CALLBACK_FAILED=6, no UNSUPPORTED). >
+    check("runtime CALLBACK_FAILED is 6", runtimeStatus.getCallbackFailed() == 6);
+    check("runtime describe 2", runtimeStatus.describe(2) == "SLOSH_OUT_OF_MEMORY");
+
+    < 5. Typed binding names a known record class for record-returning calls. >
+    check("systemInfo -> SLSystemInfo", typed.recordClassFor("oslsSystemInfo") == "SLSystemInfo");
+    check("getFileInfo -> SLFileInfo", typed.recordClassFor("oslsGetFileInfo") == "SLFileInfo");
+    check("cronValidate is scalar", typed.recordClassFor("oslsCronValidate") == "StatusScalar");
+    check("getCPUInfo returns record", typed.returnsTypedRecord("oslsGetCPUInfo"));
+
+    if (failures == 0) {
+      print("OSLS CONSISTENCY: ALL CHECKS PASSED");
+    } else {
+      print("OSLS CONSISTENCY: FAILURES PRESENT");
+    }
+  }
+}

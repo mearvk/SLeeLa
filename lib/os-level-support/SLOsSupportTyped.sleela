@@ -1,0 +1,98 @@
+<< SLeeLa Standard Library Definition.
+  Definition: Typed-result binding catalogue for the OSLS native calls. Each
+  OSLS record call returns a bounded JSON String (see SLOsSupportNative); this
+  class pairs every such call with the typed record shape that models its
+  fields, so a caller knows the exact record class to populate from a result.
+  The String type is opaque at the SLeeLa level, so field extraction from the
+  JSON is performed by the native/host boundary, not by this class; this is a
+  descriptive binding, consistent with the lib/systems record shapes
+  (SLSystemInfo, SLProcessInfo, SLFileInfo, SLCPUInfo, SLTimezoneInfo,
+  SLNetworkInterface) that mirror the osls_* C structs field-for-field. >>
+#sleela 2.5
+material;
+
+class SLOsSupportTyped {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override each record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "mearvk";
+  String metaDate = "2026-11-05";
+  String metaCopyright = "Copyright mearvk LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "mearvk LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-05";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 7;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String value) { metaVersion = value; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int value) { metaId = value; }
+  String getMetaAuthor() { return metaAuthor; }
+  void setMetaAuthor(String value) { metaAuthor = value; }
+  String getMetaDate() { return metaDate; }
+  void setMetaDate(String value) { metaDate = value; }
+  String getMetaCopyright() { return metaCopyright; }
+  void setMetaCopyright(String value) { metaCopyright = value; }
+  String getMetaTrademark() { return metaTrademark; }
+  void setMetaTrademark(String value) { metaTrademark = value; }
+  String getMetaCorporation() { return metaCorporation; }
+  void setMetaCorporation(String value) { metaCorporation = value; }
+  String getMetaOrigin() { return metaOrigin; }
+  void setMetaOrigin(String value) { metaOrigin = value; }
+  String getMetaBirthDate() { return metaBirthDate; }
+  void setMetaBirthDate(String value) { metaBirthDate = value; }
+  int getMetaScienceRating() { return metaScienceRating; }
+  void setMetaScienceRating(int value) { metaScienceRating = value; }
+  String getMetaNationalSchedule() { return metaNationalSchedule; }
+  void setMetaNationalSchedule(String value) { metaNationalSchedule = value; }
+
+<< Record-returning OSLS calls and the typed record class that models each.
+   The JSON key set in the result matches the fields on that record class. >>
+  SLList getRecordBindings() {
+    SLList out = new SLList();
+    out.add("oslsSystemInfo|SLSystemInfo|single record");
+    out.add("oslsProcessInfo|SLProcessInfo|single record");
+    out.add("oslsEnumerateProcesses|SLProcessInfo|array under items");
+    out.add("oslsGetFileInfo|SLFileInfo|single record");
+    out.add("oslsGetCPUInfo|SLCPUInfo|single record");
+    out.add("oslsGetTimezoneInfo|SLTimezoneInfo|single record");
+    out.add("oslsGetNetworkInterfaces|SLNetworkInterface|array under items");
+    return out;
+  }
+
+  < Calls whose result is a status-plus-scalar JSON, not a typed record. >
+  SLList getScalarBindings() {
+    SLList out = new SLList();
+    out.add("oslsGetEnvironmentValue|String value|status+value");
+    out.add("oslsEnumerateEnvironment|name/value pairs|array under items");
+    out.add("oslsListDirectory|String entries|array under entries");
+    out.add("oslsCronValidate|status only|status");
+    out.add("oslsCronNextAfter|long nextEpochSeconds|status+epoch");
+    return out;
+  }
+
+<< The typed record class that models a given OSLS native call, or
+   "StatusScalar" when the call returns only a status plus a scalar. >>
+  String recordClassFor(String nativeCall) {
+    if (nativeCall == "oslsSystemInfo") { return "SLSystemInfo"; }
+    if (nativeCall == "oslsProcessInfo") { return "SLProcessInfo"; }
+    if (nativeCall == "oslsEnumerateProcesses") { return "SLProcessInfo"; }
+    if (nativeCall == "oslsGetFileInfo") { return "SLFileInfo"; }
+    if (nativeCall == "oslsGetCPUInfo") { return "SLCPUInfo"; }
+    if (nativeCall == "oslsGetTimezoneInfo") { return "SLTimezoneInfo"; }
+    if (nativeCall == "oslsGetNetworkInterfaces") { return "SLNetworkInterface"; }
+    return "StatusScalar";
+  }
+
+  boolean returnsTypedRecord(String nativeCall) {
+    return recordClassFor(nativeCall) != "StatusScalar";
+  }
+}

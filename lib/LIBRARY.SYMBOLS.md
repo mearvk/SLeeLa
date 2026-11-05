@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11830
-library-packages: 109
-module-facade-symbols: 75
-total-symbol-records: 11905
+library-source-files: 11870
+library-packages: 111
+module-facade-symbols: 76
+total-symbol-records: 11946
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -1453,6 +1453,10 @@ gameplay	NewDesireMove.sleela	lib/gameplay/NewDesireMove.sleela	source
 gameplay	Player.sleela	lib/gameplay/Player.sleela	source
 gameplay	PortfolioDecision.sleela	lib/gameplay/PortfolioDecision.sleela	source
 gameplay	SLPackage.sleela	lib/gameplay/SLPackage.sleela	facade
+governance	SLVoteBallot.sleela	lib/governance/SLVoteBallot.sleela	source
+governance	SLVoteProposal.sleela	lib/governance/SLVoteProposal.sleela	source
+governance	SLVoteTally.sleela	lib/governance/SLVoteTally.sleela	source
+governance	registry-record-vote.sleela	lib/governance/examples/registry-record-vote.sleela	source
 gui	SLGuiAction.sleela	lib/gui/version-dual/SLGuiAction.sleela	source
 gui	SLGuiAdminAuthority.sleela	lib/gui/version-dual/SLGuiAdminAuthority.sleela	source
 gui	SLGuiApp.sleela	lib/gui/version-dual/SLGuiApp.sleela	source
@@ -11213,6 +11217,7 @@ opcodes	SLOpOsSpawn.sleela	lib/opcodes/SLOpOsSpawn.sleela	source
 opcodes	SLOpOsTempdir.sleela	lib/opcodes/SLOpOsTempdir.sleela	source
 opcodes	SLOpOsUsername.sleela	lib/opcodes/SLOpOsUsername.sleela	source
 opcodes	SLOpOsWait.sleela	lib/opcodes/SLOpOsWait.sleela	source
+opcodes	SLOpOslsCall.sleela	lib/opcodes/SLOpOslsCall.sleela	source
 opcodes	SLOpPipe.sleela	lib/opcodes/SLOpPipe.sleela	source
 opcodes	SLOpPipepeer.sleela	lib/opcodes/SLOpPipepeer.sleela	source
 opcodes	SLOpPop.sleela	lib/opcodes/SLOpPop.sleela	source
@@ -11356,6 +11361,28 @@ operating-system	SLUSBCatalog.sleela	lib/operating-system/usb/SLUSBCatalog.sleel
 operating-system	SLUSBDevice.sleela	lib/operating-system/usb/SLUSBDevice.sleela	source
 operating-system	SLVideoCard.sleela	lib/operating-system/video-cards/SLVideoCard.sleela	source
 operating-system	SLVideoCardCatalog.sleela	lib/operating-system/video-cards/SLVideoCardCatalog.sleela	source
+os-level-support	SLOsEvent.sleela	lib/os-level-support/SLOsEvent.sleela	source
+os-level-support	SLOsRuntimeStatus.sleela	lib/os-level-support/SLOsRuntimeStatus.sleela	source
+os-level-support	SLOsSubscription.sleela	lib/os-level-support/SLOsSubscription.sleela	source
+os-level-support	SLOsSupportCatalog.sleela	lib/os-level-support/SLOsSupportCatalog.sleela	source
+os-level-support	SLOsSupportElement.sleela	lib/os-level-support/SLOsSupportElement.sleela	source
+os-level-support	SLOsSupportLinux.sleela	lib/os-level-support/SLOsSupportLinux.sleela	source
+os-level-support	SLOsSupportLinuxSource.sleela	lib/os-level-support/SLOsSupportLinuxSource.sleela	source
+os-level-support	SLOsSupportMacOS.sleela	lib/os-level-support/SLOsSupportMacOS.sleela	source
+os-level-support	SLOsSupportMacOSSource.sleela	lib/os-level-support/SLOsSupportMacOSSource.sleela	source
+os-level-support	SLOsSupportNative.sleela	lib/os-level-support/SLOsSupportNative.sleela	source
+os-level-support	SLOsSupportOSLSElements.sleela	lib/os-level-support/SLOsSupportOSLSElements.sleela	source
+os-level-support	SLOsSupportPlatform.sleela	lib/os-level-support/SLOsSupportPlatform.sleela	source
+os-level-support	SLOsSupportStatus.sleela	lib/os-level-support/SLOsSupportStatus.sleela	source
+os-level-support	SLOsSupportTyped.sleela	lib/os-level-support/SLOsSupportTyped.sleela	source
+os-level-support	SLOsSupportVMBridge.sleela	lib/os-level-support/SLOsSupportVMBridge.sleela	source
+os-level-support	SLOsSupportVMElements.sleela	lib/os-level-support/SLOsSupportVMElements.sleela	source
+os-level-support	SLOsSupportWindows.sleela	lib/os-level-support/SLOsSupportWindows.sleela	source
+os-level-support	SLOsSupportWindowsSource.sleela	lib/os-level-support/SLOsSupportWindowsSource.sleela	source
+os-level-support	SLOsTaskQueue.sleela	lib/os-level-support/SLOsTaskQueue.sleela	source
+os-level-support	SLPackage.sleela	lib/os-level-support/SLPackage.sleela	facade
+os-level-support	SLOsSupportCatalogExample.sleela	lib/os-level-support/examples/SLOsSupportCatalogExample.sleela	source
+os-level-support	SLOsSupportConsistencyExample.sleela	lib/os-level-support/examples/SLOsSupportConsistencyExample.sleela	source
 philosophers	SLConstructorContract.sleela	lib/philosophers/SLConstructorContract.sleela	source
 philosophers	SLFavorMechanism.sleela	lib/philosophers/SLFavorMechanism.sleela	source
 philosophers	SLOrdain.sleela	lib/philosophers/SLOrdain.sleela	source
@@ -11447,8 +11474,14 @@ regex	RegexSubject.sleela	lib/regex/RegexSubject.sleela	source
 regex	RegexSystem.sleela	lib/regex/RegexSystem.sleela	source
 regex	RegexValidator.sleela	lib/regex/RegexValidator.sleela	source
 registry	SLRegistry.sleela	lib/registry/SLRegistry.sleela	source
+registry	SLRegistryIdentity.sleela	lib/registry/SLRegistryIdentity.sleela	source
 registry	SLRegistryKey.sleela	lib/registry/SLRegistryKey.sleela	source
+registry	SLRegistryLifecycle.sleela	lib/registry/SLRegistryLifecycle.sleela	source
 registry	SLRegistryProvenance.sleela	lib/registry/SLRegistryProvenance.sleela	source
+registry	SLRegistryRecord.sleela	lib/registry/SLRegistryRecord.sleela	source
+registry	SLRegistryRelationship.sleela	lib/registry/SLRegistryRelationship.sleela	source
+registry	SLRegistryResolver.sleela	lib/registry/SLRegistryResolver.sleela	source
+registry	SLRegistryReview.sleela	lib/registry/SLRegistryReview.sleela	source
 registry	SLRegistryValue.sleela	lib/registry/SLRegistryValue.sleela	source
 rmi	SLPackage.sleela	lib/rmi/SLPackage.sleela	facade
 runtime	SLCallFrame.sleela	lib/runtime/SLCallFrame.sleela	source
@@ -11537,7 +11570,15 @@ sst	SSTSymbolKind.sleela	lib/sst/SSTSymbolKind.sleela	source
 sst	SSTSymbolReference.sleela	lib/sst/SSTSymbolReference.sleela	source
 sst	SSTSymbolTable.sleela	lib/sst/SSTSymbolTable.sleela	source
 synchro	SLPackage.sleela	lib/synchro/SLPackage.sleela	facade
+systems	SLCPUInfo.sleela	lib/systems/SLCPUInfo.sleela	source
+systems	SLCronExpression.sleela	lib/systems/SLCronExpression.sleela	source
+systems	SLFileInfo.sleela	lib/systems/SLFileInfo.sleela	source
+systems	SLNetworkInterface.sleela	lib/systems/SLNetworkInterface.sleela	source
 systems	SLPackage.sleela	lib/systems/SLPackage.sleela	facade
+systems	SLProcessInfo.sleela	lib/systems/SLProcessInfo.sleela	source
+systems	SLSystemInfo.sleela	lib/systems/SLSystemInfo.sleela	source
+systems	SLSystemStatus.sleela	lib/systems/SLSystemStatus.sleela	source
+systems	SLTimezoneInfo.sleela	lib/systems/SLTimezoneInfo.sleela	source
 telephony-skya	Communication.sleela	lib/telephony-skya/Communication.sleela	source
 telephony-skya	Network.sleela	lib/telephony-skya/Network.sleela	source
 telephony-skya	RealAcquaintances.sleela	lib/telephony-skya/RealAcquaintances.sleela	source

@@ -1,14 +1,79 @@
-< SLeeLa Standard Library Definition.
-  Definition: Native OS-support binding status values, matching sleela_os_support.h. >
+<< SLeeLa Standard Library Definition.
+  Definition: Core OS-support status values for the portable osls_* C ABI.
+  These numeric values match the osls_status enum in os-level-support/osls.h
+  and the SLOsSupportVMBridge status mapping. This is the status space that the
+  registered OP_OSLS_CALL path returns; the in-process runtime uses a separate
+  space (see SLOsRuntimeStatus). >>
 #sleela 2.5
 material;
 
 class SLOsSupportStatus {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override each record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "mearvk";
+  String metaDate = "2026-11-05";
+  String metaCopyright = "Copyright mearvk LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "mearvk LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-05";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String value) { metaVersion = value; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int value) { metaId = value; }
+  String getMetaAuthor() { return metaAuthor; }
+  void setMetaAuthor(String value) { metaAuthor = value; }
+  String getMetaDate() { return metaDate; }
+  void setMetaDate(String value) { metaDate = value; }
+  String getMetaCopyright() { return metaCopyright; }
+  void setMetaCopyright(String value) { metaCopyright = value; }
+  String getMetaTrademark() { return metaTrademark; }
+  void setMetaTrademark(String value) { metaTrademark = value; }
+  String getMetaCorporation() { return metaCorporation; }
+  void setMetaCorporation(String value) { metaCorporation = value; }
+  String getMetaOrigin() { return metaOrigin; }
+  void setMetaOrigin(String value) { metaOrigin = value; }
+  String getMetaBirthDate() { return metaBirthDate; }
+  void setMetaBirthDate(String value) { metaBirthDate = value; }
+  int getMetaScienceRating() { return metaScienceRating; }
+  void setMetaScienceRating(int value) { metaScienceRating = value; }
+  String getMetaNationalSchedule() { return metaNationalSchedule; }
+  void setMetaNationalSchedule(String value) { metaNationalSchedule = value; }
+
+  < Core osls_status values, matching os-level-support/osls.h. >
   int OK = 0;
   int INVALID_ARGUMENT = 1;
-  int OUT_OF_MEMORY = 2;
-  int CAPACITY = 3;
+  int BUFFER_TOO_SMALL = 2;
+  int SYSTEM_ERROR = 3;
   int NOT_FOUND = 4;
-  int BUSY = 5;
-  int CALLBACK_FAILED = 6;
+  int UNSUPPORTED = 5;
+
+  int getOK() { return OK; }
+  int getInvalidArgument() { return INVALID_ARGUMENT; }
+  int getBufferTooSmall() { return BUFFER_TOO_SMALL; }
+  int getSystemError() { return SYSTEM_ERROR; }
+  int getNotFound() { return NOT_FOUND; }
+  int getUnsupported() { return UNSUPPORTED; }
+
+  boolean isOK(int status) { return status == OK; }
+
+  String describe(int status) {
+    if (status == OK) { return "OSLS_OK"; }
+    if (status == INVALID_ARGUMENT) { return "OSLS_INVALID_ARGUMENT"; }
+    if (status == BUFFER_TOO_SMALL) { return "OSLS_BUFFER_TOO_SMALL"; }
+    if (status == SYSTEM_ERROR) { return "OSLS_SYSTEM_ERROR"; }
+    if (status == NOT_FOUND) { return "OSLS_NOT_FOUND"; }
+    if (status == UNSUPPORTED) { return "OSLS_UNSUPPORTED"; }
+    return "OSLS_UNKNOWN";
+  }
 }

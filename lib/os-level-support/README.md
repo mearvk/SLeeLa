@@ -23,7 +23,29 @@ catalogues**.
 | SLOsSupportWindowsSource.sleela | Windows source facade with VM-backed portable calls and gated Win32/Winsock extension metadata |
 | SLOsSupportMacOSSource.sleela | macOS source facade with VM-backed portable calls and gated Darwin/Mach/framework extension metadata |
 | SLOsSupportPlatform.sleela | Runtime platform selector for the Linux, Windows and macOS source facades |
-| SLOsSupportNative.sleela | Source facade for the 12 VM-callable OSLS functions; returns JSON Strings with OSLS status |
+| SLOsSupportNative.sleela | Source facade for the 12 VM-callable OSLS functions; returns JSON Strings with OSLS status. PID and epoch arguments are `long` (int64) to match the C ABI |
+| SLOsSupportTyped.sleela | Typed-result binding catalogue: pairs each record-returning OSLS call with the `lib/systems` record class that models its JSON fields (SLSystemInfo, SLProcessInfo, SLFileInfo, SLCPUInfo, SLTimezoneInfo, SLNetworkInterface) |
+| SLOsSupportStatus.sleela | Core status values for the `osls_*` ABI, matching `osls_status` in `os-level-support/osls.h` (OK, INVALID_ARGUMENT, BUFFER_TOO_SMALL, SYSTEM_ERROR, NOT_FOUND, UNSUPPORTED) |
+| SLOsRuntimeStatus.sleela | In-process runtime status values, matching `slosh_status` / `osls_runtime_status` (adds OUT_OF_MEMORY, CAPACITY, BUSY, CALLBACK_FAILED) — a distinct space from the core ABI |
+| SLOsEvent / SLOsSubscription / SLOsTaskQueue.sleela | Descriptive contract records for the in-process runtime event, subscription and cooperative task queue |
+| examples/SLOsSupportConsistencyExample.sleela | Runnable round-trip guard: asserts the 12 OSLS element factories agree with the native registry, the core/runtime status maps round-trip, and the typed bindings name a known record class |
+
+## Two status spaces (do not conflate)
+
+The OSLS subsystem has two distinct status enums, and the SLeeLa catalogue now
+models them with two distinct classes:
+
+- **Core ABI** — `osls_status` in `os-level-support/osls.h`: `OK=0`,
+  `INVALID_ARGUMENT=1`, `BUFFER_TOO_SMALL=2`, `SYSTEM_ERROR=3`, `NOT_FOUND=4`,
+  `UNSUPPORTED=5`. This is what the registered `OP_OSLS_CALL` path returns.
+  Modelled by **`SLOsSupportStatus`** and by `SLOsSupportVMBridge.getStatusTerms()`.
+- **In-process runtime** — `slosh_status` / `osls_runtime_status`: `OK=0`,
+  `INVALID_ARGUMENT=1`, `OUT_OF_MEMORY=2`, `CAPACITY=3`, `NOT_FOUND=4`, `BUSY=5`,
+  `CALLBACK_FAILED=6`. Modelled by **`SLOsRuntimeStatus`**, and consistent with
+  the `SLOsEvent` / `SLOsSubscription` / `SLOsTaskQueue` runtime records.
+
+The two spaces share only `OK`, `INVALID_ARGUMENT` and `NOT_FOUND`; the rest
+differ, so a value from one must never be interpreted with the other.
 
 ## Canonical grouping vocabulary
 

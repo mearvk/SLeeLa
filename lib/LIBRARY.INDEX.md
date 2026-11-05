@@ -1,11 +1,33 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.55  
-**Packages:** 109  
-**SLeeLa source units:** 11836  
-**Module-facade symbols:** 75  
-**Total symbol records:** 11911  
+**Revision:** 0.56  
+**Packages:** 111  
+**SLeeLa source units:** 11870  
+**Module-facade symbols:** 76  
+**Total symbol records:** 11946  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.56 indexes the **`os-level-support`** package (`lib/os-level-support/`)
+> in `LIBRARY.SYMBOLS.md` for the first time — the 20 source classes plus two
+> runnable examples that mirror and bind the native OSLS C ABI. New in this
+> revision: **`SLOsRuntimeStatus`** (the in-process runtime status space,
+> `slosh_status` / `osls_runtime_status`), split out from **`SLOsSupportStatus`**
+> which now carries the core `osls_status` values it was conflating;
+> **`SLOsSupportTyped`** (a typed-result binding catalogue pairing each OSLS
+> record call with its `lib/systems` record shape); and
+> **`SLOsSupportConsistencyExample`** (a runnable round-trip guard that asserts
+> the 12 OSLS element factories agree with the native registry, the status maps
+> round-trip, and the typed bindings name a known record class). Every
+> `lib/os-level-support` class now carries the Metadata Class metapattern; the
+> `*Source` facades delegate their grouping terms to the backend catalogues
+> instead of re-declaring them; `SLOsSupportNative` widens PID/epoch arguments to
+> `long` to match the `int64_t` C ABI; and the previously unrunnable example is
+> fixed (the reserved words `native` were renamed and multi-line `<` headers
+> converted to `<<`/`>>` blocks so the whole package loads and runs). The header
+> counts above are reconciled to the live `/lib` tree by
+> `tools/generate-library-symbols.py` and verified by
+> `test-suites/test-library-inventory.sh`. See `os-level-support/README.md` and
+> `lib/os-level-support/README.md`.
 
 > Revision 0.55 appends **`OP_OSLS_CALL` (155)** to the canonical ISA and
 > adds its `SLOpOslsCall` wrapper. The native VM dispatch now reaches the
