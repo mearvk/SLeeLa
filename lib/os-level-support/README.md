@@ -13,7 +13,7 @@ catalogues**.
 | SLOsSupportCatalog.sleela | Canonical capability groups, common API names, runtime/module functions, planned portable functions, and grouping terms |
 | SLOsSupportElement.sleela | Reusable element descriptor: group, VM term/opcode, portable symbol, native symbol, backend, effect, status and arity |
 | SLOsSupportVMElements.sleela | Factory methods for the 21 existing OP_OS operations, mapped to VM opcodes and slos_* backend symbols |
-| SLOsSupportOSLSElements.sleela | Factory methods for the 12 common osls_* C ABI exports; VM opcode remains UNREGISTERED until an adapter is implemented |
+| SLOsSupportOSLSElements.sleela | Factory methods for the 12 registered osls_* C ABI calls, mapped to OP_OSLS_CALL (155) and operation IDs 0–11 |
 | SLOsSupportVMBridge.sleela | VM dispatch stages, status/marshalling vocabulary and current VM opcode mapping |
 | examples/SLOsSupportCatalogExample.sleela | Example that enumerates common groups, VM bindings, and each platform's native API catalogue |
 | SLOsSupportLinux.sleela | Linux grouping terms and alphabetized POSIX/Linux native symbols |
@@ -23,6 +23,7 @@ catalogues**.
 | SLOsSupportWindowsSource.sleela | Windows source facade with VM-backed portable calls and gated Win32/Winsock extension metadata |
 | SLOsSupportMacOSSource.sleela | macOS source facade with VM-backed portable calls and gated Darwin/Mach/framework extension metadata |
 | SLOsSupportPlatform.sleela | Runtime platform selector for the Linux, Windows and macOS source facades |
+| SLOsSupportNative.sleela | Source facade for the 12 VM-callable OSLS functions; returns JSON Strings with OSLS status |
 
 ## Canonical grouping vocabulary
 
@@ -38,7 +39,7 @@ The catalog uses stable terms such as:
 
 These are source-level grouping identifiers, not native function names. Use them
 as the semantic group of an OS-support element; use the platform catalogues for
-native symbols and SLOsSupportElement to describe an individual binding. SLOsSupportVMElements supplies ready-made descriptors for the current VM OS calls. SLOsSupportOSLSElements supplies descriptors for the richer root osls_* API while explicitly marking its VM binding as unregistered.
+native symbols and SLOsSupportElement to describe an individual binding. SLOsSupportVMElements supplies ready-made descriptors for the current VM OS calls. SLOsSupportOSLSElements supplies descriptors for the 12 registered root osls_* calls; each maps to the single OP_OSLS_CALL opcode plus a stable operation ID.
 
 ## VM integration boundary
 
@@ -55,17 +56,22 @@ its exact opcode names and numbers. SLOsSupportVMElements maps each existing VM
 operation to its OP_OS opcode and the corresponding slos_* C backend symbol.
 They do **not** create a second VM syscall path or duplicate opcode numbers.
 
-The richer root C library under os-level-support/ has its own osls_* metadata
-and inspection ABI. The source model explicitly distinguishes the existing
-OP_OS_* bridge from a future osls_* VM adapter:
-coreOSOpcodeBridgeImplemented() is true, while
-oslsCAbiAdapterRegistered() is false until a real host registration,
-marshalling implementation and cross-platform tests are added. The new
-SLOsSupportOSLSElements class gives each current osls_* export a source element
-with group, native symbol, arity, result contract and implementation status;
-its VM opcode field is deliberately UNREGISTERED.
+The root C library under os-level-support/ now has a VM-callable adapter:
+os-level-support/osls_vm_bridge.c registers all 12 declared osls_* APIs
+with stable operation IDs 0–11. The compiler lowers the osls... source
+built-ins to append-only opcode OP_OSLS_CALL=155. The VM validates each
+operation argument types and arity, dispatches through the binding table, and
+marshals records and collections into bounded JSON Strings containing an
+OSLS status code. Native pointers and C struct layouts never cross the VM
+boundary. SLOsSupportOSLSElements now records these real bindings rather than
+UNREGISTERED.
 
-## OS-specific source support\n\nThe three `*Source.sleela` classes are executable source-level facades for the\nportable operations already exposed by the VM (`osHostName`, `osUserName`,\n`osCurrentDir`, `osTempDir`, environment access, path existence/type and file\nsize). Their platform-specific metadata includes path separator, line ending,\nexecutable suffix, platform capability groups and native extension symbol lists.\n`SLOsSupportPlatform` detects the host through `osPlatform()` and selects a\nbackend identifier. It fails closed for an unknown platform.\n\nThe facades do not pretend that every listed native extension is callable: their\n`nativeExtensionRegistered` checks currently return false. Linux procfs/sysfs,\nnetlink, epoll, inotify and cgroups; Windows Win32/IP Helper/SCM/Registry/Winsock;\nand macOS Mach/Dispatch/IOKit/FSEvents/SystemConfiguration need explicit native\nbindings, ABI marshalling, platform builds and tests before dispatch.\n\n## Status and execution rules
+The CMake package and the SLeeLa VM Makefile both compile the adapter and the
+existing OSLS platform implementation. test_osls_vm_bridge exercises the
+native registry; make -C impl test-osls-vm exercises the VM built-ins.
+Windows network-interface enumeration currently reports OSLS_UNSUPPORTED;
+unsupported or unavailable platform details remain explicit status results.
+## OS-specific source support\n\nThe three `*Source.sleela` classes are executable source-level facades for the\nportable operations already exposed by the VM (`osHostName`, `osUserName`,\n`osCurrentDir`, `osTempDir`, environment access, path existence/type and file\nsize). Their platform-specific metadata includes path separator, line ending,\nexecutable suffix, platform capability groups and native extension symbol lists.\n`SLOsSupportPlatform` detects the host through `osPlatform()` and selects a\nbackend identifier. It fails closed for an unknown platform.\n\nThe common OSLS API is now registered and callable through the VM. The separate\n`nativeExtensionRegistered` checks on each platform facade still return false.\nLinux procfs/sysfs, netlink, epoll, inotify and cgroups; Windows Win32/IP Helper/SCM/Registry/Winsock;\nand macOS Mach/Dispatch/IOKit/FSEvents/SystemConfiguration remain separate\nplatform-extension families and are not falsely exposed as registered APIs.\n\n## Status and execution rules
 
 - Existing VM OP_OS_* operations are implemented by the current VM bridge.
 - Existing osls_* functions are declared in the root native library; they are
@@ -89,10 +95,9 @@ The C/C++ runtime support package remains buildable independently:
     ctest --test-dir build/lib-os-level-support --output-on-failure
 
 The .sleela catalogue files use the repository's existing SLList source
-class. They should be checked with the repository's current sleelvac compiler
-and executed with the SLeeLa VM in the normal source-library verification flow.
-This change does not claim a successful SLeeLa compile/run unless those checks
-are actually run.
+class. The OSLS VM bridge is compiled into the native runtime and can be exercised
+with make -C impl test-osls-vm; run the full platform build and CMake tests on
+Linux, Windows and macOS before declaring cross-platform conformance.
 
 ## Related native and VM sources
 
