@@ -13,6 +13,7 @@ class SLOsSupportRuntime {
   String elementClass = "SLOsSupportElement";
   String vmElementsClass = "SLOsSupportVMElements";
   String oslsElementsClass = "SLOsSupportOSLSElements";
+  String nativeBindingsClass = "SLOsSupportNative";
   String vmBridgeClass = "SLOsSupportVMBridge";
   String windowsBackendClass = "SLOsSupportWindows";
   String linuxBackendClass = "SLOsSupportLinux";
@@ -30,6 +31,7 @@ class SLOsSupportRuntime {
   String getElementClass() { return elementClass; }
   String getVMElementsClass() { return vmElementsClass; }
   String getOSLSElementsClass() { return oslsElementsClass; }
+  String getNativeBindingsClass() { return nativeBindingsClass; }
   String getVMBridgeClass() { return vmBridgeClass; }
   String getExistingVMBridge() { return existingVMBridge; }
   String getNativeImplementation() { return nativeImplementation; }
