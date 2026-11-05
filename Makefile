@@ -364,7 +364,7 @@ sleeladoc-jar: core
 	$(MAKE) -C sleeladoc jar
 
 # Generate all API documentation destinations from the same /lib source tree.
-# API_SNAPSHOT may select the next immutable snapshot (default: version-001).
+# API_SNAPSHOT may select the next immutable snapshot (default: automatic).
 api-docs:
 	bash tools/build-api-docs.sh
 
