@@ -1,0 +1,72 @@
+< SLeeLa Standard Library Definition.
+  Definition: Linux source-level facade. Portable calls use the existing OP_OS_*
+  VM bridge; Linux-only interfaces are capability-gated native extensions.
+  Procfs/sysfs, netlink, epoll, inotify and cgroups are never assumed present. >
+#sleela 2.5
+material;
+
+class SLOsSupportLinuxSource {
+  String backendTerm = "LinuxBackend";
+  String platformName = "Linux";
+  String pathSeparator = "/";
+  String lineEnding = "\n";
+  String executableSuffix = "";
+
+  String getBackendTerm() { return backendTerm; }
+  String getPlatformName() { return platformName; }
+  String getPathSeparator() { return pathSeparator; }
+  String getLineEnding() { return lineEnding; }
+  String getExecutableSuffix() { return executableSuffix; }
+  boolean isCurrentPlatform() { return osPlatform() == "Linux"; }
+
+  < Portable operations: routed through the existing VM bridge. >
+  String hostName() { return osHostName(); }
+  String userName() { return osUserName(); }
+  String currentDirectory() { return osCurrentDir(); }
+  String temporaryDirectory() { return osTempDir(); }
+  String environmentValue(String key) { return osGetEnv(key); }
+  boolean setEnvironmentValue(String key, String value) { return osSetEnv(key, value) == 0; }
+  boolean pathExists(String path) { return osExists(path) == 1; }
+  boolean isDirectory(String path) { return osIsDir(path) == 1; }
+  int fileSize(String path) { return osFileSize(path); }
+
+  < Linux extension names are metadata only until a registered native binding
+    is present. This prevents a catalogue entry from being mistaken for a call. >
+  SLList getExtensionGroups() {
+    SLList out = new SLList();
+    out.add("LinuxKernelAndDistribution");
+    out.add("LinuxProcessMetadata");
+    out.add("LinuxResourceLimits");
+    out.add("LinuxMemoryAndLoad");
+    out.add("LinuxCPUTopology");
+    out.add("LinuxFileSystemAndMounts");
+    out.add("LinuxDeviceMetadata");
+    out.add("LinuxNetwork");
+    out.add("LinuxEventNotification");
+    out.add("LinuxResourceControls");
+    out.add("LinuxServicesAndSessions");
+    out.add("LinuxClockAndPower");
+    return out;
+  }
+
+  SLList getNativeExtensionSymbols() {
+    SLList out = new SLList();
+    out.add("epoll_create1");
+    out.add("epoll_ctl");
+    out.add("epoll_wait");
+    out.add("inotify_add_watch");
+    out.add("inotify_init1");
+    out.add("inotify_rm_watch");
+    out.add("ioctl");
+    out.add("netlink-NETLINK_ROUTE");
+    out.add("procfs");
+    out.add("sysfs");
+    out.add("systemd-DBus");
+    return out;
+  }
+
+  boolean nativeExtensionRegistered(String symbol) { return false; }
+  String procfsRoot() { return "/proc"; }
+  String sysfsRoot() { return "/sys"; }
+  String deviceRoot() { return "/dev"; }
+}
