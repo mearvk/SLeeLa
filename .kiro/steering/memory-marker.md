@@ -6,9 +6,8 @@ inclusion: always
 
 Syntax **2.5** adds a bare, contextual, **declarative-only** document marker
 **`memory`** — a sibling to the 2.5 `material` marker and the 2.4
-`author`/`authorial` marker. It shares the current spec ceiling
-(`maxSupportedSyntax()` = `2.5`) with `material`; **no edition is bumped** to
-introduce it. The normative definition is
+`author`/`authorial` marker. It shares the **2.5 introduction gate** with `material`; **no edition is
+bumped** to introduce it. The current compiler maximum is 3.0. The normative definition is
 [`SLEELA.syntax` §20](../../SLEELA.syntax).
 
 ## What it means
@@ -37,7 +36,7 @@ once kept, is edited deliberately, as kept standing.
 
 ## Implementation (end-to-end, mirrors the `material` pattern)
 
-- `impl/frontend/version.h` — `maxSupportedSyntax()` = `{2,5}` (unchanged).
+- `impl/frontend/version.h` — current `maxSupportedSyntax()` = `{3,0}`; this marker remains gated to 2.5.
 - `impl/frontend/ast.h` — `Program.memoryMarked`.
 - `impl/frontend/parser.cpp` — `parseProgram()` recognises the contextual
   top-level `memory` word and sets the flag.
