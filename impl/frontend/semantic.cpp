@@ -151,6 +151,14 @@ class Analyzer{
   // Field marker (syntax 2.6): declarative only; gate-check only, no effect.
   if(p.fieldMarked&&syntax<SyntaxVersion{2,6})
    err("the field document marker requires #sleela 2.6");
+  // Pure marker (syntax 3.0): declarative only. Below 3.0 the word never parses
+  // as a marker, so this fires only on a genuine 3.0-feature use in an older-
+  // declared document. There is deliberately no behavioral effect.
+  if(p.pureMarked&&syntax<SyntaxVersion{3,0})
+   err("the pure document marker requires #sleela 3.0");
+  // Gasoline marker (syntax 3.0): declarative only; near-synonym of pure.
+  if(p.gasolineMarked&&syntax<SyntaxVersion{3,0})
+   err("the gasoline document marker requires #sleela 3.0");
   // @mix consequent fields (syntax 2.9): a field annotated `@mix` may repeat
   // its name; the group is understood as consequent (array/list). Top-down
   // order gives indexes 1,2,3,... unless `@mix(1,2,3,...)` assigns them, in

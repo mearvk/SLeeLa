@@ -279,6 +279,32 @@ Program Parser::parseProgram(){
             accept(Tok::Semicolon);
             p.fieldMarked=true;
         }
+        else if(check(Tok::Ident)&&cur().text=="pure"){
+            // Pure marker (syntax 3.0). A single, modifier-less, type-less word
+            // at document scope that DECLARES the document pure -- steered by,
+            // and standing on, its OWN honesty: clean, unmixed, and true to
+            // itself (see SLEELA.syntax section 27). Declarative only: it
+            // changes nothing about parsing/typing/codegen. A trailing ';' is
+            // optional; a repeat marker is harmless. Like the other Preonem
+            // markers it is contextual, not a reserved keyword, so `pure` stays
+            // an ordinary identifier anywhere else (and in any document below
+            // 3.0). `pure` and `gasoline` mean nearly the same thing.
+            ++i_;
+            accept(Tok::Semicolon);
+            p.pureMarked=true;
+        }
+        else if(check(Tok::Ident)&&cur().text=="gasoline"){
+            // Gasoline marker (syntax 3.0). The near-synonym of `pure`: the same
+            // claim of a document steered by its own honesty, in the sense of a
+            // refined, usable grade (see SLEELA.syntax section 27). Declarative
+            // only: it changes nothing about parsing/typing/codegen. A trailing
+            // ';' is optional; a repeat marker is harmless. Contextual, not a
+            // reserved keyword, so `gasoline` stays an ordinary identifier
+            // anywhere else (and in any document below 3.0).
+            ++i_;
+            accept(Tok::Semicolon);
+            p.gasolineMarked=true;
+        }
         else {
             unsigned mods=parseJavaModifiers();
             if(check(Tok::KwClass)||check(Tok::KwInterface)||check(Tok::KwEnum)||check(Tok::KwRecord)){

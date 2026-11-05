@@ -1,0 +1,3 @@
+#sleela 2.6
+gasoline;
+class GasolineTooEarly { void main() { print("should be rejected below 3.0"); } }

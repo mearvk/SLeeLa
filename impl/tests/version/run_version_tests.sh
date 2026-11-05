@@ -45,6 +45,8 @@ expect_ok "$HERE/memory_2_5.sleela"     "#sleela 2.5 with the 'memory' document 
 expect_ok "$HERE/wide_integers.sleela"  "#sleela 2.5 with long / int64 / int128 primitives (64-bit)"
 expect_ok "$HERE/int_double_widening.sleela" "#sleela 2.5 integer->double widening at decl/assign/field/arg/return"
 expect_ok "$HERE/determine_2_6.sleela"  "#sleela 2.6 with the 'determine' document marker (declarative)"
+expect_ok "$HERE/pure_3_0.sleela"       "#sleela 3.0 with the 'pure' document marker (declarative)"
+expect_ok "$HERE/gasoline_3_0.sleela"   "#sleela 3.0 with the 'gasoline' document marker (declarative)"
 
 echo "rejected:"
 expect_reject "$HERE/syntax_0_9.sleela" "#sleela 0.9 (too old; floor is 1.0)"
@@ -53,6 +55,8 @@ expect_reject "$HERE/minor_ahead.sleela" " #sleela 3.1 (future syntax edition; c
 expect_reject "$HERE/material_too_early.sleela" "'material' marker under #sleela 2.4 (feature too new for the declared version)"
 expect_reject "$HERE/memory_too_early.sleela" "'memory' marker under #sleela 2.4 (feature too new for the declared version)"
 expect_reject "$HERE/determine_too_early.sleela" "'determine' marker under #sleela 2.5 (feature too new for the declared version)"
+expect_reject "$HERE/pure_too_early.sleela" "'pure' marker under #sleela 2.6 (feature too new for the declared version)"
+expect_reject "$HERE/gasoline_too_early.sleela" "'gasoline' marker under #sleela 2.6 (feature too new for the declared version)"
 expect_reject "$HERE/malformed.sleela"   "#sleela malformed"
 
 echo "diagnostics (stderr shown):"

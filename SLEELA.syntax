@@ -17,7 +17,12 @@
     Syntax 3.0 is the current normative edition. It consolidates the 1.x and
     2.x language surface into one specification and keeps historical feature
     gates intact; it does not silently enable a feature below that feature's
-    original minimum version. Syntax 2.9 introduced **`@mix` consequent fields** (section 28): repeated
+    original minimum version. Syntax 3.0 also adds the `pure` and `gasoline`
+    document markers (section 30) — a pair of bare, contextual,
+    declarative-only Preonem words that mean nearly the same thing, each marking
+    the document's standing by its own honesty; they change nothing about
+    parsing, typing, or codegen and compose with the other markers.
+    Syntax 2.9 introduced **`@mix` consequent fields** (section 28): repeated
     same-named instance fields explicitly marked `@mix` form an indexed group;
     declaration order supplies indexes unless a matching index list is provided.
     The `prestige` marker in section 27 remains a future proposal, not an
@@ -2094,7 +2099,7 @@ annotation, not a reserved word; it reserves no identifier elsewhere.
 
 ### 28.4 Status
 
-- **Implemented.** `maxSupportedSyntax()` = **2.9**. The semantic pass permits
+- **Implemented.** `maxSupportedSyntax()` = **3.0**. The semantic pass permits
   same-named instance fields that carry `@mix` under `#sleela 2.9`, applies
   top-down 1,2,3,… indexing by default, and validates that a manual
   `@mix(...)` index count matches the number of fields in the group.
@@ -2137,3 +2142,69 @@ requires an explicit normative section and matching compiler implementation.
   and older source declarations.
 - **Not implied:** a source file declaring 3.0 does not gain unsupported
   compiler, VM, decompiler, operating-system, or native execution capabilities.
+
+## 30. Syntax 3.0 — the `pure` and `gasoline` document markers (honesty of standing)
+
+This section is **normative** for syntax **3.0**. It adds two more first-class,
+contextual, **declarative-only** document markers — `pure` and `gasoline` —
+members of the same Preonem / Natural Process family as `author`/`authorial`
+(section 18), `material` (section 19), `memory` (section 20), `determine`
+(section 23), and `object`/`field` (section 24). They are the markers that
+are gated to **3.0**.
+
+### 30.1 Meaning
+
+`pure` and `gasoline` **mean nearly the same thing**. Each is a bare word
+declared at document scope (after the `#sleela` pragma, outside any class) that
+claims the document is **steered by, and stands on, its own honesty**:
+
+- **`pure`** — the document is clean and unmixed, true to itself: it holds only
+  what it honestly is.
+- **`gasoline`** — the same claim in the sense of a *refined, usable grade* of
+  that honesty.
+
+The pair marks the document's standing **by its own honesty** rather than by any
+external authority. A document may carry either or both; the standings compose
+with the other markers.
+
+### 30.2 Form
+
+```sleela
+#sleela 3.0
+pure;
+class Name { ... }
+```
+
+```sleela
+#sleela 3.0
+gasoline;
+class Name { ... }
+```
+
+A trailing `;` is optional; a repeated marker is harmless. The marker word must
+appear at top-level document scope.
+
+### 30.3 Declarative only; contextual, not reserved
+
+Like every Preonem, `pure` and `gasoline` have **no** effect on parsing,
+typing, dispatch, or code generation. They emit no artifact and reserve no
+identifier. Each stays an ordinary identifier anywhere except the top-level
+marker position, and in any document below 3.0 (so a variable, field, method,
+or `.pure` / `.gasoline` access is unaffected).
+
+### 30.4 Gating
+
+The markers require `#sleela 3.0`. Below 3.0 the words never parse as markers,
+so the gate (`the pure document marker requires #sleela 3.0` /
+`the gasoline document marker requires #sleela 3.0`) fires only on a genuine
+3.0-feature use in an older-declared document.
+
+### 30.5 Status
+
+- **Implemented.** `maxSupportedSyntax()` = **3.0**. `impl/frontend/ast.h`
+  carries `Program.pureMarked` / `Program.gasolineMarked`; `parser.cpp`
+  recognises the two contextual top-level words; `semantic.cpp` gates each to
+  3.0 with no other effect. Version-test fixtures `pure_3_0.sleela`,
+  `gasoline_3_0.sleela` (accepted) and `pure_too_early.sleela`,
+  `gasoline_too_early.sleela` (rejected below 3.0) are wired into
+  `impl/tests/version/run_version_tests.sh`.

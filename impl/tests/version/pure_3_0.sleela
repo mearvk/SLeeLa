@@ -1,0 +1,3 @@
+#sleela 3.0
+pure;
+class PureMarker { void main() { print("pure document"); } }

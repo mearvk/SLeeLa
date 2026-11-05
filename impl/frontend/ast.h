@@ -293,6 +293,21 @@ struct Program {
     // top-level pre-content scope, so the class-member `field-decl` grammar and
     // every `.field` access are unaffected. Gated to #sleela 2.6.
     bool fieldMarked=false;
+    // Pure marker (syntax 3.0): set true when the document declares the bare
+    // top-level word `pure`. DECLARATIVE ONLY -- like the other Natural Process
+    // / Preonem markers it has no effect on parsing, typing, or codegen. It is
+    // a claim that the document is steered by, and stands on, its OWN honesty:
+    // what it holds is clean, unmixed, and true to itself (SLEELA.syntax
+    // section 27). Contextual, not a reserved keyword, so `pure` stays an
+    // ordinary identifier anywhere else (and in any document below 3.0).
+    bool pureMarked=false;
+    // Gasoline marker (syntax 3.0): set true when the document declares the bare
+    // top-level word `gasoline`. DECLARATIVE ONLY. It is the near-synonym of
+    // `pure` -- the same claim of a document steered by its own honesty, in the
+    // sense of a refined, usable grade (SLEELA.syntax section 27). The two
+    // markers mean nearly the same thing and compose with the others.
+    // Contextual, not a reserved keyword, gated to #sleela 3.0.
+    bool gasolineMarked=false;
 };
 
 } // namespace sleela
