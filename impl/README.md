@@ -122,11 +122,11 @@ class Hello { void main() { print("Hello, Sleela!"); } }
 ```
 
 The compiler **rejects** any file whose declared version is outside its
-supported range (shown by `sleela version`, currently `1.0 .. 2.9`); a file with
+supported range (shown by `sleela version`, currently `1.0 .. 3.0`); a file with
 no pragma is accepted with a warning and assumed to be the floor version. The
 supported range is defined in [`frontend/version.h`](frontend/version.h). The current
 normative language grammar is [`../SLEELA.syntax`](../SLEELA.syntax), syntax version
-`2.9`. Syntax 2.7 adds the signed wide-integer family (`int32` through
+`3.0`. Syntax 2.7 adds the signed wide-integer family (`int32` through
 `int16777216`); syntax 2.8 adds the matching unsigned family (`uint32` through
 `uint16777216`); syntax 2.9 adds `@mix` consequent fields (multiple same-named
 fields understood as one indexed group, top-down 1,2,3,… or manual
@@ -448,3 +448,12 @@ target. See the 2026-10-03 entry in [`../REVISIONS.md`](../REVISIONS.md).
 # SLeeLa
 <p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
 <p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>
+
+
+## Current language edition
+
+The normative SLeeLa language edition is **3.0**. Sleela and Sleelvac share the
+same native frontend and version resolver; both report and enforce source syntax
+**1.0–3.0**. Nordshrift delegates to that resolver. Older source declarations
+remain accepted, and historical feature gates (such as `@mix` at syntax 2.9)
+remain in force. Tool release numbers are independent of the language edition.
