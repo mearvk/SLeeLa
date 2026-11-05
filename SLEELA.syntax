@@ -1124,9 +1124,9 @@ The following Java generic forms are recognized as intended surface but are
 
 ### 16.5 Version gate
 
-Generic type signatures are specified by `#sleela 2.2`. They are accepted across
-the 2.x surface the front end drives (documented supported range 1.0 .. 2.2);
-2.2 is the version a document should declare to rely on them normatively.
+Generic type signatures are specified by `#sleela 2.2`. They remain accepted by the current frontend across its supported source range
+1.0 .. 3.0, but their feature gate remains 2.2: a document should declare
+#sleela 2.2 or later to rely on generic type signatures normatively.
 
 
 --------------------------------------------------------------------------------
@@ -1225,7 +1225,7 @@ Core:
   each Guide a zero-arg method; version-gated at 2.3.
 - `impl/frontend/compiler.cpp` — `emitGuideChain()`: head then per-Guide
   `OP_DUP`/`OP_CALL`/`OP_POP`; no new Core opcode.
-- `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.4.
+- `impl/frontend/version.h` — the current `maxSupportedSyntax()` is 3.0; the Guide-chain construct itself remains gated at syntax 2.3.
 
 The companion library and docs (the source is the authority):
 
@@ -1333,7 +1333,7 @@ there.
 
 ### 18.6 Where this is implemented
 
-- `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.4.
+- `impl/frontend/version.h` — the current `maxSupportedSyntax()` is 3.0; the author/authorial marker itself remains gated at syntax 2.4.
 - `impl/frontend/parser.cpp` — `parseProgram()` recognises the top-level
   contextual `author`/`authorial` marker and sets `Program.authorMarked`.
 - `impl/frontend/semantic.cpp` — `collect()` gates the marker to 2.4 and relaxes
