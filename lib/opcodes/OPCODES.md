@@ -1,4 +1,4 @@
-The canonical VM ISA is 155 opcodes (codes 0–154), and the `lib/opcodes` wrapper family now provides one single-opcode class for **every** one of them (155 `SLOp*` classes, codes 0–154). This page documents that full wrapper set.
+The canonical VM ISA is 156 opcodes (codes 0–155), and the `lib/opcodes` wrapper family now provides one single-opcode class for **every** one of them (156 `SLOp*` classes, codes 0–155). This page documents that full wrapper set.
 
 <img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian/debian-logo.png" width="75" height="75" alt="SLeeLa">
 
@@ -12,8 +12,8 @@ The canonical VM ISA is 155 opcodes (codes 0–154), and the `lib/opcodes` wrapp
 **Native bridge:** `native/include/sleela_opcode.h`, `native/src/sleela_opcode.cpp`
 
 The `/lib/opcodes` family expresses the **full** SLeeLa virtual-machine
-instruction set as one SLeeLa source class per opcode. It covers codes 0–154 —
-the complete canonical ISA defined by `lib/vm/InstructionSet.sleela` (155
+instruction set as one SLeeLa source class per opcode. It covers codes 0–155 —
+the complete canonical ISA defined by `lib/vm/InstructionSet.sleela` (156
 opcodes). Each class in this package carries exactly one opcode and nothing else.
 
 ## What is here
@@ -22,7 +22,7 @@ opcodes). Each class in this package carries exactly one opcode and nothing else
 |------:|---------|
 | 1 | `SLOpcodeBase.sleela` — the shared single-opcode contract |
 | 1 | `SLOpcodeStream.sleela` — the verbatim, ordered opcode sequence driver |
-| 155 | `SLOp*.sleela` — one class per opcode, codes **0–154** (the full ISA) |
+| 156 | `SLOp*.sleela` — one class per opcode, codes **0–155** (the full ISA) |
 | 1 | `OPCODES.md` — this document |
 | 8 | `governance/` — the Registrar · Listener · Event Observer series (see `governance/GOVERNANCE.md`) |
 | 6 | `running/` — grouping, conditional-reactive, and warming helpers (see `running/RUNNING.md`) |
@@ -35,8 +35,8 @@ Codes **98–102** are the five array-extension opcodes added for syntax 1.4
 the idea-canvas native-bridge ops (126–147, `OP_IC_*`), the VM-selection op
 (148, `OP_VM_SELECT`), the Modium file-resolution scan (149, `OP_MODIUM_SCAN`),
 and the tail ops `OP_UI_CALL` (150), `OP_SSEND` (151), `OP_CHECKCAST` (152),
-`OP_INSTANCEOF` (153), and `OP_DUP2` (154). The package therefore ships **a
-wrapper class for every opcode in the 155-opcode canonical ISA** (155 wrappers
+`OP_INSTANCEOF` (153), `OP_DUP2` (154), and `OP_OSLS_CALL` (155). The package therefore ships **a
+wrapper class for every opcode in the 156-opcode canonical ISA** (156 wrappers
 total), mirroring `lib/vm/InstructionSet.sleela` one-for-one.
 
 ## The single-opcode contract
@@ -106,7 +106,7 @@ Consistent with `lib/vm/OPCODE-MAP.md`, an **unknown opcode is rejected, never
 silently treated as a no-op**: `execute_one` returns `-1` and records
 `"unsupported opcode"`. `OP_HALT` also returns `-1` to stop the stream. The
 authoritative execution semantics remain in `/impl/core`; this bridge models the
-fetch/dispatch discipline and the mnemonic table (155 entries, codes 0–154).
+fetch/dispatch discipline and the mnemonic table (156 entries, codes 0–155).
 
 Build and self-test:
 
