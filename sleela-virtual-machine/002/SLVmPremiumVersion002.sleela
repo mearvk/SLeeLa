@@ -16,7 +16,7 @@
  *
  * Family: vm. Composes SLVmPremiumVersion, SLVmConfig, SLVmRuntime.
  */
-#sleela 2.4
+#sleela 3.0
 class SLVmPremiumVersion002 extends SLVmPremiumVersion {
   void configure() {
     base(2, "slvm-2", "Operator", "cryptographic and VM-link evolution", "sleela-virtual-machine/002", "crypto provider");
