@@ -6,8 +6,8 @@ inclusion: always
 
 Syntax **2.6** adds a bare, contextual, **declarative-only** document marker
 **`determine`** — a sibling to the 2.5 `material` and `memory` markers and the
-2.4 `author`/`authorial` marker. It is gated to the 2.6 spec ceiling
-(`maxSupportedSyntax()` = `2.6`). The normative definition is
+2.4 `author`/`authorial` marker. Its introduction gate is `#sleela 2.6`; the current compiler maximum is
+`maxSupportedSyntax()` = `3.0`. The normative definition is
 [`SLEELA.syntax` §23](../../SLEELA.syntax).
 
 ## What it means — the ideal definition and term (as-is)
@@ -40,7 +40,7 @@ toward completion by a qualified hand.
 
 ## Implementation (end-to-end, mirrors the `material`/`memory` pattern)
 
-- `impl/frontend/version.h` — `maxSupportedSyntax()` = `{2,6}`.
+- `impl/frontend/version.h` — current `maxSupportedSyntax()` = `{3,0}`; this marker remains gated to 2.6.
 - `impl/frontend/ast.h` — `Program.determineMarked`.
 - `impl/frontend/parser.cpp` — `parseProgram()` recognises the contextual
   top-level `determine` word and sets the flag.
