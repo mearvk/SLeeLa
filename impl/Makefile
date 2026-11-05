@@ -107,6 +107,8 @@ OSLS_DIR := ../os-level-support
 OSLS_CORE_OBJ := $(BUILD)/osls_core.o
 OSLS_EXT_OBJ := $(BUILD)/osls_extended.o
 OSLS_VM_OBJ := $(BUILD)/osls_vm_bridge.o
+OSLS_VM_CAP_SMOKE := $(BUILD)/osls_vm_capability_smoke
+OSLS_VM_CAP_SMOKE_OBJ := $(BUILD)/osls_vm_capability_test.o
 OSLS_OBJS := $(OSLS_CORE_OBJ) $(OSLS_EXT_OBJ) $(OSLS_VM_OBJ)
 ifeq ($(PLATFORM),windows)
   OSLS_DEFS := -D_CRT_SECURE_NO_WARNINGS
@@ -699,6 +701,10 @@ SLCORE_OBJS := $(CORE_OBJ) $(OSLS_OBJS) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYN
   $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SLUI_OBJS)
 $(SLCORE_LIB): $(SLCORE_OBJS)
 	$(AR) rcs $@ $(SLCORE_OBJS)
+$(OSLS_VM_CAP_SMOKE_OBJ): tests/osls_vm/osls_vm_capability_test.c | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c $< -o $@
+$(OSLS_VM_CAP_SMOKE): $(OSLS_VM_CAP_SMOKE_OBJ) $(SLCORE_LIB)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
 libslcore: $(SLCORE_LIB)
 	@echo "=== reusable Core engine archive: $(SLCORE_LIB) ==="
 $(CHEMISTRY_OBJ): subjects/chemistry/chemistry.cpp subjects/chemistry/chemistry.h | $(BUILD)
@@ -826,9 +832,10 @@ test: verify-security test-osls-isa test-osls-vm test-java-runtime test-java-aut
 test-osls-isa:
 	@cd $(CURDIR)/.. && $(PYTHON) tools/verify-osls-isa-extension.py
 
-test-osls-vm: $(SLEELA_BIN)
+test-osls-vm: $(SLEELA_BIN) $(OSLS_VM_CAP_SMOKE)
 	@cd $(CURDIR)/.. && $(CURDIR)/$(SLEELA_BIN) run impl/tests/osls_vm/osls_vm_bindings.sleela
 	@cd $(CURDIR)/.. && bash impl/tests/osls_vm/run_osls_vm_negative.sh $(CURDIR)/$(SLEELA_BIN)
+	@$(OSLS_VM_CAP_SMOKE)
 
 test-thread-platform: $(THREAD_PLATFORM_SMOKE)
 	@echo "=== OS-aware threading backend ==="; SLEELA_THREAD_PLATFORM=auto $(THREAD_PLATFORM_SMOKE)
