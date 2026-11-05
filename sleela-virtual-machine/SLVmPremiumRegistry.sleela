@@ -18,11 +18,11 @@
  *
  * Family: vm. Composes SLVmPremiumVersion001..011, SLVmRuntime.
  *
- * [VERSION NOTE 2026-11-05] This registry retains its #sleela 3.0 source
+ * [VERSION NOTE 2026-11-05] This registry now declares Syntax 3.0
  * declaration for compatibility. Syntax 3.0 is the current normative language
  * edition; the shared frontend accepts 1.0..3.0 and preserves per-file gates.
  */
-#sleela 2.4
+#sleela 3.0
 class SLVmPremiumRegistry {
   SLVmPremiumVersion001 g1; SLVmPremiumVersion002 g2; SLVmPremiumVersion003 g3;
   SLVmPremiumVersion004 g4; SLVmPremiumVersion005 g5; SLVmPremiumVersion006 g6;
