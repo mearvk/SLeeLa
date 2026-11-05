@@ -1,5 +1,6 @@
 #include "native_loader.hpp"
 
+#include <limits>
 #include <utility>
 
 namespace sleela {
@@ -24,6 +25,9 @@ SLNativeStatus NativeModule::open(const std::string &path) {
 }
 
 SLNativeStatus NativeModule::run(const std::vector<std::string> &args, int &result) {
+    if (args.size() > static_cast<std::size_t>(std::numeric_limits<int>::max()))
+        return SL_NATIVE_INVALID_ARGUMENT;
+
     std::vector<const char *> argv;
     argv.reserve(args.size());
     for (const auto &arg : args) argv.push_back(arg.c_str());
