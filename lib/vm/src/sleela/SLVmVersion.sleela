@@ -15,10 +15,11 @@
    
    Family: vm. Composes SLVmConfig, SLVmRuntime, SLVmSource.
    
-   [SYNC syntax-2.4 2026-10-25] Syntax header raised 2.1 -> 2.4 to match the
-   authoritative current level in impl/frontend/version.h (max supported 2.4).
-   No language constructs changed; the bump keeps the VM manifests on the same
-   current syntax as the rest of the tree. >>
+   [VERSION NOTE 2026-11-05] This unit retains #sleela 2.5 because its
+   material; document marker requires that feature gate. The current normative
+   language edition is Syntax 3.0 and the shared frontend accepts 1.0..3.0.
+   The source pragma is intentionally not relabelled merely to match the current
+   edition; feature gates and source-version history remain authoritative. >>
 #sleela 2.5
 material;
 class SLVmVersion {
