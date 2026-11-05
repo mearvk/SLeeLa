@@ -12,9 +12,12 @@
 
     Versioning note: two distinct version numbers apply and must not be
     conflated. The **syntax version** (MAJOR.MINOR, declared per file with
-    `#sleela 2.9`) is the grammar version defined here and enforced by
-    `impl/frontend/version.{h,cpp}` (documented supported range 1.0 .. 2.9).
-    Syntax 2.9 adds **`@mix` consequent fields** (section 28): repeated
+    `#sleela 3.0`) is the grammar edition defined here and enforced by
+    `impl/frontend/version.{h,cpp}` (supported range 1.0 .. 3.0).
+    Syntax 3.0 is the current normative edition. It consolidates the 1.x and
+    2.x language surface into one specification and keeps historical feature
+    gates intact; it does not silently enable a feature below that feature's
+    original minimum version. Syntax 2.9 introduced **`@mix` consequent fields** (section 28): repeated
     same-named instance fields explicitly marked `@mix` form an indexed group;
     declaration order supplies indexes unless a matching index list is provided.
     The `prestige` marker in section 27 remains a future proposal, not an
