@@ -103,9 +103,28 @@ The native implementation is now wired directly to the authoritative `/impl/fron
 
 SLeeLa source-level reference handlers are provided by `SLCaseHandler.sleela`, `SLObjectCreationResolver.sleela`, and `SLConstructorSeries.sleela`. These define the intended compiler contract; integration with the native frontend and passing tests must be verified before describing the feature as production-ready.
 
-## Authoritative language specification (syntax 1.7)
+## Authoritative language specification — Syntax 3.0
 
-The native compiler and all compiler front ends must validate against the repository-root [`SLEELA.syntax`](../../SLEELA.syntax) specification. Its active version is `1.7` and the native frontend's supported range is `1.3..1.7`. The `U<n>` unsigned fixed-width family accepts widths from `U1` through `U1048576`. Do not lower these types to signed or 64-bit host integers silently; unsupported runtime paths must emit an explicit diagnostic. The shared type-signature contract is in [`markdown/SOURCE.md`](../../markdown/SOURCE.md), and the runtime implementation boundary is tracked by the tests in `impl/tests/unsigned_integer_test.cpp`.
+The repository-root [`SLEELA.syntax`](../../SLEELA.syntax) is the single
+normative language specification. **Syntax 3.0** is the current edition; the
+shared native frontend accepts declared source syntax **1.0–3.0** and defaults
+unversioned source to 3.0 with a warning. A source file's `#sleela X.Y`
+pragma selects its syntax edition. Compiler/tool release numbers are
+independent of that language version.
+
+Syntax 3.0 consolidates the established 1.x and 2.x language surface without
+silently changing historical feature gates. Features introduced in earlier
+editions remain gated at their documented minimum versions; for example,
+Syntax 2.9 `@mix` remains a 2.9 feature. The compiler must preserve source
+version evidence through diagnostics, intermediate representation, and
+artifact metadata. Consult the [syntax version matrix](../../api/sleela/2.1/language/SYNTAX-VERSION-MATRIX.md)
+for the feature chronology and implementation boundaries.
+
+Unsigned and wide-integer source signatures must preserve their declared kind
+and width through lowering and runtime boundaries. Unsupported operations
+must fail explicitly rather than silently narrowing or changing signedness.
+The shared type-signature contract is in [`markdown/SOURCE.md`](../../markdown/SOURCE.md);
+focused native tests are in `impl/tests/unsigned_integer_test.cpp`.
 
 ## Native C++20 compiler prototype
 
@@ -128,12 +147,3 @@ The intended native path is `.sleela compiler source -> validated compiler IR ->
 ## Compiler construction examples
 
 The four-stage learning path for implementing a compiler in SLeeLa source is available under [`examples/`](examples/README.md): **Novice**, **Mid**, **Senior**, and **Very Senior**. Each level includes a SLeeLa scaffold, exercises, validation goals, and appropriate safety/reproducibility guidance. These examples are educational scaffolds and do not imply that full self-hosting or complete language coverage has already been verified.
-
-## Language edition 3.0
-
-The compiler package follows the normative SLeeLa syntax **3.0** edition.
-The shared native compiler gate accepts declared source syntax **1.0–3.0**;
-older pragmas remain supported, and historical feature-specific gates (for
-example, syntax 2.9 `@mix`) remain authoritative. The compiler's implementation
-release number is independent of the language syntax edition. See the root
-[`SLEELA.syntax`](../../SLEELA.syntax) and the [generated API reference](../../docs/api/index.html).
