@@ -1,29 +1,29 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.54  
+**Revision:** 0.55  
 **Packages:** 109  
-**SLeeLa source units:** 11830  
+**SLeeLa source units:** 11836  
 **Module-facade symbols:** 75  
-**Total symbol records:** 11905  
+**Total symbol records:** 11911  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.54 completes the **`opcodes`** wrapper family so it covers the
 > **entire** canonical VM ISA. The family previously shipped single-opcode
 > classes only for codes **0–102** (103 wrappers); the canonical ISA in
-> `lib/vm/InstructionSet.sleela` had since grown to **155 opcodes (codes
-> 0–154)**. This revision adds the **52** missing `SLOp*` wrapper classes for
-> codes **103–154**: the operating-system system calls (`SLOpOs*`, 103–123), the
+> `lib/vm/InstructionSet.sleela` had since grown to **156 opcodes (codes
+> 0–155)**. This revision adds the **53** missing `SLOp*` wrapper classes for
+> codes **103–155**: the operating-system system calls (`SLOpOs*`, 103–123), the
 > GC/system ops (`SLOpGcHint` 124, `SLOpRanMem` 125), the idea-canvas
 > native-bridge ops (`SLOpIc*`, 126–147), `SLOpVmSelect` (148), `SLOpModiumScan`
 > (149), and the tail ops `SLOpUiCall` (150), `SLOpSsend` (151), `SLOpCheckcast`
-> (152), `SLOpInstanceof` (153), and `SLOpDup2` (154). Each new class extends
+> (152), `SLOpInstanceof` (153),  `SLOpDup2` (154), and `SLOpOslsCall` (155). Each new class extends
 > `SLOpcodeBase`, carries exactly one `CODE`/`MNEMONIC`, honours the
 > fetch-then-execute-one contract, and carries the Metadata Class metapattern —
 > so `SLOpcodeStream` can now sequence any opcode in the set. The wrapper
-> count is now **155** (`SLOp*`), one-for-one with the native enum/dispatch and
+> count is now **156** (`SLOp*`), one-for-one with the native enum/dispatch and
 > the `lib/vm/OPCODE-MAP.md` table. See `opcodes/OPCODES.md`.
 >
-> Fifty-two new source classes (11778 → **11830** sources; 11853 → **11905**
+> Fifty-three new source classes (11783 → **11836** sources; 11836 → **11911**
 > total records). Counts reconciled to the live `/lib` tree by
 > `tools/generate-library-symbols.py` and verified by
 > `test-suites/test-library-inventory.sh` (expected totals updated to match).
