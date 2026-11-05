@@ -14,6 +14,7 @@ catalogues**.
 | SLOsSupportElement.sleela | Reusable element descriptor: group, VM term/opcode, portable symbol, native symbol, backend, effect, status and arity |
 | SLOsSupportVMElements.sleela | Factory methods for the 21 existing OP_OS operations, mapped to VM opcodes and slos_* backend symbols |
 | SLOsSupportVMBridge.sleela | VM dispatch stages, status/marshalling vocabulary and current VM opcode mapping |
+| examples/SLOsSupportCatalogExample.sleela | Example that enumerates common groups, VM bindings, and each platform's native API catalogue |
 | SLOsSupportLinux.sleela | Linux grouping terms and alphabetized POSIX/Linux native symbols |
 | SLOsSupportWindows.sleela | Windows grouping terms and alphabetized Win32/Winsock symbols |
 | SLOsSupportMacOS.sleela | macOS grouping terms and alphabetized Darwin/POSIX/Mach symbols |
@@ -92,3 +93,12 @@ are actually run.
 - lib/vm/SleelaVMSystemCallBridge.sleela — existing VM system-call facade and OSLS grouping integration.
 - lib/vm/SLVMNativeBinding.sleela — explicit native binding lifecycle model.
 - impl/core/sleela_os.h / impl/core/sleela_os.c — existing host OS backend.
+
+
+## Source-level catalogue example
+
+The example at examples/SLOsSupportCatalogExample.sleela constructs the
+catalogue and the three platform backend objects, then enumerates the common
+API, VM element bindings and native API lists. It also prints the two distinct
+integration states: the existing OP_OS bridge is implemented, while the
+additional osls C ABI adapter is not yet registered.
