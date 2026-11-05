@@ -179,7 +179,7 @@ static const osls_vm_arg_type sig_utf8_i64[] = { OSLS_VM_ARG_UTF8, OSLS_VM_ARG_I
 
 #define OSLS_INVOKER(name, op, text_expr, int_expr) \
 static int name(const osls_vm_value *a, size_t n, char *out, size_t cap) { \
-    (void)n; return osls_vm_dispatch_native((op), (text_expr), (int_expr), out, cap); \
+    (void)a; (void)n; return osls_vm_dispatch_native((op), (text_expr), (int_expr), out, cap); \
 }
 OSLS_INVOKER(invoke_system_info, OSLS_VM_SYSTEM_INFO, NULL, 0)
 OSLS_INVOKER(invoke_process_info, OSLS_VM_PROCESS_INFO, NULL, a[0].value.i64)
@@ -196,18 +196,18 @@ OSLS_INVOKER(invoke_cron_next_after, OSLS_VM_CRON_NEXT_AFTER, a[0].value.utf8, a
 #undef OSLS_INVOKER
 
 static const osls_vm_binding bindings[] = {
-    {0,"oslsSystemInfo","osls_get_system_info",0,NULL,OSLS_VM_RESULT_JSON_UTF8,"()","JSON system record",invoke_system_info},
-    {1,"oslsProcessInfo","osls_get_process_info",1,sig_i64,OSLS_VM_RESULT_JSON_UTF8,"(pid:int64; 0=self)","JSON process record",invoke_process_info},
-    {2,"oslsEnumerateProcesses","osls_enumerate_processes",0,NULL,OSLS_VM_RESULT_JSON_UTF8,"()","JSON process array; self only",invoke_enumerate_processes},
-    {3,"oslsGetEnvironmentValue","osls_get_environment_value",1,sig_utf8,OSLS_VM_RESULT_JSON_UTF8,"(name:utf8)","JSON status/value",invoke_get_environment},
-    {4,"oslsEnumerateEnvironment","osls_enumerate_environment",0,NULL,OSLS_VM_RESULT_JSON_UTF8,"()","JSON environment array",invoke_enumerate_environment},
-    {5,"oslsGetFileInfo","osls_get_file_info",1,sig_utf8,OSLS_VM_RESULT_JSON_UTF8,"(path:utf8)","JSON file record",invoke_file_info},
-    {6,"oslsListDirectory","osls_list_directory",1,sig_utf8,OSLS_VM_RESULT_JSON_UTF8,"(path:utf8)","JSON entry array",invoke_list_directory},
-    {7,"oslsGetCPUInfo","osls_get_cpu_info",0,NULL,OSLS_VM_RESULT_JSON_UTF8,"()","JSON CPU record",invoke_cpu_info},
-    {8,"oslsGetTimezoneInfo","osls_get_timezone_info",0,NULL,OSLS_VM_RESULT_JSON_UTF8,"()","JSON timezone record",invoke_timezone_info},
-    {9,"oslsGetNetworkInterfaces","osls_get_network_interfaces",0,NULL,OSLS_VM_RESULT_JSON_UTF8,"()","JSON interface array",invoke_network_interfaces},
-    {10,"oslsCronValidate","osls_cron_validate",1,sig_utf8,OSLS_VM_RESULT_JSON_UTF8,"(expression:utf8)","JSON status",invoke_cron_validate},
-    {11,"oslsCronNextAfter","osls_cron_next_after",2,sig_utf8_i64,OSLS_VM_RESULT_JSON_UTF8,"(expression:utf8, epoch:int64)","JSON status/epoch",invoke_cron_next_after}
+    {0,"oslsSystemInfo","osls_get_system_info",0,NULL,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"()","JSON system record",invoke_system_info},
+    {1,"oslsProcessInfo","osls_get_process_info",1,sig_i64,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"(pid:int64; 0=self)","JSON process record",invoke_process_info},
+    {2,"oslsEnumerateProcesses","osls_enumerate_processes",0,NULL,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"()","JSON process array; self only",invoke_enumerate_processes},
+    {3,"oslsGetEnvironmentValue","osls_get_environment_value",1,sig_utf8,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"(name:utf8)","JSON status/value",invoke_get_environment},
+    {4,"oslsEnumerateEnvironment","osls_enumerate_environment",0,NULL,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"()","JSON environment array",invoke_enumerate_environment},
+    {5,"oslsGetFileInfo","osls_get_file_info",1,sig_utf8,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"(path:utf8)","JSON file record",invoke_file_info},
+    {6,"oslsListDirectory","osls_list_directory",1,sig_utf8,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"(path:utf8)","JSON entry array",invoke_list_directory},
+    {7,"oslsGetCPUInfo","osls_get_cpu_info",0,NULL,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"()","JSON CPU record",invoke_cpu_info},
+    {8,"oslsGetTimezoneInfo","osls_get_timezone_info",0,NULL,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"()","JSON timezone record",invoke_timezone_info},
+    {9,"oslsGetNetworkInterfaces","osls_get_network_interfaces",0,NULL,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"()","JSON interface array",invoke_network_interfaces},
+    {10,"oslsCronValidate","osls_cron_validate",1,sig_utf8,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"(expression:utf8)","JSON status",invoke_cron_validate},
+    {11,"oslsCronNextAfter","osls_cron_next_after",2,sig_utf8_i64,OSLS_VM_RESULT_JSON_UTF8,OSLS_VM_CAP_HOST_READ,"(expression:utf8, epoch:int64)","JSON status/epoch",invoke_cron_next_after}
 };
 
 const osls_vm_binding *osls_vm_binding_table(size_t *out_count) {
@@ -227,13 +227,16 @@ const osls_vm_binding *osls_vm_binding_by_symbol(const char *symbol) {
         if (strcmp(bindings[i].native_symbol, symbol) == 0) return &bindings[i];
     return NULL;
 }
-int osls_vm_call_typed(int operation, const osls_vm_value *args, size_t arg_count,
-                       char *out, size_t cap, osls_vm_result *result) {
+int osls_vm_call_authorized(int operation, const osls_vm_value *args, size_t arg_count,
+                            uint64_t granted_capabilities, char *out, size_t cap,
+                            osls_vm_result *result) {
     const osls_vm_binding *binding = osls_vm_binding_by_id(operation);
     int written;
     size_t i;
     if (result) { result->type = 0; result->utf8 = NULL; result->length = 0; }
     if (!binding || !binding->invoke || !binding->native_symbol || !*binding->native_symbol)
+        return -1;
+    if ((binding->required_capabilities & granted_capabilities) != binding->required_capabilities)
         return -1;
     if (arg_count != binding->argument_count || (arg_count && !args)) return -1;
     for (i = 0; i < arg_count; ++i) {
@@ -250,6 +253,11 @@ int osls_vm_call_typed(int operation, const osls_vm_value *args, size_t arg_coun
         result->length = (size_t)written;
     }
     return written;
+}
+int osls_vm_call_typed(int operation, const osls_vm_value *args, size_t arg_count,
+                       char *out, size_t cap, osls_vm_result *result) {
+    return osls_vm_call_authorized(operation, args, arg_count, OSLS_VM_CAP_HOST_READ,
+                                   out, cap, result);
 }
 int osls_vm_call(int operation, const char *text, int64_t number, char *out, size_t cap) {
     const osls_vm_binding *binding = osls_vm_binding_by_id(operation);
