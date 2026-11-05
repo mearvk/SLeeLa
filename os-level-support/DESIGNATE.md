@@ -210,6 +210,248 @@ The current root C API is declared in `osls.h` and implemented across `osls.c` a
 
 The runtime callback/task API is declared in `runtime/osls_runtime.h`. The native shared-module API is declared in `loader/native_loader.h`. Their presence does not imply sandboxing, OS syscall interception, persistent scheduling, or process creation.
 
+
+## 11. Alphabetical native operating-system function index
+
+This index names native functions and documented system interfaces that may implement the capability families above. Names are grouped by operating system and sorted alphabetically within each group. It is an implementation reference, not a promise that every function is currently called by SLeeLa or is available on every supported OS release. Prefer documented, user-mode APIs; check availability, permissions, and return status at runtime.
+
+### 11.1 Windows — Win32 and documented system APIs
+
+The following Win32 and Windows API names are listed alphabetically. Related API families are included where they are relevant to the designated support surface.
+
+- `CloseHandle`
+- `CreateEventW`
+- `CreateFileW`
+- `CreateIoCompletionPort`
+- `CreateMutexW`
+- `CreateProcessW`
+- `CreateSemaphoreW`
+- `CreateTimerQueueTimer`
+- `CreateWaitableTimerW`
+- `DeleteFileW`
+- `DeviceIoControl` — only for documented, permitted device interfaces; not a general driver-control feature
+- `FindClose`
+- `FindFirstFileW`
+- `FindNextFileW`
+- `FormatMessageW`
+- `GetComputerNameExW`
+- `GetCurrentDirectoryW`
+- `GetCurrentProcess`
+- `GetCurrentProcessId`
+- `GetCurrentThreadId`
+- `GetDiskFreeSpaceExW`
+- `GetEnvironmentStringsW`
+- `GetEnvironmentVariableW`
+- `GetExitCodeProcess`
+- `GetFileAttributesExW`
+- `GetFileInformationByHandleEx`
+- `GetLastError`
+- `GetLogicalDrives`
+- `GetLogicalDriveStringsW`
+- `GetNativeSystemInfo`
+- `GetProcessId`
+- `GetProcessImageFileNameW`
+- `GetProcessTimes`
+- `GetSystemInfo`
+- `GetSystemTimeAsFileTime`
+- `GetSystemTimePreciseAsFileTime`
+- `GetSystemTimes`
+- `GetTickCount64`
+- `GetTimeZoneInformation`
+- `GetUserNameW`
+- `GetVolumeInformationW`
+- `GetWindowsDirectoryW`
+- `GlobalMemoryStatusEx`
+- `InitializeProcThreadAttributeList`
+- `LoadLibraryW`
+- `LocalFree`
+- `MoveFileExW`
+- `MultiByteToWideChar`
+- `OpenProcess`
+- `OpenSCManagerW`
+- `OpenServiceW`
+- `QueryPerformanceCounter`
+- `QueryPerformanceFrequency`
+- `QueryServiceConfigW`
+- `QueryServiceStatusEx`
+- `ReadDirectoryChangesW`
+- `ReadFile`
+- `RegCloseKey`
+- `RegOpenKeyExW`
+- `RegQueryValueExW`
+- `SetCurrentDirectoryW`
+- `SetEnvironmentVariableW`
+- `SetFilePointerEx`
+- `SetWaitableTimer`
+- `Sleep`
+- `TerminateProcess` — not part of routine inspection; any future use requires a separately specified, explicit process-control API
+- `WaitForMultipleObjects`
+- `WaitForSingleObject`
+- `WideCharToMultiByte`
+- `WriteFile`
+
+**Additional Windows API families (alphabetical):**
+
+- IP Helper API — interface, address, route and statistics inspection, including `GetAdaptersAddresses`, `GetIfEntry2`, `GetIpForwardTable2`
+- Performance Data Helper (PDH) — performance-counter query and collection
+- Service Control Manager (SCM) — read-only service enumeration and status queries
+- Winsock 2 — socket operations and name resolution, including `accept`, `bind`, `closesocket`, `connect`, `getaddrinfo`, `getsockname`, `getsockopt`, `listen`, `recv`, `select`, `send`, `setsockopt`, `shutdown`, `socket`, and `WSAStartup`
+
+### 11.2 Linux — POSIX, libc, and Linux system interfaces
+
+The following function names are listed alphabetically. Some are libc/POSIX interfaces and some are Linux-specific interfaces or system calls. Prefer libc wrappers over issuing raw system calls directly.
+
+- `access`
+- `accept`
+- `bind`
+- `clock_getres`
+- `clock_gettime`
+- `close`
+- `closedir`
+- `connect`
+- `dup`
+- `epoll_create1`
+- `epoll_ctl`
+- `epoll_wait`
+- `execve` — process execution; outside read-only inspection and requires an explicit process-launch API
+- `fstat`
+- `fstatvfs`
+- `ftruncate`
+- `getaddrinfo`
+- `getcwd`
+- `getegid`
+- `geteuid`
+- `getgid`
+- `gethostname`
+- `getifaddrs`
+- `getnameinfo`
+- `getpid`
+- `getppid`
+- `getpriority`
+- `getrlimit`
+- `getsockname`
+- `getsockopt`
+- `gettimeofday`
+- `getuid`
+- `inotify_add_watch`
+- `inotify_init1`
+- `inotify_rm_watch`
+- `ioctl` — only for explicitly documented and permitted interfaces
+- `listen`
+- `lseek`
+- `lstat`
+- `mmap`
+- `munmap`
+- `nanosleep`
+- `open`
+- `opendir`
+- `poll`
+- `pread`
+- `pwrite`
+- `read`
+- `readlink`
+- `recv`
+- `recvfrom`
+- `rename`
+- `select`
+- `send`
+- `sendto`
+- `setenv`
+- `setrlimit`
+- `setsockopt`
+- `shutdown`
+- `socket`
+- `stat`
+- `statvfs`
+- `sysconf`
+- `sysinfo`
+- `uname`
+- `unsetenv`
+- `write`
+
+**Additional Linux interfaces (alphabetical):**
+
+- cgroup v1/v2 control files — read permitted controller and process-limit metadata
+- netlink — read-only route, link and address inspection (for example, `NETLINK_ROUTE`)
+- procfs — process, kernel, memory, load and boot metadata (for example, `/proc/<pid>/stat`, `/proc/meminfo`, `/proc/uptime`)
+- sysfs — read-only device, CPU, memory and power metadata (for example, `/sys/devices/system/cpu`)
+- systemd D-Bus interfaces — optional, read-only service and session metadata when available
+
+### 11.3 macOS — Darwin, POSIX, Mach, and Apple system APIs
+
+The following function names are listed alphabetically. Availability and permissions vary by macOS release, sandbox profile and privacy authorization.
+
+- `accept`
+- `bind`
+- `clock_gettime`
+- `clock_getres`
+- `close`
+- `connect`
+- `dispatch_after`
+- `dispatch_source_create`
+- `dlclose`
+- `dlopen`
+- `dlsym`
+- `fcntl`
+- `fstat`
+- `fstatfs`
+- `getaddrinfo`
+- `getcwd`
+- `getifaddrs`
+- `getnameinfo`
+- `getpeername`
+- `getpid`
+- `getppid`
+- `getsockname`
+- `getsockopt`
+- `gettimeofday`
+- `host_page_size`
+- `host_statistics64`
+- `host_info`
+- `kqueue`
+- `kevent`
+- `mach_absolute_time`
+- `mach_host_self`
+- `mach_port_deallocate`
+- `mach_task_self`
+- `mach_timebase_info`
+- `mach_vm_region` — query permitted virtual-memory region metadata only; no memory modification or inspection of unrelated processes
+- `listen`
+- `lstat`
+- `mach_msg`
+- `mmap`
+- `munmap`
+- `open`
+- `opendir`
+- `proc_pidinfo`
+- `proc_pidpath`
+- `read`
+- `readlink`
+- `recv`
+- `recvfrom`
+- `select`
+- `send`
+- `sendto`
+- `stat`
+- `statfs`
+- `sysctl`
+- `sysctlbyname`
+- `uname`
+- `write`
+
+**Additional macOS frameworks and interfaces (alphabetical):**
+
+- Core Foundation — system configuration and property-list types where appropriate
+- Dispatch (Grand Central Dispatch) — timers, queues and event sources
+- I/O Kit — read-only device and power-source metadata
+- Mach — monotonic clock, host statistics and permitted task/port metadata
+- SystemConfiguration — network service, interface and DNS configuration inspection
+- FSEvents — filesystem change notification streams
+- BSD sockets — portable socket and name-resolution interfaces
+- vnode/kqueue — filesystem and descriptor event notification
+
+**Index maintenance rule:** Keep each operating-system list alphabetized whenever entries are added. Distinguish function names from API families and pseudo-filesystem interfaces; identify any state-changing call explicitly, and do not describe a candidate API as implemented until the corresponding backend and tests exist.
+
 ---
 
 **Designation:** Linux, Windows, and macOS are the required target platforms. Common behavior belongs in the portable API; genuine OS differences belong in platform backends or explicitly named extensions. All status labels in this document must be updated as implementation and cross-platform tests are completed.
