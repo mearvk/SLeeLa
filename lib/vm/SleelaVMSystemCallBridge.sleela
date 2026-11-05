@@ -113,6 +113,7 @@ class SleelaVMSystemCallBridge {
     out.add("PathManagement");
     out.add("FileSystem");
     out.add("ProcessInspection");
+    out.add("ProcessControl");
     out.add("CapabilityDiscovery");
     return out;
   }
