@@ -43,6 +43,17 @@ jobs:
           SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
         run: make -C impl clean all
 
+      - name: Build and test OSLS native registry
+        timeout-minutes: 5
+        run: |
+          cmake -S os-level-support -B build/osls -DBUILD_TESTING=ON
+          cmake --build build/osls --config Release
+          ctest --test-dir build/osls -C Release --output-on-failure
+
+      - name: Test OSLS VM compiler and runtime dispatch
+        timeout-minutes: 3
+        run: make -C impl test-osls-vm
+
       - name: Train and verify the CPU neural network with XOR
         timeout-minutes: 3
         run: make -C tests ai-neural-nets-xor
@@ -137,6 +148,17 @@ jobs:
         env:
           SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
         run: make -C impl clean all
+
+      - name: Build and test OSLS native registry
+        timeout-minutes: 5
+        run: |
+          cmake -S os-level-support -B build/osls -DBUILD_TESTING=ON
+          cmake --build build/osls --config Release
+          ctest --test-dir build/osls -C Release --output-on-failure
+
+      - name: Test OSLS VM compiler and runtime dispatch
+        timeout-minutes: 3
+        run: make -C impl test-osls-vm
 
       - name: Test clean-glyph character recognition and transcript writer
         timeout-minutes: 3
