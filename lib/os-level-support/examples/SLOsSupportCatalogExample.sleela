@@ -1,0 +1,34 @@
+< SLeeLa example: enumerate the OS support catalogue and backend symbols. >
+#sleela 2.5
+material;
+
+class SLOsSupportCatalogExample {
+  void printList(String heading, SLList values) {
+    print(heading);
+    int i = 0;
+    while (i < values.length()) {
+      print(values.get(i));
+      i = i + 1;
+    }
+  }
+
+  void main() {
+    SLOsSupportCatalog catalog = new SLOsSupportCatalog();
+    SLOsSupportVMBridge vm = new SLOsSupportVMBridge();
+    SLOsSupportLinux linux = new SLOsSupportLinux();
+    SLOsSupportWindows windows = new SLOsSupportWindows();
+    SLOsSupportMacOS mac = new SLOsSupportMacOS();
+
+    printList("Capability groups", catalog.getGroupTerms());
+    printList("Common OSLS API", catalog.getCommonOSLSFunctions());
+    printList("Existing VM opcode bindings", vm.getExistingVMElementBindings());
+    printList("Linux native API", linux.getLinuxFunctions());
+    printList("Windows native API", windows.getWin32Functions());
+    printList("macOS native API", mac.getMacOSFunctions());
+
+    print("Core VM OS opcode bridge implemented:");
+    print(vm.isCoreOSOpcodeBridgeImplemented());
+    print("Separate osls C ABI adapter registered:");
+    print(vm.isOSLSAbiAdapterRegistered());
+  }
+}
