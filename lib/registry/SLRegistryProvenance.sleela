@@ -12,7 +12,7 @@
    Mirrors: sl_reg_provenance + sl_reg_seal/sl_reg_seal_verify.
    
    Family: registry. Attached to an SLRegistryKey. >>
-#sleela 2.5
+#sleela 3.0
 material;
 class SLRegistryProvenance {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
