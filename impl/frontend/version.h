@@ -65,8 +65,9 @@ struct SyntaxVersion { int major=0, minor=0; std::string str() const { return st
 // a mismatch is a semantic error. Below 2.9 the duplicate-field rejection stands
 // (the historical rule), so this only relaxes duplicates for genuine 2.9 use
 // (section 26 of SLEELA.syntax).
-inline SyntaxVersion minSupportedSyntax(){return SyntaxVersion{1,0};} // Syntax 3.0 consolidates the established 1.x/2.x surface. It does not
+// Syntax 3.0 consolidates the established 1.x/2.x surface. It does not
 // remove older source compatibility or relax feature-specific minimum gates.
+inline SyntaxVersion minSupportedSyntax(){return SyntaxVersion{1,0};}
 inline SyntaxVersion maxSupportedSyntax(){return SyntaxVersion{3,0};} inline SyntaxVersion defaultSyntaxVersion(){return maxSupportedSyntax();}
 enum class VersionStatus{OkDeclared,OkAssumed,TooNew,TooOld,Malformed};
 struct VersionResolution{ VersionStatus status=VersionStatus::OkAssumed; SyntaxVersion declared; bool pragmaPresent=false; std::string raw; std::string message; bool accepted()const{return status==VersionStatus::OkDeclared||status==VersionStatus::OkAssumed;} bool isError()const{return !accepted();} bool isWarning()const{return status==VersionStatus::OkAssumed;} };
