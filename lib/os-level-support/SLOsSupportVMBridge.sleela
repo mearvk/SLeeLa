@@ -1,9 +1,7 @@
 < SLeeLa Standard Library Definition.
   Definition: VM-facing OSLS binding and marshalling contract.
-  The existing OP_OS_* VM system-call bridge is already implemented and catalogued
-  here. This class also describes the separate osls_* C ABI adapter, which remains
-  unregistered until the VM host supplies its native symbol table, marshalling,
-  backend integration and cross-platform tests. >
+  The existing OP_OS_* VM system-call bridge and the typed osls_* ABI adapter
+  are registered here. OSLS records cross the VM boundary as bounded JSON Strings. >
 #sleela 2.5
 material;
 
