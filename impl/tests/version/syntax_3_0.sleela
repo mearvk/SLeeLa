@@ -1,0 +1,7 @@
+#sleela 3.0
+< syntax_3_0.sleela -- current consolidated language-edition acceptance fixture. >
+class SyntaxThreeZero {
+    void main() {
+        print("SLeeLa syntax 3.0 accepted.");
+    }
+}
