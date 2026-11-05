@@ -89,6 +89,7 @@
 <li><a href="../package/nordshrift.html">nordshrift</a></li>
 <li><a href="../package/opcodes.html">opcodes</a></li>
 <li><a href="../package/operating-system.html">operating-system</a></li>
+<li><a href="../package/os-level-support.html">os-level-support</a></li>
 <li><a href="../package/philosophers.html">philosophers</a></li>
 <li><a href="../package/philosophy.html">philosophy</a></li>
 <li><a href="../package/politico.html">politico</a></li>
@@ -110,6 +111,7 @@
 <li><a href="../package/sleeladoc.html">sleeladoc</a></li>
 <li><a href="../package/social-model.html">social-model</a></li>
 <li><a href="../package/sommeliers.html">sommeliers</a></li>
+<li><a href="../package/spatial.html">spatial</a></li>
 <li><a href="../package/sst.html">sst</a></li>
 <li><a href="../package/synchro.html">synchro</a></li>
 <li><a href="../package/systems.html">systems</a></li>
@@ -132,7 +134,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; opcodes</div>
 <h1>Package <code>opcodes</code></h1>
-<div class="lead">This package contains <strong>119</strong> source unit(s) defining <strong>119</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>172</strong> source unit(s) defining <strong>172</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="slgovconcept">SLGovConcept <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/governance/SLGovConcept.sleela)</span></h2>
 <div data-u="slgovconcept slgovconcept">
@@ -707,6 +709,21 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="slopcheckcast">SLOpCheckcast <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpCheckcast.sleela)</span></h2>
+<div data-u="slopcheckcast slopcheckcast">
+<h3 id="SLOpCheckcast">SLOpCheckcast <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpCheckcast, the single-opcode class for OP_CHECKCAST (canonical code 152). This class carries exactly ONE opcode: OP_CHECKCAST. Semantics: check a runtime cast, rejecting an incompatible type. Membership: tail extension group (codes 148-154) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 152</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_CHECKCAST&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="slopcodebase">SLOpcodeBase <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpcodeBase.sleela)</span></h2>
 <div data-u="slopcodebase slopcodebase">
 <h3 id="SLOpcodeBase">SLOpcodeBase <span class="pill">class</span></h3>
@@ -714,8 +731,8 @@
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
-<tr><td><code>CANONICAL_COUNT</code></td><td><span class="sig">static final int CANONICAL_COUNT = 103</span></td><td class="desc">codes 0..102; 0..97 are the base 98</td></tr>
-<tr><td><code>code</code></td><td><span class="sig">int code</span></td><td class="desc">canonical opcode number, 0..102</td></tr>
+<tr><td><code>CANONICAL_COUNT</code></td><td><span class="sig">static final int CANONICAL_COUNT = 156</span></td><td class="desc">codes 0..155; 0..97 are the base 98, 98..102 the array extension, 103..155 the OS/GC/idea-canvas/tail/OSLS groups (the full canonical ISA)</td></tr>
+<tr><td><code>code</code></td><td><span class="sig">int code</span></td><td class="desc">canonical opcode number, 0..155</td></tr>
 <tr><td><code>mnemonic</code></td><td><span class="sig">String mnemonic</span></td><td class="desc">canonical mnemonic, e.g. &quot;OP_ADD&quot;</td></tr>
 <tr><td><code>state</code></td><td><span class="sig">int state</span></td><td class="desc">0 = idle, 1 = armed</td></tr>
 <tr><td><code>fired</code></td><td><span class="sig">int fired</span></td><td class="desc">number of times this single opcode has executed</td></tr>
@@ -1106,6 +1123,21 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="slopdup2">SLOpDup2 <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpDup2.sleela)</span></h2>
+<div data-u="slopdup2 slopdup2">
+<h3 id="SLOpDup2">SLOpDup2 <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpDup2, the single-opcode class for OP_DUP2 (canonical code 154). This class carries exactly ONE opcode: OP_DUP2. Semantics: duplicate the top two operand-stack values. Membership: tail extension group (codes 148-154) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 154</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_DUP2&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="slopeq">SLOpEq <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpEq.sleela)</span></h2>
 <div data-u="slopeq slopeq">
 <h3 id="SLOpEq">SLOpEq <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
@@ -1211,6 +1243,21 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="slopgchint">SLOpGcHint <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpGcHint.sleela)</span></h2>
+<div data-u="slopgchint slopgchint">
+<h3 id="SLOpGcHint">SLOpGcHint <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpGcHint, the single-opcode class for OP_GC_HINT (canonical code 124). This class carries exactly ONE opcode: OP_GC_HINT. Semantics: hint the garbage collector to consider a collection. Membership: GC/system group (codes 124-125) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 124</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_GC_HINT&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="slopge">SLOpGe <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpGe.sleela)</span></h2>
 <div data-u="slopge slopge">
 <h3 id="SLOpGe">SLOpGe <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
@@ -1265,6 +1312,351 @@
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 48</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_HALT&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopicadvance">SLOpIcAdvance <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpIcAdvance.sleela)</span></h2>
+<div data-u="slopicadvance slopicadvance">
+<h3 id="SLOpIcAdvance">SLOpIcAdvance <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpIcAdvance, the single-opcode class for OP_IC_ADVANCE (canonical code 134). This class carries exactly ONE opcode: OP_IC_ADVANCE. Semantics: advance the idea-canvas by a number of steps. Membership: idea-canvas native-bridge group (codes 126-147) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 134</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_IC_ADVANCE&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopicbackend">SLOpIcBackend <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpIcBackend.sleela)</span></h2>
+<div data-u="slopicbackend slopicbackend">
+<h3 id="SLOpIcBackend">SLOpIcBackend <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpIcBackend, the single-opcode class for OP_IC_BACKEND (canonical code 144). This class carries exactly ONE opcode: OP_IC_BACKEND. Semantics: report the idea-canvas backend. Membership: idea-canvas native-bridge group (codes 126-147) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 144</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_IC_BACKEND&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopiccols">SLOpIcCols <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpIcCols.sleela)</span></h2>
+<div data-u="slopiccols slopiccols">
+<h3 id="SLOpIcCols">SLOpIcCols <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpIcCols, the single-opcode class for OP_IC_COLS (canonical code 128). This class carries exactly ONE opcode: OP_IC_COLS. Semantics: report the idea-canvas column count. Membership: idea-canvas native-bridge group (codes 126-147) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 128</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_IC_COLS&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopiccount">SLOpIcCount <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpIcCount.sleela)</span></h2>
+<div data-u="slopiccount slopiccount">
+<h3 id="SLOpIcCount">SLOpIcCount <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpIcCount, the single-opcode class for OP_IC_COUNT (canonical code 130). This class carries exactly ONE opcode: OP_IC_COUNT. Semantics: report the idea-canvas cell count. Membership: idea-canvas native-bridge group (codes 126-147) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 130</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_IC_COUNT&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopiccreate">SLOpIcCreate <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpIcCreate.sleela)</span></h2>
+<div data-u="slopiccreate slopiccreate">
+<h3 id="SLOpIcCreate">SLOpIcCreate <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpIcCreate, the single-opcode class for OP_IC_CREATE (canonical code 126). This class carries exactly ONE opcode: OP_IC_CREATE. Semantics: create an idea-canvas instance. Membership: idea-canvas native-bridge group (codes 126-147) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 126</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_IC_CREATE&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopicdestroy">SLOpIcDestroy <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpIcDestroy.sleela)</span></h2>
+<div data-u="slopicdestroy slopicdestroy">
+<h3 id="SLOpIcDestroy">SLOpIcDestroy <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpIcDestroy, the single-opcode class for OP_IC_DESTROY (canonical code 127). This class carries exactly ONE opcode: OP_IC_DESTROY. Semantics: destroy an idea-canvas instance. Membership: idea-canvas native-bridge group (codes 126-147) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 127</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_IC_DESTROY&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopicexcite">SLOpIcExcite <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpIcExcite.sleela)</span></h2>
+<div data-u="slopicexcite slopicexcite">
+<h3 id="SLOpIcExcite">SLOpIcExcite <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpIcExcite, the single-opcode class for OP_IC_EXCITE (canonical code 132). This class carries exactly ONE opcode: OP_IC_EXCITE. Semantics: excite an idea-canvas cell or region. Membership: idea-canvas native-bridge group (codes 126-147) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 132</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_IC_EXCITE&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopicgpuavail">SLOpIcGpuavail <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpIcGpuavail.sleela)</span></h2>
+<div data-u="slopicgpuavail slopicgpuavail">
+<h3 id="SLOpIcGpuavail">SLOpIcGpuavail <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpIcGpuavail, the single-opcode class for OP_IC_GPUAVAIL (canonical code 145). This class carries exactly ONE opcode: OP_IC_GPUAVAIL. Semantics: test whether a GPU backend is available. Membership: idea-canvas native-bridge group (codes 126-147) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 145</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_IC_GPUAVAIL&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopichasrend">SLOpIcHasrend <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpIcHasrend.sleela)</span></h2>
+<div data-u="slopichasrend slopichasrend">
+<h3 id="SLOpIcHasrend">SLOpIcHasrend <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpIcHasrend, the single-opcode class for OP_IC_HASREND (canonical code 137). This class carries exactly ONE opcode: OP_IC_HASREND. Semantics: test whether the idea-canvas has a renderer. Membership: idea-canvas native-bridge group (codes 126-147) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 137</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_IC_HASREND&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopicintensity">SLOpIcIntensity <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpIcIntensity.sleela)</span></h2>
+<div data-u="slopicintensity slopicintensity">
+<h3 id="SLOpIcIntensity">SLOpIcIntensity <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpIcIntensity, the single-opcode class for OP_IC_INTENSITY (canonical code 136). This class carries exactly ONE opcode: OP_IC_INTENSITY. Semantics: report an idea-canvas intensity measure. Membership: idea-canvas native-bridge group (codes 126-147) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 136</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_IC_INTENSITY&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopicmeashz">SLOpIcMeashz <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpIcMeashz.sleela)</span></h2>
+<div data-u="slopicmeashz slopicmeashz">
+<h3 id="SLOpIcMeashz">SLOpIcMeashz <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpIcMeashz, the single-opcode class for OP_IC_MEASHZ (canonical code 146). This class carries exactly ONE opcode: OP_IC_MEASHZ. Semantics: measure the idea-canvas refresh rate in hertz. Membership: idea-canvas native-bridge group (codes 126-147) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 146</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_IC_MEASHZ&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopicmigrate">SLOpIcMigrate <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpIcMigrate.sleela)</span></h2>
+<div data-u="slopicmigrate slopicmigrate">
+<h3 id="SLOpIcMigrate">SLOpIcMigrate <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpIcMigrate, the single-opcode class for OP_IC_MIGRATE (canonical code 147). This class carries exactly ONE opcode: OP_IC_MIGRATE. Semantics: migrate the idea-canvas between backends. Membership: idea-canvas native-bridge group (codes 126-147) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 147</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_IC_MIGRATE&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopicopenwin">SLOpIcOpenwin <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpIcOpenwin.sleela)</span></h2>
+<div data-u="slopicopenwin slopicopenwin">
+<h3 id="SLOpIcOpenwin">SLOpIcOpenwin <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpIcOpenwin, the single-opcode class for OP_IC_OPENWIN (canonical code 138). This class carries exactly ONE opcode: OP_IC_OPENWIN. Semantics: open an idea-canvas presentation window. Membership: idea-canvas native-bridge group (codes 126-147) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 138</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_IC_OPENWIN&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopicpolicy">SLOpIcPolicy <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpIcPolicy.sleela)</span></h2>
+<div data-u="slopicpolicy slopicpolicy">
+<h3 id="SLOpIcPolicy">SLOpIcPolicy <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpIcPolicy, the single-opcode class for OP_IC_POLICY (canonical code 143). This class carries exactly ONE opcode: OP_IC_POLICY. Semantics: report the idea-canvas execution policy. Membership: idea-canvas native-bridge group (codes 126-147) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 143</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_IC_POLICY&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopicpresent">SLOpIcPresent <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpIcPresent.sleela)</span></h2>
+<div data-u="slopicpresent slopicpresent">
+<h3 id="SLOpIcPresent">SLOpIcPresent <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpIcPresent, the single-opcode class for OP_IC_PRESENT (canonical code 140). This class carries exactly ONE opcode: OP_IC_PRESENT. Semantics: present the current idea-canvas frame. Membership: idea-canvas native-bridge group (codes 126-147) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 140</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_IC_PRESENT&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopicrows">SLOpIcRows <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpIcRows.sleela)</span></h2>
+<div data-u="slopicrows slopicrows">
+<h3 id="SLOpIcRows">SLOpIcRows <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpIcRows, the single-opcode class for OP_IC_ROWS (canonical code 129). This class carries exactly ONE opcode: OP_IC_ROWS. Semantics: report the idea-canvas row count. Membership: idea-canvas native-bridge group (codes 126-147) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 129</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_IC_ROWS&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopicrun">SLOpIcRun <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpIcRun.sleela)</span></h2>
+<div data-u="slopicrun slopicrun">
+<h3 id="SLOpIcRun">SLOpIcRun <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpIcRun, the single-opcode class for OP_IC_RUN (canonical code 141). This class carries exactly ONE opcode: OP_IC_RUN. Semantics: run the idea-canvas realtime loop. Membership: idea-canvas native-bridge group (codes 126-147) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 141</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_IC_RUN&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopicsetparams">SLOpIcSetparams <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpIcSetparams.sleela)</span></h2>
+<div data-u="slopicsetparams slopicsetparams">
+<h3 id="SLOpIcSetparams">SLOpIcSetparams <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpIcSetparams, the single-opcode class for OP_IC_SETPARAMS (canonical code 131). This class carries exactly ONE opcode: OP_IC_SETPARAMS. Semantics: set idea-canvas simulation parameters. Membership: idea-canvas native-bridge group (codes 126-147) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 131</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_IC_SETPARAMS&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopicsetpolicy">SLOpIcSetpolicy <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpIcSetpolicy.sleela)</span></h2>
+<div data-u="slopicsetpolicy slopicsetpolicy">
+<h3 id="SLOpIcSetpolicy">SLOpIcSetpolicy <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpIcSetpolicy, the single-opcode class for OP_IC_SETPOLICY (canonical code 142). This class carries exactly ONE opcode: OP_IC_SETPOLICY. Semantics: set the idea-canvas execution policy. Membership: idea-canvas native-bridge group (codes 126-147) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 142</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_IC_SETPOLICY&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopicshouldclose">SLOpIcShouldclose <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpIcShouldclose.sleela)</span></h2>
+<div data-u="slopicshouldclose slopicshouldclose">
+<h3 id="SLOpIcShouldclose">SLOpIcShouldclose <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpIcShouldclose, the single-opcode class for OP_IC_SHOULDCLOSE (canonical code 139). This class carries exactly ONE opcode: OP_IC_SHOULDCLOSE. Semantics: test whether the idea-canvas window should close. Membership: idea-canvas native-bridge group (codes 126-147) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 139</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_IC_SHOULDCLOSE&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopicstep">SLOpIcStep <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpIcStep.sleela)</span></h2>
+<div data-u="slopicstep slopicstep">
+<h3 id="SLOpIcStep">SLOpIcStep <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpIcStep, the single-opcode class for OP_IC_STEP (canonical code 133). This class carries exactly ONE opcode: OP_IC_STEP. Semantics: advance the idea-canvas by one simulation step. Membership: idea-canvas native-bridge group (codes 126-147) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 133</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_IC_STEP&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopictimestep">SLOpIcTimestep <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpIcTimestep.sleela)</span></h2>
+<div data-u="slopictimestep slopictimestep">
+<h3 id="SLOpIcTimestep">SLOpIcTimestep <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpIcTimestep, the single-opcode class for OP_IC_TIMESTEP (canonical code 135). This class carries exactly ONE opcode: OP_IC_TIMESTEP. Semantics: report or set the idea-canvas timestep. Membership: idea-canvas native-bridge group (codes 126-147) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 135</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_IC_TIMESTEP&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopinstanceof">SLOpInstanceof <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpInstanceof.sleela)</span></h2>
+<div data-u="slopinstanceof slopinstanceof">
+<h3 id="SLOpInstanceof">SLOpInstanceof <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpInstanceof, the single-opcode class for OP_INSTANCEOF (canonical code 153). This class carries exactly ONE opcode: OP_INSTANCEOF. Semantics: test a value against a runtime type. Membership: tail extension group (codes 148-154) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 153</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_INSTANCEOF&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -1415,6 +1807,21 @@
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 12</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_MOD&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopmodiumscan">SLOpModiumScan <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpModiumScan.sleela)</span></h2>
+<div data-u="slopmodiumscan slopmodiumscan">
+<h3 id="SLOpModiumScan">SLOpModiumScan <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpModiumScan, the single-opcode class for OP_MODIUM_SCAN (canonical code 149). This class carries exactly ONE opcode: OP_MODIUM_SCAN. Semantics: scan for Modium file resolution. Membership: tail extension group (codes 148-154) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 149</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_MODIUM_SCAN&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -1676,6 +2083,336 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="sloposcapability">SLOpOsCapability <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpOsCapability.sleela)</span></h2>
+<div data-u="sloposcapability sloposcapability">
+<h3 id="SLOpOsCapability">SLOpOsCapability <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpOsCapability, the single-opcode class for OP_OS_CAPABILITY (canonical code 104). This class carries exactly ONE opcode: OP_OS_CAPABILITY. Semantics: query a named host operating-system capability. Membership: operating-system system-call group (codes 103-123) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 104</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_OS_CAPABILITY&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sloposchdir">SLOpOsChdir <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpOsChdir.sleela)</span></h2>
+<div data-u="sloposchdir sloposchdir">
+<h3 id="SLOpOsChdir">SLOpOsChdir <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpOsChdir, the single-opcode class for OP_OS_CHDIR (canonical code 108). This class carries exactly ONE opcode: OP_OS_CHDIR. Semantics: change the current working directory. Membership: operating-system system-call group (codes 103-123) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 108</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_OS_CHDIR&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sloposcwd">SLOpOsCwd <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpOsCwd.sleela)</span></h2>
+<div data-u="sloposcwd sloposcwd">
+<h3 id="SLOpOsCwd">SLOpOsCwd <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpOsCwd, the single-opcode class for OP_OS_CWD (canonical code 107). This class carries exactly ONE opcode: OP_OS_CWD. Semantics: report the current working directory. Membership: operating-system system-call group (codes 103-123) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 107</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_OS_CWD&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sloposexists">SLOpOsExists <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpOsExists.sleela)</span></h2>
+<div data-u="sloposexists sloposexists">
+<h3 id="SLOpOsExists">SLOpOsExists <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpOsExists, the single-opcode class for OP_OS_EXISTS (canonical code 113). This class carries exactly ONE opcode: OP_OS_EXISTS. Semantics: test whether a filesystem path exists. Membership: operating-system system-call group (codes 103-123) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 113</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_OS_EXISTS&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sloposfilesize">SLOpOsFilesize <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpOsFilesize.sleela)</span></h2>
+<div data-u="sloposfilesize sloposfilesize">
+<h3 id="SLOpOsFilesize">SLOpOsFilesize <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpOsFilesize, the single-opcode class for OP_OS_FILESIZE (canonical code 115). This class carries exactly ONE opcode: OP_OS_FILESIZE. Semantics: report the size in bytes of a file. Membership: operating-system system-call group (codes 103-123) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 115</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_OS_FILESIZE&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sloposgetenv">SLOpOsGetenv <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpOsGetenv.sleela)</span></h2>
+<div data-u="sloposgetenv sloposgetenv">
+<h3 id="SLOpOsGetenv">SLOpOsGetenv <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpOsGetenv, the single-opcode class for OP_OS_GETENV (canonical code 105). This class carries exactly ONE opcode: OP_OS_GETENV. Semantics: read an environment variable by name. Membership: operating-system system-call group (codes 103-123) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 105</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_OS_GETENV&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sloposhostname">SLOpOsHostname <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpOsHostname.sleela)</span></h2>
+<div data-u="sloposhostname sloposhostname">
+<h3 id="SLOpOsHostname">SLOpOsHostname <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpOsHostname, the single-opcode class for OP_OS_HOSTNAME (canonical code 109). This class carries exactly ONE opcode: OP_OS_HOSTNAME. Semantics: report the host name. Membership: operating-system system-call group (codes 103-123) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 109</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_OS_HOSTNAME&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sloposisdir">SLOpOsIsdir <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpOsIsdir.sleela)</span></h2>
+<div data-u="sloposisdir sloposisdir">
+<h3 id="SLOpOsIsdir">SLOpOsIsdir <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpOsIsdir, the single-opcode class for OP_OS_ISDIR (canonical code 114). This class carries exactly ONE opcode: OP_OS_ISDIR. Semantics: test whether a path is a directory. Membership: operating-system system-call group (codes 103-123) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 114</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_OS_ISDIR&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sloposkill">SLOpOsKill <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpOsKill.sleela)</span></h2>
+<div data-u="sloposkill sloposkill">
+<h3 id="SLOpOsKill">SLOpOsKill <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpOsKill, the single-opcode class for OP_OS_KILL (canonical code 122). This class carries exactly ONE opcode: OP_OS_KILL. Semantics: signal or terminate a spawned host process. Membership: operating-system system-call group (codes 103-123) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 122</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_OS_KILL&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sloposlscall">SLOpOslsCall <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpOslsCall.sleela)</span></h2>
+<div data-u="sloposlscall sloposlscall">
+<h3 id="SLOpOslsCall">SLOpOslsCall <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpOslsCall, the single-opcode class for OP_OSLS_CALL (canonical code 155). This class carries exactly ONE opcode: OP_OSLS_CALL. Semantics: dispatch a validated operation ID through the registered osls_* ABI table. Membership: host-facing OSLS native binding group (code 155) of the canonical SLeeLa ISA. step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 155</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_OSLS_CALL&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sloposmkdir">SLOpOsMkdir <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpOsMkdir.sleela)</span></h2>
+<div data-u="sloposmkdir sloposmkdir">
+<h3 id="SLOpOsMkdir">SLOpOsMkdir <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpOsMkdir, the single-opcode class for OP_OS_MKDIR (canonical code 116). This class carries exactly ONE opcode: OP_OS_MKDIR. Semantics: create a directory. Membership: operating-system system-call group (codes 103-123) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 116</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_OS_MKDIR&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopospclose">SLOpOsPclose <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpOsPclose.sleela)</span></h2>
+<div data-u="slopospclose slopospclose">
+<h3 id="SLOpOsPclose">SLOpOsPclose <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpOsPclose, the single-opcode class for OP_OS_PCLOSE (canonical code 123). This class carries exactly ONE opcode: OP_OS_PCLOSE. Semantics: close a spawned-process handle. Membership: operating-system system-call group (codes 103-123) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 123</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_OS_PCLOSE&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopospid">SLOpOsPid <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpOsPid.sleela)</span></h2>
+<div data-u="slopospid slopospid">
+<h3 id="SLOpOsPid">SLOpOsPid <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpOsPid, the single-opcode class for OP_OS_PID (canonical code 112). This class carries exactly ONE opcode: OP_OS_PID. Semantics: report the current process identifier. Membership: operating-system system-call group (codes 103-123) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 112</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_OS_PID&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sloposplatform">SLOpOsPlatform <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpOsPlatform.sleela)</span></h2>
+<div data-u="sloposplatform sloposplatform">
+<h3 id="SLOpOsPlatform">SLOpOsPlatform <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpOsPlatform, the single-opcode class for OP_OS_PLATFORM (canonical code 103). This class carries exactly ONE opcode: OP_OS_PLATFORM. Semantics: report the host operating-system platform identity. Membership: operating-system system-call group (codes 103-123) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 103</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_OS_PLATFORM&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sloposremove">SLOpOsRemove <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpOsRemove.sleela)</span></h2>
+<div data-u="sloposremove sloposremove">
+<h3 id="SLOpOsRemove">SLOpOsRemove <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpOsRemove, the single-opcode class for OP_OS_REMOVE (canonical code 117). This class carries exactly ONE opcode: OP_OS_REMOVE. Semantics: remove a file or directory. Membership: operating-system system-call group (codes 103-123) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 117</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_OS_REMOVE&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sloposrename">SLOpOsRename <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpOsRename.sleela)</span></h2>
+<div data-u="sloposrename sloposrename">
+<h3 id="SLOpOsRename">SLOpOsRename <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpOsRename, the single-opcode class for OP_OS_RENAME (canonical code 118). This class carries exactly ONE opcode: OP_OS_RENAME. Semantics: rename or move a filesystem entry. Membership: operating-system system-call group (codes 103-123) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 118</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_OS_RENAME&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sloposrun">SLOpOsRun <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpOsRun.sleela)</span></h2>
+<div data-u="sloposrun sloposrun">
+<h3 id="SLOpOsRun">SLOpOsRun <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpOsRun, the single-opcode class for OP_OS_RUN (canonical code 119). This class carries exactly ONE opcode: OP_OS_RUN. Semantics: run a host command and wait for completion. Membership: operating-system system-call group (codes 103-123) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 119</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_OS_RUN&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopossetenv">SLOpOsSetenv <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpOsSetenv.sleela)</span></h2>
+<div data-u="slopossetenv slopossetenv">
+<h3 id="SLOpOsSetenv">SLOpOsSetenv <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpOsSetenv, the single-opcode class for OP_OS_SETENV (canonical code 106). This class carries exactly ONE opcode: OP_OS_SETENV. Semantics: set an environment variable to a value. Membership: operating-system system-call group (codes 103-123) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 106</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_OS_SETENV&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sloposspawn">SLOpOsSpawn <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpOsSpawn.sleela)</span></h2>
+<div data-u="sloposspawn sloposspawn">
+<h3 id="SLOpOsSpawn">SLOpOsSpawn <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpOsSpawn, the single-opcode class for OP_OS_SPAWN (canonical code 120). This class carries exactly ONE opcode: OP_OS_SPAWN. Semantics: spawn a host process as a VM-local bounded handle. Membership: operating-system system-call group (codes 103-123) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 120</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_OS_SPAWN&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopostempdir">SLOpOsTempdir <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpOsTempdir.sleela)</span></h2>
+<div data-u="slopostempdir slopostempdir">
+<h3 id="SLOpOsTempdir">SLOpOsTempdir <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpOsTempdir, the single-opcode class for OP_OS_TEMPDIR (canonical code 111). This class carries exactly ONE opcode: OP_OS_TEMPDIR. Semantics: report the host temporary directory. Membership: operating-system system-call group (codes 103-123) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 111</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_OS_TEMPDIR&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sloposusername">SLOpOsUsername <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpOsUsername.sleela)</span></h2>
+<div data-u="sloposusername sloposusername">
+<h3 id="SLOpOsUsername">SLOpOsUsername <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpOsUsername, the single-opcode class for OP_OS_USERNAME (canonical code 110). This class carries exactly ONE opcode: OP_OS_USERNAME. Semantics: report the current user name. Membership: operating-system system-call group (codes 103-123) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 110</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_OS_USERNAME&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sloposwait">SLOpOsWait <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpOsWait.sleela)</span></h2>
+<div data-u="sloposwait sloposwait">
+<h3 id="SLOpOsWait">SLOpOsWait <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpOsWait, the single-opcode class for OP_OS_WAIT (canonical code 121). This class carries exactly ONE opcode: OP_OS_WAIT. Semantics: wait for a spawned host process to finish. Membership: operating-system system-call group (codes 103-123) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 121</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_OS_WAIT&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="sloppipe">SLOpPipe <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpPipe.sleela)</span></h2>
 <div data-u="sloppipe sloppipe">
 <h3 id="SLOpPipe">SLOpPipe <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
@@ -1730,6 +2467,21 @@
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 27</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_PRINT&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopranmem">SLOpRanMem <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpRanMem.sleela)</span></h2>
+<div data-u="slopranmem slopranmem">
+<h3 id="SLOpRanMem">SLOpRanMem <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpRanMem, the single-opcode class for OP_RAN_MEM (canonical code 125). This class carries exactly ONE opcode: OP_RAN_MEM. Semantics: report or sample random/available memory state. Membership: GC/system group (codes 124-125) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 125</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_RAN_MEM&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -1850,6 +2602,21 @@
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 28</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_SPAWN&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slopssend">SLOpSsend <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpSsend.sleela)</span></h2>
+<div data-u="slopssend slopssend">
+<h3 id="SLOpSsend">SLOpSsend <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpSsend, the single-opcode class for OP_SSEND (canonical code 151). This class carries exactly ONE opcode: OP_SSEND. Semantics: send on the structured-send channel. Membership: tail extension group (codes 148-154) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 151</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_SSEND&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -2141,6 +2908,21 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="slopuicall">SLOpUiCall <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpUiCall.sleela)</span></h2>
+<div data-u="slopuicall slopuicall">
+<h3 id="SLOpUiCall">SLOpUiCall <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpUiCall, the single-opcode class for OP_UI_CALL (canonical code 150). This class carries exactly ONE opcode: OP_UI_CALL. Semantics: cross the UI-toolkit host-integration bridge. Membership: tail extension group (codes 148-154) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 150</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_UI_CALL&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="slopunlock">SLOpUnlock <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpUnlock.sleela)</span></h2>
 <div data-u="slopunlock slopunlock">
 <h3 id="SLOpUnlock">SLOpUnlock <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
@@ -2156,10 +2938,25 @@
 <tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="slopvmselect">SLOpVmSelect <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/opcodes/SLOpVmSelect.sleela)</span></h2>
+<div data-u="slopvmselect slopvmselect">
+<h3 id="SLOpVmSelect">SLOpVmSelect <span class="pill">class</span> <span class="muted">extends <code>SLOpcodeBase</code></span></h3>
+<p class="desc">Defines SLOpVmSelect, the single-opcode class for OP_VM_SELECT (canonical code 148). This class carries exactly ONE opcode: OP_VM_SELECT. Semantics: select a Sleela VM version as a service exit. Membership: tail extension group (codes 148-154) of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela). step() honours the family contract: it first calls the VM to advance to the next instruction, then executes precisely this one opcode and returns the next instruction pointer for the following opcode object. Family: opcodes. Native VM/OS work crosses an explicit bridge.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CODE</code></td><td><span class="sig">static final int CODE = 148</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MNEMONIC</code></td><td><span class="sig">static final String MNEMONIC = &quot;OP_VM_SELECT&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>prepare</code></td><td><span class="sig">void prepare()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-02 02:46 UTC.
+<code>/lib</code> tree on 2026-11-05 06:10 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>

@@ -89,6 +89,7 @@
 <li><a href="package/nordshrift.html">nordshrift</a></li>
 <li><a href="package/opcodes.html">opcodes</a></li>
 <li><a href="package/operating-system.html">operating-system</a></li>
+<li><a href="package/os-level-support.html">os-level-support</a></li>
 <li><a href="package/philosophers.html">philosophers</a></li>
 <li><a href="package/philosophy.html">philosophy</a></li>
 <li><a href="package/politico.html">politico</a></li>
@@ -110,6 +111,7 @@
 <li><a href="package/sleeladoc.html">sleeladoc</a></li>
 <li><a href="package/social-model.html">social-model</a></li>
 <li><a href="package/sommeliers.html">sommeliers</a></li>
+<li><a href="package/spatial.html">spatial</a></li>
 <li><a href="package/sst.html">sst</a></li>
 <li><a href="package/synchro.html">synchro</a></li>
 <li><a href="package/systems.html">systems</a></li>
@@ -131,7 +133,8 @@
 </nav>
 <main>
 <h1>SLeeLa Standard Library — HTML API</h1>
-<div class="lead">This is the generated HTML documentation for every source unit under <code>/lib</code>: <strong>108</strong> packages, <strong>11837</strong> source units, <strong>12119</strong> classes and structs. Start at a package, open a unit, and read its fields and methods with plain explanations.</div>
+<div class="lead">This is the generated HTML documentation for every source unit under <code>/lib</code>: <strong>110</strong> packages, <strong>11933</strong> source units, <strong>12216</strong> classes and structs. Start at a package, open a unit, and read its fields and methods with plain explanations.</div>
+<p class="lead"><strong>Current language edition: SLeeLa syntax 3.0.</strong> Each unit retains and displays its own declared <code>#sleela</code> version; older declarations remain supported and are not silently relabelled.</p>
 <p>New here? Read the <a href="glossary.html">Glossary</a> first — it defines the reading level these pages are written for (<strong>Student 2</strong>) and the core SLeeLa terms.</p>
 <div class="attrib"><strong>Authorship &amp; attribution.</strong> SLeeLa and this documentation are the work of <strong>MEARVK LLC</strong> — Max Rupplin (UNCW, NCSU, Harvard), 2026. George Soros 2507-2608. <a href="authorship.html">Full authorship statement &rsaquo;</a></div>
 <h2 class="section">Packages</h2>
@@ -164,7 +167,7 @@
 <a class="card" data-p="data-structures" href="package/data-structures.html"><h3>data-structures</h3><p class="count">9 unit(s) · 15 class(es)</p></a>
 <a class="card" data-p="database" href="package/database.html"><h3>database</h3><p class="count">16 unit(s) · 16 class(es)</p></a>
 <a class="card" data-p="debugger" href="package/debugger.html"><h3>debugger</h3><p class="count">16 unit(s) · 16 class(es)</p></a>
-<a class="card" data-p="decompiler" href="package/decompiler.html"><h3>decompiler</h3><p class="count">13 unit(s) · 13 class(es)</p></a>
+<a class="card" data-p="decompiler" href="package/decompiler.html"><h3>decompiler</h3><p class="count">26 unit(s) · 26 class(es)</p></a>
 <a class="card" data-p="deliberation" href="package/deliberation.html"><h3>deliberation</h3><p class="count">295 unit(s) · 295 class(es)</p></a>
 <a class="card" data-p="drivers" href="package/drivers.html"><h3>drivers</h3><p class="count">1 unit(s) · 1 class(es)</p></a>
 <a class="card" data-p="examples" href="package/examples.html"><h3>examples</h3><p class="count">79 unit(s) · 89 class(es)</p></a>
@@ -205,8 +208,9 @@
 <a class="card" data-p="native" href="package/native.html"><h3>native</h3><p class="count">1 unit(s) · 1 class(es)</p></a>
 <a class="card" data-p="net" href="package/net.html"><h3>net</h3><p class="count">8 unit(s) · 8 class(es)</p></a>
 <a class="card" data-p="nordshrift" href="package/nordshrift.html"><h3>nordshrift</h3><p class="count">11 unit(s) · 11 class(es)</p></a>
-<a class="card" data-p="opcodes" href="package/opcodes.html"><h3>opcodes</h3><p class="count">119 unit(s) · 119 class(es)</p></a>
+<a class="card" data-p="opcodes" href="package/opcodes.html"><h3>opcodes</h3><p class="count">172 unit(s) · 172 class(es)</p></a>
 <a class="card" data-p="operating-system" href="package/operating-system.html"><h3>operating-system</h3><p class="count">91 unit(s) · 102 class(es)</p></a>
+<a class="card" data-p="os-level-support" href="package/os-level-support.html"><h3>os-level-support</h3><p class="count">19 unit(s) · 19 class(es)</p></a>
 <a class="card" data-p="philosophers" href="package/philosophers.html"><h3>philosophers</h3><p class="count">9 unit(s) · 9 class(es)</p></a>
 <a class="card" data-p="philosophy" href="package/philosophy.html"><h3>philosophy</h3><p class="count">19 unit(s) · 19 class(es)</p></a>
 <a class="card" data-p="politico" href="package/politico.html"><h3>politico</h3><p class="count">1 unit(s) · 1 class(es)</p></a>
@@ -228,9 +232,10 @@
 <a class="card" data-p="sleeladoc" href="package/sleeladoc.html"><h3>sleeladoc</h3><p class="count">9 unit(s) · 9 class(es)</p></a>
 <a class="card" data-p="social-model" href="package/social-model.html"><h3>social-model</h3><p class="count">1 unit(s) · 1 class(es)</p></a>
 <a class="card" data-p="sommeliers" href="package/sommeliers.html"><h3>sommeliers</h3><p class="count">11 unit(s) · 11 class(es)</p></a>
+<a class="card" data-p="spatial" href="package/spatial.html"><h3>spatial</h3><p class="count">3 unit(s) · 3 class(es)</p></a>
 <a class="card" data-p="sst" href="package/sst.html"><h3>sst</h3><p class="count">11 unit(s) · 11 class(es)</p></a>
 <a class="card" data-p="synchro" href="package/synchro.html"><h3>synchro</h3><p class="count">1 unit(s) · 1 class(es)</p></a>
-<a class="card" data-p="systems" href="package/systems.html"><h3>systems</h3><p class="count">1 unit(s) · 1 class(es)</p></a>
+<a class="card" data-p="systems" href="package/systems.html"><h3>systems</h3><p class="count">9 unit(s) · 9 class(es)</p></a>
 <a class="card" data-p="telephony-skya" href="package/telephony-skya.html"><h3>telephony-skya</h3><p class="count">7 unit(s) · 19 class(es)</p></a>
 <a class="card" data-p="terminal" href="package/terminal.html"><h3>terminal</h3><p class="count">1 unit(s) · 1 class(es)</p></a>
 <a class="card" data-p="terminal_pixel" href="package/terminal_pixel.html"><h3>terminal_pixel</h3><p class="count">1 unit(s) · 1 class(es)</p></a>
@@ -239,7 +244,7 @@
 <a class="card" data-p="us-infrastructure" href="package/us-infrastructure.html"><h3>us-infrastructure</h3><p class="count">1 unit(s) · 1 class(es)</p></a>
 <a class="card" data-p="user-interface" href="package/user-interface.html"><h3>user-interface</h3><p class="count">89 unit(s) · 90 class(es)</p></a>
 <a class="card" data-p="video" href="package/video.html"><h3>video</h3><p class="count">21 unit(s) · 23 class(es)</p></a>
-<a class="card" data-p="vm" href="package/vm.html"><h3>vm</h3><p class="count">108 unit(s) · 279 class(es)</p></a>
+<a class="card" data-p="vm" href="package/vm.html"><h3>vm</h3><p class="count">108 unit(s) · 280 class(es)</p></a>
 <a class="card" data-p="web-server-technology" href="package/web-server-technology.html"><h3>web-server-technology</h3><p class="count">8 unit(s) · 8 class(es)</p></a>
 <a class="card" data-p="website" href="package/website.html"><h3>website</h3><p class="count">50 unit(s) · 52 class(es)</p></a>
 <a class="card" data-p="wifi" href="package/wifi.html"><h3>wifi</h3><p class="count">17 unit(s) · 17 class(es)</p></a>
@@ -249,7 +254,7 @@
 <script>function fltp(q){q=q.toLowerCase();document.querySelectorAll('[data-p]').forEach(function(el){el.style.display=el.getAttribute('data-p').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-02 02:46 UTC.
+<code>/lib</code> tree on 2026-11-05 06:10 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
