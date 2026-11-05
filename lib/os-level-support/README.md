@@ -71,7 +71,23 @@ existing OSLS platform implementation. test_osls_vm_bridge exercises the
 native registry; make -C impl test-osls-vm exercises the VM built-ins.
 Windows network-interface enumeration currently reports OSLS_UNSUPPORTED;
 unsupported or unavailable platform details remain explicit status results.
-## OS-specific source support\n\nThe three `*Source.sleela` classes are executable source-level facades for the\nportable operations already exposed by the VM (`osHostName`, `osUserName`,\n`osCurrentDir`, `osTempDir`, environment access, path existence/type and file\nsize). Their platform-specific metadata includes path separator, line ending,\nexecutable suffix, platform capability groups and native extension symbol lists.\n`SLOsSupportPlatform` detects the host through `osPlatform()` and selects a\nbackend identifier. It fails closed for an unknown platform.\n\nThe common OSLS API is now registered and callable through the VM. The separate\n`nativeExtensionRegistered` checks on each platform facade still return false.\nLinux procfs/sysfs, netlink, epoll, inotify and cgroups; Windows Win32/IP Helper/SCM/Registry/Winsock;\nand macOS Mach/Dispatch/IOKit/FSEvents/SystemConfiguration remain separate\nplatform-extension families and are not falsely exposed as registered APIs.\n\n## Status and execution rules
+## OS-specific source support
+
+The three *Source.sleela classes are executable source-level facades for the
+portable operations already exposed by the VM (host/user identity, working
+directory, temporary directory, environment access, path existence/type and
+file size). Their platform metadata includes path separators, line endings,
+executable suffixes, capability groups and native extension symbol lists.
+SLOsSupportPlatform detects the host and selects a backend identifier.
+It fails closed for an unknown platform.
+
+The common OSLS API is registered and callable through the VM. The separate
+nativeExtensionRegistered checks on each platform facade still return false.
+Linux procfs/sysfs, netlink, epoll, inotify and cgroups; Windows Win32/IP Helper,
+SCM/Registry and Winsock; and macOS Mach/Dispatch/IOKit/FSEvents/SystemConfiguration
+remain separate platform-extension families and are not exposed as registered
+until their own native binding implementations are added.
+## Status and execution rules
 
 - Existing VM OP_OS_* operations are implemented by the current VM bridge.
 - Existing osls_* functions are declared in the root native library; they are
@@ -111,7 +127,6 @@ Linux, Windows and macOS before declaring cross-platform conformance.
 ## Source-level catalogue example
 
 The example at examples/SLOsSupportCatalogExample.sleela constructs the
-catalogue and the three platform backend objects, then enumerates the common
-API, VM element bindings and native API lists. It also prints the two distinct
-integration states: the existing OP_OS bridge is implemented, while the
-additional osls C ABI adapter is not yet registered.
+catalogue and platform backend objects, then enumerates the common API, VM
+bindings and native API lists. The OSLS VM adapter is registered through
+OP_OSLS_CALL; platform-extension families remain separately gated.
