@@ -1111,6 +1111,30 @@ private:
         if(n=="osKill"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: osKill(process) takes one argument");emitExpr(c.args[0].get());emit(OP_OS_KILL);return true;}
         if(n=="osProcessClose"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: osProcessClose(process) takes one argument");emitExpr(c.args[0].get());emit(OP_OS_PCLOSE);return true;}
 
+        // ---- OSLS native ABI calls (syntax 2.5). Every call is dispatched
+        // through the registered typed binding table; record/array results
+        // cross the VM boundary as bounded JSON Strings.
+        static const std::map<std::string,int> oslsIds = {
+            {"oslsSystemInfo",0},{"oslsProcessInfo",1},{"oslsEnumerateProcesses",2},
+            {"oslsGetEnvironmentValue",3},{"oslsEnumerateEnvironment",4},
+            {"oslsGetFileInfo",5},{"oslsListDirectory",6},{"oslsGetCPUInfo",7},
+            {"oslsGetTimezoneInfo",8},{"oslsGetNetworkInterfaces",9},
+            {"oslsCronValidate",10},{"oslsCronNextAfter",11}
+        };
+        {
+            auto osls = oslsIds.find(n);
+            if (osls != oslsIds.end()) {
+                if (syntax_ < SyntaxVersion{2,5})
+                    throw std::runtime_error("Semantic error: OSLS native bindings require #sleela 2.5");
+                static const int arity[] = {0,1,0,1,0,1,1,0,0,0,1,2};
+                if ((int)c.args.size() != arity[osls->second])
+                    throw std::runtime_error("Semantic error: OSLS binding has the wrong argument count");
+                emitArgs(c);
+                emit(OP_OSLS_CALL, osls->second);
+                return true;
+            }
+        }
+
         if(n=="bestOfNew"){if(!c.args.empty())throw std::runtime_error("Semantic error: bestOfNew() takes no arguments");emit(OP_BEST_NEW);return true;}
         if(n=="bestOfWeight"){if(c.args.size()!=3)throw std::runtime_error("Semantic error: bestOfWeight(handle, axis, weight) takes three arguments");emitArgs(c);emit(OP_BEST_WEIGHT);return true;}
         if(n=="bestOfMinVersion"){if(c.args.size()!=2)throw std::runtime_error("Semantic error: bestOfMinVersion(handle, minVersion) takes two arguments");emitArgs(c);emit(OP_BEST_MINVER);return true;}
