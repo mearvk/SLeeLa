@@ -16,7 +16,7 @@
  *
  * Family: vm. Composes SLVmPremiumVersion, SLVmConfig, SLVmRuntime.
  */
-#sleela 2.4
+#sleela 3.0
 class SLVmPremiumVersion007 extends SLVmPremiumVersion {
   void configure() {
     base(7, "slvm-7", "Administrator", "hardened management, failure handling, recovery", "sleela-virtual-machine/007", "manager health");
