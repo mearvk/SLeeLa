@@ -7,7 +7,6 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "../osls.h"
-#include "../osls.h"
 
 #ifdef __cplusplus
 extern "C" {
