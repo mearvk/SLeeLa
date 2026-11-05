@@ -318,7 +318,16 @@ osls_status osls_get_timezone_info(osls_timezone_info *out_info) {
     now = time(NULL);
 #if defined(_WIN32)
     if (localtime_s(&local_tm, &now) != 0 || gmtime_s(&utc_tm, &now) != 0) return OSLS_SYSTEM_ERROR;
-    out_info->offset_minutes_from_utc = (int)(-_get_timezone / 60);
+    {
+        TIME_ZONE_INFORMATION zone;
+        DWORD zone_state = GetTimeZoneInformation(&zone);
+        LONG bias;
+        if (zone_state == TIME_ZONE_ID_INVALID) return OSLS_SYSTEM_ERROR;
+        bias = zone.Bias;
+        if (zone_state == TIME_ZONE_ID_DAYLIGHT) bias += zone.DaylightBias;
+        else bias += zone.StandardBias;
+        out_info->offset_minutes_from_utc = (int)(-bias);
+    }
     osls_copy(out_info->id, sizeof(out_info->id), "local");
 #else
     if (!localtime_r(&now, &local_tm) || !gmtime_r(&now, &utc_tm)) return OSLS_SYSTEM_ERROR;
@@ -332,7 +341,13 @@ osls_status osls_get_timezone_info(osls_timezone_info *out_info) {
         osls_copy(out_info->id, sizeof(out_info->id), tz && *tz ? tz : "local");
     }
 #endif
-    osls_copy(out_info->abbreviation, sizeof(out_info->abbreviation), local_tm.tm_zone ? local_tm.tm_zone : "local");
+    {
+        char abbreviation[sizeof(out_info->abbreviation)];
+        if (strftime(abbreviation, sizeof(abbreviation), "%Z", &local_tm) > 0)
+            osls_copy(out_info->abbreviation, sizeof(out_info->abbreviation), abbreviation);
+        else
+            osls_copy(out_info->abbreviation, sizeof(out_info->abbreviation), "local");
+    }
     out_info->is_dst = local_tm.tm_isdst > 0;
     return OSLS_OK;
 }
