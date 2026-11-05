@@ -11,7 +11,7 @@
    
    Family: registry. Composes SLRegistryValue, SLRegistryProvenance; held by
      SLRegistry. >>
-#sleela 2.5
+#sleela 3.0
 material;
 class SLRegistryKey {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
