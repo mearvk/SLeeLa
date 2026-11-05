@@ -43,6 +43,9 @@ jobs:
           SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
         run: make -C impl clean all
 
+      - name: Verify frozen 155-opcode ISA and append-only extension
+        run: make -C impl test-osls-isa
+
       - name: Build and test OSLS native registry
         timeout-minutes: 5
         run: |
@@ -151,6 +154,9 @@ jobs:
         env:
           SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
         run: make -C impl clean all
+
+      - name: Verify frozen 155-opcode ISA and append-only extension
+        run: make -C impl test-osls-isa
 
       - name: Build and test OSLS native registry
         timeout-minutes: 5
