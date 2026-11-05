@@ -97,9 +97,13 @@ SLNativeStatus sl_native_open(SLNativeModule *module, const char *path) {
 
 SLNativeStatus sl_native_run_module(SLNativeModule *module, int argc,
                                     const char *const argv[], int *out_result) {
+    int i;
     if (!module || !module->handle || !module->run || argc < 0 ||
         (argc > 0 && !argv) || !out_result)
         return SL_NATIVE_INVALID_ARGUMENT;
+    for (i = 0; i < argc; ++i) {
+        if (!argv[i]) return SL_NATIVE_INVALID_ARGUMENT;
+    }
     *out_result = module->run(argc, argv);
     return SL_NATIVE_OK;
 }
