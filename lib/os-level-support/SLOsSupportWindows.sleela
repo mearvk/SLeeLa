@@ -1,0 +1,153 @@
+< SLeeLa Standard Library Definition.
+  Definition: Windows-specific OS backend grouping terms and Win32 symbol catalogue.
+  Alphabetical native symbols are implementation references, not VM built-ins.
+  Every call remains subject to Windows access control and API availability. >
+#sleela 2.5
+material;
+
+class SLOsSupportWindows {
+  String platformName = "Windows";
+  String minimumTarget = "Windows 10";
+  String backendTerm = "WindowsBackend";
+
+  String getPlatformName() { return platformName; }
+  String getMinimumTarget() { return minimumTarget; }
+  String getBackendTerm() { return backendTerm; }
+
+  SLList getGroupTerms() {
+    SLList out = new SLList();
+    out.add("WindowsIdentity");
+    out.add("WindowsProcess");
+    out.add("WindowsCPUAndMemory");
+    out.add("WindowsFileSystemAndVolumes");
+    out.add("WindowsDirectoryNotifications");
+    out.add("WindowsNetwork");
+    out.add("WindowsEventsAndWaits");
+    out.add("WindowsServices");
+    out.add("WindowsRegistryReadOnly");
+    out.add("WindowsUserAndSession");
+    out.add("WindowsPowerAndBattery");
+    out.add("WindowsSecurityContext");
+    return out;
+  }
+
+  < Win32 function names, alphabetically. >
+  SLList getWin32Functions() {
+    SLList out = new SLList();
+    out.add("CloseHandle");
+    out.add("CreateEventW");
+    out.add("CreateFileW");
+    out.add("CreateIoCompletionPort");
+    out.add("CreateMutexW");
+    out.add("CreateProcessW");
+    out.add("CreateSemaphoreW");
+    out.add("CreateTimerQueueTimer");
+    out.add("CreateWaitableTimerW");
+    out.add("DeleteFileW");
+    out.add("DeviceIoControl");
+    out.add("FindClose");
+    out.add("FindFirstFileW");
+    out.add("FindNextFileW");
+    out.add("FormatMessageW");
+    out.add("GetComputerNameExW");
+    out.add("GetCurrentDirectoryW");
+    out.add("GetCurrentProcess");
+    out.add("GetCurrentProcessId");
+    out.add("GetCurrentThreadId");
+    out.add("GetDiskFreeSpaceExW");
+    out.add("GetEnvironmentStringsW");
+    out.add("GetEnvironmentVariableW");
+    out.add("GetExitCodeProcess");
+    out.add("GetFileAttributesExW");
+    out.add("GetFileInformationByHandleEx");
+    out.add("GetLastError");
+    out.add("GetLogicalDrives");
+    out.add("GetLogicalDriveStringsW");
+    out.add("GetNativeSystemInfo");
+    out.add("GetProcessId");
+    out.add("GetProcessImageFileNameW");
+    out.add("GetProcessTimes");
+    out.add("GetSystemInfo");
+    out.add("GetSystemTimeAsFileTime");
+    out.add("GetSystemTimePreciseAsFileTime");
+    out.add("GetSystemTimes");
+    out.add("GetTickCount64");
+    out.add("GetTimeZoneInformation");
+    out.add("GetUserNameW");
+    out.add("GetVolumeInformationW");
+    out.add("GetWindowsDirectoryW");
+    out.add("GlobalMemoryStatusEx");
+    out.add("InitializeProcThreadAttributeList");
+    out.add("LoadLibraryW");
+    out.add("LocalFree");
+    out.add("MoveFileExW");
+    out.add("MultiByteToWideChar");
+    out.add("OpenProcess");
+    out.add("OpenSCManagerW");
+    out.add("OpenServiceW");
+    out.add("QueryPerformanceCounter");
+    out.add("QueryPerformanceFrequency");
+    out.add("QueryServiceConfigW");
+    out.add("QueryServiceStatusEx");
+    out.add("ReadDirectoryChangesW");
+    out.add("ReadFile");
+    out.add("RegCloseKey");
+    out.add("RegOpenKeyExW");
+    out.add("RegQueryValueExW");
+    out.add("SetCurrentDirectoryW");
+    out.add("SetEnvironmentVariableW");
+    out.add("SetFilePointerEx");
+    out.add("SetWaitableTimer");
+    out.add("Sleep");
+    out.add("TerminateProcess");
+    out.add("WaitForMultipleObjects");
+    out.add("WaitForSingleObject");
+    out.add("WideCharToMultiByte");
+    out.add("WriteFile");
+    return out;
+  }
+
+  SLList getAdditionalAPIFamilies() {
+    SLList out = new SLList();
+    out.add("IPHelper:GetAdaptersAddresses");
+    out.add("IPHelper:GetIfEntry2");
+    out.add("IPHelper:GetIpForwardTable2");
+    out.add("PerformanceDataHelper");
+    out.add("ServiceControlManager");
+    out.add("Winsock2");
+    return out;
+  }
+
+  SLList getWinsockFunctions() {
+    SLList out = new SLList();
+    out.add("accept");
+    out.add("bind");
+    out.add("closesocket");
+    out.add("connect");
+    out.add("getaddrinfo");
+    out.add("getsockname");
+    out.add("getsockopt");
+    out.add("listen");
+    out.add("recv");
+    out.add("select");
+    out.add("send");
+    out.add("setsockopt");
+    out.add("shutdown");
+    out.add("socket");
+    out.add("WSAStartup");
+    return out;
+  }
+
+  SLList getPlatformTerms() {
+    SLList out = new SLList();
+    out.add("IPHelper");
+    out.add("Kernel32");
+    out.add("RegistryReadOnly");
+    out.add("ServiceControlManager");
+    out.add("Userenv");
+    out.add("Win32");
+    out.add("WindowsBackend");
+    out.add("Winsock2");
+    return out;
+  }
+}
