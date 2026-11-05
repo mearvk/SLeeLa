@@ -23,7 +23,7 @@ REPO_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
 
 PRODUCT="SLeeLa"
 RELEASE="0.3.30-dev"
-SYNTAX_RANGE="1.0 - 2.8"
+SYNTAX_RANGE="1.0 - 3.0"
 TAGLINE="THE NOW. THE INGREDIENT."
 
 # Portable lowercase (bash 3.2 has no ${var,,}).
