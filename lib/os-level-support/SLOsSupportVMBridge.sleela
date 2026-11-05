@@ -11,7 +11,7 @@ class SLOsSupportVMBridge {
   String nativeNamespace = "osls";
   String runtimeNamespace = "osls_runtime";
   String moduleNamespace = "sl_native";
-  String dispatchBoundary = "SleelaVMSystemCallBridge / OP_OS_* VM-exit";
+  String dispatchBoundary = "SleelaVMSystemCallBridge / OP_OS_* and OP_OSLS_CALL";
 
   String getBridgeVersion() { return bridgeVersion; }
   String getVMNamespace() { return vmNamespace; }
