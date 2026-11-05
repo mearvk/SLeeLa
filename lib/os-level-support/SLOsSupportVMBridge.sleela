@@ -1,8 +1,9 @@
 < SLeeLa Standard Library Definition.
   Definition: VM-facing OSLS binding and marshalling contract.
-  This source defines the VM integration vocabulary and operation registry shape.
-  It does not pretend that a native FFI dispatcher exists until the VM host registers
-  the matching C ABI symbols and supplies platform backend implementations. >
+  The existing OP_OS_* VM system-call bridge is already implemented and catalogued
+  here. This class also describes the separate osls_* C ABI adapter, which remains
+  unregistered until the VM host supplies its native symbol table, marshalling,
+  backend integration and cross-platform tests. >
 #sleela 2.5
 material;
 
