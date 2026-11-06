@@ -1,0 +1,11 @@
+#sleela 1.7
+// BASIC: a Java launch preflight checklist. It does not start a JVM.
+class BasicLaunchPreflight {
+    void main() {
+        print("1. verify the Java runtime is available");
+        print("2. locate the requested JAR or class root");
+        print("3. validate manifest and class-path inputs");
+        print("4. resolve the main class");
+        print("5. launch only after all checks pass");
+    }
+}

@@ -1,0 +1,24 @@
+#xlt 1.0
+// ADVANCED: a two-tier memory model that also RUNS a program on itself.
+// Usual-activity code runs on a cheaper DDR2 tier; accuracy-critical code runs
+// on a fast DDR5 tier. The model then admits a program under a resource grant
+// and runs it through the built CPU's fetch-decode-execute loop.
+// Validate with:
+//   impl/xlt/build/xltc lib/examples/xlt/ADVANCED-tiered-memory.xlt
+model AdvancedTiered {
+  cpu       "SLAMDEPYC9575F";
+  memory    "ddr2_800" 4096;
+  cadence   "DDR2";
+  storage   "nvmeGen4";
+  bus       "pcieGen5x16";
+  nativeram;                         // run linear memory on real host RAM
+
+  memtier   "ddr2_800"  usual;       // usual-activities tier
+  memtier   "ddr5_6400" accurate;    // competency / accuracy tier
+  maintier  "accurate";              // unmarked code defaults to the accurate tier
+
+  program   "ADVANCED-app.sleela" sleela;  // the program to run on this machine
+  grant     65536 1000000;                 // memory words + cycle budget
+
+  target    sleela;
+}

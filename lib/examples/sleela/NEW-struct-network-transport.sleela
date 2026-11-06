@@ -1,0 +1,42 @@
+#sleela 2.1
+// NEW: structs cross a socket as packed JSON, not as VM-local handles.
+// The example uses loopback TCP only.
+struct Order {
+    String symbol;
+    int shares;
+    double limit;
+}
+
+class StructNetworkTransport {
+    static int listener;
+
+    static void server() {
+        int client = accept(listener);
+        String json = sockread(client);
+        Order order = structUnpack(Order, json);
+        double notional = order.shares * order.limit;
+        sockwrite(client, "ACK " + order.symbol + " x" + order.shares + " notional=" + notional);
+        sockclose(client);
+    }
+
+    static String client() {
+        Order order = new Order();
+        order.symbol = "SLL";
+        order.shares = 10;
+        order.limit = 25.0;
+        String wire = structPack(order);
+        int socket = connect("127.0.0.1", 45231);
+        sockwrite(socket, wire);
+        String ack = sockread(socket);
+        sockclose(socket);
+        return ack;
+    }
+
+    static void main() {
+        listener = listen(45231);
+        spawn(server);
+        print(client());
+        join();
+        sockclose(listener);
+    }
+}

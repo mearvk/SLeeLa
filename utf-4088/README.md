@@ -150,3 +150,23 @@ The source-level catalogue at [alphabet/utf-4088/SYMBOLS.md](../alphabet/utf-408
 # SLeeLa
 <p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
 <p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>
+
+
+## Encoder, decoder, and inspection utility
+
+The V1 encoder/decoder is implemented in `encoder_decoder.hpp/.cpp`. The 16,606
+front-end registry IDs remain in `0x110000..0x1140DD`; packed input-state IDs
+use a separate namespace beginning at `0x200000`. The encoder validates the
+21-bit packed input fields and the decoder rejects reserved bits and invalid
+coordinates/pressure values. See [the encoder/decoder contract](ENCODER-DECODER.md).
+
+Build the glyph inspection utility with CMake and run `utf4088-inspect`
+without arguments for usage. It can list concept seeds, inspect a provisional
+concept glyph, and decode an input-state identifier. The identifier preview is
+explicitly distinguished from the SHA-256 catalogue bitmap. See
+[GLYPH-INSPECTOR.md](GLYPH-INSPECTOR.md).
+
+Multilingual annotations follow [MULTILINGUAL-REGISTRY.md](semantics/MULTILINGUAL-REGISTRY.md)
+and its JSON Schema. No unreviewed Korean or German translations are fabricated.
+SLeeLa document storage guidance is in [INTEROPERABILITY.md](INTEROPERABILITY.md).
+The new root workflow builds and runs CTest on Linux, Windows, and macOS.

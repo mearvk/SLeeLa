@@ -1,0 +1,18 @@
+<< Stable registry identity. Names and locations may change; identity does not. >>
+#sleela 3.0
+material;
+class SLRegistryIdentity {
+  String id;
+  String nameSpace;
+  String kind;
+  String schemaVersion;
+
+  void configure(String stableId, String ns, String recordKind, String schema) {
+    id = stableId;
+    nameSpace = ns;
+    kind = recordKind;
+    schemaVersion = schema;
+  }
+
+  boolean present() { return id != null && id != ""; }
+}

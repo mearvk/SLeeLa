@@ -1,0 +1,13 @@
+#sleela 2.5
+// Legacy preset remains available for ABI compatibility.
+class ThemeLegacySlickBlack {
+  int main() {
+    SLUserInterface ui = new SLUserInterface(); ui.configure("com.mearvk.examples.ThemeLegacyBlack");
+    if (!ui.open()) { return 1; }
+    SLTheme theme = new SLTheme(); theme.slickBlack();
+    SLWindow win = ui.openWindow("Legacy Slick Black", 520, 300, theme.handle());
+    SLWidget root = win.rootWidget();
+    SLLabel label = new SLLabel(); label.createIn(root, "Legacy Slick Black preset (compatibility ID 0).");
+    win.show(); return ui.run();
+  }
+}

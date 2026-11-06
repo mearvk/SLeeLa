@@ -1,10 +1,10 @@
 # SLeeLa /lib Library Index
 
 **Revision:** 0.58  
-**Packages:** 109  
-**SLeeLa source units:** 11787  
+**Packages:** 111  
+**SLeeLa source units:** 11886  
 **Module-facade symbols:** 77  
-**Total symbol records:** 11864  
+**Total symbol records:** 11963  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.58 adds **VMSharp™** under the `vm` package (`lib/vm/vmsharp/`): a
@@ -13,7 +13,7 @@
 > commodity desktop processors — 32-bit **x86** and 64-bit **x64**, whether
 > **AMD** or **Intel** (x64 → UEFI, x86 → BIOS/MBR; live CPU facts via the OSLS
 > `oslsGetCPUInfo` read-only call). Five source classes plus the package facade:
-> **`VMSharp`** (composing manifest), **`VMSharpBootloader`** (architecture +
+> **`VMSharp`** (the composing manifest), **`VMSharpBootloader`** (architecture +
 > vendor admission), **`VMSharpInstallPlan`** (the two startup modes with a
 > fail-closed designation gate — a download/install never proceeds without an
 > explicit, recorded source and target), **`VMSharpLevy`** (the declared
@@ -25,14 +25,14 @@
 > `main`), included for **Graduated Presidents of the United States**: a Java
 > Swing app built with a JDK (`javac`→`out/`, run `java -cp out Main`) that runs
 > on the VMSharp Desktop; its quiet install auto-designates the source while the
-> install target still passes the fail-closed gate. Declarative models only: no
-> firmware flashed, no disk written, no funds moved, nothing cloned/compiled/run
-> here; a real bootable image and a real build are produced only by the pinned
-> OS Creator toolchain. VMSharp can also **reach a GitHub repo over a networking
-> stack, acquire it, and run the OS Creator** against it: **`VMSharpNetworkStack`**
-> (HTTPS/TCP reach + OSLS `oslsNetworkResolve`), **`VMSharpRepoAcquisition`**
-> (clone / tarball / zip with the exact command/URL for each), and
-> **`VMSharpOSCreatorRun`** (the first-brush orchestrator targeting
+> install target still passes the fail-closed gate. The classes are declarative
+> models: no firmware is flashed, no disk is written, no funds move, nothing is
+> cloned/compiled/run here; a real bootable image and a real build are produced
+> only by the pinned OS Creator toolchain. VMSharp can also **reach a GitHub repo
+> over a networking stack, acquire it, and run the OS Creator** against it:
+> **`VMSharpNetworkStack`** (HTTPS/TCP reach + OSLS `oslsNetworkResolve`),
+> **`VMSharpRepoAcquisition`** (clone / tarball / zip with the exact command/URL
+> for each), and **`VMSharpOSCreatorRun`** (the first-brush orchestrator targeting
 > `github.com/mearvk/OS.Sensitivity.III` for install instructions/data/code, with
 > a fail-closed gate — the OS Creator runs only after the repo is reachable AND
 > acquired) plus `examples/VMSharpOSCreatorDemo`; these reach nothing, clone
@@ -40,51 +40,74 @@
 > **`VMSharpInstallWizard`** (welcome → CPU-admission gate → mode-select →
 > desktop/OS.Sensitivity.III path screens → fee disclosure → fail-closed
 > confirm) and the selectable **`VMSharpInstallOption`** component, plus
-> `examples/VMSharpInstallWizardDemo`; confirmation is gated on an admitted CPU
-> and a ready plan (OS path: reachable AND acquired AND target designated). It
-> also adds **USB boot media**: **`VMSharpUsbMedia`** (make → make install →
-> firmware loads from USB → VMSharp starts in a configured option; engineering-
-> preference knob `sequitur` | `iq` | `havingness`), `examples/VMSharpUsbMediaDemo`,
-> and **real per-OS Makefiles** under `lib/vm/vmsharp/usb/` (brand-detecting
-> dispatcher + `Makefile.linux`/`Makefile.windows`/`Makefile.macos`). `make`
-> stages the files; `make install` is fail-closed (requires explicit
-> `USB_DEVICE` + `I_UNDERSTAND_THIS_ERASES=yes`, never auto-selects a disk,
-> stages to a git-ignored `build/`). No firmware binary is fabricated.
-> **`VMSharpDiskLayout`** lets VMSharp choose the root filesystem (EXT4 default,
-> or xfs/btrfs/zfs/f2fs/ntfs/apfs; unrootable choices refused, faithful to
-> `SLFilesystemCatalog`) and produce the initial hard-drive manifest (GPT: FAT32
-> ESP + root + swap) and the `parted`/`mkfs` partition plan — fail-closed until a
-> target disk is designated, and `VMSharpOSCreatorRun.osCreatorReady()` now also
-> requires the disk layout ready. It reads no disk and runs no mkfs.
-> Authored for the User MEARVK LLC (Max Rupplin 2026;
-> George Soros a Kindness 2507+), respectful of United States law and of the
-> persons and groupings of peoples it concerns. Every class carries the Metadata
-> Class metapattern. Counts reconciled by `tools/generate-library-symbols.py`
-> and verified by `test-suites/test-library-inventory.sh`. See `lib/vm/vmsharp/`.
+> `examples/VMSharpInstallWizardDemo`; the wizard renders text screens and
+> drives the plan objects, and confirmation is gated on an admitted CPU and a
+> ready plan (OS path: reachable AND acquired AND target designated). It also
+> adds **USB boot media**: **`VMSharpUsbMedia`** models `make` → `make install`
+> → firmware loads from USB → VMSharp starts in a configured option, with an
+> engineering-preference knob (`sequitur` | `iq` | `havingness`), plus
+> `examples/VMSharpUsbMediaDemo` and **real per-OS Makefiles** under
+> `lib/vm/vmsharp/usb/` (a brand-detecting dispatcher + `Makefile.linux`,
+> `Makefile.windows`, `Makefile.macos`). `make` stages the files; `make install`
+> is fail-closed — it refuses without an explicit `USB_DEVICE` and an
+> `I_UNDERSTAND_THIS_ERASES=yes` confirmation, never auto-selects a disk, and
+> stages to a git-ignored `build/` dir outside the inventory. No firmware binary
+> is fabricated (VMSharp is a model; the media carries files + a boot
+> descriptor). And **`VMSharpDiskLayout`** lets VMSharp **choose the root
+> filesystem** (EXT4 default, or `xfs`/`btrfs`/`zfs`/`f2fs`/`ntfs`/`apfs`;
+> unrootable choices refused, faithful to `SLFilesystemCatalog`) and produce the
+> **initial hard-drive manifest** (GPT: FAT32 ESP + root + swap) and the
+> `parted`/`mkfs` partition plan — fail-closed until a target disk is designated,
+> and `VMSharpOSCreatorRun.osCreatorReady()` now also requires the disk layout
+> ready; the install wizard gained a disk-layout screen. It reads no disk, writes
+> no partition table, and runs no mkfs. Authored
+> for the User MEARVK LLC
+> (Max Rupplin 2026; George Soros a Kindness 2507+), respectful of United States
+> law and of the persons and groupings of peoples it concerns. Every class
+> carries the Metadata Class metapattern. Counts reconciled by
+> `tools/generate-library-symbols.py` and verified by
+> `test-suites/test-library-inventory.sh`. See `lib/vm/vmsharp/`.
 
-> Revision 0.57 brings the **`os-level-support`** package to its curated, stable
-> form and indexes it in `LIBRARY.SYMBOLS.md` for the first time. The registered
-> **`osls_*`** VM surface grows from **12 to 25** read-only operations
-> (OP_OSLS_CALL IDs 0–24; opcode 155 stays frozen — the typed registry grew, the
-> ISA did not). The 13 added calls are all read-only or pure computation and bind
-> under the existing host-read capability: `osls_get_memory_info`,
-> `osls_get_available_memory`, `osls_get_disk_space`, `osls_get_volume_info`,
-> `osls_get_system_load`, `osls_get_capabilities`, `osls_get_runtime_info`,
-> `osls_get_native_error`, `osls_path_normalize`, `osls_path_join`,
-> `osls_path_resolve`, `osls_get_path_info`, `osls_network_resolve`. Native C adds
-> `os-level-support/osls_extended2.c`; the long-standing per-platform unevenness in
-> the original twelve is fixed (Windows network enumeration via IP Helper, CPU
-> vendor/model + cache-line on all three platforms, real Windows timezone key
-> name). Every `lib/os-level-support` class carries the Metadata Class metapattern;
-> `SLOsSupportStatus` (core `osls_status`) is split from the new
-> `SLOsRuntimeStatus` (runtime space); `SLOsSupportTyped` pairs each record call
-> with its `lib/systems` record shape; `SLOsSupportCatalog` separates
-> `getRegisteredInspectionFunctions` (live) from `getStateChangingPlannedFunctions`
-> (28 file/socket/timer/process operations kept off the read-only path by design,
-> per DESIGNATE.md §9); and a runnable `SLOsSupportConsistencyExample` guards
-> factory/registry/status/typed-binding agreement. Counts reconciled to the live
-> `/lib` tree by `tools/generate-library-symbols.py` and verified by
-> `test-suites/test-library-inventory.sh`. See `os-level-support/DESIGNATE.md` and
+> Revision 0.57 grows the registered **`osls_*`** VM surface from **12 to 25**
+> read-only operations (OP_OSLS_CALL IDs 0–24) — no new opcode (155 stays
+> frozen; the typed registry grew). The 13 added calls are all read-only or
+> pure computation and bind under the existing host-read capability:
+> `osls_get_memory_info`, `osls_get_available_memory`, `osls_get_disk_space`,
+> `osls_get_volume_info`, `osls_get_system_load`, `osls_get_capabilities`,
+> `osls_get_runtime_info`, `osls_get_native_error`, `osls_path_normalize`,
+> `osls_path_join`, `osls_path_resolve`, `osls_get_path_info`,
+> `osls_network_resolve`. `SLOsSupportOSLSElements` gains the 13 matching element
+> factories, `SLOsSupportNative` the 13 wrappers, and `SLOsSupportCatalog` now
+> separates `getRegisteredInspectionFunctions` (live) from
+> `getStateChangingPlannedFunctions` (28 file/socket/timer/process operations
+> that stay out of the read-only path by design, per DESIGNATE.md §9). Native
+> C: new `os-level-support/osls_extended2.c`; and the long-standing per-platform
+> unevenness in the original twelve is fixed — Windows network enumeration (IP
+> Helper), CPU vendor/model + cache-line on all three platforms, and the real
+> Windows timezone key name. No new `.sleela` files, so the counts above are
+> unchanged. See `os-level-support/DESIGNATE.md` §11 and
+> `lib/os-level-support/README.md`.
+
+> Revision 0.56 indexes the **`os-level-support`** package (`lib/os-level-support/`)
+> in `LIBRARY.SYMBOLS.md` for the first time — the 20 source classes plus two
+> runnable examples that mirror and bind the native OSLS C ABI. New in this
+> revision: **`SLOsRuntimeStatus`** (the in-process runtime status space,
+> `slosh_status` / `osls_runtime_status`), split out from **`SLOsSupportStatus`**
+> which now carries the core `osls_status` values it was conflating;
+> **`SLOsSupportTyped`** (a typed-result binding catalogue pairing each OSLS
+> record call with its `lib/systems` record shape); and
+> **`SLOsSupportConsistencyExample`** (a runnable round-trip guard that asserts
+> the 12 OSLS element factories agree with the native registry, the status maps
+> round-trip, and the typed bindings name a known record class). Every
+> `lib/os-level-support` class now carries the Metadata Class metapattern; the
+> `*Source` facades delegate their grouping terms to the backend catalogues
+> instead of re-declaring them; `SLOsSupportNative` widens PID/epoch arguments to
+> `long` to match the `int64_t` C ABI; and the previously unrunnable example is
+> fixed (the reserved words `native` were renamed and multi-line `<` headers
+> converted to `<<`/`>>` blocks so the whole package loads and runs). The header
+> counts above are reconciled to the live `/lib` tree by
+> `tools/generate-library-symbols.py` and verified by
+> `test-suites/test-library-inventory.sh`. See `os-level-support/README.md` and
 > `lib/os-level-support/README.md`.
 
 > Revision 0.55 appends **`OP_OSLS_CALL` (155)** to the canonical ISA and

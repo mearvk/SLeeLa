@@ -36,8 +36,12 @@ echo "Output dir   : $OUT_DIR"
 echo ""
 
 # 1. build the registry core + reviewer tool
-echo "[1/3] building registry core..."
+echo "[1/4] building registry core..."
 make -C "$REG_DIR" all
+
+# Registry 3.0 record, compatibility migration, and C++ facade regression tests.
+echo "[2/4] testing Registry 3.0..."
+make -C "$REG_DIR" test
 
 TOOL="$REG_DIR/build/sleela-registry"
 if [ ! -x "$TOOL" ]; then
@@ -50,11 +54,11 @@ STORE="$OUT_DIR/sleela.sleelareg"
 SQL="$OUT_DIR/registry.sql"
 
 # 2. seed the baseline registry table (text store)
-echo "[2/3] seeding baseline registry table -> $STORE"
+echo "[3/4] seeding baseline registry table -> $STORE"
 "$TOOL" seed "$STORE" >/dev/null
 
 # 3. export the MySQL table script (if the tool supports export; else via sleela)
-echo "[3/3] exporting MySQL table script -> $SQL"
+echo "[4/4] exporting MySQL table script -> $SQL"
 SLEELA="$REPO_ROOT/impl/build/sleela"
 if [ -x "$SLEELA" ]; then
     SLEELA_REGISTRY="$STORE" "$SLEELA" registry export "$SQL" >/dev/null 2>&1 \

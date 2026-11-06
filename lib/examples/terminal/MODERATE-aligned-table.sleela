@@ -1,0 +1,27 @@
+#sleela 1.7
+// MODERATE: print a left-aligned, fixed-width table. SLeeLa 1.7 has no string
+// padding intrinsic, so we build padding by appending spaces in a loop -- a
+// useful demonstration of constructing strings by hand. Output only.
+class ModerateAlignedTable {
+    // Right-pad `text` with spaces to at least `width` characters.
+    // (We approximate "length" by rebuilding: pad until we have added enough.)
+    String padTo(String text, int textLen, int width) {
+        String out = text;
+        int i = textLen;
+        while (i < width) {
+            out = out + " ";
+            i = i + 1;
+        }
+        return out;
+    }
+
+    void main() {
+        int col = 10;
+        // We pass known lengths explicitly because there is no length() intrinsic.
+        print(padTo("NAME", 4, col) + padTo("SIZE", 4, col) + "STATUS");
+        print(padTo("----", 4, col) + padTo("----", 4, col) + "------");
+        print(padTo("hello", 5, col) + padTo("512", 3, col) + "ok");
+        print(padTo("config", 6, col) + padTo("128", 3, col) + "ok");
+        print(padTo("payload", 7, col) + padTo("4096", 4, col) + "rejected");
+    }
+}

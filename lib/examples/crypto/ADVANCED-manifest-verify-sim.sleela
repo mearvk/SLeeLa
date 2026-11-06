@@ -1,0 +1,54 @@
+#sleela 1.7
+// ADVANCED: simulate a fail-closed manifest verifier.
+//
+// A manifest pairs each file name with its trusted digest. Verification walks
+// every entry, compares the file's *measured* digest to the trusted one, and
+// MUST stop the moment any entry mismatches (fail closed). This mirrors how the
+// SLeeLa build gate treats security/sha256-manifest.json -- except here the
+// digests are stand-in strings so the example is self-contained and prints the
+// same result every time. No real hashing is performed.
+class Entry { String name; String trusted; String measured; }
+class AdvancedManifestVerifySim {
+    static Entry[] manifest;
+
+    Entry row(String name, String trusted, String measured) {
+        Entry e = new Entry();
+        e.name = name; e.trusted = trusted; e.measured = measured;
+        return e;
+    }
+
+    void main() {
+        // Two entries verify; the third is tampered (measured != trusted).
+        manifest = new Entry[3];
+        manifest[0] = row("hello.sleela",  "aaaa1111", "aaaa1111");
+        manifest[1] = row("config.sheet",  "bbbb2222", "bbbb2222");
+        manifest[2] = row("payload.bin",   "cccc3333", "dead9999");
+
+        int checked = 0;
+        boolean ok = true;
+        String firstBad = "none";
+
+        int i = 0;
+        while (i < arrayLength(manifest)) {
+            Entry e = manifest[i];
+            checked = checked + 1;
+            if (e.trusted != e.measured) {
+                ok = false;
+                if (firstBad == "none") firstBad = e.name;
+                // Fail closed: stop at the first mismatch, like the real gate.
+                i = arrayLength(manifest);
+            }
+            i = i + 1;
+        }
+
+        print("entries in manifest = " + arrayLength(manifest));
+        print("entries checked before stop = " + checked);
+        if (ok) {
+            print("result: VERIFIED -- all digests match");
+        }
+        if (!ok) {
+            print("result: REJECTED -- first mismatch at: " + firstBad);
+            print("action: do not build, execute, or ship this tree");
+        }
+    }
+}

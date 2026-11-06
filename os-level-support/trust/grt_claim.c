@@ -15,8 +15,8 @@ static int valid_digest(const char *digest, size_t capacity) {
     size_t i, n = 0;
     if (!bounded_string(digest, capacity, 1)) return 0;
     while (n < capacity && digest[n]) ++n;
-    /* Require at least 64 hexadecimal characters (SHA-256-sized); algorithm
-     * identity is a separate declared field and is not cryptographically checked. */
+    /* Require SHA-256-sized-or-longer hexadecimal syntax. This checks format,
+     * not digest correctness or the declared algorithm. */
     if (n < 64 || (n & 1u)) return 0;
     for (i = 0; i < n; ++i) {
         if (!isxdigit((unsigned char)digest[i])) return 0;

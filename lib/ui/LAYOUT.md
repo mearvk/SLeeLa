@@ -161,6 +161,12 @@ widget:
 - **emphasis** — `normal()` / `primary()` / `danger()`: `primary` is the single
   suggested action, `danger` is destructive.
 - **interactivity** — `enable()` / `disable()`.
+- **visibility** — `show()` / `hide()`: a hidden component is not drawn and (in
+  a stack) collapses to take no space.
+- **margin** — `margin(px)` or `setMargins(top, right, bottom, left)`:
+  per-edge breathing room around the component (negatives clamp to 0).
+- **icon** — `icon(symbol)` / `iconFromAsset(path)` / `clearIcon()`: an optional
+  leading theme symbol and/or asset-path glyph.
 
 Every component added to an `SLLayoutFrame` gets a default quality
 (`body / normal / enabled`) you can customize by name:
@@ -181,11 +187,14 @@ f.qualityOf("save").asAccent(); f.qualityOf("save").primary();
 < e.g. "save" -> quality:accent/primary/enabled + [12,508 296x36] >
 ```
 
-When realized by `SLLayoutDriver`, the honorable parts are applied to the live
-widget (`primary` -> `uiWidgetSuggested`, `danger` -> `uiWidgetDestructive`,
-`disable()` -> `uiWidgetSensitive`); the role is a hint the themed renderer uses
+When realized by `SLLayoutDriver`, every honorable part is applied to the live
+widget, each mapping 1:1 to a real `ui*` bridge call: `primary` ->
+`uiWidgetSuggested`, `danger` -> `uiWidgetDestructive`, `disable()` ->
+`uiWidgetSensitive`, `hide()` -> `uiWidgetVisible`, a margin -> `uiWidgetMargin`,
+and an icon -> `uiWidgetSetIcon`. The role is a hint the themed renderer uses
 when drawing the surface (the toolkit has no per-widget surface call, so role is
 honored through the window theme).
 
-`lib/ui/verify-pixel-perfect.sleela` is a runnable self-check (37 assertions)
-proving exact placement/size (column, row, grid) and the quality descriptor.
+`lib/ui/verify-pixel-perfect.sleela` is a runnable self-check (47 assertions)
+proving exact placement/size (column, row, grid) and the full quality descriptor
+(role + emphasis + interactivity + visibility + margin + icon).

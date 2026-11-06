@@ -1,0 +1,47 @@
+SLeeLa LLM MODEL TAXONOMY — QUICK REFERENCE
+
+CLASSICAL / STATISTICAL
+- N-gram language models
+- Hidden Markov models
+- Conditional random fields
+
+NEURAL SEQUENCE MODELS
+- Feed-forward neural language models
+- RNN, LSTM, GRU
+- Sequence-to-sequence and attention-based encoder-decoder
+
+TRANSFORMER FAMILIES
+- Encoder-only (BERT-style)
+- Decoder-only autoregressive (GPT-style)
+- Encoder-decoder (T5-style)
+- Sparse mixture-of-experts
+- Long-context variants
+
+ALTERNATIVE / HYBRID SEQUENCE MODELS
+- State-space language models
+- Hybrid attention/state-space models
+- Neuro-symbolic systems
+
+MULTIMODAL / SPECIALIZED
+- Vision-language
+- Speech/audio language models
+- Code language models
+- Multimodal text-image-audio-video systems
+
+SYSTEM AND TRAINING PATTERNS (NOT ARCHITECTURES BY THEMSELVES)
+- Retrieval-augmented generation
+- Tool-using / agentic systems
+- Continual learning
+- Federated training
+- Quantization
+- Knowledge distillation
+
+RESEARCH DIRECTIONS
+- Diffusion-language hybrids
+- Neuromorphic language systems
+
+TIME HORIZON
+The catalogue represents families documented through 2025. The years 2026–2500 are a speculative horizon, not a factual inventory of known models.
+
+CAUTION
+These categories overlap. A deployed model can belong to several categories simultaneously. This is a representative taxonomy, not 2,000–2,500 separate model entries.

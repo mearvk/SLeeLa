@@ -1,0 +1,34 @@
+#sleela 1.7
+// MODERATE: "git bisect" in miniature. A bug was introduced at some revision;
+// every revision from that point on is bad. Instead of testing all of them, we
+// binary-search for the FIRST bad revision in log2(n) steps. Deterministic:
+// the "test" is a pure comparison, so no debugger or VCS is involved.
+class ModerateBisectRegression {
+    static int firstBad = 42;   // the revision where the bug actually appeared
+
+    // The oracle a real bisect would run: is this revision broken?
+    boolean isBad(int rev) { return rev >= firstBad; }
+
+    void main() {
+        int lo = 0;       // known good
+        int hi = 99;      // known bad
+        int steps = 0;
+
+        // Invariant: isBad(lo) is false, isBad(hi) is true.
+        while (hi - lo > 1) {
+            int mid = (lo + hi) / 2;
+            steps = steps + 1;
+            if (isBad(mid)) {
+                hi = mid;
+            }
+            if (!isBad(mid)) {
+                lo = mid;
+            }
+        }
+
+        print("search range = 0..99 (100 revisions)");
+        print("first bad revision found = " + hi);
+        print("bisect steps taken = " + steps);
+        print("linear scan would have taken up to 100 tests");
+    }
+}

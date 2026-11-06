@@ -1,0 +1,12 @@
+#sleela 1.7
+// BASIC: convert a 2.4 GHz Wi-Fi channel number to its center frequency (MHz).
+// For channels 1..13 the rule is: center = 2407 + 5 * channel (MHz).
+// Pure arithmetic; no radio is accessed.
+class BasicChannelFrequency {
+    int centerMhz(int channel) { return 2407 + 5 * channel; }
+    void main() {
+        print("channel 1  -> " + centerMhz(1)  + " MHz");
+        print("channel 6  -> " + centerMhz(6)  + " MHz");
+        print("channel 11 -> " + centerMhz(11) + " MHz");
+    }
+}

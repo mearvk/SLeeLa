@@ -54,7 +54,16 @@ int sleela_config_location_load_policy(const char *path, SLEELA_CONFIG_LOCATION 
     if (!path || !location || !(f = fopen(path, "rb"))) return 0;
     while (fgets(line, sizeof(line), f)) {
         char *p = line, *eq; size_t n = strlen(line);
-        if (n && line[n - 1] != '\n' && !feof(f)) { fclose(f); return 0; }
+        if (n && line[n - 1] != '\n') {
+            /* No trailing newline: peek one byte (same robust test as
+               sleela_vm_config_load). More data -> the line was longer than
+               the buffer (truncation) -> reject. EOF -> this was the final
+               line without a newline -> accept. feof() alone is subtle here
+               because it is only set after a read actually hits end-of-file. */
+            int peek = fgetc(f);
+            if (peek != EOF) { fclose(f); return 0; }
+            if (ferror(f)) { fclose(f); return 0; }
+        }
         while (*p && (*p == ' ' || *p == '\t' || *p == '\r' || *p == '\n')) ++p;
         if (!*p || *p == '#') continue;
         eq = strchr(p, '='); if (!eq) { fclose(f); return 0; }

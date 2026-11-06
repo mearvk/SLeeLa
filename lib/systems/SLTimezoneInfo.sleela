@@ -1,0 +1,16 @@
+< SLeeLa Standard Library Definition.
+  Definition: Timezone metadata shape matching osls_timezone_info. >
+#sleela 2.5
+material;
+
+class SLTimezoneInfo {
+  String id = "";
+  String abbreviation = "";
+  int offsetMinutesFromUtc = 0;
+  boolean daylightSavingTime = false;
+
+  String getId() { return id; }
+  String getAbbreviation() { return abbreviation; }
+  int getOffsetMinutesFromUtc() { return offsetMinutesFromUtc; }
+  boolean isDaylightSavingTime() { return daylightSavingTime; }
+}

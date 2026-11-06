@@ -49,6 +49,7 @@
 <li><a href="../package/decompiler.html">decompiler</a></li>
 <li><a href="../package/deliberation.html">deliberation</a></li>
 <li><a href="../package/drivers.html">drivers</a></li>
+<li><a href="../package/examples.html">examples</a></li>
 <li><a href="../package/filesystem.html">filesystem</a></li>
 <li><a href="../package/gameplay.html">gameplay</a></li>
 <li><a href="../package/gui.html">gui</a></li>
@@ -1953,7 +1954,8 @@
 <tr><td><code>succeeded</code></td><td><span class="sig">boolean succeeded()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>probe</code></td><td><span class="sig">int probe()</span></td><td class="desc">Verify the warehouse is reachable without downloading it (git ls-remote). Returns 0 when the branch is resolvable. Cheap pre-flight for a GUI.</td></tr>
 <tr><td><code>shapePath</code></td><td><span class="sig">String shapePath(String destRoot, String shape)</span></td><td class="desc">After a fetch into destRoot, the on-disk path to a chosen shape&#x27;s folder (&quot;Linux&quot;/&quot;Windows&quot;/&quot;macOS&quot;), e.g. destRoot/OS.Sensitivity.III/linux. Returns &quot;&quot; for an unknown shape.</td></tr>
-<tr><td><code>componentPath</code></td><td><span class="sig">String componentPath(String destRoot, String shape, String component)</span></td><td class="desc">After a fetch, the on-disk path to a (shape, component) C/C++ folder, e.g. destRoot/OS.Sensitivity.III/linux/os-core. &quot;&quot; if shape/component bad.</td></tr>
+<tr><td><code>componentPath</code></td><td><span class="sig">String componentPath(String destRoot, String shape, String component)</span></td><td class="desc">After a fetch, the on-disk path to a (shape, component) C/C++ folder, e.g. destRoot/OS.Sensitivity.III/linux/os-core. &quot;&quot; if shape/component bad. This routes through SLOSSensitivitySource.shapeComponentDir, so it honors the per-shape layout: windows/compat-loader (Wine), windows/reactos, macos/os-core (XNU), macos/puredarwin, macos/frameworks, macos/compat-loader.</td></tr>
+<tr><td><code>descriptorPath</code></td><td><span class="sig">String descriptorPath(String destRoot)</span></td><td class="desc">After a fetch, the on-disk path to the machine-readable shapes.json shape descriptor at the warehouse root. The OSCreator runnable reads this to resolve shapes/components/refs/licenses/build-entries deterministically.</td></tr>
 </table>
 </div>
 <h2 class="section" data-u="slossensitivitysource">SLOSSensitivitySource <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/operating-system/SLOSSensitivitySource.sleela)</span></h2>
@@ -1973,6 +1975,8 @@
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
 <tr><td><code>configure</code></td><td><span class="sig">void configure()</span></td><td class="desc">Configure with the known OS.Sensitivity.III warehouse reference. The pinned commit is the current main tip; callers may repin with pin(commit).</td></tr>
+<tr><td><code>descriptorFile</code></td><td><span class="sig">String descriptorFile()</span></td><td class="desc">The machine-readable shape descriptor at the warehouse root. The OSCreator runnable reads this (after fetch) to resolve shapes, component paths, pinned upstream refs, licenses, and build entry points without hard-coding.</td></tr>
+<tr><td><code>descriptorPath</code></td><td><span class="sig">String descriptorPath(String destRoot)</span></td><td class="desc">On-disk path to the descriptor after a fetch into destRoot.</td></tr>
 <tr><td><code>pin</code></td><td><span class="sig">void pin(String commit)</span></td><td class="desc">Repin to a specific revision (keeps fetches reproducible).</td></tr>
 <tr><td><code>identity</code></td><td><span class="sig">String identity()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>cloneUrl</code></td><td><span class="sig">String cloneUrl()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -1982,6 +1986,8 @@
 <tr><td><code>providesShape</code></td><td><span class="sig">boolean providesShape(String shape)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>componentDir</code></td><td><span class="sig">String componentDir(String component)</span></td><td class="desc">---- Per-component directory map ------------------------------------- The per-shape subdirectory that carries each OS component&#x27;s C/C++, in the firmware -&gt; boot -&gt; kernel -&gt; userspace -&gt; desktop order the OS boots. A caller resolves (shape, component) to a full warehouse path. componentDir returns &quot;&quot; for an unknown component; dirFor composes shape + component.</td></tr>
 <tr><td><code>providesComponent</code></td><td><span class="sig">boolean providesComponent(String component)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>shapeComponentDir</code></td><td><span class="sig">String shapeComponentDir(String shape, String component)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>providesShapeComponent</code></td><td><span class="sig">boolean providesShapeComponent(String shape, String component)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>dirFor</code></td><td><span class="sig">String dirFor(String shape, String component)</span></td><td class="desc">dirFor(shape, component): the warehouse path &quot;&lt;shape&gt;/&lt;component&gt;&quot;, or &quot;&quot; if either the shape or the component is unknown.</td></tr>
 <tr><td><code>downloadabilityNote</code></td><td><span class="sig">String downloadabilityNote(String part)</span></td><td class="desc">---- Downloadability notes ------------------------------------------ What a fetch retrieves. The warehouse uses NO Git LFS, so a normal clone needs no `git lfs` step; its C/C++ is plain git objects.</td></tr>
 <tr><td><code>referenceSheet</code></td><td><span class="sig">String referenceSheet()</span></td><td class="desc">A newline-separated reference sheet a tool or README can print.</td></tr>
@@ -2544,7 +2550,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-05 20:11 UTC.
+<code>/lib</code> tree on 2026-11-05 14:21 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>

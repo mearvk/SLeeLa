@@ -40,12 +40,19 @@
 #include "../frontend/dynamite.h"
 #include "../frontend/permissible.h"
 #include "../frontend/version.h"
+#include "../frontend/common_rails_banner.hpp"
 extern "C" {
 #include "../core/sleela_core.h"
 #include "../core/sleela_design_activity.h"
 }
 
 using namespace nordshrift;
+
+// CommonRails banner surface for Nordshrift (opt-in via SLEELA_RAILS=1). The
+// machine-parsed contract lines ("... N error(s), M warning(s)", "OK: target-
+// language = ...") are emitted verbatim by their own call sites; the rails
+// status lines are additive decoration so default output is unchanged.
+static bool nsRailsBannersEnabled(){const char*v=std::getenv("SLEELA_RAILS");return v&&(std::string(v)=="1"||std::string(v)=="true"||std::string(v)=="yes");}
 
 static const char* kVersion =
     "Nordshrift 2.7.1-dev (NS-SST-0001 spec 2.2; drives SLeeLa source syntax up to 3.0; source validation; semantic analysis; semantic subject model; Sleelvac™ runnable .sleela target)";
@@ -319,6 +326,7 @@ static void validateSourcePrograms(const Sheet& sheet, const std::string& sheetP
 }
 
 static int doCheck(const std::string& path) {
+    sleela::rails::brandNordshrift(std::cout, 1);
     Sheet sheet; DiagnosticBag diags;
     if (!loadSheet(path, sheet, diags)) return 1;
     validateSubjects(sheet, diags);
@@ -330,8 +338,14 @@ static int doCheck(const std::string& path) {
               << diags.warningCount() << " warning(s)\n";
     if (!diags.hasErrors()) {
         std::cout << "OK: target-language = " << langName(sheet.target.language) << "\n";
+        if (nsRailsBannersEnabled()) {
+            sleela::rails::component(std::cerr, "Nordshrift", 1, 1, "checked " + sheet.meta.name);
+            sleela::rails::complete(std::cerr, "0 error(s), target-language = " + std::string(langName(sheet.target.language)));
+        }
         reportComponentSeries(sheet);
         reportInputObjects(sheet);
+    } else if (nsRailsBannersEnabled()) {
+        sleela::rails::error(std::cerr, std::to_string(diags.errorCount()) + " error(s) in " + sheet.meta.name);
     }
     return diags.hasErrors() ? 1 : 0;
 }
@@ -344,6 +358,7 @@ static std::string runnablePathFor(const std::string& srcPath) {
 }
 
 static int doBuild(const std::string& path) {
+    sleela::rails::brandNordshrift(std::cout, 1);
     Sheet sheet; DiagnosticBag diags;
     if (!loadSheet(path, sheet, diags)) return 1;
 
@@ -355,6 +370,8 @@ static int doBuild(const std::string& path) {
     std::cout << diags.render();
     if (diags.hasErrors()) {
         std::cerr << "nordshrift: build halted — " << diags.errorCount() << " error(s)\n";
+        if (nsRailsBannersEnabled())
+            sleela::rails::error(std::cerr, "build halted: " + std::to_string(diags.errorCount()) + " error(s)");
         return 1;
     }
 
@@ -395,6 +412,8 @@ static int doBuild(const std::string& path) {
                 sleela::compileToArtifact(prog, output, nullptr, vr.declared);
                 std::cout << "nordshrift: " << srcPath << " -> " << output
                           << " (runnable Sleela Core artifact)\n";
+                if (nsRailsBannersEnabled())
+                    sleela::rails::complete(std::cerr, "transpiled " + srcPath + " -> " + output);
                 // Additionally emit a .ledger (QR insignia + SHA-256 chain +
                 // ISO-8601 UTC timestamp) next to the artifact, via the shared
                 // ledger core (matches the standalone ledger tool).

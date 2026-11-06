@@ -11,6 +11,19 @@
 
 This directory contains clear, runnable examples for the SLeeLa BODI XML project system. The examples are also evidence artifacts: each XML project has a corresponding expected BODI witness output where the result is deterministic and does not require external network access.
 
+## Native SleelaUI GUI learning examples
+
+The full SLeeLa-source GUI catalogue is in [gui/](gui/README.md). It covers
+native window lifecycle, the five current theme presets plus legacy/custom
+palette examples, component families, common widget properties, tabs, forms,
+event polling, backend reporting, and the separate `lib/ui` SDK object model.
+These examples target the native wrappers in `lib/user-interface/` when they
+open real desktop windows.
+
+Start with [CLASSIC Hello Window](gui/CLASSIC-hello-window.sleela), then explore
+the [full widget gallery](gui/USED-widget-gallery.sleela) and
+[theme presets](gui/USED-theme-presets.sleela).
+
 ## GUI connectivity examples
 
 The interactive native GUI examples in [../example/](../example/README.md) demonstrate the shared Wi-Fi control. Each of the five GUI versions — DUAL, GUAL, MUAL, THUAL, and MILITARY — uses an icon-backed **Wi-Fi** button and a dismissible connectivity panel with actions for scanning, connecting, disconnecting, network settings, and connection details.

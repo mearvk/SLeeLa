@@ -147,3 +147,4 @@ The intended native path is `.sleela compiler source -> validated compiler IR ->
 ## Compiler construction examples
 
 The four-stage learning path for implementing a compiler in SLeeLa source is available under [`examples/`](examples/README.md): **Novice**, **Mid**, **Senior**, and **Very Senior**. Each level includes a SLeeLa scaffold, exercises, validation goals, and appropriate safety/reproducibility guidance. These examples are educational scaffolds and do not imply that full self-hosting or complete language coverage has already been verified.
+

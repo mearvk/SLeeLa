@@ -2,7 +2,9 @@
 
 *Idea System(TM) / Idea(TM). From Author; distributive.*
 
-The Sleela object-oriented mirror of the native registry core
+The SLeeLa 3.0 architecture contract is [REGISTRY-3.0-ARCHITECTURE.md](../../registry/REGISTRY-3.0-ARCHITECTURE.md). The classes below remain the compatibility object model while the record-oriented 3.0 model is implemented in staged, testable increments.
+
+The SLeeLa object-oriented mirror of the native registry core
 ([`/registry`](../../registry/README.md)), so a program can model, seed, and
 review the registry from Sleela.
 
@@ -45,3 +47,12 @@ in call position: the review method is `show()` (not `review`), and the
 seal-check is `isSealed()` (not `sealed`). Chained calls on a method's return
 value are also avoided (assign to a local first) — the SLeeLa surface rejects
 `a.foo().bar()`.
+
+
+## Registry 3.0 source model and governance
+
+The new native API and versioned persistence contract are described in [Registry 3.0 architecture](../../registry/REGISTRY-3.0-ARCHITECTURE.md), [native bindings](../../registry/REGISTRY-3.0-BINDINGS.md), and the [Modium catalog contract](../../registry/REGISTRY-3.0-MODIUM.md).
+
+The SLeeLa source model now includes SLRegistryRecord, SLRegistryIdentity, SLRegistryRelationship, SLRegistryLifecycle, SLRegistryResolver, and SLRegistryReview. The key-path index and per-key value-name index are growable SLList string collections. The eight numbered object slots are retained solely as the legacy display window; SLList stores strings, not arbitrary class instances, and the native record engine owns the full record set.
+
+The separate [governance package](../governance/README.md) defines source shapes for manual voting. Its @vote annotation is currently inert documentation; ballot handling and eligibility remain an explicitly human procedure. The syntax and safeguards are specified in [DEMOCRATIC-VOTING-SYNTAX.md](../../registry/DEMOCRATIC-VOTING-SYNTAX.md).

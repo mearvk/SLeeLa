@@ -1,0 +1,19 @@
+<< A resolver result locates a record; it confers no authority to act. >>
+#sleela 3.0
+material;
+class SLRegistryResolver {
+  String recordId;
+  String status;
+  String locator;
+  String reason;
+
+  void configure(String id) {
+    recordId = id;
+    status = "not_resolved";
+    locator = "";
+    reason = "";
+  }
+
+  boolean resolved() { return status == "resolved" && locator != ""; }
+  boolean isResolvedReference() { return resolved(); }
+}

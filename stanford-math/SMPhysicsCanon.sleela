@@ -74,7 +74,7 @@ class SMPhysicsCanon {
   int filled;
 
   void build() {
-    eqs = new SMEquation[44];
+    eqs = new SMEquation[100];
     filled = 0;
 
     add("Newton's second law", "F = m*a  (F = dp/dt)", "classical mechanics", "Isaac Newton", "1687");
@@ -113,6 +113,59 @@ class SMPhysicsCanon {
     add("Navier-Stokes (incompressible)", "rho(dv/dt + v.grad v) = -grad p + mu laplacian v + f", "fluid dynamics", "Navier; Stokes", "1845");
     add("Wave equation", "d^2u/dt^2 = c^2 laplacian u", "classical field theory", "Jean le Rond d'Alembert", "1746");
     add("Bernoulli's principle", "p + (1/2) rho v^2 + rho g h = constant", "fluid dynamics", "Daniel Bernoulli", "1738");
+    add("Newton's first law (inertia)", "v = constant when sum F = 0", "classical mechanics", "Isaac Newton", "1687");
+    add("Newton's third law", "F_12 = -F_21", "classical mechanics", "Isaac Newton", "1687");
+    add("Gravitational potential energy", "U = m g h  (near surface)", "classical mechanics", "classical", "unknown");
+    add("Simple harmonic motion", "x(t) = A cos(omega t + phi)", "classical mechanics", "classical", "unknown");
+    add("Centripetal acceleration", "a_c = v^2 / r", "classical mechanics", "Christiaan Huygens", "1659");
+    add("Doppler effect", "f' = f (c +/- v_o) / (c -/+ v_s)", "waves", "Christian Doppler", "1842");
+    add("Snell's law", "n1 sin(theta1) = n2 sin(theta2)", "optics", "Snellius; Descartes", "1621");
+    add("Ohm's law", "V = I R", "electromagnetism", "Georg Ohm", "1827");
+    add("Compton scattering", "d_lambda = (h / (m_e c))(1 - cos theta)", "quantum mechanics", "Arthur Compton", "1923");
+    add("Wien's displacement law", "lambda_max T = b", "quantum mechanics", "Wilhelm Wien", "1893");
+    add("Kepler's first law", "planets move on ellipses with the Sun at one focus", "celestial mechanics", "Johannes Kepler", "1609");
+    add("Kepler's second law", "the radius vector sweeps equal areas in equal times", "celestial mechanics", "Johannes Kepler", "1609");
+    add("Kepler's third law", "T^2 = (4 pi^2 / (G M)) a^3", "celestial mechanics", "Johannes Kepler", "1619");
+    add("Poisson's equation (electrostatics)", "laplacian(phi) = -rho / epsilon0", "electromagnetism", "Simeon Denis Poisson", "1813");
+    add("Continuity equation (mass)", "d(rho)/dt + div(rho v) = 0", "fluid dynamics", "Leonhard Euler", "1757");
+    add("Euler's equations (inviscid flow)", "rho (dv/dt + (v.grad) v) = -grad p", "fluid dynamics", "Leonhard Euler", "1757");
+    add("Reynolds number", "Re = rho v L / mu", "fluid dynamics", "Osborne Reynolds", "1883");
+    add("Biot-Savart law", "dB = (mu0 / (4 pi)) I dl x r-hat / r^2", "electromagnetism", "Biot; Savart", "1820");
+    add("Lenz's law", "induced EMF opposes the change in flux", "electromagnetism", "Heinrich Lenz", "1834");
+    add("Larmor power (accelerated charge)", "P = (q^2 a^2) / (6 pi epsilon0 c^3)", "electromagnetism", "Joseph Larmor", "1897");
+    add("Poynting theorem (energy flow)", "dU/dt + div S = -J.E", "electromagnetism", "John Henry Poynting", "1884");
+    add("Lorentz transformation", "t' = gamma(t - v x / c^2),  x' = gamma(x - v t)", "special relativity", "Hendrik Lorentz", "1904");
+    add("Relativistic momentum", "p = gamma m v", "special relativity", "Albert Einstein", "1905");
+    add("Relativistic energy", "E = gamma m c^2", "special relativity", "Albert Einstein", "1905");
+    add("Relativistic velocity addition", "w = (u + v)/(1 + u v / c^2)", "special relativity", "Albert Einstein", "1905");
+    add("Klein-Gordon equation", "(box + (m c / hbar)^2) psi = 0", "quantum field theory", "Klein; Gordon", "1926");
+    add("Yukawa potential", "V(r) = -g^2 e^(-m r) / r", "nuclear physics", "Hideki Yukawa", "1935");
+    add("Fermi-Dirac distribution", "n(E) = 1 / (e^((E - mu)/(k_B T)) + 1)", "statistical physics", "Fermi; Dirac", "1926");
+    add("Bose-Einstein distribution", "n(E) = 1 / (e^((E - mu)/(k_B T)) - 1)", "statistical physics", "Bose; Einstein", "1924");
+    add("Rayleigh-Jeans law", "B(lambda,T) = 2 c k_B T / lambda^4", "statistical physics", "Rayleigh; Jeans", "1905");
+    add("Bragg's law", "n lambda = 2 d sin(theta)", "condensed matter", "W. H. Bragg & W. L. Bragg", "1913");
+    add("Malus's law", "I = I0 cos^2(theta)", "optics", "Etienne-Louis Malus", "1809");
+    add("Beer-Lambert law", "I = I0 e^(-alpha x)", "optics", "Beer; Lambert; Bouguer", "1852");
+    add("Fresnel reflection (normal incidence)", "R = ((n1 - n2)/(n1 + n2))^2", "optics", "Augustin-Jean Fresnel", "1823");
+    add("Thin lens equation", "1/f = 1/do + 1/di", "optics", "classical", "unknown");
+    add("Rayleigh resolution criterion", "theta = 1.22 lambda / D", "optics", "Lord Rayleigh", "1879");
+    add("Hall effect voltage", "V_H = I B / (n q t)", "condensed matter", "Edwin Hall", "1879");
+    add("Drude conductivity", "sigma = n e^2 tau / m", "condensed matter", "Paul Drude", "1900");
+    add("Debye heat capacity (low-T)", "C_V = (12 pi^4 / 5) N k_B (T / Theta_D)^3", "condensed matter", "Peter Debye", "1912");
+    add("London penetration depth", "lambda_L = sqrt(m / (mu0 n_s e^2))", "superconductivity", "Fritz & Heinz London", "1935");
+    add("Josephson relation", "I = I_c sin(phi),  dphi/dt = 2 e V / hbar", "superconductivity", "Brian Josephson", "1962");
+    add("Casimir force (parallel plates)", "F/A = -pi^2 hbar c / (240 d^4)", "quantum electrodynamics", "Hendrik Casimir", "1948");
+    add("Stefan-Boltzmann (radiated power)", "P = sigma A epsilon T^4", "thermal radiation", "Stefan; Boltzmann", "1879");
+    add("Escape velocity", "v_e = sqrt(2 G M / r)", "celestial mechanics", "classical (Newtonian)", "unknown");
+    add("Rocket equation (Tsiolkovsky)", "delta v = v_e ln(m0 / m1)", "astronautics", "Konstantin Tsiolkovsky", "1903");
+    add("Torque", "tau = r x F", "classical mechanics", "classical (Archimedes/Euler)", "unknown");
+    add("Angular momentum", "L = r x p = I omega", "classical mechanics", "Euler", "1775");
+    add("Moment of inertia", "I = sum m_i r_i^2", "classical mechanics", "Leonhard Euler", "1765");
+    add("Rotational kinetic energy", "KE_rot = (1/2) I omega^2", "classical mechanics", "Euler", "1765");
+    add("Poiseuille's law (pipe flow)", "Q = pi r^4 dP / (8 mu L)", "fluid dynamics", "Hagen; Poiseuille", "1840");
+    add("Stokes' drag law", "F = 6 pi mu r v", "fluid dynamics", "George Gabriel Stokes", "1851");
+    add("Pendulum period (small angle)", "T = 2 pi sqrt(L / g)", "classical mechanics", "classical (Huygens)", "1673");
+    add("Gravitational time dilation (weak field)", "dtau/dt = sqrt(1 - 2 G M / (r c^2))", "general relativity", "Albert Einstein", "1915");
   }
 
   void add(String name, String form, String field, String who, String year) {

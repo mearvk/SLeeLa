@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Package ballum — SleelaDoc API</title>
+<link rel="stylesheet" href="../style.css">
+
+</head>
+<body>
+<header class="top">
+  <div class="brand"><a href="../index.html">SleelaDoc API</a></div>
+  <div class="tag">HTML documentation for the SLeeLa standard library (/lib)</div>
+</header>
+<div class="wrap">
+<nav class="side">
+  <a href="../index.html"><strong>Home</strong></a>
+  <a href="../packages.html"><strong>All packages</strong></a>
+  <a href="../glossary.html"><strong>Glossary</strong></a>
+  <a href="../authorship.html"><strong>Authorship</strong></a>
+  <h2>Packages</h2><ul>
+<li><a href="../package/alphabet.html">alphabet</a></li>
+<li><a href="../package/antivirus.html">antivirus</a></li>
+<li><a href="../package/api.html">api</a></li>
+<li><a href="../package/audio.html">audio</a></li>
+<li><a href="../package/autocad.html">autocad</a></li>
+<li><a href="../package/ballum.html">ballum</a></li>
+<li><a href="../package/bash.html">bash</a></li>
+<li><a href="../package/boolean.html">boolean</a></li>
+<li><a href="../package/cdma.html">cdma</a></li>
+<li><a href="../package/character.html">character</a></li>
+<li><a href="../package/churn.html">churn</a></li>
+<li><a href="../package/citizen.html">citizen</a></li>
+<li><a href="../package/codecs.html">codecs</a></li>
+<li><a href="../package/collections.html">collections</a></li>
+<li><a href="../package/common-rails.html">common-rails</a></li>
+<li><a href="../package/compiler.html">compiler</a></li>
+<li><a href="../package/compression.html">compression</a></li>
+<li><a href="../package/config.html">config</a></li>
+<li><a href="../package/connector.html">connector</a></li>
+<li><a href="../package/coorenagraph.html">coorenagraph</a></li>
+<li><a href="../package/core.html">core</a></li>
+<li><a href="../package/cpu.html">cpu</a></li>
+<li><a href="../package/crypto.html">crypto</a></li>
+<li><a href="../package/data.html">data</a></li>
+<li><a href="../package/data-structures.html">data-structures</a></li>
+<li><a href="../package/database.html">database</a></li>
+<li><a href="../package/debugger.html">debugger</a></li>
+<li><a href="../package/decompiler.html">decompiler</a></li>
+<li><a href="../package/deliberation.html">deliberation</a></li>
+<li><a href="../package/drivers.html">drivers</a></li>
+<li><a href="../package/examples.html">examples</a></li>
+<li><a href="../package/filesystem.html">filesystem</a></li>
+<li><a href="../package/gameplay.html">gameplay</a></li>
+<li><a href="../package/gui.html">gui</a></li>
+<li><a href="../package/html.html">html</a></li>
+<li><a href="../package/http.html">http</a></li>
+<li><a href="../package/http-1.0.html">http-1.0</a></li>
+<li><a href="../package/http-2.0.html">http-2.0</a></li>
+<li><a href="../package/http-3.0.html">http-3.0</a></li>
+<li><a href="../package/http-4.0.html">http-4.0</a></li>
+<li><a href="../package/http-5.0.html">http-5.0</a></li>
+<li><a href="../package/http-6.0.html">http-6.0</a></li>
+<li><a href="../package/http-7.0.html">http-7.0</a></li>
+<li><a href="../package/http-8.0.html">http-8.0</a></li>
+<li><a href="../package/http-9.0.html">http-9.0</a></li>
+<li><a href="../package/http-servers.html">http-servers</a></li>
+<li><a href="../package/ide.html">ide</a></li>
+<li><a href="../package/ide-workbench.html">ide-workbench</a></li>
+<li><a href="../package/idea.html">idea</a></li>
+<li><a href="../package/inference-model.html">inference-model</a></li>
+<li><a href="../package/inputs.html">inputs</a></li>
+<li><a href="../package/international-criminal-court.html">international-criminal-court</a></li>
+<li><a href="../package/io.html">io</a></li>
+<li><a href="../package/java.html">java</a></li>
+<li><a href="../package/java28.html">java28</a></li>
+<li><a href="../package/journey.html">journey</a></li>
+<li><a href="../package/languages.html">languages</a></li>
+<li><a href="../package/ledger.html">ledger</a></li>
+<li><a href="../package/linux-editors.html">linux-editors</a></li>
+<li><a href="../package/manifesto.html">manifesto</a></li>
+<li><a href="../package/math.html">math</a></li>
+<li><a href="../package/memory.html">memory</a></li>
+<li><a href="../package/modules.html">modules</a></li>
+<li><a href="../package/moral-capacitor.html">moral-capacitor</a></li>
+<li><a href="../package/munction.html">munction</a></li>
+<li><a href="../package/native.html">native</a></li>
+<li><a href="../package/net.html">net</a></li>
+<li><a href="../package/nordshrift.html">nordshrift</a></li>
+<li><a href="../package/opcodes.html">opcodes</a></li>
+<li><a href="../package/operating-system.html">operating-system</a></li>
+<li><a href="../package/philosophers.html">philosophers</a></li>
+<li><a href="../package/philosophy.html">philosophy</a></li>
+<li><a href="../package/politico.html">politico</a></li>
+<li><a href="../package/process.html">process</a></li>
+<li><a href="../package/psychiatry.html">psychiatry</a></li>
+<li><a href="../package/public.html">public</a></li>
+<li><a href="../package/reflection.html">reflection</a></li>
+<li><a href="../package/regex.html">regex</a></li>
+<li><a href="../package/registry.html">registry</a></li>
+<li><a href="../package/rmi.html">rmi</a></li>
+<li><a href="../package/runtime.html">runtime</a></li>
+<li><a href="../package/security.html">security</a></li>
+<li><a href="../package/server-edition.html">server-edition</a></li>
+<li><a href="../package/signal-processing.html">signal-processing</a></li>
+<li><a href="../package/sldocument.html">sldocument</a></li>
+<li><a href="../package/sleela.html">sleela</a></li>
+<li><a href="../package/sleela-sql.html">sleela-sql</a></li>
+<li><a href="../package/sleela-terminal.html">sleela-terminal</a></li>
+<li><a href="../package/sleeladoc.html">sleeladoc</a></li>
+<li><a href="../package/social-model.html">social-model</a></li>
+<li><a href="../package/sommeliers.html">sommeliers</a></li>
+<li><a href="../package/sst.html">sst</a></li>
+<li><a href="../package/synchro.html">synchro</a></li>
+<li><a href="../package/systems.html">systems</a></li>
+<li><a href="../package/telephony-skya.html">telephony-skya</a></li>
+<li><a href="../package/terminal.html">terminal</a></li>
+<li><a href="../package/terminal_pixel.html">terminal_pixel</a></li>
+<li><a href="../package/text.html">text</a></li>
+<li><a href="../package/ui.html">ui</a></li>
+<li><a href="../package/us-infrastructure.html">us-infrastructure</a></li>
+<li><a href="../package/user-interface.html">user-interface</a></li>
+<li><a href="../package/video.html">video</a></li>
+<li><a href="../package/vm.html">vm</a></li>
+<li><a href="../package/web-server-technology.html">web-server-technology</a></li>
+<li><a href="../package/website.html">website</a></li>
+<li><a href="../package/wifi.html">wifi</a></li>
+<li><a href="../package/xlt.html">xlt</a></li>
+<li><a href="../package/xml.html">xml</a></li>
+</ul>
+</nav>
+<main>
+<div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; ballum</div>
+<h1>Package <code>ballum</code></h1>
+<div class="lead">This package contains <strong>24</strong> source unit(s) defining <strong>24</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
+<h2 class="section" data-u="01-screen-inspection">01-screen-inspection <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/examples/01-screen-inspection.sleela)</span></h2>
+<div data-u="01-screen-inspection ballumscreeninspection">
+<h3 id="BallumScreenInspection">BallumScreenInspection <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="02-safe-pixel">02-safe-pixel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/examples/02-safe-pixel.sleela)</span></h2>
+<div data-u="02-safe-pixel ballumsafepixel">
+<h3 id="BallumSafePixel">BallumSafePixel <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>inBounds</code></td><td><span class="sig">boolean inBounds(int x, int y, int w, int h)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="03-display-controls">03-display-controls <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/examples/03-display-controls.sleela)</span></h2>
+<div data-u="03-display-controls ballumdisplaycontrols">
+<h3 id="BallumDisplayControls">BallumDisplayControls <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>has</code></td><td><span class="sig">boolean has(int caps, int bit)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="04-input-polling">04-input-polling <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/examples/04-input-polling.sleela)</span></h2>
+<div data-u="04-input-polling balluminputpolling">
+<h3 id="BallumInputPolling">BallumInputPolling <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="05-headless-safe">05-headless-safe <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/examples/05-headless-safe.sleela)</span></h2>
+<div data-u="05-headless-safe ballumheadlesssafe">
+<h3 id="BallumHeadlessSafe">BallumHeadlessSafe <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="ballum">ballum <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/ballum.sleela)</span></h2>
+<div data-u="ballum ballum">
+<h3 id="Ballum">Ballum <span class="pill">class</span></h3>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>width</code></td><td><span class="sig">int width</span></td><td class="desc">--- a single display&#x27;s facts ---</td></tr>
+<tr><td><code>height</code></td><td><span class="sig">int height</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>caps</code></td><td><span class="sig">int caps</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>handle</code></td><td><span class="sig">int handle</span></td><td class="desc">--- manager state --- VM-local bridge index; &lt;0 means no bridge</td></tr>
+<tr><td><code>lastStatus</code></td><td><span class="sig">int lastStatus</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>init</code></td><td><span class="sig">void init()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nativeReady</code></td><td><span class="sig">boolean nativeReady()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bind</code></td><td><span class="sig">void bind(int h)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>has</code></td><td><span class="sig">boolean has(int cap)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>contains</code></td><td><span class="sig">boolean contains(int x, int y)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clampBrightness</code></td><td><span class="sig">int clampBrightness(int p)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clampWarmth</code></td><td><span class="sig">int clampWarmth(int k)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>statusText</code></td><td><span class="sig">String statusText(int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setPixel</code></td><td><span class="sig">int setPixel(int x, int y)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setBrightness</code></td><td><span class="sig">int setBrightness(int percent)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setWarmth</code></td><td><span class="sig">int setWarmth(int kelvin)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="ballum-live">ballum-live <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/ballum-live.sleela)</span></h2>
+<div data-u="ballum-live ballumlive">
+<h3 id="BallumLive">BallumLive <span class="pill">class</span></h3>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>capHas</code></td><td><span class="sig">boolean capHas(int caps, int bit)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="input-demo">input-demo <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/input-demo.sleela)</span></h2>
+<div data-u="input-demo inputdemo">
+<h3 id="InputDemo">InputDemo <span class="pill">class</span></h3>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>NONE</code></td><td><span class="sig">static final int NONE = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>DOWN</code></td><td><span class="sig">static final int DOWN = 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MOVE</code></td><td><span class="sig">static final int MOVE = 2</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>CLICK</code></td><td><span class="sig">static final int CLICK = 3</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>DRAG_BEGIN</code></td><td><span class="sig">static final int DRAG_BEGIN = 4</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>DRAG_MOVE</code></td><td><span class="sig">static final int DRAG_MOVE = 5</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>DRAG_END</code></td><td><span class="sig">static final int DRAG_END = 6</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>dragThreshold</code></td><td><span class="sig">int dragThreshold</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pressed</code></td><td><span class="sig">int pressed</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>dragging</code></td><td><span class="sig">int dragging</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>downX</code></td><td><span class="sig">int downX</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>downY</code></td><td><span class="sig">int downY</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>curX</code></td><td><span class="sig">int curX</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>curY</code></td><td><span class="sig">int curY</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>init</code></td><td><span class="sig">void init()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>absDiff</code></td><td><span class="sig">int absDiff(int a, int b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fold</code></td><td><span class="sig">int fold(int raw)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name(int g)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="screen-demo">screen-demo <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/screen-demo.sleela)</span></h2>
+<div data-u="screen-demo screendemo">
+<h3 id="ScreenDemo">ScreenDemo <span class="pill">class</span></h3>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>boundId</code></td><td><span class="sig">int boundId</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>w</code></td><td><span class="sig">int w</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>h</code></td><td><span class="sig">int h</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>caps</code></td><td><span class="sig">int caps</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>capHas</code></td><td><span class="sig">boolean capHas(int bit)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>inBounds</code></td><td><span class="sig">boolean inBounds(int x, int y)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>statusText</code></td><td><span class="sig">String statusText(int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>open</code></td><td><span class="sig">int open()</span></td><td class="desc">Open the primary display and cache its facts.</td></tr>
+<tr><td><code>plot</code></td><td><span class="sig">int plot(int x, int y, int r, int g, int b)</span></td><td class="desc">plot(x,y,...): one pixel-accurate write, validated before dispatch.</td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="session-demo">session-demo <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/session-demo.sleela)</span></h2>
+<div data-u="session-demo sessiondemo">
+<h3 id="SessionDemo">SessionDemo <span class="pill">class</span></h3>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>state</code></td><td><span class="sig">int state</span></td><td class="desc">run states (mirror SLBallumSession): 0 idle, 1 running, 2 frame, 3 exit</td></tr>
+<tr><td><code>frame</code></td><td><span class="sig">int frame</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fadeFrames</code></td><td><span class="sig">int fadeFrames</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>effect</code></td><td><span class="sig">int effect</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>boundId</code></td><td><span class="sig">int boundId</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>w</code></td><td><span class="sig">int w</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>h</code></td><td><span class="sig">int h</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>caps</code></td><td><span class="sig">int caps</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>param</code></td><td><span class="sig">String param(String name, String fallback)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>strToInt</code></td><td><span class="sig">int strToInt(String s, int fallback)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>capHas</code></td><td><span class="sig">boolean capHas(int bit)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>start</code></td><td><span class="sig">int start()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>paintWhite</code></td><td><span class="sig">void paintWhite()</span></td><td class="desc">fill the entire display white, pixel by pixel through the accurate bridge</td></tr>
+<tr><td><code>escPressed</code></td><td><span class="sig">void escPressed()</span></td><td class="desc">one ESC press: running -&gt; frame, frame -&gt; exit</td></tr>
+<tr><td><code>step</code></td><td><span class="sig">int step()</span></td><td class="desc">step(): poll ESC, advance the logo fade one frame, return the run state</td></tr>
+<tr><td><code>fadePercent</code></td><td><span class="sig">int fadePercent()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>stateName</code></td><td><span class="sig">String stateName(int s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slballumcolor">SLBallumColor <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/SLBallumColor.sleela)</span></h2>
+<div data-u="slballumcolor slballumcolor">
+<h3 id="SLBallumColor">SLBallumColor <span class="pill">class</span></h3>
+<p class="desc">An 8-bit RGBA color, mirroring ballum_color_t.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>r</code></td><td><span class="sig">int r</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>g</code></td><td><span class="sig">int g</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>b</code></td><td><span class="sig">int b</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>a</code></td><td><span class="sig">int a</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>clampChannel</code></td><td><span class="sig">int clampChannel(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setRgb</code></td><td><span class="sig">void setRgb(int red, int green, int blue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setRgba</code></td><td><span class="sig">void setRgba(int red, int green, int blue, int alpha)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>red</code></td><td><span class="sig">int red()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>green</code></td><td><span class="sig">int green()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>blue</code></td><td><span class="sig">int blue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>alpha</code></td><td><span class="sig">int alpha()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>packed</code></td><td><span class="sig">int packed()</span></td><td class="desc">Pack to 0xAARRGGBB for a caller that wants a single int handle.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slballumdisplay">SLBallumDisplay <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/SLBallumDisplay.sleela)</span></h2>
+<div data-u="slballumdisplay slballumdisplay">
+<h3 id="SLBallumDisplay">SLBallumDisplay <span class="pill">class</span></h3>
+<p class="desc">A connected display description, mirroring ballum_display_t.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>CAP_NONE</code></td><td><span class="sig">static final int CAP_NONE = 0</span></td><td class="desc">--- capability flags (mirror ballum_capability_t) ---</td></tr>
+<tr><td><code>CAP_PER_PIXEL</code></td><td><span class="sig">static final int CAP_PER_PIXEL = 1</span></td><td class="desc">1 &lt;&lt; 0</td></tr>
+<tr><td><code>CAP_REGION_BLIT</code></td><td><span class="sig">static final int CAP_REGION_BLIT = 2</span></td><td class="desc">1 &lt;&lt; 1</td></tr>
+<tr><td><code>CAP_BRIGHTNESS</code></td><td><span class="sig">static final int CAP_BRIGHTNESS = 4</span></td><td class="desc">1 &lt;&lt; 2</td></tr>
+<tr><td><code>CAP_COLOR_TEMPERATURE</code></td><td><span class="sig">static final int CAP_COLOR_TEMPERATURE = 8</span></td><td class="desc">1 &lt;&lt; 3</td></tr>
+<tr><td><code>CAP_GAMMA</code></td><td><span class="sig">static final int CAP_GAMMA = 16</span></td><td class="desc">1 &lt;&lt; 4</td></tr>
+<tr><td><code>id</code></td><td><span class="sig">int id</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>width</code></td><td><span class="sig">int width</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>height</code></td><td><span class="sig">int height</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>refreshMilliHz</code></td><td><span class="sig">int refreshMilliHz</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>primary</code></td><td><span class="sig">int primary</span></td><td class="desc">1 if the primary display</td></tr>
+<tr><td><code>capabilities</code></td><td><span class="sig">int capabilities</span></td><td class="desc">OR of CAP_* flags</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(int displayId, String displayName, int w, int h)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setCapabilities</code></td><td><span class="sig">void setCapabilities(int caps)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setPrimary</code></td><td><span class="sig">void setPrimary(boolean isPrimary)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>displayId</code></td><td><span class="sig">int displayId()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>displayName</code></td><td><span class="sig">String displayName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pixelWidth</code></td><td><span class="sig">int pixelWidth()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pixelHeight</code></td><td><span class="sig">int pixelHeight()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isPrimary</code></td><td><span class="sig">boolean isPrimary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>has</code></td><td><span class="sig">boolean has(int cap)</span></td><td class="desc">Capability queries a GUI checks before enabling a control.</td></tr>
+<tr><td><code>supportsPerPixel</code></td><td><span class="sig">boolean supportsPerPixel()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>supportsBlit</code></td><td><span class="sig">boolean supportsBlit()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>supportsBrightness</code></td><td><span class="sig">boolean supportsBrightness()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>supportsColorTemperature</code></td><td><span class="sig">boolean supportsColorTemperature()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>supportsGamma</code></td><td><span class="sig">boolean supportsGamma()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>contains</code></td><td><span class="sig">boolean contains(int x, int y)</span></td><td class="desc">Is (x, y) a valid pixel on this display?</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slballumeffect">SLBallumEffect <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/SLBallumEffect.sleela)</span></h2>
+<div data-u="slballumeffect slballumeffect">
+<h3 id="SLBallumEffect">SLBallumEffect <span class="pill">class</span></h3>
+<p class="desc">The catalog of Ballum transition effects a session uses to reveal a logo over a background across its fade timeline. Each effect id mirrors the native ballum_effects.h / ballum_fx_t set one-for-one; the native compositor (uiBallumLogoBlend) applies the chosen effect per frame. Effects are deliberately broad and fun: fades, wipes, iris, bars/blinds, dissolve, pixelate, slides, zoom, spotlight, ripple, checker, diamond, a radial clock wipe, and sparkle. Pick one with id() or byName(); a session passes the id to uiBallumLogoSetEffect before its fade. Family: ballum. Pure catalog; the compositing lives in native code.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>FADE</code></td><td><span class="sig">static final int FADE = 0</span></td><td class="desc">effect ids -- must match ballum_fx_t in ballum/include/.../ballum_effects.h</td></tr>
+<tr><td><code>WIPE_LEFT</code></td><td><span class="sig">static final int WIPE_LEFT = 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>WIPE_RIGHT</code></td><td><span class="sig">static final int WIPE_RIGHT = 2</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>WIPE_UP</code></td><td><span class="sig">static final int WIPE_UP = 3</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>WIPE_DOWN</code></td><td><span class="sig">static final int WIPE_DOWN = 4</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>IRIS_IN</code></td><td><span class="sig">static final int IRIS_IN = 5</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>IRIS_OUT</code></td><td><span class="sig">static final int IRIS_OUT = 6</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>BARS</code></td><td><span class="sig">static final int BARS = 7</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>BLINDS</code></td><td><span class="sig">static final int BLINDS = 8</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>DISSOLVE</code></td><td><span class="sig">static final int DISSOLVE = 9</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>PIXELATE</code></td><td><span class="sig">static final int PIXELATE = 10</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>SLIDE_LEFT</code></td><td><span class="sig">static final int SLIDE_LEFT = 11</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>SLIDE_UP</code></td><td><span class="sig">static final int SLIDE_UP = 12</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ZOOM</code></td><td><span class="sig">static final int ZOOM = 13</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>SPOTLIGHT</code></td><td><span class="sig">static final int SPOTLIGHT = 14</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>RIPPLE</code></td><td><span class="sig">static final int RIPPLE = 15</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>CHECKER</code></td><td><span class="sig">static final int CHECKER = 16</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>DIAMOND</code></td><td><span class="sig">static final int DIAMOND = 17</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>CLOCK</code></td><td><span class="sig">static final int CLOCK = 18</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>SPARKLE</code></td><td><span class="sig">static final int SPARKLE = 19</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count()</span></td><td class="desc">How many effects the native catalog advertises (authoritative).</td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name(int fx)</span></td><td class="desc">The lowercase name of an effect id (e.g. 5 -&gt; &quot;iris-in&quot;).</td></tr>
+<tr><td><code>byName</code></td><td><span class="sig">int byName(String n)</span></td><td class="desc">Resolve an effect id by name; unknown names resolve to FADE.</td></tr>
+<tr><td><code>catalog</code></td><td><span class="sig">String catalog()</span></td><td class="desc">A newline-separated listing of every effect: &quot;id name&quot;.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slballuminput">SLBallumInput <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/SLBallumInput.sleela)</span></h2>
+<div data-u="slballuminput slballuminput">
+<h3 id="SLBallumInput">SLBallumInput <span class="pill">class</span></h3>
+<p class="desc">The Ballum touchscreen + mouse input listener (click, move, drag).</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>NONE</code></td><td><span class="sig">static final int NONE = 0</span></td><td class="desc">--- gesture codes ---</td></tr>
+<tr><td><code>DOWN</code></td><td><span class="sig">static final int DOWN = 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MOVE</code></td><td><span class="sig">static final int MOVE = 2</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>CLICK</code></td><td><span class="sig">static final int CLICK = 3</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>DRAG_BEGIN</code></td><td><span class="sig">static final int DRAG_BEGIN = 4</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>DRAG_MOVE</code></td><td><span class="sig">static final int DRAG_MOVE = 5</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>DRAG_END</code></td><td><span class="sig">static final int DRAG_END = 6</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>RAW_NONE</code></td><td><span class="sig">static final int RAW_NONE = 0</span></td><td class="desc">--- raw native event types (ballum_event_type_t) ---</td></tr>
+<tr><td><code>RAW_DOWN</code></td><td><span class="sig">static final int RAW_DOWN = 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>RAW_MOVE</code></td><td><span class="sig">static final int RAW_MOVE = 2</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>RAW_UP</code></td><td><span class="sig">static final int RAW_UP = 3</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>dragThreshold</code></td><td><span class="sig">int dragThreshold</span></td><td class="desc">Movement (in pixels) past which a press becomes a drag rather than a click.</td></tr>
+<tr><td><code>pressed</code></td><td><span class="sig">int pressed</span></td><td class="desc">Pressed-gesture state. 1 while a button/finger is down</td></tr>
+<tr><td><code>dragging</code></td><td><span class="sig">int dragging</span></td><td class="desc">1 once movement crossed the threshold</td></tr>
+<tr><td><code>downX</code></td><td><span class="sig">int downX</span></td><td class="desc">where the press started</td></tr>
+<tr><td><code>downY</code></td><td><span class="sig">int downY</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>curType</code></td><td><span class="sig">int curType</span></td><td class="desc">The latched current event, for accessor reads after poll(). raw type of the last polled event</td></tr>
+<tr><td><code>curX</code></td><td><span class="sig">int curX</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>curY</code></td><td><span class="sig">int curY</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>curButton</code></td><td><span class="sig">int curButton</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>curSource</code></td><td><span class="sig">int curSource</span></td><td class="desc">0 mouse, 1 touch</td></tr>
+<tr><td><code>curContact</code></td><td><span class="sig">int curContact</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>curModifiers</code></td><td><span class="sig">int curModifiers</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastGesture</code></td><td><span class="sig">int lastGesture</span></td><td class="desc">the gesture poll() last returned</td></tr>
+<tr><td><code>KEY_NONE</code></td><td><span class="sig">static final int KEY_NONE = 0</span></td><td class="desc">--- key codes (ballum_key_t) ---</td></tr>
+<tr><td><code>KEY_ENTER</code></td><td><span class="sig">static final int KEY_ENTER = 13</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>KEY_ESC</code></td><td><span class="sig">static final int KEY_ESC = 27</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>KEY_SPACE</code></td><td><span class="sig">static final int KEY_SPACE = 32</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>curKey</code></td><td><span class="sig">int curKey</span></td><td class="desc">the last key poll_key() returned (0 none)</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setDragThreshold</code></td><td><span class="sig">void setDragThreshold(int px)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>available</code></td><td><span class="sig">boolean available()</span></td><td class="desc">Is a pointer-input backend available on this host?</td></tr>
+<tr><td><code>hasKeyboard</code></td><td><span class="sig">boolean hasKeyboard()</span></td><td class="desc">Is a keyboard backend available on this host?</td></tr>
+<tr><td><code>pollKey</code></td><td><span class="sig">int pollKey()</span></td><td class="desc">pollKey(): dequeue one key, returning its code (0 none, 27 ESC, 13 ENTER, 32 SPACE, printable ASCII as itself). Fail closed: a host with no keyboard backend always returns KEY_NONE, never a false key.</td></tr>
+<tr><td><code>key</code></td><td><span class="sig">int key()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isEscape</code></td><td><span class="sig">boolean isEscape()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>absDiff</code></td><td><span class="sig">int absDiff(int a, int b)</span></td><td class="desc">|a - b| for the threshold test.</td></tr>
+<tr><td><code>poll</code></td><td><span class="sig">int poll()</span></td><td class="desc">poll(): dequeue one raw event and fold it into the gesture state machine. Returns a gesture code (see the class header). Call repeatedly until it returns NONE to drain all input for this frame.</td></tr>
+<tr><td><code>gesture</code></td><td><span class="sig">int gesture()</span></td><td class="desc">---- accessors for the latched event / gesture ----------------------</td></tr>
+<tr><td><code>rawType</code></td><td><span class="sig">int rawType()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>x</code></td><td><span class="sig">int x()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>y</code></td><td><span class="sig">int y()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>button</code></td><td><span class="sig">int button()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>source</code></td><td><span class="sig">int source()</span></td><td class="desc">0 mouse, 1 touch</td></tr>
+<tr><td><code>contact</code></td><td><span class="sig">int contact()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>modifiers</code></td><td><span class="sig">int modifiers()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isTouch</code></td><td><span class="sig">boolean isTouch()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isMouse</code></td><td><span class="sig">boolean isMouse()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isPressed</code></td><td><span class="sig">boolean isPressed()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isDragging</code></td><td><span class="sig">boolean isDragging()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pressX</code></td><td><span class="sig">int pressX()</span></td><td class="desc">The start point of the current press/drag.</td></tr>
+<tr><td><code>pressY</code></td><td><span class="sig">int pressY()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>snapshot</code></td><td><span class="sig">SLBallumPointerEvent snapshot()</span></td><td class="desc">Build an SLBallumPointerEvent snapshot of the latched raw event, for code that prefers a value object over the inline accessors.</td></tr>
+<tr><td><code>gestureName</code></td><td><span class="sig">String gestureName(int g)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slballummanager">SLBallumManager <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/SLBallumManager.sleela)</span></h2>
+<div data-u="slballummanager slballummanager">
+<h3 id="SLBallumManager">SLBallumManager <span class="pill">class</span></h3>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>STATE_NEW</code></td><td><span class="sig">static final int STATE_NEW = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>STATE_BRIDGE_READY</code></td><td><span class="sig">static final int STATE_BRIDGE_READY = 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>STATE_ENUMERATED</code></td><td><span class="sig">static final int STATE_ENUMERATED = 2</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>BRIGHTNESS_MIN</code></td><td><span class="sig">static final int BRIGHTNESS_MIN = 0</span></td><td class="desc">Documented native ranges (mirror ballum_manager.h).</td></tr>
+<tr><td><code>BRIGHTNESS_MAX</code></td><td><span class="sig">static final int BRIGHTNESS_MAX = 100</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>WARMTH_MIN_KELVIN</code></td><td><span class="sig">static final int WARMTH_MIN_KELVIN = 1000</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>WARMTH_NEUTRAL_K</code></td><td><span class="sig">static final int WARMTH_NEUTRAL_K = 6500</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>WARMTH_MAX_KELVIN</code></td><td><span class="sig">static final int WARMTH_MAX_KELVIN = 10000</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>GAMMA_SCALE</code></td><td><span class="sig">static final int GAMMA_SCALE = 100</span></td><td class="desc">gamma 2.20 is encoded as 220</td></tr>
+<tr><td><code>GAMMA_MIN</code></td><td><span class="sig">static final int GAMMA_MIN = 10</span></td><td class="desc">0.10</td></tr>
+<tr><td><code>GAMMA_MAX</code></td><td><span class="sig">static final int GAMMA_MAX = 1000</span></td><td class="desc">10.00</td></tr>
+<tr><td><code>nativeHandle</code></td><td><span class="sig">int nativeHandle</span></td><td class="desc">VM-local bridge index, not a native pointer</td></tr>
+<tr><td><code>state</code></td><td><span class="sig">int state</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastStatus</code></td><td><span class="sig">int lastStatus</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>displayCount</code></td><td><span class="sig">int displayCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>status</code></td><td><span class="sig">SLBallumStatus status</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bindNativeHandle</code></td><td><span class="sig">boolean bindNativeHandle(int handle)</span></td><td class="desc">Bind the VM-side native handle (returned by the host bridge). A negative handle means the backend is unavailable on this host.</td></tr>
+<tr><td><code>nativeReady</code></td><td><span class="sig">boolean nativeReady()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>handle</code></td><td><span class="sig">int handle()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>managerState</code></td><td><span class="sig">int managerState()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>statusCode</code></td><td><span class="sig">int statusCode()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>statusText</code></td><td><span class="sig">String statusText()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>displays</code></td><td><span class="sig">int displays()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clampBrightness</code></td><td><span class="sig">int clampBrightness(int percent)</span></td><td class="desc">---- clamps (mirror ballum_clamp_*) --------------------------------</td></tr>
+<tr><td><code>clampWarmth</code></td><td><span class="sig">int clampWarmth(int kelvin)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clampGamma</code></td><td><span class="sig">int clampGamma(int gammaScaled)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>acceptEnumerateResult</code></td><td><span class="sig">int acceptEnumerateResult(int statusCode, int count)</span></td><td class="desc">---- enumeration ---------------------------------------------------- acceptEnumerateResult: the host bridge calls this with the native status and the display count after ballum_manager_enumerate runs.</td></tr>
+<tr><td><code>requestSetPixel</code></td><td><span class="sig">int requestSetPixel(SLBallumDisplay display, int x, int y, SLBallumColor color)</span></td><td class="desc">---- per-pixel ------------------------------------------------------ requestSetPixel: validate against the display before asking the bridge. Returns OK when the request is well-formed and may be dispatched, else a failing status that the caller surfaces without touching the device.</td></tr>
+<tr><td><code>requestGetPixel</code></td><td><span class="sig">int requestGetPixel(SLBallumDisplay display, int x, int y)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>requestBlit</code></td><td><span class="sig">int requestBlit(SLBallumDisplay display, int x, int y, int w, int h, int pixelCount)</span></td><td class="desc">requestBlit: the rectangle must be inside the display and the pixel count must equal width*height.</td></tr>
+<tr><td><code>requestBrightness</code></td><td><span class="sig">int requestBrightness(SLBallumDisplay display, int percent)</span></td><td class="desc">---- whole-display controls ----------------------------------------- Each returns the value to hand the native layer (already clamped), via lastStatus = OK, or a failing status when unsupported / no bridge.</td></tr>
+<tr><td><code>requestWarmth</code></td><td><span class="sig">int requestWarmth(SLBallumDisplay display, int kelvin)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>requestGamma</code></td><td><span class="sig">int requestGamma(SLBallumDisplay display, int gammaScaled)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>reset</code></td><td><span class="sig">void reset()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>backendSupported</code></td><td><span class="sig">boolean backendSupported()</span></td><td class="desc">1 if a real per-OS backend is compiled in, 0 if the fallback.</td></tr>
+<tr><td><code>backendName</code></td><td><span class="sig">String backendName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>enumerate</code></td><td><span class="sig">int enumerate()</span></td><td class="desc">Enumerate displays; records the count and marks the manager ENUMERATED.</td></tr>
+<tr><td><code>displayIdAt</code></td><td><span class="sig">int displayIdAt(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>displayNameAt</code></td><td><span class="sig">String displayNameAt(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>displayWidthAt</code></td><td><span class="sig">int displayWidthAt(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>displayHeightAt</code></td><td><span class="sig">int displayHeightAt(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>displayPrimaryAt</code></td><td><span class="sig">boolean displayPrimaryAt(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>displayCapsAt</code></td><td><span class="sig">int displayCapsAt(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setPixel</code></td><td><span class="sig">int setPixel(int id, int x, int y, SLBallumColor color)</span></td><td class="desc">Set a pixel&#x27;s color on display `id`. Returns the native status.</td></tr>
+<tr><td><code>getPixelPacked</code></td><td><span class="sig">int getPixelPacked(int id, int x, int y)</span></td><td class="desc">Read a pixel; returns packed 0xAARRGGBB, or -1 on failure.</td></tr>
+<tr><td><code>setBrightness</code></td><td><span class="sig">int setBrightness(int id, int percent)</span></td><td class="desc">Whole-display controls (clamped locally, then dispatched to native).</td></tr>
+<tr><td><code>setWarmth</code></td><td><span class="sig">int setWarmth(int id, int kelvin)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setGamma</code></td><td><span class="sig">int setGamma(int id, int gammaScaled)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slballumpointerevent">SLBallumPointerEvent <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/SLBallumPointerEvent.sleela)</span></h2>
+<div data-u="slballumpointerevent slballumpointerevent">
+<h3 id="SLBallumPointerEvent">SLBallumPointerEvent <span class="pill">class</span></h3>
+<p class="desc">One Ballum pointer (mouse/touch) event, mirroring ballum_pointer_event_t.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>TYPE_NONE</code></td><td><span class="sig">static final int TYPE_NONE = 0</span></td><td class="desc">--- event type (mirror ballum_event_type_t) ---</td></tr>
+<tr><td><code>TYPE_DOWN</code></td><td><span class="sig">static final int TYPE_DOWN = 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>TYPE_MOVE</code></td><td><span class="sig">static final int TYPE_MOVE = 2</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>TYPE_UP</code></td><td><span class="sig">static final int TYPE_UP = 3</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>BUTTON_NONE</code></td><td><span class="sig">static final int BUTTON_NONE = 0</span></td><td class="desc">--- button (mirror ballum_pointer_button_t) ---</td></tr>
+<tr><td><code>BUTTON_LEFT</code></td><td><span class="sig">static final int BUTTON_LEFT = 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>BUTTON_MIDDLE</code></td><td><span class="sig">static final int BUTTON_MIDDLE = 2</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>BUTTON_RIGHT</code></td><td><span class="sig">static final int BUTTON_RIGHT = 3</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>SOURCE_MOUSE</code></td><td><span class="sig">static final int SOURCE_MOUSE = 0</span></td><td class="desc">--- source (mirror ballum_pointer_source_t) ---</td></tr>
+<tr><td><code>SOURCE_TOUCH</code></td><td><span class="sig">static final int SOURCE_TOUCH = 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MOD_SHIFT</code></td><td><span class="sig">static final int MOD_SHIFT = 1</span></td><td class="desc">--- modifier bits (mirror BALLUM_MOD_*) ---</td></tr>
+<tr><td><code>MOD_CTRL</code></td><td><span class="sig">static final int MOD_CTRL = 2</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MOD_ALT</code></td><td><span class="sig">static final int MOD_ALT = 4</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MOD_SUPER</code></td><td><span class="sig">static final int MOD_SUPER = 8</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>type</code></td><td><span class="sig">int type</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>x</code></td><td><span class="sig">int x</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>y</code></td><td><span class="sig">int y</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>button</code></td><td><span class="sig">int button</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>source</code></td><td><span class="sig">int source</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>contactId</code></td><td><span class="sig">int contactId</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>modifiers</code></td><td><span class="sig">int modifiers</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(int evType, int px, int py, int evButton,</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>eventType</code></td><td><span class="sig">int eventType()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>posX</code></td><td><span class="sig">int posX()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>posY</code></td><td><span class="sig">int posY()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pointerButton</code></td><td><span class="sig">int pointerButton()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pointerSource</code></td><td><span class="sig">int pointerSource()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>touchContact</code></td><td><span class="sig">int touchContact()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>modifierMask</code></td><td><span class="sig">int modifierMask()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isDown</code></td><td><span class="sig">boolean isDown()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isMove</code></td><td><span class="sig">boolean isMove()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isUp</code></td><td><span class="sig">boolean isUp()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isNone</code></td><td><span class="sig">boolean isNone()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isTouch</code></td><td><span class="sig">boolean isTouch()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isMouse</code></td><td><span class="sig">boolean isMouse()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isLeft</code></td><td><span class="sig">boolean isLeft()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hasModifier</code></td><td><span class="sig">boolean hasModifier(int bit)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>shift</code></td><td><span class="sig">boolean shift()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ctrl</code></td><td><span class="sig">boolean ctrl()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>alt</code></td><td><span class="sig">boolean alt()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slballumscreen">SLBallumScreen <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/SLBallumScreen.sleela)</span></h2>
+<div data-u="slballumscreen slballumscreen">
+<h3 id="SLBallumScreen">SLBallumScreen <span class="pill">class</span></h3>
+<p class="desc">The clean, pixel-accurate Screen API for Ballum developers.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>manager</code></td><td><span class="sig">SLBallumManager manager</span></td><td class="desc">the low-level bridge-boundary driver</td></tr>
+<tr><td><code>status</code></td><td><span class="sig">SLBallumStatus status</span></td><td class="desc">result-code text</td></tr>
+<tr><td><code>boundIndex</code></td><td><span class="sig">int boundIndex</span></td><td class="desc">enumerate() index of the bound display, or -1</td></tr>
+<tr><td><code>boundId</code></td><td><span class="sig">int boundId</span></td><td class="desc">native display id of the bound display, or -1</td></tr>
+<tr><td><code>w</code></td><td><span class="sig">int w</span></td><td class="desc">cached width (pixels) of the bound display</td></tr>
+<tr><td><code>h</code></td><td><span class="sig">int h</span></td><td class="desc">cached height (pixels) of the bound display</td></tr>
+<tr><td><code>caps</code></td><td><span class="sig">int caps</span></td><td class="desc">cached capability bitmask of the bound display</td></tr>
+<tr><td><code>lastStatus</code></td><td><span class="sig">int lastStatus</span></td><td class="desc">the status of the most recent operation</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>create</code></td><td><span class="sig">void create()</span></td><td class="desc">Prepare the Screen. Call open()/openIndex() before drawing.</td></tr>
+<tr><td><code>attach</code></td><td><span class="sig">boolean attach(int nativeHandle)</span></td><td class="desc">Bind the native backend handle the host VM provides. A negative handle means no display backend is available on this host.</td></tr>
+<tr><td><code>open</code></td><td><span class="sig">int open()</span></td><td class="desc">open(): enumerate displays and bind the primary one (or display 0 if no display is flagged primary). Returns the result code.</td></tr>
+<tr><td><code>openIndex</code></td><td><span class="sig">int openIndex(int index)</span></td><td class="desc">openIndex(index): enumerate displays and bind the one at `index`.</td></tr>
+<tr><td><code>isReady</code></td><td><span class="sig">boolean isReady()</span></td><td class="desc">A Screen is ready to draw once a display is bound.</td></tr>
+<tr><td><code>screenCount</code></td><td><span class="sig">int screenCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>primaryIndex</code></td><td><span class="sig">int primaryIndex()</span></td><td class="desc">Index of the primary display among the enumerated set, or 0 as a safe default when none is flagged. Enumerates first if needed.</td></tr>
+<tr><td><code>width</code></td><td><span class="sig">int width()</span></td><td class="desc">Geometry + identity of the bound display.</td></tr>
+<tr><td><code>height</code></td><td><span class="sig">int height()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>displayId</code></td><td><span class="sig">int displayId()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isPrimary</code></td><td><span class="sig">boolean isPrimary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>capHas</code></td><td><span class="sig">boolean capHas(int bit)</span></td><td class="desc">Capability queries a developer checks before enabling a control. These read the advertised capability bitmask of the bound display (ballum_capability_t: 1 per-pixel, 2 blit, 4 brightness, 8 warmth, 16 gamma).</td></tr>
+<tr><td><code>canPlotPixels</code></td><td><span class="sig">boolean canPlotPixels()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canSetBrightness</code></td><td><span class="sig">boolean canSetBrightness()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canSetWarmth</code></td><td><span class="sig">boolean canSetWarmth()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canSetGamma</code></td><td><span class="sig">boolean canSetGamma()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>inBounds</code></td><td><span class="sig">boolean inBounds(int x, int y)</span></td><td class="desc">Is (x, y) an exact, in-range pixel on the bound display? This is the accuracy gate every placement passes through.</td></tr>
+<tr><td><code>rgb</code></td><td><span class="sig">SLBallumColor rgb(int r, int g, int b)</span></td><td class="desc">Build a color without needing to name SLBallumColor at the call site.</td></tr>
+<tr><td><code>rgba</code></td><td><span class="sig">SLBallumColor rgba(int r, int g, int b, int a)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>plot</code></td><td><span class="sig">int plot(int x, int y, SLBallumColor color)</span></td><td class="desc">plot(x, y, color): set exactly one pixel. Validates readiness, capability, and bounds before the write, so the pixel lands precisely or a clear status is returned. Returns the result code (also in lastStatus).</td></tr>
+<tr><td><code>plotRgb</code></td><td><span class="sig">int plotRgb(int x, int y, int r, int g, int b)</span></td><td class="desc">plotRgb: the common case, one call, no color object at the call site.</td></tr>
+<tr><td><code>sample</code></td><td><span class="sig">int sample(int x, int y)</span></td><td class="desc">sample(x, y): read a pixel back, returned packed as 0xAARRGGBB, or -1 if the read is out of bounds / unsupported. Lets a developer verify accuracy.</td></tr>
+<tr><td><code>fillRect</code></td><td><span class="sig">int fillRect(int x, int y, int rectW, int rectH, SLBallumColor color)</span></td><td class="desc">fillRect(x, y, rectW, rectH, color): set every pixel in an exact rectangle, one accurate plot at a time. The rectangle must lie fully inside the display; otherwise OUT_OF_BOUNDS is returned and nothing is drawn. Returns the result code; stops and reports the first non-OK pixel.</td></tr>
+<tr><td><code>brightness</code></td><td><span class="sig">int brightness(int percent)</span></td><td class="desc">brightness(percent): 0..100.</td></tr>
+<tr><td><code>warmth</code></td><td><span class="sig">int warmth(int kelvin)</span></td><td class="desc">warmth(kelvin): color temperature, 1000..10000K (6500 neutral; lower warmer).</td></tr>
+<tr><td><code>gamma</code></td><td><span class="sig">int gamma(int gammaScaled)</span></td><td class="desc">gamma(gammaScaled): gamma encoded x100 (2.20 gamma == 220), 10..1000.</td></tr>
+<tr><td><code>gammaPoint</code></td><td><span class="sig">int gammaPoint(int whole, int hundredths)</span></td><td class="desc">gammaPoint(whole, hundredths): convenience for gamma(2, 20) == 2.20 gamma.</td></tr>
+<tr><td><code>statusCode</code></td><td><span class="sig">int statusCode()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ok</code></td><td><span class="sig">boolean ok()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastMessage</code></td><td><span class="sig">String lastMessage()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slballumscreenfit">SLBallumScreenFit <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/SLBallumScreenFit.sleela)</span></h2>
+<div data-u="slballumscreenfit slballumscreenfit">
+<h3 id="SLBallumScreenFit">SLBallumScreenFit <span class="pill">class</span></h3>
+<p class="desc">SLBallumScreenFit — the screen-size bridge between the Ballum</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>screenW</code></td><td><span class="sig">int screenW</span></td><td class="desc">last discovered primary-display size (0 until a fit* call succeeds)</td></tr>
+<tr><td><code>screenH</code></td><td><span class="sig">int screenH</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>gotReal</code></td><td><span class="sig">int gotReal</span></td><td class="desc">1 once a real screen size was obtained from the Ballum backend</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>create</code></td><td><span class="sig">void create()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>discover</code></td><td><span class="sig">boolean discover()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>width</code></td><td><span class="sig">int width()</span></td><td class="desc">The last discovered primary-display width (0 if none).</td></tr>
+<tr><td><code>height</code></td><td><span class="sig">int height()</span></td><td class="desc">The last discovered primary-display height (0 if none).</td></tr>
+<tr><td><code>hasRealScreen</code></td><td><span class="sig">boolean hasRealScreen()</span></td><td class="desc">True if the last fit*/discover obtained a real screen size from the backend.</td></tr>
+<tr><td><code>fitFrame</code></td><td><span class="sig">boolean fitFrame(SLLayoutFrame frame, int x, int y)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slballumsession">SLBallumSession <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/SLBallumSession.sleela)</span></h2>
+<div data-u="slballumsession slballumsession">
+<h3 id="SLBallumSession">SLBallumSession <span class="pill">class</span></h3>
+<p class="desc">A full-screen Ballum session with an easy, one-call startup: a</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>IDLE</code></td><td><span class="sig">static final int IDLE = 0</span></td><td class="desc">---- session run states (returned by step()) --- not started yet</td></tr>
+<tr><td><code>RUNNING</code></td><td><span class="sig">static final int RUNNING = 1</span></td><td class="desc">fading the logo in / holding full screen</td></tr>
+<tr><td><code>FRAME</code></td><td><span class="sig">static final int FRAME = 2</span></td><td class="desc">first ESC: yielded full screen to a framed context</td></tr>
+<tr><td><code>EXIT</code></td><td><span class="sig">static final int EXIT = 3</span></td><td class="desc">second ESC (or requestExit): leaving the program</td></tr>
+<tr><td><code>screen</code></td><td><span class="sig">SLBallumScreen screen</span></td><td class="desc">the bound full-screen display</td></tr>
+<tr><td><code>input</code></td><td><span class="sig">SLBallumInput input</span></td><td class="desc">keyboard + pointer input (for ESC and the pointer exit fallback)</td></tr>
+<tr><td><code>logoUrl</code></td><td><span class="sig">String logoUrl</span></td><td class="desc">startup configuration (easy defaults; override before start())</td></tr>
+<tr><td><code>logoPath</code></td><td><span class="sig">String logoPath</span></td><td class="desc">local file path to decode the logo from (empty = none; URL is for display)</td></tr>
+<tr><td><code>effect</code></td><td><span class="sig">int effect</span></td><td class="desc">transition effect id (SLBallumEffect.*); default FADE</td></tr>
+<tr><td><code>fadeFrames</code></td><td><span class="sig">int fadeFrames</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>displayIndex</code></td><td><span class="sig">int displayIndex</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bgR</code></td><td><span class="sig">int bgR</span></td><td class="desc">background is pure white by default, as an RGB triple</td></tr>
+<tr><td><code>bgG</code></td><td><span class="sig">int bgG</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bgB</code></td><td><span class="sig">int bgB</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>state</code></td><td><span class="sig">int state</span></td><td class="desc">live state</td></tr>
+<tr><td><code>frame</code></td><td><span class="sig">int frame</span></td><td class="desc">current fade frame, 0..fadeFrames</td></tr>
+<tr><td><code>painted</code></td><td><span class="sig">int painted</span></td><td class="desc">1 once the white background has been painted</td></tr>
+<tr><td><code>logoReady</code></td><td><span class="sig">int logoReady</span></td><td class="desc">1 once a logo decoder supplied pixels (host-dependent)</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure()</span></td><td class="desc">Prepare a session with sensible, user-friendly defaults.</td></tr>
+<tr><td><code>defaultLogoUrl</code></td><td><span class="sig">String defaultLogoUrl()</span></td><td class="desc">The default splash logo (the national bitcoin / ICC mark).</td></tr>
+<tr><td><code>withLogo</code></td><td><span class="sig">SLBallumSession withLogo(String url)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>withLogoFile</code></td><td><span class="sig">SLBallumSession withLogoFile(String path)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>withEffect</code></td><td><span class="sig">SLBallumSession withEffect(int fx)</span></td><td class="desc">Choose a transition effect (SLBallumEffect.* -- FADE, IRIS_IN, SPARKLE...).</td></tr>
+<tr><td><code>withFadeFrames</code></td><td><span class="sig">SLBallumSession withFadeFrames(int frames)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>withDisplayIndex</code></td><td><span class="sig">SLBallumSession withDisplayIndex(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>withBackground</code></td><td><span class="sig">SLBallumSession withBackground(int r, int g, int b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>start</code></td><td><span class="sig">int start()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>paintBackground</code></td><td><span class="sig">void paintBackground()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>step</code></td><td><span class="sig">int step()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>handleInput</code></td><td><span class="sig">void handleInput()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>escPressed</code></td><td><span class="sig">void escPressed()</span></td><td class="desc">Apply one ESC press to the state machine.</td></tr>
+<tr><td><code>requestExit</code></td><td><span class="sig">void requestExit()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>resume</code></td><td><span class="sig">int resume()</span></td><td class="desc">Return a FRAME-mode session to full-screen running.</td></tr>
+<tr><td><code>finish</code></td><td><span class="sig">void finish()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>renderFade</code></td><td><span class="sig">void renderFade()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fadePercent</code></td><td><span class="sig">int fadePercent()</span></td><td class="desc">The current fade opacity as a percent 0..100.</td></tr>
+<tr><td><code>isFullScreen</code></td><td><span class="sig">boolean isFullScreen()</span></td><td class="desc">---- queries --------------------------------------------------------</td></tr>
+<tr><td><code>isRunning</code></td><td><span class="sig">boolean isRunning()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isFrameMode</code></td><td><span class="sig">boolean isFrameMode()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isExiting</code></td><td><span class="sig">boolean isExiting()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fadeComplete</code></td><td><span class="sig">boolean fadeComplete()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>logoPending</code></td><td><span class="sig">boolean logoPending()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>runState</code></td><td><span class="sig">int runState()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>currentFrame</code></td><td><span class="sig">int currentFrame()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>screenWidth</code></td><td><span class="sig">int screenWidth()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>screenHeight</code></td><td><span class="sig">int screenHeight()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>logo</code></td><td><span class="sig">String logo()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>stateName</code></td><td><span class="sig">String stateName(int s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slballumstatus">SLBallumStatus <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/SLBallumStatus.sleela)</span></h2>
+<div data-u="slballumstatus slballumstatus">
+<h3 id="SLBallumStatus">SLBallumStatus <span class="pill">class</span></h3>
+<p class="desc">Ballum result/status codes, mirroring ballum_status_t.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>OK</code></td><td><span class="sig">static final int OK = 0</span></td><td class="desc">--- native ballum_status_t (same ordinals) ---</td></tr>
+<tr><td><code>INVALID_ARGUMENT</code></td><td><span class="sig">static final int INVALID_ARGUMENT = 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>BACKEND_UNAVAILABLE</code></td><td><span class="sig">static final int BACKEND_UNAVAILABLE = 2</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>BACKEND_ERROR</code></td><td><span class="sig">static final int BACKEND_ERROR = 3</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>DISPLAY_NOT_FOUND</code></td><td><span class="sig">static final int DISPLAY_NOT_FOUND = 4</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>OUT_OF_BOUNDS</code></td><td><span class="sig">static final int OUT_OF_BOUNDS = 5</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>BUFFER_TOO_SMALL</code></td><td><span class="sig">static final int BUFFER_TOO_SMALL = 6</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>UNSUPPORTED</code></td><td><span class="sig">static final int UNSUPPORTED = 7</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>PERMISSION_DENIED</code></td><td><span class="sig">static final int PERMISSION_DENIED = 8</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>NOT_INITIALIZED</code></td><td><span class="sig">static final int NOT_INITIALIZED = 9</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>BRIDGE_REQUIRED</code></td><td><span class="sig">static final int BRIDGE_REQUIRED = 100</span></td><td class="desc">--- SLeeLa bridge-boundary code (no native equivalent) --- Returned before a host SLVM binding connects this facade to the native ballum_manager_* API.</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>text</code></td><td><span class="sig">String text(int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ok</code></td><td><span class="sig">boolean ok(int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sllinuxballumprofile">SLLinuxBallumProfile <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/platforms/GNU/Linux/SLLinuxBallumProfile.sleela)</span></h2>
+<div data-u="sllinuxballumprofile sllinuxballumprofile">
+<h3 id="SLLinuxBallumProfile">SLLinuxBallumProfile <span class="pill">class</span></h3>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>brand</code></td><td><span class="sig">String brand()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>backendName</code></td><td><span class="sig">String backendName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>displayServer</code></td><td><span class="sig">String displayServer()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>systemLibraries</code></td><td><span class="sig">String systemLibraries()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>supportsPerPixel</code></td><td><span class="sig">boolean supportsPerPixel()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>supportsRegionBlit</code></td><td><span class="sig">boolean supportsRegionBlit()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>supportsBrightness</code></td><td><span class="sig">boolean supportsBrightness()</span></td><td class="desc">via CRTC gamma scaling</td></tr>
+<tr><td><code>supportsColorTemperature</code></td><td><span class="sig">boolean supportsColorTemperature()</span></td><td class="desc">via CRTC gamma ramp</td></tr>
+<tr><td><code>supportsGamma</code></td><td><span class="sig">boolean supportsGamma()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>supportsDdcBacklight</code></td><td><span class="sig">boolean supportsDdcBacklight()</span></td><td class="desc">DDC/CI backlight is hardware-dependent; advertised separately.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slmacosballumprofile">SLMacOSBallumProfile <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/platforms/Apple/macOS/SLMacOSBallumProfile.sleela)</span></h2>
+<div data-u="slmacosballumprofile slmacosballumprofile">
+<h3 id="SLMacOSBallumProfile">SLMacOSBallumProfile <span class="pill">class</span></h3>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>brand</code></td><td><span class="sig">String brand()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>backendName</code></td><td><span class="sig">String backendName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>displayServer</code></td><td><span class="sig">String displayServer()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>systemLibraries</code></td><td><span class="sig">String systemLibraries()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>supportsPerPixel</code></td><td><span class="sig">boolean supportsPerPixel()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>supportsRegionBlit</code></td><td><span class="sig">boolean supportsRegionBlit()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>supportsBrightness</code></td><td><span class="sig">boolean supportsBrightness()</span></td><td class="desc">via transfer formula</td></tr>
+<tr><td><code>supportsColorTemperature</code></td><td><span class="sig">boolean supportsColorTemperature()</span></td><td class="desc">via transfer formula</td></tr>
+<tr><td><code>supportsGamma</code></td><td><span class="sig">boolean supportsGamma()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>supportsDdcBacklight</code></td><td><span class="sig">boolean supportsDdcBacklight()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slpackage">SLPackage <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/SLPackage.sleela)</span></h2>
+<div data-u="slpackage slpackage">
+<h3 id="SLPackage">SLPackage <span class="pill">class</span></h3>
+<p class="desc">Defines the SLeeLa standard-library package for ballum.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>packageName</code></td><td><span class="sig">String packageName</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>available</code></td><td><span class="sig">boolean available()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slwindowsballumprofile">SLWindowsBallumProfile <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ballum/platforms/Microsoft/Windows/SLWindowsBallumProfile.sleela)</span></h2>
+<div data-u="slwindowsballumprofile slwindowsballumprofile">
+<h3 id="SLWindowsBallumProfile">SLWindowsBallumProfile <span class="pill">class</span></h3>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>brand</code></td><td><span class="sig">String brand()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>minimumVersion</code></td><td><span class="sig">String minimumVersion()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>backendName</code></td><td><span class="sig">String backendName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>displayServer</code></td><td><span class="sig">String displayServer()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>systemLibraries</code></td><td><span class="sig">String systemLibraries()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>supportsPerPixel</code></td><td><span class="sig">boolean supportsPerPixel()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>supportsRegionBlit</code></td><td><span class="sig">boolean supportsRegionBlit()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>supportsBrightness</code></td><td><span class="sig">boolean supportsBrightness()</span></td><td class="desc">via gamma ramp scaling</td></tr>
+<tr><td><code>supportsColorTemperature</code></td><td><span class="sig">boolean supportsColorTemperature()</span></td><td class="desc">via gamma ramp</td></tr>
+<tr><td><code>supportsGamma</code></td><td><span class="sig">boolean supportsGamma()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>supportsDdcBacklight</code></td><td><span class="sig">boolean supportsDdcBacklight()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
+<footer>
+Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
+<code>/lib</code> tree on 2026-10-31 00:00 UTC.
+SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
+</footer>
+</main>
+</div>
+</body>
+</html>

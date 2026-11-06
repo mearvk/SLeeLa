@@ -185,6 +185,10 @@ void slui_window_destroy(SLUIWindow* window) {
 void slui_window_show(SLUIWindow* window) {
     if (window) as_window(window)->show();
 }
+int slui_window_closed(const SLUIWindow* window) {
+    if (!window) return 0;
+    return as_window(const_cast<SLUIWindow*>(window))->closed() ? 1 : 0;
+}
 void slui_window_hide(SLUIWindow* window) {
     if (window) as_window(window)->hide();
 }
@@ -374,6 +378,12 @@ SLUIWidget* slui_popup_create(SLUIWidget* parent) {
 }
 void slui_popup_set_open(SLUIWidget* popup, int open) {
     slui_widget_set_visible(popup, open != 0);
+}
+void slui_popup_set_anchor(SLUIWidget* popup, int top_left, int x) {
+    if (popup) as_widget(popup)->set_overlay_anchor(top_left != 0, x);
+}
+void slui_popup_anchor_to(SLUIWidget* popup, SLUIWidget* trigger) {
+    if (popup) as_widget(popup)->set_overlay_anchor_widget(trigger ? as_widget(trigger) : nullptr);
 }
 int slui_popup_is_open(const SLUIWidget* popup) {
     return popup ? as_widget(popup)->visible() : 0;

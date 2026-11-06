@@ -28,8 +28,6 @@ typedef enum grt_claim_kind {
     GRT_KIND_INDEPENDENT_ASSESSMENT = 4
 } grt_claim_kind;
 
-/* Fixed-size, caller-owned claim data. Strings must be NUL-terminated.
- * Timestamps are Unix seconds; expiry must be later than issuance. */
 typedef struct grt_claim {
     uint32_t version;
     grt_claim_kind kind;

@@ -1,0 +1,39 @@
+#sleela 1.7
+// MODERATE: resolve a class name against an ordered class-path.
+// The JVM searches class-path entries IN ORDER and uses the first match. This
+// "first wins" rule explains most "wrong version loaded" surprises. We model
+// the class-path as data and resolve a few names; no JVM is launched.
+class Entry { String root; String provides; }
+class ModerateClasspathResolution {
+    static Entry[] classpath;
+
+    Entry entry(String root, String provides) {
+        Entry e = new Entry();
+        e.root = root; e.provides = provides;
+        return e;
+    }
+
+    // Return the root that first provides the class, or "NOT FOUND".
+    String resolve(String className) {
+        int i = 0;
+        while (i < arrayLength(classpath)) {
+            Entry e = classpath[i];
+            if (e.provides == className) return e.root;
+            i = i + 1;
+        }
+        return "NOT FOUND";
+    }
+
+    void main() {
+        // Two roots both provide com.app.Util -- the earlier one must win.
+        classpath = new Entry[3];
+        classpath[0] = entry("build/classes",  "com.app.Util");
+        classpath[1] = entry("libs/legacy.jar","com.app.Util");
+        classpath[2] = entry("libs/json.jar",  "com.app.Json");
+
+        print("resolve com.app.Util = " + resolve("com.app.Util"));
+        print("resolve com.app.Json = " + resolve("com.app.Json"));
+        print("resolve com.app.Missing = " + resolve("com.app.Missing"));
+        print("rule: first class-path entry that provides the class wins");
+    }
+}

@@ -1,0 +1,25 @@
+#sleela 2.5
+class SettingsPanel {
+  int main() {
+    SLUserInterface ui = new SLUserInterface(); ui.configure("com.mearvk.examples.SettingsPanel");
+    if (!ui.open()) { return 1; }
+    SLTheme theme = new SLTheme(); theme.white();
+    SLWindow win = ui.openWindow("Settings", 680, 560, theme.handle());
+    SLWidget root = win.rootWidget();
+    SLBox page = new SLBox(); page.vertical(root, 12); page.setMarginAll(18);
+    SLHeading title = new SLHeading(); title.createIn(page, "Preferences", 24);
+    SLFrame appearance = new SLFrame(); appearance.createIn(page, "Appearance");
+    SLComboBox palette = new SLComboBox(); palette.createIn(appearance);
+    palette.addOption("Default"); palette.addOption("White"); palette.addOption("Blue"); palette.addOption("Black"); palette.addOption("Gray");
+    SLToggle compact = new SLToggle(); compact.createIn(appearance, "Use compact spacing", false);
+    SLFrame behavior = new SLFrame(); behavior.createIn(page, "Behavior");
+    SLCheckBox launch = new SLCheckBox(); launch.createIn(behavior, "Launch at sign-in", false);
+    SLCheckBox updates = new SLCheckBox(); updates.createIn(behavior, "Check for updates", true);
+    SLSlider scale = new SLSlider(); scale.createIn(behavior, 80.0, 140.0, 100.0);
+    SLBox actions = new SLBox(); actions.horizontal(page, 8);
+    SLSpacer gap = new SLSpacer(); gap.createIn(actions);
+    SLButton cancel = new SLButton(); cancel.createIn(actions, "Cancel");
+    SLButton save = new SLButton(); save.createIn(actions, "Save"); save.setSuggested(true);
+    win.show(); return ui.run();
+  }
+}

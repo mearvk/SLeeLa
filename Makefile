@@ -3,7 +3,7 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all build uninstall uninstall-all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check ballum ballum-test ballum-deps ballum-check-deps ballum-install ballum-uninstall ballum-clean lib-ballum lib-ballum-check lib-ballum-install install install-all install-local install-system install-check install-product clean-install advanced-build tutorial-check tests server config route common-rails registry premium-vms sleeladoc sleeladoc-jar api-docs clean verify-security help guess install-guide install-editors uninstall-editors
+.PHONY: all build uninstall uninstall-all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check ballum ballum-test ballum-deps ballum-check-deps ballum-install ballum-uninstall ballum-clean lib-ballum lib-ballum-check lib-ballum-install install install-all install-local install-system install-check install-product clean-install advanced-build tutorial-check tests server config route common-rails registry registry-test premium-vms sleeladoc sleeladoc-jar api-docs clean verify-security help guess install-guide install-editors uninstall-editors
 
 SLEELA_MANIFEST_CONSENT ?=
 # Answer the "install the advanced (beautified/guided) build?" prompt
@@ -364,7 +364,7 @@ sleeladoc-jar: core
 	$(MAKE) -C sleeladoc jar
 
 # Generate all API documentation destinations from the same /lib source tree.
-# API_SNAPSHOT may select the next immutable snapshot (default: version-001).
+# API_SNAPSHOT may select the next immutable snapshot (default: automatic).
 api-docs:
 	bash tools/build-api-docs.sh
 
@@ -378,6 +378,9 @@ common-rails:
 # store + MySQL export) a fresh install reviews. Part of `all`.
 registry:
 	./build-registry.sh
+
+registry-test:
+	$(MAKE) -C registry test
 
 # Build the eleven premium SLVM generations as real runnable VMs. Each links
 # the shared native Core engine archive (impl/build/libslcore.a, produced by

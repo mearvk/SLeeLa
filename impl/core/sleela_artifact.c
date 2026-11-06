@@ -103,7 +103,14 @@ static int validate_loaded_vm(const SLVM* vm, char* error, size_t error_size) {
     for (int i=0;i<vm->nfunc;i++) {
         const SLFunc* fn=&vm->funcs[i];
         if (fn->entry < 0 || fn->entry >= vm->codelen) { abi_error(error,error_size,"function entry is outside code"); return 0; }
-        if (fn->nargs < 0 || fn->nlocals < fn->nargs || fn->nlocals > FRAMES_MAX) { abi_error(error,error_size,"invalid function local/argument counts"); return 0; }
+        /* nlocals counts the operand-STACK slots a frame lays down at entry
+         * (args + body locals), so it is bounded by the stack[] buffer
+         * (STACK_MAX), NOT by the frames[] buffer (FRAMES_MAX, the call-DEPTH
+         * limit). Validating nlocals against FRAMES_MAX wrongly rejected an
+         * otherwise-legal artifact whose entry (e.g. a local, non-/lib `main`)
+         * declared 1025..STACK_MAX locals -- a file that runs fine straight from
+         * source but failed to load once compiled to a Core artifact. */
+        if (fn->nargs < 0 || fn->nlocals < fn->nargs || fn->nlocals > STACK_MAX) { abi_error(error,error_size,"function local count exceeds operand-stack limit"); return 0; }
     }
     for (int i=0;i<vm->codelen;i++) {
         const SLInstr* in=&vm->code[i];
@@ -240,8 +247,14 @@ SLVM* slvm_load_file(const char* path) {
     vm->globals = nglobal ? (SLValue*)calloc(nglobal, sizeof(SLValue)) : NULL;
     vm->gnames = nglobal ? (char**)calloc(nglobal, sizeof(char*)) : NULL;
     vm->funcs = nfunc ? (SLFunc*)calloc(nfunc, sizeof(SLFunc)) : NULL;
+    /* The layout table is a growable heap array (slvm_new leaves it NULL); the
+     * loader sizes it exactly to the artifact's struct-type count, which
+     * sane_count already bounded by the SL_MAX_STRUCT_TYPES ceiling. */
+    vm->struct_types = nstruct ? (SLStructType*)calloc(nstruct, sizeof(SLStructType)) : NULL;
+    vm->struct_typecap = (int)nstruct;
     if ((codelen && !vm->code) || (nconst && !vm->consts) || (nstr && !vm->strs) ||
-        (nglobal && (!vm->globals || !vm->gnames)) || (nfunc && !vm->funcs)) ok = 0;
+        (nglobal && (!vm->globals || !vm->gnames)) || (nfunc && !vm->funcs) ||
+        (nstruct && !vm->struct_types)) ok = 0;
 
     if (ok) {
         for (uint32_t i = 0; ok && i < codelen; ++i)

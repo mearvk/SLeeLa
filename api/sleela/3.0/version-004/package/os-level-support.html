@@ -49,6 +49,7 @@
 <li><a href="../package/decompiler.html">decompiler</a></li>
 <li><a href="../package/deliberation.html">deliberation</a></li>
 <li><a href="../package/drivers.html">drivers</a></li>
+<li><a href="../package/examples.html">examples</a></li>
 <li><a href="../package/filesystem.html">filesystem</a></li>
 <li><a href="../package/gameplay.html">gameplay</a></li>
 <li><a href="../package/gui.html">gui</a></li>
@@ -133,8 +134,49 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; os-level-support</div>
 <h1>Package <code>os-level-support</code></h1>
-<div class="lead">This package contains <strong>16</strong> source unit(s) defining <strong>16</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>19</strong> source unit(s) defining <strong>19</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
+<h2 class="section" data-u="slosevent">SLOsEvent <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/os-level-support/SLOsEvent.sleela)</span></h2>
+<div data-u="slosevent slosevent">
+<h3 id="SLOsEvent">SLOsEvent <span class="pill">class</span></h3>
+<p class="desc">Descriptive event record for the native OS-support binding API.</p>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>USER</code></td><td><span class="sig">int USER = 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>TASK_QUEUED</code></td><td><span class="sig">int TASK_QUEUED = 2</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>TASK_FINISHED</code></td><td><span class="sig">int TASK_FINISHED = 3</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>kind</code></td><td><span class="sig">int kind = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sequence</code></td><td><span class="sig">int sequence = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>payloadSize</code></td><td><span class="sig">int payloadSize = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>payloadLifetime</code></td><td><span class="sig">String payloadLifetime = &quot;borrowed for the native callback duration only&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>getKind</code></td><td><span class="sig">int getKind()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getSequence</code></td><td><span class="sig">int getSequence()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getPayloadSize</code></td><td><span class="sig">int getPayloadSize()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getPayloadLifetime</code></td><td><span class="sig">String getPayloadLifetime()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slossubscription">SLOsSubscription <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/os-level-support/SLOsSubscription.sleela)</span></h2>
+<div data-u="slossubscription slossubscription">
+<h3 id="SLOsSubscription">SLOsSubscription <span class="pill">class</span></h3>
+<p class="desc">Descriptive subscription record for the native OS-support binding API.</p>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>eventKind</code></td><td><span class="sig">int eventKind = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>token</code></td><td><span class="sig">String token = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>active</code></td><td><span class="sig">boolean active = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>scope</code></td><td><span class="sig">String scope = &quot;runtime-local callback&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>getEventKind</code></td><td><span class="sig">int getEventKind()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getToken</code></td><td><span class="sig">String getToken()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isActive</code></td><td><span class="sig">boolean isActive()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getScope</code></td><td><span class="sig">String getScope()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="slossupportcatalog">SLOsSupportCatalog <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/os-level-support/SLOsSupportCatalog.sleela)</span></h2>
 <div data-u="slossupportcatalog slossupportcatalog">
 <h3 id="SLOsSupportCatalog">SLOsSupportCatalog <span class="pill">class</span></h3>
@@ -386,14 +428,16 @@
 <h2 class="section" data-u="slossupportstatus">SLOsSupportStatus <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/os-level-support/SLOsSupportStatus.sleela)</span></h2>
 <div data-u="slossupportstatus slossupportstatus">
 <h3 id="SLOsSupportStatus">SLOsSupportStatus <span class="pill">class</span></h3>
-<p class="desc">Native OS-support binding API note.</p>
+<p class="desc">Native OS-support binding status values, matching sleela_os_support.h. &gt;</p>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>OK</code></td><td><span class="sig">int OK = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>INVALID_ARGUMENT</code></td><td><span class="sig">int INVALID_ARGUMENT = 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>CAPACITY</code></td><td><span class="sig">int CAPACITY = 2</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>NOT_FOUND</code></td><td><span class="sig">int NOT_FOUND = 3</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>CALLBACK_FAILED</code></td><td><span class="sig">int CALLBACK_FAILED = 4</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>OUT_OF_MEMORY</code></td><td><span class="sig">int OUT_OF_MEMORY = 2</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>CAPACITY</code></td><td><span class="sig">int CAPACITY = 3</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>NOT_FOUND</code></td><td><span class="sig">int NOT_FOUND = 4</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>BUSY</code></td><td><span class="sig">int BUSY = 5</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>CALLBACK_FAILED</code></td><td><span class="sig">int CALLBACK_FAILED = 6</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="slossupportvmbridge">SLOsSupportVMBridge <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/os-level-support/SLOsSupportVMBridge.sleela)</span></h2>
@@ -517,6 +561,25 @@
 <tr><td><code>temporaryPath</code></td><td><span class="sig">String temporaryPath()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="slostaskqueue">SLOsTaskQueue <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/os-level-support/SLOsTaskQueue.sleela)</span></h2>
+<div data-u="slostaskqueue slostaskqueue">
+<h3 id="SLOsTaskQueue">SLOsTaskQueue <span class="pill">class</span></h3>
+<p class="desc">Descriptive contract for the bounded cooperative task queue in the native OS-support library.</p>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>capacity</code></td><td><span class="sig">int capacity = 128</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pendingCount</code></td><td><span class="sig">int pendingCount = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>taskRunning</code></td><td><span class="sig">boolean taskRunning = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>executionModel</code></td><td><span class="sig">String executionModel = &quot;post queues work; run-one executes at most one task&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>getCapacity</code></td><td><span class="sig">int getCapacity()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getPendingCount</code></td><td><span class="sig">int getPendingCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isTaskRunning</code></td><td><span class="sig">boolean isTaskRunning()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getExecutionModel</code></td><td><span class="sig">String getExecutionModel()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="slpackage">SLPackage <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/os-level-support/SLPackage.sleela)</span></h2>
 <div data-u="slpackage slossupportruntime">
 <h3 id="SLOsSupportRuntime">SLOsSupportRuntime <span class="pill">class</span></h3>
@@ -565,7 +628,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-05 13:59 UTC.
+<code>/lib</code> tree on 2026-11-05 13:51 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>

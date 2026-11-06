@@ -1,0 +1,20 @@
+< SLeeLa Standard Library Definition.
+  Definition: Network interface metadata shape matching osls_network_interface. >
+#sleela 2.5
+material;
+
+class SLNetworkInterface {
+  String name = "";
+  String macAddress = "";
+  String ipv4 = "";
+  String ipv6 = "";
+  boolean up = false;
+  boolean loopback = false;
+
+  String getName() { return name; }
+  String getMacAddress() { return macAddress; }
+  String getIPv4() { return ipv4; }
+  String getIPv6() { return ipv6; }
+  boolean isUp() { return up; }
+  boolean isLoopback() { return loopback; }
+}

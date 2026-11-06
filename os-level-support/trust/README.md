@@ -1,4 +1,4 @@
-# GRT evidence-model source
+# GRT claim-model source
 
 This subdirectory provides a small C ABI and C++ value wrapper for representing and structurally validating Global Ring of Trust (GRT) claims.
 
@@ -6,7 +6,7 @@ This subdirectory provides a small C ABI and C++ value wrapper for representing 
 
 The API is deterministic and has no OS hooks, process launching, network access, or cryptographic code. Interoperable formats and signature profiles must be selected through independent governance; do not add home-grown cryptography.
 
-Build from the repository root with the OS support CMake project. For a standalone build:
+Standalone build:
 
 ```sh
 cmake -S os-level-support/trust -B build/grt

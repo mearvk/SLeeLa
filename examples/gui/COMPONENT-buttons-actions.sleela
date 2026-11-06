@@ -1,0 +1,20 @@
+#sleela 2.5
+class ButtonsActions {
+  int main() {
+    SLUserInterface ui = new SLUserInterface(); ui.configure("com.mearvk.examples.Buttons");
+    if (!ui.open()) { return 1; }
+    SLTheme theme = new SLTheme(); theme.defaultTheme();
+    SLWindow win = ui.openWindow("Buttons and Actions", 620, 360, theme.handle());
+    SLWidget root = win.rootWidget();
+    SLBox col = new SLBox(); col.vertical(root, 12); col.setMarginAll(18);
+    SLBox row = new SLBox(); row.horizontal(col, 10);
+    SLButton normal = new SLButton(); normal.createIn(row, "Normal");
+    SLButton primary = new SLButton(); primary.createIn(row, "Suggested"); primary.setSuggested(true);
+    SLButton destructive = new SLButton(); destructive.createIn(row, "Delete"); destructive.setDestructive(true);
+    SLLinkButton link = new SLLinkButton(); link.createIn(col, "Open documentation");
+    SLButton icon = new SLButton(); icon.createIn(col, "Wi-Fi settings");
+    icon.setIconPath("user-interface/icons/wifi.jpg", "Wifi");
+    SLLabel note = new SLLabel(); note.createIn(col, "Icon assets use JPEG with a named vector fallback.");
+    win.show(); return ui.run();
+  }
+}

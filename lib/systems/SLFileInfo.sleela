@@ -1,0 +1,27 @@
+< SLeeLa Standard Library Definition.
+  Definition: Read-only file metadata shape matching osls_file_info.
+  This record describes metadata; it does not read or modify file contents. >
+#sleela 2.5
+material;
+
+class SLFileInfo {
+  String path = "";
+  int sizeBytes = 0;
+  int modifiedEpochSeconds = 0;
+  int createdEpochSeconds = 0;
+  boolean directory = false;
+  boolean regularFile = false;
+  boolean readable = false;
+  boolean writable = false;
+  boolean executable = false;
+
+  String getPath() { return path; }
+  int getSizeBytes() { return sizeBytes; }
+  int getModifiedEpochSeconds() { return modifiedEpochSeconds; }
+  int getCreatedEpochSeconds() { return createdEpochSeconds; }
+  boolean isDirectory() { return directory; }
+  boolean isRegularFile() { return regularFile; }
+  boolean isReadable() { return readable; }
+  boolean isWritable() { return writable; }
+  boolean isExecutable() { return executable; }
+}

@@ -1,0 +1,19 @@
+#sleela 2.1
+// NEW: static protected members and a controlled accessor.
+class ProtectedSystem {
+    static protected int systemDegree = next.next;
+    static protected int viewpointDegree = next.next.next.next;
+    static protected int protectedState = 7;
+
+    static protected int readState() {
+        return protectedState;
+    }
+
+    void main() {
+        print("next = " + next);
+        print("next.next = " + next.next);
+        print("static Degree-2 viewpoint = " + viewpointDegree);
+        print("system degree = " + systemDegree);
+        print("protected state = " + readState());
+    }
+}

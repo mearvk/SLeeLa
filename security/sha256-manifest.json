@@ -235,7 +235,7 @@
     },
     {
       "path": "impl/core/sleela_artifact.c",
-      "sha256": "2831acd839f1faadf7b28801ff1c53efc0eae27afd6dfdff939dfa554df29b45"
+      "sha256": "68bd2d79b6af26100daa58d82ed9010f822fe8040e8cd467a6c3beb4281187f2"
     },
     {
       "path": "impl/core/sleela_audio_bridge.cpp",
@@ -327,7 +327,7 @@
     },
     {
       "path": "impl/core/sleela_memmgr.c",
-      "sha256": "654a6129bc4ffc3ee4896ed4e31938735b149329fb28952547b01df51c2fd0ad"
+      "sha256": "76df54848444810d733b94ad72f75cd0dfb75684157d854ca3486b9edcdaf1f5"
     },
     {
       "path": "impl/core/sleela_memmgr.h",
@@ -375,11 +375,11 @@
     },
     {
       "path": "impl/core/sleela_os.c",
-      "sha256": "eeb0df52498469a51f6f7b379e5724a2bab240ab08fbbaf29d990041d188f1c3"
+      "sha256": "5413711b73d2bf16151ab6375ab6d0a18601235a72123fb35a248704dedbc980"
     },
     {
       "path": "impl/core/sleela_os.h",
-      "sha256": "844196600ed86962ae13a1d9b4ddd09f424b6c1825bf9b6b3b4d8702f6c5f5dc"
+      "sha256": "3c015e66d55bfdb4448fe3434bc849edcb97eb2376417fbcf7275d603299a95a"
     },
     {
       "path": "impl/core/sleela_path.c",
@@ -451,7 +451,7 @@
     },
     {
       "path": "impl/core/sleela_ui_vm.c",
-      "sha256": "4b8649713bc15230597cdb9802a4af24a06b7714a2c6f07a4210dd8046b6f82e"
+      "sha256": "0e12df03383252daf6230283b2edb9ab2fb89952c9abb28e88f09c3d958c9c68"
     },
     {
       "path": "impl/core/sleela_ui_vm.h",
@@ -510,6 +510,10 @@
       "sha256": "a404a9bbd03a0738306d102ff0012645e1c390c1d52c3e9f62f7b7b0728a6b33"
     },
     {
+      "path": "impl/frontend/common_rails_banner.hpp",
+      "sha256": "24361490601cf9ba9ac3f25bd4b1ca64aed4a6a9228d71e8eb7d6447d71757b9"
+    },
+    {
       "path": "impl/frontend/compiler.cpp",
       "sha256": "925141ca21a7d62bbf0d9e59c42778dd2357bbe5a0f2acc2e51c5e0fdf7d811d"
     },
@@ -527,7 +531,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "324680e4ec409e6d17fbc9c279968aa1fbec2accf43e6810adb3afb26d65f33d"
+      "sha256": "89cb67ce9b12a7f164bfc7882c2e19864a6f7f95a2705ecfc565e9397614349e"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -699,7 +703,7 @@
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "985fdb0064f80b980168a6f7cbfbb908d1367cdf3eb8137961eb06c4549bafd1"
+      "sha256": "11de43f74657be865f0d59999ce5b7219b0855b1edbc99edbc5d59fb79e9b82f"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
@@ -2802,6 +2806,10 @@
       "sha256": "09669499f19816e7ecdcbddc4d0bff551c7a17a526cc2a178494d9c49ee4c35a"
     },
     {
+      "path": "lib/common-rails/PrintRail.sleela",
+      "sha256": "9846d63d968762f016dddd8368a3e44cf52e2fcb5da7eaa80c28d6b3164667d3"
+    },
+    {
       "path": "lib/common-rails/PrintRenderer.sleela",
       "sha256": "3077402349b1d9fba06b12fb386e7b53ec0ac48c421af197d339db6458a1c39d"
     },
@@ -2815,7 +2823,11 @@
     },
     {
       "path": "lib/common-rails/SLPackage.sleela",
-      "sha256": "b8644f3e0d008a70c0b7da9344df66415b681076364cc4bb9b2c93801bc9496c"
+      "sha256": "d1c4f5d961e9ed618d3b13a2468e90d72a700c10f64db41692db65214747891c"
+    },
+    {
+      "path": "lib/common-rails/common-rails.sleela",
+      "sha256": "e585c472036c2df4171e451479834ae12e9861755e9d40fa0bb37167e0393cfd"
     },
     {
       "path": "lib/compiler/BinaryFormatReference.sleela",
@@ -6506,6 +6518,322 @@
       "sha256": "532e191e41bd78c8d86764534345e14793bcc574cd0566e26573ec9c2850ba21"
     },
     {
+      "path": "lib/examples/autocad/ADVANCED-layer-takeoff.sleela",
+      "sha256": "20c0b4dd223c769bae164b9d08e8df93419218dc838aaf4bbf753d5dc431561c"
+    },
+    {
+      "path": "lib/examples/autocad/BASIC-geometry-area.sleela",
+      "sha256": "d23a0ea6127306057c91e48e7b4aee5228acd1b006f74e3123cd2a2c5cd74c97"
+    },
+    {
+      "path": "lib/examples/autocad/CLASSIC-geometry-primitives.sleela",
+      "sha256": "5bad1594d1afc02d43bd5d184236f80e140cd08ffe0b566a23a8a4ce80d934c2"
+    },
+    {
+      "path": "lib/examples/autocad/MODERATE-polyline-bounds.sleela",
+      "sha256": "70ea331f09bb1c6624ea9ae676fc48da02e20a04f1c354ee7b3c15d15063b006"
+    },
+    {
+      "path": "lib/examples/ballum/ADVANCED-dirty-rects.sleela",
+      "sha256": "225142d47f498dae829d9b5b0b882a1cbfb60fa1e851a240b256b77864a1e381"
+    },
+    {
+      "path": "lib/examples/ballum/BASIC-frame-metrics.sleela",
+      "sha256": "fe9cc0a1e3fe979fe0b8914f44abf32c1ebb0b53cfd91af22980151b79acebf5"
+    },
+    {
+      "path": "lib/examples/ballum/CLASSIC-display-frame.sleela",
+      "sha256": "e1a718ac30c73c6c31907bcab9656181744a2d457071c31c3f97479cb2949a2d"
+    },
+    {
+      "path": "lib/examples/ballum/MODERATE-fit-and-letterbox.sleela",
+      "sha256": "0158ad0e51275ccd04e5e2eacfe085d0af3b346e726a7021594fab7e1d05c5f6"
+    },
+    {
+      "path": "lib/examples/cdma/ADVANCED-processing-gain-capacity.sleela",
+      "sha256": "990a984b3d2e156d3d9fc5b9c2c8837496b0fa0eeb7ab3919fc2959cb5e7aec2"
+    },
+    {
+      "path": "lib/examples/cdma/BASIC-link-budget.sleela",
+      "sha256": "cb5b752f880295bf4307340e854965dc1a2d1b395855951b25d26a3d9c68e4c9"
+    },
+    {
+      "path": "lib/examples/cdma/CLASSIC-link-budget.sleela",
+      "sha256": "b98ee0241311223035c387def95f65ef18b4df0d9b02a13fce9c89be471a0883"
+    },
+    {
+      "path": "lib/examples/cdma/MODERATE-link-margin.sleela",
+      "sha256": "b64701fde31a1b708996e32aa33519a874f4487511f11b4d37fdd86aaf6033c1"
+    },
+    {
+      "path": "lib/examples/connector/ADVANCED-retry-backoff.sleela",
+      "sha256": "0396cb3c8d50edf6b71852549b3338e653ca383206f8050a317d1d69dc466e41"
+    },
+    {
+      "path": "lib/examples/connector/BASIC-connector-lifecycle.sleela",
+      "sha256": "f15b262a217d229c0d301449fce44ae0e99338b0905037711ba533ca808c8ec1"
+    },
+    {
+      "path": "lib/examples/connector/CLASSIC-connector-lifecycle.sleela",
+      "sha256": "bfe770ea411340e3e9cf97b1229919efebf7efb43e2acd66aecd2c5740acbaad"
+    },
+    {
+      "path": "lib/examples/connector/MODERATE-state-machine.sleela",
+      "sha256": "04fa726d863c774b1a5daa6da321340fe2778e19a35379c1cfe3c4d93bff5d41"
+    },
+    {
+      "path": "lib/examples/crypto/ADVANCED-manifest-verify-sim.sleela",
+      "sha256": "671d872559cb6f846f27099cd606a14b16b4a8f757e4790bc85dbe7d4eab6258"
+    },
+    {
+      "path": "lib/examples/crypto/BASIC-integrity-workflow.sleela",
+      "sha256": "0f0e9d6331c848cc74e5078ea82b32b839f7984226f7a97ac16be447ad837011"
+    },
+    {
+      "path": "lib/examples/crypto/CLASSIC-hash-integrity-workflow.sleela",
+      "sha256": "b58f7de8f987b8f54567b9227411d1a550f97e474c887b821b903d1645cafe6a"
+    },
+    {
+      "path": "lib/examples/crypto/MODERATE-checksum-not-crypto.sleela",
+      "sha256": "a696d6544ee50359af6cb91cc481124eb9afd63b7c24bd0e8a7fc04b55c950f9"
+    },
+    {
+      "path": "lib/examples/debugger/ADVANCED-invariant-harness.sleela",
+      "sha256": "469700f8538799b098f0d5bf65df9fd7adca9639596df65ba9ef64de4dc82ad0"
+    },
+    {
+      "path": "lib/examples/debugger/BASIC-debugging-checklist.sleela",
+      "sha256": "1d536e420e460102538145c4a6ae1ec6f3770991e483fd2e5352bccd7129b2db"
+    },
+    {
+      "path": "lib/examples/debugger/CLASSIC-debugging-checklist.sleela",
+      "sha256": "4e5f9f21ca07a1e14dd1ffecc1483c6490dd6f5e6574e1e084a0cfc85cda8b46"
+    },
+    {
+      "path": "lib/examples/debugger/MODERATE-bisect-regression.sleela",
+      "sha256": "09a5887ad726ac604010abd08f28dbf08ec89c156dec2bbe9ee15531d31a545e"
+    },
+    {
+      "path": "lib/examples/decompiler/ADVANCED-disassemble-stream.sleela",
+      "sha256": "a11670902bf3e062056ac077aa592990306f1bbd120032301a3af11c5b127c90"
+    },
+    {
+      "path": "lib/examples/decompiler/BASIC-artifact-inspection.sleela",
+      "sha256": "a80e00d82a7a0db3cb96946f6930baac7df61189e1d12e5c151cb269c50ea2bb"
+    },
+    {
+      "path": "lib/examples/decompiler/CLASSIC-artifact-inspection.sleela",
+      "sha256": "a92ca3dfc6482efc927ea0365265eb23da25add98007e26aa34ebd7f321df294"
+    },
+    {
+      "path": "lib/examples/decompiler/MODERATE-section-table.sleela",
+      "sha256": "1fa4ea133056359ceae0736bd8bd0d16acfd11be3f81257da1241cc2f0663f34"
+    },
+    {
+      "path": "lib/examples/gui/ADVANCED-grid-layout.sleela",
+      "sha256": "89d8866a3368c0306902706b59d9b6b4fd20d9b0ec250c46330421b378f8b0ca"
+    },
+    {
+      "path": "lib/examples/gui/BASIC-clamp-to-parent.sleela",
+      "sha256": "70be2c5c4c51d70cc12beebfb96a0da1bf714b6fbe424257ed36301940c0d72c"
+    },
+    {
+      "path": "lib/examples/gui/CLASSIC-layout-bounds.sleela",
+      "sha256": "6795a1434b0a2303b2f9a0c3ea015359f9fad0b6d085f9c1ee3f5e8f6c70fc63"
+    },
+    {
+      "path": "lib/examples/gui/MODERATE-stack-layout.sleela",
+      "sha256": "418f36ae1c1f938bc5ff2f1797299afa09c7dac11aa72143b26911f135cbb7c4"
+    },
+    {
+      "path": "lib/examples/java/ADVANCED-main-class-resolution.sleela",
+      "sha256": "76d3b42964c8e1ce65b5332d2545a3c6cba5eb95e1266dd4c197494420732ece"
+    },
+    {
+      "path": "lib/examples/java/BASIC-launch-preflight.sleela",
+      "sha256": "176ad2f1f48ec13dc0e855c81fd87da9e7349c029e13e7cdf11390f23f731910"
+    },
+    {
+      "path": "lib/examples/java/CLASSIC-java-launch-preflight.sleela",
+      "sha256": "480ccf9f2a33a5a6513e3e622d84f26b4f7b02aef53581081e593dfa537e29a4"
+    },
+    {
+      "path": "lib/examples/java/MODERATE-classpath-resolution.sleela",
+      "sha256": "e42ed9119f41994e6b85b15ffbaa60d54215e7bd1b669137dd68609d02dbab2b"
+    },
+    {
+      "path": "lib/examples/network/ADVANCED-request-response-protocol.sleela",
+      "sha256": "2ec550d01827f92b3d5a994d2068738535513da7a426f6f2bd6fde4f6e6c6b75"
+    },
+    {
+      "path": "lib/examples/network/BASIC-endpoint-validation.sleela",
+      "sha256": "4d8edc9b2d9da0cc51e402d9eb512c14ab2f39452d34c924c7b6c0c8968e8e3b"
+    },
+    {
+      "path": "lib/examples/network/USED-loopback-tcp-echo.sleela",
+      "sha256": "e0c2393a163eb7c170241a8266d6670d9a3a48cdc9343fac769e92fb104f0fde"
+    },
+    {
+      "path": "lib/examples/nordshrift/ADVANCED-Service.sleela",
+      "sha256": "01afe89949b232f07038b77e0681ee9e8bb4f5dc8c30e27efeca584f1ca08314"
+    },
+    {
+      "path": "lib/examples/nordshrift/ADVANCED-ServiceDraft.sleela",
+      "sha256": "059f081a7e7240b7186fffc35b759f50354e7b845c2650a9287f671a1a9c77d6"
+    },
+    {
+      "path": "lib/examples/nordshrift/BASIC-Greeter.sleela",
+      "sha256": "43bb33f83872790797d55cc0b1190c1fb1ee545838c5d1baedcb582d34c1ccf2"
+    },
+    {
+      "path": "lib/examples/nordshrift/CLASSIC-Ledgerize.sleela",
+      "sha256": "2e354391bc6e294c67072685e04ad2c497700282c8bd379b7aa85045abc65cdd"
+    },
+    {
+      "path": "lib/examples/nordshrift/MODERATE-App.sleela",
+      "sha256": "d4db9071123b4c607d255d9842abd644b01806193643d74af8d8a7fb9e972860"
+    },
+    {
+      "path": "lib/examples/nordshrift/MODERATE-Report.sleela",
+      "sha256": "a71b4be17ac72708b4a6e8713de6f6e0d1dd7aa456d2cc582f0d92f177140479"
+    },
+    {
+      "path": "lib/examples/regex/ADVANCED-anchored-classes.sleela",
+      "sha256": "a179797dc95626c82e517fb7e1614f38cc519aee2ba548de0803c2f3a5f941d3"
+    },
+    {
+      "path": "lib/examples/regex/BASIC-literal-match.sleela",
+      "sha256": "55b9417c6360dafd76a70807403256fae4e0b7be9362b7cf3a3cd004746e59b0"
+    },
+    {
+      "path": "lib/examples/regex/DRAFT-literal-find.sleela",
+      "sha256": "d6ae41a4786946d2b37846a560c2f340a75c39b2aa85a73ac131aad2f899e990"
+    },
+    {
+      "path": "lib/examples/regex/MODERATE-wildcard-match.sleela",
+      "sha256": "1188b81e8ffe5a9b12013a22a472c9da13e7794df7a0453c49c8a00403b759be"
+    },
+    {
+      "path": "lib/examples/runtime/ADVANCED-producer-consumer.sleela",
+      "sha256": "478446d26de26f49481d74262d6b38bc7953085a32a06a02151d641fe8c361e4"
+    },
+    {
+      "path": "lib/examples/runtime/BASIC-sequential-accumulate.sleela",
+      "sha256": "38710f7f00a2243208278050f727babc4f2b68e4feb0e3d0925a6ceb40ef7106"
+    },
+    {
+      "path": "lib/examples/runtime/USED-thread-workers.sleela",
+      "sha256": "c14064139ffc403834c0bb992ba5db29ec2ae0c38c6d552174d40332bf064c47"
+    },
+    {
+      "path": "lib/examples/sleela/CLASSIC-hello-world.sleela",
+      "sha256": "bb3afbb4e6d7034a3b09407d3f90bd83d70d27ae71d8f2fa2afee7f850f5cecf"
+    },
+    {
+      "path": "lib/examples/sleela/NEW-bestof-route.sleela",
+      "sha256": "49b136191c2ba4c0b931a247806d1041da9a3d4b1a54ca028250830f531c4c1f"
+    },
+    {
+      "path": "lib/examples/sleela/NEW-dynamic-arrays.sleela",
+      "sha256": "ff36bff782d875d83c1976c0f6e196d5b5a114f7ac7b52b711af86ce69b85573"
+    },
+    {
+      "path": "lib/examples/sleela/NEW-file-pipes.sleela",
+      "sha256": "46d6ce78d1b8dd5ecc808a91eb74cef84505d738ad1262f65f1bc56d66e16f49"
+    },
+    {
+      "path": "lib/examples/sleela/NEW-munction-file-reach.sleela",
+      "sha256": "fcf22afb99688cca35a89a4a36f998d02ffb1ba092eb4499af7cc5e39775150a"
+    },
+    {
+      "path": "lib/examples/sleela/NEW-native-financial-import.sleela",
+      "sha256": "25959d525328c2b92ceae207d7789d254074311733e86dcdd649c09d91d55d97"
+    },
+    {
+      "path": "lib/examples/sleela/NEW-nested-classes.sleela",
+      "sha256": "f0c70f58763cd0d64c70525f5d81a7d79d9953a50e1a8f1056306309ca3b1414"
+    },
+    {
+      "path": "lib/examples/sleela/NEW-signed-wide-integers-2.7.sleela",
+      "sha256": "f3128960e10014492892b9264d0ac00249444a62352538b6f799a9bfd984a2f0"
+    },
+    {
+      "path": "lib/examples/sleela/NEW-static-protected-access.sleela",
+      "sha256": "8d578db471ea1acc073f3ba75787445282e2c57caca0f0bd82a9971a49769b61"
+    },
+    {
+      "path": "lib/examples/sleela/NEW-struct-network-transport.sleela",
+      "sha256": "05a2dd977f3fb5a0d983eba07697cb66fdf0ea47d2a8dfed86755edd37ee7181"
+    },
+    {
+      "path": "lib/examples/sleela/NEW-struct-record.sleela",
+      "sha256": "d460f96bd55117be24bc393d30f913a745e7b44e97f705e54970e13662857266"
+    },
+    {
+      "path": "lib/examples/sleela/NEW-synchro-measure.sleela",
+      "sha256": "0d2e5d3624b41f54a572a52904a520c2866cb5137329cc871c671e7142988330"
+    },
+    {
+      "path": "lib/examples/sleela/NEW-time-api.sleela",
+      "sha256": "d5f79b1ebb94eef06f37b230b8200a6c2e43eb92097830f2f0b6dacd8462585f"
+    },
+    {
+      "path": "lib/examples/sleela/NEW-unsigned-wide-integers-2.8.sleela",
+      "sha256": "c72db0296c8ddaa8a8e9efe343441dee4a8f76d4d5ede54c2ecb184f10fc5ce8"
+    },
+    {
+      "path": "lib/examples/sleela/ORIGINAL-fizz-buzz.sleela",
+      "sha256": "06e48945e486593b4f5792abc0f15afd24da18eae16ffc80bb09ae1561409c89"
+    },
+    {
+      "path": "lib/examples/sleela/USED-methods-and-return-values.sleela",
+      "sha256": "a06145f10a4a08127b048b739ba1a0af242755564f6ee57e08160cb30db5bca4"
+    },
+    {
+      "path": "lib/examples/sleela/USED-short-circuit-guards.sleela",
+      "sha256": "a192aa4f00354fd2bcf3a83408e7d6dd60c2f219996423371ed369f9e76ce799"
+    },
+    {
+      "path": "lib/examples/sleela/USED-switch-selection.sleela",
+      "sha256": "98037a523ca54e6a9cb936c5296fb58e1194f152a18d5ce176093e5d246609ce"
+    },
+    {
+      "path": "lib/examples/terminal/ADVANCED-progress-bar.sleela",
+      "sha256": "b31cf2cf81bede9640e0554a9ae1883ebcf1d4bbd8b330b29040f382b11fdf88"
+    },
+    {
+      "path": "lib/examples/terminal/BASIC-menu.sleela",
+      "sha256": "dcd1d60d550a3a35e38e8863721752cf6ba8001fa98be47efd6834326c43dda4"
+    },
+    {
+      "path": "lib/examples/terminal/CLASSIC-terminal-menu.sleela",
+      "sha256": "2074258cf1f798e0a7d560d2735e1f245a0d9b50d90bf3a6526f039d64975115"
+    },
+    {
+      "path": "lib/examples/terminal/MODERATE-aligned-table.sleela",
+      "sha256": "cfd6d1c30ffe7b8642dad50563c688b73219b1cde546b21aa963b8de3536a67f"
+    },
+    {
+      "path": "lib/examples/wifi/ADVANCED-nonoverlap-plan.sleela",
+      "sha256": "87de616e4bff927d2ca7b2157b1dc4da3d9ce7787566a431f34309a916e51166"
+    },
+    {
+      "path": "lib/examples/wifi/BASIC-channel-frequency.sleela",
+      "sha256": "ec7881e74249d5f0b41885e5132f25a6dae32e7f260eb6b14777cc65af58d728"
+    },
+    {
+      "path": "lib/examples/wifi/MODERATE-security-policy.sleela",
+      "sha256": "06723ce8ed24130603ad358b5c3d3aacbc2006d7a9dda41ef588e8dd44f4c624"
+    },
+    {
+      "path": "lib/examples/wifi/USED-wifi-policy-smoke.sleela",
+      "sha256": "b3ec10aed2647bb76fbc22ee6cd62e343f5d44af4cc6928022270c5af4a7042b"
+    },
+    {
+      "path": "lib/examples/xlt/ADVANCED-app.sleela",
+      "sha256": "f6fcf4b5eca5ae50396212f3db0725c0d43ed1540dd007ae1659f3eeec9cb681"
+    },
+    {
       "path": "lib/filesystem/SLArchive.sleela",
       "sha256": "4b5f93e1db33dff9c06a9dece5dc25f75303011b2e2d14d945e5d63201f0d71b"
     },
@@ -6624,6 +6952,22 @@
     {
       "path": "lib/gameplay/SLPackage.sleela",
       "sha256": "509aa6dd1b5cc951505c70f33cccc661c5ead76a7a865c7342ae3349b5ef4fc2"
+    },
+    {
+      "path": "lib/governance/SLVoteBallot.sleela",
+      "sha256": "e24548394b1da31c147adbaf901d461858c8ecfd94ec66e38cac80c51c4f7013"
+    },
+    {
+      "path": "lib/governance/SLVoteProposal.sleela",
+      "sha256": "f59696662f36fa574fcf71f0d207a83d83243a7642c0cad5d54ef04b6d610941"
+    },
+    {
+      "path": "lib/governance/SLVoteTally.sleela",
+      "sha256": "a98a143cdcb65fd790d7303c8d8e8e1fa2d5f1baad4d397a3c5464051069e5f2"
+    },
+    {
+      "path": "lib/governance/examples/registry-record-vote.sleela",
+      "sha256": "fbfb3ac0568dc8eeb98222aca7e7d1477c1c557635d0be5beb3c74cfac550511"
     },
     {
       "path": "lib/gui/version-dual/SLGuiAction.sleela",
@@ -45114,6 +45458,34 @@
       "sha256": "c1f1f7f4dbb9dec9c0a7bb20a4aebe406cfbfc8b87b18e66144278388c3d98e5"
     },
     {
+      "path": "lib/native/loader/native_loader.c",
+      "sha256": "1c5e0830bcb20adc528d93979bfa96ce063ee6db53752b926634a786bca49ea8"
+    },
+    {
+      "path": "lib/native/loader/native_loader.cpp",
+      "sha256": "3c6dbc8d578437ccff0341e95100e7d2dcca99de5b81a3ae7d58e4c4611448da"
+    },
+    {
+      "path": "lib/native/loader/native_loader.h",
+      "sha256": "0e259b4d08e6748fe8e601b192253cf3f55943df6dad7ed660bc6be62c446024"
+    },
+    {
+      "path": "lib/native/loader/native_loader.hpp",
+      "sha256": "c14ec97761b4920229c941f392998451093fb2a10d1f317526691fdffd2f2b91"
+    },
+    {
+      "path": "lib/native/loader/tests/fixture.c",
+      "sha256": "a9e8edd05054adbcc551fcb47862194cd366b8275545d833365034cd0dc5d123"
+    },
+    {
+      "path": "lib/native/loader/tests/test_c.c",
+      "sha256": "879ae1daaefc9de5340edcaf124eeb583a4c5d38632ecd1de13b097bde186dae"
+    },
+    {
+      "path": "lib/native/loader/tests/test_cpp.cpp",
+      "sha256": "7870f074b315ed5fdbea83cc83575d24dbe70fd58f876bc08e502728b26816ee"
+    },
+    {
       "path": "lib/net/SLDnsResolver.sleela",
       "sha256": "d60d3e1b8e3659160c563d2143dfe30a103ebfc7990572ecdc9026109f2b5081"
     },
@@ -46051,11 +46423,11 @@
     },
     {
       "path": "lib/operating-system/SLOSSensitivityFetch.sleela",
-      "sha256": "52388d4b40558dc31c7ae2d39b7cc7543476d6a09b2f85da29e8c41b07332c8f"
+      "sha256": "3ef07eee78bc1842d66f9cab15860523c5b96cdac4669642493b5de29fd86441"
     },
     {
       "path": "lib/operating-system/SLOSSensitivitySource.sleela",
-      "sha256": "87436bd5762302c1680a783ae91a41209fc320cee1d15c7fca9e7c850d63f9eb"
+      "sha256": "f694d10e6ecd9bc6619301e36947eadca1e797553329e90886f11f8f0ddaa838"
     },
     {
       "path": "lib/operating-system/SLOSShape.sleela",
@@ -46387,7 +46759,7 @@
     },
     {
       "path": "lib/philosophy/SLPackage.sleela",
-      "sha256": "e86ba497373c24c5e15574f0937b9d3579ffb08be2c1cc6bf15aa005a83cbf59"
+      "sha256": "45869067054b476e6cf0a3a47f6e8c6b1c9fa514f4abbb5f8e6b3dba2ed05bc6"
     },
     {
       "path": "lib/philosophy/SLPhilosophyAdmin.sleela",
@@ -46711,19 +47083,43 @@
     },
     {
       "path": "lib/registry/SLRegistry.sleela",
-      "sha256": "1185aa1b3ba1a7054ee27700797356c7951eebd40ca4db2432f269c4904bdd29"
+      "sha256": "bb7df0196265c4d59f540ae8c608465509f0648b8d8cd48a58f47eeceb42193b"
+    },
+    {
+      "path": "lib/registry/SLRegistryIdentity.sleela",
+      "sha256": "686d63297aa9ffa5c25b934ea2969675b61aa1caf8d68098001ddf3504f96dca"
     },
     {
       "path": "lib/registry/SLRegistryKey.sleela",
-      "sha256": "2bb5afe1cafcfd9b3f3bb7ac5212982b39f067e65f8f33ad0abb462dcf6194bb"
+      "sha256": "7c6d6cf940ce37d6519d0f22163eb6da59daeffa69fe947f9c732dfcc36d3e47"
+    },
+    {
+      "path": "lib/registry/SLRegistryLifecycle.sleela",
+      "sha256": "44fd2d1d7aac76dc711c6aee5d4c255cf47939ef5603f13879993810d01c38a6"
     },
     {
       "path": "lib/registry/SLRegistryProvenance.sleela",
-      "sha256": "579b01511c5d366b8b45d19219d1da9ad0d0d106287bea087491b6dcc4db75ea"
+      "sha256": "412f8cc2ebb7065c6d11bc31db15be779388c9ed28afeccd073e13bb8d8f6349"
+    },
+    {
+      "path": "lib/registry/SLRegistryRecord.sleela",
+      "sha256": "8fc9c74bccadf7bfe3a3c3af7b0297f0928aabb54e00c804a9cca21a8c9943d0"
+    },
+    {
+      "path": "lib/registry/SLRegistryRelationship.sleela",
+      "sha256": "d983f32bf1e5ce1732bce801b3e275a56dedd3609244d548afb65effcaca231c"
+    },
+    {
+      "path": "lib/registry/SLRegistryResolver.sleela",
+      "sha256": "104d3731a017049effb9784cea05a955934619ead081221e4f0f98bf09959ebb"
+    },
+    {
+      "path": "lib/registry/SLRegistryReview.sleela",
+      "sha256": "a588660dbcdb20cf27d04ee62fb66b509fab7758748ff05da7a8546dd06d0254"
     },
     {
       "path": "lib/registry/SLRegistryValue.sleela",
-      "sha256": "7bfc5014c147636b1e8ed57b5c8ce0fe074f0ffc7bb41efa049936aa604a56e0"
+      "sha256": "cb6228173a3db5be06f30bd216c10066ceca515d0060054c003f2ffb700e0489"
     },
     {
       "path": "lib/rmi/SLPackage.sleela",
@@ -47114,8 +47510,40 @@
       "sha256": "30e175b2fbba3756797c0074b9ad6560958ca76d33fa90c7d780e1748bee14a8"
     },
     {
+      "path": "lib/systems/SLCPUInfo.sleela",
+      "sha256": "0f01de3900ba730ffb20104c78edb2c21c5ee8b459d4fa3a6a67d73b3bbd5347"
+    },
+    {
+      "path": "lib/systems/SLCronExpression.sleela",
+      "sha256": "e0225198e9b1e42d559779df347eb1bf61a8052de75227e565106e2230837842"
+    },
+    {
+      "path": "lib/systems/SLFileInfo.sleela",
+      "sha256": "d1544148dd9e1468e811b6ce8798673231178d02a9773551640223a36fad3c8b"
+    },
+    {
+      "path": "lib/systems/SLNetworkInterface.sleela",
+      "sha256": "7769201812f02a7695f7a81feb39407c44cec91584ac7221e10b051194e3ef7c"
+    },
+    {
       "path": "lib/systems/SLPackage.sleela",
       "sha256": "f25bed7092eaad454c08fe8e2dca1b6ac4e1be624040dfe0c40cdd8e14087892"
+    },
+    {
+      "path": "lib/systems/SLProcessInfo.sleela",
+      "sha256": "b4b1aeb603778778223746b2c40580e0c95d609ab4109c4d4c41c2593d3b50fc"
+    },
+    {
+      "path": "lib/systems/SLSystemInfo.sleela",
+      "sha256": "ce113d5b7fab03739b2aa5551fddde84584fab587b55636fb74c53ec0e024075"
+    },
+    {
+      "path": "lib/systems/SLSystemStatus.sleela",
+      "sha256": "76871505fd01a38b7ba7e302ff58701cc28cc3c6920f49d3fda7cb9eee9d340e"
+    },
+    {
+      "path": "lib/systems/SLTimezoneInfo.sleela",
+      "sha256": "5368890346a21bbc489368e8695ebd7a71a60edae816bb7d82d54a526c7fc6a4"
     },
     {
       "path": "lib/telephony-skya/Communication.sleela",
@@ -47211,7 +47639,7 @@
     },
     {
       "path": "lib/ui/SLComponentQuality.sleela",
-      "sha256": "2d164abf0f7f784a1d89544a3d4b1fa91a0a6ec7d9a9250e746afa923b258abb"
+      "sha256": "75e2e0de14bf275690c06a7e9c0e0a6770d13b47bdafb98a8495f0a98ce0325c"
     },
     {
       "path": "lib/ui/SLDialog.sleela",
@@ -47239,7 +47667,7 @@
     },
     {
       "path": "lib/ui/SLLayoutDriver.sleela",
-      "sha256": "f2929c65bb93068987cb744877c8fa43d5dd43b515c140f34be77c63a2a86b95"
+      "sha256": "c61d92d6f60c27038ec938a12446aa4ed2288306b5fdf8ffa65818b915341e2c"
     },
     {
       "path": "lib/ui/SLLayoutFrame.sleela",
@@ -47375,7 +47803,7 @@
     },
     {
       "path": "lib/ui/verify-pixel-perfect.sleela",
-      "sha256": "27127393ac3528be24771969dc1a589a6f9b7834d00e2aed33648317155bac8e"
+      "sha256": "84a44663dcc7332e6df85edcbfce044f2116d733443e5892899a28f633cfa8ff"
     },
     {
       "path": "lib/us-infrastructure/SLPackage.sleela",
@@ -48903,11 +49331,11 @@
     },
     {
       "path": "os-level-support/osls.c",
-      "sha256": "6dbab4aa9abbbe6ba3dd230b094f313244bda8d30d39dcdaaff1df8cf05f0b8c"
+      "sha256": "0abdf5123b9b7199ed9ea5439760848beb2b086d62622429a9ebb8658e5dea56"
     },
     {
       "path": "os-level-support/osls.cpp",
-      "sha256": "c649667250fd55c3337aac7ce0fdb668c73e4df24100409729c7ce7932a186fd"
+      "sha256": "4be5083156678f45715f44e99a0185e3f4a7b531967ea8c85596b1facd382da4"
     },
     {
       "path": "os-level-support/osls.h",
@@ -48915,7 +49343,7 @@
     },
     {
       "path": "os-level-support/osls.hpp",
-      "sha256": "fb87b7b5ec17a00a00a62090ebefd3d2acf17265b8d1d22652ecfc60447cce14"
+      "sha256": "6e488e732f97405bce5ce4aa9f8866e03d3744c26683890f6d0768a0357a7b3f"
     },
     {
       "path": "os-level-support/osls_extended.c",
@@ -48963,7 +49391,7 @@
     },
     {
       "path": "os-level-support/trust/grt_claim.c",
-      "sha256": "0e98b662de0456159483158a7197925acb21959addc459354a20ae2bb68ee893"
+      "sha256": "34b2b7975415ceb5a6305c07e9a84da8afcbe8be6e172982e72d295a2de38d39"
     },
     {
       "path": "os-level-support/trust/grt_claim.cpp",
@@ -48971,7 +49399,7 @@
     },
     {
       "path": "os-level-support/trust/grt_claim.h",
-      "sha256": "e3b846522560b5d812686122e92869aa90291f8e3e9a1e0b42fb0b440946d7f6"
+      "sha256": "b42e44c6a6a1e785ca474b32b054bc3a21db8c5491dcd58a64bd77637a617582"
     },
     {
       "path": "os-level-support/trust/grt_claim.hpp",
@@ -48983,15 +49411,15 @@
     },
     {
       "path": "runtime/Parameters.c",
-      "sha256": "6c2dad5b6e91b8efe1d9c8512636be31f584af5002ed253463c8fd9ea1c50247"
+      "sha256": "3e3598f7a56dac1e4ced2616aa7847e0c1db6d6d7873216131e0fc035fc35e2d"
     },
     {
       "path": "runtime/Parameters.h",
-      "sha256": "6287cde4006af97014cba4e0bfcfbda3824d715040af12762e1e8aaa37286c73"
+      "sha256": "6adcd8e6a6f4a063638ba702e61ae91065b895024417f75c6f9ae917073ecbcc"
     },
     {
       "path": "runtime/garbage_collector.c",
-      "sha256": "712d21ca01b3a0f03170bb203aac111fff3ed60e11a99e3be92a679c5fefdb12"
+      "sha256": "7ecdb2375bece7eb60f6e2f55d78877964b39e1c0d963933834989d07a9cd450"
     },
     {
       "path": "runtime/garbage_collector.h",
@@ -48999,7 +49427,7 @@
     },
     {
       "path": "runtime/security_supervisor.c",
-      "sha256": "d59d92c4a081243c3d6d888e308b6cf5757215f16234851b0613f28e901c1796"
+      "sha256": "8f6a66048d7453ab81bdd5fb71e5f48928349c852d005146d393c5424789ff7e"
     },
     {
       "path": "runtime/security_supervisor.h",

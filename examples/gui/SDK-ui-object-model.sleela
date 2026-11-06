@@ -1,0 +1,55 @@
+#sleela 2.5
+// SDK model exercise for lib/ui. This does NOT open a native OS window.
+class UiSdkObjectModel {
+  int main() {
+    SLApplication app = new SLApplication();
+    app.configure("SDK object model");
+    app.add();
+    app.show();
+
+    SLWindow window = new SLWindow();
+    window.configure("Preferences");
+    window.add();
+    window.show();
+
+    SLWidget widget = new SLWidget();
+    widget.configure("Root content");
+    widget.add();
+    widget.show();
+
+    SLTheme theme = new SLTheme();
+    theme.configure("Default palette");
+    theme.show();
+
+    SLButton button = new SLButton();
+    button.configure("Save");
+    button.show();
+
+    SLLabel label = new SLLabel();
+    label.configure("Ready");
+    label.show();
+
+    SLView view = new SLView();
+    view.configure("Main view");
+    view.add();
+    view.show();
+
+    SLLayout layout = new SLLayout();
+    layout.configure("Vertical stack");
+    layout.add();
+    layout.show();
+
+    if (!app.visible()) { return 1; }
+    if (!window.visible()) { return 2; }
+    if (!widget.visible()) { return 3; }
+    if (!theme.visible()) { return 4; }
+    if (!button.visible()) { return 5; }
+    if (!label.visible()) { return 6; }
+    if (!view.visible()) { return 7; }
+    if (!layout.visible()) { return 8; }
+
+    window.hide();
+    if (window.visible()) { return 9; }
+    return 0;
+  }
+}

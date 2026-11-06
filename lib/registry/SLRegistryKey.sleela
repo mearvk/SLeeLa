@@ -11,7 +11,7 @@
    
    Family: registry. Composes SLRegistryValue, SLRegistryProvenance; held by
      SLRegistry. >>
-#sleela 2.5
+#sleela 3.0
 material;
 class SLRegistryKey {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
@@ -55,35 +55,43 @@ class SLRegistryKey {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  static final int MAX_VALUES = 8;
+  < Eight object references remain as the legacy display window. >
+  < A growable string list indexes all names for native record resolution. >
+  static final int LEGACY_OBJECT_WINDOW = 8;
 
   < full key path, e.g. "Settings" >
   String path;
   < live values >
   int    count;
+  SLList valueNames;
   SLRegistryValue v0; SLRegistryValue v1; SLRegistryValue v2; SLRegistryValue v3;
   SLRegistryValue v4; SLRegistryValue v5; SLRegistryValue v6; SLRegistryValue v7;
   int hasProvenance;
   SLRegistryProvenance provenance;
 
-  void configure(String keyPath) { path = keyPath; count = 0; hasProvenance = 0; }
+  void configure(String keyPath) {
+    path = keyPath;
+    count = 0;
+    valueNames = new SLList();
+    hasProvenance = 0;
+  }
 
   < append a value (numbered-field store in place of an array) >
   boolean add(SLRegistryValue val) {
-    if (count >= MAX_VALUES) { return false; }
-    if (count == 0) { v0 = val; }
-    else if (count == 1) { v1 = val; }
-    else if (count == 2) { v2 = val; }
-    else if (count == 3) { v3 = val; }
-    else if (count == 4) { v4 = val; }
-    else if (count == 5) { v5 = val; }
-    else if (count == 6) { v6 = val; }
-    else { v7 = val; }
+    if (val == null) { return false; }
+    valueNames.add(val.name);
+    if (count == 0) { v0 = val; } else if (count == 1) { v1 = val; }
+    else if (count == 2) { v2 = val; } else if (count == 3) { v3 = val; }
+    else if (count == 4) { v4 = val; } else if (count == 5) { v5 = val; }
+    else if (count == 6) { v6 = val; } else if (count == 7) { v7 = val; }
     count = count + 1;
     return true;
   }
 
+  String valueNameAt(int idx) { return valueNames.get(idx); }
+
   SLRegistryValue valueAt(int idx) {
+    if (idx < 0 || idx >= count || idx >= LEGACY_OBJECT_WINDOW) { return null; }
     if (idx == 0) { return v0; } if (idx == 1) { return v1; }
     if (idx == 2) { return v2; } if (idx == 3) { return v3; }
     if (idx == 4) { return v4; } if (idx == 5) { return v5; }
@@ -98,7 +106,8 @@ class SLRegistryKey {
     int i = 0;
     while (i < count) {
       SLRegistryValue vv = valueAt(i);
-      print("    " + vv.render());
+      if (vv != null) { print("    " + vv.render()); }
+      else { print("    " + valueNameAt(i) + " (native record-backed value)"); }
       i = i + 1;
     }
     if (hasProvenance == 1) { print("    " + provenance.render()); }

@@ -296,6 +296,11 @@ SLUIWindow *slui_window_create(SLUIApp *app, const SLUIWindowConfig *config);
 void slui_window_destroy(SLUIWindow *window);
 void slui_window_show(SLUIWindow *window);
 void slui_window_hide(SLUIWindow *window);
+/* Non-zero once the user has closed the window (WM close / X button); 0 while
+ * it is still open (or for a NULL handle). A manual slui_app_pump() loop polls
+ * this to end cleanly on close, mirroring what slui_app_run() checks
+ * internally. */
+int slui_window_closed(const SLUIWindow *window);
 void slui_window_set_title(SLUIWindow *window, const char *title);
 SLUIWidget *slui_window_root(SLUIWindow *window);
 const SLUITheme *slui_window_theme(const SLUIWindow *window);
@@ -469,6 +474,16 @@ void slui_widget_set_visible(SLUIWidget *w, int visible);
 SLUIWidget *slui_popup_create(SLUIWidget *parent);
 void slui_popup_set_open(SLUIWidget *popup, int open);
 int slui_popup_is_open(const SLUIWidget *popup);
+/* Overlay placement for a popup. top_left != 0 anchors the panel just below the
+ * top strip (a menubar dropdown) instead of the default lower-right; x >= 0
+ * additionally places its left edge at that pixel (under its menu button),
+ * clamped on-screen. x < 0 leaves the horizontal placement to the default. */
+void slui_popup_set_anchor(SLUIWidget *popup, int top_left, int x);
+/* Anchor a popup to a TRIGGER widget: the popup is centered horizontally on the
+ * trigger's laid-out rect, dropped just below it, and gets an upward teardrop
+ * caret aimed at the trigger's center. Exact (reads the trigger's real bounds),
+ * unlike the fixed-x form above. Pass NULL to clear. */
+void slui_popup_anchor_to(SLUIWidget *popup, SLUIWidget *trigger);
 
 /* Text accessors (label/button/entry). text buffers are copied in; `out`/`cap`
  * read the current value and return the full length (even if truncated). */

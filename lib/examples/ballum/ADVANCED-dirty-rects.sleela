@@ -1,0 +1,61 @@
+#sleela 1.7
+// ADVANCED: track "dirty rectangles" -- the regions of a frame that changed and
+// must be repainted. A display layer uses this to avoid redrawing the whole
+// screen every frame. We union the dirty regions into one bounding rectangle
+// and report how much of the frame it covers. No pixels are touched.
+//
+// Uses the 1.7 object-array idiom: array is a static field, elements are built
+// in typed locals, and read back through typed locals.
+class Rect { int x; int y; int w; int h; }
+class AdvancedDirtyRects {
+    static Rect[] dirty;
+
+    Rect make(int x, int y, int w, int h) {
+        Rect r = new Rect();
+        r.x = x; r.y = y; r.w = w; r.h = h;
+        return r;
+    }
+
+    void main() {
+        int frameW = 800;
+        int frameH = 600;
+
+        dirty = new Rect[3];
+        dirty[0] = make(10, 10, 100, 40);    // a text caret region
+        dirty[1] = make(300, 200, 120, 90);  // a moved sprite
+        dirty[2] = make(60, 420, 200, 30);   // a status bar update
+
+        // Union: smallest rectangle that contains all dirty rectangles.
+        Rect first = dirty[0];
+        int minX = first.x;
+        int minY = first.y;
+        int maxX = first.x + first.w;
+        int maxY = first.y + first.h;
+
+        int changedArea = 0;
+        int i = 0;
+        while (i < arrayLength(dirty)) {
+            Rect r = dirty[i];
+            if (r.x < minX) minX = r.x;
+            if (r.y < minY) minY = r.y;
+            if (r.x + r.w > maxX) maxX = r.x + r.w;
+            if (r.y + r.h > maxY) maxY = r.y + r.h;
+            changedArea = changedArea + (r.w * r.h);   // naive: ignores overlap
+            i = i + 1;
+        }
+
+        int unionW = maxX - minX;
+        int unionH = maxY - minY;
+        int frameArea = frameW * frameH;
+        int unionArea = unionW * unionH;
+
+        print("dirty regions = " + arrayLength(dirty));
+        print("union rect = (" + minX + ", " + minY + ") " + unionW + " x " + unionH);
+        print("sum of region areas (with overlap) = " + changedArea);
+        print("union bounding area = " + unionArea);
+        print("frame area = " + frameArea);
+        // Percent as integer tenths to stay readable without float formatting.
+        int permille = (unionArea * 1000) / frameArea;
+        print("union covers (per-mille of frame) = " + permille);
+    }
+}

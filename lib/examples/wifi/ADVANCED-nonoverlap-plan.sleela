@@ -1,0 +1,54 @@
+#sleela 1.7
+// ADVANCED: check a multi-AP 2.4 GHz channel plan for co-channel and adjacent
+// (overlapping) interference. In the 2.4 GHz band each channel is 20 MHz wide
+// but channels are spaced only 5 MHz apart, so two APs interfere unless their
+// channel numbers differ by at least 5. The classic non-overlapping set is
+// {1, 6, 11}. We verify a plan the way a site survey tool would. No radio used.
+class AP { String name; int channel; }
+class ADVNonoverlapPlan {
+    static AP[] plan;
+
+    AP ap(String name, int channel) {
+        AP a = new AP();
+        a.name = name; a.channel = channel;
+        return a;
+    }
+
+    int gap(int a, int b) {
+        int d = a - b;
+        if (d < 0) d = 0 - d;
+        return d;
+    }
+
+    void main() {
+        // A plan with a conflict: AP-C on channel 4 overlaps AP-A on channel 1.
+        plan = new AP[4];
+        plan[0] = ap("AP-A", 1);
+        plan[1] = ap("AP-B", 6);
+        plan[2] = ap("AP-C", 4);
+        plan[3] = ap("AP-D", 11);
+
+        int conflicts = 0;
+        int i = 0;
+        while (i < arrayLength(plan)) {
+            int j = i + 1;
+            AP ai = plan[i];
+            while (j < arrayLength(plan)) {
+                AP aj = plan[j];
+                int g = gap(ai.channel, aj.channel);
+                if (g < 5) {
+                    print("conflict: " + ai.name + "(ch " + ai.channel + ") and "
+                        + aj.name + "(ch " + aj.channel + ") -- separation " + g + " < 5");
+                    conflicts = conflicts + 1;
+                }
+                j = j + 1;
+            }
+            i = i + 1;
+        }
+
+        print("access points = " + arrayLength(plan));
+        print("interfering pairs = " + conflicts);
+        if (conflicts == 0) print("plan is clean (non-overlapping)");
+        if (conflicts > 0)  print("fix: move conflicting APs onto {1, 6, 11}");
+    }
+}

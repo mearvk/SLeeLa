@@ -76,7 +76,15 @@ int gc_resize_object(GarbageCollector *g, SLGCObject *object, size_t new_bytes) 
 }
 
 SLGCObject *gc_allocate(GarbageCollector *g,size_t bytes,SLGCMarkFn m,SLGCDestroyFn d,void *c) {
-    if (!g||!g->initialized||!grow(&g->objects,&g->count,&g->capacity)) return NULL;
+    if (!g||!g->initialized) return NULL;
+    /* Enforce the managed-heap byte limit at the allocation boundary, fail
+       closed, and keep the accounting overflow-safe (same check as
+       gc_allocate_external / gc_resize_object). Without this, gc_allocate
+       silently blew past gc_limit(). */
+    if (bytes > SIZE_MAX - g->bytes_allocated ||
+        g->bytes_allocated > g->bytes_limit ||
+        bytes > g->bytes_limit - g->bytes_allocated) return NULL;
+    if (!grow(&g->objects,&g->count,&g->capacity)) return NULL;
     SLGCObject *o=(SLGCObject*)calloc(1,sizeof(*o)); if(!o)return NULL;
     if(bytes){o->payload=calloc(1,bytes);if(!o->payload){free(o);return NULL;}}
     o->bytes=bytes;o->generation=SLGC_GENERATION_YOUNG;o->mark_children=m;o->destroy=d;o->context=c;o->external=0;

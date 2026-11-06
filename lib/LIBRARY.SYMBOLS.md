@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11787
-library-packages: 109
+library-source-files: 11886
+library-packages: 111
 module-facade-symbols: 77
-total-symbol-records: 11864
+total-symbol-records: 11963
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -480,10 +480,12 @@ common-rails	PrintGlyphs.sleela	lib/common-rails/PrintGlyphs.sleela	source
 common-rails	PrintLayout.sleela	lib/common-rails/PrintLayout.sleela	source
 common-rails	PrintLine.sleela	lib/common-rails/PrintLine.sleela	source
 common-rails	PrintProgress.sleela	lib/common-rails/PrintProgress.sleela	source
+common-rails	PrintRail.sleela	lib/common-rails/PrintRail.sleela	source
 common-rails	PrintRenderer.sleela	lib/common-rails/PrintRenderer.sleela	source
 common-rails	PrintState.sleela	lib/common-rails/PrintState.sleela	source
 common-rails	PrintWriter.sleela	lib/common-rails/PrintWriter.sleela	source
 common-rails	SLPackage.sleela	lib/common-rails/SLPackage.sleela	facade
+common-rails	common-rails.sleela	lib/common-rails/common-rails.sleela	source
 compiler	BinaryFormatReference.sleela	lib/compiler/BinaryFormatReference.sleela	source
 compiler	DynamiteConnector.sleela	lib/compiler/DynamiteConnector.sleela	source
 compiler	LanguageReference.sleela	lib/compiler/LanguageReference.sleela	source
@@ -1342,6 +1344,85 @@ deliberation	SLWorkflowDecision.sleela	lib/deliberation/SLWorkflowDecision.sleel
 deliberation	SLXor.sleela	lib/deliberation/SLXor.sleela	source
 deliberation	SLZeroSumGame.sleela	lib/deliberation/SLZeroSumGame.sleela	source
 drivers	SLPackage.sleela	lib/drivers/SLPackage.sleela	facade
+examples	ADVANCED-layer-takeoff.sleela	lib/examples/autocad/ADVANCED-layer-takeoff.sleela	source
+examples	BASIC-geometry-area.sleela	lib/examples/autocad/BASIC-geometry-area.sleela	source
+examples	CLASSIC-geometry-primitives.sleela	lib/examples/autocad/CLASSIC-geometry-primitives.sleela	source
+examples	MODERATE-polyline-bounds.sleela	lib/examples/autocad/MODERATE-polyline-bounds.sleela	source
+examples	ADVANCED-dirty-rects.sleela	lib/examples/ballum/ADVANCED-dirty-rects.sleela	source
+examples	BASIC-frame-metrics.sleela	lib/examples/ballum/BASIC-frame-metrics.sleela	source
+examples	CLASSIC-display-frame.sleela	lib/examples/ballum/CLASSIC-display-frame.sleela	source
+examples	MODERATE-fit-and-letterbox.sleela	lib/examples/ballum/MODERATE-fit-and-letterbox.sleela	source
+examples	ADVANCED-processing-gain-capacity.sleela	lib/examples/cdma/ADVANCED-processing-gain-capacity.sleela	source
+examples	BASIC-link-budget.sleela	lib/examples/cdma/BASIC-link-budget.sleela	source
+examples	CLASSIC-link-budget.sleela	lib/examples/cdma/CLASSIC-link-budget.sleela	source
+examples	MODERATE-link-margin.sleela	lib/examples/cdma/MODERATE-link-margin.sleela	source
+examples	ADVANCED-retry-backoff.sleela	lib/examples/connector/ADVANCED-retry-backoff.sleela	source
+examples	BASIC-connector-lifecycle.sleela	lib/examples/connector/BASIC-connector-lifecycle.sleela	source
+examples	CLASSIC-connector-lifecycle.sleela	lib/examples/connector/CLASSIC-connector-lifecycle.sleela	source
+examples	MODERATE-state-machine.sleela	lib/examples/connector/MODERATE-state-machine.sleela	source
+examples	ADVANCED-manifest-verify-sim.sleela	lib/examples/crypto/ADVANCED-manifest-verify-sim.sleela	source
+examples	BASIC-integrity-workflow.sleela	lib/examples/crypto/BASIC-integrity-workflow.sleela	source
+examples	CLASSIC-hash-integrity-workflow.sleela	lib/examples/crypto/CLASSIC-hash-integrity-workflow.sleela	source
+examples	MODERATE-checksum-not-crypto.sleela	lib/examples/crypto/MODERATE-checksum-not-crypto.sleela	source
+examples	ADVANCED-invariant-harness.sleela	lib/examples/debugger/ADVANCED-invariant-harness.sleela	source
+examples	BASIC-debugging-checklist.sleela	lib/examples/debugger/BASIC-debugging-checklist.sleela	source
+examples	CLASSIC-debugging-checklist.sleela	lib/examples/debugger/CLASSIC-debugging-checklist.sleela	source
+examples	MODERATE-bisect-regression.sleela	lib/examples/debugger/MODERATE-bisect-regression.sleela	source
+examples	ADVANCED-disassemble-stream.sleela	lib/examples/decompiler/ADVANCED-disassemble-stream.sleela	source
+examples	BASIC-artifact-inspection.sleela	lib/examples/decompiler/BASIC-artifact-inspection.sleela	source
+examples	CLASSIC-artifact-inspection.sleela	lib/examples/decompiler/CLASSIC-artifact-inspection.sleela	source
+examples	MODERATE-section-table.sleela	lib/examples/decompiler/MODERATE-section-table.sleela	source
+examples	ADVANCED-grid-layout.sleela	lib/examples/gui/ADVANCED-grid-layout.sleela	source
+examples	BASIC-clamp-to-parent.sleela	lib/examples/gui/BASIC-clamp-to-parent.sleela	source
+examples	CLASSIC-layout-bounds.sleela	lib/examples/gui/CLASSIC-layout-bounds.sleela	source
+examples	MODERATE-stack-layout.sleela	lib/examples/gui/MODERATE-stack-layout.sleela	source
+examples	ADVANCED-main-class-resolution.sleela	lib/examples/java/ADVANCED-main-class-resolution.sleela	source
+examples	BASIC-launch-preflight.sleela	lib/examples/java/BASIC-launch-preflight.sleela	source
+examples	CLASSIC-java-launch-preflight.sleela	lib/examples/java/CLASSIC-java-launch-preflight.sleela	source
+examples	MODERATE-classpath-resolution.sleela	lib/examples/java/MODERATE-classpath-resolution.sleela	source
+examples	ADVANCED-request-response-protocol.sleela	lib/examples/network/ADVANCED-request-response-protocol.sleela	source
+examples	BASIC-endpoint-validation.sleela	lib/examples/network/BASIC-endpoint-validation.sleela	source
+examples	USED-loopback-tcp-echo.sleela	lib/examples/network/USED-loopback-tcp-echo.sleela	source
+examples	ADVANCED-Service.sleela	lib/examples/nordshrift/ADVANCED-Service.sleela	source
+examples	ADVANCED-ServiceDraft.sleela	lib/examples/nordshrift/ADVANCED-ServiceDraft.sleela	source
+examples	BASIC-Greeter.sleela	lib/examples/nordshrift/BASIC-Greeter.sleela	source
+examples	CLASSIC-Ledgerize.sleela	lib/examples/nordshrift/CLASSIC-Ledgerize.sleela	source
+examples	MODERATE-App.sleela	lib/examples/nordshrift/MODERATE-App.sleela	source
+examples	MODERATE-Report.sleela	lib/examples/nordshrift/MODERATE-Report.sleela	source
+examples	ADVANCED-anchored-classes.sleela	lib/examples/regex/ADVANCED-anchored-classes.sleela	source
+examples	BASIC-literal-match.sleela	lib/examples/regex/BASIC-literal-match.sleela	source
+examples	DRAFT-literal-find.sleela	lib/examples/regex/DRAFT-literal-find.sleela	source
+examples	MODERATE-wildcard-match.sleela	lib/examples/regex/MODERATE-wildcard-match.sleela	source
+examples	ADVANCED-producer-consumer.sleela	lib/examples/runtime/ADVANCED-producer-consumer.sleela	source
+examples	BASIC-sequential-accumulate.sleela	lib/examples/runtime/BASIC-sequential-accumulate.sleela	source
+examples	USED-thread-workers.sleela	lib/examples/runtime/USED-thread-workers.sleela	source
+examples	CLASSIC-hello-world.sleela	lib/examples/sleela/CLASSIC-hello-world.sleela	source
+examples	NEW-bestof-route.sleela	lib/examples/sleela/NEW-bestof-route.sleela	source
+examples	NEW-dynamic-arrays.sleela	lib/examples/sleela/NEW-dynamic-arrays.sleela	source
+examples	NEW-file-pipes.sleela	lib/examples/sleela/NEW-file-pipes.sleela	source
+examples	NEW-munction-file-reach.sleela	lib/examples/sleela/NEW-munction-file-reach.sleela	source
+examples	NEW-native-financial-import.sleela	lib/examples/sleela/NEW-native-financial-import.sleela	source
+examples	NEW-nested-classes.sleela	lib/examples/sleela/NEW-nested-classes.sleela	source
+examples	NEW-signed-wide-integers-2.7.sleela	lib/examples/sleela/NEW-signed-wide-integers-2.7.sleela	source
+examples	NEW-static-protected-access.sleela	lib/examples/sleela/NEW-static-protected-access.sleela	source
+examples	NEW-struct-network-transport.sleela	lib/examples/sleela/NEW-struct-network-transport.sleela	source
+examples	NEW-struct-record.sleela	lib/examples/sleela/NEW-struct-record.sleela	source
+examples	NEW-synchro-measure.sleela	lib/examples/sleela/NEW-synchro-measure.sleela	source
+examples	NEW-time-api.sleela	lib/examples/sleela/NEW-time-api.sleela	source
+examples	NEW-unsigned-wide-integers-2.8.sleela	lib/examples/sleela/NEW-unsigned-wide-integers-2.8.sleela	source
+examples	ORIGINAL-fizz-buzz.sleela	lib/examples/sleela/ORIGINAL-fizz-buzz.sleela	source
+examples	USED-methods-and-return-values.sleela	lib/examples/sleela/USED-methods-and-return-values.sleela	source
+examples	USED-short-circuit-guards.sleela	lib/examples/sleela/USED-short-circuit-guards.sleela	source
+examples	USED-switch-selection.sleela	lib/examples/sleela/USED-switch-selection.sleela	source
+examples	ADVANCED-progress-bar.sleela	lib/examples/terminal/ADVANCED-progress-bar.sleela	source
+examples	BASIC-menu.sleela	lib/examples/terminal/BASIC-menu.sleela	source
+examples	CLASSIC-terminal-menu.sleela	lib/examples/terminal/CLASSIC-terminal-menu.sleela	source
+examples	MODERATE-aligned-table.sleela	lib/examples/terminal/MODERATE-aligned-table.sleela	source
+examples	ADVANCED-nonoverlap-plan.sleela	lib/examples/wifi/ADVANCED-nonoverlap-plan.sleela	source
+examples	BASIC-channel-frequency.sleela	lib/examples/wifi/BASIC-channel-frequency.sleela	source
+examples	MODERATE-security-policy.sleela	lib/examples/wifi/MODERATE-security-policy.sleela	source
+examples	USED-wifi-policy-smoke.sleela	lib/examples/wifi/USED-wifi-policy-smoke.sleela	source
+examples	ADVANCED-app.sleela	lib/examples/xlt/ADVANCED-app.sleela	source
 filesystem	SLArchive.sleela	lib/filesystem/SLArchive.sleela	source
 filesystem	SLDirectoryInfo.sleela	lib/filesystem/SLDirectoryInfo.sleela	source
 filesystem	SLDirectoryReader.sleela	lib/filesystem/SLDirectoryReader.sleela	source
@@ -1372,6 +1453,10 @@ gameplay	NewDesireMove.sleela	lib/gameplay/NewDesireMove.sleela	source
 gameplay	Player.sleela	lib/gameplay/Player.sleela	source
 gameplay	PortfolioDecision.sleela	lib/gameplay/PortfolioDecision.sleela	source
 gameplay	SLPackage.sleela	lib/gameplay/SLPackage.sleela	facade
+governance	SLVoteBallot.sleela	lib/governance/SLVoteBallot.sleela	source
+governance	SLVoteProposal.sleela	lib/governance/SLVoteProposal.sleela	source
+governance	SLVoteTally.sleela	lib/governance/SLVoteTally.sleela	source
+governance	registry-record-vote.sleela	lib/governance/examples/registry-record-vote.sleela	source
 gui	SLGuiAction.sleela	lib/gui/version-dual/SLGuiAction.sleela	source
 gui	SLGuiAdminAuthority.sleela	lib/gui/version-dual/SLGuiAdminAuthority.sleela	source
 gui	SLGuiApp.sleela	lib/gui/version-dual/SLGuiApp.sleela	source
@@ -11389,8 +11474,14 @@ regex	RegexSubject.sleela	lib/regex/RegexSubject.sleela	source
 regex	RegexSystem.sleela	lib/regex/RegexSystem.sleela	source
 regex	RegexValidator.sleela	lib/regex/RegexValidator.sleela	source
 registry	SLRegistry.sleela	lib/registry/SLRegistry.sleela	source
+registry	SLRegistryIdentity.sleela	lib/registry/SLRegistryIdentity.sleela	source
 registry	SLRegistryKey.sleela	lib/registry/SLRegistryKey.sleela	source
+registry	SLRegistryLifecycle.sleela	lib/registry/SLRegistryLifecycle.sleela	source
 registry	SLRegistryProvenance.sleela	lib/registry/SLRegistryProvenance.sleela	source
+registry	SLRegistryRecord.sleela	lib/registry/SLRegistryRecord.sleela	source
+registry	SLRegistryRelationship.sleela	lib/registry/SLRegistryRelationship.sleela	source
+registry	SLRegistryResolver.sleela	lib/registry/SLRegistryResolver.sleela	source
+registry	SLRegistryReview.sleela	lib/registry/SLRegistryReview.sleela	source
 registry	SLRegistryValue.sleela	lib/registry/SLRegistryValue.sleela	source
 rmi	SLPackage.sleela	lib/rmi/SLPackage.sleela	facade
 runtime	SLCallFrame.sleela	lib/runtime/SLCallFrame.sleela	source
@@ -11479,7 +11570,15 @@ sst	SSTSymbolKind.sleela	lib/sst/SSTSymbolKind.sleela	source
 sst	SSTSymbolReference.sleela	lib/sst/SSTSymbolReference.sleela	source
 sst	SSTSymbolTable.sleela	lib/sst/SSTSymbolTable.sleela	source
 synchro	SLPackage.sleela	lib/synchro/SLPackage.sleela	facade
+systems	SLCPUInfo.sleela	lib/systems/SLCPUInfo.sleela	source
+systems	SLCronExpression.sleela	lib/systems/SLCronExpression.sleela	source
+systems	SLFileInfo.sleela	lib/systems/SLFileInfo.sleela	source
+systems	SLNetworkInterface.sleela	lib/systems/SLNetworkInterface.sleela	source
 systems	SLPackage.sleela	lib/systems/SLPackage.sleela	facade
+systems	SLProcessInfo.sleela	lib/systems/SLProcessInfo.sleela	source
+systems	SLSystemInfo.sleela	lib/systems/SLSystemInfo.sleela	source
+systems	SLSystemStatus.sleela	lib/systems/SLSystemStatus.sleela	source
+systems	SLTimezoneInfo.sleela	lib/systems/SLTimezoneInfo.sleela	source
 telephony-skya	Communication.sleela	lib/telephony-skya/Communication.sleela	source
 telephony-skya	Network.sleela	lib/telephony-skya/Network.sleela	source
 telephony-skya	RealAcquaintances.sleela	lib/telephony-skya/RealAcquaintances.sleela	source

@@ -1,0 +1,11 @@
+#sleela 1.7
+// Teaching example: frame dimensions and pixel count; no display backend is opened.
+class ClassicDisplayFrame {
+    void main() {
+        int width = 800;
+        int height = 600;
+        print("Ballum frame: " + width + " x " + height);
+        print("pixel positions = " + (width * height));
+        print("Native backend integration is a separate runtime/build step.");
+    }
+}

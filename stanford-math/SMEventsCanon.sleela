@@ -1,0 +1,128 @@
+<< stanford-math/SMEventsCanon.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The "calculus of events" canon -- the foundational equations that
+   govern discrete and structured EVENTS rather than steady states: collisions
+   (the event of impact), sound (the event of a pressure disturbance propagating
+   and being heard), departures (arrivals-and-departures / queueing / first
+   passage), and routine (periodic, recurrent, and renewal processes that bring
+   events back around). Each entry records a real name, symbolic form,
+   discoverer, and year faithful to the public record; where attribution is
+   genuinely diffuse it is marked honestly. >>
+#sleela 2.1
+< Executive+ class: a standards/products artifact, full metadata record. >
+class SMEventsCanon {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9280;
+  String metaAuthor = "the mathematical and physical public record";
+  String metaDate = "2026-11-03";
+  String metaCopyright = "results in the public domain / peer-reviewed record";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-03";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 10;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- Scientific record (purpose / method / gains / bedrock / integrity) ---- >
+  << Spec-sanctioned extension (SLEELA.syntax §15: ordinary fields + accessors):
+     what the canon is for, the method it follows, what its editors gain, and
+     the bedrock it rests on. See SMProvenance for the literature callouts. >>
+  String metaPurpose = "A curated index of the foundational equations of events -- collision, sound, departure, and routine -- and their rightful discoverers.";
+  String metaScientificMethod = "Tertiary cataloguing: record established results traceable to primary/secondary literature; originate nothing.";
+  String metaAuthorialGains = "Editorial credit for the catalogue only; the results are public-domain science owned by no one.";
+  String metaBedrock = "The historical and peer-reviewed mechanics, acoustics, and probability record (see SMProvenance).";
+  String metaIntegrityGoal = "Record each event-law under the name history gives it -- impact, pressure, arrival, or return -- crediting the discoverer, claiming nothing.";
+  String getPurpose() { return metaPurpose; }
+  void setPurpose(String v) { metaPurpose = v; }
+  String getScientificMethod() { return metaScientificMethod; }
+  void setScientificMethod(String v) { metaScientificMethod = v; }
+  String getAuthorialGains() { return metaAuthorialGains; }
+  void setAuthorialGains(String v) { metaAuthorialGains = v; }
+  String getBedrock() { return metaBedrock; }
+  void setBedrock(String v) { metaBedrock = v; }
+  String getIntegrityGoal() { return metaIntegrityGoal; }
+  void setIntegrityGoal(String v) { metaIntegrityGoal = v; }
+
+  < ---- The calculus-of-events canon (public record) ---- >
+  SMEquation[] eqs;
+  int filled;
+
+  void build() {
+    eqs = new SMEquation[32];
+    filled = 0;
+
+    < -- Collision: the event of impact -- >
+    add("Impulse-momentum theorem", "J = integral F dt = delta p", "collision mechanics", "Isaac Newton (Principia)", "1687");
+    add("Coefficient of restitution", "e = -(v2' - v1') / (v2 - v1)", "collision mechanics", "Isaac Newton", "1687");
+    add("Elastic collision (1-D final velocities)", "v1' = ((m1-m2) v1 + 2 m2 v2)/(m1+m2)", "collision mechanics", "Huygens; Wallis; Wren", "1668");
+    add("Perfectly inelastic collision", "v' = (m1 v1 + m2 v2)/(m1 + m2)", "collision mechanics", "classical", "1668");
+    add("Konig's theorem (kinetic-energy split)", "KE = KE_cm + KE_internal", "collision mechanics", "Johann Samuel Konig", "1751");
+    add("Rutherford scattering cross-section", "dsigma/dOmega = (k/(4 E))^2 / sin^4(theta/2)", "collision mechanics", "Ernest Rutherford", "1911");
+
+    < -- Sound: the event of a pressure disturbance propagating and being heard -- >
+    add("Speed of sound (Newton-Laplace)", "c = sqrt(gamma P / rho)", "acoustics", "Newton; Laplace", "1816");
+    add("Acoustic wave equation", "d2p/dt2 = c^2 laplacian(p)", "acoustics", "Euler; d'Alembert", "1750");
+    add("Helmholtz equation", "laplacian(p) + k^2 p = 0", "acoustics", "Hermann von Helmholtz", "1860");
+    add("Doppler effect (source and observer)", "f' = f (c +/- v_o) / (c -/+ v_s)", "acoustics", "Christian Doppler", "1842");
+    add("Sound intensity level (decibel)", "L = 10 log10(I / I0)", "acoustics", "Bell System; Barkhausen", "1924");
+    add("Webster horn equation", "d2p/dx2 + (A'/A) dp/dx + k^2 p = 0", "acoustics", "Arthur Gordon Webster", "1919");
+    add("Sabine reverberation time", "T60 = 0.161 V / A", "acoustics", "Wallace Clement Sabine", "1900");
+
+    < -- Departure: arrivals-and-departures, queueing, first passage -- >
+    add("Poisson arrival process", "P(N(t) = n) = (lambda t)^n e^(-lambda t) / n!", "queueing theory", "Simeon Denis Poisson", "1837");
+    add("M/M/1 mean number in system", "L = rho / (1 - rho),  rho = lambda/mu", "queueing theory", "A. K. Erlang; D. G. Kendall", "1909");
+    add("Erlang C (M/M/c wait probability)", "P_wait = Erlang-C(c, a),  a = lambda/mu", "queueing theory", "Agner Krarup Erlang", "1917");
+    add("Pollaczek-Khinchine (M/G/1 queue)", "L_q = rho^2 (1 + C^2) / (2 (1 - rho))", "queueing theory", "Pollaczek; Khinchine", "1930");
+    add("Kramers escape (first-passage) rate", "k = (w0 wb / (2 pi gamma)) e^(-E_b / (k_B T))", "first-passage theory", "Hendrik Anthony Kramers", "1940");
+
+    < -- Routine: periodic, recurrent, and renewal processes that bring events back -- >
+    add("Simple-harmonic period", "T = 2 pi sqrt(m / k)", "periodic processes", "classical (Huygens)", "1673");
+    add("Fourier transform (time to spectrum)", "F(w) = integral f(t) e^(-i w t) dt", "periodic processes", "Joseph Fourier", "1822");
+    add("Poincare recurrence theorem", "a measure-preserving flow returns arbitrarily close to its start", "recurrent processes", "Henri Poincare", "1890");
+    add("Elementary renewal theorem", "m(t) / t -> 1 / mu  as  t -> inf", "renewal theory", "Feller; Smith", "1941");
+  }
+
+  void add(String name, String form, String field, String who, String year) {
+    SMEquation e = new SMEquation();
+    e.define(name, form, field, who, year);
+    eqs[filled] = e;
+    filled = filled + 1;
+  }
+
+  int count() { return filled; }
+
+  String lineAt(int i) {
+    SMEquation e = eqs[i];
+    return e.line();
+  }
+}

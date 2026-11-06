@@ -1,0 +1,20 @@
+#nordshrift 1.0
+#sleela     1.7
+
+// MODERATE: gather SEVERAL sources with one glob pattern.
+// The glob "MODERATE-*.sleela" matches MODERATE-App.sleela and
+// MODERATE-Report.sleela. Nordshrift validates each gathered source as its own
+// compilation unit, so every file in a multi-source sheet is self-contained
+// (each has its own main). This is "collect many programs with one pattern."
+
+sheet moderateMultiSource:
+  version 1.0.0
+  description "Compile a set of self-contained SLeeLa programs matched by a glob."
+
+source:
+  root  "."
+  glob  "MODERATE-*.sleela"
+
+target:
+  root            "out"
+  target-language sleela

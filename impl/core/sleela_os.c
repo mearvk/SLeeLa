@@ -91,6 +91,28 @@ int slos_tempdir(char *buf, size_t cap) {
 }
 int64_t slos_process_id(void) { return (int64_t)GetCurrentProcessId(); }
 
+int slos_removable_volumes(char *buf, size_t cap) {
+    if (!buf || cap == 0) return -1;
+    size_t used = 0; int count = 0;
+    buf[0] = 0;
+    /* The OS decides what is removable: ask GetDriveTypeA per logical drive and
+     * keep only DRIVE_REMOVABLE (USB sticks, card readers). Fixed/system disks
+     * (DRIVE_FIXED), network, CD-ROM and RAM drives are deliberately excluded. */
+    DWORD mask = GetLogicalDrives();
+    for (int i = 0; i < 26; ++i) {
+        if (!(mask & (1u << i))) continue;
+        char root[4] = { (char)('A' + i), ':', '\\', 0 };
+        if (GetDriveTypeA(root) != DRIVE_REMOVABLE) continue;
+        size_t need = 3 + (count ? 1 : 0);       /* "E:\\" plus a separating \n */
+        if (used + need + 1 > cap) break;         /* leave room for NUL */
+        if (count) buf[used++] = '\n';
+        memcpy(buf + used, root, 3); used += 3;
+        buf[used] = 0;
+        ++count;
+    }
+    return count;
+}
+
 int slos_exists(const char *path) {
     if (!path) return -1;
     return (GetFileAttributesA(path) != INVALID_FILE_ATTRIBUTES) ? 1 : 0;
@@ -218,6 +240,15 @@ int slos_tempdir(char *buf, size_t cap) {
     return slos_copy_out(t, buf, cap);
 }
 int64_t slos_process_id(void) { return (int64_t)getpid(); }
+
+int slos_removable_volumes(char *buf, size_t cap) {
+    /* POSIX: the caller resolves removable mounts directly and more richly --
+     * Linux from /proc/self/mountinfo, macOS from /Volumes -- so this backend
+     * reports none and defers to that host-specific logic. */
+    if (!buf || cap == 0) return -1;
+    buf[0] = 0;
+    return 0;
+}
 
 int slos_exists(const char *path) {
     if (!path) return -1;

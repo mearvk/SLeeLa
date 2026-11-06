@@ -1,0 +1,42 @@
+#sleela 1.7
+// MODERATE: a tiny additive checksum over a byte array, to show what a digest
+// "shape" is -- fixed-size output derived from variable-size input.
+//
+// IMPORTANT: this is NOT a cryptographic hash. An additive checksum is trivial
+// to forge and must never be used for security. The lesson is the DISTINCTION:
+// a real integrity check uses SHA-256 via the approved verifier, not this.
+class ModerateChecksumNotCrypto {
+    // Sum the bytes modulo 256 -> a single-byte "checkword". Order-insensitive,
+    // collision-prone: exactly why it is not a security primitive.
+    int checksum8(int[] bytes) {
+        int acc = 0;
+        int i = 0;
+        while (i < arrayLength(bytes)) {
+            acc = (acc + bytes[i]) % 256;
+            i = i + 1;
+        }
+        return acc;
+    }
+
+    void main() {
+        int[] message = new int[5];
+        message[0] = 83;  // S
+        message[1] = 76;  // L
+        message[2] = 101; // e
+        message[3] = 101; // e
+        message[4] = 76;  // L
+
+        int sum = checksum8(message);
+        print("bytes = " + arrayLength(message));
+        print("additive checksum (mod 256) = " + sum);
+
+        // Demonstrate the weakness: swapping two bytes changes the message but
+        // NOT the checksum, because addition is order-insensitive.
+        int[] swapped = new int[5];
+        swapped[0] = 76; swapped[1] = 83; swapped[2] = 101;
+        swapped[3] = 101; swapped[4] = 76;
+        int sum2 = checksum8(swapped);
+        print("swapped checksum = " + sum2);
+        if (sum == sum2) print("collision: different bytes, same checksum -> NOT a hash");
+    }
+}

@@ -1,0 +1,12 @@
+#sleela 2.5
+class ThemeWhite {
+  int main() {
+    SLUserInterface ui = new SLUserInterface(); ui.configure("com.mearvk.examples.ThemeWhite");
+    if (!ui.open()) { return 1; }
+    SLTheme theme = new SLTheme(); theme.white();
+    SLWindow win = ui.openWindow("White Theme", 520, 300, theme.handle());
+    SLWidget root = win.rootWidget();
+    SLLabel label = new SLLabel(); label.createIn(root, "White: light surfaces, dark text, restrained blue accent.");
+    win.show(); return ui.run();
+  }
+}

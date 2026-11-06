@@ -55,8 +55,12 @@ int sleela_vm_config_load(const char *path, SLEELA_VM_CONFIG *config) {
         size_t length = strlen(line);
         char *entry, *equals, *key, *value;
         if (length && line[length - 1] != '\n') {
-            int next = fgetc(file);
-            if (next != EOF) {
+            /* No trailing newline: either the line was longer than the buffer
+               (truncation -> reject as malformed) or it is the final line at
+               EOF (accept). `peek` deliberately does not shadow the outer
+               `next` config accumulator. */
+            int peek = fgetc(file);
+            if (peek != EOF) {
                 fclose(file);
                 return -3;
             }

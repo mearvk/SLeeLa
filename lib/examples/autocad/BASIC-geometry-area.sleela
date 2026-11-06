@@ -1,0 +1,16 @@
+#sleela 1.7
+// BASIC: the single idea of the autocad examples -- compute 2D geometry
+// with plain arithmetic. No AutoCAD API is called; these are the numbers
+// you would later hand to a real drawing backend.
+class BasicGeometryArea {
+    void main() {
+        double width = 120.0;
+        double height = 45.0;
+        double area = width * height;
+        double perimeter = 2.0 * (width + height);
+        print("rectangle width = " + width);
+        print("rectangle height = " + height);
+        print("rectangle area = " + area);
+        print("rectangle perimeter = " + perimeter);
+    }
+}

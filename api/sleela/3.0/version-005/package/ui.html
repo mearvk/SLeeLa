@@ -49,6 +49,7 @@
 <li><a href="../package/decompiler.html">decompiler</a></li>
 <li><a href="../package/deliberation.html">deliberation</a></li>
 <li><a href="../package/drivers.html">drivers</a></li>
+<li><a href="../package/examples.html">examples</a></li>
 <li><a href="../package/filesystem.html">filesystem</a></li>
 <li><a href="../package/gameplay.html">gameplay</a></li>
 <li><a href="../package/gui.html">gui</a></li>
@@ -595,10 +596,17 @@
 <tr><td><code>role</code></td><td><span class="sig">int role</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>emphasis</code></td><td><span class="sig">int emphasis</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>interactive</code></td><td><span class="sig">int interactive</span></td><td class="desc">1 = enabled/interactive, 0 = disabled (greyed out)</td></tr>
+<tr><td><code>visible</code></td><td><span class="sig">int visible</span></td><td class="desc">1 = shown, 0 = hidden. A hidden component takes no space and is not drawn.</td></tr>
+<tr><td><code>marginTop</code></td><td><span class="sig">int marginTop</span></td><td class="desc">Margin (breathing room) around the component, in px, per edge.</td></tr>
+<tr><td><code>marginRight</code></td><td><span class="sig">int marginRight</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>marginBottom</code></td><td><span class="sig">int marginBottom</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>marginLeft</code></td><td><span class="sig">int marginLeft</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>iconSymbol</code></td><td><span class="sig">String iconSymbol</span></td><td class="desc">Optional leading icon: a named theme symbol (e.g. &quot;save&quot;, &quot;trash&quot;) and/or an asset path. Empty strings mean &quot;no icon&quot;.</td></tr>
+<tr><td><code>iconAsset</code></td><td><span class="sig">String iconAsset</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
-<tr><td><code>create</code></td><td><span class="sig">void create()</span></td><td class="desc">Default quality: body role, no emphasis, interactive.</td></tr>
+<tr><td><code>create</code></td><td><span class="sig">void create()</span></td><td class="desc">Default quality: body role, no emphasis, interactive, shown, no margin, no icon.</td></tr>
 <tr><td><code>asBody</code></td><td><span class="sig">void asBody()</span></td><td class="desc">---- role (fluent one-call setters, beginner-friendly) ------------------</td></tr>
 <tr><td><code>asSurface</code></td><td><span class="sig">void asSurface()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>asChrome</code></td><td><span class="sig">void asChrome()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -616,6 +624,23 @@
 <tr><td><code>disable</code></td><td><span class="sig">void disable()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>setInteractive</code></td><td><span class="sig">void setInteractive(boolean on)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>isInteractive</code></td><td><span class="sig">boolean isInteractive()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>show</code></td><td><span class="sig">void show()</span></td><td class="desc">---- visibility --------------------------------------------------------- A hidden component is not drawn and (in a stack) collapses to take no space; the native realizer honors it with uiWidgetVisible.</td></tr>
+<tr><td><code>hide</code></td><td><span class="sig">void hide()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setVisible</code></td><td><span class="sig">void setVisible(boolean on)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isVisible</code></td><td><span class="sig">boolean isVisible()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>margin</code></td><td><span class="sig">void margin(int px)</span></td><td class="desc">---- margin (breathing room around the component, per edge, in px) ------ Uniform margin on all four edges.</td></tr>
+<tr><td><code>setMargins</code></td><td><span class="sig">void setMargins(int top, int right, int bottom, int left)</span></td><td class="desc">Independent per-edge margins (negatives clamped to 0).</td></tr>
+<tr><td><code>getMarginTop</code></td><td><span class="sig">int getMarginTop()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getMarginRight</code></td><td><span class="sig">int getMarginRight()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getMarginBottom</code></td><td><span class="sig">int getMarginBottom()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getMarginLeft</code></td><td><span class="sig">int getMarginLeft()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hasMargin</code></td><td><span class="sig">boolean hasMargin()</span></td><td class="desc">True when any edge has a non-zero margin.</td></tr>
+<tr><td><code>icon</code></td><td><span class="sig">void icon(String symbol)</span></td><td class="desc">---- icon (optional leading symbol / asset) ----------------------------- Set a named theme symbol (e.g. &quot;save&quot;, &quot;trash&quot;, &quot;search&quot;).</td></tr>
+<tr><td><code>iconFromAsset</code></td><td><span class="sig">void iconFromAsset(String assetPath)</span></td><td class="desc">Set an asset-path icon (e.g. a file the host loads).</td></tr>
+<tr><td><code>clearIcon</code></td><td><span class="sig">void clearIcon()</span></td><td class="desc">Clear any icon.</td></tr>
+<tr><td><code>getIconSymbol</code></td><td><span class="sig">String getIconSymbol()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getIconAsset</code></td><td><span class="sig">String getIconAsset()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hasIcon</code></td><td><span class="sig">boolean hasIcon()</span></td><td class="desc">True when a symbol or asset icon has been set.</td></tr>
 <tr><td><code>roleName</code></td><td><span class="sig">String roleName()</span></td><td class="desc">The role name, in the theme&#x27;s own vocabulary.</td></tr>
 <tr><td><code>emphasisName</code></td><td><span class="sig">String emphasisName()</span></td><td class="desc">The emphasis name.</td></tr>
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc">A one-line account of the quality, for logs/inspection.</td></tr>
@@ -1054,7 +1079,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-05 14:10 UTC.
+<code>/lib</code> tree on 2026-11-05 13:56 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>

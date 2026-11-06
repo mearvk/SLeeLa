@@ -1,0 +1,33 @@
+#sleela 2.1
+// NEW: Best-of route selection folds weighted criteria and honest Synchro measurements.
+// The probe uses loopback discard port 9; it does not contact an external host.
+class BestOfRoute {
+    void main() {
+        int b = bestOfNew();
+        bestOfWeight(b, 0, 60);
+        bestOfWeight(b, 1, 25);
+        bestOfWeight(b, 2, 10);
+        bestOfWeight(b, 3, 5);
+        bestOfMinVersion(b, 1);
+        bestOfCostBudget(b, 50);
+
+        int edge = bestOfCandidate(b, "edge", "tcp://127.0.0.1:45218", 200, 64, 5, 5, 2, 10, 3);
+        int spare = bestOfCandidate(b, "spare", "tcp://127.0.0.1:45219", 1000, 128, 0, 0, 2, 5, 1);
+
+        int probe = synchroOpen("127.0.0.1", 9);
+        if (probe >= 0) {
+            int i = 0;
+            while (i < 3) {
+                bestOfRecord(b, edge, synchroDispatch(probe, 64, 30));
+                bestOfRecord(b, spare, synchroDispatch(probe, 128, 30));
+                i = i + 1;
+            }
+            synchroClose(probe);
+        }
+
+        print("winner index = " + bestOfBest(b));
+        print("chosen = " + bestOfChoice(b));
+        print(bestOfReport(b));
+        bestOfClose(b);
+    }
+}

@@ -1,0 +1,24 @@
+<< A secret paper ballot representation. It contains no voter identity. >>
+#sleela 3.0
+material;
+class SLVoteBallot {
+  String anonymousBallotId;
+  String choice;
+  String status;
+  boolean receivedBeforeClose;
+  boolean witnessedByTwoTellers;
+
+  void record(String anonymousId, String markedChoice) {
+    anonymousBallotId = anonymousId;
+    choice = markedChoice;
+    status = "received";
+    receivedBeforeClose = false;
+    witnessedByTwoTellers = false;
+  }
+
+  boolean validForTally() {
+    return anonymousBallotId != null && anonymousBallotId != ""
+        && (choice == "approve" || choice == "reject" || choice == "abstain")
+        && status == "received" && receivedBeforeClose && witnessedByTwoTellers;
+  }
+}

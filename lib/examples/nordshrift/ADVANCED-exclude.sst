@@ -1,0 +1,21 @@
+#nordshrift 1.0
+#sleela     1.7
+
+// ADVANCED: gather by glob, then REMOVE unwanted files with an exclude list.
+// The glob matches both ADVANCED-Service.sleela and ADVANCED-ServiceDraft.sleela,
+// but the exclude pattern drops the "*Draft*" file so only the real service is
+// compiled. This "collect broadly, then prune" pattern is how you keep drafts,
+// scratch files, or generated output out of a build without renaming anything.
+
+sheet advancedExclude:
+  version 1.0.0
+  description "Glob a set, then exclude draft sources from the build."
+
+source:
+  root    "."
+  glob    "ADVANCED-*.sleela"
+  exclude [ "*Draft*" ]
+
+target:
+  root            "out"
+  target-language sleela

@@ -1,0 +1,21 @@
+#sleela 2.5
+class DisplayFeedback {
+  int main() {
+    SLUserInterface ui = new SLUserInterface(); ui.configure("com.mearvk.examples.Feedback");
+    if (!ui.open()) { return 1; }
+    SLTheme theme = new SLTheme(); theme.gray();
+    SLWindow win = ui.openWindow("Display and Feedback", 620, 480, theme.handle());
+    SLWidget root = win.rootWidget();
+    SLBox col = new SLBox(); col.vertical(root, 12); col.setMarginAll(18);
+    SLHeading heading = new SLHeading(); heading.createIn(col, "Status and identity", 22);
+    SLBox row = new SLBox(); row.horizontal(col, 10);
+    SLAvatar avatar = new SLAvatar(); avatar.createIn(row, "M", 40);
+    SLBadge badge = new SLBadge(); badge.createIn(row, "Online");
+    SLChip chip = new SLChip(); chip.createIn(row, "SLeeLa");
+    SLImage image = new SLImage(); image.createIn(col, "UI", 96, 64);
+    SLInfoBar info = new SLInfoBar(); info.createIn(col, "Configuration saved.", 0);
+    SLTooltip tooltip = new SLTooltip(); tooltip.createIn(col, "Additional information");
+    SLLabel note = new SLLabel(); note.createIn(col, "Feedback widgets share the active theme palette.");
+    win.show(); return ui.run();
+  }
+}

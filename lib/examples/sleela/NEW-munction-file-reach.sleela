@@ -1,0 +1,14 @@
+#sleela 2.1
+// NEW: a Munction file-channel reach, kept local to the machine.
+class MunctionFileReach {
+    void main() {
+        String receipt = Munction.start("xyx")
+            .connect("file:/tmp/munction-example.log")
+            .send("payload")
+            .thatch("frame,checksum")
+            .consume()
+            .latch()
+            .closeWithReceipt();
+        print(receipt);
+    }
+}

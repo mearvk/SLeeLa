@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language-model-taxonomy schema-version="1.0">
+  <scope>Representative architecture families and model-system patterns known through 2025.</scope>
+  <notice>This is not a list of 2,000–2,500 individual models. Future possibilities through 2500 are speculative, not established knowledge.</notice>
+  <model id="n-gram" status="established">
+    <name>Statistical language model</name>
+    <period>2000s</period>
+    <description>Predicts tokens from local frequency context; useful baseline, limited long-range structure.</description>
+  </model>
+  <model id="hidden-markov-model" status="established">
+    <name>Probabilistic sequence model</name>
+    <period>pre-2010</period>
+    <description>Models hidden states and observed token sequences; historically important for speech and NLP.</description>
+  </model>
+  <model id="conditional-random-field" status="established">
+    <name>Structured prediction</name>
+    <period>2000s</period>
+    <description>Labels sequences using contextual feature dependencies in classical NLP pipelines.</description>
+  </model>
+  <model id="feed-forward-neural-lm" status="established">
+    <name>Neural language model</name>
+    <period>2000s</period>
+    <description>Predicts a token from a fixed context window using dense neural layers.</description>
+  </model>
+  <model id="rnn" status="established">
+    <name>Recurrent neural network</name>
+    <period>2010s</period>
+    <description>Processes sequences with recurrent state; foundational neural sequence architecture.</description>
+  </model>
+  <model id="lstm" status="established">
+    <name>Gated recurrent network</name>
+    <period>2010s</period>
+    <description>Uses input, forget, and output gates to retain information over longer sequences.</description>
+  </model>
+  <model id="gru" status="established">
+    <name>Gated recurrent network</name>
+    <period>2010s</period>
+    <description>A streamlined gated recurrent architecture with update and reset gates.</description>
+  </model>
+  <model id="seq2seq" status="established">
+    <name>Encoder-decoder sequence model</name>
+    <period>2010s</period>
+    <description>Maps an input sequence to an output sequence, often with recurrent or transformer components.</description>
+  </model>
+  <model id="attention-seq2seq" status="established">
+    <name>Attention-based encoder-decoder</name>
+    <period>2010s</period>
+    <description>Allows decoder steps to focus on relevant encoded input positions.</description>
+  </model>
+  <model id="transformer-encoder" status="established">
+    <name>Bidirectional encoder</name>
+    <period>2018 onward</period>
+    <description>Uses self-attention and feed-forward blocks for contextual representations; BERT-style family.</description>
+  </model>
+  <model id="transformer-decoder" status="established">
+    <name>Autoregressive decoder</name>
+    <period>2018 onward</period>
+    <description>Uses causal self-attention to predict the next token; GPT-style family.</description>
+  </model>
+  <model id="encoder-decoder-transformer" status="established">
+    <name>Text-to-text transformer</name>
+    <period>2019 onward</period>
+    <description>Uses an encoder and autoregressive decoder for translation, summarization, and general text tasks.</description>
+  </model>
+  <model id="sparse-mixture-of-experts" status="established">
+    <name>Conditional-compute model</name>
+    <period>2020s</period>
+    <description>Routes tokens or examples to a subset of expert networks to scale capacity with conditional computation.</description>
+  </model>
+  <model id="retrieval-augmented-generation" status="established">
+    <name>Retrieval-grounded model system</name>
+    <period>2020s</period>
+    <description>Combines a language model with search or document retrieval; retrieved evidence is distinct from model weights.</description>
+  </model>
+  <model id="long-context-transformer" status="established">
+    <name>Extended-context model</name>
+    <period>2020s</period>
+    <description>Uses attention variants, memory, or position strategies to process longer sequences.</description>
+  </model>
+  <model id="state-space-language-model" status="established">
+    <name>State-space sequence model</name>
+    <period>2020s</period>
+    <description>Uses structured state-space dynamics or selective scans as an alternative to full attention in some settings.</description>
+  </model>
+</language-model-taxonomy>

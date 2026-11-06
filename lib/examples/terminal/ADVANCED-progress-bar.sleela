@@ -1,0 +1,33 @@
+#sleela 1.7
+// ADVANCED: render a text progress bar for a sequence of steps.
+// Each line shows a [#####-----] bar and a percentage, built entirely from
+// string construction -- the technique behind most CLI progress indicators.
+// Output only; no timers or I/O.
+class AdvancedProgressBar {
+    static int WIDTH = 20;   // bar width in characters
+
+    // Build a bar string with `filled` '#' cells and the rest as '-'.
+    String bar(int filled) {
+        String out = "[";
+        int i = 0;
+        while (i < WIDTH) {
+            if (i < filled) out = out + "#";
+            if (i >= filled) out = out + "-";
+            i = i + 1;
+        }
+        out = out + "]";
+        return out;
+    }
+
+    void main() {
+        int total = 8;     // number of work steps
+        int step = 0;
+        while (step <= total) {
+            int percent = (step * 100) / total;
+            int filled = (step * WIDTH) / total;
+            print(bar(filled) + " " + percent + "% (" + step + "/" + total + ")");
+            step = step + 1;
+        }
+        print("done.");
+    }
+}

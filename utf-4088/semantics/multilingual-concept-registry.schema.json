@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UTF-4088 multilingual concept annotation registry",
+  "description": "Annotation contract only. Translation slots are intentionally not populated with unreviewed machine translations.",
+  "type": "object",
+  "required": ["schema_version", "concept_key", "concept_id", "language_mappings"],
+  "properties": {
+    "schema_version": { "const": "UTF4088-MULTILINGUAL-1" },
+    "concept_key": { "type": "string", "minLength": 1 },
+    "concept_id": { "type": "integer", "minimum": 1 },
+    "language_mappings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["language", "status"],
+        "properties": {
+          "language": { "enum": ["american-english", "korean", "germanic"] },
+          "label": { "type": ["string", "null"] },
+          "definition": { "type": ["string", "null"] },
+          "sense_note": { "type": ["string", "null"] },
+          "source": { "type": ["string", "null"] },
+          "reviewer": { "type": ["string", "null"] },
+          "status": { "enum": ["unreviewed", "provisional", "reviewed", "validated"] }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

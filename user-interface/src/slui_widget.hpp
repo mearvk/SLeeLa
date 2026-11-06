@@ -133,6 +133,18 @@ public:
     bool is_overlay() const { return is_overlay_; }
     void set_overlay(bool on) { is_overlay_ = on; }
 
+    /* Overlay placement hints (honored by the Window's overlay pass): anchor a
+     * popup top-left (a menubar dropdown) and optionally fix its left edge x. */
+    bool overlay_top_left() const { return anchor_top_left_; }
+    int  overlay_anchor_x() const { return anchor_x_; }
+    void set_overlay_anchor(bool top_left, int x) { anchor_top_left_ = top_left; anchor_x_ = x; }
+    /* Anchor the overlay to a TRIGGER widget: the Window centers the popup
+     * horizontally on the trigger's laid-out rect and draws a teardrop pointer
+     * at the popup's top aimed at the trigger's center. Exact, not estimated,
+     * because it reads the trigger's real bounds at paint time. */
+    Widget* overlay_anchor_widget() const { return anchor_widget_; }
+    void set_overlay_anchor_widget(Widget* w) { anchor_widget_ = w; anchor_top_left_ = true; }
+
     void paint_children(PaintContext& ctx) {
         for (auto& c : children_) {
             if (c->visible_ && !c->is_overlay_) c->paint(ctx);
@@ -291,6 +303,13 @@ protected:
     bool destructive_ = false;
     bool activated_ = false; /* one-shot activation latch (take_activated) */
     bool is_overlay_ = false; /* floats forward of the frame; painted last */
+    /* Overlay placement. Default -1 keeps the historical lower-right anchor (the
+     * connectivity popup). anchor_top_left_ anchors near the top-left instead
+     * (a menubar dropdown), and anchor_x_ >= 0 nudges it to sit under its menu
+     * button (a left inset in pixels). */
+    bool anchor_top_left_ = false;
+    int  anchor_x_ = -1;
+    Widget* anchor_widget_ = nullptr; /* trigger to center under + point a teardrop at */
 
     SLUIActivateHandler activate_ = nullptr;
     void* activate_user_ = nullptr;
@@ -580,15 +599,25 @@ private:
 class Image : public Widget {
 public:
     Image(std::string glyph, int w, int h)
-        : Widget(WidgetKind::Image), glyph_(std::move(glyph)), w_(w), h_(h) {}
+        : Widget(WidgetKind::Image), glyph_(std::move(glyph)), w_(w), h_(h) {
+        load_source();
+    }
     SLUISize measure(const PaintContext& ctx) override;
     void paint(PaintContext& ctx) override;
-    void set_text(const std::string& t) override { glyph_ = t; invalidate(); }
+    /* The string argument doubles as the image SOURCE: a readable file path
+     * (jpg/jpeg always; png/avif when the build links libpng/libavif) is
+     * decoded and rendered as real pixels; anything else (a bare caption or a
+     * missing file) falls back to the themed monogram tile. Re-decoded on
+     * every set_text so a gallery can page through files by reusing one Image. */
+    void set_text(const std::string& t) override { glyph_ = t; load_source(); invalidate(); }
     std::string text() const override { return glyph_; }
 
 private:
+    void load_source(); /* (re)decode glyph_ as a file path into rgb_ */
     std::string glyph_;
     int w_, h_;
+    std::vector<unsigned char> rgb_; /* decoded packed 24-bit RGB, empty if none */
+    int iw_ = 0, ih_ = 0;            /* decoded image dimensions */
 };
 
 /* A round avatar showing an initial on an accent disc. */

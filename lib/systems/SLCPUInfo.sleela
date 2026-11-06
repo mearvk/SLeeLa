@@ -1,0 +1,20 @@
+< SLeeLa Standard Library Definition.
+  Definition: CPU and memory metadata shape matching osls_cpu_info. >
+#sleela 2.5
+material;
+
+class SLCPUInfo {
+  String vendor = "";
+  String model = "";
+  int logicalCores = 0;
+  int physicalCores = 0;
+  int cacheLineSize = 0;
+  int totalMemoryBytes = 0;
+
+  String getVendor() { return vendor; }
+  String getModel() { return model; }
+  int getLogicalCores() { return logicalCores; }
+  int getPhysicalCores() { return physicalCores; }
+  int getCacheLineSize() { return cacheLineSize; }
+  int getTotalMemoryBytes() { return totalMemoryBytes; }
+}

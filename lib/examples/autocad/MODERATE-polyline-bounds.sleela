@@ -1,0 +1,57 @@
+#sleela 1.7
+// MODERATE: model a drawing as data, then measure it.
+// A Vertex object holds one point; an array of vertices is a polyline.
+// We walk the polyline to find its bounding box and total path length.
+// Still pure arithmetic -- the result is a specification a CAD backend can draw.
+//
+// 1.7 array idiom: declare the object array as a static field, build each
+// element in a typed local (set its fields there), then store it; read an
+// element back through a typed local too. Direct arr[i].field access loses
+// the element type in this compiler, so we always bind to a local first.
+class Vertex { double x; double y; }
+class ModeratePolylineBounds {
+    static Vertex[] path;
+
+    // Absolute value helper: SLeeLa 1.7 has no math intrinsics, so we spell it out.
+    double abs(double v) {
+        if (v < 0.0) return 0.0 - v;
+        return v;
+    }
+
+    Vertex at(double x, double y) {
+        Vertex v = new Vertex();
+        v.x = x; v.y = y;
+        return v;
+    }
+
+    void main() {
+        path = new Vertex[4];
+        path[0] = at(0.0,  0.0);
+        path[1] = at(40.0, 0.0);
+        path[2] = at(40.0, 30.0);
+        path[3] = at(0.0,  30.0);
+
+        Vertex first = path[0];
+        double minX = first.x; double maxX = first.x;
+        double minY = first.y; double maxY = first.y;
+        double length = 0.0;
+
+        int i = 1;
+        while (i < arrayLength(path)) {
+            Vertex cur = path[i];
+            Vertex prev = path[i - 1];
+            if (cur.x < minX) minX = cur.x;
+            if (cur.x > maxX) maxX = cur.x;
+            if (cur.y < minY) minY = cur.y;
+            if (cur.y > maxY) maxY = cur.y;
+            // Rectilinear path: each leg is axis-aligned, so Manhattan length is exact.
+            length = length + abs(cur.x - prev.x) + abs(cur.y - prev.y);
+            i = i + 1;
+        }
+
+        print("vertices = " + arrayLength(path));
+        print("bounding box width = " + (maxX - minX));
+        print("bounding box height = " + (maxY - minY));
+        print("open path length = " + length);
+    }
+}

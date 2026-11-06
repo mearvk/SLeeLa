@@ -1,0 +1,14 @@
+#sleela 1.7
+// BASIC: the core radio idea -- a link budget in decibels.
+// Received power = transmit power - path loss (all in dB / dBm).
+// Safe numerical illustration; no modem or radio is accessed.
+class BasicLinkBudget {
+    void main() {
+        double transmitDbm = 20.0;   // 100 mW
+        double pathLossDb = 105.0;
+        double receivedDbm = transmitDbm - pathLossDb;
+        print("transmit power (dBm) = " + transmitDbm);
+        print("path loss (dB) = " + pathLossDb);
+        print("received power (dBm) = " + receivedDbm);
+    }
+}

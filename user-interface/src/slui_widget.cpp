@@ -1215,8 +1215,29 @@ void Card::arrange(const PaintContext& ctx, const Rect& area) {
 void Card::paint(PaintContext& ctx) {
     const Theme& t = *ctx.theme;
     Rect c = content();
-    ctx.canvas->fill_round_rect(c, t.radius, t.surface);
-    ctx.canvas->stroke_round_rect(c, t.radius, 1.0, t.border);
+    if (is_overlay_) {
+        /* A floating overlay card (a popup / menu dropdown) reads as a raised
+         * panel: a soft drop shadow beneath it, a top-lit vertical-gradient
+         * face, and a bright top hairline over the themed border. Only overlays
+         * get this treatment so inline cards stay flat. */
+        for (int i = 3; i >= 1; --i) {
+            Rect s{c.x + i, c.y + i + 1, c.w, c.h};
+            ctx.canvas->fill_round_rect(s, t.radius + i,
+                Color{0, 0, 0, static_cast<uint8_t>(20 + 10 * (3 - i))});
+        }
+        /* Raised face: lighter surface_hi at the top easing to surface at the
+         * bottom gives a subtle 3D dome without any new theme tokens. */
+        ctx.canvas->fill_round_rect_vgrad(c, t.radius, t.surface_hi, t.surface);
+        ctx.canvas->stroke_round_rect(c, t.radius, 1.0, t.border);
+        /* Top-edge highlight: a thin brighter inset line across the top for the
+         * lit bevel. */
+        Rect hi{c.x + 2, c.y + 1, c.w - 4, 1};
+        ctx.canvas->fill_round_rect(hi, 0.5,
+            Color{t.surface_hi.r, t.surface_hi.g, t.surface_hi.b, 140});
+    } else {
+        ctx.canvas->fill_round_rect(c, t.radius, t.surface);
+        ctx.canvas->stroke_round_rect(c, t.radius, 1.0, t.border);
+    }
     /* A card is a hard paint boundary: clip children to the card's content box
      * so interior components can never spill past the rounded border/margins. */
     if (ctx.canvas) ctx.canvas->push_clip(c);
@@ -1277,12 +1298,53 @@ SLUISize Image::measure(const PaintContext&) {
     return SLUISize{w_ + margin_.left + margin_.right,
                     h_ + margin_.top + margin_.bottom};
 }
+/* Treat glyph_ as an image file path and decode it to packed RGB. A path that
+ * does not exist / is not a supported image simply leaves rgb_ empty, so
+ * paint() falls back to the monogram tile and a caption is still shown. */
+void Image::load_source() {
+    rgb_.clear();
+    iw_ = ih_ = 0;
+    if (glyph_.empty()) return;
+    std::vector<unsigned char> decoded;
+    int w = 0, h = 0;
+    if (load_button_image(glyph_, decoded, w, h) && w > 0 && h > 0 &&
+        decoded.size() == static_cast<size_t>(w) * static_cast<size_t>(h) * 3u) {
+        rgb_.swap(decoded);
+        iw_ = w;
+        ih_ = h;
+    }
+}
 void Image::paint(PaintContext& ctx) {
     const Theme& t = *ctx.theme;
     Rect c = content();
     Rect tile{c.x, c.y, w_, h_};
     ctx.canvas->fill_round_rect(tile, t.radius, t.surface_hi);
     ctx.canvas->stroke_round_rect(tile, t.radius, 1.0, t.border);
+    if (!rgb_.empty() && iw_ > 0 && ih_ > 0) {
+        /* Aspect-preserving fit into the tile, nearest-neighbour scaled and
+         * composited pixel-by-pixel (the same path Button uses for its icon).
+         * Clipped to the tile so a non-matching aspect ratio cannot spill. */
+        const double scale = std::min(static_cast<double>(w_) / iw_,
+                                      static_cast<double>(h_) / ih_);
+        const int dw = std::max(1, static_cast<int>(iw_ * scale + 0.5));
+        const int dh = std::max(1, static_cast<int>(ih_ * scale + 0.5));
+        const int dx = tile.x + (w_ - dw) / 2;
+        const int dy = tile.y + (h_ - dh) / 2;
+        ctx.canvas->push_clip(tile);
+        for (int y = 0; y < dh; ++y) {
+            const int sy = std::min(ih_ - 1,
+                static_cast<int>((static_cast<long long>(y) * ih_) / dh));
+            for (int x = 0; x < dw; ++x) {
+                const int sx = std::min(iw_ - 1,
+                    static_cast<int>((static_cast<long long>(x) * iw_) / dw));
+                const size_t p = (static_cast<size_t>(sy) * iw_ + sx) * 3u;
+                ctx.canvas->blend(dx + x, dy + y,
+                    Color{rgb_[p], rgb_[p + 1u], rgb_[p + 2u], 255}, 1.0);
+            }
+        }
+        ctx.canvas->pop_clip();
+        return;
+    }
     if (!glyph_.empty()) {
         double tw = measure_text(ctx.backend, glyph_);
         int baseline = centered_baseline(ctx, tile);

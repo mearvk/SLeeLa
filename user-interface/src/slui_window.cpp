@@ -182,15 +182,60 @@ const Canvas& Window::render() {
             int oh = s.h > 0 ? s.h : 160;
             if (ow > W) ow = W;
             if (oh > H) oh = H;
-            /* Anchor to the lower-right, a small inset above the status bar,
-             * which is where the connectivity trigger sits in these demos. */
             int margin = theme_.unit * 3;
-            int ox = W - ow - margin;
-            int oy = H - oh - (theme_.control_height + margin);
-            if (ox < margin) ox = margin;
-            if (oy < margin) oy = margin;
-            ov->arrange(ctx, Rect{ox, oy, ow, oh});
+            int ox, oy;
+            int teardrop_x = -1; /* >=0 draws an upward teardrop at this x */
+            Widget* trig = ov->overlay_anchor_widget();
+            if (trig && trig->bounds().w > 0) {
+                /* Center the dropdown horizontally on its trigger button and
+                 * drop it just below the menubar, so each menu's panel sits
+                 * under its own selector. A teardrop points up at the center. */
+                Rect tb = trig->bounds();
+                int cx = tb.x + tb.w / 2;
+                ox = cx - ow / 2;
+                oy = tb.bottom() + theme_.unit + 6; /* leave room for the teardrop */
+                if (ox + ow > W - margin) ox = W - ow - margin;
+                if (ox < margin) ox = margin;
+                if (oy + oh > H - margin) oy = H - oh - margin;
+                if (oy < margin) oy = margin;
+                teardrop_x = cx; /* aim at the real button center */
+            } else if (ov->overlay_top_left()) {
+                /* Menubar dropdown without a trigger widget: top-left, optional x. */
+                int ax = ov->overlay_anchor_x();
+                ox = ax >= 0 ? ax : margin;
+                oy = theme_.control_height + margin;
+                if (ox + ow > W - margin) ox = W - ow - margin;
+                if (ox < margin) ox = margin;
+                if (oy + oh > H - margin) oy = H - oh - margin;
+                if (oy < margin) oy = margin;
+            } else {
+                /* Default: lower-right inset above the status bar (connectivity
+                 * popup), preserving the historical placement. */
+                ox = W - ow - margin;
+                oy = H - oh - (theme_.control_height + margin);
+                if (ox < margin) ox = margin;
+                if (oy < margin) oy = margin;
+            }
+            Rect obox{ox, oy, ow, oh};
+            ov->arrange(ctx, obox);
             canvas_.push_clip(Rect{0, 0, W, H});
+            /* Teardrop/caret: a small filled triangle above the panel, pointing
+             * up toward the trigger's center, clamped to stay over the panel. */
+            if (teardrop_x >= 0) {
+                int tw = theme_.unit * 2;         /* half-width of the caret */
+                int tipx = teardrop_x;
+                if (tipx < obox.x + tw + 2) tipx = obox.x + tw + 2;
+                if (tipx > obox.right() - tw - 2) tipx = obox.right() - tw - 2;
+                int baseY = obox.y + 1;           /* sits on the panel's top edge */
+                int tipY = obox.y - tw;           /* apex above the panel */
+                for (int yy = tipY; yy <= baseY; ++yy) {
+                    double f = (baseY - yy) / static_cast<double>(tw + 1);
+                    int half = static_cast<int>(tw * f + 0.5);
+                    for (int xx = tipx - half; xx <= tipx + half; ++xx)
+                        canvas_.blend(xx, yy, Color{theme_.surface_hi.r,
+                            theme_.surface_hi.g, theme_.surface_hi.b, 255}, 1.0);
+                }
+            }
             ov->paint(ctx);
             canvas_.pop_clip();
         }

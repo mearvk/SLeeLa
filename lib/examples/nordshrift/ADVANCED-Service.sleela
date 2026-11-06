@@ -1,0 +1,7 @@
+#sleela 1.7
+// Kept source paired with ADVANCED-exclude.sst.
+class Service {
+    void main() {
+        print("service built by Nordshrift");
+    }
+}

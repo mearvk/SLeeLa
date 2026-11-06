@@ -1,0 +1,70 @@
+<< Aggregate-only tally model. Individual secret ballot choices are not public fields. >>
+#sleela 3.0
+material;
+class SLVoteTally {
+  long eligibleCount;
+  long approveCount;
+  long rejectCount;
+  long abstainCount;
+  long invalidCount;
+  long validBallotCount;
+  long quorumRequired;
+  boolean quorumMet;
+  boolean certified;
+  boolean adopted;
+  String method;
+  String certificateReference;
+  String challengeState;
+
+  void reset() {
+    eligibleCount = 0;
+    approveCount = 0;
+    rejectCount = 0;
+    abstainCount = 0;
+    invalidCount = 0;
+    validBallotCount = 0;
+    quorumRequired = 0;
+    quorumMet = false;
+    certified = false;
+    adopted = false;
+    method = "strict-majority";
+    certificateReference = "";
+    challengeState = "open";
+  }
+
+  void calculateQuorum(long absoluteMinimum, int participationPercent,
+                       boolean abstentionsCount) {
+    long participation = approveCount + rejectCount;
+    if (absoluteMinimum < 0 || participationPercent < 0 || participationPercent > 100
+        || eligibleCount < 0 || approveCount < 0 || rejectCount < 0 || abstainCount < 0) {
+      validBallotCount = 0;
+      quorumRequired = 0;
+      quorumMet = false;
+      return;
+    }
+    if (abstentionsCount) { participation = participation + abstainCount; }
+    validBallotCount = participation;
+    quorumRequired = absoluteMinimum;
+    if (participationPercent > 0) {
+      long percentMinimum = (eligibleCount * participationPercent + 99) / 100;
+      if (percentMinimum > quorumRequired) { quorumRequired = percentMinimum; }
+    }
+    quorumMet = validBallotCount >= quorumRequired;
+  }
+
+  boolean strictMajorityPasses() {
+    return quorumMet && approveCount > rejectCount;
+  }
+
+  boolean twoThirdsPasses() {
+    long denominator = approveCount + rejectCount;
+    return quorumMet && denominator > 0 && (approveCount * 3) >= (denominator * 2);
+  }
+
+  void certify(String reference) {
+    certificateReference = reference;
+    certified = reference != null && reference != "" && challengeState == "closed";
+    adopted = certified && (method == "strict-majority"
+        ? strictMajorityPasses() : twoThirdsPasses());
+  }
+}

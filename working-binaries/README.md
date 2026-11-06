@@ -4,8 +4,8 @@ Prebuilt native SLeeLa toolchain binaries, kept here for quick access.
 
 | Binary | What it is | Size |
 |--------|------------|------|
-| `sleela` | The authoritative SLeeLa compiler/runner (Sleelvac™). Subcommands include `check`, `run`, `compile -o <out>`, `validate-artifact`, `nordshrift`, `version`. **There is no separate `sleelac`** — compilation is `sleela compile`. | ~1.7 MB |
-| `nordshrift` | The Nordshrift round-trip tool (SLeeLa → Nordshrift → back; targets sleela/java/c). | ~1.4 MB |
+| `sleela` | The authoritative SLeeLa compiler/runner (Sleelvac™). Subcommands include `check`, `run`, `compile -o <out>`, `validate-artifact`, `nordshrift`, `version`. **There is no separate `sleelac`** — compilation is `sleela compile`. | ~2.5 MB |
+| `nordshrift` | The Nordshrift round-trip tool (SLeeLa → Nordshrift → back; targets sleela/java/c). | ~2.2 MB |
 
 ## Important caveats
 

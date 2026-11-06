@@ -114,6 +114,7 @@ int sleela_ui_arity(int id) {
         /* 1 arg */
         case SLUI_FN_APP_CREATE: case SLUI_FN_APP_RUN: case SLUI_FN_APP_DESTROY:
         case SLUI_FN_BACKEND_NAME: case SLUI_FN_WINDOW_SHOW: case SLUI_FN_WINDOW_HIDE:
+        case SLUI_FN_WINDOW_CLOSED:
         case SLUI_FN_WINDOW_ROOT: case SLUI_FN_WINDOW_REDRAW: case SLUI_FN_CARD:
         case SLUI_FN_HEADER_BAR: case SLUI_FN_STATUS_BAR: case SLUI_FN_SPACER:
         case SLUI_FN_SPINNER: case SLUI_FN_COMBO_BOX: case SLUI_FN_THEME_PRESET:
@@ -153,7 +154,7 @@ int sleela_ui_arity(int id) {
         case SLUI_FN_THROBBER_SET_INTENSITY: case SLUI_FN_THROBBER_SET_HUE:
         case SLUI_FN_WIDGET_SET_TEXT: case SLUI_FN_WIDGET_SET_TOGGLE:
         case SLUI_FN_WIDGET_SET_VALUE: case SLUI_FN_WIDGET_SET_SENSITIVE:
-        case SLUI_FN_WIDGET_SET_VISIBLE: case SLUI_FN_POPUP_SET_OPEN: case SLUI_FN_WIFI_CONNECT:
+        case SLUI_FN_WIDGET_SET_VISIBLE: case SLUI_FN_POPUP_SET_OPEN: case SLUI_FN_POPUP_ANCHOR_TO: case SLUI_FN_WIFI_CONNECT:
         case SLUI_FN_WIDGET_SET_SUGGESTED:
         case SLUI_FN_WIDGET_SET_DESTRUCT:
         case SLUI_FN_THEME_LOAD_CONFIG: case SLUI_FN_THEME_SET_BASE:
@@ -169,6 +170,7 @@ int sleela_ui_arity(int id) {
         /* 3 args */
         case SLUI_FN_BOX: case SLUI_FN_GRID: case SLUI_FN_TOGGLE:
         case SLUI_FN_CHECK_BOX: case SLUI_FN_HEADING: case SLUI_FN_INFO_BAR:
+        case SLUI_FN_POPUP_SET_ANCHOR:
         case SLUI_FN_WIDGET_SET_ALIGN: case SLUI_FN_WIDGET_SET_EXPAND:
         case SLUI_FN_WIDGET_SET_SIZE_REQ: case SLUI_FN_AVATAR:
         case SLUI_FN_THEME_SET_FONT:
@@ -227,6 +229,7 @@ SLUIArg sleela_ui_dispatch(int id, const SLUIArg* a, int n) {
         }
         case SLUI_FN_WINDOW_SHOW:   slui_window_show(win_get(ai(a,n,0))); return r_null();
         case SLUI_FN_WINDOW_HIDE:   slui_window_hide(win_get(ai(a,n,0))); return r_null();
+        case SLUI_FN_WINDOW_CLOSED: return r_int(slui_window_closed(win_get(ai(a,n,0))));
         case SLUI_FN_WINDOW_ROOT:   return r_int(widget_put(slui_window_root(win_get(ai(a,n,0)))));
         case SLUI_FN_WINDOW_SET_TITLE: slui_window_set_title(win_get(ai(a,n,0)), as_(a,n,1)); return r_null();
         case SLUI_FN_WINDOW_SET_MIN_SIZE:
@@ -324,6 +327,8 @@ SLUIArg sleela_ui_dispatch(int id, const SLUIArg* a, int n) {
         case SLUI_FN_POPUP_CREATE:        return r_int(widget_put(slui_popup_create(widget_get(ai(a,n,0)))));
         case SLUI_FN_POPUP_SET_OPEN:       slui_popup_set_open(widget_get(ai(a,n,0)), (int)ai(a,n,1)); return r_null();
         case SLUI_FN_POPUP_IS_OPEN:        return r_int(slui_popup_is_open(widget_get(ai(a,n,0))));
+        case SLUI_FN_POPUP_SET_ANCHOR:     slui_popup_set_anchor(widget_get(ai(a,n,0)), (int)ai(a,n,1), (int)ai(a,n,2)); return r_null();
+        case SLUI_FN_POPUP_ANCHOR_TO:      slui_popup_anchor_to(widget_get(ai(a,n,0)), widget_get(ai(a,n,1))); return r_null();
         case SLUI_FN_WIFI_OPEN_SETTINGS:    return r_int(slui_wifi_open_settings());
         case SLUI_FN_WIFI_SCAN: return r_int(sleela_wifi_vm_scan());
         case SLUI_FN_WIFI_NETWORK_COUNT: return r_int(sleela_wifi_vm_network_count());

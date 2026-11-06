@@ -1,0 +1,19 @@
+#nordshrift 1.0
+#sleela     1.7
+
+// BASIC: the smallest useful sheet -- one source file, one target.
+// A Nordshrift sheet (.sst) describes WHAT to build: which sources to gather
+// and which target language to produce. This one gathers a single file and
+// targets SLeeLa.
+
+sheet basicSingleSource:
+  version 1.0.0
+  description "Compile one SLeeLa source to a SLeeLa target."
+
+source:
+  root  "."
+  glob  "BASIC-Greeter.sleela"
+
+target:
+  root            "out"
+  target-language sleela

@@ -1,0 +1,14 @@
+#sleela 2.7
+// NEW: the signed integer-width family introduced in syntax 2.7.
+// The VM currently has native integer slots through 128 bits; wider types
+// are recognized by the language but arbitrary-width arithmetic is future work.
+class NewSignedWideIntegers {
+    void main() {
+        int32 smallCount = 120;
+        int64 normalCount = 64000;
+        int128 largeCount = 1000000;
+        print("int32 sample = " + smallCount);
+        print("int64 sample = " + normalCount);
+        print("int128 sample = " + largeCount);
+    }
+}

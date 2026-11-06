@@ -1,29 +1,50 @@
 # SLeeLa Language API and Version Contracts
 
-This directory documents the language-facing contracts that affect API consumers. The normative grammar remains [`../../../../SLEELA.syntax`](../../SLEELA.syntax); compiler behavior and the runtime implementation are authoritative over explanatory documentation.
+This directory documents the language-facing contracts that affect API
+consumers. The normative grammar remains
+[`SLEELA.syntax`](../../../../SLEELA.syntax); compiler behavior and regression tests
+establish the implemented boundary.
 
 ## Versioned contracts
 
-- [Syntax version matrix](SYNTAX-VERSION-MATRIX.md) — features and compatibility boundaries.
-- [Document markers](DOCUMENT-MARKERS.md) — the `author`/`authorial`, `material`, `memory`, and `determine` document-scope markers in one catalog.
-- [System namespace API](system-namespace/API.md) — the `ran::` system-reference namespace.
-- [Verified system references](system-namespace/REFERENCES.md) — reference inventory grounded in the current syntax 1.9 fixtures.
-
-## Version 1.9: GC hints
-
-Syntax 1.9 introduces the contextual assignment right-hand-side forms `x = gc N;` and `x = mem N;`. See [GC-hint API](../runtime/gc/GC-HINT-API.md), [semantics](../runtime/gc/SEMANTICS.md), and [test matrix](../runtime/gc/TEST-MATRIX.md).
-
-The feature is a request to the runtime, not a promise that every allocation is reclaimed immediately. Reachable objects must remain valid. A language-level hint is distinct from the native collector API under `impl/` and from the tracked allocator under `api/native/memory/`.
-
-## Documentation status
-
-The matrix marks evidence and implementation boundaries explicitly. Do not promote a planned API to implemented status based only on a design document, class name, or placeholder declaration.
-
+- [Syntax version matrix](SYNTAX-VERSION-MATRIX.md) — syntax editions,
+  feature history, and implementation boundaries.
+- [Document markers](DOCUMENT-MARKERS.md) — the complete document-scope marker
+  family, including the compiler-active `author` marker and declarative markers.
+- [System namespace API](system-namespace/API.md) — the `ran::` system-reference
+  namespace.
+- [Verified system references](system-namespace/REFERENCES.md) — reference
+  inventory and its fixture evidence.
 
 ## Current syntax edition: 3.0
 
-The current normative language edition is **3.0**. The compiler accepts source
-syntax 1.0–3.0 and defaults unversioned source to 3.0 with a warning. Earlier
-source declarations remain valid; historical feature-specific minimum gates
-remain in force. See the [syntax version matrix](SYNTAX-VERSION-MATRIX.md)
-and the [SLeeLa 3.0 API edition](../../3.0/README.md).
+The compiler accepts source syntax from **1.0 through 3.0** and defaults unversioned source to
+3.0 with a warning. The normative specification consolidates the established
+1.x/2.x language surface; historical feature-specific minimum gates remain.
+A file's `#sleela X.Y` pragma selects its source-syntax edition; the compiler
+release number is a separate version and does not silently change that pragma.
+
+Syntax 2.9 introduced `@mix` consequent fields (see §28 of
+[`SLEELA.syntax`](../../../../SLEELA.syntax)). Repeated same-named instance fields
+must carry `@mix`; their declaration order supplies indexes unless explicit
+indexes are provided. The `prestige` marker described in §27 remains a future
+proposal and is **not** an implemented feature. Syntax 3.0 does not add a new
+reserved word or grammar production solely through the edition bump.
+
+## Earlier versioned feature: syntax 1.9 GC hints
+
+Syntax 1.9 introduces the contextual assignment right-hand-side forms
+`x = gc N;` and `x = mem N;`. See the [GC-hint API](../runtime/gc/GC-HINT-API.md),
+[semantics](../runtime/gc/SEMANTICS.md), and
+[test matrix](../runtime/gc/TEST-MATRIX.md).
+
+The feature is a request to the runtime, not a promise that every allocation is
+reclaimed immediately. Reachable objects must remain valid. A language-level
+hint is distinct from the native collector API under `impl/` and from the
+tracked allocator under `api/native/memory/`.
+
+## Documentation status
+
+The matrix marks evidence and implementation boundaries explicitly. Do not
+promote a planned API to implemented status based only on a design document,
+class name, or placeholder declaration.

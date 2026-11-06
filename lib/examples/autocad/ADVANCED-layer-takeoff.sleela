@@ -1,0 +1,46 @@
+#sleela 1.7
+// ADVANCED: a small "quantity takeoff" over a layered drawing.
+// Each entity carries a layer id and a measured area; we aggregate area
+// per layer and report totals -- the kind of roll-up a CAD estimator needs.
+// Shows objects + arrays + grouped accumulation, still with no CAD backend.
+//
+// Note the 1.7 object-array idiom: build each entity in a typed local, then
+// store it into the static-field array; read elements back through a local.
+class Entity { int layer; double area; }
+class AdvancedLayerTakeoff {
+    static Entity[] drawing;
+
+    Entity make(int layer, double area) {
+        Entity e = new Entity();
+        e.layer = layer; e.area = area;
+        return e;
+    }
+
+    void main() {
+        // Layers: 0 = walls, 1 = glazing, 2 = floor.
+        drawing = new Entity[5];
+        drawing[0] = make(0, 32.0);
+        drawing[1] = make(2, 96.0);
+        drawing[2] = make(0, 18.5);
+        drawing[3] = make(1, 12.0);
+        drawing[4] = make(1, 7.5);
+
+        double[] totals = new double[3];
+        totals[0] = 0.0; totals[1] = 0.0; totals[2] = 0.0;
+        double grand = 0.0;
+
+        int i = 0;
+        while (i < arrayLength(drawing)) {
+            Entity e = drawing[i];
+            totals[e.layer] = totals[e.layer] + e.area;
+            grand = grand + e.area;
+            i = i + 1;
+        }
+
+        print("entities = " + arrayLength(drawing));
+        print("walls area  (layer 0) = " + totals[0]);
+        print("glazing area(layer 1) = " + totals[1]);
+        print("floor area  (layer 2) = " + totals[2]);
+        print("total area = " + grand);
+    }
+}

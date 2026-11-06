@@ -1,0 +1,14 @@
+#sleela 1.7
+// Source paired with CLASSIC-capstone.sst.
+class Ledgerize {
+    int sumWindow(int completed, int window) {
+        if (window <= 0) return 0;
+        return completed / window;
+    }
+    void main() {
+        int completed = 120;
+        int window = 4;
+        print("throughput = " + sumWindow(completed, window) + " ops/second");
+        print("done");
+    }
+}

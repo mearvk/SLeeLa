@@ -1,0 +1,11 @@
+#sleela 1.7
+// The second independent program gathered by MODERATE-multi-source.sst.
+// It is self-contained (its own main) because Nordshrift compiles each gathered
+// source as its own unit.
+class ModerateReport {
+    void main() {
+        print("Report: three lines");
+        print("  line 1");
+        print("  line 2");
+    }
+}

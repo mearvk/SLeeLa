@@ -26,40 +26,153 @@ faithful to the subject's real origin where publicly known**; unknowns are
 | `SMPhysicsCanon`   | Foundational physics equations | Standard references (see Sources) |
 | `SMThermoEquations`| Thermodynamics & statistical-mechanics equations | Standard references (see Sources) |
 | `SMCrossoverCanon` | Applied/PhD crossovers (finance, chemistry, cosmology, info) | Standard references (see Sources) |
+| `SMFinanceCanon`   | Finance & economics equations (money, capitalism, credit) | Standard references (see Sources) |
+| `SMChemistryCanon` | Covalent-bonding chemistry equations | Standard references (see Sources) |
+| `SMSocialCanon`    | Social-structure equations (ties, networks, wealth distribution) | Standard references (see Sources) |
+| `SMEventsCanon`    | Calculus-of-events equations (collision, sound, departure, routine) | Standard references (see Sources) |
 | `SMProvenance`     | Purpose/method/gains/bedrock + tiered literature callouts (Wikipedia attributed) | Primary/secondary/tertiary sources |
 | `SMArchive` (demo) | Runnable entry point that broadcasts the archive | — |
 
-## The equation canon (102 entries)
+## The equation canon (448 entries)
 
 > On "all of the equations known in the known Universe": **no finite, complete
 > list of every equation exists** — and fabricating one would violate this
 > repo's one hard rule (values faithful to real origin; unknowns are `"none"`,
 > never invented). So this archive records a **curated, fully-attributed canon**
 > of the genuinely foundational equations that every math/physics PhD rests on:
-> **102 entries**, each with its real name, symbolic form, discoverer(s), year,
+> **448 entries**, each with its real name, symbolic form, discoverer(s), year,
 > and field.
 
 Breakdown (counts verified by running `SMArchive`):
 
-- **Mathematics — 34:** Pythagoras, Euler's identity/formula, FTC, binomial
+- **Mathematics — 75:** Pythagoras, Euler's identity/formula, FTC, binomial
   theorem, Taylor & Fourier series, Cauchy–Schwarz, Gauss/Green/Stokes,
   Cauchy integral & residue theorems, Riemann zeta functional equation, Euler
   product, prime number theorem, Bayes, CLT, Stirling, Gamma, Basel problem,
   Euler–Mascheroni, golden ratio, polyhedron formula, eigenvalue equation,
-  Green–Tao, and more.
-- **Physics — 36:** Newton's laws & gravitation, Lagrange/Hamilton, Coulomb,
+  Green–Tao, plus L'Hôpital's rule, integration by parts, chain rule, Jensen &
+  AM–GM inequalities, geometric series, Euler's totient, Fermat's little
+  theorem, Cantor's diagonal cardinality, Laplace's equation, Euler's totient
+  theorem, Gauss's quadratic reciprocity, Cramer's rule, the Wallis product,
+  Lagrange's mean value theorem, the intermediate value theorem, Wilson's
+  theorem, the Chinese remainder theorem, the Vandermonde determinant,
+  Cayley–Hamilton, Gram–Schmidt, Parseval's identity, Chebyshev's inequality,
+  the fundamental theorem of algebra, Rolle's theorem, the Cauchy–Riemann
+  equations, the argument principle, Lagrange interpolation, Newton's method,
+  the singular value decomposition, Bolzano–Weierstrass, the Banach
+  fixed-point theorem, Hölder & Minkowski inequalities, the weak law of large
+  numbers, Markov's inequality, Möbius inversion, Dirichlet on primes in
+  arithmetic progression, and the Catalan numbers, plus a deep second layer —
+  Lagrange multipliers & the Euler–Lagrange equation, Noether's and Gauss–Bonnet
+  theorems, the Cauchy integral theorem, Liouville, Schwarz, Morera, Rouché, the
+  Jordan-curve and Brouwer fixed-point theorems, the implicit/inverse-function
+  and Picard–Lindelöf theorems, the Bessel/Legendre/Hermite/Laguerre equations,
+  the Beta function, Poisson summation, Plancherel and the convolution theorem,
+  the spectral theorem, LU/QR/Cholesky, Perron–Frobenius, the Cramér–Rao bound
+  and MLE, the Poisson/binomial distributions, Borel–Cantelli, and Simpson's
+  rule & Runge–Kutta — and more.
+- **Physics — 89:** Newton's three laws & gravitation, Lagrange/Hamilton, Coulomb,
   all four Maxwell equations, Lorentz force, `E=mc^2`, Einstein field equations,
   Schwarzschild radius, Planck relation & law, de Broglie, both Schrödinger
   equations, Heisenberg uncertainty, Dirac, canonical commutation, Bohr levels,
-  Rydberg, photoelectric, Navier–Stokes, wave equation, Bernoulli.
-- **Thermodynamics & statistical mechanics — 20:** the four laws, Clausius
+  Rydberg, photoelectric, Navier–Stokes, wave equation, Bernoulli, plus simple
+  harmonic motion, centripetal acceleration, Doppler, Snell's law, Ohm's law,
+  Compton scattering, and Wien's displacement law, plus a deep second layer —
+  Kepler's three laws, Poisson's equation, the continuity and Euler fluid
+  equations, the Reynolds number, Biot–Savart, Lenz, Larmor, Poynting, the
+  Lorentz transformation and relativistic momentum/energy/velocity addition,
+  Klein–Gordon, the Yukawa potential, Fermi–Dirac & Bose–Einstein statistics,
+  Rayleigh–Jeans, Bragg, Malus, Beer–Lambert, Fresnel, the thin-lens and
+  Rayleigh-resolution laws, Hall, Drude, Debye, the London/Josephson/Casimir
+  results, escape velocity & the Tsiolkovsky rocket equation, torque/angular
+  momentum/moment of inertia, Poiseuille, Stokes drag, and gravitational time
+  dilation.
+- **Thermodynamics & statistical mechanics — 48:** the four laws, Clausius
   entropy, Boltzmann `S=k ln W`, Gibbs entropy, ideal gas law, Gibbs/Helmholtz
   free energies, enthalpy, Carnot efficiency, Maxwell–Boltzmann, Boltzmann
   factor, partition function, Stefan–Boltzmann, Clausius–Clapeyron,
-  Gibbs–Helmholtz, Sackur–Tetrode, Landauer's principle.
-- **Crossovers — 12:** Black–Scholes (PDE & call price), Itô's lemma, Nernst,
+  Gibbs–Helmholtz, Sackur–Tetrode, Landauer's principle, van der Waals,
+  Mayer's heat-capacity relation, Fourier's law of conduction, the Gibbs
+  chemical potential, plus the **critical-point conditions** and **van der Waals
+  critical constants** (where molecular attraction locates the phase law), **De
+  Donder's chemical affinity**, and the **equilibrium/equality condition**
+  (affinity = 0; equal T, P, and chemical potential across coexisting phases),
+  plus a deep second layer — the four Maxwell relations, the Euler and
+  Gibbs–Duhem relations, the Clausius inequality, the Joule–Thomson coefficient,
+  Dulong–Petit and Einstein heat capacities, the grand partition function and
+  grand potential, the equipartition and fluctuation–dissipation results,
+  Onsager reciprocity, the Clapeyron and Gibbs-adsorption equations, and
+  Kirchhoff's thermochemical law.
+- **Crossovers — 36:** Black–Scholes (PDE & call price), Itô's lemma, Nernst,
   Arrhenius, Friedmann, Hubble–Lemaître, Drake, Shannon entropy & channel
-  capacity, logistic equation, heat equation.
+  capacity, logistic equation, heat equation, plus Michaelis–Menten kinetics,
+  Hardy–Weinberg, Lotka–Volterra, and the Kelly criterion, plus a deep second
+  layer — the Fokker–Planck, Langevin and Ornstein–Uhlenbeck processes,
+  Feynman–Kac and Girsanov, the Kolmogorov forward equation, the SIR model and
+  basic reproduction number, replicator dynamics, the Price equation, Fisher's
+  fundamental theorem, Wright–Fisher drift, the Goldman–Hodgkin–Katz and
+  Hodgkin–Huxley membrane laws, Nernst–Planck electrodiffusion, Schelling
+  segregation, the Bass diffusion model, Gompertz growth, Kleiber's law, and
+  Zipf's law.
+- **Finance & economics — 50:** the equation of exchange / quantity theory of
+  money, compound & continuous interest, present value, annuities & perpetuities,
+  Gordon growth, the Fisher equation, the money multiplier, CAPM & beta,
+  Modigliani–Miller, WACC, bond pricing & Macaulay duration, the Sharpe ratio,
+  Markowitz portfolio variance, put–call parity, Okun's law, the Phillips curve,
+  the Taylor rule, Cobb–Douglas, Solow growth, MC = MR, and **Little's Law**
+  (`L = λW`, the throughput–inventory relation behind economic "pace"), plus a
+  deep second layer — the Black–Scholes Greeks (delta/gamma/vega/theta), the
+  CRR binomial and Black-76 models, cost-of-carry forwards and covered interest
+  parity, the Vasicek, CIR and Merton models, modified duration/convexity/YTM,
+  Fama–French and APT, Jensen's alpha and the Treynor/Sortino ratios, parametric
+  VaR, GARCH(1,1), the Rule of 72, EOQ, and the Herfindahl–Hirschman index.
+- **Covalent-bonding chemistry — 43:** the Lewis shared electron pair, the octet
+  rule, MO bond order, LCAO & two-center MO energies, Heitler–London valence
+  bond, Pauling electronegativity, bond dissociation energy, the Morse and
+  Lennard-Jones potentials, Coulomb's law, Born–Oppenheimer, hybridization,
+  formal charge, dipole moment, the harmonic-bond law, Pauli exclusion, and
+  Aufbau/Hund filling, plus a deep second layer spanning the rest of general
+  chemistry — Henderson–Hasselbalch and the pH/Kw definitions, the equilibrium
+  constant and law of mass action, first/second-order and Arrhenius/Eyring rate
+  laws, van 't Hoff, the Gibbs reaction/equilibrium relations, Nernst, Faraday
+  electrolysis and Butler–Volmer, Debye–Hückel, Raoult's and Henry's laws, the
+  Gibbs phase rule, freezing-point depression and osmotic pressure, the Langmuir
+  and BET isotherms, Beer–Lambert, and Clausius–Clapeyron.
+- **Social structure — 34:** network density, clustering & centrality (degree,
+  betweenness), tie strength & the strength of weak ties (Granovetter), tie
+  overlap, homophily, social capital (bonding vs bridging), structural holes,
+  Dunbar's number, preferential attachment, small-world path length, modularity,
+  assortativity, and wealth distribution (Gini, Lorenz, Pareto), plus a deep
+  second layer — eigenvector/PageRank/Katz/closeness/Bonacich centralities,
+  Freeman centralization, the Shannon/Simpson diversity and Theil/Atkinson
+  inequality indices, Zipf's city-size and the gravity migration models,
+  Benford's law, Fisher's sex-ratio principle, Metcalfe's law, and the
+  Granovetter threshold model. These measure **structure and distribution — not
+  persons**.
+- **Calculus of events — 22:** a canon of the equations that govern *things that
+  happen* rather than steady states, in four kinds. **Collision** (impact):
+  impulse–momentum, coefficient of restitution, 1-D elastic and perfectly
+  inelastic collisions, König's kinetic-energy split, Rutherford scattering.
+  **Sound** (a pressure event propagating and heard): speed of sound
+  (Newton–Laplace), the acoustic wave and Helmholtz equations, the Doppler
+  effect, the decibel, the Webster horn equation, Sabine reverberation.
+  **Departure** (arrivals-and-departures / first passage): the Poisson arrival
+  process, M/M/1 and Erlang-C queues, Pollaczek–Khinchine, Kramers escape.
+  **Routine** (periodic, recurrent, renewal): the simple-harmonic period, the
+  Fourier transform, Poincaré recurrence, and the elementary renewal theorem.
+
+Each group has a full human-readable table — every equation with its symbolic
+form, field, discoverer(s), and year — mirrored directly from the `.sleela`
+canon (the single source of truth):
+
+- [`EQUATIONS-MATH.md`](EQUATIONS-MATH.md) — 126 mathematics equations (`SMMathCanon`)
+- [`EQUATIONS-PHYSICS.md`](EQUATIONS-PHYSICS.md) — 89 physics equations (`SMPhysicsCanon`)
+- [`EQUATIONS-THERMODYNAMICS.md`](EQUATIONS-THERMODYNAMICS.md) — 48 thermodynamics & statistical-mechanics equations (`SMThermoEquations`)
+- [`EQUATIONS-CROSSOVERS.md`](EQUATIONS-CROSSOVERS.md) — 36 applied/PhD crossovers (`SMCrossoverCanon`)
+- [`EQUATIONS-FINANCE.md`](EQUATIONS-FINANCE.md) — 50 finance & economics equations (`SMFinanceCanon`)
+- [`EQUATIONS-CHEMISTRY.md`](EQUATIONS-CHEMISTRY.md) — 43 covalent-bonding chemistry equations (`SMChemistryCanon`)
+- [`EQUATIONS-SOCIAL.md`](EQUATIONS-SOCIAL.md) — 34 social-structure equations (`SMSocialCanon`)
+- [`EQUATIONS-EVENTS.md`](EQUATIONS-EVENTS.md) — 22 calculus-of-events equations (`SMEventsCanon`)
 
 Where attribution is genuinely diffuse (e.g. the quadratic formula, the 2×2
 determinant), the discoverer field says so honestly rather than crediting a
@@ -82,7 +195,7 @@ record**:
   String metaIntegrityGoal     = "...";   < the standing promise the record keeps >
 ```
 
-This block is present on **all 13 classes** in the archive, and — this is the
+This block is present on **all 14 classes** in the archive, and — this is the
 point — it is **written truthfully for each class, not copied**. The purpose of
 `SMEquation` ("hold one equation faithfully") is not the purpose of `SMArchive`
 ("broadcast the whole, unaltered"); the gains of a public-domain theorem differ
@@ -107,6 +220,7 @@ from the gains of a cited 1973 finance paper. *Not the same.*
 | `SMThermodynamics` | Record the great reach fully, out to black-hole thermodynamics — while marking where the math dept ends and Physics begins. |
 | `SMMathCanon` / `SMPhysicsCanon` / `SMThermoEquations` | Record each great result under the name history/experiment gives it — credit the discoverer, claim nothing. |
 | `SMCrossoverCanon` | Record each crossover with its primary paper — credit the authors/publishers, claim nothing. |
+| `SMEventsCanon` | Record each event-law under the name history gives it — impact, pressure, arrival, or return — crediting the discoverer, claiming nothing. |
 | `SMProvenance` | Tier every source honestly — trace greatness to its origin, not a convenient index. |
 | `SMEquation` | Record the move exactly as it happened — great or small — crediting the real author, never the archive. |
 | `SMArchive` | Read the greatness aloud exactly as recorded — adding nothing, hiding nothing. |
@@ -144,6 +258,9 @@ diffraction), **Donald Ornstein** (the isomorphism theorem in ergodic theory),
 (minimal surfaces). Rosters drawn from Stanford's own bulletins and faculty
 pages.
 
+> Full roster with years, field, Stanford standing, best-known contribution, and
+> a "why it matters" note: [`PEOPLE.md`](PEOPLE.md) (mirrors `SMPersonRegistry`).
+
 ## Named formulas / symbols (examples recorded)
 
 - **"Seven shuffles suffice" (Bayer–Diaconis, 1992):** riffle-shuffle mixing
@@ -156,6 +273,10 @@ pages.
   it extends to an analytic Pick (Nevanlinna) function on the upper half-plane.
 - **Geometrical theory of diffraction (Keller, 1962):** extends geometrical
   optics with diffracted rays from edges, corners, and grazing surfaces.
+
+> Full table of all six Stanford-anchored results with symbolic form, citation,
+> and a "why it matters" note: [`FORMULAS.md`](FORMULAS.md) (mirrors
+> `SMFormulaCatalog`).
 
 ## The reach of "their thermodynamics"
 

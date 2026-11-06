@@ -279,19 +279,37 @@ void slmm_reset(void) {
     unlock();
 }
 
+/* Group an unsigned value with thousands separators into `out` for the memory
+ * manager's own report lines (SYSTEM-side presentation; user print(...) output
+ * never routes through here). */
+static const char* slmm_group(unsigned long long v, char* out, size_t cap) {
+    char tmp[32];
+    int n = snprintf(tmp, sizeof tmp, "%llu", v);
+    size_t o = 0;
+    for (int i = 0; i < n; ++i) {
+        if (i > 0 && (n - i) % 3 == 0 && o + 1 < cap) out[o++] = ',';
+        if (o + 1 < cap) out[o++] = tmp[i];
+    }
+    out[o < cap ? o : cap - 1] = 0;
+    return out;
+}
+
 int slmm_format_report(char* buf, size_t cap) {
     SLMMStats s;
     slmm_stats(&s);
+    char gl[32], gv[32], gp[32], gla[32], ga[32], gf[32], gr[32];
     return snprintf(buf, cap,
-        "[memory-manager] backend=%s enabled=%s limit=%zu bytes\n"
-        "[memory-manager] live=%zu bytes  peak=%zu bytes  live-allocs=%zu\n"
-        "[memory-manager] allocs=%llu  frees=%llu  refused=%llu  last=%s\n",
+        "[memory-manager] backend=%s enabled=%s limit=%s bytes\n"
+        "[memory-manager] live=%s bytes  peak=%s bytes  live-allocs=%s\n"
+        "[memory-manager] allocs=%s  frees=%s  refused=%s  last=%s\n",
         slmemory_platform_name(),
         s.enabled ? "yes" : "no",
-        s.limit_bytes,
-        s.live_bytes, s.peak_bytes, s.live_allocs,
-        (unsigned long long)s.total_allocs,
-        (unsigned long long)s.total_frees,
-        (unsigned long long)s.refused,
+        slmm_group((unsigned long long)s.limit_bytes, gl, sizeof gl),
+        slmm_group((unsigned long long)s.live_bytes, gv, sizeof gv),
+        slmm_group((unsigned long long)s.peak_bytes, gp, sizeof gp),
+        slmm_group((unsigned long long)s.live_allocs, gla, sizeof gla),
+        slmm_group((unsigned long long)s.total_allocs, ga, sizeof ga),
+        slmm_group((unsigned long long)s.total_frees, gf, sizeof gf),
+        slmm_group((unsigned long long)s.refused, gr, sizeof gr),
         slmm_status_name(s.last_status));
 }

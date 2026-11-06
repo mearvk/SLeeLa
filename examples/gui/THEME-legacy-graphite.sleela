@@ -1,0 +1,13 @@
+#sleela 2.5
+// Legacy Graphite preset id retained for ABI compatibility.
+class ThemeLegacyGraphite {
+  int main() {
+    SLUserInterface ui = new SLUserInterface(); ui.configure("com.mearvk.examples.ThemeLegacyGraphite");
+    if (!ui.open()) { return 1; }
+    SLTheme theme = new SLTheme(); theme.preset(SLTheme.GRAPHITE);
+    SLWindow win = ui.openWindow("Legacy Graphite", 520, 300, theme.handle());
+    SLWidget root = win.rootWidget();
+    SLLabel label = new SLLabel(); label.createIn(root, "Legacy Graphite preset (compatibility ID 1).");
+    win.show(); return ui.run();
+  }
+}

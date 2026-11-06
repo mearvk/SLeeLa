@@ -1,0 +1,59 @@
+#sleela 1.7
+// ADVANCED: a tiny anchored matcher with character classes and a one-or-more
+// quantifier, enough to validate a simple token like an identifier or a number.
+// Implemented on arrays of character codes, no regex intrinsic involved.
+//
+// Rules demonstrated (all anchored to the whole input):
+//   isDigits(text)      -> text is one or more ASCII digits   (like ^[0-9]+$)
+//   isIdentifier(text)  -> starts with a letter/underscore,
+//                          then letters/digits/underscores     (like ^[A-Za-z_]\w*$)
+class ADVAnchoredClasses {
+    boolean isDigit(int c)  { return c >= 48 && c <= 57; }
+    boolean isLower(int c)  { return c >= 97 && c <= 122; }
+    boolean isUpper(int c)  { return c >= 65 && c <= 90; }
+    boolean isAlpha(int c)  { return isLower(c) || isUpper(c); }
+    boolean isUnder(int c)  { return c == 95; }
+
+    // ^[0-9]+$
+    boolean isDigits(int[] t) {
+        if (arrayLength(t) == 0) return false;
+        int i = 0;
+        while (i < arrayLength(t)) {
+            if (!isDigit(t[i])) return false;
+            i = i + 1;
+        }
+        return true;
+    }
+
+    // ^[A-Za-z_][A-Za-z0-9_]*$
+    boolean isIdentifier(int[] t) {
+        if (arrayLength(t) == 0) return false;
+        int first = t[0];
+        if (!isAlpha(first) && !isUnder(first)) return false;
+        int i = 1;
+        while (i < arrayLength(t)) {
+            int c = t[i];
+            if (!isAlpha(c) && !isDigit(c) && !isUnder(c)) return false;
+            i = i + 1;
+        }
+        return true;
+    }
+
+    void main() {
+        // "2048"
+        int[] num = new int[4];
+        num[0]=50; num[1]=48; num[2]=52; num[3]=56;
+        // "sleela_v2"
+        int[] id = new int[9];
+        id[0]=115; id[1]=108; id[2]=101; id[3]=101; id[4]=108;
+        id[5]=97;  id[6]=95;  id[7]=118; id[8]=50;
+        // "2bad" -- starts with a digit, not a valid identifier
+        int[] bad = new int[4];
+        bad[0]=50; bad[1]=98; bad[2]=97; bad[3]=100;
+
+        print("isDigits('2048')        = " + isDigits(num));
+        print("isDigits('sleela_v2')   = " + isDigits(id));
+        print("isIdentifier('sleela_v2')= " + isIdentifier(id));
+        print("isIdentifier('2bad')     = " + isIdentifier(bad));
+    }
+}

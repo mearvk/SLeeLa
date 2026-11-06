@@ -1,0 +1,19 @@
+#sleela 2.1
+// NEW: Synchro reports measured packet outcomes, not guaranteed delivery.
+// Port 9 on loopback is used as a local discard target for an honest loss test.
+class SynchroMeasure {
+    void main() {
+        int probe = synchroOpen("127.0.0.1", 9);
+        print("probe handle >= 0 : " + (probe >= 0));
+        if (probe >= 0) {
+            int rtt = synchroDispatch(probe, 32, 50);
+            print("last RTT (us) = " + rtt);
+            print("sent=" + synchroSent(probe)
+                + " received=" + synchroReceived(probe)
+                + " loss(permille)=" + synchroLoss(probe));
+            print("mean(us)=" + synchroMean(probe) + " p95(us)=" + synchroP95(probe));
+            print(synchroReport(probe));
+            synchroClose(probe);
+        }
+    }
+}

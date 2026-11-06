@@ -1,0 +1,50 @@
+#sleela 2.5
+// USED: showcase the core controls in one native window.
+class WidgetGallery {
+  int main() {
+    SLUserInterface ui = new SLUserInterface();
+    ui.configure("com.mearvk.examples.WidgetGallery");
+    if (!ui.open()) { return 1; }
+    SLTheme theme = new SLTheme(); theme.defaultTheme();
+    SLWindow win = ui.openWindow("SleelaUI - Widget Gallery", 760, 760, theme.handle());
+    SLWidget root = win.rootWidget();
+
+    SLBox page = new SLBox(); page.vertical(root, 12);
+    page.setMarginAll(18); page.setExpand(true, true);
+
+    SLHeaderBar header = new SLHeaderBar(); header.createIn(page);
+    SLLabel brand = new SLLabel(); brand.createIn(header, "SleelaUI Components");
+    SLSpacer headerGap = new SLSpacer(); headerGap.createIn(header);
+    SLBadge version = new SLBadge(); version.createIn(header, "2.5");
+
+    SLHeading title = new SLHeading(); title.createIn(page, "Component Gallery", 22);
+    SLLabel intro = new SLLabel(); intro.createIn(page, "Controls inherit the active theme and native focus states.");
+
+    SLBox actions = new SLBox(); actions.horizontal(page, 8);
+    SLButton primary = new SLButton(); primary.createIn(actions, "Apply"); primary.setSuggested(true);
+    SLButton danger = new SLButton(); danger.createIn(actions, "Remove"); danger.setDestructive(true);
+    SLLinkButton help = new SLLinkButton(); help.createIn(actions, "Help");
+
+    SLEntry entry = new SLEntry(); entry.createIn(page, "Enter a value");
+    SLSearchEntry search = new SLSearchEntry(); search.createIn(page, "Search components");
+    SLToggle toggle = new SLToggle(); toggle.createIn(page, "Enable feature", true);
+    SLCheckBox check = new SLCheckBox(); check.createIn(page, "Remember selection", false);
+
+    SLSlider slider = new SLSlider(); slider.createIn(page, 0.0, 100.0, 65.0);
+    SLProgressBar progress = new SLProgressBar(); progress.createIn(page, 0.65);
+    SLLevelBar level = new SLLevelBar(); level.createIn(page, 0.8);
+    SLSeparator rule = new SLSeparator(); rule.createIn(page, SLWidget.ORIENT_HORIZONTAL);
+
+    SLBox tags = new SLBox(); tags.horizontal(page, 8);
+    SLChip one = new SLChip(); one.createIn(tags, "Native");
+    SLChip two = new SLChip(); two.createIn(tags, "Portable");
+    SLAvatar avatar = new SLAvatar(); avatar.createIn(tags, "S", 36);
+
+    SLInfoBar info = new SLInfoBar(); info.createIn(page, "All controls use SleelaUI theme roles.", 0);
+    SLStatusBar status = new SLStatusBar(); status.createIn(page);
+    SLLabel statusText = new SLLabel(); statusText.createIn(status, "Ready.");
+
+    win.show();
+    return ui.run();
+  }
+}

@@ -1,0 +1,23 @@
+< SLeeLa Standard Library Definition.
+  Definition: Read-only snapshot shape matching osls_system_info in osls.h.
+  Values are populated by the native library; this class does not query the host. >
+#sleela 2.5
+material;
+
+class SLSystemInfo {
+  int platform = 0;
+  int processId = 0;
+  int unixTimeSeconds = 0;
+  int monotonicTimeNanoseconds = 0;
+  String hostname = "";
+  String userName = "";
+  String workingDirectory = "";
+
+  int getPlatform() { return platform; }
+  int getProcessId() { return processId; }
+  int getUnixTimeSeconds() { return unixTimeSeconds; }
+  int getMonotonicTimeNanoseconds() { return monotonicTimeNanoseconds; }
+  String getHostname() { return hostname; }
+  String getUserName() { return userName; }
+  String getWorkingDirectory() { return workingDirectory; }
+}

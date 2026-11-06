@@ -1,0 +1,44 @@
+#sleela 1.7
+// ADVANCED: a tiny assertion harness that checks invariants and reports a
+// pass/fail summary with the first failing case -- the core of how automated
+// tests localize a bug. No debugger attachment; everything is in-process.
+class AdvancedInvariantHarness {
+    static int passed;
+    static int failed;
+    static String firstFailure;
+
+    // Record one named check.
+    void expect(String label, boolean condition) {
+        if (condition) {
+            passed = passed + 1;
+        }
+        if (!condition) {
+            failed = failed + 1;
+            if (firstFailure == "none") firstFailure = label;
+            print("FAIL: " + label);
+        }
+    }
+
+    // The function under test (contains a deliberate off-by-one style bug for
+    // the demo: it returns n*(n+1)/2 but we also assert a wrong expectation to
+    // show how a failing invariant is surfaced).
+    int triangular(int n) { return (n * (n + 1)) / 2; }
+
+    void main() {
+        passed = 0; failed = 0; firstFailure = "none";
+
+        expect("triangular(0) == 0", triangular(0) == 0);
+        expect("triangular(1) == 1", triangular(1) == 1);
+        expect("triangular(4) == 10", triangular(4) == 10);
+        expect("monotonic: t(5) > t(4)", triangular(5) > triangular(4));
+        // A wrong expectation on purpose, to demonstrate a reported failure:
+        expect("triangular(3) == 7 (intentionally wrong)", triangular(3) == 7);
+
+        print("---- summary ----");
+        print("passed = " + passed);
+        print("failed = " + failed);
+        print("first failure = " + firstFailure);
+        if (failed == 0) print("result: all invariants hold");
+        if (failed > 0)  print("result: investigate the first failure above");
+    }
+}

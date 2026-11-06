@@ -1,0 +1,14 @@
+#sleela 1.7
+// BASIC: the core GUI-layout idea -- a child can never be wider than its parent.
+// Pure arithmetic; no GUI window is opened.
+class BasicClampToParent {
+    void main() {
+        int parentWidth = 800;
+        int requestedChildWidth = 920;
+        int childWidth = requestedChildWidth;
+        if (childWidth > parentWidth) childWidth = parentWidth;
+        print("parent width = " + parentWidth);
+        print("requested child width = " + requestedChildWidth);
+        print("clamped child width = " + childWidth);
+    }
+}

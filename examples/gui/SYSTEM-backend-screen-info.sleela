@@ -1,0 +1,16 @@
+#sleela 2.5
+class BackendScreenInfo {
+  int main() {
+    SLUserInterface ui = new SLUserInterface(); ui.configure("com.mearvk.examples.BackendInfo");
+    if (!ui.open()) { return 1; }
+    SLTheme theme = new SLTheme(); theme.defaultTheme();
+    SLWindow win = ui.openWindow("SleelaUI Backend", 560, 340, theme.handle());
+    SLWidget root = win.rootWidget();
+    SLBox col = new SLBox(); col.vertical(root, 10); col.setMarginAll(18);
+    SLLabel backend = new SLLabel(); backend.createIn(col, "Backend: " + ui.backend());
+    SLLabel version = new SLLabel(); version.createIn(col, "Toolkit: " + ui.version());
+    SLLabel screen = new SLLabel(); screen.createIn(col, "Screen: " + ui.screenWidth() + " x " + ui.screenHeight());
+    SLLabel known = new SLLabel(); known.createIn(col, ui.screenKnown() ? "Display dimensions available." : "Display dimensions unavailable.");
+    win.show(); return ui.run();
+  }
+}

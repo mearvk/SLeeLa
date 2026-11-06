@@ -1,0 +1,27 @@
+< SLeeLa Standard Library Definition.
+  Definition: Read-only process metadata shape matching osls_process_info.
+  Process inspection is limited by the native API to the caller's own process. >
+#sleela 2.5
+material;
+
+class SLProcessInfo {
+  int processId = 0;
+  int parentProcessId = 0;
+  int threadCount = 0;
+  int startEpochSeconds = 0;
+  String executablePath = "";
+  String commandLine = "";
+  String currentDirectory = "";
+  String state = "";
+  String userName = "";
+
+  int getProcessId() { return processId; }
+  int getParentProcessId() { return parentProcessId; }
+  int getThreadCount() { return threadCount; }
+  int getStartEpochSeconds() { return startEpochSeconds; }
+  String getExecutablePath() { return executablePath; }
+  String getCommandLine() { return commandLine; }
+  String getCurrentDirectory() { return currentDirectory; }
+  String getState() { return state; }
+  String getUserName() { return userName; }
+}

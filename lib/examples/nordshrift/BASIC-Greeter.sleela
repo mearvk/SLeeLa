@@ -1,0 +1,7 @@
+#sleela 1.7
+// Source paired with BASIC-single-source.sst.
+class Greeter {
+    void main() {
+        print("Nordshrift built and ran this program.");
+    }
+}

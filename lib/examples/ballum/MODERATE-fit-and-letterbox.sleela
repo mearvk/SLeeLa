@@ -1,0 +1,37 @@
+#sleela 1.7
+// MODERATE: fit a source image inside a frame while keeping its aspect ratio.
+// This is the classic "letterbox / pillarbox" calculation every display layer
+// needs. Pure arithmetic -- nothing is drawn.
+//
+// We keep the scaled size in doubles on purpose: SLeeLa 1.7 does not truncate
+// on an (int) cast, so rounding to whole pixels is a backend concern. The job
+// of this example is the ratio math and the centering, which are exact.
+class ModerateFitAndLetterbox {
+    void main() {
+        double frameW = 1920.0;
+        double frameH = 1080.0;
+        double srcW = 1280.0;
+        double srcH = 1024.0;
+
+        // Scale to the smaller of the two axis ratios so the whole source fits.
+        double scaleW = frameW / srcW;
+        double scaleH = frameH / srcH;
+        double scale = scaleW;
+        if (scaleH < scaleW) scale = scaleH;
+
+        double drawW = srcW * scale;
+        double drawH = srcH * scale;
+
+        // Center the scaled image: leftover space is split into two margins.
+        double marginX = (frameW - drawW) / 2.0;
+        double marginY = (frameH - drawH) / 2.0;
+
+        print("frame  = " + frameW + " x " + frameH);
+        print("source = " + srcW + " x " + srcH);
+        print("scale  = " + scale);
+        print("drawn  = " + drawW + " x " + drawH);
+        print("margins (x, y) = (" + marginX + ", " + marginY + ")");
+        if (marginX > 0.0) print("result: pillarbox (bars on left/right)");
+        if (marginY > 0.0) print("result: letterbox (bars on top/bottom)");
+    }
+}

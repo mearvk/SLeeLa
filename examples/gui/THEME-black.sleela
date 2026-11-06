@@ -1,0 +1,12 @@
+#sleela 2.5
+class ThemeBlack {
+  int main() {
+    SLUserInterface ui = new SLUserInterface(); ui.configure("com.mearvk.examples.ThemeBlack");
+    if (!ui.open()) { return 1; }
+    SLTheme theme = new SLTheme(); theme.black();
+    SLWindow win = ui.openWindow("Black Theme", 520, 300, theme.handle());
+    SLWidget root = win.rootWidget();
+    SLLabel label = new SLLabel(); label.createIn(root, "Black: deep matte surfaces, white text, blue accent.");
+    win.show(); return ui.run();
+  }
+}

@@ -1,0 +1,20 @@
+#sleela 2.5
+class TabsNotebook {
+  int main() {
+    SLUserInterface ui = new SLUserInterface(); ui.configure("com.mearvk.examples.Tabs");
+    if (!ui.open()) { return 1; }
+    SLTheme theme = new SLTheme(); theme.defaultTheme();
+    SLWindow win = ui.openWindow("Tabs and Pages", 720, 480, theme.handle());
+    SLWidget root = win.rootWidget();
+    SLBox page = new SLBox(); page.vertical(root, 12); page.setMarginAll(16);
+    SLNotebook notebook = new SLNotebook(); notebook.createIn(page);
+    int general = notebook.addPage("General");
+    int editor = notebook.addPage("Editor");
+    int network = notebook.addPage("Network");
+    SLLabel a = new SLLabel(); a.createIn(notebook.pageContent(general), "General application preferences.");
+    SLLabel b = new SLLabel(); b.createIn(notebook.pageContent(editor), "Editor preferences and formatting.");
+    SLLabel c = new SLLabel(); c.createIn(notebook.pageContent(network), "Network preferences and proxy settings.");
+    notebook.select(general); notebook.setDirty(editor, true);
+    win.show(); return ui.run();
+  }
+}

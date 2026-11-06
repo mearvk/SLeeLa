@@ -1,0 +1,27 @@
+#sleela 2.5
+<< impl/tests/common_rails/sleela_probe.sleela
+   Emit the CommonRails Sleela PrintRail rendering for the conformance
+   fixtures. The "square" section MUST be byte-identical to the native C++
+   heritage engine (native_probe.cpp); the "lines" section is pinned to a
+   fixture so any drift on the Sleela side is caught.
+   Keep the case list in lockstep with native_probe.cpp. >>
+class Probe {
+    static void main() {
+        PrintRail r = new PrintRail();
+
+        < ---- square section (must match native byte-for-byte) ---- >
+        r.printSquare(0);
+        r.printSquare(1);
+        r.printSquare(22);
+        r.printSquare(220);
+        r.printSquare(441);
+
+        < ---- lines section (single-line primitives) ---- >
+        print(r.componentLine("Sleelvac", 8, 1, 1, "compiling Hello.sleela"));
+        print(r.stateLineText("START", 5, "semantic analysis", 17));
+        print(r.stateLineText("WORKING", 7, "lowering subject", 16));
+        print(r.stateLineText("COMPLETE", 8, "runnable Core artifact written", 30));
+        print(r.stateLineText("WARN", 4, "deprecated pragma", 17));
+        print(r.stateLineText("ERROR", 5, "unknown type", 12));
+    }
+}

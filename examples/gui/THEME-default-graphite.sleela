@@ -1,0 +1,12 @@
+#sleela 2.5
+class ThemeDefaultGraphite {
+  int main() {
+    SLUserInterface ui = new SLUserInterface(); ui.configure("com.mearvk.examples.ThemeDefault");
+    if (!ui.open()) { return 1; }
+    SLTheme theme = new SLTheme(); theme.defaultTheme();
+    SLWindow win = ui.openWindow("Default Graphite Theme", 520, 300, theme.handle());
+    SLWidget root = win.rootWidget();
+    SLLabel label = new SLLabel(); label.createIn(root, "Default: graphite surfaces, neutral text, steel-blue accent.");
+    win.show(); return ui.run();
+  }
+}

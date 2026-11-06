@@ -49,6 +49,7 @@
 <li><a href="../package/decompiler.html">decompiler</a></li>
 <li><a href="../package/deliberation.html">deliberation</a></li>
 <li><a href="../package/drivers.html">drivers</a></li>
+<li><a href="../package/examples.html">examples</a></li>
 <li><a href="../package/filesystem.html">filesystem</a></li>
 <li><a href="../package/gameplay.html">gameplay</a></li>
 <li><a href="../package/gui.html">gui</a></li>
@@ -133,8 +134,62 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; common-rails</div>
 <h1>Package <code>common-rails</code></h1>
-<div class="lead">This package contains <strong>12</strong> source unit(s) defining <strong>12</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>14</strong> source unit(s) defining <strong>14</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
+<h2 class="section" data-u="common-rails">common-rails <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/common-rails/common-rails.sleela)</span></h2>
+<div data-u="common-rails printrail">
+<h3 id="PrintRail">PrintRail <span class="pill">class</span></h3>
+<p class="desc">the self-contained, runnable build of the SLeeLa common-rails</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>SQUARE_SIZE</code></td><td><span class="sig">int SQUARE_SIZE   = 21</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>OID_WIDTH</code></td><td><span class="sig">int OID_WIDTH     = 10</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>CURRENT_WIDTH</code></td><td><span class="sig">int CURRENT_WIDTH = 39</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>PRINT_WIDTH</code></td><td><span class="sig">int PRINT_WIDTH   = 80</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>STATE_FIELD</code></td><td><span class="sig">int STATE_FIELD   = 10</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>FULL</code></td><td><span class="sig">String FULL  = &quot;█&quot;</span></td><td class="desc">Progress-square glyphs: FULL is the filled cell, LIGHT the empty cell.</td></tr>
+<tr><td><code>LIGHT</code></td><td><span class="sig">String LIGHT = &quot;░&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>BOX_TL</code></td><td><span class="sig">String BOX_TL = &quot;┌&quot;;  String BOX_TM = &quot;┬&quot;;  String BOX_TR = &quot;┐&quot;</span></td><td class="desc">Box-drawing glyph set that frames a table (meaning survives without color).</td></tr>
+<tr><td><code>BOX_ML</code></td><td><span class="sig">String BOX_ML = &quot;├&quot;;  String BOX_MM = &quot;┼&quot;;  String BOX_MR = &quot;┤&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>BOX_BL</code></td><td><span class="sig">String BOX_BL = &quot;└&quot;;  String BOX_BM = &quot;┴&quot;;  String BOX_BR = &quot;┘&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>BOX_H</code></td><td><span class="sig">String BOX_H  = &quot;─&quot;;  String BOX_V  = &quot;│&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>repeat</code></td><td><span class="sig">String repeat(String s, int n)</span></td><td class="desc">repeat(s, n): the core String has no repeat; build it by concatenation.</td></tr>
+<tr><td><code>digitCount</code></td><td><span class="sig">int digitCount(int v)</span></td><td class="desc">digitCount(v): number of decimal digits in a non-negative int.</td></tr>
+<tr><td><code>padZeros</code></td><td><span class="sig">String padZeros(int value, int width)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>groupInt</code></td><td><span class="sig">String groupInt(int value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>padRight</code></td><td><span class="sig">String padRight(String content, int contentChars, int width)</span></td><td class="desc">padRight(content, contentChars, width): content then right-pad spaces.</td></tr>
+<tr><td><code>padLeft</code></td><td><span class="sig">String padLeft(String content, int contentChars, int width)</span></td><td class="desc">padLeft(content, contentChars, width): left-pad spaces then content.</td></tr>
+<tr><td><code>widthLine</code></td><td><span class="sig">String widthLine(String content, int contentChars)</span></td><td class="desc">A fixed-width content line, PRINT_WIDTH columns wide.</td></tr>
+<tr><td><code>padCurrent</code></td><td><span class="sig">String padCurrent(String name, int nameChars)</span></td><td class="desc">padCurrent(name, nameChars): &quot;[Current: @Name&quot; + spaces + &quot;]&quot;.</td></tr>
+<tr><td><code>componentLine</code></td><td><span class="sig">String componentLine(String name, int nameChars, int oid, int dateSeq, String message)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>stateLineText</code></td><td><span class="sig">String stateLineText(String state, int stateChars, String message, int messageChars)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tableRule</code></td><td><span class="sig">String tableRule(String left, String mid, String right, int w0, int w1)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tableRowText</code></td><td><span class="sig">String tableRowText(</span></td><td class="desc">A table row &quot;│ cell0 │ cell1 │&quot;; leftAlign selects alignment for both cells.</td></tr>
+<tr><td><code>printComponent</code></td><td><span class="sig">void printComponent(String name, int nameChars, int oid, int dateSeq, String message)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>printState</code></td><td><span class="sig">void printState(String state, int stateChars, String message, int messageChars)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>printTableTop</code></td><td><span class="sig">void printTableTop(int w0, int w1)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>printTableSeparator</code></td><td><span class="sig">void printTableSeparator(int w0, int w1)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>printTableBottom</code></td><td><span class="sig">void printTableBottom(int w0, int w1)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>printTableRow</code></td><td><span class="sig">void printTableRow(</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>printTable</code></td><td><span class="sig">void printTable(</span></td><td class="desc">A complete two-column table: top, header, separator, two rows, bottom.</td></tr>
+<tr><td><code>printPair</code></td><td><span class="sig">void printPair(String field, int fieldChars, String value, int valueChars, boolean table)</span></td><td class="desc">Field/value renderer with a `table` switch: framed table vs plain line.</td></tr>
+<tr><td><code>clampPercent</code></td><td><span class="sig">int clampPercent(int percent)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>percentToCells</code></td><td><span class="sig">int percentToCells(int percent)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>printSquare</code></td><td><span class="sig">void printSquare(int filledCells)</span></td><td class="desc">`filled` cells are filled in order bottom-right to left, then up a row.</td></tr>
+<tr><td><code>printSquarePercent</code></td><td><span class="sig">void printSquarePercent(int percent)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>printPixel</code></td><td><span class="sig">void printPixel(int filledCells)</span></td><td class="desc">Single-pixel indicator: the most compact rendering, one glyph.</td></tr>
+<tr><td><code>printPixelPercent</code></td><td><span class="sig">void printPixelPercent(int percent)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toolLine</code></td><td><span class="sig">String toolLine(String tool, int toolChars, String message, int messageChars)</span></td><td class="desc">A tool banner line, for example: sleelvac, then the source and artifact.</td></tr>
+<tr><td><code>compilerState</code></td><td><span class="sig">void compilerState(String state, int stateChars, String message, int messageChars)</span></td><td class="desc">The COMPILER (Sleelvac) rail.</td></tr>
+<tr><td><code>nordshriftState</code></td><td><span class="sig">void nordshriftState(String state, int stateChars, String message, int messageChars)</span></td><td class="desc">The NORDSHRIFT rail.</td></tr>
+<tr><td><code>debugFrame</code></td><td><span class="sig">void debugFrame(String symbol, int symbolChars, String location, int locationChars)</span></td><td class="desc">The DEBUGGER rail: one stack frame rendered into the two-column table.</td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="printcomponent">PrintComponent <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/common-rails/PrintComponent.sleela)</span></h2>
 <div data-u="printcomponent printcomponent">
 <h3 id="PrintComponent">PrintComponent <span class="pill">class</span></h3>
@@ -247,6 +302,59 @@
 <tr><td><code>percentToCells</code></td><td><span class="sig">int percentToCells(int percent)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="printrail">PrintRail <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/common-rails/PrintRail.sleela)</span></h2>
+<div data-u="printrail printrail">
+<h3 id="PrintRail">PrintRail <span class="pill">class</span></h3>
+<p class="desc">PrintRail -- the one professional-printing surface the SLeeLa</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>SQUARE_SIZE</code></td><td><span class="sig">int SQUARE_SIZE   = 21</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>OID_WIDTH</code></td><td><span class="sig">int OID_WIDTH     = 10</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>CURRENT_WIDTH</code></td><td><span class="sig">int CURRENT_WIDTH = 39</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>PRINT_WIDTH</code></td><td><span class="sig">int PRINT_WIDTH   = 80</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>STATE_FIELD</code></td><td><span class="sig">int STATE_FIELD   = 10</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>FULL</code></td><td><span class="sig">String FULL  = &quot;█&quot;</span></td><td class="desc">Progress-square glyphs: FULL is the filled cell, LIGHT the empty cell.</td></tr>
+<tr><td><code>LIGHT</code></td><td><span class="sig">String LIGHT = &quot;░&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>BOX_TL</code></td><td><span class="sig">String BOX_TL = &quot;┌&quot;;  String BOX_TM = &quot;┬&quot;;  String BOX_TR = &quot;┐&quot;</span></td><td class="desc">Box-drawing glyph set that frames a table (meaning survives without color).</td></tr>
+<tr><td><code>BOX_ML</code></td><td><span class="sig">String BOX_ML = &quot;├&quot;;  String BOX_MM = &quot;┼&quot;;  String BOX_MR = &quot;┤&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>BOX_BL</code></td><td><span class="sig">String BOX_BL = &quot;└&quot;;  String BOX_BM = &quot;┴&quot;;  String BOX_BR = &quot;┘&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>BOX_H</code></td><td><span class="sig">String BOX_H  = &quot;─&quot;;  String BOX_V  = &quot;│&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>repeat</code></td><td><span class="sig">String repeat(String s, int n)</span></td><td class="desc">repeat(s, n): the core String has no repeat; build it by concatenation.</td></tr>
+<tr><td><code>digitCount</code></td><td><span class="sig">int digitCount(int v)</span></td><td class="desc">digitCount(v): number of decimal digits in a non-negative int.</td></tr>
+<tr><td><code>padZeros</code></td><td><span class="sig">String padZeros(int value, int width)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>groupInt</code></td><td><span class="sig">String groupInt(int value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>padRight</code></td><td><span class="sig">String padRight(String content, int contentChars, int width)</span></td><td class="desc">padRight(content, contentChars, width): content then right-pad spaces.</td></tr>
+<tr><td><code>padLeft</code></td><td><span class="sig">String padLeft(String content, int contentChars, int width)</span></td><td class="desc">padLeft(content, contentChars, width): left-pad spaces then content.</td></tr>
+<tr><td><code>widthLine</code></td><td><span class="sig">String widthLine(String content, int contentChars)</span></td><td class="desc">A fixed-width content line, PRINT_WIDTH columns wide.</td></tr>
+<tr><td><code>padCurrent</code></td><td><span class="sig">String padCurrent(String name, int nameChars)</span></td><td class="desc">padCurrent(name, nameChars): &quot;[Current: @Name&quot; + spaces + &quot;]&quot;.</td></tr>
+<tr><td><code>componentLine</code></td><td><span class="sig">String componentLine(String name, int nameChars, int oid, int dateSeq, String message)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>stateLineText</code></td><td><span class="sig">String stateLineText(String state, int stateChars, String message, int messageChars)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tableRule</code></td><td><span class="sig">String tableRule(String left, String mid, String right, int w0, int w1)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tableRowText</code></td><td><span class="sig">String tableRowText(</span></td><td class="desc">A table row &quot;│ cell0 │ cell1 │&quot;; leftAlign selects alignment for both cells.</td></tr>
+<tr><td><code>printComponent</code></td><td><span class="sig">void printComponent(String name, int nameChars, int oid, int dateSeq, String message)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>printState</code></td><td><span class="sig">void printState(String state, int stateChars, String message, int messageChars)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>printTableTop</code></td><td><span class="sig">void printTableTop(int w0, int w1)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>printTableSeparator</code></td><td><span class="sig">void printTableSeparator(int w0, int w1)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>printTableBottom</code></td><td><span class="sig">void printTableBottom(int w0, int w1)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>printTableRow</code></td><td><span class="sig">void printTableRow(</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>printTable</code></td><td><span class="sig">void printTable(</span></td><td class="desc">A complete two-column table: top, header, separator, two rows, bottom.</td></tr>
+<tr><td><code>printPair</code></td><td><span class="sig">void printPair(String field, int fieldChars, String value, int valueChars, boolean table)</span></td><td class="desc">Field/value renderer with a `table` switch: framed table vs plain line.</td></tr>
+<tr><td><code>clampPercent</code></td><td><span class="sig">int clampPercent(int percent)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>percentToCells</code></td><td><span class="sig">int percentToCells(int percent)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>printSquare</code></td><td><span class="sig">void printSquare(int filledCells)</span></td><td class="desc">`filled` cells are filled in order bottom-right to left, then up a row.</td></tr>
+<tr><td><code>printSquarePercent</code></td><td><span class="sig">void printSquarePercent(int percent)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>printPixel</code></td><td><span class="sig">void printPixel(int filledCells)</span></td><td class="desc">Single-pixel indicator: the most compact rendering, one glyph.</td></tr>
+<tr><td><code>printPixelPercent</code></td><td><span class="sig">void printPixelPercent(int percent)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toolLine</code></td><td><span class="sig">String toolLine(String tool, int toolChars, String message, int messageChars)</span></td><td class="desc">A tool banner line, for example: sleelvac, then the source and artifact.</td></tr>
+<tr><td><code>compilerState</code></td><td><span class="sig">void compilerState(String state, int stateChars, String message, int messageChars)</span></td><td class="desc">The COMPILER (Sleelvac) rail.</td></tr>
+<tr><td><code>nordshriftState</code></td><td><span class="sig">void nordshriftState(String state, int stateChars, String message, int messageChars)</span></td><td class="desc">The NORDSHRIFT rail.</td></tr>
+<tr><td><code>debugFrame</code></td><td><span class="sig">void debugFrame(String symbol, int symbolChars, String location, int locationChars)</span></td><td class="desc">The DEBUGGER rail: one stack frame rendered into the two-column table.</td></tr>
+</table>
+</div>
 <h2 class="section" data-u="printrenderer">PrintRenderer <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/common-rails/PrintRenderer.sleela)</span></h2>
 <div data-u="printrenderer printrenderer">
 <h3 id="PrintRenderer">PrintRenderer <span class="pill">class</span></h3>
@@ -299,10 +407,11 @@
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
-<tr><td><code>source</code></td><td><span class="sig">String source</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>source</code></td><td><span class="sig">String source = &quot;lib/common-rails/PrintRail.sleela&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>entryClass</code></td><td><span class="sig">String entryClass()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>configure</code></td><td><span class="sig">void configure(String path)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>path</code></td><td><span class="sig">String path()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>available</code></td><td><span class="sig">boolean available()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -311,7 +420,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-05 20:00 UTC.
+<code>/lib</code> tree on 2026-11-05 14:02 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>

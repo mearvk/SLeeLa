@@ -1,0 +1,16 @@
+<< A typed, directed edge between stable Registry record identities. >>
+#sleela 3.0
+material;
+class SLRegistryRelationship {
+  String type;
+  String targetId;
+
+  void configure(String relationshipType, String stableTargetId) {
+    type = relationshipType;
+    targetId = stableTargetId;
+  }
+
+  boolean complete() {
+    return type != null && type != "" && targetId != null && targetId != "";
+  }
+}
