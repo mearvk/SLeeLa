@@ -186,3 +186,12 @@ jobs:
         run: >-
           printf '#include "rrs/rrs.hpp"\nint main(){return 0;}\n' > /tmp/rrs_cc.cpp
           && c++ -std=c++17 -O2 -Wall -Wextra -I. /tmp/rrs_cc.cpp rrs/rrs.c -o /tmp/rrs_cc
+
+      - name: Build + run RRS signal monitor demo (1/0/2 signal analysis)
+        run: >-
+          cc -std=c11 -O2 -Wall -Wextra -pedantic
+          rrs/rrs.c large_language_models.c large_language_models_reasoning.c
+          rrs/rrs-signal-monitor/rrs_signal_monitor.c
+          rrs/rrs-signal-monitor/rrs_signal_monitor_demo.c
+          -o /tmp/rrs_signal_monitor_demo
+          && /tmp/rrs_signal_monitor_demo

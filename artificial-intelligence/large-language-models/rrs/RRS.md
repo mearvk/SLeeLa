@@ -74,6 +74,13 @@ power in the Latin sense, not force.
 | `rrs.hpp` | C++17 `Rrs` facade |
 | `rrs_demo.c` | Warranted / faith-subtracted / responsibility-unmet / provisional cases + ternary-fold + verifier checks |
 
+## Signal monitor
+
+`rrs-signal-monitor/` is a read-only observability layer over the ternary
+1/0/2 signal stream: it runs a feed-forward and reports the per-signal tallies,
+eliminations by reason (incl. faith subtracted), stage power, and the potestas
+culmination. See `rrs-signal-monitor/README.md`.
+
 ## What is NOT bundled
 
 No weights. RRS is a controller + a real ternary conjunctive accumulator + a
