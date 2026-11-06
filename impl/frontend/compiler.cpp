@@ -921,6 +921,21 @@ private:
         if(n=="send"){if(c.args.size()!=2)throw std::runtime_error("Semantic error: send(slot, value) takes two arguments");int slot=litInt(c.args[0].get(),"send slot");emitExpr(c.args[1].get());emit(OP_SEND,slot);emit(OP_CONST,addNullConst());return true;}
         if(n=="recv"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: recv(slot) takes exactly one argument");emit(OP_RECV,litInt(c.args[0].get(),"recv slot"));return true;}
 
+        // Native big-integer multiply: bigmul(a, b, result). a, b, result are
+        // int[] of base-1,000,000,000 little-endian limbs. Multiplies a * b
+        // with the native Karatsuba kernel directly over the limb buffers (one
+        // opcode, no per-limb bytecode loop) and writes the product into
+        // result, which must hold at least len(a)+len(b) limbs. Evaluates to
+        // the int count of significant result limbs.
+        if(n=="bigmul"){
+            if(c.args.size()!=3)throw std::runtime_error("Semantic error: bigmul(a, b, result) takes exactly three int[] arguments");
+            emitExpr(c.args[0].get());   // a
+            emitExpr(c.args[1].get());   // b
+            emitExpr(c.args[2].get());   // result (top of stack)
+            emit(OP_BIGMUL);
+            return true;
+        }
+
         if(n=="structPack"||n=="structUnpack"){
             if(syntax_<SyntaxVersion{1,2})throw std::runtime_error("Semantic error: struct transport built-ins require #sleela 1.2");
         }

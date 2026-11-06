@@ -1058,6 +1058,135 @@ static void log_unsupported_opcode(SLVM* vm, uint8_t opcode) {
     if (out != stderr) fclose(out);
 }
 
+/* ------------------------------------------------------------------------
+ * Native big-integer multiply kernel (base 1,000,000,000 limbs).
+ *
+ * Limbs are uint32_t in [0, 1e9), little-endian (index 0 least significant).
+ * sl_bigmul computes r = a * b. It uses schoolbook multiply below a threshold
+ * and Karatsuba recursion above it, so the cost grows as O(n^1.585) rather
+ * than O(n^2) -- the difference between a million-digit multiply taking
+ * seconds versus minutes. Intermediate products are accumulated in uint64_t
+ * (max limb product 1e18, well within 2^64) and carries are propagated in a
+ * final normalization pass. Returns the number of significant result limbs.
+ *
+ * This is deliberately buffer-only: it never touches the VM stack, the array
+ * mutex per element, or the per-instruction GC safepoint -- the whole multiply
+ * is one native call, which is the entire point of the OP_BIGMUL bridge.
+ * ---------------------------------------------------------------------- */
+#define SL_BIG_BASE 1000000000ULL
+#define SL_BIG_KARATSUBA_THRESHOLD 40
+
+/* Schoolbook: r[0..na+nb-1] = a[0..na-1] * b[0..nb-1], base 1e9. r must be
+ * zeroed by the caller and have room for na+nb limbs. */
+static void sl_bigmul_school(const uint32_t* a, int na,
+                             const uint32_t* b, int nb, uint32_t* r) {
+    for (int i = 0; i < na; i++) {
+        uint64_t carry = 0;
+        uint64_t ai = a[i];
+        for (int j = 0; j < nb; j++) {
+            uint64_t cur = (uint64_t)r[i + j] + ai * (uint64_t)b[j] + carry;
+            r[i + j] = (uint32_t)(cur % SL_BIG_BASE);
+            carry = cur / SL_BIG_BASE;
+        }
+        int k = i + nb;
+        while (carry) {
+            uint64_t cur = (uint64_t)r[k] + carry;
+            r[k] = (uint32_t)(cur % SL_BIG_BASE);
+            carry = cur / SL_BIG_BASE;
+            k++;
+        }
+    }
+}
+
+/* Add src[0..n-1] into dst[0..] at limb offset `off`, propagating carry. */
+static void sl_big_addto(uint32_t* dst, const uint32_t* src, int n, int off) {
+    uint64_t carry = 0;
+    int i = 0;
+    for (; i < n; i++) {
+        uint64_t cur = (uint64_t)dst[off + i] + src[i] + carry;
+        dst[off + i] = (uint32_t)(cur % SL_BIG_BASE);
+        carry = cur / SL_BIG_BASE;
+    }
+    int k = off + n;
+    while (carry) {
+        uint64_t cur = (uint64_t)dst[k] + carry;
+        dst[k] = (uint32_t)(cur % SL_BIG_BASE);
+        carry = cur / SL_BIG_BASE;
+        k++;
+    }
+}
+
+/* Karatsuba: r = a * b. r must be zeroed and have room for na+nb limbs.
+ * Allocates scratch; returns 0 on success, -1 on allocation failure. */
+static int sl_bigmul_kara(const uint32_t* a, int na,
+                          const uint32_t* b, int nb, uint32_t* r) {
+    if (na <= SL_BIG_KARATSUBA_THRESHOLD || nb <= SL_BIG_KARATSUBA_THRESHOLD) {
+        sl_bigmul_school(a, na, b, nb, r);
+        return 0;
+    }
+    int half = (na > nb ? na : nb) / 2;
+    if (half >= na) half = na - 1;
+    if (half >= nb) half = nb - 1;
+    if (half < 1) { sl_bigmul_school(a, na, b, nb, r); return 0; }
+
+    const uint32_t* a0 = a;         int n0 = half;
+    const uint32_t* a1 = a + half;  int n1 = na - half;
+    const uint32_t* b0 = b;         int m0 = (half < nb ? half : nb);
+    const uint32_t* b1 = b + half;  int m1 = nb - half;
+    if (m1 < 0) { m1 = 0; }
+
+    int z0len = n0 + m0;
+    int z2len = n1 + m1;
+    int rc = 0;
+    uint32_t* z0 = (uint32_t*)calloc((size_t)(z0len > 0 ? z0len : 1), sizeof(uint32_t));
+    uint32_t* z2 = (uint32_t*)calloc((size_t)(z2len > 0 ? z2len : 1), sizeof(uint32_t));
+    /* sums a0+a1 and b0+b1 (each at most half+1 limbs) */
+    int sa_len = (n0 > n1 ? n0 : n1) + 1;
+    int sb_len = (m0 > m1 ? m0 : m1) + 1;
+    uint32_t* sa = (uint32_t*)calloc((size_t)sa_len, sizeof(uint32_t));
+    uint32_t* sb = (uint32_t*)calloc((size_t)sb_len, sizeof(uint32_t));
+    int z1len = sa_len + sb_len;
+    uint32_t* z1 = (uint32_t*)calloc((size_t)z1len, sizeof(uint32_t));
+    if (!z0 || !z2 || !sa || !sb || !z1) { rc = -1; goto done; }
+
+    if (m0 > 0) { if (sl_bigmul_kara(a0, n0, b0, m0, z0)) { rc = -1; goto done; } }
+    if (m1 > 0) { if (sl_bigmul_kara(a1, n1, b1, m1, z2)) { rc = -1; goto done; } }
+
+    /* sa = a0 + a1 */
+    { uint64_t c = 0; for (int i = 0; i < sa_len; i++) {
+        uint64_t x = c; if (i < n0) x += a0[i]; if (i < n1) x += a1[i];
+        sa[i] = (uint32_t)(x % SL_BIG_BASE); c = x / SL_BIG_BASE; } }
+    /* sb = b0 + b1 */
+    { uint64_t c = 0; for (int i = 0; i < sb_len; i++) {
+        uint64_t x = c; if (i < m0) x += b0[i]; if (i < m1) x += b1[i];
+        sb[i] = (uint32_t)(x % SL_BIG_BASE); c = x / SL_BIG_BASE; } }
+
+    if (sl_bigmul_kara(sa, sa_len, sb, sb_len, z1)) { rc = -1; goto done; }
+    /* z1 = z1 - z0 - z2 (borrow subtraction; z1 >= z0 + z2 mathematically) */
+    { int64_t borrow = 0;
+      for (int i = 0; i < z1len; i++) {
+        int64_t cur = (int64_t)z1[i] - borrow;
+        if (i < z0len) cur -= z0[i];
+        if (i < z2len) cur -= z2[i];
+        if (cur < 0) { cur += (int64_t)SL_BIG_BASE; borrow = 1; } else borrow = 0;
+        z1[i] = (uint32_t)cur;
+      }
+    }
+    /* r = z0 + z1<<half + z2<<(2*half) */
+    sl_big_addto(r, z0, z0len, 0);
+    sl_big_addto(r, z1, z1len, half);
+    sl_big_addto(r, z2, z2len, 2 * half);
+done:
+    free(z0); free(z2); free(sa); free(sb); free(z1);
+    return rc;
+}
+
+/* Trim trailing zero limbs; always report at least 1 limb. */
+static int sl_big_significant(const uint32_t* r, int n) {
+    while (n > 1 && r[n - 1] == 0) n--;
+    return n;
+}
+
 static SLResult run_thread(SLThread* t);
 static void* thread_trampoline(void* arg) { run_thread((SLThread*)arg); return NULL; }
 
@@ -2070,6 +2199,74 @@ static SLResult run_thread(SLThread* t) {
                 free(json);
                 PUSH(out);
             }
+        } break;
+
+        case OP_BIGMUL: {
+            /* Pops result, b, a (result on top). Each is an int[] of base-1e9
+             * little-endian limbs. Multiplies a * b with the native Karatsuba
+             * kernel and writes the product into the result array (which must
+             * hold at least len(a)+len(b) limbs). Pushes the significant limb
+             * count of the product. */
+            SLValue rv = POP(), bv = POP(), av = POP();
+            if (av.type != SL_ARRAY || !array_valid_handle(vm, av.as.h) ||
+                bv.type != SL_ARRAY || !array_valid_handle(vm, bv.as.h) ||
+                rv.type != SL_ARRAY || !array_valid_handle(vm, rv.as.h))
+                TERR("bigmul requires three int[] array handles (a, b, result)");
+            uint32_t *abuf = NULL, *bbuf = NULL, *rbuf = NULL;
+            int na = 0, nb = 0, nr = 0, sig = 0, ok = 1;
+            pthread_mutex_lock(&vm->array_mtx);
+            {
+                SLArrayInstance *aa = &vm->arrays[av.as.h];
+                SLArrayInstance *ab = &vm->arrays[bv.as.h];
+                SLArrayInstance *ar = &vm->arrays[rv.as.h];
+                na = aa->len; nb = ab->len; nr = ar->len;
+                if (na < 1 || nb < 1) { ok = 0; }
+                else if (nr < na + nb) { ok = 2; }   /* result too small */
+                else {
+                    abuf = (uint32_t*)malloc((size_t)na * sizeof(uint32_t));
+                    bbuf = (uint32_t*)malloc((size_t)nb * sizeof(uint32_t));
+                    rbuf = (uint32_t*)calloc((size_t)(na + nb), sizeof(uint32_t));
+                    if (!abuf || !bbuf || !rbuf) { ok = 3; }
+                    else {
+                        for (int i = 0; i < na; i++) {
+                            SLValue e = aa->elems[i];
+                            int64_t x = (e.type == SL_INT) ? e.as.i :
+                                        (e.type == SL_INT128) ? (int64_t)e.as.i128 : 0;
+                            if (e.type != SL_INT && e.type != SL_INT128) ok = 4;
+                            if (x < 0 || x >= (int64_t)SL_BIG_BASE) ok = 5;
+                            abuf[i] = (x >= 0 && x < (int64_t)SL_BIG_BASE) ? (uint32_t)x : 0;
+                        }
+                        for (int i = 0; i < nb; i++) {
+                            SLValue e = ab->elems[i];
+                            int64_t x = (e.type == SL_INT) ? e.as.i :
+                                        (e.type == SL_INT128) ? (int64_t)e.as.i128 : 0;
+                            if (e.type != SL_INT && e.type != SL_INT128) ok = 4;
+                            if (x < 0 || x >= (int64_t)SL_BIG_BASE) ok = 5;
+                            bbuf[i] = (x >= 0 && x < (int64_t)SL_BIG_BASE) ? (uint32_t)x : 0;
+                        }
+                    }
+                }
+            }
+            pthread_mutex_unlock(&vm->array_mtx);
+            if (ok == 0) { free(abuf); free(bbuf); free(rbuf); TERR("bigmul operands must each have at least one limb"); }
+            if (ok == 2) { free(abuf); free(bbuf); free(rbuf); TERR("bigmul result array is too small (need len(a)+len(b) limbs)"); }
+            if (ok == 3) { free(abuf); free(bbuf); free(rbuf); TERR("bigmul could not allocate its limb buffers"); }
+            if (ok == 4) { free(abuf); free(bbuf); free(rbuf); TERR("bigmul limbs must be integers"); }
+            if (ok == 5) { free(abuf); free(bbuf); free(rbuf); TERR("bigmul limbs must be in [0, 1000000000)"); }
+            if (sl_bigmul_kara(abuf, na, bbuf, nb, rbuf) != 0) {
+                free(abuf); free(bbuf); free(rbuf);
+                TERR("bigmul native kernel ran out of memory");
+            }
+            sig = sl_big_significant(rbuf, na + nb);
+            pthread_mutex_lock(&vm->array_mtx);
+            {
+                SLArrayInstance *ar = &vm->arrays[rv.as.h];
+                int wn = (na + nb <= ar->len) ? (na + nb) : ar->len;
+                for (int i = 0; i < wn; i++) { ar->elems[i].type = SL_INT; ar->elems[i].as.i = (int64_t)rbuf[i]; }
+            }
+            pthread_mutex_unlock(&vm->array_mtx);
+            free(abuf); free(bbuf); free(rbuf);
+            PUSH(slval_int(sig));
         } break;
 
         default: log_unsupported_opcode(vm, in.op); TERR("unsupported opcode");

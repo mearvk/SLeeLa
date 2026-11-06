@@ -1,0 +1,93 @@
+<< lib/math/examples/BigIntegerDemo.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Demonstrates native big-integer multiplication through the VM
+   bridge. SLBigInteger.multiply() calls the bigmul() builtin (opcode
+   OP_BIGMUL), which multiplies base-1e9 limb arrays with a C Karatsuba kernel
+   in one native call. Shows exact products and a large-operand timing. Sibling
+   .sleela files in the package are auto-linked by the runner. >>
+#sleela 2.5
+material;
+class BigIntegerDemo {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class example. >>
+  String metaVersion = "1.0.0";
+  int metaId = 7905;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-06";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-06";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  void main() {
+    print("SLBigInteger native multiply (OP_BIGMUL bridge)");
+
+    SLBigInteger a = new SLBigInteger();
+    SLBigInteger b = new SLBigInteger();
+    a.fromLong(123456789);
+    b.fromLong(987654321);
+    print("123456789 * 987654321 = " + a.multiply(b).toDecimalString());
+
+    SLBigInteger x = new SLBigInteger();
+    x.fromLong(1000000000000);
+    print("1e12 * 1e12 = " + x.multiply(x).toDecimalString());
+
+    SLBigInteger neg = new SLBigInteger();
+    neg.fromLong(0 - 7);
+    SLBigInteger six = new SLBigInteger();
+    six.fromLong(6);
+    print("-7 * 6 = " + neg.multiply(six).toDecimalString());
+
+    << Factorial-ish chained growth: 10^9 raised to the 8th power, entirely via
+       the native limb multiply -- 72 significant decimal digits. >>
+    SLBigInteger acc = new SLBigInteger();
+    acc.fromLong(1);
+    SLBigInteger ten9 = new SLBigInteger();
+    ten9.fromLong(1000000000);
+    int i = 0;
+    while (i < 8) { acc = acc.multiply(ten9); i = i + 1; }
+    print("(10^9)^8 = " + acc.toDecimalString());
+
+    << Large-operand timing: two 1000-limb numbers (about 9000 decimal digits
+       each). The native Karatsuba kernel multiplies them in one opcode; a
+       pure-SLeeLa schoolbook loop would run a million interpreted limb-pair
+       array operations. >>
+    int n = 1000;
+    int[] p = new int[n];
+    int[] q = new int[n];
+    int k = 0;
+    while (k < n) { p[k] = 123456789; q[k] = 987654321; k = k + 1; }
+    int[] r = new int[n + n];
+    long t0 = timeMonotonicNanos();
+    int sig = bigmul(p, q, r);
+    long t1 = timeMonotonicNanos();
+    print("1000-limb x 1000-limb multiply: " + sig + " result limbs in "
+          + ((t1 - t0) / 1000) + " microseconds");
+  }
+}
