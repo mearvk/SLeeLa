@@ -68,7 +68,7 @@ static bool builtin(const std::string&n){
  static const std::set<std::string> s={
  "spawn","join","lock","unlock","send","recv","structPack","structUnpack","listen","accept","connect","sockread","sockwrite","sockclose",
  "pipe","pipePeer","fifoCreate","npfsCreate","openFile","read","write","close","unlinkFile",
- "timeUtcMillis","timeUtcNanos","timeMonotonicNanos","timePrecisionMillis","timeLocation","timeHttpDate","timeJson","timeNtp","timeSetLocation",
+ "timeUtcMillis","timeUtcNanos","timeMonotonicNanos","timePrecisionMillis","timeLocation","timeHttpDate","timeJson","timeNtp","timeSetLocation","sleep",
  "Munction.start","synchroOpen","synchroDispatch","synchroReport","synchroClose","synchroSent","synchroReceived","synchroMean","synchroMin","synchroMax","synchroP95","synchroLoss",
  "bestOfNew","bestOfWeight","bestOfMinVersion","bestOfCostBudget","bestOfCandidate","bestOfRecord","bestOfScore","bestOfBest","bestOfChoice","bestOfReport","bestOfClose",
  "bestOfMean","bestOfLoss","bestOfJitter","bestOfCertainty","bestOfCandidateArch","bestOfArchRealized","bestOfArch","bestOfArchParam","bestOfArchState",
@@ -542,7 +542,7 @@ class Analyzer{
   if(n=="sysdepth"||n=="degreemax"||n=="timeUtcMillis"||n=="timeUtcNanos"||n=="timeMonotonicNanos"||n=="timePrecisionMillis"){return{Kind::Int,{}};}
   if(n=="bigmul"){return{Kind::Int,{}};}
   if(n=="synchroMean"||n=="synchroMin"||n=="synchroMax"||n=="synchroP95"||n=="synchroLoss"||n=="bestOfMean"||n=="bestOfLoss"||n=="bestOfJitter"||n=="bestOfCertainty"){return{Kind::Double,{}};}
-  if(n=="Munction.start"||n=="read"||n=="recv"||n=="sockread"||n=="timeNtp"){return{Kind::Unknown,{}};}
+  if(n=="Munction.start"||n=="read"||n=="recv"||n=="sockread"||n=="timeNtp"||n=="sleep"){return{Kind::Unknown,{}};}
   // SleelaUI (ui*) bridge return types: string getters, one double getter, the
   // rest return int handles/counts/status.
   if(n=="uiVersion"||n=="uiBackendName"||n=="uiWidgetGetText"||n=="uiBallumStatusName"||n=="uiBallumDisplayName"||n=="uiBallumEventTypeName"||n=="uiBallumFxName"||n=="uiBallumBackendName"||n=="uiWifiStatusName"||n=="uiWifiNetworkSsid"||n=="uiWifiNetworkBssid"||n=="uiWifiNetworkSecurity"){return{Kind::String,{}};}

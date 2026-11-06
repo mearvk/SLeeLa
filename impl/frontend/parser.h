@@ -43,6 +43,9 @@ private:
     bool isTypeStart() const;
     std::string parseType(std::vector<annotation::Annotation>* typeAnnotations=nullptr);
     StmtP parseStatement(); std::unique_ptr<Block> parseBlock(); StmtP parseSimpleStatement();
+    // Resolve the per-iteration sleep (milliseconds) a loop's leading timing
+    // annotations (@loopDelay / @loopBudget) request. Returns 0 when none apply.
+    long loopTimingMillis(const std::vector<annotation::Annotation>& anns);
     ExprP parseExpr();
     StmtP parseIf(); StmtP parseWhile(); StmtP parseDo(); StmtP parseFor(); StmtP parseSwitch(); StmtP parseTry(); StmtP parseSynchronized(); ExprP parseAssignment(); ExprP parseGuideChain(); ExprP parseStructOffload(); ExprP parseConditional(); ExprP parseOr(); ExprP parseAnd(); ExprP parseBitOr(); ExprP parseBitXor(); ExprP parseBitAnd(); ExprP parseEquality();
     ExprP parseComparison(); ExprP parseShift(); ExprP parseAdditive(); ExprP parseMultiplicative();

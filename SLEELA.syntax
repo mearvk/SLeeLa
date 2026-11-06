@@ -2320,3 +2320,73 @@ and a document-scope role annotation for discoverability.
   annotations label.
 - `lib/vm/src/sleela/SLVmModium.sleela`, `lib/opcodes/SLOpModiumScan.sleela`,
   and `lib/registry/SLRegistry*.sleela` — the realized subsystems.
+
+
+## 32. Syntax 3.0 — the `@loopDelay` and `@loopBudget` loop-timing annotations
+
+This section is **normative**. Unlike every other annotation in this document,
+which is declaration-level metadata, `@loopDelay` and `@loopBudget` are
+**statement-level, behavioral** annotations: they attach to a `for`, `while`, or
+`do` loop and insert a real per-iteration pause into its execution. They are the
+first annotations that change the runtime behavior of the construct they mark.
+
+### 32.1 Placement
+
+A loop-timing annotation is written on its own, immediately **before** the loop
+keyword it governs:
+
+```
+@loopDelay(ms = 250)
+while (i < n) { ... }
+
+@loopBudget(seconds = 10, iterations = 1000)
+for (int i = 0; i < 1000; i = i + 1) { ... }
+```
+
+It is a parse error to place either annotation before anything other than a
+`for`, `while`, or `do` loop. The annotation governs exactly the loop that
+immediately follows it.
+
+### 32.2 `@loopDelay` — sleep per iteration
+
+`@loopDelay` pauses the thread at the top of **every** iteration of the loop
+body (it does not run when the loop makes zero passes). Accepted forms:
+
+- `@loopDelay(<N>)` — sleep `N` **milliseconds** per iteration (a bare number
+  defaults to milliseconds).
+- `@loopDelay(ms = <N>)` — sleep `N` milliseconds per iteration.
+- `@loopDelay(seconds = <N>)` — sleep `N` seconds per iteration.
+
+### 32.3 `@loopBudget` — spread a known iteration count over a total time
+
+`@loopBudget` expresses a **total wall-clock budget** for a loop whose iteration
+count is known, and divides it evenly into a per-iteration delay. Both a total
+time and a positive iteration count are required:
+
+- `@loopBudget(seconds = <T>, iterations = <K>)` — spread `K` iterations over
+  `T` seconds; the per-iteration sleep is `(T * 1000) / K` milliseconds.
+- `@loopBudget(ms = <T>, iterations = <K>)` — total `T` milliseconds over `K`
+  iterations; the per-iteration sleep is `T / K` milliseconds.
+
+The per-iteration value is integer-divided (truncated) and is the *delay added*
+per pass; it does not subtract the loop body's own execution time, so the total
+is a floor, not a hard real-time guarantee. Omitting the time or giving a
+non-positive `iterations` is a parse error.
+
+### 32.4 Lowering and the `sleep` primitive
+
+Both annotations lower to the same mechanism: the compiler emits, at the top of
+each iteration, a push of the resolved millisecond delay followed by the
+`OP_SLEEP` opcode (ISA index 156, declared in `lib/vm/InstructionSet.sleela`).
+`OP_SLEEP` pops an integer millisecond count and blocks the current thread for
+that long (0 or negative is a no-op); it is implemented portably by
+`sltime_sleep_millis()` (POSIX `nanosleep`, Windows `Sleep`).
+
+The same opcode backs a general-purpose built-in callable anywhere, not only in
+loops:
+
+```
+sleep(<milliseconds>);   // block the current thread for N milliseconds
+```
+
+`sleep(ms)` takes one integer argument and returns no value.

@@ -55,6 +55,20 @@ uint64_t sltime_monotonic_nanos(void){
  return clock_mono_ns();
 #endif
 }
+int sltime_sleep_millis(int64_t millis){
+ if(millis<=0)return 0;
+#ifdef _WIN32
+ /* Sleep takes a DWORD of milliseconds; clamp very long sleeps to the max. */
+ { uint64_t ms=(uint64_t)millis; if(ms>0xFFFFFFFEULL)ms=0xFFFFFFFEULL; Sleep((DWORD)ms); return 0; }
+#else
+ { struct timespec req, rem;
+   req.tv_sec=(time_t)(millis/1000);
+   req.tv_nsec=(long)((millis%1000)*1000000L);
+   /* Resume the remainder if interrupted by a signal so the full delay elapses. */
+   while(nanosleep(&req,&rem)!=0){ if(errno!=EINTR)return errno; req=rem; }
+   return 0; }
+#endif
+}
 int sltime_set_location(SLTimeLocationMode mode,const char* country,const char* zone){
  (void)mode;g_country[0]=0;g_timezone[0]=0;
  if(country&&strlen(country)>=2){g_country[0]=country[0];g_country[1]=country[1];}

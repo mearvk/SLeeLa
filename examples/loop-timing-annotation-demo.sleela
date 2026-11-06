@@ -1,0 +1,52 @@
+#sleela 3.0
+<< loop-timing-annotation-demo.sleela -- the runnable reference for the syntax
+   3.0 loop-timing annotations @loopDelay and @loopBudget (SLEELA.syntax
+   section 32).
+
+   These are the first STATEMENT-LEVEL, BEHAVIORAL annotations in SLeeLa: they
+   attach to a for/while/do loop and insert a real per-iteration pause.
+
+     @loopDelay(<N>)                        sleep N milliseconds per iteration
+     @loopDelay(ms = <N>)                   sleep N milliseconds per iteration
+     @loopDelay(seconds = <N>)              sleep N seconds per iteration
+     @loopBudget(seconds = <T>, iterations = <K>)
+                                            spread K iterations over T seconds
+     @loopBudget(ms = <T>, iterations = <K>)
+                                            spread K iterations over T ms
+
+   They lower to OP_SLEEP (ISA 156), which also backs the general sleep(ms)
+   built-in. The delay is the time ADDED per pass; it does not subtract the
+   body's own run time, so a budget is a floor, not a hard real-time guarantee.
+
+   Run it (it takes a couple of seconds by design):
+     sleela run examples/loop-timing-annotation-demo.sleela >>
+class LoopTimingDemo {
+
+    void main() {
+        print("1) while with @loopDelay(ms = 200): 3 iterations, ~200ms each");
+        int i = 0;
+        @loopDelay(ms = 200)
+        while (i < 3) {
+            print("   while tick " + i);
+            i = i + 1;
+        }
+
+        print("2) for with @loopDelay(seconds = 1): 2 iterations, ~1s each");
+        @loopDelay(seconds = 1)
+        for (int j = 0; j < 2; j = j + 1) {
+            print("   for tick " + j);
+        }
+
+        print("3) for with @loopBudget(ms = 900, iterations = 3): ~300ms each");
+        @loopBudget(ms = 900, iterations = 3)
+        for (int k = 0; k < 3; k = k + 1) {
+            print("   budget tick " + k);
+        }
+
+        print("4) the sleep(ms) built-in works anywhere, not only in loops");
+        sleep(250);
+        print("   woke after 250ms");
+
+        print("done");
+    }
+}

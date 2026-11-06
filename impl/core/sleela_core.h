@@ -210,6 +210,11 @@ typedef enum {
      * len(a)+len(b) long). Pushes the int count of significant result limbs.
      * This is the VM bridge SLBigInteger was designed to call. */
     OP_BIGMUL,
+    /* Block the current thread for a number of MILLISECONDS popped from the
+     * stack (an integer). 0 or negative is a no-op. Pushes nothing. Backs the
+     * sleep(ms) builtin and the per-iteration delay of the @loopDelay /
+     * @loopBudget loop-timing annotations. Append-only; see OP__COUNT note. */
+    OP_SLEEP,
     /* Sentinel: one past the last real opcode. Artifact validation uses this so
      * every defined opcode is accepted and adding a new opcode above never
      * requires updating the validator's upper bound again. KEEP LAST. */
@@ -223,7 +228,8 @@ static_assert(OP_GC_HINT == 124, "legacy opcode 124 must remain OP_GC_HINT");
 static_assert(OP_DUP2 == 154, "the pre-OSLS ISA must remain 155 opcodes (0..154)");
 static_assert(OP_OSLS_CALL == 155, "OSLS must be the first append-only opcode");
 static_assert(OP_BIGMUL == 156, "OP_BIGMUL is append-only opcode 156");
-static_assert(OP__COUNT == 157, "the extended ISA must contain 157 opcodes");
+static_assert(OP_SLEEP == 157, "OP_SLEEP is append-only opcode 157");
+static_assert(OP__COUNT == 158, "the extended ISA must contain 158 opcodes");
 #else
 _Static_assert(OP_OS_PLATFORM == 103, "legacy OS opcode range must begin at 103");
 _Static_assert(OP_OS_PCLOSE == 123, "legacy OS opcode range must end at 123");
@@ -231,7 +237,8 @@ _Static_assert(OP_GC_HINT == 124, "legacy opcode 124 must remain OP_GC_HINT");
 _Static_assert(OP_DUP2 == 154, "the pre-OSLS ISA must remain 155 opcodes (0..154)");
 _Static_assert(OP_OSLS_CALL == 155, "OSLS must be the first append-only opcode");
 _Static_assert(OP_BIGMUL == 156, "OP_BIGMUL is append-only opcode 156");
-_Static_assert(OP__COUNT == 157, "the extended ISA must contain 157 opcodes");
+_Static_assert(OP_SLEEP == 157, "OP_SLEEP is append-only opcode 157");
+_Static_assert(OP__COUNT == 158, "the extended ISA must contain 158 opcodes");
 #endif
 /* GC-hint aggressiveness bands for OP_GC_HINT (operand a). */
 #define SL_GC_HINT_MAX  100   /* clamp ceiling for the 0..100 aggressiveness scale */

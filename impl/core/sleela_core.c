@@ -1852,6 +1852,18 @@ static SLResult run_thread(SLThread* t) {
         case OP_TIME_MONO_NS: {
             PUSH(slval_int((int64_t)sltime_monotonic_nanos()));
         } break;
+        case OP_SLEEP: {
+            /* Pop a millisecond count (any integer) and block the current
+             * thread for that long. 0 or negative is a no-op. This backs the
+             * sleep(ms) builtin and the per-iteration delay emitted by the
+             * @loopDelay / @loopBudget loop-timing annotations. */
+            SLValue ms = POP();
+            if (ms.type != SL_INT && ms.type != SL_INT128) TERR("sleep expects an integer millisecond count");
+            sl_int128_t v = as_i128(ms);
+            if (v < 0) v = 0;
+            if (v > (sl_int128_t)INT64_MAX) v = (sl_int128_t)INT64_MAX;
+            sltime_sleep_millis((int64_t)v);
+        } break;
         case OP_TIME_PRECISION_MS: {
             SLTimeSample ts; if(sltime_sample(&ts)!=0){PUSH(slval_int(-1));break;}
             PUSH(slval_int((int64_t)((ts.uncertainty_us+999ULL)/1000ULL)));

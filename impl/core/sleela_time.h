@@ -35,6 +35,10 @@ int sltime_init(void);
 int64_t sltime_utc_millis(void);
 int64_t sltime_utc_nanos(void);
 uint64_t sltime_monotonic_nanos(void);
+/* Block the current thread for the given number of milliseconds. A value of
+ * 0 or less returns immediately. Returns 0 on success, non-zero on error.
+ * Portable: nanosleep on POSIX (retried across EINTR), Sleep on Windows. */
+int sltime_sleep_millis(int64_t millis);
 int sltime_sample(SLTimeSample* sample);
 int sltime_set_location(SLTimeLocationMode mode, const char* country_iso2, const char* iana_timezone);
 const char* sltime_location_timezone(void);

@@ -3,6 +3,7 @@
 // ===========================================================================
 #include "parser.h"
 #include <stdexcept>
+#include <cctype>
 namespace sleela {
 // Parse a GC-hint aggressiveness level that is already clamped to a small band
 // (0..1000000) at the call site, tolerating an absurdly long digit run without
@@ -109,6 +110,67 @@ std::vector<annotation::Annotation> Parser::parseAnnotations(annotation::UseSite
 }
 std::vector<annotation::Annotation> Parser::parseTypeAnnotations(){
     return parseAnnotations(annotation::UseSite::TypeUse);
+}
+// Resolve the loop-timing annotations into a per-iteration sleep in ms.
+//
+//   @loopDelay(<N>)                 sleep N milliseconds per iteration
+//   @loopDelay(ms = <N>)            sleep N milliseconds per iteration
+//   @loopDelay(seconds = <N>)       sleep N seconds per iteration
+//   @loopBudget(seconds = <T>, iterations = <K>)   spread K iterations over T
+//                                   seconds -> per-iteration sleep = T/K ms
+//   @loopBudget(ms = <T>, iterations = <K>)        total T ms over K iterations
+//
+// The annotation argument text is captured by parseAnnotation as a loose,
+// space-joined string; this reads unsigned integers keyed by the words
+// "ms"/"milliseconds", "seconds", and "iterations" (a bare number defaults to
+// milliseconds). Unknown annotations are ignored here (validated elsewhere).
+long Parser::loopTimingMillis(const std::vector<annotation::Annotation>& anns){
+    long resultMs=0;
+    bool sawTiming=false;
+    for(const auto& a:anns){
+        if(a.name!="loopDelay" && a.name!="loopBudget") continue;
+        sawTiming=true;
+        // Pull "<word> <number>" pairs and standalone numbers from the value.
+        long ms=-1, seconds=-1, iters=-1, bareNum=-1;
+        const std::string& v=a.value;
+        size_t i=0;
+        std::string pendingKey;
+        while(i<v.size()){
+            unsigned char ch=(unsigned char)v[i];
+            if(std::isalpha(ch)){
+                size_t j=i; while(j<v.size() && std::isalpha((unsigned char)v[j])) ++j;
+                pendingKey=v.substr(i,j-i);
+                for(char& c:pendingKey) c=(char)std::tolower((unsigned char)c);
+                i=j;
+            } else if(std::isdigit(ch)){
+                size_t j=i; long num=0; while(j<v.size() && std::isdigit((unsigned char)v[j])){ num=num*10+(v[j]-'0'); ++j; }
+                if(pendingKey=="ms"||pendingKey=="millis"||pendingKey=="milliseconds") ms=num;
+                else if(pendingKey=="seconds"||pendingKey=="sec"||pendingKey=="s") seconds=num;
+                else if(pendingKey=="iterations"||pendingKey=="iters"||pendingKey=="count") iters=num;
+                else bareNum=num;
+                pendingKey.clear();
+                i=j;
+            } else { ++i; }
+        }
+        if(a.name=="loopDelay"){
+            long perIter=0;
+            if(ms>=0) perIter=ms;
+            else if(seconds>=0) perIter=seconds*1000;
+            else if(bareNum>=0) perIter=bareNum;        // bare number defaults to ms
+            else error("@loopDelay requires a delay, e.g. @loopDelay(250) or @loopDelay(seconds = 2)");
+            resultMs+=perIter;
+        } else { // loopBudget
+            long totalMs=-1;
+            if(ms>=0) totalMs=ms;
+            else if(seconds>=0) totalMs=seconds*1000;
+            else if(bareNum>=0) totalMs=bareNum;        // bare number defaults to total ms
+            if(totalMs<0||iters<=0)
+                error("@loopBudget requires a total time and a positive iteration count, e.g. @loopBudget(seconds = 10, iterations = 1000)");
+            resultMs+=totalMs/iters;                    // even per-iteration share
+        }
+    }
+    if(sawTiming && resultMs<0) resultMs=0;
+    return resultMs;
 }
 Program Parser::parseProgram(){
     collectStructNames(); Program p; bool contentStarted=false;
@@ -715,6 +777,22 @@ StmtP Parser::parseSynchronized(){expect(Tok::KwSynchronized,"'synchronized'");e
 StmtP Parser::parseTry(){expect(Tok::KwTry,"'try'");auto s=std::make_unique<TryStmt>();s->body=parseBlock();while(accept(Tok::KwCatch)){expect(Tok::LParen,"'('");CatchClause c; c.type=expect(Tok::Ident,"exception type").text;c.variable=expect(Tok::Ident,"exception variable").text;expect(Tok::RParen,"')'");c.body=parseBlock();s->catches.push_back(std::move(c));}if(accept(Tok::KwFinally))s->finallyBlock=parseBlock();if(s->catches.empty()&&!s->finallyBlock)error("try requires catch or finally");return s;}
 StmtP Parser::parseSwitch(){expect(Tok::KwSwitch,"'switch'");expect(Tok::LParen,"'('");auto s=std::make_unique<SwitchStmt>();s->selector=parseExpr();expect(Tok::RParen,"')'");expect(Tok::LBrace,"'{'");while(!check(Tok::RBrace)&&!check(Tok::Eof)){SwitchCase sc;if(accept(Tok::KwDefault)){sc.isDefault=true;expect(Tok::Colon,"':'");}else{expect(Tok::KwCase,"'case'");sc.labels.push_back(parseExpr());while(accept(Tok::Comma))sc.labels.push_back(parseExpr());expect(Tok::Colon,"':'");}while(!check(Tok::KwCase)&&!check(Tok::KwDefault)&&!check(Tok::RBrace)&&!check(Tok::Eof))sc.statements.push_back(parseStatement());s->cases.push_back(std::move(sc));}expect(Tok::RBrace,"'}'");return s;}
 StmtP Parser::parseStatement(){
+ // A statement may carry leading annotations. Today the only statement-level
+ // annotations are the loop-timing ones (@loopDelay / @loopBudget), which must
+ // precede a for/while/do loop and set its per-iteration sleep.
+ if(check(Tok::At)){
+   auto anns=parseAnnotations(annotation::UseSite::LocalVariable);
+   long ms=loopTimingMillis(anns);
+   StmtP loop;
+   if(check(Tok::KwWhile)) loop=parseWhile();
+   else if(check(Tok::KwFor)) loop=parseFor();
+   else if(check(Tok::KwDo)) loop=parseDo();
+   else error("a loop-timing annotation (@loopDelay / @loopBudget) must precede a 'for', 'while', or 'do' loop");
+   if(auto w=dynamic_cast<WhileStmt*>(loop.get())) w->loopSleepMs=ms;
+   else if(auto f=dynamic_cast<ForStmt*>(loop.get())) f->loopSleepMs=ms;
+   else if(auto d=dynamic_cast<DoStmt*>(loop.get())) d->loopSleepMs=ms;
+   return loop;
+ }
  if(check(Tok::LBrace))return parseBlock();
  if(check(Tok::KwIf))return parseIf();
  if(check(Tok::KwWhile))return parseWhile();

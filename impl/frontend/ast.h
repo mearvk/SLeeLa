@@ -146,10 +146,13 @@ struct GcHintStmt:Stmt{std::string target;std::string spelling;int aggressivenes
 struct ReturnStmt:Stmt{ExprP value;};
 struct Block:Stmt{std::vector<StmtP> stmts;};
 struct IfStmt:Stmt{ExprP cond;StmtP thenS,elseS;};
-struct WhileStmt:Stmt{ExprP cond;StmtP body;};
-struct ForStmt:Stmt{StmtP init;ExprP cond;StmtP update,body;ExprP threadStable,heapHealthy;};
+// loopSleepMs: milliseconds to sleep per iteration, set by the @loopDelay /
+// @loopBudget loop-timing annotations (0 = no delay). The compiler emits an
+// OP_SLEEP with this operand at the top of each iteration's body.
+struct WhileStmt:Stmt{ExprP cond;StmtP body;long loopSleepMs=0;};
+struct ForStmt:Stmt{StmtP init;ExprP cond;StmtP update,body;ExprP threadStable,heapHealthy;long loopSleepMs=0;};
 // --- Java statement forms (surface completeness). --------------------------
-struct DoStmt:Stmt{StmtP body;ExprP cond;};
+struct DoStmt:Stmt{StmtP body;ExprP cond;long loopSleepMs=0;};
 struct BreakStmt:Stmt{std::string label;};
 struct ContinueStmt:Stmt{std::string label;};
 struct ThrowStmt:Stmt{ExprP value;};
