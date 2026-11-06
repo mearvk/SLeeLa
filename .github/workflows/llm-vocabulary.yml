@@ -21,7 +21,7 @@ on:
       - "artificial-intelligence/large-language-models/parametry/**"
       - "artificial-intelligence/neural-nets/**"
       - "artificial-intelligence/large-language-models/loader/**"
-      - "artificial-intelligence/large-language-models/rrs/**"
+      - "artificial-intelligence/rrs/**"
       - ".github/workflows/llm-vocabulary.yml"
   pull_request:
     branches: [master, main]
@@ -43,7 +43,7 @@ on:
       - "artificial-intelligence/large-language-models/parametry/**"
       - "artificial-intelligence/neural-nets/**"
       - "artificial-intelligence/large-language-models/loader/**"
-      - "artificial-intelligence/large-language-models/rrs/**"
+      - "artificial-intelligence/rrs/**"
       - ".github/workflows/llm-vocabulary.yml"
   workflow_dispatch:
 
@@ -178,20 +178,20 @@ jobs:
         run: >-
           cc -std=c11 -O2 -Wall -Wextra -pedantic
           large_language_models.c large_language_models_reasoning.c
-          rrs/rrs.c rrs/rrs_demo.c
+          ../rrs/rrs.c ../rrs/rrs_demo.c
           -o /tmp/rrs_demo
           && /tmp/rrs_demo
 
       - name: Compile RRS C++17 facade
         run: >-
-          printf '#include "rrs/rrs.hpp"\nint main(){return 0;}\n' > /tmp/rrs_cc.cpp
-          && c++ -std=c++17 -O2 -Wall -Wextra -I. /tmp/rrs_cc.cpp rrs/rrs.c -o /tmp/rrs_cc
+          printf '#include "../rrs/rrs.hpp"\nint main(){return 0;}\n' > /tmp/rrs_cc.cpp
+          && c++ -std=c++17 -O2 -Wall -Wextra -I. /tmp/rrs_cc.cpp ../rrs/rrs.c -o /tmp/rrs_cc
 
       - name: Build + run RRS signal monitor demo (1/0/2 signal analysis)
         run: >-
           cc -std=c11 -O2 -Wall -Wextra -pedantic
-          rrs/rrs.c large_language_models.c large_language_models_reasoning.c
-          rrs/rrs-signal-monitor/rrs_signal_monitor.c
-          rrs/rrs-signal-monitor/rrs_signal_monitor_demo.c
+          ../rrs/rrs.c large_language_models.c large_language_models_reasoning.c
+          ../rrs/rrs-signal-monitor/rrs_signal_monitor.c
+          ../rrs/rrs-signal-monitor/rrs_signal_monitor_demo.c
           -o /tmp/rrs_signal_monitor_demo
           && /tmp/rrs_signal_monitor_demo

@@ -49,7 +49,8 @@ A sample run (solid + responsible): `affirm=1 eliminate=0 power-add=2`,
 
 ```sh
 cc -std=c11 -O2 -Wall -Wextra -pedantic \
-   ../rrs.c ../../large_language_models.c ../../large_language_models_reasoning.c \
+   ../rrs.c ../../large-language-models/large_language_models.c \
+   ../../large-language-models/large_language_models_reasoning.c \
    rrs_signal_monitor.c rrs_signal_monitor_demo.c -o rrs_signal_monitor_demo
 ./rrs_signal_monitor_demo
 ```
