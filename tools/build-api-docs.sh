@@ -14,6 +14,9 @@ else
   for existing in api/sleela/3.0/version-[0-9][0-9][0-9]; do
     [ -d "$existing" ] || continue
     number="${existing##*version-}"
+    # Force base-10: zero-padded values like 008/009 are otherwise parsed as
+    # (invalid) octal by $(( )) and abort the build.
+    number=$((10#$number))
     if [ "$number" -ge "$NEXT" ]; then NEXT=$((number + 1)); fi
   done
   SNAPSHOT="$(printf 'version-%03d' "$NEXT")"

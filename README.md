@@ -35,6 +35,30 @@ that standing is kept (recorded faithfully, e.g. in each class's Metadata
 
 Recent additions to the language, drivers, and standard library:
 
+- **Loop-timing annotations — `@loopDelay` / `@loopBudget` (+ a `sleep(ms)`
+  built-in).** The first **statement-level, behavioral** annotations in SLeeLa:
+  written on their own line before a `for` / `while` / `do` loop, they insert a
+  real pause into the loop's execution. `@loopDelay(ms = 250)` /
+  `@loopDelay(seconds = 2)` sleeps a fixed amount per iteration (a bare
+  `@loopDelay(250)` defaults to milliseconds); `@loopBudget(seconds = 10,
+  iterations = 1000)` spreads a known iteration count evenly over a total
+  wall-clock budget. Both lower to the new append-only opcode **`OP_SLEEP`**
+  (ISA 157), which also backs a general **`sleep(<ms>)`** built-in callable
+  anywhere; the pause is implemented portably (`nanosleep` / `Sleep`). Specified
+  in [`SLEELA.syntax` §32](SLEELA.syntax); API reference in
+  [`api/sleela/3.0/LOOP_TIMING_API.md`](api/sleela/3.0/LOOP_TIMING_API.md);
+  runnable
+  [`examples/loop-timing-annotation-demo.sleela`](examples/loop-timing-annotation-demo.sleela).
+  A session-additions index (including this, the native `OP_BIGMUL`
+  big-integer multiply, and the standalone **[local-generator](local-generator/README.md)**
+  and **[pi-generator](pi-generator/README.md)** tools) lives at
+  [`api/sleela/3.0/SESSION-ADDITIONS-API.md`](api/sleela/3.0/SESSION-ADDITIONS-API.md).
+  The three generated API surfaces
+  ([`sleeladoc-api/`](sleeladoc-api/README.md),
+  [`docs/api/`](docs/api/README.md), and the immutable
+  [`api/sleela/3.0/version-014/`](api/sleela/3.0/version-014/index.html)
+  snapshot) were rebuilt with `make api-docs` and now carry the new `SLISASleep`
+  / `SLISABigMul` instruction entries on their `vm` package page.
 - **SleelaDoc from the command line — `sleela docs`.** SleelaDoc is now reachable
   straight from the terminal. `sleela docs` lists every documentable topic;
   `sleela docs crypto` shows a package; `sleela docs stringbuilder` resolves a

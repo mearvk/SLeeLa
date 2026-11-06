@@ -52,3 +52,16 @@ summarised rather than listed on every page, to keep the pages clean.
 See also `manifesto/SLEELADOC.md` (the SleelaDoc convention), the
 `lib/sleeladoc/` extractor package, and `manifesto/SLEELADOC.WIKI.md` (the
 compiler's `--wiki` doc output).
+
+## Language-level additions (not `/lib` classes)
+
+Some additions are language/compiler features specified in `SLEELA.syntax`
+rather than `/lib` classes, so they do not appear as package pages here. See the
+hand-authored references under the 3.0 edition:
+
+- [Session additions — index](../api/sleela/3.0/SESSION-ADDITIONS-API.md)
+- [Loop-timing API — `@loopDelay` / `@loopBudget` / `sleep(ms)`](../api/sleela/3.0/LOOP_TIMING_API.md)
+
+The `OP_SLEEP` (157) and `OP_BIGMUL` (156) opcodes added this session appear on
+this site's generated [`vm` package page](package/vm.html) as `SLISASleep` and
+`SLISABigMul`.

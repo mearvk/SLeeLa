@@ -7,9 +7,16 @@
 The 3.0 API edition documents the current `/lib` source tree. Its generated
 snapshot is stored in an immutable numbered directory:
 
-- [Version 003 — latest generated HTML API snapshot](version-003/index.html)
-- [Version 002 — previous generated HTML API snapshot](version-002/index.html)
+- [Version 014 — latest generated HTML API snapshot](version-014/index.html)
+- [Version 003 — earlier generated HTML API snapshot](version-003/index.html)
+- [Version 002 — earlier generated HTML API snapshot](version-002/index.html)
 - [Version 001 — initial generated HTML API snapshot](version-001/index.html)
+
+Hand-authored API references for language-level features (specified in
+`SLEELA.syntax`, not as a `/lib` class):
+
+- [Session additions — index](SESSION-ADDITIONS-API.md)
+- [Loop-timing API — `@loopDelay` / `@loopBudget` / `sleep(ms)`](LOOP_TIMING_API.md)
 
 If the snapshot has not yet been generated in a checkout, run:
 

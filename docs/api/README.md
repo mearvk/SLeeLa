@@ -25,3 +25,14 @@ when a new language specification edition is published.
 
 See the [API catalogue](../../api/README.md), [SLeeLa 3.0 edition](../../api/sleela/3.0/README.md),
 and [SleelaDoc source convention](../../manifesto/SLEELADOC.md).
+
+## Language-level additions (not `/lib` classes)
+
+Language/compiler features specified in `SLEELA.syntax` are documented by
+hand under the 3.0 edition (they are not `/lib` package pages):
+
+- [Session additions — index](../../api/sleela/3.0/SESSION-ADDITIONS-API.md)
+- [Loop-timing API — `@loopDelay` / `@loopBudget` / `sleep(ms)`](../../api/sleela/3.0/LOOP_TIMING_API.md)
+
+The `OP_SLEEP` (157) and `OP_BIGMUL` (156) opcodes appear on this site's
+generated [`vm` package page](package/vm.html) as `SLISASleep` / `SLISABigMul`.
