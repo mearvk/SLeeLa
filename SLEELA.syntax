@@ -21,7 +21,12 @@
     document markers (section 30) — a pair of bare, contextual,
     declarative-only Preonem words that mean nearly the same thing, each marking
     the document's standing by its own honesty; they change nothing about
-    parsing, typing, or codegen and compose with the other markers. Syntax 2.8
+    parsing, typing, or codegen and compose with the other markers.
+    Section 31 (informative) documents the registered `@modium` and
+    `@registry` subsystem-role annotations — greppable, non-repeatable labels
+    that mark a declaration's part in the Modium (storage/integrity) versus
+    Registry (catalog identity/lifecycle) responsibility split; they add no
+    grammar and change nothing about parsing, typing, or codegen. Syntax 2.8
     introduced the matching **base-2 unsigned
     (positive-only) integer series** (section 25) — `uint32`, `uint64`,
     `uint128`, `uint256`, ... up to `uint16777216` (the same twenty power-of-two
@@ -2203,3 +2208,107 @@ so the gate (`the pure document marker requires #sleela 3.0` /
   `gasoline_3_0.sleela` (accepted) and `pure_too_early.sleela`,
   `gasoline_too_early.sleela` (rejected below 3.0) are wired into
   `impl/tests/version/run_version_tests.sh`.
+
+--------------------------------------------------------------------------------
+## 31. The `@modium` and `@registry` subsystem-role annotations
+
+This section is **informative**. It documents two registered language
+annotations that mark a declaration's role in the Modium / Registry split.
+Neither annotation adds a parse rule, reserves an identifier, or changes typing,
+dispatch, or code generation. They are labels: greppable, tool-readable metadata
+attached through the ordinary annotation mechanism (sections 22, 28). They are
+**not** a second registry and do not replace the Metadata Class record
+(section 15); `/lib` remains the single source of truth.
+
+### 31.1 The responsibility split they label
+
+Modium and Registry are **library subsystems**, not language features, and the
+annotations only summarize a contract that lives in those subsystems:
+
+- **Modium** owns storage operations and artifact-integrity verification: it
+  performs the SHA-256 (~95%) integrity scan against a version's `MODIUM.json`
+  (`virtual-machine/vm-version/NNN/MODIUM.json`, produced by
+  `tools/generate-modium.py`) and advises reconstitution from `rebuild.sql`. It
+  is realized by `lib/vm/src/sleela/SLVmModium.sleela`, the `OP_MODIUM_SCAN`
+  service opcode (149), and `lib/opcodes/SLOpModiumScan.sleela`. Modium resolves
+  the current host location and returns bounded VM-local handles.
+- **Registry** owns durable catalog identity, classification, and the
+  provenance records describing tracked artifacts (file name, date, author,
+  version, hex id, SHA-256 hash, originality seal). It is realized by the
+  `lib/registry/SLRegistry*.sleela` family and the native `registry/` C/C++ core
+  (`registry/README.md`, `registry/sleela_registry.{c,h,hpp}`). Registry stores
+  stable record IDs and descriptive metadata; it does not mount a volume, claim
+  a device, format storage, or restore data.
+
+The boundary is an **architecture/API contract**, expressed in classes,
+opcodes, and the subsystem docs — which is exactly why it needs annotations
+(labels) rather than grammar.
+
+### 31.2 Form
+
+Each is a standard `@name("value")` annotation. The value is a free-form string
+naming the specific role; an empty name or value is rejected (the shared
+annotation rule: name and value must not be empty).
+
+Placement follows the ordinary annotation grammar (§28, and the `@supporter`
+precedent in §22). The two **enforced** rules below — recognition (no "unknown
+annotation" warning) and the single-occurrence check — are applied by the front
+end to **document-scope** annotations: those written after the `#sleela` pragma
+and *not* immediately bound to a `class`/`interface`/`enum`/`record`. That is
+the position the validator (`validateLanguageAnnotations`, invoked from
+`semantic.cpp`) inspects, and it is the recommended placement for a
+subsystem-role label:
+
+    #sleela 3.0
+    @modium("region-scan")
+    @registry("catalog-record")
+
+    class SLVmModium { ... }
+
+An annotation may also be written directly on a declaration
+(`@modium("region-scan") class SLVmModium { ... }`); in that position the parser
+attaches it to the declaration and preserves it as metadata, but it does **not**
+flow through the document-scope validator, so neither the recognition check nor
+the single-occurrence check fires on it. Either placement is accepted; use
+document scope when you want the enforced rules.
+
+By convention the value names the part in the contract — e.g. `"region-scan"`,
+`"integrity-verify"`, `"reconstitution"` for Modium, and `"catalog-record"`,
+`"provenance"`, `"key"`, `"value"` for Registry. The set of values is **not**
+enforced by the front end; it is descriptive.
+
+### 31.3 Registration and rules
+
+- Both `modium` and `registry` are **registered** language-annotation names in
+  `impl/frontend/annotation_pipeline.cpp` (`isKnownLanguageAnnotation()`), so a
+  document-scope occurrence is accepted **without** the
+  "unknown annotation '@...' is preserved as metadata" warning that an
+  unregistered name (e.g. `@zzznotreal`) still draws.
+- Both are **non-repeatable**: at document scope a file carries at most one
+  `@modium` and at most one `@registry`; a second occurrence of the same name is
+  an error (`annotation '@modium' may occur only once`). They are deliberately
+  absent from `annotationMayRepeat()`. A document **may** carry both (one
+  `@modium` and one `@registry`) when it genuinely sits on the seam between the
+  two subsystems.
+- They are **purely additive** and **edition-agnostic**: they are preserved as
+  metadata and do not alter parsing, typing, dispatch, or codegen, and they are
+  not gated to a `#sleela` edition — the annotation mechanism itself predates and
+  is independent of the document markers.
+
+### 31.4 Relationship to the Metadata Class record
+
+These annotations are orthogonal to the Metadata Class metapattern (section 15).
+The Metadata record catalogues a class's **provenance** (version, id, author,
+copyright, trademark, corporation, origin, national schedule, …); `@modium` /
+`@registry` label the **architectural role** in the storage/catalog split. A
+unit may carry both: the full Metadata record inside the class for provenance,
+and a document-scope role annotation for discoverability.
+
+### 31.5 Where this is implemented
+
+- `impl/frontend/annotation_pipeline.cpp` — `modium` and `registry` registered
+  in `isKnownLanguageAnnotation()`; intentionally **not** added to
+  `annotationMayRepeat()` (single-occurrence labels).
+- `lib/vm/src/sleela/SLVmModium.sleela`, `lib/opcodes/SLOpModiumScan.sleela`,
+  and `lib/registry/SLRegistry*.sleela` — the realized subsystems the
+  annotations label.
