@@ -1,4 +1,4 @@
-#sleela 3.0
+#sleela 2.9
 << PiGenerator.sleela -- compute Pi and stream its digits to a local file.
 
    Algorithm: the Rabinowitz-Wagon spigot. It produces the decimal digits of Pi
