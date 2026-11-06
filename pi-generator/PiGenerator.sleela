@@ -1,0 +1,133 @@
+#sleela 3.0
+<< PiGenerator.sleela -- compute Pi and stream its digits to a local file.
+
+   Algorithm: the Rabinowitz-Wagon spigot. It produces the decimal digits of Pi
+   one at a time using only bounded integer arithmetic over a single int[]
+   array -- no arbitrary-precision/bignum type is required, which suits SLeeLa's
+   real runtime (the widest genuine integer is 128-bit and there is no working
+   big-integer library). Digits are written straight to the output file in
+   fixed-size chunks via openFile/write/close, so memory stays flat instead of
+   accumulating one enormous String.
+
+   DIGITS is the number of decimal digits of Pi to compute, set to 7,000,000 as
+   requested. It is a single constant -- lower it to validate quickly (1000 or
+   10000 finish in seconds). See README.md for the honest performance note:
+   SLeeLa's VM is an interpreted bytecode engine with O(N) array-element access,
+   so very large digit counts are correct in principle but impractical to run
+   to completion here; the algorithm itself is verified correct at reachable
+   sizes. >>
+class PiGenerator {
+
+    < The requested digit count. Single knob for the whole program. >
+    int DIGITS = 7000000;
+
+    < Output file name -- recognizable and digit-count stamped. >
+    String OUT_PATH = "pi-7000000-digits.txt";
+
+    < Digits to buffer before each write() call (keeps memory flat). >
+    int CHUNK = 4096;
+
+    < Mutable streaming state, held as fields so one small helper can flush. >
+    int fd = -1;
+    String buf = "";
+    int bufLen = 0;
+    int emitted = 0;
+
+    void main() {
+        int digits = DIGITS;
+
+        << The spigot needs len = floor(10 * digits / 3) + 1 cells of state;
+           each pass over the array yields one more decimal digit of Pi. >>
+        int len = (digits * 10) / 3 + 1;
+
+        int[] a = new int[len];
+        int i = 0;
+        while (i < len) { a[i] = 2; i = i + 1; }
+
+        fd = openFile(OUT_PATH, "w");
+        if (fd < 0) {
+            print("PiGenerator: could not open " + OUT_PATH + " for writing");
+            return;
+        }
+
+        << The spigot holds back a predigit plus a run of 9s to let carries
+           settle: a produced value of 10 rolls the held 9s over and bumps the
+           predigit; anything else flushes the settled predigit and its 9s. >>
+        boolean started = false;
+        int predigit = 0;
+        int nines = 0;
+
+        int j = 0;
+        while (j < digits) {
+            << One spigot pass: a base-conversion sweep from the tail of the
+               array to the head, carrying q downward. >>
+            int q = 0;
+            int k = len - 1;
+            while (k > 0) {
+                int num = a[k] * 10 + q * (k + 1);
+                int den = 2 * k + 1;
+                a[k] = num % den;
+                q = num / den;
+                k = k - 1;
+            }
+            int num0 = a[0] * 10 + q;
+            a[0] = num0 % 10;
+            q = num0 / 10;
+
+            if (q == 9) {
+                nines = nines + 1;
+            } else {
+                if (q == 10) {
+                    if (started) {
+                        put(predigit + 1);
+                        int z = 0;
+                        while (z < nines) { put(0); z = z + 1; }
+                    }
+                    predigit = 0;
+                    nines = 0;
+                } else {
+                    if (started) {
+                        put(predigit);
+                        int z = 0;
+                        while (z < nines) { put(9); z = z + 1; }
+                    }
+                    predigit = q;
+                    nines = 0;
+                    started = true;
+                }
+            }
+            j = j + 1;
+        }
+
+        << Emit the final settled predigit, flush, and close. >>
+        put(predigit);
+        flush();
+        close(fd);
+        print("PiGenerator: wrote Pi to " + OUT_PATH
+              + " (" + emitted + " digits emitted, target " + digits + ")");
+    }
+
+    << Append one decimal digit to the output stream. The first digit is the
+       integer part "3", so it is written as "3." to form 3.14159...; the rest
+       are fractional. Flushes the chunk buffer to disk when it fills. >>
+    void put(int digit) {
+        if (emitted == 0) {
+            buf = buf + digit + ".";
+            bufLen = bufLen + 2;
+        } else {
+            buf = buf + digit;
+            bufLen = bufLen + 1;
+        }
+        emitted = emitted + 1;
+        if (bufLen >= CHUNK) { flush(); }
+    }
+
+    << Write the buffered chunk to the file and reset the buffer. >>
+    void flush() {
+        if (bufLen > 0) {
+            write(fd, buf);
+            buf = "";
+            bufLen = 0;
+        }
+    }
+}
