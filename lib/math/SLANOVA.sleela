@@ -47,10 +47,31 @@ class SLANOVA {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << One-way ANOVA F-statistic = (between-group MS) / (within-group MS) for g
+     groups described by their sizes, means, and the pooled grand data. Takes
+     per-group sum and sum-of-squares plus sizes. >>
+  double mean(double[] xs, int n) {
+    double s = 0.0; int i = 0;
+    while (i < n) { s = s + xs[i]; i = i + 1; }
+    return n == 0 ? 0.0 : s / n;
+  }
+  << F from group means and the grand mean. groupMeans/groupSizes length g;
+     within is the pooled within-group sum of squares; totalN the grand count. >>
+  double fStatistic(double[] groupMeans, int[] groupSizes, int g,
+                    double grandMean, double withinSS, int totalN) {
+    double betweenSS = 0.0;
+    int i = 0;
+    while (i < g) {
+      double d = groupMeans[i] - grandMean;
+      betweenSS = betweenSS + groupSizes[i] * d * d;
+      i = i + 1;
+    }
+    int dfB = g - 1;
+    int dfW = totalN - g;
+    if (dfB <= 0 || dfW <= 0 || withinSS == 0.0) { return 0.0; }
+    double msB = betweenSS / dfB;
+    double msW = withinSS / dfW;
+    return msB / msW;
+  }
 }

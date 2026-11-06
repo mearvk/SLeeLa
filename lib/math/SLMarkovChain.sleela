@@ -47,10 +47,32 @@ class SLMarkovChain {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << A finite Markov chain with an n x n row-stochastic transition matrix P
+     (row-major). step advances a state distribution one step: out = dist * P. >>
+  int n;
+  void configure(int states) { n = states; }
+  void step(double[] dist, double[] p, double[] out) {
+    int j = 0;
+    while (j < n) {
+      double s = 0.0;
+      int i = 0;
+      while (i < n) { s = s + dist[i] * p[i * n + j]; i = i + 1; }
+      out[j] = s;
+      j = j + 1;
+    }
+  }
+  boolean rowStochastic(double[] p, double tol) {
+    int i = 0;
+    while (i < n) {
+      double s = 0.0;
+      int j = 0;
+      while (j < n) { s = s + p[i * n + j]; j = j + 1; }
+      double d = s - 1.0;
+      if (d < 0.0) { d = 0.0 - d; }
+      if (d > tol) { return false; }
+      i = i + 1;
+    }
+    return true;
+  }
 }

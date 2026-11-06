@@ -45,4 +45,43 @@ class SLNormalDistribution {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  double sqrt(double x) {
+    if (x <= 0.0) { return 0.0; }
+    double g = x;
+    int i = 0;
+    while (i < 60) { g = (g + x / g) / 2.0; i = i + 1; }
+    return g;
+  }
+  double expf(double x) {
+    boolean neg = x < 0.0;
+    if (neg) { x = 0.0 - x; }
+    double term = 1.0;
+    double sum = 1.0;
+    int k = 1;
+    while (k < 60) { term = term * x / k; sum = sum + term; k = k + 1; }
+    if (neg) { if (sum == 0.0) { return 0.0; } return 1.0 / sum; }
+    return sum;
+  }
+  double mean;
+  double stdDev;
+  void configure(double m, double s) { mean = m; stdDev = s; }
+  double pdf(double x) {
+    if (stdDev <= 0.0) { return 0.0; }
+    double z = (x - mean) / stdDev;
+    double twoPi = 6.283185307179586;
+    return expf(0.0 - z * z / 2.0) / (stdDev * sqrt(twoPi));
+  }
+  << Standard-normal CDF via the Abramowitz-Stegun rational approximation of the
+     error function (accurate to about 7 decimals). >>
+  double cdf(double x) {
+    double z = (x - mean) / stdDev;
+    double t = 1.0 / (1.0 + 0.2316419 * (z < 0.0 ? 0.0 - z : z));
+    double d = expf(0.0 - z * z / 2.0) / 2.5066282746310002;
+    double p = d * t * (0.319381530 + t * (0.0 - 0.356563782
+             + t * (1.781477937 + t * (0.0 - 1.821255978 + t * 1.330274429))));
+    if (z >= 0.0) { return 1.0 - p; }
+    return p;
+  }
+}

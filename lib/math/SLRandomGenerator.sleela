@@ -47,10 +47,26 @@ class SLRandomGenerator {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << A deterministic linear congruential generator (Numerical Recipes constants).
+     state is the 64-bit seed; next() advances and returns a value in [0,1). >>
+  long state;
+  void seed(long s) { state = s; }
+  long nextLong() {
+    state = state * 6364136223846793005 + 1442695040888963407;
+    return state;
+  }
+  double next() {
+    long v = nextLong();
+    if (v < 0) { v = 0 - v; }
+    double d = v;
+    double max = 9223372036854775807.0;
+    return d / max;
+  }
+  int nextInt(int bound) {
+    double u = next();
+    int r = (int) (u * bound);
+    if (r >= bound) { r = bound - 1; }
+    return r;
+  }
 }

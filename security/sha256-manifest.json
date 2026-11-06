@@ -44383,7 +44383,7 @@
     },
     {
       "path": "lib/math/SLANOVA.sleela",
-      "sha256": "8c4178aa40dd7247af2a64894b50b95e912a36e989625db52f95caa473d9613d"
+      "sha256": "a9fea7a85717dfbc2b549e36048cef9288bfb4e82e2617df8a7e91cd5afa8221"
     },
     {
       "path": "lib/math/SLAbsoluteValue.sleela",
@@ -44439,7 +44439,7 @@
     },
     {
       "path": "lib/math/SLBinomialDistribution.sleela",
-      "sha256": "73ba6ed4fdd1ab50a4d18b6be4194ad9a2399e4bfd9cd42de517f32884961353"
+      "sha256": "b113bbf447a6c41eb687bc0d247a2b2950159bcebdefc20a7c89f9ae85fd8675"
     },
     {
       "path": "lib/math/SLBisectionSolver.sleela",
@@ -44455,7 +44455,7 @@
     },
     {
       "path": "lib/math/SLChiSquareTest.sleela",
-      "sha256": "e991a1681bf6624c1fa0bbfb9758818d9f1e07f957d768be020521f97fbfcacf"
+      "sha256": "f9b1a2e01798e16458eed381abf8cccbe385e95ff69935fd64bc84ac81114e3d"
     },
     {
       "path": "lib/math/SLClamp.sleela",
@@ -44491,11 +44491,11 @@
     },
     {
       "path": "lib/math/SLConfidenceInterval.sleela",
-      "sha256": "4088ab89a711dc0719d97a616a45a0bf0422c2992fcfb7405eddb7878713e801"
+      "sha256": "cf8d48d2572f0fc06a4831688957bc6bb8be99cbc3aac12fae60d584a90e4a8d"
     },
     {
       "path": "lib/math/SLConfidenceLevel.sleela",
-      "sha256": "2ffee5616c8e8411dbdcb2a4b594e2693a025c47d9cb58cbd973837e26d26689"
+      "sha256": "61734e52b6bb740d91f9b1c6ddeae36bc481dbde5bb1130c118166fd6b9bd0cc"
     },
     {
       "path": "lib/math/SLConstant.sleela",
@@ -44523,7 +44523,7 @@
     },
     {
       "path": "lib/math/SLCorrelationMatrix.sleela",
-      "sha256": "3958d182ac3574b3c692a713fc7d5521ed9ad1553fcf0a4e6c235b354894dbe9"
+      "sha256": "763009ac8a4f2ac7ae181fd68cc8e0c8faa1439e66c3c67503339ae79f42acd9"
     },
     {
       "path": "lib/math/SLCosine.sleela",
@@ -44535,7 +44535,7 @@
     },
     {
       "path": "lib/math/SLCovarianceMatrix.sleela",
-      "sha256": "1c7182fdd0762c715bbf86faa9e524d20e2a64f418c15e25d69a97702bb9e58f"
+      "sha256": "92062f43762d9cc83c7288b62fbcd919c99edbece793275e43d42efad257691e"
     },
     {
       "path": "lib/math/SLCrossProduct.sleela",
@@ -44547,7 +44547,7 @@
     },
     {
       "path": "lib/math/SLDataSummary.sleela",
-      "sha256": "f09c718599041d577430a5145938f7b9123c18b9771d105d4be89fd44ae21df4"
+      "sha256": "99089bd468095451b801d8ff765dbba3d2d5e67d60ac48e081b03ce8f428dc3a"
     },
     {
       "path": "lib/math/SLDerivative.sleela",
@@ -44575,7 +44575,7 @@
     },
     {
       "path": "lib/math/SLDistribution.sleela",
-      "sha256": "324e8fdfb04a07db64434a49889c2063d3a9a0d4cfa8279e86e0d7dae8e4f4f8"
+      "sha256": "486e6d68d24a75a0d5474e05f143fbfa4b27209aaed55e0b8f439ed07480f183"
     },
     {
       "path": "lib/math/SLDivisor.sleela",
@@ -44715,11 +44715,11 @@
     },
     {
       "path": "lib/math/SLHistogram.sleela",
-      "sha256": "6a1b005bf9e941c95230116b31579bfa60208c8e357a1c7faf59a1f87300a5f5"
+      "sha256": "6ea7162a8898081e3cbe585e1faa311c589eed7b291e64d1eaca0bc02957d8ff"
     },
     {
       "path": "lib/math/SLHypothesisTest.sleela",
-      "sha256": "e30e4d168acd2ed45ce8dfce4fbf6678b49dc1db372bd056f492ad2a424b5187"
+      "sha256": "c8edf0b45f192cefe47f2a59a176cc45972fef14eb707a57f7a5d002547c41e1"
     },
     {
       "path": "lib/math/SLInequality.sleela",
@@ -44795,7 +44795,7 @@
     },
     {
       "path": "lib/math/SLLeastSquares.sleela",
-      "sha256": "57eeb987d2c82f17c0c611496087c959cbadb312e7ed5f25b3a4ac5f26ddde02"
+      "sha256": "e3fdacc7c8eacd4e1d918f1fb15e09671d72648dfe6b1cba10e093a0f40c9753"
     },
     {
       "path": "lib/math/SLLimit.sleela",
@@ -44815,7 +44815,7 @@
     },
     {
       "path": "lib/math/SLLinearRegression.sleela",
-      "sha256": "68a11ebbadedf068275a2d5cd97305296d7206680d1bc97ef4db2cc1aaeffb97"
+      "sha256": "c4a09f56701c38ec1378c2d75a205dfe310bad069d0bf68d78e3227430a9e501"
     },
     {
       "path": "lib/math/SLLogarithm.sleela",
@@ -44831,7 +44831,7 @@
     },
     {
       "path": "lib/math/SLMarkovChain.sleela",
-      "sha256": "c6b348e8e377d221e3e51819e1a144e64ca2012c7c350f5e29d746b6ff48f16f"
+      "sha256": "5a26c7588ecd4c726c33eb9d8cd12d7730f44569a37e95cf464e6d16630a0c92"
     },
     {
       "path": "lib/math/SLMath.sleela",
@@ -44891,11 +44891,11 @@
     },
     {
       "path": "lib/math/SLMonteCarlo.sleela",
-      "sha256": "88b8e3f0ff0538c65ee3e0287d144a3c9a35b9438aa016f484e45d6598580e71"
+      "sha256": "c998f027e9a691f9abc23f314c681538d08550ae73b644797490c22c0dac8607"
     },
     {
       "path": "lib/math/SLMonteCarloSampler.sleela",
-      "sha256": "984bf572158c0003b8bf6b1e26b9e50007c152ef6dd91f028a4c1c0317531974"
+      "sha256": "1736aea5b42600ba88fa4a7fa1c1b95eadf6024c607e3f6f54c0faf6fd8ad804"
     },
     {
       "path": "lib/math/SLNewtonInterpolation.sleela",
@@ -44915,7 +44915,7 @@
     },
     {
       "path": "lib/math/SLNormalDistribution.sleela",
-      "sha256": "db91cabdf92c5b4049e1595a5e221083c87eae9cbf35b746c94a0d9ceb4ba563"
+      "sha256": "82387267f768e07300f999f4c323ff384157208ba0a2ec8a4c73644c907fdace"
     },
     {
       "path": "lib/math/SLNumber.sleela",
@@ -45027,7 +45027,7 @@
     },
     {
       "path": "lib/math/SLPoissonDistribution.sleela",
-      "sha256": "0fc80b005d9bcc1353774f71ae9e4c4299c140b86aa774950f6d36156c5ec30b"
+      "sha256": "ca3f599ef264b83f3e90f71217fed1943787f6775cf327ca05878af0d78d6940"
     },
     {
       "path": "lib/math/SLPolarCoordinate.sleela",
@@ -45039,7 +45039,7 @@
     },
     {
       "path": "lib/math/SLPolynomialRegression.sleela",
-      "sha256": "a558f0cd959796cf8fbd0ca0d38b8078c2217498f962abe70ba03a344675f58e"
+      "sha256": "8802c855a0241f11926d23a73c26307f5e2cee40d8d58a5cb30b9339377238f9"
     },
     {
       "path": "lib/math/SLPower.sleela",
@@ -45095,15 +45095,15 @@
     },
     {
       "path": "lib/math/SLRandomDistribution.sleela",
-      "sha256": "997f11ed1ec46cf11f8dcc4d8f8cd6a3f870e4ce3b36d42c89bde5b65e9fb6bc"
+      "sha256": "851f55395fd6c22a5644a5dd1a632f3a7debfa30d8235dd96f6faf8279efda3b"
     },
     {
       "path": "lib/math/SLRandomGenerator.sleela",
-      "sha256": "4760799f2493985a2192021b1acba68310900c3fb8d200bd6f38375dd8be517c"
+      "sha256": "662f3d66a4609f5025bc7f72719d9b86e3610ae6be8c345073bdbb5e09f90383"
     },
     {
       "path": "lib/math/SLRandomVariable.sleela",
-      "sha256": "3d81803127ea74a3d692d80f73fd5c6eed252bc40e2de82e63d72ecc3054280e"
+      "sha256": "e037d413c2c5ddfe5f9d923404debe1c190b28255e9ee6a1cb3d2fc60793fc3c"
     },
     {
       "path": "lib/math/SLRational.sleela",
@@ -45127,11 +45127,11 @@
     },
     {
       "path": "lib/math/SLRegression.sleela",
-      "sha256": "06cfe0f0df49882dc7372fbcf8fd235601bf61ffa3a862871e8769e81d9d1d5b"
+      "sha256": "4cb693781a58c3685ce080e861a3d56336189c4edfa13e12e3c705c0d223322e"
     },
     {
       "path": "lib/math/SLRegressionModel.sleela",
-      "sha256": "c82d81e076b8be519b744216eb9d6dec2fb8b3c8735067fc0beb8b0dde1980f0"
+      "sha256": "0bc94555cce4cfed47722d2998942f51eb176074cead4be09a2c58beb8225803"
     },
     {
       "path": "lib/math/SLRegularization.sleela",
@@ -45179,7 +45179,7 @@
     },
     {
       "path": "lib/math/SLSeededRandom.sleela",
-      "sha256": "459df7c1f00375df6c6a7b32319b8457dbf1f846c4d71a3ab14dc9a722ab2a50"
+      "sha256": "51749ecc6bbbbf4a755a5c45e350e601c1327844bf1d2297fe3aea5c3ed22187"
     },
     {
       "path": "lib/math/SLSequence.sleela",
@@ -45251,7 +45251,7 @@
     },
     {
       "path": "lib/math/SLTTest.sleela",
-      "sha256": "68e0c52a608cf7d932c537f87c888f4b0d495dee0bdc195f23c74e3005adf690"
+      "sha256": "44e2c13be4941e7d9a182480d272c9009862026c81fa75383dd3d3bb5fc9a5e3"
     },
     {
       "path": "lib/math/SLTangent.sleela",
@@ -45295,7 +45295,7 @@
     },
     {
       "path": "lib/math/SLUniformDistribution.sleela",
-      "sha256": "9c707e5e17e2ad39828b64d7d9e6c7941d13b234e7e9669e4115378296421579"
+      "sha256": "0ac6cc0e07679b957f6972eaea0d481aec631f0ea00abc5b91cfe8a8bf5fab41"
     },
     {
       "path": "lib/math/SLUnion.sleela",

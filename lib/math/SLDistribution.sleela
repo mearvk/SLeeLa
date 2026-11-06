@@ -45,4 +45,28 @@ class SLDistribution {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << A generic discrete distribution over sampled outcome probabilities. >>
+  double mean(double[] values, double[] probs, int n) {
+    double s = 0.0;
+    int i = 0;
+    while (i < n) { s = s + values[i] * probs[i]; i = i + 1; }
+    return s;
+  }
+  double variance(double[] values, double[] probs, int n) {
+    double m = mean(values, probs, n);
+    double s = 0.0;
+    int i = 0;
+    while (i < n) { double d = values[i] - m; s = s + d * d * probs[i]; i = i + 1; }
+    return s;
+  }
+  boolean normalized(double[] probs, int n, double tol) {
+    double s = 0.0;
+    int i = 0;
+    while (i < n) { s = s + probs[i]; i = i + 1; }
+    double d = s - 1.0;
+    if (d < 0.0) { d = 0.0 - d; }
+    return d <= tol;
+  }
+}

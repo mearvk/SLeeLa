@@ -47,10 +47,34 @@ class SLRegressionModel {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << A fitted linear model plus its coefficient of determination R^2. >>
+  double slope;
+  double intercept;
+  double rSquared;
+  void fit(double[] xs, double[] ys, int n) {
+    double sx = 0.0; double sy = 0.0; double sxx = 0.0; double sxy = 0.0;
+    int i = 0;
+    while (i < n) {
+      sx = sx + xs[i]; sy = sy + ys[i];
+      sxx = sxx + xs[i] * xs[i]; sxy = sxy + xs[i] * ys[i];
+      i = i + 1;
+    }
+    double denom = n * sxx - sx * sx;
+    if (denom == 0.0) { slope = 0.0; intercept = sy / n; }
+    else { slope = (n * sxy - sx * sy) / denom; intercept = (sy - slope * sx) / n; }
+    double my = sy / n;
+    double ssTot = 0.0;
+    double ssRes = 0.0;
+    int j = 0;
+    while (j < n) {
+      double pred = slope * xs[j] + intercept;
+      ssTot = ssTot + (ys[j] - my) * (ys[j] - my);
+      ssRes = ssRes + (ys[j] - pred) * (ys[j] - pred);
+      j = j + 1;
+    }
+    rSquared = ssTot == 0.0 ? 1.0 : 1.0 - ssRes / ssTot;
+  }
+  double getRSquared() { return rSquared; }
+  double predict(double x) { return slope * x + intercept; }
 }

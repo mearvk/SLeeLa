@@ -45,4 +45,29 @@ class SLPoissonDistribution {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  double expf(double x) {
+    boolean neg = x < 0.0;
+    if (neg) { x = 0.0 - x; }
+    double term = 1.0;
+    double sum = 1.0;
+    int k = 1;
+    while (k < 60) { term = term * x / k; sum = sum + term; k = k + 1; }
+    if (neg) { if (sum == 0.0) { return 0.0; } return 1.0 / sum; }
+    return sum;
+  }
+  < Probability mass lambda^k e^(-lambda) / k!. >
+  double pmf(double lambda, int k) {
+    if (k < 0) { return 0.0; }
+    double lk = 1.0;
+    int i = 0;
+    while (i < k) { lk = lk * lambda; i = i + 1; }
+    double kf = 1.0;
+    int j = 2;
+    while (j <= k) { kf = kf * j; j = j + 1; }
+    return lk * expf(0.0 - lambda) / kf;
+  }
+  double mean(double lambda) { return lambda; }
+  double variance(double lambda) { return lambda; }
+}

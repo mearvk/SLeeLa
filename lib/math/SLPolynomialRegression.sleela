@@ -45,4 +45,34 @@ class SLPolynomialRegression {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << Quadratic (degree-2) least squares via the normal equations solved by
+     Cramer's rule, fitting y = c0 + c1 x + c2 x^2. Coefficients stored on fit. >>
+  double c0;
+  double c1;
+  double c2;
+  void fit(double[] xs, double[] ys, int n) {
+    double s0 = n;
+    double s1 = 0.0; double s2 = 0.0; double s3 = 0.0; double s4 = 0.0;
+    double t0 = 0.0; double t1 = 0.0; double t2 = 0.0;
+    int i = 0;
+    while (i < n) {
+      double x = xs[i];
+      double x2 = x * x;
+      s1 = s1 + x; s2 = s2 + x2; s3 = s3 + x2 * x; s4 = s4 + x2 * x2;
+      t0 = t0 + ys[i]; t1 = t1 + ys[i] * x; t2 = t2 + ys[i] * x2;
+      i = i + 1;
+    }
+    double det = s0 * (s2 * s4 - s3 * s3) - s1 * (s1 * s4 - s3 * s2)
+               + s2 * (s1 * s3 - s2 * s2);
+    if (det == 0.0) { c0 = 0.0; c1 = 0.0; c2 = 0.0; return; }
+    c0 = (t0 * (s2 * s4 - s3 * s3) - s1 * (t1 * s4 - t2 * s3)
+        + s2 * (t1 * s3 - t2 * s2)) / det;
+    c1 = (s0 * (t1 * s4 - t2 * s3) - t0 * (s1 * s4 - s3 * s2)
+        + s2 * (s1 * t2 - s2 * t1)) / det;
+    c2 = (s0 * (s2 * t2 - s3 * t1) - s1 * (s1 * t2 - s2 * t1)
+        + t0 * (s1 * s3 - s2 * s2)) / det;
+  }
+  double predict(double x) { return c0 + c1 * x + c2 * x * x; }
+}

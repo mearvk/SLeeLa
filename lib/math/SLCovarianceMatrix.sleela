@@ -47,10 +47,26 @@ class SLCovarianceMatrix {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << Fill an m x m covariance matrix (population, row-major out) from m variables
+     with n samples each, variable-major in data. >>
+  double cov(double[] data, int n, int vi, int vj) {
+    double sx = 0.0; double sy = 0.0;
+    int t = 0;
+    while (t < n) { sx = sx + data[vi * n + t]; sy = sy + data[vj * n + t]; t = t + 1; }
+    double mx = sx / n;
+    double my = sy / n;
+    double s = 0.0;
+    t = 0;
+    while (t < n) { s = s + (data[vi * n + t] - mx) * (data[vj * n + t] - my); t = t + 1; }
+    return s / n;
+  }
+  void build(double[] data, int m, int n, double[] out) {
+    int i = 0;
+    while (i < m) {
+      int j = 0;
+      while (j < m) { out[i * m + j] = cov(data, n, i, j); j = j + 1; }
+      i = i + 1;
+    }
+  }
 }

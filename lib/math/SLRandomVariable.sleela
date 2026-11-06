@@ -45,4 +45,21 @@ class SLRandomVariable {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << A discrete random variable given by paired value/probability arrays; exposes
+     its expectation and variance. >>
+  double expectation(double[] values, double[] probs, int n) {
+    double s = 0.0;
+    int i = 0;
+    while (i < n) { s = s + values[i] * probs[i]; i = i + 1; }
+    return s;
+  }
+  double variance(double[] values, double[] probs, int n) {
+    double m = expectation(values, probs, n);
+    double s = 0.0;
+    int i = 0;
+    while (i < n) { double d = values[i] - m; s = s + d * d * probs[i]; i = i + 1; }
+    return s;
+  }
+}

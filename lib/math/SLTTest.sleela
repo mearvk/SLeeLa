@@ -47,10 +47,29 @@ class SLTTest {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  double sqrt(double x) {
+    if (x <= 0.0) { return 0.0; }
+    double g = x;
+    int i = 0;
+    while (i < 60) { g = (g + x / g) / 2.0; i = i + 1; }
+    return g;
+  }
+  double mean(double[] xs, int n) {
+    double s = 0.0; int i = 0;
+    while (i < n) { s = s + xs[i]; i = i + 1; }
+    return n == 0 ? 0.0 : s / n;
+  }
+  << One-sample t-statistic against mu0: (xbar - mu0) / (s / sqrt(n)) with the
+     sample standard deviation. >>
+  double oneSample(double[] xs, int n, double mu0) {
+    if (n <= 1) { return 0.0; }
+    double m = mean(xs, n);
+    double ss = 0.0;
+    int i = 0;
+    while (i < n) { double d = xs[i] - m; ss = ss + d * d; i = i + 1; }
+    double sd = sqrt(ss / (n - 1));
+    if (sd == 0.0) { return 0.0; }
+    return (m - mu0) / (sd / sqrt(n));
+  }
 }

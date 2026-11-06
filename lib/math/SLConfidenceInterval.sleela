@@ -45,4 +45,24 @@ class SLConfidenceInterval {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  double sqrt(double x) {
+    if (x <= 0.0) { return 0.0; }
+    double g = x;
+    int i = 0;
+    while (i < 60) { g = (g + x / g) / 2.0; i = i + 1; }
+    return g;
+  }
+  << Normal-approximation confidence interval for a mean: xbar +/- z * s/sqrt(n).
+     Lower/upper bounds written into out[0], out[1]. >>
+  void ofMean(double mean, double stdDev, int n, double z, double[] out) {
+    double half = n <= 0 ? 0.0 : z * stdDev / sqrt(n);
+    out[0] = mean - half;
+    out[1] = mean + half;
+  }
+  double marginOfError(double stdDev, int n, double z) {
+    if (n <= 0) { return 0.0; }
+    return z * stdDev / sqrt(n);
+  }
+}

@@ -45,4 +45,24 @@ class SLBinomialDistribution {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Probability mass C(n,k) p^k (1-p)^(n-k). >
+  double pmf(int n, int k, double p) {
+    if (k < 0 || k > n) { return 0.0; }
+    double c = 1.0;
+    int kk = k;
+    if (kk > n - kk) { kk = n - kk; }
+    int i = 0;
+    while (i < kk) { c = c * (n - i) / (i + 1); i = i + 1; }
+    double pk = 1.0;
+    int j = 0;
+    while (j < k) { pk = pk * p; j = j + 1; }
+    double qn = 1.0;
+    int m = 0;
+    while (m < n - k) { qn = qn * (1.0 - p); m = m + 1; }
+    return c * pk * qn;
+  }
+  double mean(int n, double p) { return n * p; }
+  double variance(int n, double p) { return n * p * (1.0 - p); }
+}
