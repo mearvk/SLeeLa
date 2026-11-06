@@ -45,4 +45,17 @@ class SLNewtonSolver {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < One Newton-Raphson update step toward a root of f. >
+  double step(double x, double fx, double dfx) {
+    if (dfx == 0.0) { return x; }
+    return x - fx / dfx;
+  }
+  < Has the iterate converged within tol? >
+  boolean converged(double xNew, double xOld, double tol) {
+    double d = xNew - xOld;
+    if (d < 0.0) { d = 0.0 - d; }
+    return d <= tol;
+  }
+}

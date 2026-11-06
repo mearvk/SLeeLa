@@ -44407,7 +44407,7 @@
     },
     {
       "path": "lib/math/SLApproximation.sleela",
-      "sha256": "8e38257404a6e394f91e71371f369386fc31de587ee0e65837795f3bc0b31f49"
+      "sha256": "063fabc5a2107ca251832b776499cce6a23a365761893a41f59c9e8c9f8a91fa"
     },
     {
       "path": "lib/math/SLArithmetic.sleela",
@@ -44443,7 +44443,7 @@
     },
     {
       "path": "lib/math/SLBisectionSolver.sleela",
-      "sha256": "c07221748ee6f00978274a965f7ee5bd71559e888d5c24cb9f43bb987b8986fe"
+      "sha256": "247322617113af45a5aa5e4fc1f55e4a94ceba63dde242d26df30cad00c2f9ac"
     },
     {
       "path": "lib/math/SLCardinality.sleela",
@@ -44507,7 +44507,7 @@
     },
     {
       "path": "lib/math/SLConvergence.sleela",
-      "sha256": "ab41a2ee35f8f1383f90653019cd5eb397c6ab22397464a69f9b4802fc77802d"
+      "sha256": "d6dd8a74690de16480500a93ec06abbe16409f4da0c48b11d427986b183b3281"
     },
     {
       "path": "lib/math/SLCoordinate.sleela",
@@ -44551,7 +44551,7 @@
     },
     {
       "path": "lib/math/SLDerivative.sleela",
-      "sha256": "fcc98a76726dc1a7b41007ef9d7a9f48d104fe67d7dbe2447b72a14ab2a9e5ed"
+      "sha256": "441dd2ea40ff2890c075978030dde1372fe09c0a72e12eb7ca668aed2fb3e09c"
     },
     {
       "path": "lib/math/SLDeterminant.sleela",
@@ -44603,7 +44603,7 @@
     },
     {
       "path": "lib/math/SLErrorBound.sleela",
-      "sha256": "e867a43b1bd8cb51c07701eac9e932e3f0367bd3efb15066074a91fd597d00f8"
+      "sha256": "350ed4328ac1ec86becd8ccf51c4b31f297fd5bc01fd9cbf15df350c453b4a18"
     },
     {
       "path": "lib/math/SLExpectation.sleela",
@@ -44735,15 +44735,15 @@
     },
     {
       "path": "lib/math/SLIntegral.sleela",
-      "sha256": "14dff0c333b26eaf45e665f4832d8e3f6a5c5534db0195f5e5df7411b7bd36cb"
+      "sha256": "2699a0cc43a9c895252b4d864a8ecd47dc432a920e11156264855fd30d022e52"
     },
     {
       "path": "lib/math/SLInterpolation.sleela",
-      "sha256": "73fc8590f5a3de1faf3da102707138236d95e65d01712905e084bd7020ce919e"
+      "sha256": "18bc3e83ed2d00ef0920beb91b3c82ca2d342f712c8d5856b369d82352a8822d"
     },
     {
       "path": "lib/math/SLInterpolationTable.sleela",
-      "sha256": "99dc2c39de018673f61acd34db4f9bb27643c18957328aed8dd5c06ad5237e9e"
+      "sha256": "ce135d9a9ecda1dd73dd37ea55cca7c4a84137a7d4a186a43ae509f57bb439c8"
     },
     {
       "path": "lib/math/SLIntersection.sleela",
@@ -44763,7 +44763,7 @@
     },
     {
       "path": "lib/math/SLIteration.sleela",
-      "sha256": "b11123601a80687598dec355e6be32ca9859583dd02b6f32309de9687b637d77"
+      "sha256": "14ca106de3e2467518ec2ba2ed1d3eb5f88863c95da43f88ec80d2c2a31c704a"
     },
     {
       "path": "lib/math/SLJacobian.sleela",
@@ -44779,7 +44779,7 @@
     },
     {
       "path": "lib/math/SLLagrangeInterpolation.sleela",
-      "sha256": "3f5c5aeec9acc04cb4ae1b6f403b042f4f577029f5295fb98d4803aaea18aa05"
+      "sha256": "de2ebe1c33d21cb9812f7dffb60efd02181ba3d2939ac39505565f54db7d567f"
     },
     {
       "path": "lib/math/SLLambda.sleela",
@@ -44899,11 +44899,11 @@
     },
     {
       "path": "lib/math/SLNewtonInterpolation.sleela",
-      "sha256": "905d5bd4870a9d4f9242b431322f12a07142d7a52d53547969da41bec3774235"
+      "sha256": "baf94f629899d32b67996c32b6f80563e9bfa9e1aeafd226291a3874a2ba4356"
     },
     {
       "path": "lib/math/SLNewtonMethod.sleela",
-      "sha256": "7e88f4e7a1fa44e4e470d67c06e3426bbb604a5e660fc99c54c3e8513827b468"
+      "sha256": "9d55bc99b3a232ad1177731877cfdc8d9c3e1e1a1baf3e3cd2e5b4fa19cf93ec"
     },
     {
       "path": "lib/math/SLNewtonOptimization.sleela",
@@ -44911,7 +44911,7 @@
     },
     {
       "path": "lib/math/SLNewtonSolver.sleela",
-      "sha256": "d1209b603114b08d651a4f7d2afc95511b9e5b5477fc9db5e1afb5131138e358"
+      "sha256": "29f0a3771e58eb79dba2e8916f6f1aa0c066f3ebeaefcb69f969183d1fc3fc90"
     },
     {
       "path": "lib/math/SLNormalDistribution.sleela",
@@ -44935,11 +44935,11 @@
     },
     {
       "path": "lib/math/SLNumericalDerivative.sleela",
-      "sha256": "4cf5f946801ecd96062d27dcd4a0d733328a4a3aa6c0093d17ce49be74a1a1ef"
+      "sha256": "b38e7724064add22cb81420dd403e8dfea00ba4ad1aaad8e82e2a07738cbc13f"
     },
     {
       "path": "lib/math/SLNumericalIntegration.sleela",
-      "sha256": "0ba0c9eee56ae9b887e84979ecdfbbce2d901043820444d2056dcd60841484f8"
+      "sha256": "31a9cd0a64333a7a945efb1f74b581dbdc347c6b4e7820b896a4c626dec07f02"
     },
     {
       "path": "lib/math/SLNumericalMath.sleela",
@@ -44951,7 +44951,7 @@
     },
     {
       "path": "lib/math/SLNumericalRoot.sleela",
-      "sha256": "abce9704769b17a315e73347fb6b8a9e500f7962f7005144b49f883e3fa7fa41"
+      "sha256": "6009ac4301aff3e3847b75455ff65fb570931124f754ec44f4c6e72f3548ae2d"
     },
     {
       "path": "lib/math/SLNumericalSequence.sleela",
@@ -44995,7 +44995,7 @@
     },
     {
       "path": "lib/math/SLPartialDerivative.sleela",
-      "sha256": "27bd706d31c095a6b835a4b06648b5f27cc1e2853c11f334822d33df971f3da7"
+      "sha256": "e7b53145bcf67119b7ea230183442efd71c7cf7e028c9b687c49cd73a274af17"
     },
     {
       "path": "lib/math/SLPathLength.sleela",
@@ -45143,7 +45143,7 @@
     },
     {
       "path": "lib/math/SLResidual.sleela",
-      "sha256": "423b806d1e9be0d3eb78ef7077702d66e2b0dbeed58ccf5939e9806e19ba8ac1"
+      "sha256": "dc82ca4fd2efc9435b2356af87294172392a0d837a135bb9d5e68875d75e3ea3"
     },
     {
       "path": "lib/math/SLRoot.sleela",
@@ -45151,7 +45151,7 @@
     },
     {
       "path": "lib/math/SLRootFinder.sleela",
-      "sha256": "1c726478c9f25eb023455ecb1cb3e18e5d862ae1976bddf850db177a4d5c2b09"
+      "sha256": "55fe3bf1d692a1cc1b4b5a84dbc76c3980fdc08f4278ac691b0177366e67ef19"
     },
     {
       "path": "lib/math/SLRotation.sleela",
@@ -45175,7 +45175,7 @@
     },
     {
       "path": "lib/math/SLSecantMethod.sleela",
-      "sha256": "0d2392a8ae9370d8ccad5d8d443fc0052ece1e9914cff3f92b612e82a10f1419"
+      "sha256": "a3fcc97d9eaae7cfa516d73c2ae5835eb9af56b63a6d7fe36479936dc5383781"
     },
     {
       "path": "lib/math/SLSeededRandom.sleela",
@@ -45211,7 +45211,7 @@
     },
     {
       "path": "lib/math/SLSimpsonRule.sleela",
-      "sha256": "eddb8f88ca5681b90890320927028b151b233c67b2341964d6a9de951feb406a"
+      "sha256": "c98787b5e8f6ebd9c6215bd5b4677be27ce4b0778e782c42938a0eb2084f6be3"
     },
     {
       "path": "lib/math/SLSine.sleela",
@@ -45283,7 +45283,7 @@
     },
     {
       "path": "lib/math/SLTrapezoidRule.sleela",
-      "sha256": "cf7bbc038782c063c2fa9f316f74fcde6d77692c43703ea7301ea5aa3d82268f"
+      "sha256": "b66106119eb301d9881186b5be2e4e8a0b2d33c69839f5e1a08433344c74c8fd"
     },
     {
       "path": "lib/math/SLTrigonometry.sleela",

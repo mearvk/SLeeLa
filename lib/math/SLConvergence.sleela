@@ -47,10 +47,15 @@ class SLConvergence {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  double absd(double x) { if (x < 0.0) { return 0.0 - x; } return x; }
+  < Has a sequence converged: successive terms within tol? >
+  boolean reached(double current, double previous, double tol) {
+    return absd(current - previous) <= tol;
+  }
+  < Linear convergence rate estimate from three successive errors. >
+  double rate(double e0, double e1, double e2) {
+    if (e1 == 0.0 || e0 == 0.0) { return 0.0; }
+    return (e2 / e1) / (e1 / e0);
+  }
 }

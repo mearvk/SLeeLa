@@ -45,4 +45,20 @@ class SLDerivative {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << Central-difference numerical derivative of a sampled function:
+     deriv(x_i) approx (y[i+1] - y[i-1]) / (x[i+1] - x[i-1]). >>
+  double central(double[] xs, double[] ys, int i, int n) {
+    if (i <= 0 || i >= n - 1) { return 0.0; }
+    double h = xs[i + 1] - xs[i - 1];
+    if (h == 0.0) { return 0.0; }
+    return (ys[i + 1] - ys[i - 1]) / h;
+  }
+  < Forward difference at the left endpoint. >
+  double forward(double[] xs, double[] ys, int i) {
+    double h = xs[i + 1] - xs[i];
+    if (h == 0.0) { return 0.0; }
+    return (ys[i + 1] - ys[i]) / h;
+  }
+}

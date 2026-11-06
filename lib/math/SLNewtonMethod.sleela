@@ -47,10 +47,10 @@ class SLNewtonMethod {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  < One Newton-Raphson update step: x minus f(x) divided by its derivative. >
+  double step(double x, double fx, double dfx) {
+    if (dfx == 0.0) { return x; }
+    return x - fx / dfx;
+  }
 }

@@ -45,4 +45,14 @@ class SLInterpolation {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Linear interpolation between (x0,y0) and (x1,y1) at x. >
+  double linear(double x0, double y0, double x1, double y1, double x) {
+    if (x1 == x0) { return y0; }
+    double t = (x - x0) / (x1 - x0);
+    return y0 + t * (y1 - y0);
+  }
+  < Normalized linear blend: (1-t)*a + t*b. >
+  double lerp(double a, double b, double t) { return a + t * (b - a); }
+}

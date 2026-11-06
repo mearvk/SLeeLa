@@ -45,4 +45,16 @@ class SLNumericalDerivative {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Three-point central difference using a step h about sampled triplet. >
+  double derivative(double yPrev, double yNext, double h) {
+    if (h == 0.0) { return 0.0; }
+    return (yNext - yPrev) / (2.0 * h);
+  }
+  < Second derivative via the standard three-point stencil. >
+  double secondDerivative(double yPrev, double yMid, double yNext, double h) {
+    if (h == 0.0) { return 0.0; }
+    return (yNext - 2.0 * yMid + yPrev) / (h * h);
+  }
+}

@@ -45,4 +45,18 @@ class SLBisectionSolver {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  double absd(double x) { if (x < 0.0) { return 0.0 - x; } return x; }
+  << Bisection root of a sampled sign change: given f(a), f(b) of opposite sign
+     this narrows the bracket; here it reports the midpoint and which half holds
+     the root, so a caller can iterate with fresh samples. >>
+  double midpoint(double a, double b) { return (a + b) / 2.0; }
+  << Which half contains the root, given signs of f(a) and f(mid). Returns 0 for
+     the left half [a,mid], 1 for the right half [mid,b]. >>
+  int half(double fa, double fmid) {
+    if (fa * fmid <= 0.0) { return 0; }
+    return 1;
+  }
+  boolean bracketed(double fa, double fb) { return fa * fb <= 0.0; }
+}

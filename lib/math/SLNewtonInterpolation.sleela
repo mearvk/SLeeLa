@@ -47,10 +47,27 @@ class SLNewtonInterpolation {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << Newton divided-difference interpolation. Builds the coefficient table in a
+     copy of ys and evaluates the resulting polynomial at x. >>
+  double evaluate(double[] xs, double[] ysIn, int n, double x) {
+    double[] c = new double[n];
+    int i = 0;
+    while (i < n) { c[i] = ysIn[i]; i = i + 1; }
+    int j = 1;
+    while (j < n) {
+      int k = n - 1;
+      while (k >= j) {
+        double denom = xs[k] - xs[k - j];
+        if (denom == 0.0) { return 0.0; }
+        c[k] = (c[k] - c[k - 1]) / denom;
+        k = k - 1;
+      }
+      j = j + 1;
+    }
+    double result = c[n - 1];
+    int m = n - 2;
+    while (m >= 0) { result = result * (x - xs[m]) + c[m]; m = m - 1; }
+    return result;
+  }
 }

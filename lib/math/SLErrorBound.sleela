@@ -47,10 +47,12 @@ class SLErrorBound {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  double absd(double x) { if (x < 0.0) { return 0.0 - x; } return x; }
+  < Record and widen an error bound as a computation proceeds. >
+  double bound;
+  void reset() { bound = 0.0; }
+  void observe(double err) { double a = absd(err); if (a > bound) { bound = a; } }
+  double getBound() { return bound; }
+  boolean acceptable(double tol) { return bound <= tol; }
 }
