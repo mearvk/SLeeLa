@@ -16,7 +16,7 @@ syn match sleelaMarker "^\s*\%(authorial\|author\|material\|memory\|determine\|o
 syn match sleelaPragma "^\s*#\%(sleela\|schema\)\>.*$"
 syn match sleelaNumber "\<\d\+\>"
 syn region sleelaString start=+"+ skip=+\\.+ end=+"+
-syn region sleelaString start=+'+ skip=+\\.+ end=+'
+syn region sleelaString start=+'+ skip=+\\.+ end=+'+
 " Comment forms the SLeeLa lexer accepts: // line, /* */ block, and the
 " go-forward house style << >> block and < > single-line angle comments. An
 " angle comment must begin a line (only whitespace before the opener).
