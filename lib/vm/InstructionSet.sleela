@@ -377,3 +377,9 @@ class SLISAOslsCall { String name; int code; }
 
 < OP_BIGMUL 156 -- native big-integer multiply over base-1e9 limb arrays (the SLBigInteger VM bridge) >
 class SLISABigMul { String name; int code; }
+
+< OP_BIGADD 157 -- native big-integer add over base-1e9 limb arrays (pops a, b, result int[]; companion to OP_BIGMUL) >
+class SLISABigAdd { String name; int code; }
+
+< OP_BIGDIVMOD 158 -- native big-integer divide/remainder of a limb array by a small integer divisor (pushes the remainder; backs base conversion and Chudnovsky scaling) >
+class SLISABigDivMod { String name; int code; }
