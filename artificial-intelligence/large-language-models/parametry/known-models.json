@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "title": "SLeeLa parametry — registry of known/supported models",
+  "description": "Declarative mirror of the built-in registry in parametry.c. Lists supported model NAMES and their declared parameters only. No weights are shipped; a user binding a known name still supplies the actual weights for that family. A user may instead bind a LOCAL model by path (see binding.schema.json).",
+  "models": [
+    { "name": "sleela-code-compact",  "kind": "llm", "weight_bytes": 2147483648,  "context_tokens": 2048,  "weight_format": "gguf-q4_k_m",      "note": "Compact SLeeLa Code LLM (lower 2 GB envelope)." },
+    { "name": "sleela-code-standard", "kind": "llm", "weight_bytes": 4294967296,  "context_tokens": 4096,  "weight_format": "gguf-q5_k_m",      "note": "Balanced SLeeLa Code LLM." },
+    { "name": "sleela-code-capable",  "kind": "llm", "weight_bytes": 8589934592,  "context_tokens": 8192,  "weight_format": "safetensors-fp16", "note": "Capable SLeeLa Code LLM; larger context." },
+    { "name": "sleela-code-large",    "kind": "llm", "weight_bytes": 17179869184, "context_tokens": 16384, "weight_format": "safetensors-fp16", "note": "Large SLeeLa Code LLM (upper 16 GB envelope)." },
+    { "name": "sleela-nn-xor",        "kind": "neural-net", "layer_sizes": [2, 4, 1],        "note": "Classic 2-4-1 XOR demonstration net." },
+    { "name": "sleela-nn-small-mlp",  "kind": "neural-net", "layer_sizes": [16, 32, 16, 4],  "note": "Small general-purpose MLP." }
+  ]
+}

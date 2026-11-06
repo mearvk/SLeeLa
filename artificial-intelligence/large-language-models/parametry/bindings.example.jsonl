@@ -1,0 +1,4 @@
+{"schema_version":"1.0","kind":"llm","name":"sleela-code-capable","note":"SLeeLa LLM bound to a KNOWN supported model by name; parameters come from the registry (8 GB, capable tier)."}
+{"schema_version":"1.0","kind":"llm","local_path":"/models/my-sleela-coder.gguf","weight_bytes":6442450944,"weight_format":"gguf-q4_k_m","note":"SLeeLa LLM bound to a LOCAL model by path; user declares 6 GB. User supplies the weights."}
+{"schema_version":"1.0","kind":"neural-net","name":"sleela-nn-xor","note":"SLeeLa neural net bound to a KNOWN shape (2-4-1) by name."}
+{"schema_version":"1.0","kind":"neural-net","local_path":"/models/my-net.slnn","layer_sizes":[8,12,3],"note":"SLeeLa neural net bound to a LOCAL model with an 8-12-3 fully-connected shape."}

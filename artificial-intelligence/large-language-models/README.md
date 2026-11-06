@@ -134,6 +134,17 @@ such as `record`/`native`/`enum`, the `<< >>` comment forms, the 64-field class
 cap, the Metadata Class metapattern) and bridges to the real `impl/build/sleela`
 compiler for ground truth. See `sleela/README.md`.
 
+## Parametry (binding models to known or local sources)
+
+`parametry/` binds a SLeeLa **LLM** or a SLeeLa **neural net** to **either** a
+known/supported model (by name, from a built-in registry) **or** a user's local
+model (by path). An LLM binding yields a `CapacityProfile` (2–16 GB envelope); a
+neural-net binding yields an `slnn_network_config` that builds a real
+fully-connected net (the `neural-nets/` API). Resolution fails closed on an
+unknown name with no local fallback, a kind mismatch, or a shapeless local net.
+SLeeLa ships the registry of names + declared parameters and the binding logic —
+never weights. See `parametry/README.md`.
+
 ## Inference
 
 The inference backend supplies three operations:
