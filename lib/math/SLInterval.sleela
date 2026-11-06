@@ -47,10 +47,12 @@ class SLInterval {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  double lo;
+  double hi;
+  void set(double a, double b) { if (a <= b) { lo = a; hi = b; } else { lo = b; hi = a; } }
+  boolean contains(double x) { return x >= lo && x <= hi; }
+  double width() { return hi - lo; }
+  double midpoint() { return (lo + hi) / 2.0; }
+  boolean overlaps(SLInterval o) { return lo <= o.hi && o.lo <= hi; }
 }

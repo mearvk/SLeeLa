@@ -45,4 +45,23 @@ class SLPolynomial {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << A polynomial by its coefficient array coeffs[0..degree] (constant first).
+     Evaluation uses Horner's rule. >>
+  double evaluate(double[] coeffs, int degree, double x) {
+    double r = coeffs[degree];
+    int i = degree - 1;
+    while (i >= 0) { r = r * x + coeffs[i]; i = i - 1; }
+    return r;
+  }
+  < Derivative coefficients written into out (length degree). >
+  void derivative(double[] coeffs, int degree, double[] out) {
+    int i = 1;
+    while (i <= degree) { out[i - 1] = coeffs[i] * i; i = i + 1; }
+  }
+  void add(double[] a, double[] b, double[] out, int n) {
+    int i = 0;
+    while (i < n) { out[i] = a[i] + b[i]; i = i + 1; }
+  }
+}

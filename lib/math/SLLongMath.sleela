@@ -45,4 +45,10 @@ class SLLongMath {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  long maxVal() { return 9223372036854775807; }
+  long clampAdd(long a, long b) { return a + b; }
+  long absL(long v) { if (v < 0) { return 0 - v; } return v; }
+  long sign(long v) { if (v > 0) { return 1; } if (v < 0) { return 0 - 1; } return 0; }
+}

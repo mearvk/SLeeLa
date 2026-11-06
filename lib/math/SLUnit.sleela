@@ -47,10 +47,12 @@ class SLUnit {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << A unit with a scale factor relative to an SI base and an additive offset
+     (so temperature-like affine units work): value_SI = raw*scale + offset. >>
+  double scale;
+  double offset;
+  void configure(double s, double o) { scale = s; offset = o; }
+  double toBase(double raw) { return raw * scale + offset; }
+  double fromBase(double si) { if (scale == 0.0) { return 0.0; } return (si - offset) / scale; }
 }

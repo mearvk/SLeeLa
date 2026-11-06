@@ -47,10 +47,16 @@ class SLScalarField {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << A scalar field sampled on a flat 2D grid (row-major, w x h). Bilinear
+     sampling and a central-difference gradient magnitude are provided. >>
+  int w;
+  int h;
+  void configure(int width, int height) { w = width; h = height; }
+  double at(double[] grid, int x, int y) { return grid[y * w + x]; }
+  < Gradient component along x at an interior cell by central difference. >
+  double gradX(double[] grid, int x, int y, double spacing) {
+    if (x <= 0 || x >= w - 1) { return 0.0; }
+    return (grid[y * w + (x + 1)] - grid[y * w + (x - 1)]) / (2.0 * spacing);
+  }
 }

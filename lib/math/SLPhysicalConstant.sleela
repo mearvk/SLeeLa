@@ -47,10 +47,13 @@ class SLPhysicalConstant {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << SI values of fundamental physical constants (CODATA-style, exact where the
+     SI 2019 redefinition fixes them). >>
+  double speedOfLight() { return 299792458.0; }
+  double planck() { return 0.000000000000000000000000000000000662607015; }
+  double elementaryCharge() { return 0.0000000000000000001602176634; }
+  double avogadro() { return 602214076000000000000000.0; }
+  double boltzmann() { return 0.00000000000000000000001380649; }
+  double gravitation() { return 0.0000000000667430; }
 }

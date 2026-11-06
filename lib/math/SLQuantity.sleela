@@ -47,10 +47,12 @@ class SLQuantity {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << A physical quantity: a numeric magnitude paired with a unit scale to SI. >>
+  double magnitude;
+  double unitScale;
+  void set(double m, double scaleToSI) { magnitude = m; unitScale = scaleToSI; }
+  double inSI() { return magnitude * unitScale; }
+  double getMagnitude() { return magnitude; }
+  void add(SLQuantity o) { magnitude = magnitude + o.inSI() / unitScale; }
 }

@@ -45,4 +45,17 @@ class SLCoefficient {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  double value;
+  int degree;
+  void set(double v, int d) { value = v; degree = d; }
+  double getValue() { return value; }
+  int getDegree() { return degree; }
+  double termAt(double x) {
+    double p = 1.0;
+    int i = 0;
+    while (i < degree) { p = p * x; i = i + 1; }
+    return value * p;
+  }
+}

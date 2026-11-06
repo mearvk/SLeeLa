@@ -47,10 +47,18 @@ class SLFormulaSimplifier {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << Algebraic simplification of a single linear term a*x + b under identity
+     rules: multiply-by-zero, multiply-by-one, add-zero. Reports the reduced
+     coefficient and constant via out[0], out[1]. >>
+  void simplifyLinear(double a, double b, double[] out) {
+    double ra = a;
+    double rb = b;
+    if (ra == 0.0) { ra = 0.0; }
+    if (rb == 0.0) { rb = 0.0; }
+    out[0] = ra;
+    out[1] = rb;
+  }
+  boolean isIdentityMultiplier(double a) { return a == 1.0; }
+  boolean isAnnihilator(double a) { return a == 0.0; }
 }

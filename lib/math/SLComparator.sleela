@@ -47,10 +47,20 @@ class SLComparator {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  int compareDouble(double a, double b) {
+    if (a < b) { return 0 - 1; }
+    if (a > b) { return 1; }
+    return 0;
+  }
+  int compareInt(int a, int b) {
+    if (a < b) { return 0 - 1; }
+    if (a > b) { return 1; }
+    return 0;
+  }
+  boolean equalWithin(double a, double b, double tol) {
+    double d = a - b;
+    if (d < 0.0) { d = 0.0 - d; }
+    return d <= tol;
+  }
 }

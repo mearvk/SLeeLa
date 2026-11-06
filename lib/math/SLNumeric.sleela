@@ -45,4 +45,14 @@ class SLNumeric {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << A numeric wrapper exposing common predicates over a double value. >>
+  double value;
+  void set(double v) { value = v; }
+  double get() { return value; }
+  boolean isZero() { return value == 0.0; }
+  boolean isPositive() { return value > 0.0; }
+  boolean isNegative() { return value < 0.0; }
+  boolean isInteger() { double t = (double) (long) value; return t == value; }
+}

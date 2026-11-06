@@ -45,4 +45,25 @@ class SLRational {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  int num;
+  int den;
+  int gcd(int a, int b) {
+    if (a < 0) { a = 0 - a; }
+    if (b < 0) { b = 0 - b; }
+    while (b != 0) { int t = b; b = a % b; a = t; }
+    return a;
+  }
+  void set(int n, int d) {
+    if (d == 0) { num = 0; den = 1; return; }
+    if (d < 0) { n = 0 - n; d = 0 - d; }
+    int g = gcd(n, d);
+    if (g == 0) { g = 1; }
+    num = n / g;
+    den = d / g;
+  }
+  double toDouble() { return den == 0 ? 0.0 : (double) num / den; }
+  int getNum() { return num; }
+  int getDen() { return den; }
+}

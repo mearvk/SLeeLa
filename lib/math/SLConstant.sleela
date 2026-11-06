@@ -45,4 +45,12 @@ class SLConstant {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Named mathematical constants. >
+  double pi() { return 3.141592653589793; }
+  double e() { return 2.718281828459045; }
+  double goldenRatio() { return 1.618033988749895; }
+  double sqrt2() { return 1.4142135623730951; }
+  double eulerGamma() { return 0.5772156649015329; }
+}

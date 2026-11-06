@@ -47,10 +47,28 @@ class SLExpressionEvaluator {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << Evaluate a postfix token stream (op -1 = push vals[i], 0..3 = + - * /). >>
+  double evaluate(int[] ops, double[] vals, int n) {
+    double[] st = new double[n + 1];
+    int sp = 0;
+    int i = 0;
+    while (i < n) {
+      if (ops[i] == 0 - 1) { st[sp] = vals[i]; sp = sp + 1; }
+      else {
+        if (sp < 2) { return 0.0; }
+        double b = st[sp - 1];
+        double a = st[sp - 2];
+        sp = sp - 2;
+        double r = 0.0;
+        if (ops[i] == 0) { r = a + b; }
+        if (ops[i] == 1) { r = a - b; }
+        if (ops[i] == 2) { r = a * b; }
+        if (ops[i] == 3) { r = b == 0.0 ? 0.0 : a / b; }
+        st[sp] = r; sp = sp + 1;
+      }
+      i = i + 1;
+    }
+    return sp > 0 ? st[sp - 1] : 0.0;
+  }
 }

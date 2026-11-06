@@ -45,4 +45,12 @@ class SLFactor {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << A linear factor (x - root); the product of factors reconstructs a monic
+     polynomial. >>
+  double root;
+  void set(double r) { root = r; }
+  double evaluate(double x) { return x - root; }
+  double getRoot() { return root; }
+}

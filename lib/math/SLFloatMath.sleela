@@ -45,4 +45,24 @@ class SLFloatMath {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  double sqrt(double x) {
+    if (x <= 0.0) { return 0.0; }
+    double g = x;
+    int i = 0;
+    while (i < 60) { g = (g + x / g) / 2.0; i = i + 1; }
+    return g;
+  }
+  double absF(double x) { if (x < 0.0) { return 0.0 - x; } return x; }
+  < Smallest resolvable gap near 1.0 for single precision. >
+  double epsilon() { return 0.00000011920929; }
+  double roundTo(double x, int places) {
+    double f = 1.0;
+    int i = 0;
+    while (i < places) { f = f * 10.0; i = i + 1; }
+    double scaled = x * f;
+    long r = (long) (scaled >= 0.0 ? scaled + 0.5 : scaled - 0.5);
+    return r / f;
+  }
+}

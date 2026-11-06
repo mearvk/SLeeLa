@@ -45,4 +45,13 @@ class SLEquation {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << A linear equation a x + b = 0 with a single root. >>
+  double a;
+  double b;
+  void set(double pa, double pb) { a = pa; b = pb; }
+  boolean hasUniqueRoot() { return a != 0.0; }
+  double root() { if (a == 0.0) { return 0.0; } return 0.0 - b / a; }
+  double leftMinusRight(double x) { return a * x + b; }
+}

@@ -47,10 +47,16 @@ class SLUnderflow {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  double smallestNormal() { return 0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000022250738585072014; }
+  < Has a magnitude underflowed below a working threshold (flushed to zero)? >
+  boolean underflows(double x, double threshold) {
+    double a = x < 0.0 ? 0.0 - x : x;
+    return a != 0.0 && a < threshold;
+  }
+  double flush(double x, double threshold) {
+    double a = x < 0.0 ? 0.0 - x : x;
+    if (a < threshold) { return 0.0; }
+    return x;
+  }
 }

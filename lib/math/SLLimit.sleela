@@ -45,4 +45,19 @@ class SLLimit {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << Estimate a one-sided limit by sampling the function values approaching a
+     point: given f at a sequence of shrinking offsets, report the last value as
+     the limit estimate and whether successive samples are converging. >>
+  double estimate(double[] samples, int n) {
+    if (n <= 0) { return 0.0; }
+    return samples[n - 1];
+  }
+  boolean converging(double[] samples, int n, double tol) {
+    if (n < 2) { return false; }
+    double d = samples[n - 1] - samples[n - 2];
+    if (d < 0.0) { d = 0.0 - d; }
+    return d <= tol;
+  }
+}

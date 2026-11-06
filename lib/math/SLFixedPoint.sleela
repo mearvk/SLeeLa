@@ -47,10 +47,23 @@ class SLFixedPoint {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << A fixed-point number as a scaled long with a fixed number of fractional
+     bits. Conversions and basic arithmetic preserve the scale. >>
+  int fracBits;
+  long raw;
+  void configure(int bits) { fracBits = bits; }
+  void fromDouble(double x) {
+    long scale = 1;
+    int i = 0;
+    while (i < fracBits) { scale = scale * 2; i = i + 1; }
+    raw = (long) (x * scale);
+  }
+  double toDouble() {
+    long scale = 1;
+    int i = 0;
+    while (i < fracBits) { scale = scale * 2; i = i + 1; }
+    return (double) raw / scale;
+  }
+  long getRaw() { return raw; }
 }

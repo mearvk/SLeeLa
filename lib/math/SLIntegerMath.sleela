@@ -45,4 +45,21 @@ class SLIntegerMath {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  long add(long a, long b) { return a + b; }
+  long multiply(long a, long b) { return a * b; }
+  long gcd(long a, long b) {
+    if (a < 0) { a = 0 - a; }
+    if (b < 0) { b = 0 - b; }
+    while (b != 0) { long t = b; b = a % b; a = t; }
+    return a;
+  }
+  long pow(long base, int exp) {
+    long r = 1;
+    int i = 0;
+    while (i < exp) { r = r * base; i = i + 1; }
+    return r;
+  }
+  boolean isEven(long v) { return v % 2 == 0; }
+}

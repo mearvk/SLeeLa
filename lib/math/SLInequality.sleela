@@ -45,4 +45,20 @@ class SLInequality {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << A linear inequality a x + b (op) 0, with op encoded: 0 = <, 1 = <=,
+     2 = >, 3 = >=. satisfies tests a candidate x. >>
+  double a;
+  double b;
+  int op;
+  void set(double pa, double pb, int o) { a = pa; b = pb; op = o; }
+  boolean satisfies(double x) {
+    double v = a * x + b;
+    if (op == 0) { return v < 0.0; }
+    if (op == 1) { return v <= 0.0; }
+    if (op == 2) { return v > 0.0; }
+    if (op == 3) { return v >= 0.0; }
+    return false;
+  }
+}

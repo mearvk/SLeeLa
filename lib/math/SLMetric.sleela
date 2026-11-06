@@ -47,10 +47,31 @@ class SLMetric {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  double sqrt(double x) {
+    if (x <= 0.0) { return 0.0; }
+    double g = x;
+    int i = 0;
+    while (i < 60) { g = (g + x / g) / 2.0; i = i + 1; }
+    return g;
+  }
+  << Distance metrics between two n-vectors: Euclidean, Manhattan, Chebyshev. >>
+  double euclidean(double[] a, double[] b, int n) {
+    double s = 0.0;
+    int i = 0;
+    while (i < n) { double d = a[i] - b[i]; s = s + d * d; i = i + 1; }
+    return sqrt(s);
+  }
+  double manhattan(double[] a, double[] b, int n) {
+    double s = 0.0;
+    int i = 0;
+    while (i < n) { double d = a[i] - b[i]; if (d < 0.0) { d = 0.0 - d; } s = s + d; i = i + 1; }
+    return s;
+  }
+  double chebyshev(double[] a, double[] b, int n) {
+    double m = 0.0;
+    int i = 0;
+    while (i < n) { double d = a[i] - b[i]; if (d < 0.0) { d = 0.0 - d; } if (d > m) { m = d; } i = i + 1; }
+    return m;
+  }
 }

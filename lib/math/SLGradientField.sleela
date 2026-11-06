@@ -47,10 +47,15 @@ class SLGradientField {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << The gradient field of a scalar grid: at each interior cell the gradient is
+     (df/dx, df/dy) by central difference, written into out (gx, gy). >>
+  int w;
+  int h;
+  void configure(int width, int height) { w = width; h = height; }
+  void gradientAt(double[] f, int x, int y, double spacing, double[] out) {
+    if (x <= 0 || x >= w - 1 || y <= 0 || y >= h - 1) { out[0] = 0.0; out[1] = 0.0; return; }
+    out[0] = (f[y * w + (x + 1)] - f[y * w + (x - 1)]) / (2.0 * spacing);
+    out[1] = (f[(y + 1) * w + x] - f[(y - 1) * w + x]) / (2.0 * spacing);
+  }
 }

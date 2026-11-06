@@ -47,10 +47,20 @@ class SLTopology {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << Elementary point-set topology over a 1D interval model: open/closed
+     membership and boundary tests for the set [lo,hi]. >>
+  double lo;
+  double hi;
+  boolean closedLow;
+  boolean closedHigh;
+  void configure(double a, double b, boolean cl, boolean ch) {
+    lo = a; hi = b; closedLow = cl; closedHigh = ch;
+  }
+  boolean contains(double x) {
+    boolean okLow = closedLow ? x >= lo : x > lo;
+    boolean okHigh = closedHigh ? x <= hi : x < hi;
+    return okLow && okHigh;
+  }
+  boolean isBoundary(double x) { return x == lo || x == hi; }
 }

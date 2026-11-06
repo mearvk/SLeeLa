@@ -45,4 +45,16 @@ class SLLambda {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << An affine lambda x -> scale*x + offset; compose combines two lambdas. >>
+  double scale;
+  double offset;
+  void set(double s, double o) { scale = s; offset = o; }
+  double apply(double x) { return scale * x + offset; }
+  < Compose this after g (this(g(x))), writing the result lambda into out. >
+  void composeAfter(SLLambda g, SLLambda out) {
+    out.scale = scale * g.scale;
+    out.offset = scale * g.offset + offset;
+  }
+}

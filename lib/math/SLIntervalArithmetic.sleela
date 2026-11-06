@@ -47,10 +47,24 @@ class SLIntervalArithmetic {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << Interval arithmetic on [aLo,aHi] and [bLo,bHi]; sums/products written into
+     out[0]=resultLo, out[1]=resultHi. >>
+  void add(double aLo, double aHi, double bLo, double bHi, double[] out) {
+    out[0] = aLo + bLo;
+    out[1] = aHi + bHi;
+  }
+  void multiply(double aLo, double aHi, double bLo, double bHi, double[] out) {
+    double p1 = aLo * bLo;
+    double p2 = aLo * bHi;
+    double p3 = aHi * bLo;
+    double p4 = aHi * bHi;
+    double mn = p1;
+    double mx = p1;
+    if (p2 < mn) { mn = p2; } if (p2 > mx) { mx = p2; }
+    if (p3 < mn) { mn = p3; } if (p3 > mx) { mx = p3; }
+    if (p4 < mn) { mn = p4; } if (p4 > mx) { mx = p4; }
+    out[0] = mn;
+    out[1] = mx;
+  }
 }
