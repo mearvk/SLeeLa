@@ -1,11 +1,28 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.63  
+**Revision:** 0.64  
 **Packages:** 113  
-**SLeeLa source units:** 11906  
+**SLeeLa source units:** 11907  
 **Module-facade symbols:** 80  
-**Total symbol records:** 11986  
+**Total symbol records:** 11987  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.64 makes very large numbers computable in SLeeLa by fixing two VM
+> bottlenecks exposed by big-integer work. (1) **Batched GC safepoint**: the
+> interpreter polled the collector -- taking a thread mutex -- on every single
+> instruction; it now polls once per 1,024 instructions (allocation opcodes poll
+> directly), so a tight fill/loop no longer pays a mutex per opcode. Filling a
+> 50,000-element array went from timing out (>100 s) to ~15 ms. (2) **GC
+> allocate-black**: the incremental generational collector snapshots roots once
+> at the start of marking, so an object allocated mid-marking was not rooted and
+> was swept while still live (surfacing as "index assignment on a non-array
+> value" when a second large array was built during a collection). New objects
+> allocated during an active cycle are now marked live for that cycle. Together
+> these let a 10,000,000-digit multiply run end to end for the first time
+> (~75 s total on Gen1), and put a ~1,000,000-digit single multiply at about one
+> second (fill 200 ms + multiply 1,120 ms). New regression guards:
+> `examples/BigArrayGCVerify` (two large arrays across a collection) and the
+> existing `examples/BigMulVerify`.
 
 > Revision 0.63 fixes a correctness bug in the OP_BIGMUL Karatsuba kernel and
 > adds a regression guard. The `z1 = z1 - z0 - z2` recombination subtracts two

@@ -88,12 +88,20 @@ SLGCObject *gc_allocate(GarbageCollector *g,size_t bytes,SLGCMarkFn m,SLGCDestro
     SLGCObject *o=(SLGCObject*)calloc(1,sizeof(*o)); if(!o)return NULL;
     if(bytes){o->payload=calloc(1,bytes);if(!o->payload){free(o);return NULL;}}
     o->bytes=bytes;o->generation=SLGC_GENERATION_YOUNG;o->mark_children=m;o->destroy=d;o->context=c;o->external=0;
+    /* Allocate-black: an object created while a collection is already marking or
+     * sweeping is not on that cycle's root snapshot, so without this it would be
+     * swept as garbage even though it is live (the classic lost-object hazard of
+     * incremental GC). Mark it live for the in-progress cycle; the next cycle
+     * evaluates it normally. */
+    if (g->phase != SLGC_IDLE) o->marked = 1;
     g->objects[g->count++]=o;g->bytes_allocated+=bytes;return o;
 }
 SLGCObject *gc_allocate_external(GarbageCollector *g,void *payload,size_t bytes,SLGCMarkFn m,SLGCDestroyFn d,void *c) {
     if (!g || !g->initialized || !payload || bytes > SIZE_MAX - g->bytes_allocated || g->bytes_allocated > g->bytes_limit || bytes > g->bytes_limit - g->bytes_allocated || !grow(&g->objects, &g->count, &g->capacity)) return NULL;
     SLGCObject *o=(SLGCObject*)calloc(1,sizeof(*o));if(!o)return NULL;
     o->payload=payload;o->bytes=bytes;o->generation=SLGC_GENERATION_YOUNG;o->mark_children=m;o->destroy=d;o->context=c;o->external=1;
+    /* Allocate-black during an active cycle -- see gc_allocate above. */
+    if (g->phase != SLGC_IDLE) o->marked = 1;
     g->objects[g->count++]=o;g->bytes_allocated+=bytes;return o;
 }
 int gc_add_root(GarbageCollector *g,SLGCObject *o){if(!g||!o||!live(g,o))return 0;return push_unique(&g->roots,&g->root_count,&g->root_capacity,o);}
