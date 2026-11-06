@@ -614,6 +614,8 @@ help:
 	@echo "  make uninstall-all    Remove SLeeLa from every standard location (mirror of install-all)"
 	@echo "  make uninstall-editors Restore backups/remove unchanged files deployed by install-editors"
 	@echo "  make verify-security Verify the checkout rooted at this Makefile against its SHA-256 manifest"
+	@echo "      (to refresh/check the manifest after intentional source edits, use the impl/ targets:"
+	@echo "       make -C impl check-manifest  /  make -C impl regen-manifest)"
 	@echo "  make vm        Build lib/vm/"
 	@echo ""
 	@echo "Product-specific build folders and Makefiles remain authoritative."
