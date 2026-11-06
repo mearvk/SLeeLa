@@ -9,28 +9,27 @@
    fixed-size chunks via openFile/write/close, so memory stays flat instead of
    accumulating one enormous String.
 
-   DIGITS is the number of decimal digits of Pi to compute. It is set to 1,000
-   -- a value that both ALLOCATES and COMPLETES on this VM in about a second,
-   and whose output matches an independent reference exactly (see README.md).
-   It is a single knob: raise it to produce more digits, but note two hard
-   runtime realities documented in README.md. (1) The VM refuses a single
-   array beyond SL_MAX_ARRAY_LEN (2^24) cells AND rejects very large array
-   allocations well below that, so the ~23-million-cell state a 7,000,000-digit
-   run needs cannot be allocated as written; main() guards this and caps the
-   count rather than dying with a raw allocation error. (2) The VM is an
-   interpreted bytecode engine with super-linear int[] element access, so even
-   a few tens of thousands of digits take minutes (10,000 digits ~= 48 s here).
-   The algorithm is verified correct at reachable sizes; the 7,000,000 target
-   originally requested documents intent but is impractical to run to
-   completion on this runtime. >>
+   DIGITS is the number of decimal digits of Pi to compute, set to 7,000,000 as
+   originally requested. As of the VM limit raise (SL_MAX_ARRAY_LEN 2^24 -> 2^25
+   and the GC byte limit 512 MiB -> 1 GiB), the ~23,333,334-cell state array a
+   7,000,000-digit run needs DOES now allocate (it is ~712 MiB of boxed cells).
+   Two notes still hold (see README.md). (1) ALLOCATION is no longer the limit;
+   main() still guards against SL_MAX_ARRAY_LEN for safety and caps rather than
+   dying if a future target exceeds even 2^25 cells. (2) The VM is an
+   interpreted bytecode engine with super-linear int[] element access, so a
+   7,000,000-digit run allocates immediately but will not COMPLETE quickly
+   (10,000 digits ~= 48 s here; 7,000,000 is astronomically longer). The
+   algorithm is verified correct against an independent reference at reachable
+   sizes; lower DIGITS (1000 or 10000) to produce a finished file in seconds. >>
 class PiGenerator {
 
-    << The digit count. Single knob for the whole program. Default 1000 both
-       allocates and completes; see the header note before raising it. >>
-    int DIGITS = 1000;
+    << The digit count. Single knob for the whole program. Set to 7,000,000 as
+       requested; the array now allocates (see header), but lower it (1000 or
+       10000) for a run that COMPLETES in seconds. >>
+    int DIGITS = 7000000;
 
     < Output file name -- recognizable and digit-count stamped. >
-    String OUT_PATH = "pi-1000-digits.txt";
+    String OUT_PATH = "pi-7000000-digits.txt";
 
     < Digits to buffer before each write() call (keeps memory flat). >
     int CHUNK = 4096;
@@ -41,10 +40,11 @@ class PiGenerator {
     int bufLen = 0;
     int emitted = 0;
 
-    << Hard ceiling on a single array in the VM (SL_MAX_ARRAY_LEN = 2^24). The
-       spigot state array must not exceed this, or new int[] is refused at
-       runtime with "array allocation failed". >>
-    int MAX_ARRAY_LEN = 16777216;
+    << Hard ceiling on a single array in the VM (SL_MAX_ARRAY_LEN = 2^25 =
+       33,554,432). The spigot state array must not exceed this, or new int[] is
+       refused at runtime with "array allocation failed". A 7,000,000-digit run
+       needs 23,333,334 cells, which is under this ceiling. >>
+    int MAX_ARRAY_LEN = 33554432;
 
     void main() {
         int digits = DIGITS;
