@@ -45,4 +45,19 @@ class SLSetTheory {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Does the sorted set `a` (length na) contain value v? >
+  boolean contains(int[] a, int na, int v) {
+    int i = 0;
+    while (i < na) { if (a[i] == v) { return true; } i = i + 1; }
+    return false;
+  }
+  < Is `a` a subset of `b`? >
+  boolean subset(int[] a, int na, int[] b, int nb) {
+    int i = 0;
+    while (i < na) { if (!contains(b, nb, a[i])) { return false; } i = i + 1; }
+    return true;
+  }
+  int cardinality(int[] a, int na) { return na; }
+}

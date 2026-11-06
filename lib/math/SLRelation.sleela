@@ -45,4 +45,42 @@ class SLRelation {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << A binary relation on a finite domain as an n x n boolean adjacency stored in
+     a flat int[] (1 = related). Tests the three equivalence-relation properties. >>
+  int n;
+  void configure(int size) { n = size; }
+  boolean reflexive(int[] r) {
+    int i = 0;
+    while (i < n) { if (r[i * n + i] != 1) { return false; } i = i + 1; }
+    return true;
+  }
+  boolean symmetric(int[] r) {
+    int i = 0;
+    while (i < n) {
+      int j = 0;
+      while (j < n) { if (r[i * n + j] != r[j * n + i]) { return false; } j = j + 1; }
+      i = i + 1;
+    }
+    return true;
+  }
+  boolean transitive(int[] r) {
+    int i = 0;
+    while (i < n) {
+      int j = 0;
+      while (j < n) {
+        if (r[i * n + j] == 1) {
+          int k = 0;
+          while (k < n) {
+            if (r[j * n + k] == 1 && r[i * n + k] != 1) { return false; }
+            k = k + 1;
+          }
+        }
+        j = j + 1;
+      }
+      i = i + 1;
+    }
+    return true;
+  }
+}

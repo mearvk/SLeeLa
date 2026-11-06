@@ -45,4 +45,20 @@ class SLPermutation {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < P(n,k), the number of ordered k-arrangements of an n-set. >
+  long count(int n, int k) {
+    long r = 1;
+    int i = 0;
+    while (i < k) { r = r * (n - i); i = i + 1; }
+    return r;
+  }
+  < n! total permutations. >
+  long total(int n) {
+    long r = 1;
+    int i = 2;
+    while (i <= n) { r = r * i; i = i + 1; }
+    return r;
+  }
+}

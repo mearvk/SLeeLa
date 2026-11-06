@@ -47,10 +47,21 @@ class SLFiniteSet {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  int[] members;
+  int size;
+  int capacity;
+  void configure(int cap) { capacity = cap; members = new int[cap]; size = 0; }
+  boolean contains(int v) {
+    int i = 0;
+    while (i < size) { if (members[i] == v) { return true; } i = i + 1; }
+    return false;
+  }
+  boolean add(int v) {
+    if (contains(v) || size >= capacity) { return false; }
+    members[size] = v;
+    size = size + 1;
+    return true;
+  }
+  int cardinality() { return size; }
 }

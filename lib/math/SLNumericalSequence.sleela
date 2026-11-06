@@ -47,10 +47,18 @@ class SLNumericalSequence {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  < Build a linearly spaced sequence of n points from a to b into out. >
+  void linspace(double a, double b, int n, double[] out) {
+    if (n == 1) { out[0] = a; return; }
+    double step = (b - a) / (n - 1);
+    int i = 0;
+    while (i < n) { out[i] = a + step * i; i = i + 1; }
+  }
+  < Build a geometric sequence a, a*r, a*r^2, ... into out. >
+  void geomspace(double a, double r, int n, double[] out) {
+    double v = a;
+    int i = 0;
+    while (i < n) { out[i] = v; v = v * r; i = i + 1; }
+  }
 }

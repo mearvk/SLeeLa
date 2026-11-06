@@ -47,10 +47,18 @@ class SLInfiniteSet {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << A countable set defined by a membership predicate on integers rather than by
+     enumeration. The predicate is selected by a kind code set at configure time:
+     0 = all integers, 1 = evens, 2 = odds, 3 = nonnegative. >>
+  int kind;
+  void configure(int k) { kind = k; }
+  boolean contains(int v) {
+    if (kind == 0) { return true; }
+    if (kind == 1) { return v % 2 == 0; }
+    if (kind == 2) { return v % 2 != 0; }
+    if (kind == 3) { return v >= 0; }
+    return false;
+  }
+  boolean countable() { return true; }
 }

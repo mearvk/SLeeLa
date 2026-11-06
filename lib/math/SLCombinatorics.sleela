@@ -45,4 +45,29 @@ class SLCombinatorics {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < n! as a long. >
+  long factorial(int n) {
+    long r = 1;
+    int i = 2;
+    while (i <= n) { r = r * i; i = i + 1; }
+    return r;
+  }
+  < Permutations P(n,k) = n!/(n-k)! by the falling product. >
+  long permutations(int n, int k) {
+    long r = 1;
+    int i = 0;
+    while (i < k) { r = r * (n - i); i = i + 1; }
+    return r;
+  }
+  < Combinations C(n,k) by the multiplicative formula. >
+  long combinations(int n, int k) {
+    if (k < 0 || k > n) { return 0; }
+    if (k > n - k) { k = n - k; }
+    long r = 1;
+    int i = 0;
+    while (i < k) { r = r * (n - i); i = i + 1; r = r / i; }
+    return r;
+  }
+}

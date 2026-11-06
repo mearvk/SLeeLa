@@ -47,10 +47,16 @@ class SLIntersection {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  boolean contains(int[] a, int na, int v) {
+    int i = 0;
+    while (i < na) { if (a[i] == v) { return true; } i = i + 1; }
+    return false;
+  }
+  int of(int[] a, int na, int[] b, int nb, int[] out) {
+    int w = 0;
+    int i = 0;
+    while (i < na) { if (contains(b, nb, a[i])) { out[w] = a[i]; w = w + 1; } i = i + 1; }
+    return w;
+  }
 }

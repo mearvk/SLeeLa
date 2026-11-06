@@ -45,4 +45,18 @@ class SLSequence {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  double[] terms;
+  int n;
+  void configure(int count) { n = count; terms = new double[count]; }
+  void setTerm(int i, double v) { terms[i] = v; }
+  double getTerm(int i) { return terms[i]; }
+  int length() { return n; }
+  double sum() {
+    double s = 0.0;
+    int i = 0;
+    while (i < n) { s = s + terms[i]; i = i + 1; }
+    return s;
+  }
+}

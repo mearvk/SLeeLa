@@ -47,10 +47,29 @@ class SLCombinationGenerator {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << Generate all k-combinations of indices 0..n-1 in lexicographic order into
+     the flat array out (each combination occupies k slots). Returns the number
+     of combinations generated. >>
+  int generate(int n, int k, int[] out) {
+    int[] c = new int[k];
+    int i = 0;
+    while (i < k) { c[i] = i; i = i + 1; }
+    int written = 0;
+    boolean more = k <= n;
+    while (more) {
+      int j = 0;
+      while (j < k) { out[written * k + j] = c[j]; j = j + 1; }
+      written = written + 1;
+      int p = k - 1;
+      while (p >= 0 && c[p] == n - k + p) { p = p - 1; }
+      if (p < 0) { more = false; }
+      else {
+        c[p] = c[p] + 1;
+        int m = p + 1;
+        while (m < k) { c[m] = c[m - 1] + 1; m = m + 1; }
+      }
+    }
+    return written;
+  }
 }
