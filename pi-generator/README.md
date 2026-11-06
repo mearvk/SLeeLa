@@ -50,28 +50,89 @@ The output was checked against an independent reference (Chudnovsky via Python
 
 The `DIGITS` constant ships at **1,000** so the program runs to completion out of
 the box. The algorithm is correct at any digit count, but a very large target
-such as 7,000,000 **will not complete in practice on this VM**, for two measured
-reasons — and `main()` now guards both so a raised `DIGITS` fails gracefully
-instead of crashing:
+such as 7,000,000 **will not complete in practice on this VM** — not because of
+memory (see Version 2.0 below), but because of raw interpreter speed:
 
-1. **The VM is an interpreted bytecode engine with no JIT, and `int[]`
-   element access is super-linear.** Measured on this machine: 1,000 digits
-   finish in ~1 s, 10,000 digits take ~48 s, and 100,000 does not finish within
-   a couple of minutes. A 7,000,000-digit spigot needs an array of ~23 million
-   cells, each touched on every one of 7,000,000 passes (~10¹⁴ accesses).
-2. **The array store refuses large allocations.** A single array is hard-capped
-   at `SL_MAX_ARRAY_LEN = 16,777,216` (2²⁴) cells, and very large allocations
-   are rejected below that too. The ~23-million-cell state a 7,000,000-digit run
-   needs is above the cap, so it cannot be allocated as written. `main()` now
-   detects this, prints a clear message, and caps the digit count rather than
-   dying with the raw runtime error:
-   `array allocation failed (negative/too-large size or store exhausted)`.
+- **The VM is an interpreted bytecode engine with no JIT, and `int[]` element
+  access is linear.** The spigot is **O(digits²)**: it runs `digits` passes,
+  and each pass sweeps the whole state array (length ∝ `digits`). A 7,000,000-
+  digit run is ~23 million cells touched on each of 7,000,000 passes (~10¹⁴
+  element accesses).
+
+`main()` still guards the array against `SL_MAX_ARRAY_LEN` and caps gracefully
+(rather than dying with a raw allocation error) for any future target that would
+exceed even the raised ceiling.
 
 In other words: the program is a faithful, correct Pi-to-file generator. To
-produce a file within a reasonable time, keep `DIGITS` in the reachable range
-(hundreds to a few thousand). Reaching millions of digits would require either a
-faster execution path for array access in the VM or a native big-integer helper
-to do the heavy arithmetic; that is a runtime capability, not a defect in this
-program.
+produce a file within a reasonable time with **this** algorithm, keep `DIGITS`
+in the reachable range (hundreds to a few thousand). For a much faster generator
+that does the heavy arithmetic in the native big-integer kernel, see
+[`PiMachin.sleela`](PiMachin.sleela) and the comparison in Version 2.0 below.
+
+## Performance — Version 2.0
+
+**Version 2.0** reflects the VM limit raise (`SL_MAX_ARRAY_LEN` 2²⁴ → 2²⁵ =
+33,554,432 cells, and the GC byte limit 512 MiB → 1 GiB). The headline change
+from v1.0: **allocation is no longer the wall.** A 7,000,000-digit run needs a
+23,333,334-cell state array (~712 MiB of boxed cells); on v1.0 that was refused
+(`array allocation failed`), on v2.0 it allocates immediately. The remaining
+limit is compute time.
+
+### Measured spigot runtime (v2.0)
+
+Timed with the source-built compiler (`impl/build/sleela`) on this machine; the
+spigot is O(digits²), so time grows ~100× for each 10× in digits:
+
+| Decimal digits | State array (cells) | Wall time | Notes |
+|---:|---:|---:|---|
+| 1,000 | 3,334 | ~2 s | matches the reference exactly |
+| 2,000 | 6,667 | ~4 s | |
+| 4,000 | 13,334 | ~9 s | |
+| 10,000 | 33,334 | ~48 s | |
+| 100,000 | 333,334 | ~1.3 h (est.) | extrapolated, O(d²) |
+| 1,000,000 | 3,333,334 | ~5.6 days (est.) | extrapolated |
+| 7,000,000 | 23,333,334 | **~272 days (est.)** | allocates on v2.0; does not finish in practice |
+
+The fit is clean: the implied exponent across the measured points is ~2.0
+(e.g. 1,000 → 10,000 digits is 10× the work and ~24× the time once array sweeps
+dominate). Extrapolations use `t ≈ (48 s) · (digits / 10,000)²` anchored at the
+10,000-digit point.
+
+> **Takeaway.** v2.0 makes a 7,000,000-digit array *allocatable*, but the O(d²)
+> spigot would take roughly **nine months** of continuous computation to finish
+> it — so it is not a practical way to reach millions of digits.
+
+### Faster: [`PiMachin.sleela`](PiMachin.sleela) — native big-integer kernel
+
+The companion program computes Pi with **Machin's formula**
+
+```
+pi = 16·arctan(1/5) − 4·arctan(1/239),   arctan(1/x) = Σ (−1)ᵏ / ((2k+1)·x^(2k+1))
+```
+
+carried as a scaled base-1,000,000,000 integer and driven by the native
+big-integer opcodes — `bigmul` (`OP_BIGMUL`, NTT/Karatsuba), `bigadd`
+(`OP_BIGADD`), and `bigdivmod` (`OP_BIGDIVMOD`, divide by a small integer).
+Every per-term division (by `x²` and by `2k+1`) is one native C long-division
+over the whole limb array instead of an interpreted per-element sweep.
+
+Measured, v2.0, same machine — verified digit-for-digit against an independent
+reference:
+
+| Digits | Spigot (`PiGenerator`) | Machin (`PiMachin`) | Speed-up |
+|---:|---:|---:|---:|
+| 1,000 | ~2 s | <1 s | — |
+| 10,000 | ~51 s | ~3 s | **~17×** |
+| 20,000 | ~200 s (est.) | ~11 s | ~18× |
+| 40,000 | ~13 min (est.) | ~40 s | ~20× |
+
+**Honest limit.** `PiMachin` is still **O(digits²)** — it runs ~`digits` series
+terms and the accumulate step copies the limb array each term. It is a large
+*constant-factor* win (the heavy divides are native), not a better exponent,
+because the VM kernel exposes only `bigmul` / `bigadd` / `bigdivmod` (small
+divisor). A truly sub-quadratic method (Chudnovsky with binary splitting) would
+need a native **big ÷ big** division and a big square root, which the kernel
+does not provide yet; adding those is the next step toward millions of digits in
+minutes. See the header of `PiMachin.sleela` for the full rationale.
 
 **Max Rupplin — MEARVK LLC — 2026**
