@@ -2,6 +2,7 @@
 #define SLEELA_AI_LLM_REASONING_HPP
 #include "large_language_models_reasoning.h"
 #include "large_language_models.hpp"
+#include "large_language_models_capacity.h"
 #include <cstdint>
 #include <functional>
 #include <stdexcept>
@@ -36,6 +37,17 @@ struct ReasoningOptions {
  double min_confidence = 0.55;
  bool require_verified = false;
  std::uint64_t seed = 0;
+
+ // Scale the step/backtrack/reflection budget to a user-declared model-capacity
+ // budget (from a CapacityProfile, 2..16 GB envelope). Leaves subject and the
+ // honesty knobs (min_confidence, require_verified) alone. Returns *this for
+ // chaining; the user may still override any field afterwards.
+ ReasoningOptions& apply(const sllmc_budget& b) {
+  max_steps = b.max_steps;
+  max_backtracks = b.max_backtracks;
+  reflection_every = b.reflection_every;
+  return *this;
+ }
 };
 
 // Optional verifier: a callback that judges a candidate step. Returning

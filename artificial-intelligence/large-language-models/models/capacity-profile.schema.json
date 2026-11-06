@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sleela.dev/ai/llm/models/capacity-profile-1.0.json",
+  "title": "SLeeLa LLM model-capacity profile (version 1.0)",
+  "description": "A declarative, USER-OWNED description of the model the caller intends to run, within a supported envelope of ~2 GB to 16 GB of weights. SLeeLa ships no weights and selects no model; this records the user's choice so the reasoning layer can scale its budget. The envelope bounds are advisory.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "model_id", "weight_bytes"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "model_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The caller's identifier for THEIR model. Not a model shipped by SLeeLa."
+    },
+    "weight_format": {
+      "type": "string",
+      "description": "Informational, e.g. 'gguf-q4_k_m', 'safetensors-fp16'."
+    },
+    "weight_bytes": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Declared weight size in bytes. The supported envelope is 2 GiB (2147483648) to 16 GiB (17179869184); values outside are accepted with an advisory warning."
+    },
+    "tier_hint": {
+      "type": "string",
+      "enum": ["compact", "standard", "capable", "large"],
+      "description": "Optional; the native layer derives the tier from weight_bytes. If present it should agree with that derivation."
+    },
+    "context_tokens": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "0 => derive from tier. A nonzero value overrides the tier default."
+    },
+    "ram_budget_bytes": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Host memory the user allots; 0 => unspecified."
+    },
+    "accelerated": {
+      "type": "boolean",
+      "description": "True if a GPU/accelerator backend is used."
+    },
+    "note": { "type": "string" }
+  }
+}

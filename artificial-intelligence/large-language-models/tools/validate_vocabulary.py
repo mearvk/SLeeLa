@@ -173,6 +173,63 @@ def validate_jsonl(path, schema_path, schema_dir):
         err(where, "file has no records")
 
 
+MIN_BYTES = 2 * 1024**3   # 2 GiB
+MAX_BYTES = 16 * 1024**3  # 16 GiB
+
+
+def tier_for_bytes(b):
+    if b == 0:
+        return "unknown"
+    if b < 3 * 1024**3:
+        return "compact"
+    if b < 6 * 1024**3:
+        return "standard"
+    if b < 12 * 1024**3:
+        return "capable"
+    return "large"
+
+
+def validate_capacity(path, schema_path):
+    """Schema + advisory-envelope + tier_hint agreement for user capacity profiles."""
+    where = str(path)
+    schema = load_json(schema_path) if (schema_path and schema_path.exists()) else None
+    try:
+        with open(path, encoding="utf-8") as fh:
+            lines = fh.readlines()
+    except OSError as e:
+        err(where, f"cannot read: {e}")
+        return
+    ids = set()
+    for lineno, line in enumerate(lines, 1):
+        line = line.strip()
+        if not line:
+            continue
+        loc = f"{where}:{lineno}"
+        try:
+            rec = json.loads(line)
+        except json.JSONDecodeError as e:
+            err(loc, f"invalid JSON: {e}")
+            continue
+        if schema is not None:
+            schema_check(rec, schema, loc)
+        mid = rec.get("model_id", "")
+        if mid in ids:
+            err(loc, f"duplicate model_id '{mid}'")
+        ids.add(mid)
+        wb = rec.get("weight_bytes", 0)
+        # The envelope is advisory: a value outside 2..16 GB is a WARNING, not a hard
+        # failure (the user owns the model choice). Record it as an issue only when
+        # strictly outside, so examples in-envelope stay clean.
+        if isinstance(wb, int) and wb > 0:
+            if wb < MIN_BYTES:
+                err(loc, f"[{mid}] weight_bytes {wb} below 2 GB envelope (advisory)")
+            elif wb > MAX_BYTES:
+                err(loc, f"[{mid}] weight_bytes {wb} above 16 GB envelope (advisory)")
+            hint = rec.get("tier_hint")
+            if hint and hint != tier_for_bytes(wb):
+                err(loc, f"[{mid}] tier_hint '{hint}' disagrees with derived tier '{tier_for_bytes(wb)}'")
+
+
 def main(argv=None):
     root = Path(__file__).resolve().parent.parent  # large-language-models/
     schema_dir_tok = root / "tokenizers"
@@ -196,13 +253,20 @@ def main(argv=None):
     for f in sorted(samples_dir.glob("*.jsonl")) if samples_dir.exists() else []:
         validate_jsonl(f, corpus_schema, schema_dir_vocab)
 
+    # Model-capacity profiles (user-owned; advisory 2..16 GB envelope)
+    models_dir = root / "models"
+    cap_schema = models_dir / "capacity-profile.schema.json"
+    cap_files = sorted(models_dir.glob("capacity-profile*.jsonl")) if models_dir.exists() else []
+    for f in cap_files:
+        validate_capacity(f, cap_schema)
+
     if errors:
         print(f"validate: FAILED with {len(errors)} issue(s):", file=sys.stderr)
         for e in errors:
             print(f"  - {e}", file=sys.stderr)
         return 1
-    scope = f"base + {len(corpus_files)} corpus file(s)"
-    print(f"validate: OK — {scope} pass schema, ID, and licensing checks"
+    scope = f"base + {len(corpus_files)} corpus file(s) + {len(cap_files)} capacity profile(s)"
+    print(f"validate: OK — {scope} pass schema, ID, licensing, and capacity checks"
           + ("" if HAVE_JSONSCHEMA else " (built-in schema subset; install jsonschema for full checks)"))
     return 0
 
