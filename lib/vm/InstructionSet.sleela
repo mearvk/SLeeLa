@@ -380,3 +380,9 @@ class SLISABigMul { String name; int code; }
 
 < OP_SLEEP 157 -- block the thread for a popped millisecond count (sleep() builtin and the loop-timing annotations) >
 class SLISASleep { String name; int code; }
+
+< OP_BIGADD 158 -- native big-integer add over base-1e9 limb arrays (pops a, b, result int[]; companion to OP_BIGMUL) >
+class SLISABigAdd { String name; int code; }
+
+< OP_BIGDIVMOD 159 -- native big-integer divide/remainder of a limb array by a small integer divisor (pushes the remainder; backs base conversion and Chudnovsky scaling) >
+class SLISABigDivMod { String name; int code; }

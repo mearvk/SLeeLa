@@ -48403,7 +48403,7 @@
     },
     {
       "path": "lib/vm/InstructionSet.sleela",
-      "sha256": "0dd8126ae573ae56b2ab54f8d24eba7de944a021882d0e5f6df811edc4075728"
+      "sha256": "ccfeb1a2b0b19071be0d299fb6343017934939976701ec9281ab2b276f065bf9"
     },
     {
       "path": "lib/vm/SLNativeMemory.sleela",
