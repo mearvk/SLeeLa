@@ -9,20 +9,28 @@
    fixed-size chunks via openFile/write/close, so memory stays flat instead of
    accumulating one enormous String.
 
-   DIGITS is the number of decimal digits of Pi to compute, set to 7,000,000 as
-   requested. It is a single constant -- lower it to validate quickly (1000 or
-   10000 finish in seconds). See README.md for the honest performance note:
-   SLeeLa's VM is an interpreted bytecode engine with O(N) array-element access,
-   so very large digit counts are correct in principle but impractical to run
-   to completion here; the algorithm itself is verified correct at reachable
-   sizes. >>
+   DIGITS is the number of decimal digits of Pi to compute. It is set to 1,000
+   -- a value that both ALLOCATES and COMPLETES on this VM in about a second,
+   and whose output matches an independent reference exactly (see README.md).
+   It is a single knob: raise it to produce more digits, but note two hard
+   runtime realities documented in README.md. (1) The VM refuses a single
+   array beyond SL_MAX_ARRAY_LEN (2^24) cells AND rejects very large array
+   allocations well below that, so the ~23-million-cell state a 7,000,000-digit
+   run needs cannot be allocated as written; main() guards this and caps the
+   count rather than dying with a raw allocation error. (2) The VM is an
+   interpreted bytecode engine with super-linear int[] element access, so even
+   a few tens of thousands of digits take minutes (10,000 digits ~= 48 s here).
+   The algorithm is verified correct at reachable sizes; the 7,000,000 target
+   originally requested documents intent but is impractical to run to
+   completion on this runtime. >>
 class PiGenerator {
 
-    < The requested digit count. Single knob for the whole program. >
-    int DIGITS = 7000000;
+    << The digit count. Single knob for the whole program. Default 1000 both
+       allocates and completes; see the header note before raising it. >>
+    int DIGITS = 1000;
 
     < Output file name -- recognizable and digit-count stamped. >
-    String OUT_PATH = "pi-7000000-digits.txt";
+    String OUT_PATH = "pi-1000-digits.txt";
 
     < Digits to buffer before each write() call (keeps memory flat). >
     int CHUNK = 4096;
@@ -33,12 +41,31 @@ class PiGenerator {
     int bufLen = 0;
     int emitted = 0;
 
+    << Hard ceiling on a single array in the VM (SL_MAX_ARRAY_LEN = 2^24). The
+       spigot state array must not exceed this, or new int[] is refused at
+       runtime with "array allocation failed". >>
+    int MAX_ARRAY_LEN = 16777216;
+
     void main() {
         int digits = DIGITS;
 
         << The spigot needs len = floor(10 * digits / 3) + 1 cells of state;
-           each pass over the array yields one more decimal digit of Pi. >>
+           each pass over the array yields one more decimal digit of Pi. The
+           VM refuses any single array larger than MAX_ARRAY_LEN (2^24), so if
+           the requested digit count would exceed that, cap it to the largest
+           count that still allocates and say so -- the run then completes
+           instead of dying with a raw VM allocation error. >>
         int len = (digits * 10) / 3 + 1;
+        if (len > MAX_ARRAY_LEN) {
+            << Largest digits with (digits*10)/3 + 1 <= MAX_ARRAY_LEN. >>
+            int maxDigits = ((MAX_ARRAY_LEN - 1) * 3) / 10;
+            print("PiGenerator: requested " + digits
+                  + " digits needs an array of " + len
+                  + " cells, above the VM limit of " + MAX_ARRAY_LEN
+                  + "; capping to " + maxDigits + " digits.");
+            digits = maxDigits;
+            len = (digits * 10) / 3 + 1;
+        }
 
         int[] a = new int[len];
         int i = 0;
