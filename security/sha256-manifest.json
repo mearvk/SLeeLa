@@ -627,7 +627,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "4c96c306fa96ba996fae7b54eea66cd0d0b67b9bc01b10a6ec46f41e8a227403"
+      "sha256": "9dbd4c18de3e4e1e8fddab0d2a5b1bd9e751ee477bdcfa73ecabf8300ef16390"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -44322,6 +44322,54 @@
       "sha256": "07855cfeab3d92f62180319a7eb09f49b2c61ae4cd7dc626ee5bb974b88398a7"
     },
     {
+      "path": "lib/large-language-models/SLLlmBaseVocabulary.sleela",
+      "sha256": "5cfa1ae2a1d56de3807e7ec1d8e1e98d08d31f990ed6d45749c7317b5589d327"
+    },
+    {
+      "path": "lib/large-language-models/SLLlmCapacity.sleela",
+      "sha256": "3cd002e868d44a85e255b8ba85b178967184e4d838d164884bab276ecece8e53"
+    },
+    {
+      "path": "lib/large-language-models/SLLlmCodeModel.sleela",
+      "sha256": "505e62e8ed73395d88dfe7aa839a954e20441dea217724043591ee4f26bf5ee8"
+    },
+    {
+      "path": "lib/large-language-models/SLLlmEngine.sleela",
+      "sha256": "e059443084aa1cbac02b609951401b1a6784ade6f935426f39ccc7d5dd511007"
+    },
+    {
+      "path": "lib/large-language-models/SLLlmGenerationOptions.sleela",
+      "sha256": "763e7166bf29086f9a2df6c88307c5527ec2666f9ebc80ce8be40b3210578df7"
+    },
+    {
+      "path": "lib/large-language-models/SLLlmLoader.sleela",
+      "sha256": "c837e4be4a55fc9520f8e998e9623781f82402a4d9100e4c4d1e7b8eae7027c6"
+    },
+    {
+      "path": "lib/large-language-models/SLLlmParametry.sleela",
+      "sha256": "af4bcec09829b801f953df4a28f45ca59535b92d34567ad0d40dc4ef873ece83"
+    },
+    {
+      "path": "lib/large-language-models/SLLlmReasoning.sleela",
+      "sha256": "6edf3fc904af878e262b8ac350f84a45a00e62200cf71c3c4ca7d2d07b163e3e"
+    },
+    {
+      "path": "lib/large-language-models/SLLlmSleelaVerifier.sleela",
+      "sha256": "5fe0047a042c0f3262e728adc0b99dedc45947c0c17d317efd827fc7303a6ace"
+    },
+    {
+      "path": "lib/large-language-models/SLLlmVocabulary.sleela",
+      "sha256": "55c189f6ffa84cf81895fb31207b54afe6bd17903a1db863695e6d96bd746c5d"
+    },
+    {
+      "path": "lib/large-language-models/SLPackage.sleela",
+      "sha256": "97cf5e8963fc9de7fec3155dd67dea89ee26736a3d92f8250a71977fd888e088"
+    },
+    {
+      "path": "lib/large-language-models/examples/LlmReasoningDemo.sleela",
+      "sha256": "83a0561dce5eb8a2bb7034e0ad409479e4aa5f1b79073102a7a6c538cbacd716"
+    },
+    {
       "path": "lib/ledger/SLPackage.sleela",
       "sha256": "3072a3c27766d6cd930231ddac7ce999e4424c21b3f3317213397c70cc7a7e9e"
     },
@@ -47124,6 +47172,22 @@
     {
       "path": "lib/rmi/SLPackage.sleela",
       "sha256": "89670ebe0254326ce890584a172e349f84d69cbecc3a791090d4007581688619"
+    },
+    {
+      "path": "lib/rrs/SLPackage.sleela",
+      "sha256": "80eedaf7c7037318ab2d1335d6a1b7049fbc376692871ee86fee67467425ec27"
+    },
+    {
+      "path": "lib/rrs/SLRrs.sleela",
+      "sha256": "787f88d031b3492cbcd1bb84d55499e5e8411b2acdd4e0e85228b611f152a46d"
+    },
+    {
+      "path": "lib/rrs/SLRrsSignalMonitor.sleela",
+      "sha256": "ca2f4ded1c78216716a7a7ddc6cbad73c1b2a01e9abc2c839e830cef1658e4ef"
+    },
+    {
+      "path": "lib/rrs/examples/RrsDemo.sleela",
+      "sha256": "a8240d8c2d69e6718d9f2aa6ce17f4592c9cbcfe1376b82a45c0c6278231a231"
     },
     {
       "path": "lib/runtime/SLCallFrame.sleela",

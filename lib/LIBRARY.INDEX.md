@@ -1,11 +1,33 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.58  
-**Packages:** 111  
-**SLeeLa source units:** 11886  
-**Module-facade symbols:** 77  
-**Total symbol records:** 11963  
+**Revision:** 0.59  
+**Packages:** 113  
+**SLeeLa source units:** 11900  
+**Module-facade symbols:** 79  
+**Total symbol records:** 11979  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.59 adds the SLeeLa mirrors of the recently-built AI/LLM C/C++
+> subsystem as two new `/lib` packages. **`large-language-models`**
+> (`lib/large-language-models/`) mirrors
+> `artificial-intelligence/large-language-models`: `SLLlmEngine` (backend-driven
+> engine lifecycle), `SLLlmGenerationOptions`, `SLLlmVocabulary` (stable
+> insertion-order token ids), `SLLlmBaseVocabulary` (the `sleela-base-en-1.0`
+> seed with ten specials at fixed low ids), `SLLlmReasoning` (the RLM layer:
+> subjects, step kinds, verdicts, and the UNKNOWN-never-promoted commit policy),
+> `SLLlmCapacity` (the 2–16 GB envelope and derived reasoning budget),
+> `SLLlmCodeModel` (procedural code-model profile), `SLLlmSleelaVerifier` (the
+> static SLeeLa-rule checker that acts as the reasoning layer's symbolic half),
+> `SLLlmParametry` (known-by-name or local-by-path model binding, fail-closed),
+> and `SLLlmLoader` (the fixed-width loader/handler idiom), plus a runnable
+> `examples/LlmReasoningDemo`. **`rrs`** (`lib/rrs/`) mirrors
+> `artificial-intelligence/rrs`: `SLRrs` (Reasonable Responsibility Solidity —
+> the three-stage congruent feed-forward over the ternary 1/0/2 signal, the fold
+> kernel, and the `potestas` culmination) and `SLRrsSignalMonitor` (read-only
+> observability over the signal), plus a runnable `examples/RrsDemo`. The native
+> C/C++/Python sources remain authoritative; these classes expose the same
+> contracts to the SLeeLa compiler, Loader, and Nordshrift, and carry no model
+> or weights. Both demos pass `sleela check` and `sleela run`.
 
 > Revision 0.58 adds **VMSharp™** under the `vm` package (`lib/vm/vmsharp/`): a
 > VM manifest that can start as a self-installer bootloader for either a

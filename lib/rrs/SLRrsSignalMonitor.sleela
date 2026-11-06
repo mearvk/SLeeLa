@@ -1,0 +1,158 @@
+<< lib/rrs/SLRrsSignalMonitor.sleela
+   SLeeLa Standard Library Definition.
+   Definition: SLeeLa mirror of the RRS signal monitor (sllmrm_ in
+   artificial-intelligence/rrs/rrs-signal-monitor/rrs_signal_monitor.h).
+   Read-only observability over the ternary 1/0/2 signal: it re-derives the
+   effective per-premise signal exactly as the fold kernel does, records the
+   elimination reason and running power, and reports per-signal and per-stage
+   tallies with the potestas culmination. It never changes an RRS outcome. >>
+#sleela 3.0
+material;
+class SLRrsSignalMonitor {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 8222;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-06";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-06";
+  int metaScienceRating = 6;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < sllmrm_reason: why the effective signal of a premise was an elimination. >
+  static final int REASON_NONE = 0;
+  static final int REASON_SIGNALLED_NO = 1;
+  static final int REASON_FAITH = 2;
+  static final int REASON_RESPONSIBILITY = 3;
+
+  < sllmrm_status. >
+  static final int STATUS_OK = 0;
+  static final int STATUS_INVALID_ARGUMENT = 1;
+  static final int STATUS_CAPACITY = 2;
+
+  < Tally (sllmrm_tally): counts per signal and running power. >
+  int tallyAffirm;
+  int tallyEliminate;
+  int tallyPowerAdd;
+  int byReasonSignalledNo;
+  int byReasonFaith;
+  int byReasonResponsibility;
+  int totalPower;
+  int potestas;
+  boolean solid;
+
+  void resetTally() {
+    tallyAffirm = 0;
+    tallyEliminate = 0;
+    tallyPowerAdd = 0;
+    byReasonSignalledNo = 0;
+    byReasonFaith = 0;
+    byReasonResponsibility = 0;
+    totalPower = 0;
+    potestas = 0;
+    solid = false;
+  }
+
+  << Classify the reason for an effective ELIMINATE, given the raw inputs.
+     Stage/signal ordinals are used as literals because a class static is not
+     reachable through an instance: stage 1 = RESPONSIBILITY, signal 0 =
+     ELIMINATE, 1 = AFFIRM, 2 = POWER_ADD (see SLRrs). >>
+  int reasonFor(int stage, int rawSignal, boolean faithOrTrial,
+                boolean responsibilityMet) {
+    if (faithOrTrial) { return REASON_FAITH; }
+    if (stage == 1 && !responsibilityMet) {
+      return REASON_RESPONSIBILITY;
+    }
+    if (rawSignal == 0) { return REASON_SIGNALLED_NO; }
+    return REASON_NONE;
+  }
+
+  << Observe the premises of one stage: fold the effective signals into the tally
+     the same way the RRS kernel does, counting each reason. Read-only. The
+     effective signal is computed by SLRrs.effectiveSignal on the passed handle. >>
+  void observeStage(int stage, int[] signals, boolean[] faith,
+                    boolean[] respMet, int n, SLRrs rrs) {
+    int i = 0;
+    while (i < n) {
+      int eff = rrs.effectiveSignal(stage, signals[i], faith[i], respMet[i]);
+      if (eff == 0) {
+        tallyEliminate = tallyEliminate + 1;
+        int reason = reasonFor(stage, signals[i], faith[i], respMet[i]);
+        if (reason == REASON_FAITH) { byReasonFaith = byReasonFaith + 1; }
+        if (reason == REASON_RESPONSIBILITY) {
+          byReasonResponsibility = byReasonResponsibility + 1;
+        }
+        if (reason == REASON_SIGNALLED_NO) {
+          byReasonSignalledNo = byReasonSignalledNo + 1;
+        }
+      } else {
+        if (eff == 1) {
+          tallyAffirm = tallyAffirm + 1;
+          totalPower = totalPower + 1;
+        }
+        if (eff == 2) {
+          tallyPowerAdd = tallyPowerAdd + 1;
+          totalPower = totalPower + 2;
+        }
+      }
+      i = i + 1;
+    }
+  }
+
+  < Record the final culmination read off the RRS result. >
+  void recordOutcome(SLRrs rrs) {
+    potestas = rrs.getPotestas();
+    solid = rrs.isSolid();
+  }
+
+  int getTotalPower() { return totalPower; }
+  int getTallyAffirm() { return tallyAffirm; }
+  int getTallyEliminate() { return tallyEliminate; }
+  int getTallyPowerAdd() { return tallyPowerAdd; }
+
+  String reasonName(int reason) {
+    if (reason == REASON_NONE) { return "none"; }
+    if (reason == REASON_SIGNALLED_NO) { return "signalled no"; }
+    if (reason == REASON_FAITH) { return "faith"; }
+    if (reason == REASON_RESPONSIBILITY) { return "responsibility"; }
+    return "unknown";
+  }
+
+  String statusString(int status) {
+    if (status == STATUS_OK) { return "ok"; }
+    if (status == STATUS_INVALID_ARGUMENT) { return "invalid argument"; }
+    if (status == STATUS_CAPACITY) { return "capacity"; }
+    return "unknown";
+  }
+
+  boolean available() { return true; }
+}

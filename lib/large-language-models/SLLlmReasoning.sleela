@@ -1,0 +1,164 @@
+<< lib/large-language-models/SLLlmReasoning.sleela
+   SLeeLa Standard Library Definition.
+   Definition: SLeeLa mirror of the Reasoning Language Model layer (sllmr_ in
+   large_language_models_reasoning.h). A neuro-symbolic chain-of-thought
+   controller over a plain LLM engine plus an optional verifier. It decomposes a
+   question, proposes steps, reflects, verifies each step, backtracks on refuted
+   paths, and commits an answer only when the require-verified policy is met.
+   UNKNOWN is never promoted to verified. It bundles no model. >>
+#sleela 3.0
+material;
+class SLLlmReasoning {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 8206;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-06";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-06";
+  int metaScienceRating = 6;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < sllmr_status mirror. >
+  static final int STATUS_OK = 0;
+  static final int STATUS_INVALID_ARGUMENT = 1;
+  static final int STATUS_OUT_OF_MEMORY = 2;
+  static final int STATUS_BACKEND_ERROR = 3;
+  static final int STATUS_NOT_LOADED = 4;
+  static final int STATUS_CANCELLED = 5;
+  static final int STATUS_NO_SOUND_PATH = 6;
+  static final int STATUS_UNSUPPORTED = 7;
+
+  < sllmr_subject mirror: controller policies, not separate models. >
+  static final int SUBJECT_GENERAL = 0;
+  static final int SUBJECT_MATH = 1;
+  static final int SUBJECT_PHILOSOPHY = 2;
+  static final int SUBJECT_RELIGION = 3;
+  static final int SUBJECT_CODE = 4;
+
+  < sllmr_step_kind mirror. >
+  static final int STEP_DECOMPOSE = 0;
+  static final int STEP_ASSUMPTION = 1;
+  static final int STEP_DEDUCTION = 2;
+  static final int STEP_INDUCTION = 3;
+  static final int STEP_OBJECTION = 4;
+  static final int STEP_REFLECTION = 5;
+  static final int STEP_REVISION = 6;
+  static final int STEP_CONCLUSION = 7;
+
+  < sllmr_verdict mirror. >
+  static final int VERDICT_UNKNOWN = 0;
+  static final int VERDICT_SUPPORTED = 1;
+  static final int VERDICT_REFUTED = 2;
+
+  < sllmr_options fields. >
+  int subject;
+  int maxSteps;
+  int maxBacktracks;
+  int reflectionEvery;
+  double minConfidence;
+  boolean requireVerified;
+  long seed;
+
+  String verifierName;
+  boolean hasVerifier;
+
+  < sllmr_options_init: neutral reasoning defaults. >
+  void initOptions() {
+    subject = SUBJECT_GENERAL;
+    maxSteps = 16;
+    maxBacktracks = 4;
+    reflectionEvery = 3;
+    minConfidence = 0.5;
+    requireVerified = false;
+    seed = 0;
+  }
+
+  < sllmr_engine_create: bind an optional symbolic verifier by name. >
+  void configure(String verifier) {
+    verifierName = verifier;
+    hasVerifier = verifier != null;
+  }
+
+  String engineVerifierName() { return verifierName; }
+
+  String subjectName(int s) {
+    if (s == SUBJECT_GENERAL) { return "general"; }
+    if (s == SUBJECT_MATH) { return "math"; }
+    if (s == SUBJECT_PHILOSOPHY) { return "philosophy"; }
+    if (s == SUBJECT_RELIGION) { return "religion"; }
+    if (s == SUBJECT_CODE) { return "code"; }
+    return "unknown";
+  }
+
+  String stepKindName(int k) {
+    if (k == STEP_DECOMPOSE) { return "decompose"; }
+    if (k == STEP_ASSUMPTION) { return "assumption"; }
+    if (k == STEP_DEDUCTION) { return "deduction"; }
+    if (k == STEP_INDUCTION) { return "induction"; }
+    if (k == STEP_OBJECTION) { return "objection"; }
+    if (k == STEP_REFLECTION) { return "reflection"; }
+    if (k == STEP_REVISION) { return "revision"; }
+    if (k == STEP_CONCLUSION) { return "conclusion"; }
+    return "unknown";
+  }
+
+  String verdictName(int v) {
+    if (v == VERDICT_UNKNOWN) { return "unknown"; }
+    if (v == VERDICT_SUPPORTED) { return "supported"; }
+    if (v == VERDICT_REFUTED) { return "refuted"; }
+    return "unknown";
+  }
+
+  < Policy gate mirroring the C commit rule: a step is committable only if its >
+  < verdict is not REFUTED, and when require-verified holds it must be SUPPORTED. >
+  < UNKNOWN is never promoted to verified. >
+  boolean stepCommittable(int verdict) {
+    if (verdict == VERDICT_REFUTED) { return false; }
+    if (requireVerified) { return verdict == VERDICT_SUPPORTED; }
+    return true;
+  }
+
+  String statusString(int status) {
+    if (status == STATUS_OK) { return "ok"; }
+    if (status == STATUS_INVALID_ARGUMENT) { return "invalid argument"; }
+    if (status == STATUS_OUT_OF_MEMORY) { return "out of memory"; }
+    if (status == STATUS_BACKEND_ERROR) { return "backend error"; }
+    if (status == STATUS_NOT_LOADED) { return "not loaded"; }
+    if (status == STATUS_CANCELLED) { return "cancelled"; }
+    if (status == STATUS_NO_SOUND_PATH) { return "no sound path"; }
+    if (status == STATUS_UNSUPPORTED) { return "unsupported"; }
+    return "unknown";
+  }
+
+  boolean available() { return maxSteps > 0; }
+}

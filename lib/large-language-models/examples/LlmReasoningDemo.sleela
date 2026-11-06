@@ -1,0 +1,89 @@
+<< lib/large-language-models/examples/LlmReasoningDemo.sleela
+   SLeeLa Standard Library Definition.
+   Definition: A runnable demo of the large-language-models package: declares a
+   model capacity, derives a reasoning budget, configures the reasoning layer
+   with the SLeeLa code verifier as its symbolic half, and shows the
+   UNKNOWN-never-promoted commit policy. Sibling .sleela files in this package
+   are auto-linked by the runner. >>
+#sleela 3.0
+material;
+class LlmReasoningDemo {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class example. >>
+  String metaVersion = "1.0.0";
+  int metaId = 8212;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-06";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-06";
+  int metaScienceRating = 5;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << Enum ordinals are passed as integer literals because a class static is not
+     reachable through an instance in the checker. The named constants remain
+     declared on each mirror class and are documented in the package README. >>
+  void main() {
+    print("large-language-models demo");
+
+    SLLlmCapacity cap = new SLLlmCapacity();
+    cap.initProfile();
+    int tier = cap.tierForBytes(cap.weightBytes);
+    print("capacity tier: " + cap.tierName(tier));
+    print("budget max steps: " + cap.budgetMaxStepsForTier(tier));
+    print("budget context tokens: " + cap.budgetContextTokensForTier(tier));
+
+    SLLlmReasoning rlm = new SLLlmReasoning();
+    rlm.initOptions();
+    rlm.subject = 4;
+    < 4 = SUBJECT_CODE >
+    rlm.requireVerified = true;
+    rlm.configure("sleela-code-verifier");
+    print("subject: " + rlm.subjectName(rlm.subject));
+    print("verifier: " + rlm.engineVerifierName());
+
+    SLLlmSleelaVerifier v = new SLLlmSleelaVerifier();
+    v.initOptions();
+    int verdict = v.verdictForFinding(1);
+    < 1 = RULE_RESERVED_IDENTIFIER >
+    print("reserved-identifier verdict: " + rlm.verdictName(verdict));
+    print("committable when require-verified and refuted: "
+          + rlm.stepCommittable(verdict));
+    int clean = v.verdictForFinding(0);
+    < 0 = RULE_OK >
+    print("clean verdict: " + rlm.verdictName(clean));
+    print("committable when clean: " + rlm.stepCommittable(clean));
+
+    SLLlmParametry p = new SLLlmParametry();
+    int st = p.resolveBinding(0, "sleela-base-llm", null,
+                              4294967296, 4096, 0, 0);
+    < kind 0 = KIND_LLM >
+    print("parametry resolve: " + p.statusString(st)
+          + " source=" + p.sourceName(p.source));
+  }
+}

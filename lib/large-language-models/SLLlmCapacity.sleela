@@ -1,0 +1,138 @@
+<< lib/large-language-models/SLLlmCapacity.sleela
+   SLeeLa Standard Library Definition.
+   Definition: SLeeLa mirror of the model-capacity profile (sllmc_ in
+   large_language_models_capacity.h). A user-owned declaration of a model's size
+   within a 2..16 GB envelope that derives a reasoning budget scaled to the tier.
+   The envelope bounds are advisory guardrails: out-of-range values clamp and are
+   reported, never refused. It ships no weights and picks no model. >>
+#sleela 3.0
+material;
+class SLLlmCapacity {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 8207;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-06";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-06";
+  int metaScienceRating = 6;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Envelope bounds in bytes: 2 GiB .. 16 GiB. >
+  static final long MIN_BYTES = 2147483648;
+  static final long MAX_BYTES = 17179869184;
+
+  < sllmc_tier mirror. >
+  static final int TIER_UNKNOWN = 0;
+  static final int TIER_COMPACT = 1;
+  static final int TIER_STANDARD = 2;
+  static final int TIER_CAPABLE = 3;
+  static final int TIER_LARGE = 4;
+
+  < sllmc_status mirror (advisory). >
+  static final int STATUS_OK = 0;
+  static final int STATUS_INVALID_ARGUMENT = 1;
+  static final int STATUS_BELOW_MIN = 2;
+  static final int STATUS_ABOVE_MAX = 3;
+
+  < sllmc_profile fields. >
+  String modelId;
+  String weightFormat;
+  long weightBytes;
+  int contextTokens;
+  long ramBudgetBytes;
+  boolean accelerated;
+
+  < sllmc_profile_init: STANDARD / ~4 GB defaults. >
+  void initProfile() {
+    modelId = null;
+    weightFormat = "q4";
+    weightBytes = 4294967296;
+    contextTokens = 0;
+    ramBudgetBytes = 0;
+    accelerated = false;
+  }
+
+  << sllmc_tier_for_bytes: classify a weight size into a tier. Zero is UNKNOWN;
+     out-of-envelope sizes clamp to the nearest tier. >>
+  int tierForBytes(long bytes) {
+    if (bytes <= 0) { return TIER_UNKNOWN; }
+    if (bytes <= 3221225472) { return TIER_COMPACT; }
+    if (bytes <= 6442450944) { return TIER_STANDARD; }
+    if (bytes <= 12884901888) { return TIER_CAPABLE; }
+    return TIER_LARGE;
+  }
+
+  < sllmc_profile_check: advisory below-min / above-max reporting. >
+  int profileCheck() {
+    if (weightBytes <= 0) { return STATUS_INVALID_ARGUMENT; }
+    if (weightBytes < MIN_BYTES) { return STATUS_BELOW_MIN; }
+    if (weightBytes > MAX_BYTES) { return STATUS_ABOVE_MAX; }
+    return STATUS_OK;
+  }
+
+  < sllmc_derive_budget: max_steps for the declared tier (budget knob subset). >
+  int budgetMaxStepsForTier(int tier) {
+    if (tier == TIER_COMPACT) { return 8; }
+    if (tier == TIER_STANDARD) { return 16; }
+    if (tier == TIER_CAPABLE) { return 24; }
+    if (tier == TIER_LARGE) { return 32; }
+    return 4;
+  }
+
+  int budgetContextTokensForTier(int tier) {
+    if (contextTokens > 0) { return contextTokens; }
+    if (tier == TIER_COMPACT) { return 2048; }
+    if (tier == TIER_STANDARD) { return 4096; }
+    if (tier == TIER_CAPABLE) { return 8192; }
+    if (tier == TIER_LARGE) { return 16384; }
+    return 1024;
+  }
+
+  String tierName(int tier) {
+    if (tier == TIER_COMPACT) { return "compact"; }
+    if (tier == TIER_STANDARD) { return "standard"; }
+    if (tier == TIER_CAPABLE) { return "capable"; }
+    if (tier == TIER_LARGE) { return "large"; }
+    return "unknown";
+  }
+
+  String statusString(int status) {
+    if (status == STATUS_OK) { return "ok"; }
+    if (status == STATUS_INVALID_ARGUMENT) { return "invalid argument"; }
+    if (status == STATUS_BELOW_MIN) { return "below minimum envelope"; }
+    if (status == STATUS_ABOVE_MAX) { return "above maximum envelope"; }
+    return "unknown";
+  }
+
+  boolean available() { return weightBytes > 0; }
+}

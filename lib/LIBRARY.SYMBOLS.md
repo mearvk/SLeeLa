@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11886
-library-packages: 111
-module-facade-symbols: 77
-total-symbol-records: 11963
+library-source-files: 11900
+library-packages: 113
+module-facade-symbols: 79
+total-symbol-records: 11979
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -10795,6 +10795,18 @@ languages	SLLanguage.sleela	lib/languages/SLLanguage.sleela	source
 languages	SLLanguageCatalog.sleela	lib/languages/SLLanguageCatalog.sleela	source
 languages	SLLanguageSettings.sleela	lib/languages/SLLanguageSettings.sleela	source
 languages	languages.sleela	lib/languages/languages.sleela	source
+large-language-models	SLLlmBaseVocabulary.sleela	lib/large-language-models/SLLlmBaseVocabulary.sleela	source
+large-language-models	SLLlmCapacity.sleela	lib/large-language-models/SLLlmCapacity.sleela	source
+large-language-models	SLLlmCodeModel.sleela	lib/large-language-models/SLLlmCodeModel.sleela	source
+large-language-models	SLLlmEngine.sleela	lib/large-language-models/SLLlmEngine.sleela	source
+large-language-models	SLLlmGenerationOptions.sleela	lib/large-language-models/SLLlmGenerationOptions.sleela	source
+large-language-models	SLLlmLoader.sleela	lib/large-language-models/SLLlmLoader.sleela	source
+large-language-models	SLLlmParametry.sleela	lib/large-language-models/SLLlmParametry.sleela	source
+large-language-models	SLLlmReasoning.sleela	lib/large-language-models/SLLlmReasoning.sleela	source
+large-language-models	SLLlmSleelaVerifier.sleela	lib/large-language-models/SLLlmSleelaVerifier.sleela	source
+large-language-models	SLLlmVocabulary.sleela	lib/large-language-models/SLLlmVocabulary.sleela	source
+large-language-models	SLPackage.sleela	lib/large-language-models/SLPackage.sleela	facade
+large-language-models	LlmReasoningDemo.sleela	lib/large-language-models/examples/LlmReasoningDemo.sleela	source
 ledger	SLPackage.sleela	lib/ledger/SLPackage.sleela	facade
 linux-editors	SLeeLaEditorTheme.sleela	lib/linux-editors/SLeeLaEditorTheme.sleela	source
 manifesto	SLPackage.sleela	lib/manifesto/SLPackage.sleela	facade
@@ -11484,6 +11496,10 @@ registry	SLRegistryResolver.sleela	lib/registry/SLRegistryResolver.sleela	source
 registry	SLRegistryReview.sleela	lib/registry/SLRegistryReview.sleela	source
 registry	SLRegistryValue.sleela	lib/registry/SLRegistryValue.sleela	source
 rmi	SLPackage.sleela	lib/rmi/SLPackage.sleela	facade
+rrs	SLPackage.sleela	lib/rrs/SLPackage.sleela	facade
+rrs	SLRrs.sleela	lib/rrs/SLRrs.sleela	source
+rrs	SLRrsSignalMonitor.sleela	lib/rrs/SLRrsSignalMonitor.sleela	source
+rrs	RrsDemo.sleela	lib/rrs/examples/RrsDemo.sleela	source
 runtime	SLCallFrame.sleela	lib/runtime/SLCallFrame.sleela	source
 runtime	SLCallStack.sleela	lib/runtime/SLCallStack.sleela	source
 runtime	SLConstantPool.sleela	lib/runtime/SLConstantPool.sleela	source

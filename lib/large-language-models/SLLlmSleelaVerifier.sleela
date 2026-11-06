@@ -1,0 +1,122 @@
+<< lib/large-language-models/SLLlmSleelaVerifier.sleela
+   SLeeLa Standard Library Definition.
+   Definition: SLeeLa mirror of the SLeeLa code verifier (sllmsl_ in
+   sleela/sleela_code_verifier.h). A fast static checker that encodes SLeeLa's
+   real rules from SLEELA.syntax (reserved identifiers, the no-arg close()
+   collision, C-style comments, multi-line single-angle comments, inline angle
+   comments, apostrophe-in-comment, the 64-field cap, and the missing-metadata
+   advisory). It plugs into the reasoning layer as the symbolic half so bad code
+   proposals are refuted and backtracked. It does not shell out to the real
+   compiler. >>
+#sleela 3.0
+material;
+class SLLlmSleelaVerifier {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 8209;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-06";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-06";
+  int metaScienceRating = 7;
+  < metaNationalSchedule: the rules are drawn from the SLeeLa language spec. >
+  String metaNationalSchedule = "SLEELA.syntax";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < sllmsl_rule mirror. >
+  static final int RULE_OK = 0;
+  static final int RULE_RESERVED_IDENTIFIER = 1;
+  static final int RULE_CLOSE_COLLISION = 2;
+  static final int RULE_CSTYLE_COMMENT = 3;
+  static final int RULE_MULTILINE_ANGLE = 4;
+  static final int RULE_INLINE_ANGLE = 5;
+  static final int RULE_APOSTROPHE_COMMENT = 6;
+  static final int RULE_FIELD_CAP = 7;
+  static final int RULE_MISSING_METADATA = 8;
+
+  < SL_MAX_STRUCT_FIELDS: the layout cap the VM admits per class/struct. >
+  static final int MAX_FIELDS = 64;
+
+  < sllmr_verdict values the reasoning layer expects back from a verifier. >
+  static final int VERDICT_UNKNOWN = 0;
+  static final int VERDICT_SUPPORTED = 1;
+  static final int VERDICT_REFUTED = 2;
+
+  boolean treatMissingMetadataAsError;
+
+  void initOptions() { treatMissingMetadataAsError = false; }
+
+  << sllmsl_is_reserved_word: a subset of the SLeeLa reserved keywords that bite
+     when used as identifiers. The native verifier carries the full 60-word list. >>
+  boolean isReservedWord(String word) {
+    return word == "class" || word == "interface" || word == "enum"
+        || word == "struct" || word == "record" || word == "switch"
+        || word == "synchronized" || word == "instanceof" || word == "throw"
+        || word == "yield" || word == "assert" || word == "super"
+        || word == "this" || word == "native" || word == "return"
+        || word == "import" || word == "static" || word == "final";
+  }
+
+  << A no-arg close() collides at runtime with the reserved Munction reach-handle
+     builtin. Report it so a proposal renaming to e.g. requestClose() is preferred. >>
+  boolean isCloseCollision(String methodName, int paramCount) {
+    return methodName == "close" && paramCount == 0;
+  }
+
+  String ruleName(int rule) {
+    if (rule == RULE_OK) { return "ok"; }
+    if (rule == RULE_RESERVED_IDENTIFIER) { return "reserved identifier"; }
+    if (rule == RULE_CLOSE_COLLISION) { return "close() collision"; }
+    if (rule == RULE_CSTYLE_COMMENT) { return "c-style comment"; }
+    if (rule == RULE_MULTILINE_ANGLE) { return "multi-line single-angle comment"; }
+    if (rule == RULE_INLINE_ANGLE) { return "inline angle comment"; }
+    if (rule == RULE_APOSTROPHE_COMMENT) { return "apostrophe in comment"; }
+    if (rule == RULE_FIELD_CAP) { return "field cap exceeded"; }
+    if (rule == RULE_MISSING_METADATA) { return "missing metadata class"; }
+    return "unknown";
+  }
+
+  << Map a static finding to the verdict the reasoning layer consumes:
+     a clean snippet is SUPPORTED; a hard violation is REFUTED; a soft/advisory
+     finding (missing metadata, when not treated as an error) stays UNKNOWN. >>
+  int verdictForFinding(int rule) {
+    if (rule == RULE_OK) { return VERDICT_SUPPORTED; }
+    if (rule == RULE_MISSING_METADATA && !treatMissingMetadataAsError) {
+      return VERDICT_UNKNOWN;
+    }
+    return VERDICT_REFUTED;
+  }
+
+  < Does a class with this many instance fields exceed the VM layout cap? >
+  boolean exceedsFieldCap(int fieldCount) { return fieldCount > MAX_FIELDS; }
+
+  boolean available() { return MAX_FIELDS == 64; }
+}

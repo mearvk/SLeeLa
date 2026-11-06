@@ -1,0 +1,107 @@
+<< lib/large-language-models/SLLlmEngine.sleela
+   SLeeLa Standard Library Definition.
+   Definition: SLeeLa mirror of the core LLM engine (sllm_ in
+   artificial-intelligence/large-language-models/large_language_models.h). A thin
+   engine that drives a caller-supplied backend adapter. It bundles no model and
+   no weights: the backend loads/unloads a model id and generates text. >>
+#sleela 3.0
+material;
+< The engine holds a backend name and a loaded flag. Generation options and the >
+< streaming chunk-callback contract of the C API are modelled by SLLlmGenerationOptions >
+< and the backend generate() call in the native layer; here we expose the lifecycle. >
+class SLLlmEngine {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 8202;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-06";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-06";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < sllm_status mirror: the fail-closed status codes returned by the C engine. >
+  static final int STATUS_OK = 0;
+  static final int STATUS_ERROR_INVALID_ARGUMENT = 1;
+  static final int STATUS_ERROR_OUT_OF_MEMORY = 2;
+  static final int STATUS_ERROR_BACKEND = 3;
+  static final int STATUS_ERROR_NOT_LOADED = 4;
+  static final int STATUS_ERROR_CANCELLED = 5;
+  static final int STATUS_ERROR_UNSUPPORTED = 6;
+
+  String backendName;
+  boolean loaded;
+  String modelId;
+
+  < Create the engine over a named backend adapter (sllm_engine_create). >
+  void configure(String backend) {
+    backendName = backend;
+    loaded = false;
+    modelId = null;
+  }
+
+  String engineBackendName() { return backendName; }
+  boolean isLoaded() { return loaded; }
+
+  < sllm_engine_load: the backend loads a model by id. >
+  int loadModel(String id) {
+    if (backendName == null) { return STATUS_ERROR_BACKEND; }
+    if (id == null || id == "") { return STATUS_ERROR_INVALID_ARGUMENT; }
+    modelId = id;
+    loaded = true;
+    return STATUS_OK;
+  }
+
+  < sllm_engine_unload: release the loaded model. >
+  int unloadModel() {
+    loaded = false;
+    modelId = null;
+    return STATUS_OK;
+  }
+
+  < Human-readable status text, mirroring sllm_status_string. >
+  String statusString(int status) {
+    if (status == STATUS_OK) { return "ok"; }
+    if (status == STATUS_ERROR_INVALID_ARGUMENT) { return "invalid argument"; }
+    if (status == STATUS_ERROR_OUT_OF_MEMORY) { return "out of memory"; }
+    if (status == STATUS_ERROR_BACKEND) { return "backend error"; }
+    if (status == STATUS_ERROR_NOT_LOADED) { return "not loaded"; }
+    if (status == STATUS_ERROR_CANCELLED) { return "cancelled"; }
+    if (status == STATUS_ERROR_UNSUPPORTED) { return "unsupported"; }
+    return "unknown";
+  }
+
+  boolean available() { return backendName != null; }
+}
