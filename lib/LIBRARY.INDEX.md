@@ -1,11 +1,25 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.60  
+**Revision:** 0.61  
 **Packages:** 111  
-**SLeeLa source units:** 11890  
+**SLeeLa source units:** 11891  
 **Module-facade symbols:** 78  
-**Total symbol records:** 11968  
+**Total symbol records:** 11969  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.61 adds a native big-integer multiply to the VM and wires it into
+> `SLBigInteger`. A new append-only opcode **`OP_BIGMUL`** (156) multiplies two
+> base-1,000,000,000 limb `int[]` arrays with a C Karatsuba kernel in a single
+> native call -- bypassing the per-element array mutex and the per-instruction
+> interpreter overhead that make a hand-written limb loop slow. It is exposed to
+> SLeeLa as the `bigmul(a, b, result)` builtin and used by
+> `SLBigInteger.multiply()` (plus new `fromLimbs`/`toDecimalString` helpers and a
+> `examples/BigIntegerDemo`). Measured: a 1000-limb x 1000-limb product (about
+> 9,000 decimal digits each) completes in well under a millisecond, versus the
+> ~1,000,000 interpreted limb-pair array operations a pure-SLeeLa schoolbook
+> multiply would run. This is the VM bridge for heavy arithmetic that
+> `SLBigInteger` was originally designed to call, and the foundation for
+> computing very large numbers (e.g. high-digit pi) in SLeeLa itself.
 
 > Revision 0.60 adds the math precision norms and the Modium pi reference.
 > `SLMathNorms` carries the editable norms -- irrational-digit carry 2048,

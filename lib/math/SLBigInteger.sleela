@@ -47,20 +47,90 @@ class SLBigInteger {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  << A fixed-width big integer modelled as a sign plus base-1e9 limbs in a flat
-     int[] (least significant first). This front-end contract exposes the limb
-     model and small-value helpers; heavy arithmetic belongs behind a VM bridge. >>
+  << A big integer modelled as a sign plus base-1e9 limbs in a flat int[]
+     (least significant first). Heavy arithmetic crosses the VM bridge: the
+     multiply() method calls the native bigmul() builtin (opcode OP_BIGMUL),
+     which multiplies the two limb arrays with a C Karatsuba kernel in a single
+     call -- no per-limb bytecode loop, no per-element array mutex -- so a
+     thousand-limb product costs microseconds instead of a million interpreted
+     array operations. This is the bridge the earlier contract anticipated. >>
   int[] limbs;
   int count;
   int sign;
   void fromLong(long v) {
     sign = v < 0 ? 0 - 1 : 1;
     if (v < 0) { v = 0 - v; }
-    limbs = new int[4];
-    count = 0;
-    if (v == 0) { limbs[0] = 0; count = 1; return; }
-    while (v > 0) { limbs[count] = (int) (v % 1000000000); v = v / 1000000000; count = count + 1; }
+    < count the limbs first so the array length equals count exactly (the >
+    < bigmul bridge sizes the product from the operand array lengths). >
+    long t = v;
+    int n = 0;
+    if (t == 0) { n = 1; } else { while (t > 0) { n = n + 1; t = t / 1000000000; } }
+    limbs = new int[n];
+    count = n;
+    if (v == 0) { limbs[0] = 0; return; }
+    int i = 0;
+    while (v > 0) { limbs[i] = (int) (v % 1000000000); v = v / 1000000000; i = i + 1; }
   }
   int limbCount() { return count; }
   int getSign() { return sign; }
+
+  < Build directly from a caller-held limb array (little-endian, base 1e9). >
+  void fromLimbs(int[] ls, int n, int sgn) {
+    limbs = new int[n];
+    int i = 0;
+    while (i < n) { limbs[i] = ls[i]; i = i + 1; }
+    count = n;
+    sign = sgn;
+  }
+
+  int limbAt(int i) { return limbs[i]; }
+
+  << Multiply this by other, returning the product as a new SLBigInteger. The
+     heavy work crosses the VM bridge: bigmul() multiplies the two base-1e9
+     limb arrays with a native Karatsuba kernel in one call -- no per-limb
+     bytecode loop -- and returns the significant limb count. >>
+  SLBigInteger multiply(SLBigInteger other) {
+    int na = count;
+    int nb = other.count;
+    int[] product = new int[na + nb];
+    int sig = bigmul(limbs, other.limbs, product);
+    SLBigInteger r = new SLBigInteger();
+    r.fromLimbs(product, sig, sign * other.sign);
+    return r;
+  }
+
+  < Trim trailing zero limbs (keep at least one). >
+  void normalize() {
+    while (count > 1 && limbs[count - 1] == 0) { count = count - 1; }
+  }
+
+  < The number of decimal digits in a nonnegative int (1 for zero). >
+  int digitCountOf(int v) {
+    if (v == 0) { return 1; }
+    int n = 0;
+    while (v > 0) { n = n + 1; v = v / 10; }
+    return n;
+  }
+
+  < Nine-character zero-padded decimal of a limb value 0..999999999. >
+  String padLimb(int v) {
+    int pad = 9 - digitCountOf(v);
+    String z = "";
+    int i = 0;
+    while (i < pad) { z = z + "0"; i = i + 1; }
+    return z + v;
+  }
+
+  << The full decimal string. The most-significant limb is printed without
+     left padding; every lower limb is zero-padded to nine digits so the
+     base-1e9 limbs concatenate into the correct decimal number. >>
+  String toDecimalString() {
+    normalize();
+    String out = "";
+    if (sign < 0 && !(count == 1 && limbs[0] == 0)) { out = "-"; }
+    out = out + limbs[count - 1];
+    int i = count - 2;
+    while (i >= 0) { out = out + padLimb(limbs[i]); i = i - 1; }
+    return out;
+  }
 }
