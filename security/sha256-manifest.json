@@ -263,11 +263,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "c4722da5d37b609782cc280d20bf3a7fb48cb2135f8c1be4a6f901c2488bc5ac"
+      "sha256": "33fa0d61e4e68775f7955c2d6b556374ea8b2cb01ede98d53cbade6f528eb6e3"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "376878b082e8d1aa517cfc5ef2c3008aef9df9ddc050bc382c17e9759d54088e"
+      "sha256": "3d871487a76ca249efc09a6c34ee89a3b60c015399d1b2ba08d23093916e205a"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -515,7 +515,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "17d1dfd9b589b1653be635ea0f34b6ef81d200b034b74c3a8b4349d934c8904a"
+      "sha256": "b0d7a8a4360af0c3cc9b0c08f8581caac200c346abf2ef9c909f8c1368b34865"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -627,7 +627,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "ab30b3f8901e205cc31848dbe99e1c4207599bab24cc53d3c59ef95ad0fd32e5"
+      "sha256": "26e6e2ffca5e26f345ec284b6cee7d9579c5d16f6c01201c0c548de01ab591fb"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -45328,6 +45328,10 @@
     {
       "path": "lib/math/examples/BigMulVerify.sleela",
       "sha256": "fb8dc883fb9a369a24a5803c72cb998a6b37ac80e03e62245e666fcfe926dd89"
+    },
+    {
+      "path": "lib/math/examples/BigNumOpsVerify.sleela",
+      "sha256": "dff1b0b1e94d2eaa9bc2eccb5bb491b859af5bc95ee80e01dc837e536c78c960"
     },
     {
       "path": "lib/math/examples/MathDemo.sleela",

@@ -1,11 +1,27 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.63  
+**Revision:** 0.64  
 **Packages:** 111  
-**SLeeLa source units:** 11893  
+**SLeeLa source units:** 11894  
 **Module-facade symbols:** 78  
-**Total symbol records:** 11971  
+**Total symbol records:** 11972  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.64 brings three big-number improvements that make a 10,000,000-digit
+> multiply run in ~3 seconds (from ~75 s). (1) **NTT multiply**: OP_BIGMUL now
+> uses a number-theoretic transform (exact, mod a 62-bit prime, base-1000
+> sub-limbs) above 512 limbs — O(n log n) vs Karatsuba's O(n^1.585). A
+> 10M-digit multiply dropped from ~39 s to ~3 s and scales linearly. (2) **New
+> big-integer opcodes** OP_BIGADD and OP_BIGDIVMOD (the `bigadd(a,b,result)` and
+> `bigdivmod(dividend,divisor,result)` builtins), completing the op set needed
+> for base conversion and a native Chudnovsky pi. (3) **Lock-free primitive
+> arrays + O(1) GC tracing**: the array opcodes skip the per-element mutex when
+> single-threaded, and the collector no longer re-scans a scalars-only array
+> (a new has_refs flag), removing an O(n^2) cost — filling a 1,000,000-element
+> array went from ~9 s to ~0.1 s. Regression guards `examples/BigNumOpsVerify`
+> (Karatsuba+NTT multiply, add, divmod vs references), `examples/BigMulVerify`,
+> and `examples/BigArrayGCVerify` all pass; threading/synchro/munction tests
+> pass (the lock-free path falls back to locking as soon as a worker spawns).
 
 > Revision 0.63 makes very large numbers computable in SLeeLa by fixing two VM
 > bottlenecks exposed by big-integer work. (1) **Batched GC safepoint**: the

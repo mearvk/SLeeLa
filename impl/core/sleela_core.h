@@ -210,6 +210,20 @@ typedef enum {
      * len(a)+len(b) long). Pushes the int count of significant result limbs.
      * This is the VM bridge SLBigInteger was designed to call. */
     OP_BIGMUL,
+    /* Native big-integer add over base-1e9 limb arrays. Pops three int[] handles
+     * (a, b, result; result on top). Computes a + b limb-wise with carry over
+     * the raw buffers in one opcode and writes the sum into result (which must
+     * be at least max(len(a),len(b))+1 long). Pushes the significant result-limb
+     * count. Companion to OP_BIGMUL. */
+    OP_BIGADD,
+    /* Native big-integer divide/remainder of a limb array by a SMALL integer
+     * divisor (1..1e9-1). Pops: result int[], then the int divisor, then the
+     * dividend int[] (dividend deepest). Computes quotient = dividend / divisor
+     * limb-wise (most-significant-first long division in base 1e9), writes the
+     * quotient limbs into result (same length as dividend suffices), and pushes
+     * the integer REMAINDER (0..divisor-1). This small-divisor form is what
+     * base conversion and the Chudnovsky final scaling need. */
+    OP_BIGDIVMOD,
     /* Sentinel: one past the last real opcode. Artifact validation uses this so
      * every defined opcode is accepted and adding a new opcode above never
      * requires updating the validator's upper bound again. KEEP LAST. */
@@ -223,7 +237,9 @@ static_assert(OP_GC_HINT == 124, "legacy opcode 124 must remain OP_GC_HINT");
 static_assert(OP_DUP2 == 154, "the pre-OSLS ISA must remain 155 opcodes (0..154)");
 static_assert(OP_OSLS_CALL == 155, "OSLS must be the first append-only opcode");
 static_assert(OP_BIGMUL == 156, "OP_BIGMUL is append-only opcode 156");
-static_assert(OP__COUNT == 157, "the extended ISA must contain 157 opcodes");
+static_assert(OP_BIGADD == 157, "OP_BIGADD is append-only opcode 157");
+static_assert(OP_BIGDIVMOD == 158, "OP_BIGDIVMOD is append-only opcode 158");
+static_assert(OP__COUNT == 159, "the extended ISA must contain 159 opcodes");
 #else
 _Static_assert(OP_OS_PLATFORM == 103, "legacy OS opcode range must begin at 103");
 _Static_assert(OP_OS_PCLOSE == 123, "legacy OS opcode range must end at 123");
@@ -231,7 +247,9 @@ _Static_assert(OP_GC_HINT == 124, "legacy opcode 124 must remain OP_GC_HINT");
 _Static_assert(OP_DUP2 == 154, "the pre-OSLS ISA must remain 155 opcodes (0..154)");
 _Static_assert(OP_OSLS_CALL == 155, "OSLS must be the first append-only opcode");
 _Static_assert(OP_BIGMUL == 156, "OP_BIGMUL is append-only opcode 156");
-_Static_assert(OP__COUNT == 157, "the extended ISA must contain 157 opcodes");
+_Static_assert(OP_BIGADD == 157, "OP_BIGADD is append-only opcode 157");
+_Static_assert(OP_BIGDIVMOD == 158, "OP_BIGDIVMOD is append-only opcode 158");
+_Static_assert(OP__COUNT == 159, "the extended ISA must contain 159 opcodes");
 #endif
 /* GC-hint aggressiveness bands for OP_GC_HINT (operand a). */
 #define SL_GC_HINT_MAX  100   /* clamp ceiling for the 0..100 aggressiveness scale */
