@@ -167,6 +167,24 @@ BLOCK4=(
 
 BLOCK_NAMES=("$BLOCK1_NAME" "$BLOCK2_NAME" "$BLOCK3_NAME" "$BLOCK4_NAME")
 
+# --- Top-level programs (NOT lib/ packages) --------------------------------
+# Some newer subsystems ship as their own top-level directories rather than as
+# lib/<pkg> packages (like sleela-terminal/). The lib/*-scoped catalog above
+# cannot see them, so they are offered and staged explicitly here. Each entry
+# is a repo-root-relative directory; only those present on disk are offered.
+#   pi-generator               -- Pi spigot program that streams digits to file
+#   artificial-intelligence    -- AI subsystem: large-language-models (RRS/RLM,
+#                                 code LLMs, parametry, signal monitor),
+#                                 neural-nets, character-recognition, rrs
+TOPLEVEL_NAME="Top-level programs (Pi generator, Artificial Intelligence)"
+TOPLEVEL_MODULES=(
+  pi-generator artificial-intelligence
+)
+# Include set for the top-level programs (parallel to EXCLUDE_LIB, but these are
+# opt-in: a name lands in TOPLEVEL_INCLUDE only when the user selects it).
+TOPLEVEL_INCLUDE=()
+toplevel_included() { local n="$1" e; for e in "${TOPLEVEL_INCLUDE[@]}"; do [ "$e" = "$n" ] && return 0; done; return 1; }
+
 # The live exclusion set is computed at selection time (start = every lib/
 # package that is NOT always-resident; each inclusion removes members). This
 # guarantees completeness: a package not listed in any block above still shows
@@ -246,17 +264,51 @@ select_block() {
   return 0
 }
 
-# The whole selection experience: four blocks (+ any additional), with an
-# "install EVERYTHING" fast path first.
+# Offer the top-level programs that are not lib/ packages. Same yes/no shape as
+# select_block: "include all?"; on no, per-program yes/no. Only programs that
+# exist on disk are offered; selection records the dir name in TOPLEVEL_INCLUDE.
+select_toplevel() {
+  local present=() m
+  for m in "${TOPLEVEL_MODULES[@]}"; do [ -d "$REPO_ROOT/$m" ] && present+=("$m"); done
+  [ "${#present[@]}" -eq 0 ] && return 0
+  heading "Block: $TOPLEVEL_NAME  ${GREY}(${#present[@]} programs)${RESET}"
+  local line="" p
+  for p in "${present[@]}"; do line="${line:+$line }$p"; done
+  printf "  %s%s%s\n\n" "$GREY" "$line" "$RESET"
+  if [ "$(ask_yn "Include the entire \"$TOPLEVEL_NAME\" block?" yes)" = yes ]; then
+    TOPLEVEL_INCLUDE=("${present[@]}"); note_group "$TOPLEVEL_NAME (all)"
+    ok "including all ${#present[@]} top-level programs"
+    return 0
+  fi
+  say "  ${GREY}Choosing programs individually for this block:${RESET}"
+  local picked=0
+  for p in "${present[@]}"; do
+    if [ "$(ask_yn "  include ${WHITE}$p${RESET}?" no)" = yes ]; then
+      TOPLEVEL_INCLUDE+=("$p"); picked=$((picked+1))
+    fi
+  done
+  if [ "$picked" -gt 0 ]; then
+    note_group "$TOPLEVEL_NAME ($picked)"; ok "$picked program(s) included from \"$TOPLEVEL_NAME\""
+  else
+    skip "no programs included from \"$TOPLEVEL_NAME\""
+  fi
+  return 0
+}
+
+# The whole selection experience: four blocks (+ any additional, + top-level
+# programs), with an "install EVERYTHING" fast path first.
 select_environment() {
   compute_catalog
   heading "Choose your SLeeLa environment"
   say "  ${GREY}The core runtime is always installed. Beyond it, the full SLeeLa${RESET}"
-  say "  ${GREY}environment is organized into four blocks of resident software.${RESET}"
+  say "  ${GREY}environment is organized into four blocks of resident software,${RESET}"
+  say "  ${GREY}plus a block of stand-alone top-level programs.${RESET}"
   say "  ${GREY}You will decide each block with a yes/no (then, if no, each module).${RESET}"
   printf "\n"
   if [ "$(ask_yn "Install EVERYTHING — every module in every block?" no)" = yes ]; then
     include_group "${EXCLUDE_LIB[@]}"; note_group "complete environment (all blocks)"
+    local m; TOPLEVEL_INCLUDE=()
+    for m in "${TOPLEVEL_MODULES[@]}"; do [ -d "$REPO_ROOT/$m" ] && TOPLEVEL_INCLUDE+=("$m"); done
     ok "the complete SLeeLa environment will be installed"
     return 0
   fi
@@ -267,6 +319,7 @@ select_environment() {
   if [ "${#BLOCK_EXTRA[@]}" -gt 0 ]; then
     select_block "Additional modules" "${BLOCK_EXTRA[@]}"
   fi
+  select_toplevel
   return 0
 }
 
@@ -283,6 +336,7 @@ print_contents() {
   item "2) ${WHITE}$BLOCK2_NAME${RESET}"
   item "3) ${WHITE}$BLOCK3_NAME${RESET}"
   item "4) ${WHITE}$BLOCK4_NAME${RESET}"
+  item "5) ${WHITE}$TOPLEVEL_NAME${RESET}"
   printf "\n  %sYou will be asked yes/no for each block (and, if you decline a block,%s\n" "$GREY" "$RESET"
   printf "  %sfor each module in it). You may also install EVERYTHING at once.%s\n\n" "$GREY" "$RESET"
 }
@@ -408,6 +462,21 @@ install_main() {
   # top-level lib/*.md inventory files travel with the library
   cp -a "$REPO_ROOT"/lib/*.md "$STAGE_DIR/lib/" 2>/dev/null || true
   ok "library staged: ${LIB_KEPT} packages kept, ${LIB_DROPPED} excluded"
+
+  # Stage the selected top-level programs (pi-generator, artificial-intelligence,
+  # ...). These are NOT lib/ packages; each is copied to the install root under
+  # its own directory, preserving the relative layout the programs expect.
+  if [ "${#TOPLEVEL_INCLUDE[@]}" -gt 0 ]; then
+    step "staging top-level programs"
+    local tl
+    for tl in "${TOPLEVEL_INCLUDE[@]}"; do
+      if [ -d "$REPO_ROOT/$tl" ]; then
+        cp -a "$REPO_ROOT/$tl" "$STAGE_DIR/"
+        item "$tl"
+      fi
+    done
+    ok "top-level programs staged: ${#TOPLEVEL_INCLUDE[@]}"
+  fi
 
   step "staging the integrity manifest and verifier"
   cp -a "$REPO_ROOT/tools/verify-before-execution.py" "$STAGE_DIR/tools/"

@@ -49,6 +49,16 @@ $blocks = @(
  @{ Name="Systems, Networking & Protocols"; Members=@("net","rmi","munction","synchro","connector","drivers","operating-system","systems","bash","terminal","terminal_pixel","sleela-terminal","telephony-skya","cdma","wifi","http","http-1.0","http-2.0","http-3.0","http-4.0","http-5.0","http-6.0","http-7.0","http-8.0","http-9.0","http-servers","server-edition","web-server-technology","website","api","us-infrastructure") },
  @{ Name="Applications, UI, Tooling & Society"; Members=@("gui","ui","user-interface","idea","ballum","autocad","ide","ide-workbench","linux-editors","common-rails","coorenagraph","deliberation","gameplay","journey","sommeliers","social-model","citizen","manifesto","moral-capacitor","philosophers","politico","international-criminal-court","psychiatry","java","java28","antivirus","churn","xlt") }
 )
+# Top-level programs that are NOT lib/ packages (identical set to the Linux/
+# macOS editions): pi-generator (Pi spigot) and artificial-intelligence (the AI
+# subsystem: large-language-models with RRS/RLM/code-LLMs, neural-nets,
+# character-recognition, rrs). These live as their own top-level directories, so
+# the lib/-scoped catalog and the file manifest do not cover them; they are
+# offered and staged explicitly below. Only those present on disk are offered.
+$toplevelName = "Top-level programs (Pi generator, Artificial Intelligence)"
+$toplevelAll = @("pi-generator","artificial-intelligence") | Where-Object { Test-Path (Join-Path $RepoRoot $_) -PathType Container }
+$toplevelInclude = @()
+
 $libRoot = Join-Path $RepoRoot "lib"
 $allLib = @(Get-ChildItem $libRoot -Directory | ForEach-Object { $_.Name })
 $excluded = @($allLib | Where-Object { $core -notcontains $_ })
@@ -58,6 +68,7 @@ Heading "Choose your SLeeLa environment"
 Write-Host "Core runtime modules are always installed. Choose whole blocks or individual modules."
 if ((Ask-YesNo "Install EVERYTHING — every optional module?" "no") -eq "yes") {
   $excluded = @()
+  $toplevelInclude = @($toplevelAll)
 } else {
   foreach ($block in $blocks) {
     $members = @($block.Members | Where-Object { $allLib -contains $_ })
@@ -76,6 +87,11 @@ if ((Ask-YesNo "Install EVERYTHING — every optional module?" "no") -eq "yes") 
     Heading "Additional modules ($($extra.Count))"; Write-Host ($extra -join ", ")
     if ((Ask-YesNo "Include all additional modules?" "no") -eq "yes") { $excluded = @($excluded | Where-Object { $extra -notcontains $_ }) }
     else { foreach ($module in $extra) { if ((Ask-YesNo "Include additional module '$module'?" "no") -eq "yes") { $excluded = @($excluded | Where-Object { $_ -ne $module }) } } }
+  }
+  if ($toplevelAll.Count -gt 0) {
+    Heading "$toplevelName ($($toplevelAll.Count) programs)"; Write-Host ($toplevelAll -join ", ")
+    if ((Ask-YesNo "Include the entire '$toplevelName' block?" "yes") -eq "yes") { $toplevelInclude = @($toplevelAll) }
+    else { foreach ($prog in $toplevelAll) { if ((Ask-YesNo "Include program '$prog'?" "no") -eq "yes") { $toplevelInclude += $prog } } }
   }
 }
 if (-not $NoBuild) {
@@ -122,6 +138,11 @@ try {
     Copy-Item -Recurse -Force $entry.FullName (Join-Path $stage "lib")
   }
   Get-ChildItem $libRoot -File -Filter "*.md" | Copy-Item -Destination (Join-Path $stage "lib") -Force
+  # Stage selected top-level (non-lib/) programs into their own directories.
+  foreach ($prog in $toplevelInclude) {
+    $progSrc = Join-Path $RepoRoot $prog
+    if (Test-Path $progSrc -PathType Container) { Copy-Item -Recurse -Force $progSrc $stage }
+  }
   if (Test-Path (Join-Path $RepoRoot "SHEET.sheet")) { Copy-Item -Force (Join-Path $RepoRoot "SHEET.sheet") $stage }
   $servers = if ($excluded -contains "http") { "excluded" } else { "included" }
   $ides = if ($excluded -contains "ide") { "excluded" } else { "included" }
@@ -145,4 +166,5 @@ try {
   Write-Host "SLeeLa $Release installed." -ForegroundColor Green
   Write-Host "Binaries: $bin"; Write-Host "Configuration: $(Join-Path $Destination 'config\startup.conf')"
   Write-Host "Modules excluded: $($excluded.Count)"
+  Write-Host "Top-level programs installed: $($toplevelInclude.Count)$(if ($toplevelInclude.Count -gt 0) { ' (' + ($toplevelInclude -join ', ') + ')' })"
 } finally { if (Test-Path $stage) { Remove-Item -Recurse -Force $stage } }
