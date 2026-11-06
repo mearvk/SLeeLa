@@ -1,0 +1,20 @@
+# A sample project intent (blueprint) for the SLeeLa Local Generator.
+#
+# A host reads these keys, builds a Blueprint, and asks the generator for the
+# plan. Values map one-to-one to Blueprint.create(...).
+#
+#   name           project name (root dir + used in documentation)
+#   cls            entry class name (a valid SLeeLa identifier)
+#   kind           app | library | service | cli
+#   license        SPDX-style id, or "none"
+#   sleelaVersion  #sleela version stamped into generated sources
+#   withTests      1 to emit a sibling demo/test, else 0
+#   withMakefile   1 to emit a Makefile that drives the SLeeLa runtime, else 0
+
+name = sample-lib
+cls = SampleLib
+kind = library
+license = MIT
+sleelaVersion = 2.1
+withTests = 1
+withMakefile = 1

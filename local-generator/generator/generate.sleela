@@ -1,0 +1,358 @@
+#sleela 2.1
+<< generate.sleela -- the SLeeLa Local Generator.
+
+   Scaffolds a complete local SLeeLa project on disk from a single high-level
+   project intent (a Blueprint). Where the Website Generator turns a design
+   intent into a website, this turns a project intent into a ready-to-run
+   project layout: a directory tree, starter .sleela sources, a Makefile, a
+   README, and a .gitignore.
+
+   Pipeline, all authoritative SLeeLa:
+     1. a Blueprint carries the intent (name, kind, options);
+     2. the planner decides which Artifacts (path + body) a kind needs;
+     3. the emitter fills each body;
+     4. main composes a blueprint and prints the whole plan.
+   A host (a CLI or the Makefile) materializes the printed plan to disk; the
+   generator never touches the filesystem itself.
+
+   The generator is one class and one top-level struct on purpose: the SLeeLa
+   compiler recognizes the meta* fields of the Metadata Class metapattern and
+   auto-generates their accessors, and two linked classes that both carry the
+   metapattern would collide on those generated accessors. Keeping the whole
+   generator in one executive class carries the full metadata record once and
+   keeps the unit linkable and runnable. >>
+
+<< The project intent as a flat record. Declared at top level so the current
+   SLeeLa compiler accepts it as a struct type; instantiate with new.
+     name           project name (root dir + entry class name)
+     kind           0 app, 1 library, 2 service, 3 cli
+     license        SPDX-style id, or "none"
+     sleelaVersion  the sleela version stamped into generated sources
+     withTests      1 to emit a sibling demo/test, else 0
+     withMakefile   1 to emit a Makefile driving the runtime, else 0 >>
+struct BlueprintModel {
+    String name;
+    String cls;
+    int kind;
+    String license;
+    String sleelaVersion;
+    int withTests;
+    int withMakefile;
+}
+
+class Generate {
+
+    < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+    << Eleven catalogued attributes; the compiler recognizes these meta* fields
+       and exposes read/override accessors. Values are faithful to the real
+       origin of this generator where publicly known. >>
+    String metaVersion = "1.0.0";
+    int metaId = 0;
+    String metaAuthor = "Max Rupplin";
+    String metaDate = "2026-11-06";
+    String metaCopyright = "Copyright 2026 MEARVK LLC";
+    String metaTrademark = "none";
+    String metaCorporation = "MEARVK LLC";
+    < metaOrigin widens: National, then International, then Galactic >
+    String metaOrigin = "International";
+    String metaBirthDate = "2026-11-06";
+    < metaScienceRating: maturity on a 1..10 scale >
+    int metaScienceRating = 7;
+    < metaNationalSchedule: a real, citable instrument or the value none >
+    String metaNationalSchedule = "none";
+
+    << The maximum number of artifacts a single plan may hold. Two parallel
+       String arrays plus a count back the plan so it needs no custom-class
+       arrays (whose element method calls are lossy in this compiler). >>
+    int MAX = 64;
+    String[] planPaths = new String[64];
+    String[] planBodies = new String[64];
+    int planCount = 0;
+
+    << ---- Top level: compose a blueprint and print the whole plan. ---- >>
+    void main() {
+        << Choose a blueprint. "library" produces a reusable class plus a
+           sibling demo -- a good showcase. Swap to "app", "service", or "cli"
+           for a different project shape with the same pipeline. >>
+        BlueprintModel b = preset("library");
+
+        << Build the ordered artifact plan for this blueprint. >>
+        buildPlan(b);
+
+        << Print a short header, then the full plan. A host CLI splits the
+           stream on the artifact path banners and writes each file. >>
+        print("# SLeeLa Local Generator -- plan for project: " + b.name);
+        print("# kind=" + kindName(b.kind) + " files=" + planCount);
+        print("");
+        print(renderPlan());
+    }
+
+    << ---- Blueprint construction ---- >>
+
+    << Build a blueprint with every value supplied. The kind is clamped to the
+       known range and the flags to 0/1 so a host cannot request a project
+       shape that does not exist. >>
+    << cls is the entry class name (a valid SLeeLa identifier). It is supplied
+       explicitly rather than derived from name, because the current compiler
+       has no primitive String length/index operation to transform a dashed
+       project name into CamelCase; a host that wants automatic derivation can
+       compute cls itself and pass it in. >>
+    BlueprintModel create(String name, String cls, int kind, String license,
+                          String sleelaVersion, int withTests, int withMakefile) {
+        BlueprintModel b = new BlueprintModel();
+        b.name = name;
+        b.cls = cls;
+        b.kind = clamp(kind, 0, 3);
+        b.license = license;
+        b.sleelaVersion = sleelaVersion;
+        b.withTests = clampBit(withTests);
+        b.withMakefile = clampBit(withMakefile);
+        return b;
+    }
+
+    << Named presets. A host can start from a preset then override. >>
+    BlueprintModel preset(String name) {
+        if (name == "library") {
+            return create("sample-lib", "SampleLib", 1, "MIT", "2.1", 1, 1);
+        }
+        if (name == "service") {
+            return create("sample-service", "SampleService", 2, "Apache-2.0", "2.1", 0, 1);
+        }
+        if (name == "cli") {
+            return create("sample-cli", "SampleCli", 3, "MIT", "2.1", 0, 1);
+        }
+        << default: a runnable application. >>
+        return create("sample-app", "SampleApp", 0, "MIT", "2.1", 1, 1);
+    }
+
+    << ---- Plan: which artifacts a kind needs, in order ---- >>
+
+    << Fill the plan arrays for a blueprint. The planner is the one place that
+       knows the file set per kind. >>
+    void buildPlan(BlueprintModel b) {
+        planCount = 0;
+        String cls = b.cls;
+
+        << Always: a README and a .gitignore. >>
+        addArtifact("README.md", readme(b));
+        addArtifact(".gitignore", gitignore(b));
+
+        << When requested: a Makefile that drives the SLeeLa runtime. >>
+        if (b.withMakefile == 1) {
+            addArtifact("Makefile", makefile(b));
+        }
+
+        << By kind: the source set. >>
+        if (b.kind == 1) {
+            addArtifact("src/" + cls + ".sleela", libraryClass(b));
+            if (b.withTests == 1) {
+                addArtifact("src/" + cls + "Demo.sleela", libraryDemo(b));
+            }
+        } else {
+            if (b.kind == 2) {
+                addArtifact("src/" + cls + ".sleela", serviceMain(b));
+            } else {
+                if (b.kind == 3) {
+                    addArtifact("src/" + cls + ".sleela", cliMain(b));
+                } else {
+                    addArtifact("src/" + cls + ".sleela", appMain(b));
+                }
+            }
+        }
+    }
+
+    << Append one artifact (path + body). Silently ignores overflow past MAX. >>
+    void addArtifact(String path, String body) {
+        if (planCount >= MAX) { return; }
+        planPaths[planCount] = path;
+        planBodies[planCount] = body;
+        planCount = planCount + 1;
+    }
+
+    << Render the whole plan as one printable document. Each artifact is
+       introduced by a path banner so a host CLI can split the stream back into
+       files, and closed by an end banner. >>
+    String renderPlan() {
+        String out = "";
+        int i = 0;
+        while (i < planCount) {
+            out = out + ">>> " + planPaths[i] + "\n";
+            out = out + planBodies[i];
+            out = out + "\n<<< end " + planPaths[i] + "\n\n";
+            i = i + 1;
+        }
+        return out;
+    }
+
+    << ---- Emit: the body text of each generated file ---- >>
+
+    << The #sleela version line used at the top of every generated source. >>
+    String versionLine(BlueprintModel b) {
+        return "#sleela " + b.sleelaVersion + "\n";
+    }
+
+    << Entry point for an application: a class with main(). >>
+    String appMain(BlueprintModel b) {
+        String cls = b.cls;
+        String s = "";
+        s = s + versionLine(b);
+        s = s + "<< " + cls + ".sleela -- entry point for the '" + b.name + "' application.\n";
+        s = s + "   Generated by the SLeeLa Local Generator. >>\n";
+        s = s + "class " + cls + " {\n\n";
+        s = s + "    void main() {\n";
+        s = s + "        print(\"" + cls + ": hello from a generated SLeeLa app\");\n";
+        s = s + "    }\n";
+        s = s + "}\n";
+        return s;
+    }
+
+    << The reusable class source for a library project. >>
+    String libraryClass(BlueprintModel b) {
+        String cls = b.cls;
+        String s = "";
+        s = s + versionLine(b);
+        s = s + "<< " + cls + ".sleela -- a reusable class for the '" + b.name + "' library.\n";
+        s = s + "   Generated by the SLeeLa Local Generator. >>\n";
+        s = s + "class " + cls + " {\n\n";
+        s = s + "    << Greet by name. Replace with the real surface of your library. >>\n";
+        s = s + "    String greet(String who) {\n";
+        s = s + "        return \"Hello, \" + who + \"!\";\n";
+        s = s + "    }\n";
+        s = s + "}\n";
+        return s;
+    }
+
+    << A sibling demo that exercises a library class. Run auto-links siblings in
+       the same directory, so no import is needed. >>
+    String libraryDemo(BlueprintModel b) {
+        String cls = b.cls;
+        String s = "";
+        s = s + versionLine(b);
+        s = s + "<< " + cls + "Demo.sleela -- exercises " + cls + " as a sibling demo.\n";
+        s = s + "   Generated by the SLeeLa Local Generator. >>\n";
+        s = s + "class " + cls + "Demo {\n\n";
+        s = s + "    void main() {\n";
+        s = s + "        " + cls + " lib = new " + cls + "();\n";
+        s = s + "        print(lib.greet(\"world\"));\n";
+        s = s + "    }\n";
+        s = s + "}\n";
+        return s;
+    }
+
+    << Entry point for a long-lived service: a bounded serve/tick loop so the
+       generated demo terminates instead of running forever. >>
+    String serviceMain(BlueprintModel b) {
+        String cls = b.cls;
+        String s = "";
+        s = s + versionLine(b);
+        s = s + "<< " + cls + ".sleela -- service skeleton for '" + b.name + "'.\n";
+        s = s + "   Generated by the SLeeLa Local Generator. The loop is bounded so\n";
+        s = s + "   the demo terminates; make it unbounded for a real service. >>\n";
+        s = s + "class " + cls + " {\n\n";
+        s = s + "    void main() {\n";
+        s = s + "        int tick = 0;\n";
+        s = s + "        while (tick < 3) {\n";
+        s = s + "            serve(tick);\n";
+        s = s + "            tick = tick + 1;\n";
+        s = s + "        }\n";
+        s = s + "        print(\"" + cls + ": service stopped\");\n";
+        s = s + "    }\n\n";
+        s = s + "    << One unit of work. A real service would accept a request here. >>\n";
+        s = s + "    void serve(int tick) {\n";
+        s = s + "        print(\"" + cls + ": tick \" + tick);\n";
+        s = s + "    }\n";
+        s = s + "}\n";
+        return s;
+    }
+
+    << Entry point for a CLI: prints a usage banner. >>
+    String cliMain(BlueprintModel b) {
+        String cls = b.cls;
+        String s = "";
+        s = s + versionLine(b);
+        s = s + "<< " + cls + ".sleela -- command-line entry point for '" + b.name + "'.\n";
+        s = s + "   Generated by the SLeeLa Local Generator. >>\n";
+        s = s + "class " + cls + " {\n\n";
+        s = s + "    void main() {\n";
+        s = s + "        usage();\n";
+        s = s + "    }\n\n";
+        s = s + "    << Print how to invoke this tool. Wire real argument parsing in here. >>\n";
+        s = s + "    void usage() {\n";
+        s = s + "        print(\"usage: " + b.name + " [options]\");\n";
+        s = s + "        print(\"  a generated SLeeLa command-line tool\");\n";
+        s = s + "    }\n";
+        s = s + "}\n";
+        return s;
+    }
+
+    << The project README. >>
+    String readme(BlueprintModel b) {
+        String kind = kindName(b.kind);
+        String s = "";
+        s = s + "# " + b.name + "\n\n";
+        s = s + "A SLeeLa " + kind + " project, scaffolded by the SLeeLa Local Generator.\n\n";
+        s = s + "## Layout\n\n";
+        s = s + "- src/ -- SLeeLa sources.\n";
+        if (b.withMakefile == 1) {
+            s = s + "- Makefile -- drives the SLeeLa runtime (make run).\n";
+        }
+        s = s + "\n## Run\n\n";
+        if (b.withMakefile == 1) {
+            s = s + "    make run\n";
+        } else {
+            s = s + "    sleela run src/" + b.cls + ".sleela\n";
+        }
+        s = s + "\n## License\n\n";
+        s = s + b.license + "\n";
+        return s;
+    }
+
+    << The project .gitignore. >>
+    String gitignore(BlueprintModel b) {
+        String s = "";
+        s = s + "# Generated by the SLeeLa Local Generator\n";
+        s = s + "out/\n";
+        s = s + "*.o\n";
+        s = s + "*.class\n";
+        s = s + ".DS_Store\n";
+        return s;
+    }
+
+    << The project Makefile. Drives the SLeeLa runtime over the entry source. >>
+    String makefile(BlueprintModel b) {
+        String entry = b.cls;
+        String s = "";
+        s = s + "# " + b.name + " -- generated by the SLeeLa Local Generator.\n";
+        s = s + "SLEELA_BIN ?= sleela\n";
+        s = s + "ENTRY := src/" + entry + ".sleela\n\n";
+        s = s + ".PHONY: run check clean\n\n";
+        s = s + "run:\n";
+        s = s + "\t\"$(SLEELA_BIN)\" run \"$(ENTRY)\"\n\n";
+        s = s + "check:\n";
+        s = s + "\t\"$(SLEELA_BIN)\" check \"$(ENTRY)\"\n\n";
+        s = s + "clean:\n";
+        s = s + "\trm -rf out\n";
+        return s;
+    }
+
+    << ---- Small helpers ---- >>
+
+    << The human-readable name of a kind, used in generated documentation. >>
+    String kindName(int kind) {
+        if (kind == 1) { return "library"; }
+        if (kind == 2) { return "service"; }
+        if (kind == 3) { return "cli"; }
+        return "app";
+    }
+
+    int clamp(int v, int lo, int hi) {
+        if (v < lo) { return lo; }
+        if (v > hi) { return hi; }
+        return v;
+    }
+
+    int clampBit(int v) {
+        if (v <= 0) { return 0; }
+        return 1;
+    }
+}
