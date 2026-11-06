@@ -68,6 +68,14 @@ reasoning budget, and with `SLLMR_SUBJECT_CODE` for the procedural-code persona.
 | `models/code-models.example.jsonl` | Example profiles: C, Fortran, Python, SLeeLa, Pascal |
 | `tools/code_model_selftest.c` | Native self-test |
 
+## A worked instance: the SLeeLa Code LLM
+
+`sleela/` contains a Code LLM specialized for the **SLeeLa language itself** — a
+concrete instance of this type with a verifier (`sllmsl_*`) that knows SLeeLa's
+real rules (reserved words like `record`/`native`/`enum`, the `<< >>` comment
+forms, the 64-field class cap, the Metadata Class metapattern) and, for ground
+truth, bridges to the real `impl/build/sleela check`. See `sleela/README.md`.
+
 ## What is NOT bundled
 
 No code model, no weights, no compiler, no test runner. SLeeLa supplies the
