@@ -345,14 +345,76 @@ def main(argv=None):
         except (OSError, json.JSONDecodeError) as e:
             err(where, f"cannot read/parse: {e}")
 
+    # Parametry: known-models registry + binding examples
+    parametry_dir = root / "parametry"
+    parametry_ok = 0
+    known_names = {}
+    if parametry_dir.exists():
+        km = parametry_dir / "known-models.json"
+        if km.exists():
+            parametry_ok = 1
+            where = str(km)
+            try:
+                reg = load_json(km)
+                for i, m in enumerate(reg.get("models", [])):
+                    nm = m.get("name", "")
+                    kind = m.get("kind")
+                    if not nm:
+                        err(where, f"models[{i}] missing name")
+                    if kind not in ("llm", "neural-net"):
+                        err(where, f"models[{i}] '{nm}' invalid kind '{kind}'")
+                    known_names[nm] = kind
+                    if kind == "llm":
+                        wb = m.get("weight_bytes", 0)
+                        if not (MIN_BYTES <= wb <= MAX_BYTES):
+                            err(where, f"models[{i}] '{nm}' llm weight_bytes {wb} outside 2..16 GB envelope")
+                    elif kind == "neural-net":
+                        ls = m.get("layer_sizes", [])
+                        if len(ls) < 2:
+                            err(where, f"models[{i}] '{nm}' neural-net needs >=2 layer_sizes")
+            except (OSError, json.JSONDecodeError) as e:
+                err(where, f"cannot read/parse: {e}")
+        bind_schema = parametry_dir / "binding.schema.json"
+        for bf in sorted(parametry_dir.glob("bindings*.jsonl")):
+            where = str(bf)
+            schema = load_json(bind_schema) if bind_schema.exists() else None
+            try:
+                blines = open(bf, encoding="utf-8").read().splitlines()
+            except OSError as e:
+                err(where, f"cannot read: {e}"); continue
+            for lineno, line in enumerate(blines, 1):
+                line = line.strip()
+                if not line:
+                    continue
+                loc = f"{where}:{lineno}"
+                try:
+                    rec = json.loads(line)
+                except json.JSONDecodeError as e:
+                    err(loc, f"invalid JSON: {e}"); continue
+                if schema is not None:
+                    schema_check(rec, schema, loc)
+                nm = rec.get("name")
+                path = rec.get("local_path")
+                if not nm and not path:
+                    err(loc, "binding needs a name or a local_path")
+                # Known name must exist in the registry and match kind.
+                if nm and known_names:
+                    if nm not in known_names:
+                        err(loc, f"name '{nm}' is not in known-models.json")
+                    elif known_names[nm] != rec.get("kind"):
+                        err(loc, f"name '{nm}' kind '{known_names[nm]}' != binding kind '{rec.get('kind')}'")
+                # A LOCAL neural net must carry a shape.
+                if rec.get("kind") == "neural-net" and not nm and not rec.get("layer_sizes"):
+                    err(loc, "local neural-net binding requires layer_sizes")
+
     if errors:
         print(f"validate: FAILED with {len(errors)} issue(s):", file=sys.stderr)
         for e in errors:
             print(f"  - {e}", file=sys.stderr)
         return 1
     scope = (f"base + {len(corpus_files)} corpus file(s) + {len(cap_files)} capacity + "
-             f"{len(code_files)} code-model + {sleela_ok} SLeeLa profile(s)")
-    print(f"validate: OK — {scope} pass schema, ID, licensing, capacity, code, and SLeeLa checks"
+             f"{len(code_files)} code-model + {sleela_ok} SLeeLa + {parametry_ok} parametry")
+    print(f"validate: OK — {scope} pass schema, ID, licensing, capacity, code, SLeeLa, and parametry checks"
           + ("" if HAVE_JSONSCHEMA else " (built-in schema subset; install jsonschema for full checks)"))
     return 0
 
