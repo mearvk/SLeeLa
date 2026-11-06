@@ -134,6 +134,17 @@ such as `record`/`native`/`enum`, the `<< >>` comment forms, the 64-field class
 cap, the Metadata Class metapattern) and bridges to the real `impl/build/sleela`
 compiler for ground truth. See `sleela/README.md`.
 
+## Loader-handler idiom (bring your own classes/data)
+
+`loader/` is a small, careful way for users to load **their own classes/data** —
+words, maths, objects — into trainable features. The user implements one tiny
+`encode()` handler for their type; the framework owns bounded, reused scratch
+(zero per-item allocation), fixed validated widths, honest skip/stop semantics,
+and a ready-made sink that trains a **real `slnn_*` network** — so "load these
+words/maths/objects and train against known weights/vocabulary" is a genuine,
+end-to-end path. Fail-closed, auditable counts, no fabricated data. See
+`loader/README.md`.
+
 ## Parametry (binding models to known or local sources)
 
 `parametry/` binds a SLeeLa **LLM** or a SLeeLa **neural net** to **either** a
