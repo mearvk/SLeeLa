@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sleela.dev/ai/llm/vocabulary/lexical-corpus-1.0.json",
+  "title": "SLeeLa lexical corpus record (version 1.0)",
+  "description": "One JSON Lines record per (headword, source). A lexical record describes a WORD's meaning and provenance; it is NOT a tokenizer vocabulary item and never carries a token ID. Imported definition text is only permitted when the source license allows redistribution with the recorded notices; otherwise the record is reference-only (metadata + lookup URL). SLeeLa-authored glosses must be labeled as such and kept distinct from source text.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "record_id", "headword", "language", "part_of_speech", "source", "record_status", "senses"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "record_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._+-]*$",
+      "description": "Stable unique id, conventionally '<headword>.<source-slug>'."
+    },
+    "headword": { "type": "string", "minLength": 1 },
+    "language": { "type": "string", "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]+)?$" },
+    "part_of_speech": {
+      "type": "string",
+      "enum": ["noun", "verb", "adjective", "adverb", "pronoun", "determiner", "preposition", "conjunction", "interjection", "numeral", "symbol", "other"]
+    },
+    "record_status": {
+      "type": "string",
+      "enum": ["definition_imported", "sleela_authored", "reference_only"],
+      "description": "definition_imported: text from a redistribution-permitting source. sleela_authored: original SLeeLa gloss (no third-party text). reference_only: metadata + URL only; definitions NOT stored."
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "license"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "edition": { "type": "string" },
+        "url": { "type": "string" },
+        "license": { "type": "string", "minLength": 1 },
+        "retrieved": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" }
+      }
+    },
+    "attribution": { "type": "string" },
+    "integration": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": { "type": "string" },
+        "definition_stored": { "type": "boolean" },
+        "reason": { "type": "string" }
+      }
+    },
+    "senses": {
+      "type": "array",
+      "description": "Senses carrying definition text. MUST be empty when record_status is reference_only.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["sense_id", "definition"],
+        "properties": {
+          "sense_id": { "type": "string", "minLength": 1 },
+          "definition": { "type": "string", "minLength": 1 },
+          "examples": { "type": "array", "items": { "type": "string" } },
+          "synonyms": { "type": "array", "items": { "type": "string" } },
+          "antonyms": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}

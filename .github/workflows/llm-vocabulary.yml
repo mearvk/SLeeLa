@@ -1,0 +1,70 @@
+name: LLM Vocabulary (word sets)
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - "artificial-intelligence/large-language-models/tokenizers/**"
+      - "artificial-intelligence/large-language-models/vocabulary/**"
+      - "artificial-intelligence/large-language-models/tools/**"
+      - "artificial-intelligence/large-language-models/large_language_models_base_vocabulary.*"
+      - "artificial-intelligence/large-language-models/large_language_models_vocabulary.*"
+      - ".github/workflows/llm-vocabulary.yml"
+  pull_request:
+    branches: [master, main]
+    paths:
+      - "artificial-intelligence/large-language-models/tokenizers/**"
+      - "artificial-intelligence/large-language-models/vocabulary/**"
+      - "artificial-intelligence/large-language-models/tools/**"
+      - "artificial-intelligence/large-language-models/large_language_models_base_vocabulary.*"
+      - "artificial-intelligence/large-language-models/large_language_models_vocabulary.*"
+      - ".github/workflows/llm-vocabulary.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    name: Validate word sets + build + seed self-test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: artificial-intelligence/large-language-models
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install jsonschema (full schema checks)
+        run: python -m pip install --quiet jsonschema
+
+      - name: Validation / licensing gate
+        run: python3 tools/validate_vocabulary.py
+
+      - name: Build vocabulary from base + corpus (strict)
+        run: >-
+          python3 tools/build_vocabulary.py
+          --base tokenizers/base-vocabulary.json
+          --corpus vocabulary/corpus/core-en.jsonl
+          --out /tmp/built-vocab.txt
+          --report /tmp/build-report.json
+          --strict
+
+      - name: Compile + run native base-vocabulary self-test (C11)
+        run: >-
+          cc -std=c11 -O2 -Wall -Wextra -pedantic
+          large_language_models_vocabulary.c
+          large_language_models_base_vocabulary.c
+          tools/base_vocabulary_selftest.c
+          -o /tmp/base_vocabulary_selftest
+          && /tmp/base_vocabulary_selftest
+
+      - name: Compile C++17 facades
+        run: >-
+          c++ -std=c++17 -O2 -Wall -Wextra -c large_language_models_vocabulary.cpp -o /tmp/v.o
+          && c++ -std=c++17 -O2 -Wall -Wextra -c large_language_models_base_vocabulary.cpp -o /tmp/bv.o
