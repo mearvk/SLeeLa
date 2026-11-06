@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sleela.dev/ai/llm/models/code-model-1.0.json",
+  "title": "SLeeLa Code LLM profile (version 1.0)",
+  "description": "A declarative, USER-OWNED description of a code-specialized language model (coding assistant / program-aided LM) for procedural programming. SLeeLa ships no code model and selects none; this records the caller's choice, the procedural language, the enabled tasks, and the strongest verification the caller can provide (none/compile/test/trace).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "model_id", "primary_language", "tasks"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "model_id": { "type": "string", "minLength": 1, "description": "The caller's code model; not shipped by SLeeLa." },
+    "base_family": { "type": "string", "description": "Informational, e.g. 'code-llama', 'deepseek-coder', 'codex'." },
+    "primary_language": {
+      "type": "string",
+      "enum": ["c", "fortran", "pascal", "python", "shell", "sleela", "other"]
+    },
+    "other_language": { "type": "string", "description": "Required in spirit when primary_language is 'other'." },
+    "tasks": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "enum": ["summarize", "dry-run", "refactor", "translate", "debug", "complete"] },
+      "description": "The Code LLM uses the caller enables."
+    },
+    "check_mode": {
+      "type": "string",
+      "enum": ["none", "compile", "test", "trace"],
+      "description": "Strongest verification available. 'none' means claims about behavior stay UNKNOWN (unverified)."
+    },
+    "fill_in_middle": { "type": "boolean" },
+    "note": { "type": "string" }
+  }
+}

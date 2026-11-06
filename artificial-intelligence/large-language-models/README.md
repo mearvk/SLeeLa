@@ -32,6 +32,8 @@ Provider-neutral native APIs for SLeeLa applications that connect to local or ho
 | `large_language_models_reasoning.hpp/.cpp` | C++17 RAII facade (`sleela::ai::ReasoningModel`) with `std::function` verifier/observer |
 | `large_language_models_capacity.h/.c` | C11 user-owned model-capacity profile (`sllmc_*`, ABI v1): declares a model in the 2–16 GB envelope and derives a reasoning budget; ships no weights |
 | `large_language_models_capacity.hpp` | C++17 `CapacityProfile` helper (tier, envelope check, budget) |
+| `large_language_models_code.h/.c` | C11 Code LLM profile (`sllmcx_*`, ABI v1): user-owned code-specialized model for procedural programming (summarize/dry-run/refactor/translate) + verifier contract; ships no model |
+| `large_language_models_code.hpp` | C++17 `CodeModelProfile` helper |
 | `large_language_models_training.h/.c` | C training-backend ABI, batch training, evaluation, metrics, and checkpoint requests |
 | `large_language_models_training.hpp/.cpp` | C++17 RAII training facade |
 | `large_language_models_data.h/.c` | Bounded-memory connector read interface, local-file connector, and streaming JSONL reader |
@@ -115,6 +117,16 @@ It is **capacity-aware but model-agnostic**: a user-declared `CapacityProfile`
 (context, steps, backtracks) across four tiers (compact/standard/capable/large).
 SLeeLa ships no weights and picks no model — the size and the model are the
 user's choice; the layer only adapts to them.
+
+## Code LLMs (procedural programming)
+
+A supported model **type** for source code: the Code LLM (coding assistant /
+program-aided LM) summarizes, dry-runs/state-tracks, refactors, and translates
+procedural code (C, Fortran, Pascal, procedural Python). It plugs into the
+reasoning layer as `SLLMR_SUBJECT_CODE` and is declared by a user-owned
+`CodeModelProfile` (`sllmcx_*`). Behavior claims are only trusted when a code
+verifier (compile / test / trace) supports them; otherwise they stay UNKNOWN.
+See `CODE-MODELS.md`. No code model, weights, or compiler are bundled.
 
 ## Inference
 

@@ -61,7 +61,9 @@ typedef enum sllmr_subject {
  SLLMR_SUBJECT_GENERAL=0,     /* balanced default */
  SLLMR_SUBJECT_MATH=1,        /* expects a symbolic/numeric verifier; seeks proof */
  SLLMR_SUBJECT_PHILOSOPHY=2,  /* dialectic: surface assumptions, steelman objections */
- SLLMR_SUBJECT_RELIGION=3     /* interpretive: attribute claims to traditions, no proof-claims */
+ SLLMR_SUBJECT_RELIGION=3,    /* interpretive: attribute claims to traditions, no proof-claims */
+ SLLMR_SUBJECT_CODE=4         /* procedural programming: summarize, dry-run/state-track,
+                                 refactor/translate; expects a code verifier (compile/test/trace) */
 } sllmr_subject;
 
 /* The role a step plays in the chain of thought. */

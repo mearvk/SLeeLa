@@ -59,7 +59,7 @@ const char *sllmr_status_string(sllmr_status s){
 }
 const char *sllmr_subject_name(sllmr_subject s){
  switch(s){case SLLMR_SUBJECT_MATH:return "math";case SLLMR_SUBJECT_PHILOSOPHY:return "philosophy";
-  case SLLMR_SUBJECT_RELIGION:return "religion";default:return "general";}
+  case SLLMR_SUBJECT_RELIGION:return "religion";case SLLMR_SUBJECT_CODE:return "code";default:return "general";}
 }
 const char *sllmr_step_kind_name(sllmr_step_kind k){
  switch(k){case SLLMR_STEP_DECOMPOSE:return "decompose";case SLLMR_STEP_ASSUMPTION:return "assumption";
@@ -136,6 +136,13 @@ static int build_prompt(str *p, sllmr_subject subject, const char *question,
    persona="You are a careful comparative-religion scholar. Attribute claims to specific traditions "
            "or texts, distinguish faith commitments from empirical claims, and make NO claim of proof. "
            "Mark each line with one tag: DECOMPOSE, ASSUMPTION, INDUCTION, OBJECTION, REFLECTION, REVISION, or CONCLUSION."; break;
+  case SLLMR_SUBJECT_CODE:
+   persona="You are a careful programmer reasoning about PROCEDURAL code (C, Fortran, Pascal, "
+           "procedural Python). Track the step-by-step flow: state changes, loops, and conditionals. "
+           "Summarize what code does, DRY-RUN it to predict variable values, and when asked, refactor "
+           "or translate it while preserving behavior. State the assumptions a claim depends on, and "
+           "defer execution/compilation checks to the verifier. Mark each line with one tag: DECOMPOSE, "
+           "ASSUMPTION, DEDUCTION, INDUCTION, OBJECTION, REFLECTION, REVISION, or CONCLUSION."; break;
   default:
    persona="You are a careful reasoner. Decompose the problem, reflect on your own steps, and revise "
            "when a step is weak. Mark each line with one tag: DECOMPOSE, ASSUMPTION, DEDUCTION, INDUCTION, "
@@ -166,6 +173,8 @@ static double step_confidence(sllmr_subject subject, sllmr_step_kind kind, sllmr
   /* open subjects: cap confidence; proof is not on offer */
   if(base>0.8) base=0.75;
  }
+ /* MATH and CODE are verifiable: a verifier's SUPPORTED/ REFUTED is trusted as-is
+    (code can be compiled/tested/traced), so no cap is applied. */
  if(kind==SLLMR_STEP_OBJECTION || kind==SLLMR_STEP_REFLECTION) base=base*0.6+0.2;
  return base;
 }
@@ -255,12 +264,13 @@ sllmr_status sllmr_reason(sllmr_engine *e, const char *question,
    if(steps[i].kind==SLLMR_STEP_REFLECTION||steps[i].kind==SLLMR_STEP_OBJECTION) continue;
    sum+=steps[i].confidence; counted++;
    if(steps[i].verdict==SLLMR_VERDICT_REFUTED) any_refuted=1;
-   if(opt->subject==SLLMR_SUBJECT_MATH &&
+   if((opt->subject==SLLMR_SUBJECT_MATH || opt->subject==SLLMR_SUBJECT_CODE) &&
       (steps[i].kind==SLLMR_STEP_DEDUCTION) &&
       steps[i].verdict!=SLLMR_VERDICT_SUPPORTED) math_unproven=1;
   }
   double conf = counted? sum/(double)counted : 0.0;
-  int verified = !any_refuted && !(opt->subject==SLLMR_SUBJECT_MATH && math_unproven);
+  int verified = !any_refuted &&
+                 !((opt->subject==SLLMR_SUBJECT_MATH || opt->subject==SLLMR_SUBJECT_CODE) && math_unproven);
 
   int acceptable = reached_conclusion && !path_refuted &&
                    (!opt->require_verified || verified);
