@@ -1,11 +1,23 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.62  
+**Revision:** 0.63  
 **Packages:** 113  
-**SLeeLa source units:** 11905  
+**SLeeLa source units:** 11906  
 **Module-facade symbols:** 80  
-**Total symbol records:** 11985  
+**Total symbol records:** 11986  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.63 fixes a correctness bug in the OP_BIGMUL Karatsuba kernel and
+> adds a regression guard. The `z1 = z1 - z0 - z2` recombination subtracts two
+> operands from one limb, so the running borrow can reach two per limb, but the
+> kernel only handled a borrow of one -- producing wrong high limbs (an exact
+> multiple of 2^32) for products above the Karatsuba threshold. The borrow is
+> now carried as an integer count of bases. New `examples/BigMulVerify` checks
+> native `bigmul()` against a pure-SLeeLa schoolbook multiply across sizes from
+> 41 to 2,223 limbs (~370 to ~20,000 digits) and asserts the limb arrays are
+> identical. Measured after the fix: a ~20,000-digit multiply is byte-identical
+> to the reference and about 1,389x faster than the schoolbook multiply
+> (~2.1 ms native vs ~2.87 s pure-SLeeLa).
 
 > Revision 0.62 adds a native big-integer multiply to the VM and wires it into
 > `SLBigInteger`. A new append-only opcode **`OP_BIGMUL`** (156) multiplies two

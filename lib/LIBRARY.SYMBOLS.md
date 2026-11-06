@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11905
+library-source-files: 11906
 library-packages: 113
 module-facade-symbols: 80
-total-symbol-records: 11985
+total-symbol-records: 11986
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -11057,6 +11057,7 @@ math	SLVectorProjection.sleela	lib/math/SLVectorProjection.sleela	source
 math	SLZScore.sleela	lib/math/SLZScore.sleela	source
 math	SLZTransform.sleela	lib/math/SLZTransform.sleela	source
 math	BigIntegerDemo.sleela	lib/math/examples/BigIntegerDemo.sleela	source
+math	BigMulVerify.sleela	lib/math/examples/BigMulVerify.sleela	source
 math	MathDemo.sleela	lib/math/examples/MathDemo.sleela	source
 math	PiReferenceDemo.sleela	lib/math/examples/PiReferenceDemo.sleela	source
 memory	SLAddress.sleela	lib/memory/SLAddress.sleela	source

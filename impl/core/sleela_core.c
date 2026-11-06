@@ -1162,13 +1162,17 @@ static int sl_bigmul_kara(const uint32_t* a, int na,
         sb[i] = (uint32_t)(x % SL_BIG_BASE); c = x / SL_BIG_BASE; } }
 
     if (sl_bigmul_kara(sa, sa_len, sb, sb_len, z1)) { rc = -1; goto done; }
-    /* z1 = z1 - z0 - z2 (borrow subtraction; z1 >= z0 + z2 mathematically) */
+    /* z1 = z1 - z0 - z2 (borrow subtraction; z1 >= z0 + z2 mathematically).
+     * A single limb subtracts BOTH z0[i] and z2[i], so the running borrow can
+     * exceed 1 (up to 2 per limb). Carry it as an integer count of bases, not a
+     * 0/1 flag, and normalize cur up by whole bases until it is nonnegative. */
     { int64_t borrow = 0;
       for (int i = 0; i < z1len; i++) {
         int64_t cur = (int64_t)z1[i] - borrow;
-        if (i < z0len) cur -= z0[i];
-        if (i < z2len) cur -= z2[i];
-        if (cur < 0) { cur += (int64_t)SL_BIG_BASE; borrow = 1; } else borrow = 0;
+        if (i < z0len) cur -= (int64_t)z0[i];
+        if (i < z2len) cur -= (int64_t)z2[i];
+        borrow = 0;
+        while (cur < 0) { cur += (int64_t)SL_BIG_BASE; borrow++; }
         z1[i] = (uint32_t)cur;
       }
     }

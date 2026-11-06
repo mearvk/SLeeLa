@@ -1,0 +1,121 @@
+<< lib/math/examples/BigMulVerify.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Regression check for the native big-integer multiply (OP_BIGMUL).
+   It multiplies the same operands two ways -- the native bigmul() bridge and a
+   pure-SLeeLa schoolbook multiply -- across several operand sizes spanning the
+   Karatsuba threshold, and asserts the limb arrays are identical. This guards
+   the Karatsuba recombination (the z1 = z1 - z0 - z2 borrow, which must carry a
+   borrow of up to two per limb) against silent regressions. >>
+#sleela 2.5
+material;
+class BigMulVerify {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class example. >>
+  String metaVersion = "1.0.0";
+  int metaId = 7906;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-06";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-06";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Pure-SLeeLa reference multiply over base-1e9 limbs. >
+  int schoolbook(int[] a, int na, int[] b, int nb, int[] r) {
+    int i = 0;
+    while (i < na + nb) { r[i] = 0; i = i + 1; }
+    i = 0;
+    while (i < na) {
+      long carry = 0;
+      long ai = a[i];
+      int j = 0;
+      while (j < nb) {
+        long cur = r[i + j] + ai * b[j] + carry;
+        r[i + j] = (int) (cur % 1000000000);
+        carry = cur / 1000000000;
+        j = j + 1;
+      }
+      int k = i + nb;
+      while (carry > 0) {
+        long cur = r[k] + carry;
+        r[k] = (int) (cur % 1000000000);
+        carry = cur / 1000000000;
+        k = k + 1;
+      }
+      i = i + 1;
+    }
+    int sig = na + nb;
+    while (sig > 1 && r[sig - 1] == 0) { sig = sig - 1; }
+    return sig;
+  }
+
+  < A tiny deterministic limb generator (linear congruential), values in [0,1e9). >
+  int nextLimb(int seed) {
+    long s = seed;
+    s = (s * 1103515245 + 12345) % 1000000000;
+    if (s < 0) { s = 0 - s; }
+    return (int) s;
+  }
+
+  < Multiply n-limb operands both ways; return the count of mismatched limbs. >
+  int checkSize(int n, int seed) {
+    int[] a = new int[n];
+    int[] b = new int[n];
+    int s = seed;
+    int i = 0;
+    while (i < n) { s = nextLimb(s); a[i] = s; s = nextLimb(s); b[i] = s; i = i + 1; }
+    int[] r1 = new int[n + n];
+    int[] r2 = new int[n + n];
+    int sig1 = bigmul(a, b, r1);
+    int sig2 = schoolbook(a, n, b, n, r2);
+    int mism = 0;
+    if (sig1 != sig2) { mism = mism + 1; }
+    int k = 0;
+    while (k < n + n) { if (r1[k] != r2[k]) { mism = mism + 1; } k = k + 1; }
+    return mism;
+  }
+
+  void main() {
+    print("OP_BIGMUL regression: native vs schoolbook across sizes");
+    int[] sizes = new int[7];
+    sizes[0] = 41; sizes[1] = 50; sizes[2] = 80; sizes[3] = 128;
+    sizes[4] = 200; sizes[5] = 1000; sizes[6] = 2223;
+    boolean allOk = true;
+    int t = 0;
+    while (t < 7) {
+      int mism = checkSize(sizes[t], 7 + t * 31);
+      String tag = mism == 0 ? "ok" : "FAIL";
+      print("  n=" + sizes[t] + " limbs (~" + (sizes[t] * 9) + " digits): mismatches=" + mism + " " + tag);
+      if (mism != 0) { allOk = false; }
+      t = t + 1;
+    }
+    if (allOk) { print("RESULT: PASS - native bigmul matches schoolbook at all sizes"); }
+    else { print("RESULT: FAIL - native bigmul diverged from schoolbook"); }
+  }
+}
