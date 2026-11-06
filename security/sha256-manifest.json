@@ -44994,6 +44994,10 @@
       "sha256": "e5f2e254b71d115b2184f44706a9a68a93b60e9a54ebd2dfd082ffec566e0e00"
     },
     {
+      "path": "lib/math/SLPackage.sleela",
+      "sha256": "35bfa3f23d31303a6f0149411bc23015a12b05968a4e93b056afb9c3592558b5"
+    },
+    {
       "path": "lib/math/SLPartialDerivative.sleela",
       "sha256": "e7b53145bcf67119b7ea230183442efd71c7cf7e028c9b687c49cd73a274af17"
     },
@@ -45352,6 +45356,10 @@
     {
       "path": "lib/math/SLZTransform.sleela",
       "sha256": "753c4533dbf61a29b508e061cd7f59a9d8e7e89127786b8dc22a085febfffab5"
+    },
+    {
+      "path": "lib/math/examples/MathDemo.sleela",
+      "sha256": "d50c51458132c8a16d95c51bb10511a56760ad13d3307bd6931d3876aed37eb5"
     },
     {
       "path": "lib/memory/SLAddress.sleela",

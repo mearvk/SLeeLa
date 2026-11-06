@@ -1,11 +1,25 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.59  
+**Revision:** 0.60  
 **Packages:** 113  
-**SLeeLa source units:** 11900  
-**Module-facade symbols:** 79  
-**Total symbol records:** 11979  
+**SLeeLa source units:** 11901  
+**Module-facade symbols:** 80  
+**Total symbol records:** 11981  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.60 brings the `math` package to life. All **243** `lib/math`
+> classes, which previously carried only a generic `state`/`count` stub, now
+> have real, compiler-verified SLeeLa implementations spanning number theory,
+> statistics and probability, distributions, regression and hypothesis tests,
+> linear algebra (determinant/inverse/eigen), calculus and numerical methods,
+> ODE/PDE steps, Fourier/Laplace/Z transforms and signal processing,
+> optimization, sequences/series/combinatorics, set theory, geometry and
+> transforms, number types (complex/rational/big), expressions and symbolic
+> rules, fields, units, graphs, and tensors. The package also gains its
+> `SLPackage` facade and a runnable `examples/MathDemo`. Elementary functions
+> (`sqrt`, `exp`, `ln`, `sin`/`cos`, nth roots) are implemented inline in pure
+> SLeeLa; matrices/tensors are flat row-major `double[]`. Every result was
+> checked against known values via `impl/build/sleela run`.
 
 > Revision 0.59 adds the SLeeLa mirrors of the recently-built AI/LLM C/C++
 > subsystem as two new `/lib` packages. **`large-language-models`**
