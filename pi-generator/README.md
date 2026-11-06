@@ -10,6 +10,12 @@ and streams them to a local file.
 
 ## Algorithm
 
+The source declares `#sleela 2.9` so it is accepted by both the older
+`Sleelvac™` compiler (supported range 1.0 – 2.9) and the current
+`SLeeLa™ Language/Runtime` build (1.0 – 3.0). It uses no 3.0-only syntax — only
+integer arithmetic, `int[]`, `while`, and the `openFile`/`write`/`close` file
+API, all available in 2.x.
+
 It uses the **Rabinowitz–Wagon spigot**, which emits Pi's digits one at a time
 using only bounded integer arithmetic over a single `int[]` array. That matters
 here: SLeeLa's runtime has no working arbitrary-precision/bignum type (the
