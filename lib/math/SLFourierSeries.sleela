@@ -47,10 +47,38 @@ class SLFourierSeries {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  double reduceAngle(double x) {
+    double twoPi = 6.283185307179586;
+    while (x > 3.141592653589793) { x = x - twoPi; }
+    while (x < 0.0 - 3.141592653589793) { x = x + twoPi; }
+    return x;
+  }
+  double sinv(double x) {
+    x = reduceAngle(x);
+    double term = x;
+    double sum = x;
+    int n = 1;
+    while (n < 20) { term = term * (0.0 - x * x) / ((2 * n) * (2 * n + 1)); sum = sum + term; n = n + 1; }
+    return sum;
+  }
+  double cosv(double x) {
+    x = reduceAngle(x);
+    double term = 1.0;
+    double sum = 1.0;
+    int n = 1;
+    while (n < 20) { term = term * (0.0 - x * x) / ((2 * n - 1) * (2 * n)); sum = sum + term; n = n + 1; }
+    return sum;
+  }
+  << Reconstruct a periodic signal at x from its Fourier coefficients: a0/2 plus
+     sum over k of (a[k] cos(k x) + b[k] sin(k x)). >>
+  double evaluate(double a0, double[] a, double[] b, int terms, double x) {
+    double sum = a0 / 2.0;
+    int k = 1;
+    while (k <= terms) {
+      sum = sum + a[k - 1] * cosv(k * x) + b[k - 1] * sinv(k * x);
+      k = k + 1;
+    }
+    return sum;
+  }
 }

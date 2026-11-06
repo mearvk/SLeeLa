@@ -47,10 +47,12 @@ class SLNewtonOptimization {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << Newton step for unconstrained minimization in 1D: x := x - g/H where g is
+     the gradient and H the second derivative (Hessian). >>
+  double step(double x, double gradient, double hessian) {
+    if (hessian == 0.0) { return x; }
+    return x - gradient / hessian;
+  }
+  boolean isMinimum(double hessian) { return hessian > 0.0; }
 }

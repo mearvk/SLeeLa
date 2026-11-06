@@ -47,10 +47,12 @@ class SLOrdinaryDifferentialEquation {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << Represents dy/dt = a*y + b (a linear first-order ODE) with an exact and an
+     Euler-stepped solution for testing a solver. >>
+  double a;
+  double b;
+  void set(double pa, double pb) { a = pa; b = pb; }
+  double slope(double y) { return a * y + b; }
+  double eulerStep(double y, double h) { return y + h * slope(y); }
 }

@@ -45,4 +45,20 @@ class SLOptimization {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << Minimization helpers over a sampled objective: argmin index and whether the
+     search has converged in objective value. >>
+  int argMin(double[] values, int n) {
+    if (n <= 0) { return 0 - 1; }
+    int best = 0;
+    int i = 1;
+    while (i < n) { if (values[i] < values[best]) { best = i; } i = i + 1; }
+    return best;
+  }
+  boolean converged(double fNew, double fOld, double tol) {
+    double d = fNew - fOld;
+    if (d < 0.0) { d = 0.0 - d; }
+    return d <= tol;
+  }
+}

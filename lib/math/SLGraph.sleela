@@ -47,10 +47,31 @@ class SLGraph {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << An undirected graph by adjacency matrix (row-major n x n). Breadth-first
+     reachability counts how many vertices are reachable from a source. >>
+  int n;
+  void configure(int size) { n = size; }
+  int reachableCount(double[] adj, int source) {
+    boolean[] seen = new boolean[n];
+    int[] queue = new int[n];
+    int head = 0;
+    int tail = 0;
+    seen[source] = true;
+    queue[tail] = source;
+    tail = tail + 1;
+    int count = 0;
+    while (head < tail) {
+      int u = queue[head];
+      head = head + 1;
+      count = count + 1;
+      int v = 0;
+      while (v < n) {
+        if (adj[u * n + v] != 0.0 && !seen[v]) { seen[v] = true; queue[tail] = v; tail = tail + 1; }
+        v = v + 1;
+      }
+    }
+    return count;
+  }
+  boolean connected(double[] adj) { return reachableCount(adj, 0) == n; }
 }

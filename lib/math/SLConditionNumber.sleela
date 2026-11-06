@@ -47,10 +47,14 @@ class SLConditionNumber {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << Condition number estimate from the ratio of largest to smallest absolute
+     eigenvalue (or singular value) supplied by the caller. >>
+  double fromExtremes(double largest, double smallest) {
+    double a = largest < 0.0 ? 0.0 - largest : largest;
+    double b = smallest < 0.0 ? 0.0 - smallest : smallest;
+    if (b == 0.0) { return 0.0; }
+    return a / b;
+  }
+  boolean illConditioned(double cond, double threshold) { return cond > threshold; }
 }

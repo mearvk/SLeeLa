@@ -45,4 +45,51 @@ class SLLaplace {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  double reduceAngle(double x) {
+    double twoPi = 6.283185307179586;
+    while (x > 3.141592653589793) { x = x - twoPi; }
+    while (x < 0.0 - 3.141592653589793) { x = x + twoPi; }
+    return x;
+  }
+  double sinv(double x) {
+    x = reduceAngle(x);
+    double term = x;
+    double sum = x;
+    int n = 1;
+    while (n < 20) { term = term * (0.0 - x * x) / ((2 * n) * (2 * n + 1)); sum = sum + term; n = n + 1; }
+    return sum;
+  }
+  double cosv(double x) {
+    x = reduceAngle(x);
+    double term = 1.0;
+    double sum = 1.0;
+    int n = 1;
+    while (n < 20) { term = term * (0.0 - x * x) / ((2 * n - 1) * (2 * n)); sum = sum + term; n = n + 1; }
+    return sum;
+  }
+  << Numerical Laplace transform value F(s) = integral of f(t) e^(-s t) dt over
+     a sampled signal with uniform spacing dt, by the trapezoidal rule. >>
+  double expNeg(double x) {
+    boolean neg = x < 0.0;
+    if (neg) { x = 0.0 - x; }
+    double term = 1.0;
+    double sum = 1.0;
+    int k = 1;
+    while (k < 60) { term = term * x / k; sum = sum + term; k = k + 1; }
+    if (neg) { return sum == 0.0 ? 0.0 : 1.0 / sum; }
+    return sum;
+  }
+  double transform(double[] f, int n, double dt, double s) {
+    double sum = 0.0;
+    int i = 0;
+    while (i < n) {
+      double t = i * dt;
+      double w = (i == 0 || i == n - 1) ? 0.5 : 1.0;
+      sum = sum + w * f[i] * expNeg(s * t);
+      i = i + 1;
+    }
+    return sum * dt;
+  }
+}

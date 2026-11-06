@@ -45,4 +45,52 @@ class SLFourier {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  double reduceAngle(double x) {
+    double twoPi = 6.283185307179586;
+    while (x > 3.141592653589793) { x = x - twoPi; }
+    while (x < 0.0 - 3.141592653589793) { x = x + twoPi; }
+    return x;
+  }
+  double sinv(double x) {
+    x = reduceAngle(x);
+    double term = x;
+    double sum = x;
+    int n = 1;
+    while (n < 20) { term = term * (0.0 - x * x) / ((2 * n) * (2 * n + 1)); sum = sum + term; n = n + 1; }
+    return sum;
+  }
+  double cosv(double x) {
+    x = reduceAngle(x);
+    double term = 1.0;
+    double sum = 1.0;
+    int n = 1;
+    while (n < 20) { term = term * (0.0 - x * x) / ((2 * n - 1) * (2 * n)); sum = sum + term; n = n + 1; }
+    return sum;
+  }  double sqrt(double x) {
+    if (x <= 0.0) { return 0.0; }
+    double g = x;
+    int i = 0;
+    while (i < 60) { g = (g + x / g) / 2.0; i = i + 1; }
+    return g;
+  }
+  << Magnitude spectrum of a real signal via the DFT: mag[k] = |X[k]|. >>
+  void magnitude(double[] signal, int n, double[] magOut) {
+    double twoPi = 6.283185307179586;
+    int k = 0;
+    while (k < n) {
+      double sre = 0.0;
+      double sim = 0.0;
+      int t = 0;
+      while (t < n) {
+        double angle = 0.0 - twoPi * k * t / n;
+        sre = sre + signal[t] * cosv(angle);
+        sim = sim + signal[t] * sinv(angle);
+        t = t + 1;
+      }
+      magOut[k] = sqrt(sre * sre + sim * sim);
+      k = k + 1;
+    }
+  }
+}

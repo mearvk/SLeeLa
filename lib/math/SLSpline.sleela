@@ -45,4 +45,14 @@ class SLSpline {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << A piecewise-linear spline through sample points, with Catmull-Rom tangents
+     available for smoother interpolation between interior knots. >>
+  double linearSegment(double y0, double y1, double t) { return y0 + t * (y1 - y0); }
+  < Catmull-Rom tangent at point i from its neighbours. >
+  double catmullTangent(double[] ys, int i, int n) {
+    if (i <= 0 || i >= n - 1) { return 0.0; }
+    return (ys[i + 1] - ys[i - 1]) / 2.0;
+  }
+}

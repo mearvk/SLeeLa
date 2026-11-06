@@ -47,10 +47,18 @@ class SLRungeKutta {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << Classical fourth-order Runge-Kutta step for dy/dt = f(t,y). The caller
+     supplies the four evaluated slopes k1..k4. >>
+  double step(double y, double k1, double k2, double k3, double k4, double h) {
+    return y + h * (k1 + 2.0 * k2 + 2.0 * k3 + k4) / 6.0;
+  }
+  << Slope sample points for RK4 given the current (t,y) and step h, returned as
+     the four t-offsets 0, h/2, h/2, h (the y-predictions depend on prior ks and
+     are formed by the caller). >>
+  double stageOffset(int stage, double h) {
+    if (stage == 0) { return 0.0; }
+    if (stage == 3) { return h; }
+    return h / 2.0;
+  }
 }

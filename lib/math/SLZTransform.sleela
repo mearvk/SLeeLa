@@ -45,4 +45,20 @@ class SLZTransform {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << Evaluate the Z-transform of a finite real sequence x[0..n-1] at a real point
+     z: sum of x[k] z^(-k). >>
+  double evaluateReal(double[] x, int n, double z) {
+    if (z == 0.0) { return 0.0; }
+    double sum = 0.0;
+    double zk = 1.0;
+    int k = 0;
+    while (k < n) {
+      sum = sum + x[k] / zk;
+      zk = zk * z;
+      k = k + 1;
+    }
+    return sum;
+  }
+}

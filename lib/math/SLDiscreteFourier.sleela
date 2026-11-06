@@ -45,4 +45,48 @@ class SLDiscreteFourier {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  double reduceAngle(double x) {
+    double twoPi = 6.283185307179586;
+    while (x > 3.141592653589793) { x = x - twoPi; }
+    while (x < 0.0 - 3.141592653589793) { x = x + twoPi; }
+    return x;
+  }
+  double sinv(double x) {
+    x = reduceAngle(x);
+    double term = x;
+    double sum = x;
+    int n = 1;
+    while (n < 20) { term = term * (0.0 - x * x) / ((2 * n) * (2 * n + 1)); sum = sum + term; n = n + 1; }
+    return sum;
+  }
+  double cosv(double x) {
+    x = reduceAngle(x);
+    double term = 1.0;
+    double sum = 1.0;
+    int n = 1;
+    while (n < 20) { term = term * (0.0 - x * x) / ((2 * n - 1) * (2 * n)); sum = sum + term; n = n + 1; }
+    return sum;
+  }
+  << Discrete Fourier transform of a real signal of length n. The k-th
+     coefficient real/imag parts are written into reOut[k], imOut[k]. >>
+  void forward(double[] signal, int n, double[] reOut, double[] imOut) {
+    double twoPi = 6.283185307179586;
+    int k = 0;
+    while (k < n) {
+      double sre = 0.0;
+      double sim = 0.0;
+      int t = 0;
+      while (t < n) {
+        double angle = 0.0 - twoPi * k * t / n;
+        sre = sre + signal[t] * cosv(angle);
+        sim = sim + signal[t] * sinv(angle);
+        t = t + 1;
+      }
+      reOut[k] = sre;
+      imOut[k] = sim;
+      k = k + 1;
+    }
+  }
+}

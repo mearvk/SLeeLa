@@ -45,4 +45,25 @@ class SLConstraint {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << A linear constraint a.x (op) rhs, op: 0 = <=, 1 = >=, 2 = ==.
+     satisfied() tests a candidate point x (length n). >>
+  int op;
+  double rhs;
+  void configure(int o, double r) { op = o; rhs = r; }
+  double lhs(double[] coeffs, double[] x, int n) {
+    double s = 0.0;
+    int i = 0;
+    while (i < n) { s = s + coeffs[i] * x[i]; i = i + 1; }
+    return s;
+  }
+  boolean satisfied(double[] coeffs, double[] x, int n, double tol) {
+    double v = lhs(coeffs, x, n);
+    if (op == 0) { return v <= rhs + tol; }
+    if (op == 1) { return v >= rhs - tol; }
+    double d = v - rhs;
+    if (d < 0.0) { d = 0.0 - d; }
+    return d <= tol;
+  }
+}

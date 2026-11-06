@@ -45,4 +45,26 @@ class SLHessian {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << The 2x2 Hessian of a scalar function from finite differences of first
+     partials. Second partials fxx, fyy, fxy written into out (length 3). The
+     determinant classifies a critical point. >>
+  void build(double fxx, double fyy, double fxy, double[] out) {
+    out[0] = fxx;
+    out[1] = fyy;
+    out[2] = fxy;
+  }
+  double determinant(double fxx, double fyy, double fxy) {
+    return fxx * fyy - fxy * fxy;
+  }
+  << Second-derivative test: 1 = local min, -1 = local max, 0 = saddle, 2 =
+     inconclusive. >>
+  int classify(double fxx, double fyy, double fxy) {
+    double d = fxx * fyy - fxy * fxy;
+    if (d < 0.0) { return 0; }
+    if (d == 0.0) { return 2; }
+    if (fxx > 0.0) { return 1; }
+    return 0 - 1;
+  }
+}

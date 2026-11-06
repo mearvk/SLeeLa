@@ -47,10 +47,20 @@ class SLOptimizationProblem {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << A minimization problem: a sampled objective over candidate points, with an
+     optional sense flag (true = minimize, false = maximize). >>
+  boolean minimize;
+  void configure(boolean doMinimize) { minimize = doMinimize; }
+  int bestIndex(double[] objective, int n) {
+    if (n <= 0) { return 0 - 1; }
+    int best = 0;
+    int i = 1;
+    while (i < n) {
+      boolean better = minimize ? objective[i] < objective[best] : objective[i] > objective[best];
+      if (better) { best = i; }
+      i = i + 1;
+    }
+    return best;
+  }
 }
