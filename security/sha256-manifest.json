@@ -44879,7 +44879,7 @@
     },
     {
       "path": "lib/math/SLNumericFormatter.sleela",
-      "sha256": "ccc970e8c6a3f6847ff94f9baea018d5b02e28fba08d67e8d63a6fc7cd5172cc"
+      "sha256": "f0d6ff913fc5ea4ea4e9186ec2a5fef29a911dfe14a167988b8e89bfd54abeac"
     },
     {
       "path": "lib/math/SLNumericParser.sleela",
@@ -45003,7 +45003,7 @@
     },
     {
       "path": "lib/math/SLPrecision.sleela",
-      "sha256": "01adb5a16861bf490144b30f83a7833406425c5100e690ebcd44de71d1568466"
+      "sha256": "0b1121e41d0d96a0a1ddce0a044afb854f1fb615d42409a8b8b9edd889a2c8e3"
     },
     {
       "path": "lib/math/SLPredicate.sleela",
@@ -45311,7 +45311,7 @@
     },
     {
       "path": "lib/math/examples/MathDemo.sleela",
-      "sha256": "d50c51458132c8a16d95c51bb10511a56760ad13d3307bd6931d3876aed37eb5"
+      "sha256": "25fd0b15a91093caa7d87b4901630f707c8a532b86cb5fb717f8a973a77d73a5"
     },
     {
       "path": "lib/memory/SLAddress.sleela",
