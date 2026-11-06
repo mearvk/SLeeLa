@@ -263,7 +263,7 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "0f971229c6fc86904e4792b508754234242b06d0348bb3a9c43136c987577932"
+      "sha256": "060a51fd42456a368528082abed35e74f1865c8de2e054ecbfd0c09c20e937a6"
     },
     {
       "path": "impl/core/sleela_core.h",
@@ -45320,6 +45320,10 @@
     {
       "path": "lib/math/examples/BigIntegerDemo.sleela",
       "sha256": "9c0f23991b8eb55a7615b861a61fdfb09dd9ac0b89c14c63f7d6f0ee9f178407"
+    },
+    {
+      "path": "lib/math/examples/BigMulVerify.sleela",
+      "sha256": "fb8dc883fb9a369a24a5803c72cb998a6b37ac80e03e62245e666fcfe926dd89"
     },
     {
       "path": "lib/math/examples/MathDemo.sleela",
