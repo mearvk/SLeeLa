@@ -20,6 +20,7 @@ on:
       - "artificial-intelligence/large-language-models/sleela/**"
       - "artificial-intelligence/large-language-models/parametry/**"
       - "artificial-intelligence/neural-nets/**"
+      - "artificial-intelligence/large-language-models/loader/**"
       - ".github/workflows/llm-vocabulary.yml"
   pull_request:
     branches: [master, main]
@@ -40,6 +41,7 @@ on:
       - "artificial-intelligence/large-language-models/sleela/**"
       - "artificial-intelligence/large-language-models/parametry/**"
       - "artificial-intelligence/neural-nets/**"
+      - "artificial-intelligence/large-language-models/loader/**"
       - ".github/workflows/llm-vocabulary.yml"
   workflow_dispatch:
 
@@ -155,3 +157,17 @@ jobs:
           ../neural-nets/neural_nets.c parametry/parametry_demo.c
           -o /tmp/parametry_demo -lm
           && /tmp/parametry_demo
+
+      - name: Compile loader core + slnn sink warning-clean (C11)
+        run: >-
+          cc -std=c11 -O2 -Wall -Wextra -pedantic -c loader/example_loader.c -o /tmp/el.o
+          && cc -std=c11 -O2 -Wall -Wextra -pedantic -c loader/example_loader_slnn.c -o /tmp/els.o
+
+      - name: Build + run loader-handler demo (words/maths/objects -> real net)
+        run: >-
+          cc -std=c11 -O2 -Wall -Wextra -pedantic
+          loader/example_loader.c loader/example_loader_slnn.c
+          large_language_models_vocabulary.c large_language_models_base_vocabulary.c
+          ../neural-nets/neural_nets.c loader/example_loader_demo.c
+          -o /tmp/example_loader_demo -lm
+          && /tmp/example_loader_demo
