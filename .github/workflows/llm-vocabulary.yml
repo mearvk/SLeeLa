@@ -21,6 +21,7 @@ on:
       - "artificial-intelligence/large-language-models/parametry/**"
       - "artificial-intelligence/neural-nets/**"
       - "artificial-intelligence/large-language-models/loader/**"
+      - "artificial-intelligence/large-language-models/rrs/**"
       - ".github/workflows/llm-vocabulary.yml"
   pull_request:
     branches: [master, main]
@@ -42,6 +43,7 @@ on:
       - "artificial-intelligence/large-language-models/parametry/**"
       - "artificial-intelligence/neural-nets/**"
       - "artificial-intelligence/large-language-models/loader/**"
+      - "artificial-intelligence/large-language-models/rrs/**"
       - ".github/workflows/llm-vocabulary.yml"
   workflow_dispatch:
 
@@ -171,3 +173,16 @@ jobs:
           ../neural-nets/neural_nets.c loader/example_loader_demo.c
           -o /tmp/example_loader_demo -lm
           && /tmp/example_loader_demo
+
+      - name: Build + run RRS demo (3-stage feed-forward, ternary 1/0/2)
+        run: >-
+          cc -std=c11 -O2 -Wall -Wextra -pedantic
+          large_language_models.c large_language_models_reasoning.c
+          rrs/rrs.c rrs/rrs_demo.c
+          -o /tmp/rrs_demo
+          && /tmp/rrs_demo
+
+      - name: Compile RRS C++17 facade
+        run: >-
+          printf '#include "rrs/rrs.hpp"\nint main(){return 0;}\n' > /tmp/rrs_cc.cpp
+          && c++ -std=c++17 -O2 -Wall -Wextra -I. /tmp/rrs_cc.cpp rrs/rrs.c -o /tmp/rrs_cc
