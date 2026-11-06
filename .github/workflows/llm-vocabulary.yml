@@ -15,6 +15,8 @@ on:
       - "artificial-intelligence/large-language-models/REASONING.md"
       - "artificial-intelligence/large-language-models/large_language_models_capacity.*"
       - "artificial-intelligence/large-language-models/models/capacity-profile*"
+      - "artificial-intelligence/large-language-models/large_language_models_code.*"
+      - "artificial-intelligence/large-language-models/models/code-model*"
       - ".github/workflows/llm-vocabulary.yml"
   pull_request:
     branches: [master, main]
@@ -30,6 +32,8 @@ on:
       - "artificial-intelligence/large-language-models/REASONING.md"
       - "artificial-intelligence/large-language-models/large_language_models_capacity.*"
       - "artificial-intelligence/large-language-models/models/capacity-profile*"
+      - "artificial-intelligence/large-language-models/large_language_models_code.*"
+      - "artificial-intelligence/large-language-models/models/code-model*"
       - ".github/workflows/llm-vocabulary.yml"
   workflow_dispatch:
 
@@ -84,6 +88,14 @@ jobs:
           -o /tmp/capacity_selftest
           && /tmp/capacity_selftest
 
+      - name: Compile + run Code LLM profile self-test (C11)
+        run: >-
+          cc -std=c11 -O2 -Wall -Wextra -pedantic
+          large_language_models_code.c
+          tools/code_model_selftest.c
+          -o /tmp/code_model_selftest
+          && /tmp/code_model_selftest
+
       - name: Compile C++17 facades
         run: >-
           c++ -std=c++17 -O2 -Wall -Wextra -c large_language_models_vocabulary.cpp -o /tmp/v.o
@@ -102,3 +114,7 @@ jobs:
       - name: Compile reasoning + capacity C++17 facades
         run: >-
           c++ -std=c++17 -O2 -Wall -Wextra -c large_language_models_reasoning.cpp -o /tmp/r.o
+
+      - name: Compile Code LLM C11 unit
+        run: >-
+          cc -std=c11 -O2 -Wall -Wextra -pedantic -c large_language_models_code.c -o /tmp/code.o

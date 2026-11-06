@@ -76,6 +76,10 @@ model or vocabulary:
 - `PHILOSOPHY` — dialectic: surface assumptions, steelman the strongest
   objection, prefer a nuanced position to a slogan.
 - `RELIGION` — interpretive: attribute to traditions, make no proof-claim.
+- `CODE` — procedural programming: summarize, dry-run/state-track, refactor,
+  translate. Verifiable like math — a code verifier (compile/test/trace)
+  supplies soundness, so SUPPORTED steps are trusted and a verified result is
+  meaningful. See `CODE-MODELS.md`.
 - `GENERAL` — balanced default.
 
 ## Files

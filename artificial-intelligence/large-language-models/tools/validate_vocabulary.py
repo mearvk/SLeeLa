@@ -230,6 +230,60 @@ def validate_capacity(path, schema_path):
                 err(loc, f"[{mid}] tier_hint '{hint}' disagrees with derived tier '{tier_for_bytes(wb)}'")
 
 
+CODE_LANGS = {"c", "fortran", "pascal", "python", "shell", "sleela", "other"}
+CODE_TASKS = {"summarize", "dry-run", "refactor", "translate", "debug", "complete"}
+CODE_CHECKS = {"none", "compile", "test", "trace"}
+
+
+def validate_code_models(path, schema_path):
+    """Schema + consistency checks for user-owned Code LLM profiles."""
+    where = str(path)
+    schema = load_json(schema_path) if (schema_path and schema_path.exists()) else None
+    try:
+        with open(path, encoding="utf-8") as fh:
+            lines = fh.readlines()
+    except OSError as e:
+        err(where, f"cannot read: {e}")
+        return
+    ids = set()
+    for lineno, line in enumerate(lines, 1):
+        line = line.strip()
+        if not line:
+            continue
+        loc = f"{where}:{lineno}"
+        try:
+            rec = json.loads(line)
+        except json.JSONDecodeError as e:
+            err(loc, f"invalid JSON: {e}")
+            continue
+        if schema is not None:
+            schema_check(rec, schema, loc)
+        mid = rec.get("model_id", "")
+        if mid in ids:
+            err(loc, f"duplicate model_id '{mid}'")
+        ids.add(mid)
+        lang = rec.get("primary_language")
+        if lang not in CODE_LANGS:
+            err(loc, f"[{mid}] invalid primary_language '{lang}'")
+        if lang == "other" and not rec.get("other_language"):
+            err(loc, f"[{mid}] primary_language 'other' requires other_language")
+        tasks = rec.get("tasks", [])
+        if not tasks:
+            err(loc, f"[{mid}] tasks must be non-empty")
+        for t in tasks:
+            if t not in CODE_TASKS:
+                err(loc, f"[{mid}] invalid task '{t}'")
+        cm = rec.get("check_mode")
+        if cm is not None and cm not in CODE_CHECKS:
+            err(loc, f"[{mid}] invalid check_mode '{cm}'")
+        # Honesty: dry-run/debug claim behavior; with check_mode 'none' that behavior
+        # is unverifiable. This is allowed, but the note should say so (advisory).
+        if cm == "none" and ("dry-run" in tasks or "debug" in tasks):
+            note = (rec.get("note") or "").lower()
+            if "unverif" not in note and "unverified" not in note:
+                err(loc, f"[{mid}] check_mode 'none' with dry-run/debug: note should flag that behavior claims are unverified")
+
+
 def main(argv=None):
     root = Path(__file__).resolve().parent.parent  # large-language-models/
     schema_dir_tok = root / "tokenizers"
@@ -260,13 +314,20 @@ def main(argv=None):
     for f in cap_files:
         validate_capacity(f, cap_schema)
 
+    # Code LLM profiles (user-owned code-specialized models)
+    code_schema = models_dir / "code-model.schema.json"
+    code_files = sorted(models_dir.glob("code-model*.jsonl")) if models_dir.exists() else []
+    for f in code_files:
+        validate_code_models(f, code_schema)
+
     if errors:
         print(f"validate: FAILED with {len(errors)} issue(s):", file=sys.stderr)
         for e in errors:
             print(f"  - {e}", file=sys.stderr)
         return 1
-    scope = f"base + {len(corpus_files)} corpus file(s) + {len(cap_files)} capacity profile(s)"
-    print(f"validate: OK — {scope} pass schema, ID, licensing, and capacity checks"
+    scope = (f"base + {len(corpus_files)} corpus file(s) + {len(cap_files)} capacity + "
+             f"{len(code_files)} code-model profile(s)")
+    print(f"validate: OK — {scope} pass schema, ID, licensing, capacity, and code checks"
           + ("" if HAVE_JSONSCHEMA else " (built-in schema subset; install jsonschema for full checks)"))
     return 0
 

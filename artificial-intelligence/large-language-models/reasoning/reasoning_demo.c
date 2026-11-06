@@ -38,6 +38,7 @@ static sllm_status stub_generate(void* ud, const char* prompt,
  int reflect = has(prompt,"Make this step a REFLECTION");
  int math = has(prompt,"sum of the interior angles of a triangle");
  int phil = has(prompt,"Is it ever moral to lie");
+ int code = has(prompt,"for (i = 0; i < 4; i++) sum += i");
 
  if(reflect){
   line="REFLECTION: Re-examining the path; each stated step should follow from the assumptions.";
@@ -56,6 +57,21 @@ static sllm_status stub_generate(void* ud, const char* prompt,
    line="CONCLUSION: The interior angles of a Euclidean triangle sum to 180 degrees.";
   else
    line="DEDUCTION: By the Euclidean parallel postulate the interior angles sum to 180 degrees.";
+ } else if(code){
+  /* Dry-run a loop: sum of 0+1+2+3 = 6. Propose a wrong value first. */
+  if(!has(prompt,"Reasoning so far"))
+   line="ASSUMPTION: sum starts at 0 and i runs 0,1,2,3.";
+  else if(has(prompt,"A previous path was refuted")){
+   if(has(prompt,"equals 6"))
+    line="CONCLUSION: After the loop, sum equals 6.";
+   else
+    line="DEDUCTION: Dry-run: 0+1+2+3, so sum equals 6.";
+  } else if(!st->math_wrong_emitted){ st->math_wrong_emitted=1;
+   line="DEDUCTION: Dry-run: the loop adds 1+2+3+4, so sum equals 10."; }
+  else if(has(prompt,"equals 6"))
+   line="CONCLUSION: After the loop, sum equals 6.";
+  else
+   line="DEDUCTION: Dry-run: 0+1+2+3, so sum equals 6.";
  } else if(phil){
   if(!has(prompt,"Reasoning so far"))
    line="DECOMPOSE: Separate the duty not to deceive from the duty to prevent serious harm.";
@@ -79,6 +95,11 @@ static sllmr_verdict demo_check(void* ud, sllmr_subject subject, const char* q,
  if(subject==SLLMR_SUBJECT_MATH){
   if(strstr(t,"360 degrees")){ if(note&&ncap) snprintf(note,ncap,"false: Euclidean triangle angle sum is 180, not 360"); return SLLMR_VERDICT_REFUTED; }
   if(strstr(t,"180 degrees")){ if(note&&ncap) snprintf(note,ncap,"matches the Euclidean theorem"); return SLLMR_VERDICT_SUPPORTED; }
+ }
+ if(subject==SLLMR_SUBJECT_CODE){
+  /* Stand-in for a trace verifier: the true loop sum (0+1+2+3) is 6. */
+  if(strstr(t,"equals 10")){ if(note&&ncap) snprintf(note,ncap,"trace: loop adds 0..3, not 1..4; sum is 6"); return SLLMR_VERDICT_REFUTED; }
+  if(strstr(t,"equals 6")){ if(note&&ncap) snprintf(note,ncap,"trace confirms sum==6"); return SLLMR_VERDICT_SUPPORTED; }
  }
  return SLLMR_VERDICT_UNKNOWN; /* open / interpretive / unknown */
 }
@@ -159,6 +180,10 @@ int main(void){
  ok &= run("Mathematics (verified, with backtrack)", re,
            "What is the sum of the interior angles of a triangle?",
            SLLMR_SUBJECT_MATH, 1, &budget);
+ /* Code (procedural): dry-run a loop, refute a wrong state, verify via trace. */
+ ok &= run("Code LLM (procedural dry-run, verified)", re,
+           "Dry-run this C: int sum = 0; for (i = 0; i < 4; i++) sum += i; What is sum?",
+           SLLMR_SUBJECT_CODE, 1, &budget);
  /* Philosophy: stays honestly tentative, surfaces an objection, no proof-claim. */
  ok &= run("Philosophy (nuanced, tentative)", re,
            "Is it ever moral to lie?",
