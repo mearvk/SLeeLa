@@ -270,7 +270,14 @@ _Static_assert(OP__COUNT == 157, "the extended ISA must contain 157 opcodes");
 #define SL_MAX_STRUCTS 4096       /* live struct instances per VM              */
 #define SL_MAX_STRTEXT 65536      /* max bytes for a built/concatenated String */
 #define SL_MAX_ARRAYS 4096        /* live array instances per VM               */
-#define SL_MAX_ARRAY_LEN 1048576  /* maximum elements in a single array        */
+/* Maximum elements in a single array. Raised from 2^20 to 2^24 so a single
+ * big-integer limb array can hold a multi-million-limb number -- e.g. a
+ * 10,000,000-decimal-digit value is ~1,111,112 base-1e9 limbs, and its product
+ * ~2,222,223 limbs, both well under this ceiling. Each element is a boxed
+ * SLValue (24 bytes), so one full 16,777,216-element array is ~384 MB of the
+ * memory manager's live budget; the manager's byte limit still bounds how many
+ * such arrays can be live at once (it fails closed on exhaustion). */
+#define SL_MAX_ARRAY_LEN 16777216 /* maximum elements in a single array (2^24)  */
 typedef enum { SLR_OK = 0, SLR_ERROR, SLR_HALT } SLResult;
 typedef struct SLVM SLVM;
 typedef int (*SLAudioNativeRenderFn)(
