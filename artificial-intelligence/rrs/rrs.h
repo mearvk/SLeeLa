@@ -43,7 +43,7 @@
  * reasoning engine (SLLMR_*). The ternary net is a real, tiny conjunctive
  * accumulator defined here; a backend LLM (optional) supplies premise text.
  */
-#include "../large_language_models_reasoning.h"
+#include "../large-language-models/large_language_models_reasoning.h"
 #include <stddef.h>
 #include <stdint.h>
 #ifdef __cplusplus

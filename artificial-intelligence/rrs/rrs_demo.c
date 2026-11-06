@@ -8,7 +8,8 @@
  *
  * Build:
  *   cc -std=c11 -O2 -Wall -Wextra -pedantic \
- *      ../large_language_models.c ../large_language_models_reasoning.c \
+ *      ../large-language-models/large_language_models.c \
+ *      ../large-language-models/large_language_models_reasoning.c \
  *      rrs.c rrs_demo.c -o rrs_demo
  */
 #include "rrs.h"
