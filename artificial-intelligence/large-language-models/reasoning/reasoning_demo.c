@@ -14,6 +14,7 @@
  *      reasoning_demo.c -o reasoning_demo
  */
 #include "../large_language_models_reasoning.h"
+#include "../large_language_models_capacity.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -93,9 +94,26 @@ static void trace_bt(void* ud, uint32_t from, const char* why){
  (void)ud; printf("   -- backtrack from depth %u: %s\n", from, why);
 }
 
-static int run(const char* title, sllmr_engine* e, const char* q, sllmr_subject subj, int require_verified){
+/* Show how a USER-DECLARED model size (2..16 GB) scales the reasoning budget,
+   while the model itself is never shipped or chosen here. */
+static void show_capacity(uint64_t gib){
+ sllmc_profile p; sllmc_profile_init(&p);
+ p.weight_bytes = gib * 1024ULL*1024ULL*1024ULL;
+ sllmc_status chk = sllmc_profile_check(&p);
+ sllmc_budget b; sllmc_derive_budget(&p,&b);
+ printf("  %2llu GB -> tier=%-8s ctx=%-5u steps=%-2u backtracks=%u  (%s)\n",
+        (unsigned long long)gib, sllmc_tier_name(sllmc_tier_for_bytes(p.weight_bytes)),
+        b.context_tokens, b.max_steps, b.max_backtracks, sllmc_status_string(chk));
+}
+
+static int run(const char* title, sllmr_engine* e, const char* q, sllmr_subject subj,
+               int require_verified, const sllmc_budget* budget){
  sllmr_options o; sllmr_options_init(&o);
- o.subject=subj; o.require_verified=require_verified; o.max_steps=8; o.max_backtracks=2;
+ o.subject=subj; o.require_verified=require_verified;
+ /* Scale the reasoning budget to the user's declared model capacity. */
+ if(budget){ o.max_steps=budget->max_steps; o.max_backtracks=budget->max_backtracks;
+             o.reflection_every=budget->reflection_every; }
+ else { o.max_steps=8; o.max_backtracks=2; }
  sllmr_trace tr={0}; tr.on_step=trace_step; tr.on_backtrack=trace_bt;
  printf("== %s ==\n Q: %s\n", title, q);
  sllmr_result r;
@@ -125,15 +143,26 @@ int main(void){
  sllmr_engine* re=NULL;
  if(sllmr_engine_create(llm,&ver,&re)!=SLLMR_OK){ fprintf(stderr,"demo: reasoning create failed\n"); return 1; }
 
+ /* The USER chooses the model size anywhere in the 2..16 GB envelope; the layer
+    only scales its budget to it. No weights are shipped or selected here. */
+ printf("== Model-capacity budgets (user-declared size, 2..16 GB envelope) ==\n");
+ show_capacity(2); show_capacity(4); show_capacity(8); show_capacity(16);
+ printf("\n");
+
+ /* Pick an 8 GB profile for the reasoning runs below (the user's choice). */
+ sllmc_profile prof; sllmc_profile_init(&prof);
+ prof.weight_bytes = 8ULL*1024*1024*1024;
+ sllmc_budget budget; sllmc_derive_budget(&prof,&budget);
+
  int ok=1;
  /* Math: must refute the 360 path, backtrack, prove 180, and REQUIRE verification. */
  ok &= run("Mathematics (verified, with backtrack)", re,
            "What is the sum of the interior angles of a triangle?",
-           SLLMR_SUBJECT_MATH, 1);
+           SLLMR_SUBJECT_MATH, 1, &budget);
  /* Philosophy: stays honestly tentative, surfaces an objection, no proof-claim. */
  ok &= run("Philosophy (nuanced, tentative)", re,
            "Is it ever moral to lie?",
-           SLLMR_SUBJECT_PHILOSOPHY, 0);
+           SLLMR_SUBJECT_PHILOSOPHY, 0, &budget);
 
  sllmr_engine_destroy(re);
  sllm_engine_unload(llm); sllm_engine_destroy(llm);

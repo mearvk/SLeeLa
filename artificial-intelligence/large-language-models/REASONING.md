@@ -86,8 +86,42 @@ model or vocabulary:
 | `large_language_models_reasoning.hpp/.cpp` | C++17 RAII facade (`sleela::ai::ReasoningModel`) with `std::function` verifier/observer |
 | `reasoning/reasoning_demo.c` | End-to-end demo: a stub backend + tiny symbolic verifier run a math question (refute -> backtrack -> prove) and a philosophy question (tentative) |
 
+## Model capacity (2 GB .. 16 GB, chosen by the user)
+
+The reasoning layer is **capacity-aware** but **model-agnostic**: it supports a
+weight envelope of roughly **2 GB to 16 GB**, and scales its reasoning budget to
+whatever size the user declares — but it ships no weights and selects no model.
+Which model, which size, which quantization, and where the weights come from are
+entirely the user's choice.
+
+A user declares a `sllmc_profile` (or a `models/capacity-profile*.jsonl` record);
+the layer derives a tier and a budget:
+
+| Tier | ~Size | Context | Max steps | Backtracks |
+|---|---|---|---|---|
+| compact  | ~2 GB  | 2048  | 8  | 2 |
+| standard | ~4 GB  | 4096  | 12 | 3 |
+| capable  | ~8 GB  | 8192  | 16 | 4 |
+| large    | ~16 GB | 16384 | 24 | 6 |
+
+```c
+sllmc_profile p; sllmc_profile_init(&p);
+p.weight_bytes = 8ULL*1024*1024*1024;   /* the USER's 8 GB model */
+sllmc_budget b; sllmc_derive_budget(&p, &b);
+sllmr_options o; sllmr_options_init(&o);
+o.max_steps = b.max_steps; o.max_backtracks = b.max_backtracks;
+o.reflection_every = b.reflection_every;   /* then override anything you like */
+```
+
+The envelope bounds are **advisory guardrails**, not hard refusals: a size
+outside 2..16 GB still classifies (to compact/large) and is reported by
+`sllmc_profile_check` so a host can warn. The user may always override the
+derived context/steps. See `large_language_models_capacity.{h,c,hpp}` and
+`models/capacity-profile.schema.json` (+ `models/capacity-profiles.example.jsonl`).
+
 ## What is NOT bundled
 
 No model weights, no trained backend, no network client. The layer drives a
-caller-supplied `sllm_backend` and an optional caller-supplied `sllmr_verifier`.
-It is an integration contract and a control procedure, not a trained model.
+caller-supplied `sllm_backend` and an optional caller-supplied `sllmr_verifier`,
+sized to a caller-supplied capacity profile. It is an integration contract and a
+control procedure, not a trained model — the user supplies the model.

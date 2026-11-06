@@ -30,6 +30,8 @@ Provider-neutral native APIs for SLeeLa applications that connect to local or ho
 | `large_language_models_base_vocabulary.hpp/.cpp` | C++17 RAII facade for seeding the default base vocabulary |
 | `large_language_models_reasoning.h/.c` | C11 Reasoning Language Model controller (`sllmr_*`, ABI v1): neuro-symbolic chain-of-thought with reflection, self-verification, and backtracking over a pluggable backend + verifier |
 | `large_language_models_reasoning.hpp/.cpp` | C++17 RAII facade (`sleela::ai::ReasoningModel`) with `std::function` verifier/observer |
+| `large_language_models_capacity.h/.c` | C11 user-owned model-capacity profile (`sllmc_*`, ABI v1): declares a model in the 2–16 GB envelope and derives a reasoning budget; ships no weights |
+| `large_language_models_capacity.hpp` | C++17 `CapacityProfile` helper (tier, envelope check, budget) |
 | `large_language_models_training.h/.c` | C training-backend ABI, batch training, evaluation, metrics, and checkpoint requests |
 | `large_language_models_training.hpp/.cpp` | C++17 RAII training facade |
 | `large_language_models_data.h/.c` | Bounded-memory connector read interface, local-file connector, and streaming JSONL reader |
@@ -107,6 +109,12 @@ On open subjects the verifier returns `UNKNOWN` and the engine reports a
 **tentative** position rather than claiming proof. See `REASONING.md` for the
 full contract and `reasoning/` for a runnable end-to-end demo (stub backend +
 tiny symbolic verifier; no weights, no network).
+
+It is **capacity-aware but model-agnostic**: a user-declared `CapacityProfile`
+(`sllmc_*`) in the **2 GB–16 GB** weight envelope scales the reasoning budget
+(context, steps, backtracks) across four tiers (compact/standard/capable/large).
+SLeeLa ships no weights and picks no model — the size and the model are the
+user's choice; the layer only adapts to them.
 
 ## Inference
 

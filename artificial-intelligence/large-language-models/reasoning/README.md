@@ -17,6 +17,7 @@ network, no weights** — to the reasoning engine:
 cc -std=c11 -O2 -Wall -Wextra -pedantic \
    ../large_language_models.c \
    ../large_language_models_reasoning.c \
+   ../large_language_models_capacity.c \
    reasoning_demo.c -o reasoning_demo
 ./reasoning_demo
 ```
@@ -30,6 +31,9 @@ cc -std=c11 -O2 -Wall -Wextra -pedantic \
 2. **Philosophy (nuanced, tentative).** The engine decomposes the question,
    surfaces an objection, and commits an honest, **tentative** position with its
    caveat intact — no proof-claim on a contestable question.
+3. **Model-capacity budgets.** A table shows how a user-declared model size
+   across the 2–16 GB envelope scales the reasoning budget (context, steps,
+   backtracks). The model itself is the user's choice; nothing is shipped.
 
 The demo is a schema/behavior fixture for the control loop, not a trained model.
 To reason for real, implement `sllm_backend` against an actual model and supply
