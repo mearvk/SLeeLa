@@ -940,6 +940,30 @@ private:
             emit(OP_BIGMUL);
             return true;
         }
+        // Native big-integer add: bigadd(a, b, result). Adds base-1e9 limb
+        // arrays a + b into result (needs max(len(a),len(b))+1 limbs). Evaluates
+        // to the significant result-limb count.
+        if(n=="bigadd"){
+            if(c.args.size()!=3)throw std::runtime_error("Semantic error: bigadd(a, b, result) takes exactly three int[] arguments");
+            emitExpr(c.args[0].get());   // a
+            emitExpr(c.args[1].get());   // b
+            emitExpr(c.args[2].get());   // result (top of stack)
+            emit(OP_BIGADD);
+            return true;
+        }
+        // Native big-integer divide by a small integer:
+        // bigdivmod(dividend, divisor, result). Divides the base-1e9 limb array
+        // `dividend` by the small int `divisor` (1..1e9-1), writes the quotient
+        // limbs into result (len(dividend) suffices), and evaluates to the
+        // integer remainder.
+        if(n=="bigdivmod"){
+            if(c.args.size()!=3)throw std::runtime_error("Semantic error: bigdivmod(dividend, divisor, result) takes exactly three arguments");
+            emitExpr(c.args[0].get());   // dividend (deepest)
+            emitExpr(c.args[1].get());   // divisor (int)
+            emitExpr(c.args[2].get());   // result (top of stack)
+            emit(OP_BIGDIVMOD);
+            return true;
+        }
 
         if(n=="structPack"||n=="structUnpack"){
             if(syntax_<SyntaxVersion{1,2})throw std::runtime_error("Semantic error: struct transport built-ins require #sleela 1.2");

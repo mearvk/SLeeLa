@@ -84,7 +84,7 @@ static bool builtin(const std::string&n){
  "ideaCanvasIntensityAt","ideaCanvasHasRenderer","ideaCanvasOpenWindow","ideaCanvasShouldClose",
  "ideaCanvasPresent","ideaCanvasRun",
  "ideaCanvasSetBackendPolicy","ideaCanvasPolicy","ideaCanvasActiveBackend","ideaCanvasGpuAvailable","ideaCanvasMeasuredHz","ideaCanvasMigrate",
- "bigmul"};
+ "bigmul","bigadd","bigdivmod"};
  if(s.count(n)!=0) return true;
  // SleelaUI (ui*) bridge built-ins: any ui<Capital>... name is a native UI
  // call lowered by the compiler to OP_UI_CALL (see sleela_ui_ids.h / the
@@ -540,7 +540,7 @@ class Analyzer{
   if(n=="osPlatform"||n=="osGetEnv"||n=="osCurrentDir"||n=="osHostName"||n=="osUserName"||n=="osTempDir"){return{Kind::String,{}};}
   if(n=="osCapability"||n=="osSetEnv"||n=="osChangeDir"||n=="osProcessId"||n=="osExists"||n=="osIsDir"||n=="osFileSize"||n=="osMakeDir"||n=="osRemove"||n=="osRename"||n=="osRun"||n=="osSpawn"||n=="osWait"||n=="osKill"){return{Kind::Int,{}};}
   if(n=="sysdepth"||n=="degreemax"||n=="timeUtcMillis"||n=="timeUtcNanos"||n=="timeMonotonicNanos"||n=="timePrecisionMillis"){return{Kind::Int,{}};}
-  if(n=="bigmul"){return{Kind::Int,{}};}
+  if(n=="bigmul"||n=="bigadd"||n=="bigdivmod"){return{Kind::Int,{}};}
   if(n=="synchroMean"||n=="synchroMin"||n=="synchroMax"||n=="synchroP95"||n=="synchroLoss"||n=="bestOfMean"||n=="bestOfLoss"||n=="bestOfJitter"||n=="bestOfCertainty"){return{Kind::Double,{}};}
   if(n=="Munction.start"||n=="read"||n=="recv"||n=="sockread"||n=="timeNtp"||n=="sleep"){return{Kind::Unknown,{}};}
   // SleelaUI (ui*) bridge return types: string getters, one double getter, the

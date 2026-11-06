@@ -65,6 +65,14 @@ typedef struct SLThread {
                               * once per SL_GC_SAFEPOINT_STRIDE instructions
                               * rather than on every one, so a tight numeric loop
                               * does not pay a mutex per opcode. */
+    int workers_cached;      /* worker-thread count observed at the last safepoint.
+                              * When 0, this thread owns every array/struct, so the
+                              * array opcodes skip the per-element array mutex (the
+                              * dominant cost of a large fill/scan loop). Refreshed
+                              * under thr_mtx at the batched safepoint; a worker can
+                              * only be spawned by this thread (OP_SPAWN), which
+                              * forces a safepoint refresh before any concurrent
+                              * access. */
     pthread_t handle;
     int started;
 } SLThread;
@@ -133,6 +141,11 @@ typedef struct {
     int active;
     int len;
     int cap;
+    int has_refs;   /* 1 once a struct/array element has ever been stored. While
+                     * 0 the array holds only scalars, so the GC can skip tracing
+                     * its elements entirely -- turning O(n) marking of a large
+                     * primitive array into O(1) and removing the O(n^2) cost of
+                     * re-marking a growing int[] across a fill loop. */
     SLValue *elems;
     SLGCObject *gc_object;
 } SLArrayInstance;
@@ -711,6 +724,9 @@ static void gc_trace_array(SLGCObject *object, void *context) {
     SLVM *vm = (SLVM *)context;
     SLArrayInstance *ai = object ? (SLArrayInstance *)object->payload : NULL;
     if (!vm || !ai || !ai->active) return;
+    /* A scalars-only array can hold no references, so there is nothing to trace.
+     * This is what keeps marking a large primitive int[]/double[] O(1). */
+    if (!ai->has_refs) return;
     for (int i = 0; i < ai->len; ++i)
         if (ai->elems && (ai->elems[i].type == SL_STRUCT || ai->elems[i].type == SL_ARRAY))
             gc_mark_value(vm, &vm->gc, ai->elems[i]);
@@ -744,13 +760,16 @@ static void gc_struct_destroy(void *payload) {
 }
 static void gc_array_destroy(void *payload) {
     SLArrayInstance *ai = (SLArrayInstance *)payload;
-    if (ai) { free(ai->elems); ai->elems = NULL; ai->len = 0; ai->cap = 0; ai->active = 0; ai->gc_object = NULL; }
+    if (ai) { free(ai->elems); ai->elems = NULL; ai->len = 0; ai->cap = 0; ai->has_refs = 0; ai->active = 0; ai->gc_object = NULL; }
 }
 static void slvm_gc_safepoint(SLVM *vm, SLThread *current, size_t budget) {
     if (!vm) return;
     pthread_mutex_lock(&vm->thr_mtx);
     int workers = vm->nthreads;
     pthread_mutex_unlock(&vm->thr_mtx);
+    /* Cache the worker count so the array opcodes can take a lock-free fast path
+     * when single-threaded. Refreshed every batched safepoint. */
+    if (current) current->workers_cached = workers;
     /* Collection is a VM safepoint. With worker threads active, defer heap
      * reclamation until structured-concurrency quiescence so all stacks are
      * observed consistently. */
@@ -860,6 +879,7 @@ static int array_push(SLVM* vm, int h, SLValue val) {
         }
         ai->elems = ne; ai->cap = ncap;
     }
+    if (val.type == SL_STRUCT || val.type == SL_ARRAY) ai->has_refs = 1;
     ai->elems[ai->len++] = val;
     int len = ai->len;
     pthread_mutex_unlock(&vm->array_mtx);
@@ -1203,6 +1223,183 @@ static int sl_big_significant(const uint32_t* r, int n) {
     return n;
 }
 
+/* ------------------------------------------------------------------------
+ * NTT (number-theoretic transform) big-integer multiply.
+ *
+ * For large operands, schoolbook is O(n^2) and Karatsuba O(n^1.585); an NTT
+ * convolution is O(n log n). We transform exactly in the integers modulo a
+ * single NTT-friendly 62-bit prime, so there is no floating-point rounding and
+ * no CRT recombination to get wrong.
+ *
+ * Each base-1e9 limb is split into THREE base-1000 sub-limbs (a base-1e9 number
+ * is a base-1000 number with 3x the digits). The acyclic convolution of two
+ * base-1000 digit sequences of combined length L has coefficients bounded by
+ * L * (999)^2 < L * 1e6. For the sizes this is used at (L up to ~2^24) that is
+ * < 2^54, comfortably below the prime, so every coefficient is recovered
+ * exactly. Carries are then propagated in base 1000 and the result repacked
+ * into base-1e9 limbs.
+ *
+ * Prime: p = 4179340454199820289 = 29 * 2^57 + 1 (a known NTT prime with a
+ * 2^57 power-of-two factor, so transforms up to length 2^57 exist) with
+ * primitive root 3.
+ * ---------------------------------------------------------------------- */
+#define SL_NTT_PRIME 4179340454199820289ULL
+#define SL_NTT_ROOT  3ULL
+/* Use NTT only when the schoolbook/Karatsuba product would be large. Below this
+ * (in base-1e9 limbs) Karatsuba is faster due to NTT's setup/transform constant. */
+#define SL_NTT_THRESHOLD 512
+
+static uint64_t sl_ntt_mulmod(uint64_t a, uint64_t b, uint64_t m) {
+#if defined(__SIZEOF_INT128__)
+    return (uint64_t)(((unsigned __int128)a * b) % m);
+#else
+    /* Portable fallback: binary mulmod (slower, only if no __int128). */
+    uint64_t r = 0; a %= m;
+    while (b) { if (b & 1) { r = (r + a) % m; } a = (a << 1) % m; b >>= 1; }
+    return r;
+#endif
+}
+static uint64_t sl_ntt_powmod(uint64_t a, uint64_t e, uint64_t m) {
+    uint64_t r = 1 % m; a %= m;
+    while (e) { if (e & 1) r = sl_ntt_mulmod(r, a, m); a = sl_ntt_mulmod(a, a, m); e >>= 1; }
+    return r;
+}
+/* In-place iterative NTT of length n (a power of two). invert!=0 does the
+ * inverse transform (without the final 1/n scaling, applied by the caller). */
+static void sl_ntt_transform(uint64_t* v, size_t n, int invert) {
+    for (size_t i = 1, j = 0; i < n; ++i) {
+        size_t bit = n >> 1;
+        for (; j & bit; bit >>= 1) j ^= bit;
+        j ^= bit;
+        if (i < j) { uint64_t t = v[i]; v[i] = v[j]; v[j] = t; }
+    }
+    for (size_t len = 2; len <= n; len <<= 1) {
+        uint64_t w = sl_ntt_powmod(SL_NTT_ROOT, (SL_NTT_PRIME - 1) / len, SL_NTT_PRIME);
+        if (invert) w = sl_ntt_powmod(w, SL_NTT_PRIME - 2, SL_NTT_PRIME);
+        for (size_t i = 0; i < n; i += len) {
+            uint64_t wn = 1;
+            for (size_t k = 0; k < len / 2; ++k) {
+                uint64_t u = v[i + k];
+                uint64_t t = sl_ntt_mulmod(v[i + k + len / 2], wn, SL_NTT_PRIME);
+                v[i + k] = u + t < SL_NTT_PRIME ? u + t : u + t - SL_NTT_PRIME;
+                v[i + k + len / 2] = u >= t ? u - t : u + SL_NTT_PRIME - t;
+                wn = sl_ntt_mulmod(wn, w, SL_NTT_PRIME);
+            }
+        }
+    }
+}
+/* r = a * b via NTT. r must be zeroed, room for na+nb base-1e9 limbs.
+ * Returns 0 on success, -1 on allocation failure. */
+static int sl_bigmul_ntt(const uint32_t* a, int na, const uint32_t* b, int nb, uint32_t* r) {
+    /* split each base-1e9 limb into 3 base-1000 sub-limbs */
+    size_t la = (size_t)na * 3, lb = (size_t)nb * 3;
+    size_t need = la + lb; /* acyclic convolution length */
+    size_t n = 1;
+    while (n < need) n <<= 1;
+    uint64_t* fa = (uint64_t*)calloc(n, sizeof(uint64_t));
+    uint64_t* fb = (uint64_t*)calloc(n, sizeof(uint64_t));
+    if (!fa || !fb) { free(fa); free(fb); return -1; }
+    for (int i = 0; i < na; ++i) {
+        uint32_t x = a[i];
+        fa[(size_t)i * 3 + 0] = x % 1000; x /= 1000;
+        fa[(size_t)i * 3 + 1] = x % 1000; x /= 1000;
+        fa[(size_t)i * 3 + 2] = x % 1000;
+    }
+    for (int i = 0; i < nb; ++i) {
+        uint32_t x = b[i];
+        fb[(size_t)i * 3 + 0] = x % 1000; x /= 1000;
+        fb[(size_t)i * 3 + 1] = x % 1000; x /= 1000;
+        fb[(size_t)i * 3 + 2] = x % 1000;
+    }
+    sl_ntt_transform(fa, n, 0);
+    sl_ntt_transform(fb, n, 0);
+    for (size_t i = 0; i < n; ++i) fa[i] = sl_ntt_mulmod(fa[i], fb[i], SL_NTT_PRIME);
+    sl_ntt_transform(fa, n, 1);
+    uint64_t ninv = sl_ntt_powmod(n % SL_NTT_PRIME, SL_NTT_PRIME - 2, SL_NTT_PRIME);
+    /* propagate base-1000 carries over the convolution coefficients */
+    uint64_t carry = 0;
+    size_t outlen = la + lb;
+    /* accumulate into base-1000 sub-limbs, then repack 3 at a time into base-1e9 */
+    uint64_t subcarry = 0;
+    size_t ri = 0;
+    uint32_t packLow = 0, packMid = 0, packHigh = 0; (void)packHigh;
+    (void)carry;
+    /* First pass: coefficient -> base-1000 digit stream with carry. */
+    for (size_t i = 0; i < outlen; ++i) {
+        uint64_t coeff = sl_ntt_mulmod(fa[i], ninv, SL_NTT_PRIME) + subcarry;
+        uint64_t digit = coeff % 1000;
+        subcarry = coeff / 1000;
+        /* repack: every 3 base-1000 digits form one base-1e9 limb */
+        size_t phase = i % 3;
+        if (phase == 0) packLow = (uint32_t)digit;
+        else if (phase == 1) packMid = (uint32_t)digit;
+        else {
+            uint32_t limb = packLow + packMid * 1000u + (uint32_t)digit * 1000000u;
+            r[ri++] = limb;
+        }
+    }
+    /* flush any tail digits and remaining subcarry into further base-1e9 limbs */
+    {
+        size_t phase = outlen % 3;
+        uint64_t limb = 0;
+        if (phase == 1) limb = packLow;
+        else if (phase == 2) limb = packLow + (uint64_t)packMid * 1000u;
+        /* fold remaining subcarry (in base 1000 at position outlen) into limb */
+        /* position within current limb for the next base-1000 digit = phase */
+        uint64_t mul = (phase == 0) ? 1 : (phase == 1) ? 1000 : 1000000;
+        if (phase == 0) { mul = 1; }
+        while (subcarry > 0 || phase != 0) {
+            uint64_t d = subcarry % 1000; subcarry /= 1000;
+            if (phase == 0) { limb = d; mul = 1000; phase = 1; }
+            else if (phase == 1) { limb += d * 1000u; mul = 1000000; phase = 2; }
+            else { limb += d * 1000000u; r[ri++] = (uint32_t)limb; limb = 0; mul = 1; phase = 0; }
+            if (subcarry == 0 && phase == 0) break;
+        }
+        if (phase != 0) r[ri++] = (uint32_t)limb;
+    }
+    free(fa); free(fb);
+    return 0;
+}
+
+/* Dispatcher: choose NTT for large products, Karatsuba otherwise. */
+static int sl_bigmul(const uint32_t* a, int na, const uint32_t* b, int nb, uint32_t* r) {
+    if (na >= SL_NTT_THRESHOLD && nb >= SL_NTT_THRESHOLD) {
+        if (sl_bigmul_ntt(a, na, b, nb, r) == 0) return 0;
+        /* fall through to Karatsuba on NTT allocation failure */
+    }
+    return sl_bigmul_kara(a, na, b, nb, r);
+}
+
+/* r = a + b, base 1e9. r must be zeroed with room for max(na,nb)+1 limbs.
+ * Returns the significant result-limb count. */
+static int sl_bigadd(const uint32_t* a, int na, const uint32_t* b, int nb, uint32_t* r) {
+    int n = na > nb ? na : nb;
+    uint64_t carry = 0;
+    for (int i = 0; i < n; ++i) {
+        uint64_t s = carry;
+        if (i < na) s += a[i];
+        if (i < nb) s += b[i];
+        r[i] = (uint32_t)(s % SL_BIG_BASE);
+        carry = s / SL_BIG_BASE;
+    }
+    int len = n;
+    if (carry) { r[n] = (uint32_t)carry; len = n + 1; }
+    return sl_big_significant(r, len);
+}
+
+/* quotient[0..n-1] = dividend[0..n-1] / divisor (small, 1..1e9-1), base 1e9,
+ * most-significant-first long division. Returns the remainder (0..divisor-1).
+ * quotient may alias dividend. */
+static uint32_t sl_bigdivmod_small(const uint32_t* dividend, int n, uint32_t divisor, uint32_t* quotient) {
+    uint64_t rem = 0;
+    for (int i = n - 1; i >= 0; --i) {
+        uint64_t cur = rem * SL_BIG_BASE + dividend[i];
+        quotient[i] = (uint32_t)(cur / divisor);
+        rem = cur % divisor;
+    }
+    return (uint32_t)rem;
+}
+
 static SLResult run_thread(SLThread* t);
 static void* thread_trampoline(void* arg) { run_thread((SLThread*)arg); return NULL; }
 
@@ -1375,6 +1572,10 @@ static SLResult run_thread(SLThread* t) {
         case OP_SPAWN: {
             int sfi=in.a; if(sfi<0||sfi>=vm->nfunc) TERR("spawn of unknown function"); int nargs=vm->funcs[sfi].nargs; if(t->sp<nargs) TERR("spawn: not enough arguments on stack");
             SLValue args[FRAMES_MAX]; for(int i=0;i<nargs;i++) args[i]=t->stack[t->sp-nargs+i]; t->sp-=nargs; PUSH(slval_int(spawn_thread(vm,sfi,args,nargs)));
+            /* A worker now exists; refresh immediately so the array opcodes take
+             * the mutex-guarded path right away rather than waiting for the next
+             * batched safepoint (which could be up to a stride away). */
+            { pthread_mutex_lock(&vm->thr_mtx); t->workers_cached = vm->nthreads; pthread_mutex_unlock(&vm->thr_mtx); }
         } break;
         case OP_JOINALL: slvm_joinall(vm); break;
         case OP_LOCK: if(in.a<0||in.a>=SL_MAX_LOCKS) TERR("lock id out of range"); pthread_mutex_lock(&vm->locks[in.a]); break;
@@ -2044,28 +2245,56 @@ static SLResult run_thread(SLThread* t) {
             SLValue idxv=POP(), av=POP();
             if(av.type!=SL_ARRAY||!array_valid_handle(vm,av.as.h)) TERR("index read on a non-array value");
             if(idxv.type!=SL_INT) TERR("array index must be an integer");
-            pthread_mutex_lock(&vm->array_mtx);
-            SLArrayInstance* ai=&vm->arrays[av.as.h];
-            if(idxv.as.i<0||idxv.as.i>=ai->len){pthread_mutex_unlock(&vm->array_mtx);TERR("array index out of range");}
-            SLValue ev=ai->elems[idxv.as.i];
-            pthread_mutex_unlock(&vm->array_mtx);
-            PUSH(ev);
+            /* Lock-free fast path when single-threaded: with no worker threads
+             * this thread is the sole owner of every array, so the per-element
+             * array mutex is pure overhead. This is the dominant cost of a large
+             * fill/scan loop. workers_cached is refreshed at the batched
+             * safepoint and forced at OP_SPAWN, so it is never a stale zero while
+             * a worker exists. */
+            if (t->workers_cached == 0) {
+                SLArrayInstance* ai=&vm->arrays[av.as.h];
+                if(idxv.as.i<0||idxv.as.i>=ai->len) TERR("array index out of range");
+                PUSH(ai->elems[idxv.as.i]);
+            } else {
+                pthread_mutex_lock(&vm->array_mtx);
+                SLArrayInstance* ai=&vm->arrays[av.as.h];
+                if(idxv.as.i<0||idxv.as.i>=ai->len){pthread_mutex_unlock(&vm->array_mtx);TERR("array index out of range");}
+                SLValue ev=ai->elems[idxv.as.i];
+                pthread_mutex_unlock(&vm->array_mtx);
+                PUSH(ev);
+            }
         } break;
         case OP_ARRSET: {
             SLValue val=POP(), idxv=POP(), av=POP();
             if(av.type!=SL_ARRAY||!array_valid_handle(vm,av.as.h)) TERR("index assignment on a non-array value");
             if(idxv.type!=SL_INT) TERR("array index must be an integer");
-            pthread_mutex_lock(&vm->array_mtx);
-            SLArrayInstance* ai=&vm->arrays[av.as.h];
-            if(idxv.as.i<0||idxv.as.i>=ai->len){pthread_mutex_unlock(&vm->array_mtx);TERR("array index out of range");}
-            SLValue old=ai->elems[idxv.as.i];
-            if (old.type == SL_STRUCT || old.type == SL_ARRAY || val.type == SL_STRUCT || val.type == SL_ARRAY)
-                gc_write_barrier(&vm->gc, array_gc_object(vm, av.as.h),
-                    old.type==SL_STRUCT?struct_gc_object(vm,old.as.h):array_gc_object(vm,old.as.h),
-                    val.type==SL_STRUCT?struct_gc_object(vm,val.as.h):array_gc_object(vm,val.as.h));
-            ai->elems[idxv.as.i]=val;
-            pthread_mutex_unlock(&vm->array_mtx);
-            PUSH(val);
+            if (t->workers_cached == 0) {
+                /* Lock-free single-threaded fast path (see OP_ARRGET). The GC
+                 * write barrier still runs -- it is correctness, not locking. */
+                SLArrayInstance* ai=&vm->arrays[av.as.h];
+                if(idxv.as.i<0||idxv.as.i>=ai->len) TERR("array index out of range");
+                SLValue old=ai->elems[idxv.as.i];
+                if (old.type == SL_STRUCT || old.type == SL_ARRAY || val.type == SL_STRUCT || val.type == SL_ARRAY)
+                    gc_write_barrier(&vm->gc, array_gc_object(vm, av.as.h),
+                        old.type==SL_STRUCT?struct_gc_object(vm,old.as.h):array_gc_object(vm,old.as.h),
+                        val.type==SL_STRUCT?struct_gc_object(vm,val.as.h):array_gc_object(vm,val.as.h));
+                if (val.type == SL_STRUCT || val.type == SL_ARRAY) ai->has_refs = 1;
+                ai->elems[idxv.as.i]=val;
+                PUSH(val);
+            } else {
+                pthread_mutex_lock(&vm->array_mtx);
+                SLArrayInstance* ai=&vm->arrays[av.as.h];
+                if(idxv.as.i<0||idxv.as.i>=ai->len){pthread_mutex_unlock(&vm->array_mtx);TERR("array index out of range");}
+                SLValue old=ai->elems[idxv.as.i];
+                if (old.type == SL_STRUCT || old.type == SL_ARRAY || val.type == SL_STRUCT || val.type == SL_ARRAY)
+                    gc_write_barrier(&vm->gc, array_gc_object(vm, av.as.h),
+                        old.type==SL_STRUCT?struct_gc_object(vm,old.as.h):array_gc_object(vm,old.as.h),
+                        val.type==SL_STRUCT?struct_gc_object(vm,val.as.h):array_gc_object(vm,val.as.h));
+                if (val.type == SL_STRUCT || val.type == SL_ARRAY) ai->has_refs = 1;
+                ai->elems[idxv.as.i]=val;
+                pthread_mutex_unlock(&vm->array_mtx);
+                PUSH(val);
+            }
         } break;
         case OP_ARRLEN: {
             SLValue av=POP();
@@ -2282,7 +2511,7 @@ static SLResult run_thread(SLThread* t) {
             if (ok == 3) { free(abuf); free(bbuf); free(rbuf); TERR("bigmul could not allocate its limb buffers"); }
             if (ok == 4) { free(abuf); free(bbuf); free(rbuf); TERR("bigmul limbs must be integers"); }
             if (ok == 5) { free(abuf); free(bbuf); free(rbuf); TERR("bigmul limbs must be in [0, 1000000000)"); }
-            if (sl_bigmul_kara(abuf, na, bbuf, nb, rbuf) != 0) {
+            if (sl_bigmul(abuf, na, bbuf, nb, rbuf) != 0) {
                 free(abuf); free(bbuf); free(rbuf);
                 TERR("bigmul native kernel ran out of memory");
             }
@@ -2296,6 +2525,117 @@ static SLResult run_thread(SLThread* t) {
             pthread_mutex_unlock(&vm->array_mtx);
             free(abuf); free(bbuf); free(rbuf);
             PUSH(slval_int(sig));
+        } break;
+
+        case OP_BIGADD: {
+            /* Pops result, b, a (result on top). Each an int[] of base-1e9 limbs.
+             * Adds a + b, writes the sum into result (needs max(na,nb)+1 limbs),
+             * pushes the significant limb count. */
+            SLValue rv = POP(), bv = POP(), av = POP();
+            if (av.type != SL_ARRAY || !array_valid_handle(vm, av.as.h) ||
+                bv.type != SL_ARRAY || !array_valid_handle(vm, bv.as.h) ||
+                rv.type != SL_ARRAY || !array_valid_handle(vm, rv.as.h))
+                TERR("bigadd requires three int[] array handles (a, b, result)");
+            uint32_t *abuf = NULL, *bbuf = NULL, *rbuf = NULL;
+            int na = 0, nb = 0, nmax = 0, sig = 0, ok = 1;
+            pthread_mutex_lock(&vm->array_mtx);
+            {
+                SLArrayInstance *aa = &vm->arrays[av.as.h];
+                SLArrayInstance *ab = &vm->arrays[bv.as.h];
+                SLArrayInstance *ar = &vm->arrays[rv.as.h];
+                na = aa->len; nb = ab->len; nmax = na > nb ? na : nb;
+                if (na < 1 || nb < 1) { ok = 0; }
+                else if (ar->len < nmax + 1) { ok = 2; }
+                else {
+                    abuf = (uint32_t*)malloc((size_t)na * sizeof(uint32_t));
+                    bbuf = (uint32_t*)malloc((size_t)nb * sizeof(uint32_t));
+                    rbuf = (uint32_t*)calloc((size_t)(nmax + 1), sizeof(uint32_t));
+                    if (!abuf || !bbuf || !rbuf) { ok = 3; }
+                    else {
+                        for (int i = 0; i < na; i++) {
+                            SLValue e = aa->elems[i];
+                            int64_t x = (e.type == SL_INT) ? e.as.i : (e.type == SL_INT128) ? (int64_t)e.as.i128 : -1;
+                            if (x < 0 || x >= (int64_t)SL_BIG_BASE) ok = 5;
+                            abuf[i] = (x >= 0 && x < (int64_t)SL_BIG_BASE) ? (uint32_t)x : 0;
+                        }
+                        for (int i = 0; i < nb; i++) {
+                            SLValue e = ab->elems[i];
+                            int64_t x = (e.type == SL_INT) ? e.as.i : (e.type == SL_INT128) ? (int64_t)e.as.i128 : -1;
+                            if (x < 0 || x >= (int64_t)SL_BIG_BASE) ok = 5;
+                            bbuf[i] = (x >= 0 && x < (int64_t)SL_BIG_BASE) ? (uint32_t)x : 0;
+                        }
+                    }
+                }
+            }
+            pthread_mutex_unlock(&vm->array_mtx);
+            if (ok == 0) { free(abuf); free(bbuf); free(rbuf); TERR("bigadd operands must each have at least one limb"); }
+            if (ok == 2) { free(abuf); free(bbuf); free(rbuf); TERR("bigadd result array is too small (need max(len(a),len(b))+1 limbs)"); }
+            if (ok == 3) { free(abuf); free(bbuf); free(rbuf); TERR("bigadd could not allocate its limb buffers"); }
+            if (ok == 5) { free(abuf); free(bbuf); free(rbuf); TERR("bigadd limbs must be in [0, 1000000000)"); }
+            sig = sl_bigadd(abuf, na, bbuf, nb, rbuf);
+            pthread_mutex_lock(&vm->array_mtx);
+            {
+                SLArrayInstance *ar = &vm->arrays[rv.as.h];
+                int wn = (nmax + 1 <= ar->len) ? (nmax + 1) : ar->len;
+                for (int i = 0; i < wn; i++) { ar->elems[i].type = SL_INT; ar->elems[i].as.i = (int64_t)rbuf[i]; }
+            }
+            pthread_mutex_unlock(&vm->array_mtx);
+            free(abuf); free(bbuf); free(rbuf);
+            PUSH(slval_int(sig));
+        } break;
+
+        case OP_BIGDIVMOD: {
+            /* Pops result, divisor(int), dividend (dividend deepest). Divides the
+             * dividend int[] by the small integer divisor (1..1e9-1), writes the
+             * quotient limbs into result (dividend length suffices), and pushes
+             * the integer remainder. */
+            SLValue rv = POP(), dvv = POP(), nv = POP();
+            if (nv.type != SL_ARRAY || !array_valid_handle(vm, nv.as.h) ||
+                rv.type != SL_ARRAY || !array_valid_handle(vm, rv.as.h))
+                TERR("bigdivmod requires (dividend int[], int divisor, result int[])");
+            if (dvv.type != SL_INT) TERR("bigdivmod divisor must be an integer");
+            int64_t divisor = dvv.as.i;
+            if (divisor < 1 || divisor >= (int64_t)SL_BIG_BASE)
+                TERR("bigdivmod divisor must be in [1, 1000000000)");
+            uint32_t *dbuf = NULL, *qbuf = NULL;
+            int n = 0, ok = 1;
+            uint32_t rem = 0;
+            pthread_mutex_lock(&vm->array_mtx);
+            {
+                SLArrayInstance *ad = &vm->arrays[nv.as.h];
+                SLArrayInstance *ar = &vm->arrays[rv.as.h];
+                n = ad->len;
+                if (n < 1) { ok = 0; }
+                else if (ar->len < n) { ok = 2; }
+                else {
+                    dbuf = (uint32_t*)malloc((size_t)n * sizeof(uint32_t));
+                    qbuf = (uint32_t*)calloc((size_t)n, sizeof(uint32_t));
+                    if (!dbuf || !qbuf) { ok = 3; }
+                    else {
+                        for (int i = 0; i < n; i++) {
+                            SLValue e = ad->elems[i];
+                            int64_t x = (e.type == SL_INT) ? e.as.i : (e.type == SL_INT128) ? (int64_t)e.as.i128 : -1;
+                            if (x < 0 || x >= (int64_t)SL_BIG_BASE) ok = 5;
+                            dbuf[i] = (x >= 0 && x < (int64_t)SL_BIG_BASE) ? (uint32_t)x : 0;
+                        }
+                    }
+                }
+            }
+            pthread_mutex_unlock(&vm->array_mtx);
+            if (ok == 0) { free(dbuf); free(qbuf); TERR("bigdivmod dividend must have at least one limb"); }
+            if (ok == 2) { free(dbuf); free(qbuf); TERR("bigdivmod result array is too small (need len(dividend) limbs)"); }
+            if (ok == 3) { free(dbuf); free(qbuf); TERR("bigdivmod could not allocate its limb buffers"); }
+            if (ok == 5) { free(dbuf); free(qbuf); TERR("bigdivmod limbs must be in [0, 1000000000)"); }
+            rem = sl_bigdivmod_small(dbuf, n, (uint32_t)divisor, qbuf);
+            pthread_mutex_lock(&vm->array_mtx);
+            {
+                SLArrayInstance *ar = &vm->arrays[rv.as.h];
+                int wn = (n <= ar->len) ? n : ar->len;
+                for (int i = 0; i < wn; i++) { ar->elems[i].type = SL_INT; ar->elems[i].as.i = (int64_t)qbuf[i]; }
+            }
+            pthread_mutex_unlock(&vm->array_mtx);
+            free(dbuf); free(qbuf);
+            PUSH(slval_int((int64_t)rem));
         } break;
 
         default: log_unsupported_opcode(vm, in.op); TERR("unsupported opcode");
