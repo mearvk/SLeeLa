@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11901
+library-source-files: 11904
 library-packages: 113
 module-facade-symbols: 80
-total-symbol-records: 11981
+total-symbol-records: 11984
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -10927,6 +10927,7 @@ math	SLMath.sleela	lib/math/SLMath.sleela	source
 math	SLMathContext.sleela	lib/math/SLMathContext.sleela	source
 math	SLMathEngine.sleela	lib/math/SLMathEngine.sleela	source
 math	SLMathEvaluator.sleela	lib/math/SLMathEvaluator.sleela	source
+math	SLMathNorms.sleela	lib/math/SLMathNorms.sleela	source
 math	SLMatrix.sleela	lib/math/SLMatrix.sleela	source
 math	SLMatrixOperations.sleela	lib/math/SLMatrixOperations.sleela	source
 math	SLMax.sleela	lib/math/SLMax.sleela	source
@@ -10970,6 +10971,7 @@ math	SLPercentile.sleela	lib/math/SLPercentile.sleela	source
 math	SLPermutation.sleela	lib/math/SLPermutation.sleela	source
 math	SLPermutationGenerator.sleela	lib/math/SLPermutationGenerator.sleela	source
 math	SLPhysicalConstant.sleela	lib/math/SLPhysicalConstant.sleela	source
+math	SLPiReference.sleela	lib/math/SLPiReference.sleela	source
 math	SLPlane.sleela	lib/math/SLPlane.sleela	source
 math	SLPoint.sleela	lib/math/SLPoint.sleela	source
 math	SLPoissonDistribution.sleela	lib/math/SLPoissonDistribution.sleela	source
@@ -11055,6 +11057,7 @@ math	SLVectorProjection.sleela	lib/math/SLVectorProjection.sleela	source
 math	SLZScore.sleela	lib/math/SLZScore.sleela	source
 math	SLZTransform.sleela	lib/math/SLZTransform.sleela	source
 math	MathDemo.sleela	lib/math/examples/MathDemo.sleela	source
+math	PiReferenceDemo.sleela	lib/math/examples/PiReferenceDemo.sleela	source
 memory	SLAddress.sleela	lib/memory/SLAddress.sleela	source
 memory	SLAllocator.sleela	lib/memory/SLAllocator.sleela	source
 memory	SLArena.sleela	lib/memory/SLArena.sleela	source

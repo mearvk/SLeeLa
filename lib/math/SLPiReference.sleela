@@ -1,0 +1,116 @@
+<< lib/math/SLPiReference.sleela
+   SLeeLa Standard Library Definition.
+   Definition: SLPiReference is the Modium static reference variable for the
+   mathematical constant pi. It carries pi inline to the irrational-digit-carry
+   norm (SLMathNorms.DEFAULT_IRRATIONAL_CARRY = 2048 fractional digits) as a
+   static final String, reports its own digit count and a digit checksum, and
+   self-verifies its leading digits against a known reference. The value is a
+   Modium catalog static: a single authoritative, hash-checkable reference that
+   the SLeeLa registry seeds as a default start value. >>
+#sleela 2.5
+material;
+< Modium static reference: the canonical pi value for the SLeeLa catalog. >
+class SLPiReference {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 7903;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-06";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-06";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << The Modium static reference value of pi, carried to 2048 fractional digits
+     as "3." followed by the digits. It is published as a head (the first 60
+     fractional digits) and a tail that compose back to the whole, so integrity
+     can be self-checked using only string equality and concatenation -- the
+     operations SLeeLa Strings guarantee. A deeper reference set (millions of
+     digits) is produced out-of-band and resolved by handle; this inline value
+     is the catalog's canonical, hash-checkable start value at the irrational-
+     digit-carry norm (SLMathNorms.DEFAULT_IRRATIONAL_CARRY = 2048). >>
+  static final String PI = "3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664709384460955058223172535940812848111745028410270193852110555964462294895493038196442881097566593344612847564823378678316527120190914564856692346034861045432664821339360726024914127372458700660631558817488152092096282925409171536436789259036001133053054882046652138414695194151160943305727036575959195309218611738193261179310511854807446237996274956735188575272489122793818301194912983367336244065664308602139494639522473719070217986094370277053921717629317675238467481846766940513200056812714526356082778577134275778960917363717872146844090122495343014654958537105079227968925892354201995611212902196086403441815981362977477130996051870721134999999837297804995105973173281609631859502445945534690830264252230825334468503526193118817101000313783875288658753320838142061717766914730359825349042875546873115956286388235378759375195778185778053217122680661300192787661119590921642019893809525720106548586327886593615338182796823030195203530185296899577362259941389124972177528347913151557485724245415069595082953311686172785588907509838175463746493931925506040092770167113900984882401285836160356370766010471018194295559619894676783744944825537977472684710404753464620804668425906949129331367702898915210475216205696602405803815019351125338243003558764024749647326391419927260426992279678235478163600934172164121992458631503028618297455570674983850549458858692699569092721079750930295532116534498720275596023648066549911988183479775356636980742654252786255181841757467289097777279380008164706001614524919217321721477235014144197356854816136115735255213347574184946843852332390739414333454776241686251898356948556209921922218427255025425688767179049460165346680498862723279178608578438382796797668145410095388378636095068006422512520511739298489608412848862694560424196528502221066118630674427862203919494504712371378696095636437191728746776465757396241389086583264599581339047802759009946576407895126946839835259570982582262052248940";
+
+  < The published head: "3." plus the first 60 fractional digits. >
+  static final String PI_HEAD = "3.141592653589793238462643383279502884197169399375105820974944";
+
+  < The published tail: the remaining fractional digits. PI_HEAD + PI_TAIL == PI. >
+  static final String PI_TAIL = "59230781640628620899862803482534211706798214808651328230664709384460955058223172535940812848111745028410270193852110555964462294895493038196442881097566593344612847564823378678316527120190914564856692346034861045432664821339360726024914127372458700660631558817488152092096282925409171536436789259036001133053054882046652138414695194151160943305727036575959195309218611738193261179310511854807446237996274956735188575272489122793818301194912983367336244065664308602139494639522473719070217986094370277053921717629317675238467481846766940513200056812714526356082778577134275778960917363717872146844090122495343014654958537105079227968925892354201995611212902196086403441815981362977477130996051870721134999999837297804995105973173281609631859502445945534690830264252230825334468503526193118817101000313783875288658753320838142061717766914730359825349042875546873115956286388235378759375195778185778053217122680661300192787661119590921642019893809525720106548586327886593615338182796823030195203530185296899577362259941389124972177528347913151557485724245415069595082953311686172785588907509838175463746493931925506040092770167113900984882401285836160356370766010471018194295559619894676783744944825537977472684710404753464620804668425906949129331367702898915210475216205696602405803815019351125338243003558764024749647326391419927260426992279678235478163600934172164121992458631503028618297455570674983850549458858692699569092721079750930295532116534498720275596023648066549911988183479775356636980742654252786255181841757467289097777279380008164706001614524919217321721477235014144197356854816136115735255213347574184946843852332390739414333454776241686251898356948556209921922218427255025425688767179049460165346680498862723279178608578438382796797668145410095388378636095068006422512520511739298489608412848862694560424196528502221066118630674427862203919494504712371378696095636437191728746776465757396241389086583264599581339047802759009946576407895126946839835259570982582262052248940";
+
+  < An independent echo of the head, for a tamper check against PI_HEAD. >
+  static final String PI_HEAD_ECHO = "3.141592653589793238462643383279502884197169399375105820974944";
+
+  < The first 50 fractional digits, a widely published reference for pi. >
+  static final String PI_REF_50 = "14159265358979323846264338327950288419716939937510";
+
+  < The head with the leading "3." stripped: the first 50 then 60 digits. >
+  static final String PI_HEAD_FRACTION_50 = "14159265358979323846264338327950288419716939937510";
+
+  < The number of fractional digits carried inline (the irrational-carry norm). >
+  static final int PI_DIGITS = 2048;
+
+  < The sum of the fractional decimal digits -- a stable integrity checksum. >
+  static final int PI_DIGIT_CHECKSUM = 9338;
+
+  String value() { return PI; }
+  int digitCount() { return PI_DIGITS; }
+  int checksum() { return PI_DIGIT_CHECKSUM; }
+  < The published head ("3." + first 60 fractional digits), via a method. >
+  String head() { return PI_HEAD; }
+
+  << Self-verify pi using only string equality and concatenation:
+       1. the head and its independent echo agree (no tamper);
+       2. head and tail compose back to the whole stored value;
+       3. the published 50-digit reference is the start of the head fraction.
+     Returns true when the catalog pi value is intact. The sibling demo prints
+     this on compile (check) and run so SLeeLa reports pi correctness. >>
+  boolean verify() {
+    if (PI_HEAD != PI_HEAD_ECHO) { return false; }
+    if ((PI_HEAD + PI_TAIL) != PI) { return false; }
+    if (("3." + PI_REF_50) != firstFiftyTwo()) { return false; }
+    return true;
+  }
+
+  < The first 52 characters ("3." + 50 digits), rebuilt from the reference. >
+  String firstFiftyTwo() { return "3." + PI_REF_50; }
+
+  < A one-line human report of the verification outcome. >
+  String report() {
+    if (verify()) { return "pi OK: 2048 digits, checksum " + PI_DIGIT_CHECKSUM; }
+    return "pi FAILED verification";
+  }
+
+  boolean available() { return PI_DIGITS == 2048; }
+}

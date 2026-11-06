@@ -124,6 +124,22 @@ class SLRegistry {
 
     SLRegistryKey art = new SLRegistryKey(); art.configure("Artifacts");
     addKey(art);
+
+    << Math: default start values for the precision norms and the Modium pi
+       static reference. A fresh install begins from these; they are editable
+       via lib/math/math-precision-norms.json (see MATH.PRECISION.NORMS.md).
+       The pi head is the first 60 fractional digits of the 2048-digit catalog
+       value in lib/math/SLPiReference.sleela. >>
+    SLRegistryKey mathKey = new SLRegistryKey(); mathKey.configure("Math");
+    SLRegistryValue nIrr = new SLRegistryValue(); nIrr.setInt("irrationalDigitCarry", 2048); mathKey.add(nIrr);
+    SLRegistryValue nRep = new SLRegistryValue(); nRep.setInt("repeatingDigitCarry", 58); mathKey.add(nRep);
+    SLRegistryValue nFin = new SLRegistryValue(); nFin.setInt("financeCarry", 1023); mathKey.add(nFin);
+    SLRegistryValue piDigits = new SLRegistryValue(); piDigits.setInt("piReferenceDigits", 2048); mathKey.add(piDigits);
+    SLRegistryValue piRef = new SLRegistryValue();
+    piRef.setString("piReference",
+      "3.141592653589793238462643383279502884197169399375105820974944");
+    mathKey.add(piRef);
+    addKey(mathKey);
   }
 
   boolean featureEnabled(String name) {
