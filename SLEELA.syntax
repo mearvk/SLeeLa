@@ -27,6 +27,19 @@
     that mark a declaration's part in the Modium / Registry responsibility
     split (`registry/REGISTRY-3.0-MODIUM.md`); they add no grammar and change
     nothing about parsing, typing, or codegen.
+    Syntax 3.0 further adds the first **statement-level, behavioral**
+    annotations: the `@loopDelay` / `@loopBudget` loop-timing annotations and
+    the `sleep(ms)` built-in they lower to (section 32), and the `@spill`
+    loop timer-start annotation (section 33). Unlike every declaration-level
+    marker above them, these attach to a `for`/`while`/`do` loop and insert a
+    real pause into its execution. Section 34 (normative) adds the native
+    **big-integer built-ins** `bigmul`, `bigadd`, and `bigdivmod` — one-opcode
+    arithmetic over base-1,000,000,000 limb `int[]` arrays (the VM bridge
+    `SLBigInteger` was designed to call) — and records two enabling VM changes:
+    the single-array ceiling `SL_MAX_ARRAY_LEN` was raised from 2^20 to
+    **2^24 (16,777,216) elements** so multi-million-limb operands are
+    allocatable, and a `double` value may now be **narrowed by explicit cast**
+    to an integer type instead of aborting.
     Syntax 2.9 introduced **`@mix` consequent fields** (section 28): repeated
     same-named instance fields explicitly marked `@mix` form an indexed group;
     declaration order supplies indexes unless a matching index list is provided.
@@ -571,6 +584,10 @@ Expected output (order of the concurrent phase aside):
                     `x = gc N;` / `x = mem N;`, N in 0..100  (syntax 1.9+)
     system (1):     ran           contextual; the `ran::` namespace qualifier for
                     system refs — `ran::mem`, `ran::gc` (syntax 1.9+, §13.4)
+    timing (1):     sleep         block the current thread for a millisecond
+                    count; backs @loopDelay/@loopBudget/@spill (syntax 3.0, §32,§34)
+    big-integer(3): bigmul bigadd bigdivmod    one-opcode arithmetic over
+                    base-1e9 limb int[] arrays (the SLBigInteger bridge) (syntax 3.0, §34)
 
 Contextual built-ins are recognized in call position only (they are not reserved
 words). The Munction fluent chain is one sane reach sentence of 4..16 calls; see
@@ -2377,7 +2394,7 @@ non-positive `iterations` is a parse error.
 
 Both annotations lower to the same mechanism: the compiler emits, at the top of
 each iteration, a push of the resolved millisecond delay followed by the
-`OP_SLEEP` opcode (ISA index 156, declared in `lib/vm/InstructionSet.sleela`).
+`OP_SLEEP` opcode (ISA index 157, declared in `lib/vm/InstructionSet.sleela`).
 `OP_SLEEP` pops an integer millisecond count and blocks the current thread for
 that long (0 or negative is a no-op); it is implemented portably by
 `sltime_sleep_millis()` (POSIX `nanosleep`, Windows `Sleep`).
@@ -2461,3 +2478,96 @@ each iteration: the compiler pushes the resolved millisecond pause and emits
 `OP_SLEEP`. A spill whose pause is 0 is a pure checkpoint and emits no
 instruction. The `judges` and `witnesses` subjects are carried on the loop's AST
 node and do not emit bytecode.
+
+--------------------------------------------------------------------------------
+## 34. Syntax 3.0 — native big-integer built-ins (`bigmul`, `bigadd`, `bigdivmod`)
+
+This section is **normative**. Syntax 3.0 exposes three contextual built-ins
+that perform big-integer arithmetic over **base-1,000,000,000 limb arrays** in a
+single VM opcode each, rather than through a per-limb bytecode loop. Each limb
+is one `int` element holding nine decimal digits; a big integer is a flat,
+little-endian `int[]` whose element 0 is the least-significant limb. These are
+the VM bridge the `SLBigInteger` library class was designed to call; they are
+recognized in call position only and are not reserved words.
+
+### 34.1 `bigmul` — multiply
+
+```
+int sig = bigmul(a, b, result);
+```
+
+Multiplies the limb arrays `a * b` with a native C kernel and writes the product
+limbs into `result`. The call evaluates to the `int` count of **significant
+result limbs**.
+
+- `a`, `b`, `result` are each `int[]` in base-1e9 little-endian form.
+- `result` must have room for at least `len(a) + len(b)` limbs.
+- The kernel chooses its algorithm by operand size: schoolbook below a small
+  threshold, Karatsuba (`O(n^1.585)`) above it, and a number-theoretic
+  transform (NTT, `O(n log n)`) for large products. The choice is internal and
+  does not change the result or the call contract.
+- Backed by `OP_BIGMUL` (ISA index **156**).
+
+### 34.2 `bigadd` — add
+
+```
+int sig = bigadd(a, b, result);
+```
+
+Computes `a + b` limb-wise with carry and writes the sum into `result`,
+evaluating to the significant result-limb count.
+
+- `a`, `b`, `result` are each `int[]` in base-1e9 little-endian form.
+- `result` must have room for at least `max(len(a), len(b)) + 1` limbs (the extra
+  limb absorbs a final carry).
+- Backed by `OP_BIGADD` (ISA index **158**). Companion to `bigmul`.
+
+### 34.3 `bigdivmod` — divide by a small integer, with remainder
+
+```
+int remainder = bigdivmod(dividend, divisor, result);
+```
+
+Divides the limb array `dividend` by a **small integer** `divisor` and writes the
+quotient limbs into `result`. The call evaluates to the integer **remainder**.
+
+- `dividend` and `result` are `int[]` in base-1e9 little-endian form; `divisor`
+  is a plain `int` in the range `1 .. 999,999,999` (`1e9 - 1`).
+- `result` of the same length as `dividend` always suffices.
+- The remainder is in `0 .. divisor - 1`.
+- This small-divisor long-division form is what base conversion and the
+  Chudnovsky final scaling need.
+- Backed by `OP_BIGDIVMOD` (ISA index **159**).
+
+### 34.4 Argument count and errors
+
+Each built-in takes **exactly three** arguments in the order shown; any other
+count is a compile-time (semantic) error. The native kernels fail closed with a
+descriptive runtime error when an operand is not an `int[]`, a limb is outside
+`[0, 1e9)`, the divisor is out of range, or the `result` array is too small to
+hold the answer.
+
+### 34.5 Enabling VM changes (informative)
+
+Two runtime changes landed alongside these built-ins and are recorded here
+because they define the sizes at which the built-ins are usable:
+
+- **Array ceiling raised.** The maximum number of elements in a single array,
+  `SL_MAX_ARRAY_LEN` (`impl/core/sleela_core.h`), was raised from `2^20`
+  (1,048,576) to **`2^24` (16,777,216)**. This is what makes multi-million-limb
+  operands — e.g. a 10,000,000-decimal-digit multiply (~1.11 M limbs per
+  operand, ~2.22 M result limbs) — allocatable and so reachable as a single
+  `bigmul()` call.
+- **Narrowing cast from `double`.** A `double` value may now be **narrowed by an
+  explicit cast** to an integer type (e.g. `(int)` or `(int128)`); the VM
+  truncates toward zero instead of aborting. The cast must be explicit — no
+  implicit double→int narrowing is introduced.
+
+### 34.6 Version gate
+
+The big-integer built-ins and the enabling VM changes are part of the Syntax 3.0
+edition. Declare `#sleela 3.0` (or later) to rely on them normatively. The ISA
+indices above are append-only; the pre-OSLS ISA remains the frozen 155-opcode
+baseline (0..154), OSLS is opcode 155, and `bigmul`/`sleep`/`bigadd`/`bigdivmod`
+occupy 156/157/158/159 in that fixed order. See `lib/vm/InstructionSet.sleela`
+for the ISA mirror.
