@@ -39,6 +39,10 @@ public:
                   const GenerationOptions& options,
                   const std::function<bool(std::string_view)>& on_chunk);
 
+    // Borrowed native handle for interop with the C reasoning layer. Ownership
+    // stays with this object; do not destroy the returned handle.
+    sllm_engine* native_handle() const noexcept { return handle_; }
+
 private:
     sllm_engine* handle_ = nullptr;
     static void throw_if_error(sllm_status status);
