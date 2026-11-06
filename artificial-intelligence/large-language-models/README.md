@@ -28,6 +28,8 @@ Provider-neutral native APIs for SLeeLa applications that connect to local or ho
 | `large_language_models_vocabulary.hpp/.cpp` | C++17 RAII vocabulary wrapper with string and vector helpers |
 | `large_language_models_base_vocabulary.h/.c` | C11 seed-vocabulary loader (`sllmbv_*`, ABI v1): populates the store with the curated base word set, special tokens at fixed low IDs, fail-closed ID verification |
 | `large_language_models_base_vocabulary.hpp/.cpp` | C++17 RAII facade for seeding the default base vocabulary |
+| `large_language_models_reasoning.h/.c` | C11 Reasoning Language Model controller (`sllmr_*`, ABI v1): neuro-symbolic chain-of-thought with reflection, self-verification, and backtracking over a pluggable backend + verifier |
+| `large_language_models_reasoning.hpp/.cpp` | C++17 RAII facade (`sleela::ai::ReasoningModel`) with `std::function` verifier/observer |
 | `large_language_models_training.h/.c` | C training-backend ABI, batch training, evaluation, metrics, and checkpoint requests |
 | `large_language_models_training.hpp/.cpp` | C++17 RAII training facade |
 | `large_language_models_data.h/.c` | Bounded-memory connector read interface, local-file connector, and streaming JSONL reader |
@@ -89,6 +91,22 @@ builds its premises on:
    the licensing discipline, failing closed with exact locations.
 
 See `tokenizers/README.md` and `vocabulary/corpus/README.md` for the contract.
+
+## Reasoning (RLM layer)
+
+The `sllmr_*` layer turns a plain next-token backend into a model that reasons:
+it decomposes a question, emits a tagged chain of thought, reflects on and
+critiques each step, verifies steps through a pluggable checker, backtracks when
+a path is refuted, and commits an answer with honest confidence. It is tuned for
+subjects that are mainly philosophical, mathematical, or religious, where a
+single confident answer is often wrong.
+
+The design is neuro-symbolic: the LLM supplies proposals and nuance; an optional
+verifier supplies soundness (for math/logic, bridge it to `lib/deliberation`).
+On open subjects the verifier returns `UNKNOWN` and the engine reports a
+**tentative** position rather than claiming proof. See `REASONING.md` for the
+full contract and `reasoning/` for a runnable end-to-end demo (stub backend +
+tiny symbolic verifier; no weights, no network).
 
 ## Inference
 

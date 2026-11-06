@@ -1,4 +1,4 @@
-name: LLM Vocabulary (word sets)
+name: LLM Vocabulary + Reasoning
 
 on:
   push:
@@ -9,6 +9,10 @@ on:
       - "artificial-intelligence/large-language-models/tools/**"
       - "artificial-intelligence/large-language-models/large_language_models_base_vocabulary.*"
       - "artificial-intelligence/large-language-models/large_language_models_vocabulary.*"
+      - "artificial-intelligence/large-language-models/large_language_models_reasoning.*"
+      - "artificial-intelligence/large-language-models/large_language_models.*"
+      - "artificial-intelligence/large-language-models/reasoning/**"
+      - "artificial-intelligence/large-language-models/REASONING.md"
       - ".github/workflows/llm-vocabulary.yml"
   pull_request:
     branches: [master, main]
@@ -18,6 +22,10 @@ on:
       - "artificial-intelligence/large-language-models/tools/**"
       - "artificial-intelligence/large-language-models/large_language_models_base_vocabulary.*"
       - "artificial-intelligence/large-language-models/large_language_models_vocabulary.*"
+      - "artificial-intelligence/large-language-models/large_language_models_reasoning.*"
+      - "artificial-intelligence/large-language-models/large_language_models.*"
+      - "artificial-intelligence/large-language-models/reasoning/**"
+      - "artificial-intelligence/large-language-models/REASONING.md"
       - ".github/workflows/llm-vocabulary.yml"
   workflow_dispatch:
 
@@ -68,3 +76,16 @@ jobs:
         run: >-
           c++ -std=c++17 -O2 -Wall -Wextra -c large_language_models_vocabulary.cpp -o /tmp/v.o
           && c++ -std=c++17 -O2 -Wall -Wextra -c large_language_models_base_vocabulary.cpp -o /tmp/bv.o
+
+      - name: Build + run reasoning demo (C11)
+        run: >-
+          cc -std=c11 -O2 -Wall -Wextra -pedantic
+          large_language_models.c
+          large_language_models_reasoning.c
+          reasoning/reasoning_demo.c
+          -o /tmp/reasoning_demo
+          && /tmp/reasoning_demo
+
+      - name: Compile reasoning C++17 facade
+        run: >-
+          c++ -std=c++17 -O2 -Wall -Wextra -c large_language_models_reasoning.cpp -o /tmp/r.o
