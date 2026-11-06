@@ -51,12 +51,12 @@ full-featured starter.
 ## A note on the tier modifiers
 
 The `usualmem` / `accuratemem` **function** modifiers are an XLT-aware language
-feature recognized by the source-built toolchain (`make compiler`). The bundled
-`working-binaries/sleela` (an older build) does not accept them, so
-`ADVANCED-app.sleela` is kept as plain SLeeLa 1.7 that validates everywhere, and
-the memory tiers are declared at the **model** level in the `.xlt` sheet. For a
-model-level tiered example from the library, see
-`lib/xlt/examples/epyc-tiered-memory.xlt`.
+feature recognized by the toolchain (both `make compiler` and the current
+bundled `working-binaries/sleela`, which now supports syntax 1.0 – 3.0, accept
+them). `ADVANCED-app.sleela` is nonetheless kept as plain SLeeLa 1.7 that
+validates on older toolchains too, with the memory tiers declared at the
+**model** level in the `.xlt` sheet. For a model-level tiered example from the
+library, see `lib/xlt/examples/epyc-tiered-memory.xlt`.
 
 ## Validate them
 

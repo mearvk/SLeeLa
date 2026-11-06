@@ -28,7 +28,8 @@ white and nothing else changes.
 ## Run it
 
 ```sh
-# needs the source-built compiler (supports #sleela 2.9):
+# the current compiler supports #sleela 1.0 – 3.0 (impl/build/sleela or the
+# prebuilt working-binaries/sleela):
 impl/build/sleela run ballum/example/white-screen-esc.sleela
 ```
 

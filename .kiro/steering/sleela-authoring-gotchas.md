@@ -5,14 +5,21 @@ inclusion: always
 # SLeeLa authoring gotchas (verified against the source-built compiler)
 
 Confirmed behaviours of the toolchain that `sleela check` alone will not catch.
-These were verified with the source-built compiler (`impl/build/sleela`), which
-supports syntax up to 2.2. Keep new/edited `.sleela` code within these rules.
+These were verified against the current compiler, which supports **source
+syntax 1.0 – 3.0**. Keep new/edited `.sleela` code within these rules.
 
-## Compiler choice for `#sleela 2.x`
+## Compiler choice
 
-- The prebuilt `working-binaries/sleela` only supports syntax up to **1.11**, so
-  it **cannot** check or run `#sleela 2.x` files. Build the source compiler to
-  validate 2.x library code:
+- The prebuilt `working-binaries/sleela` is current: it reports
+  `SLeeLa™ Language/Runtime 0.3.30-dev` and supports **syntax 1.0 – 3.0**, so it
+  checks and runs the whole tree (including `#sleela 2.x` and `#sleela 3.0`
+  files). Use it directly:
+
+      ./working-binaries/sleela check <file>
+      ./working-binaries/sleela run   <file>
+
+- To build the same compiler from source (authoritative, and required on any
+  non-Linux-x86-64 host):
 
       cd impl && SLEELA_SHA256_MANIFEST="$(pwd)/../security/sha256-manifest.json" make build/sleela
 

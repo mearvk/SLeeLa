@@ -43,7 +43,8 @@ These are `#sleela 2.1` library-style classes; validate through the sibling demo
 `SLEELA_LIB` at it so the sibling records resolve:
 
 ```sh
-# build the source compiler first if needed (prebuilt binary tops out at 1.11)
+# the prebuilt working-binaries/sleela supports syntax 1.0 – 3.0 and works
+# directly; build the source compiler only on a non-Linux-x86-64 host:
 cd impl && SLEELA_SHA256_MANIFEST="$PWD/../security/sha256-manifest.json" make build/sleela
 cd ..
 

@@ -48,8 +48,9 @@ The static verifier is fast and catches the common mistakes, but the ultimate
 SLeeLa checker is the compiler itself. A host can set `check_mode = compile` and
 run `impl/build/sleela check <file>` (syntax up to 3.0) — or `run <file>` to
 execute — as the authoritative verifier behind the same `sllmr_verifier`
-contract. (The prebuilt `working-binaries/sleela` only supports syntax up to
-1.11, so build the source compiler to validate 2.x/3.0 code.)
+contract. (The prebuilt `working-binaries/sleela` is current and supports
+syntax 1.0 – 3.0, so it validates 2.x/3.0 code directly; building the source
+compiler is only needed on non-Linux-x86-64 hosts.)
 
 ## What is NOT bundled
 

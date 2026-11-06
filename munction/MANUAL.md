@@ -58,8 +58,9 @@ and the recognition in `impl/frontend/compiler.cpp`.
 
 ## 3. Running the SLeeLa examples
 
-Munction™ is a syntax-1.3 feature, recognized by the source-built compiler (the prebuilt
-`working-binaries/sleela` may predate it; build from source to be sure).
+Munction™ is a syntax-1.3 feature, recognized by the compiler. The current
+prebuilt `working-binaries/sleela` is built from the same source and supports
+syntax 1.0 – 3.0, so it recognizes Munction™; you can also build from source.
 
 ```sh
 # 1) Build the compiler (needs g++, X11/fontconfig/freetype dev libs)

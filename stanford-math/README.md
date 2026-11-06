@@ -315,8 +315,9 @@ SLEELA_LIB="$PWD/stanford-math" impl/build/sleela check stanford-math/SMArchive.
 SLEELA_LIB="$PWD/stanford-math" impl/build/sleela run   stanford-math/SMArchive.sleela
 ```
 
-Build the source compiler first if needed (the prebuilt `working-binaries/sleela`
-tops out at syntax 1.11 and cannot check these `#sleela 2.1` files):
+The prebuilt `working-binaries/sleela` is current (supports syntax 1.0 – 3.0)
+and checks these `#sleela 2.1` files directly. Build the source compiler only
+if you need it on a non-Linux-x86-64 host:
 
 ```sh
 cd impl && SLEELA_SHA256_MANIFEST="$PWD/../security/sha256-manifest.json" make build/sleela

@@ -73,8 +73,8 @@ names the build that emits it.
 
 | Supposed `bin/` name | Built as | Source | Purpose |
 |---|---|---|---|
-| `sleela` | `impl/build/sleela` | `make -C impl` | the authoritative compiler/runtime (Sleelvac™) — `check`/`run`/`compile`/`native`/`vm`/… |
-| `nordshrift` | `impl/build/nordshrift` | `make -C impl` | the Nordshrift `.sst` round-trip tool |
+| `sleela` | `impl/build/sleela` | `make -C impl` | the authoritative compiler/runtime (`SLeeLa™ Language/Runtime`; historically "Sleelvac™"), source syntax 1.0 – 3.0 — `check`/`run`/`compile`/`native`/`vm`/`nordshrift`/… |
+| `nordshrift` | `impl/build/nordshrift` | `make -C impl` | the Nordshrift `.sst` transpiler driver (NS-SST-0001 spec 2.2; `check`/`build`/`objects`/`relevance`). The SLeeLa→Nordshrift→back round-trip is `sleela nordshrift`. |
 | `sleelvac` | `impl/build/sleelvac` (`SLEELAVC_BIN`) | `make -C impl` | the Sleelvac driver variant |
 | `sleela.exe` / `nordshrift.exe` | MinGW build | `build-windows.ps1` | the Windows variants (the launcher already probes `.exe`) |
 

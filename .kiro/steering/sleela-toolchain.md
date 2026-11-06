@@ -13,7 +13,8 @@ For now and for some time, a prebuilt binary collection lives in-tree at
 ./working-binaries/sleela check <file.sleela>     # validate
 ./working-binaries/sleela run   <file.sleela>     # compile + execute
 ./working-binaries/sleela compile <file.sleela> -o <out.sleela>
-./working-binaries/nordshrift [--emit] [--target=sleela|java|c] <file.sleela>
+./working-binaries/sleela nordshrift [--emit|--roundtrip] [--target=sleela|java|c] <file.sleela>
+./working-binaries/nordshrift check|build <sheet.sst>   # the .sst transpiler driver
 ```
 
 These are **Linux x86-64** builds; rebuild from source for any other platform
@@ -22,17 +23,25 @@ the integrity-gated source build.
 
 ## Binaries
 
-The toolchain is **two** native executables:
+The toolchain is **two** native executables. The committed copies in
+[`/working-binaries/`](../../working-binaries/) report:
 
-- **`sleela`** — the authoritative compiler/runner (Sleelvac™). Subcommands:
-  `check <f>`, `run <f>`, `compile <f...> -o <out>`, `validate-artifact <f>`,
-  `nordshrift <f>`, `version`.
-- **`nordshrift`** — the Nordshrift round-trip tool.
+- **`sleela`** — `SLeeLa™ Language/Runtime 0.3.30-dev`, the authoritative
+  compiler/runner, **supported source syntax 1.0 – 3.0**, native C/C++ Core VM.
+  Subcommands: `check <f>`, `run <f>`, `compile <f...> -o <out>`,
+  `validate-artifact <f>`, `nordshrift [--emit|--roundtrip] [--target=…] <f>`,
+  `version`. (Older builds branded this binary "Sleelvac™" and capped syntax at
+  2.9; the current build raises the ceiling to 3.0.)
+- **`nordshrift`** — `Nordshrift 2.7.1-dev`, the SLeeLa `.sst` transpiler driver
+  (NS-SST-0001 spec 2.2), which **drives SLeeLa source syntax up to 3.0**.
+  Subcommands: `check <sheet.sst>`, `build <sheet.sst>`, `objects`,
+  `relevance --target=java|sleela|c [Object]`, `version`, `design-activity …`.
+  (The SLeeLa→Nordshrift→back *round-trip* facility lives inside the `sleela`
+  binary as `sleela nordshrift`, not in this standalone driver.)
 
 There is **no separate `sleelac`** binary — compilation is `sleela compile`.
 
-Prebuilt copies (Linux x86-64) are committed under
-[`/working-binaries/`](../../working-binaries/) for quick access. They are
+The prebuilt copies (Linux x86-64) are committed for quick access. They are
 platform-specific and are **not** a substitute for the integrity-gated build;
 rebuild from source for any other platform or when in doubt.
 

@@ -4,8 +4,8 @@ Prebuilt native SLeeLa toolchain binaries, kept here for quick access.
 
 | Binary | What it is | Size |
 |--------|------------|------|
-| `sleela` | The authoritative SLeeLa compiler/runner (Sleelvac™). Subcommands include `check`, `run`, `compile -o <out>`, `validate-artifact`, `nordshrift`, `version`. **There is no separate `sleelac`** — compilation is `sleela compile`. | ~2.5 MB |
-| `nordshrift` | The Nordshrift round-trip tool (SLeeLa → Nordshrift → back; targets sleela/java/c). | ~2.2 MB |
+| `sleela` | `SLeeLa™ Language/Runtime 0.3.30-dev` — the authoritative SLeeLa compiler/runner. **Supported source syntax 1.0 – 3.0**, native C/C++ Core VM. Subcommands include `check`, `run`, `compile -o <out>`, `validate-artifact`, `nordshrift [--emit\|--roundtrip] [--target=…]`, `version`. **There is no separate `sleelac`** — compilation is `sleela compile`. | ~2.6 MB |
+| `nordshrift` | `Nordshrift 2.7.1-dev` — the SLeeLa `.sst` transpiler driver (NS-SST-0001 spec 2.2); drives SLeeLa source syntax up to 3.0. Subcommands: `check`, `build`, `objects`, `relevance --target=java\|sleela\|c`, `version`. (The SLeeLa → Nordshrift → back round-trip is `sleela nordshrift`, inside the `sleela` binary.) | ~2.3 MB |
 
 ## Important caveats
 
@@ -41,9 +41,19 @@ SLEELA_BIN=working-binaries/sleela tools/idea-check.sh
 
 ## Provenance
 
-Built in the Kiro sandbox from this repository's `impl/` tree with the
-top-level `Makefile` (`g++ -std=c++17 -O2`, pthread). SHA-256 of the copies at
-commit time is recorded in the pull request description.
+Built in the Kiro sandbox from this repository's `impl/` tree
+(`g++ -std=c++17 -O2`, pthread; `make build/sleela` and `make build/nordshrift`).
+Reported versions:
+
+- `sleela` — `SLeeLa™ Language/Runtime 0.3.30-dev` (supported source syntax 1.0 – 3.0)
+- `nordshrift` — `Nordshrift 2.7.1-dev` (NS-SST-0001 spec 2.2; drives SLeeLa up to 3.0)
+
+SHA-256 of the committed copies:
+
+```
+d29e85a78b13b9a6e58659e73b4d2457021e1ce33961808374267b873a96e622  sleela
+a9e70651a70a86959736c62e59806870af621396c1609a5b544f91f0a447e1b3  nordshrift
+```
 
 ---
 
