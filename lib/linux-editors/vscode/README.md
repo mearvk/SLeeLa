@@ -18,7 +18,8 @@ Silk Road*, *SLeeLa East Asian*, *SLeeLa Greek*, or *SLeeLa Turkish*.
 
 The grammar highlights keywords, types, strings, numbers, `@`-annotations, the
 `#sleela`/`#schema` pragmas, the document markers (`author`/`authorial`/
-`material`/`memory`/`determine`, matched only when alone on a line), and the
+`material`/`memory`/`determine`/`object`/`field`/`pure`/`gasoline`, matched only
+when alone on a line), and the
 `//`, `/* */`, `<< >>`, and `< >` comment forms.
 
 > For Vim-style modal editing in VS Code, pair this with a Vim-emulation

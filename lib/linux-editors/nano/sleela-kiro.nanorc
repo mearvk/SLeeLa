@@ -17,7 +17,7 @@ color #e8c547 "'(\\.|[^'\\])*'"
 color #b79ce6 "@[A-Za-z_][A-Za-z0-9_]*"
 color #b79ce6 "^[[:space:]]*#(sleela|schema)\>.*$"
 ## document markers (only when alone on a line, optional ;)
-color #b79ce6 "^[[:space:]]*(author|authorial|material|memory|determine)[[:space:]]*;?[[:space:]]*$"
+color #b79ce6 "^[[:space:]]*(author|authorial|material|memory|determine|object|field|pure|gasoline)[[:space:]]*;?[[:space:]]*$"
 ## comments: // line and /* */ block, plus << >> and < > angle forms
 color #6a6482 "//.*$"
 color #6a6482 start="/\*" end="\*/"

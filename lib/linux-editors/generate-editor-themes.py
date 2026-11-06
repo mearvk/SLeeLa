@@ -124,7 +124,11 @@ KEYWORDS = ("let var const if else while for in return break continue class "
             "yield instanceof").split()
 TYPES = ("String SLString Integer Int Long Double Float Boolean Character Byte "
          "Short Void Object List Map Set Array int64 int128 long double boolean").split()
-MARKERS = ("author", "authorial", "material", "memory", "determine")
+# Document markers (contextual, only when alone on a line). Kept in step with
+# vim/syntax/sleela.vim (the source of truth): author/authorial (2.4),
+# material/memory (2.5), determine/object/field (2.6), pure/gasoline (3.0).
+MARKERS = ("author", "authorial", "material", "memory", "determine",
+           "object", "field", "pure", "gasoline")
 
 
 def w(relpath, text):
@@ -363,7 +367,7 @@ def gen_vscode():
             "pragmas": {"name": "keyword.control.directive.sleela",
                         "match": "^\\s*#(sleela|schema)\\b.*$"},
             "markers": {"name": "keyword.other.marker.sleela",
-                        "match": "^\\s*(author|authorial|material|memory|determine)\\s*;?\\s*$"},
+                        "match": "^\\s*(" + "|".join(MARKERS) + ")\\s*;?\\s*$"},
             "strings": {"patterns": [
                 {"name": "string.quoted.double.sleela", "begin": "\"", "end": "\"",
                  "patterns": [{"name": "constant.character.escape.sleela", "match": "\\\\."}]},
@@ -436,6 +440,7 @@ def gen_vscode():
     pkg = {
         "name": "sleela",
         "displayName": "SLeeLa",
+        "publisher": "mearvk",
         "description": "SLeeLa language grammar and color themes (mirrors the vim/emacs palettes).",
         "version": "1.0.0",
         "engines": {"vscode": "^1.60.0"},
@@ -580,7 +585,8 @@ Silk Road*, *SLeeLa East Asian*, *SLeeLa Greek*, or *SLeeLa Turkish*.
 
 The grammar highlights keywords, types, strings, numbers, `@`-annotations, the
 `#sleela`/`#schema` pragmas, the document markers (`author`/`authorial`/
-`material`/`memory`/`determine`, matched only when alone on a line), and the
+`material`/`memory`/`determine`/`object`/`field`/`pure`/`gasoline`, matched only
+when alone on a line), and the
 `//`, `/* */`, `<< >>`, and `< >` comment forms.
 
 > For Vim-style modal editing in VS Code, pair this with a Vim-emulation
