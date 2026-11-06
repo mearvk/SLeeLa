@@ -60,7 +60,7 @@
     },
     "markers": {
       "name": "keyword.other.marker.sleela",
-      "match": "^\\s*(author|authorial|material|memory|determine)\\s*;?\\s*$"
+      "match": "^\\s*(author|authorial|material|memory|determine|object|field|pure|gasoline)\\s*;?\\s*$"
     },
     "strings": {
       "patterns": [

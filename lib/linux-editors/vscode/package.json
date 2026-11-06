@@ -1,6 +1,7 @@
 {
   "name": "sleela",
   "displayName": "SLeeLa",
+  "publisher": "mearvk",
   "description": "SLeeLa language grammar and color themes (mirrors the vim/emacs palettes).",
   "version": "1.0.0",
   "engines": {
@@ -78,6 +79,5 @@
         "path": "./themes/sleela-turkish-color-theme.json"
       }
     ]
-  },
-  "publisher": "mearvk"
+  }
 }
