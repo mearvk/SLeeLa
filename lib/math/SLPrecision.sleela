@@ -61,4 +61,48 @@ class SLPrecision {
     if (diff < 0.0) { diff = 0.0 - diff; }
     return diff <= tol;
   }
+
+  < The machine epsilon for IEEE-754 double precision (2^-52). >
+  double epsilon() { return 0.0000000000000002220446049250313; }
+
+  < The largest number of reliable significant decimal digits in a double. >
+  int maxDigits() { return 15; }
+
+  << Relative-error comparison scaled by the larger operand magnitude, which is
+     the robust way to compare two computed doubles. Values near zero fall back
+     to an absolute comparison against epsilon times the tolerance. >>
+  boolean almostEqual(double a, double b, double relTol) {
+    double diff = a - b;
+    if (diff < 0.0) { diff = 0.0 - diff; }
+    double sa = a < 0.0 ? 0.0 - a : a;
+    double sb = b < 0.0 ? 0.0 - b : b;
+    double scale = sa > sb ? sa : sb;
+    if (scale < epsilon()) { return diff <= relTol * epsilon(); }
+    return diff <= relTol * scale;
+  }
+
+  << Agreement in significant decimal digits between two values: how many leading
+     significant digits a and b share (capped at maxDigits). A higher number
+     means closer agreement; equal values report the full budget. >>
+  int agreeingDigits(double a, double b) {
+    double diff = a - b;
+    if (diff < 0.0) { diff = 0.0 - diff; }
+    if (diff == 0.0) { return maxDigits(); }
+    double sa = a < 0.0 ? 0.0 - a : a;
+    double sb = b < 0.0 ? 0.0 - b : b;
+    double scale = sa > sb ? sa : sb;
+    if (scale == 0.0) { return maxDigits(); }
+    double rel = diff / scale;
+    return significantDigits(rel);
+  }
+
+  << A relative error magnitude |a - b| / |b| between an approximation a and a
+     reference b; zero reference yields the absolute difference. >>
+  double relativeError(double approx, double reference) {
+    double diff = approx - reference;
+    if (diff < 0.0) { diff = 0.0 - diff; }
+    double r = reference < 0.0 ? 0.0 - reference : reference;
+    if (r == 0.0) { return diff; }
+    return diff / r;
+  }
 }

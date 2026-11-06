@@ -48,15 +48,119 @@ class SLNumericFormatter {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  << Format helpers reported as numeric parts rather than strings: integerPart
-     and the first `places` fractional digits as an integer. >>
+  << High-precision rendering of a double value.
+
+     The runtime prints a double through the C %g format, which shows only about
+     six significant figures -- yet the underlying value is a full IEEE-754
+     double carrying roughly fifteen significant decimal digits. These helpers
+     recover that precision by extracting the digits through integer arithmetic
+     (longs print without loss) and assembling a String. Up to MAX_PLACES = 15
+     fractional digits are supported before the 10^places scale would exceed a
+     signed 64-bit long. >>
+
+  int MAX_PLACES = 15;
+
   long integerPart(double x) { return (long) x; }
+
+  < The first `places` fractional digits of |x|, as an integer (rounded). >
   long fractionalDigits(double x, int places) {
+    if (places < 0) { places = 0; }
+    if (places > MAX_PLACES) { places = MAX_PLACES; }
     double frac = x - (long) x;
     if (frac < 0.0) { frac = 0.0 - frac; }
+    double f = pow10(places);
+    return (long) (frac * f + 0.5);
+  }
+
+  < 10^n as a double, for 0 <= n <= 18. >
+  double pow10(int n) {
     double f = 1.0;
     int i = 0;
-    while (i < places) { f = f * 10.0; i = i + 1; }
-    return (long) (frac * f + 0.5);
+    while (i < n) { f = f * 10.0; i = i + 1; }
+    return f;
+  }
+
+  < The decimal digit 0..9 as a one-character String. >
+  String digitChar(long d) {
+    if (d <= 0) { return "0"; }
+    if (d == 1) { return "1"; }
+    if (d == 2) { return "2"; }
+    if (d == 3) { return "3"; }
+    if (d == 4) { return "4"; }
+    if (d == 5) { return "5"; }
+    if (d == 6) { return "6"; }
+    if (d == 7) { return "7"; }
+    if (d == 8) { return "8"; }
+    return "9";
+  }
+
+  < A nonnegative long as its decimal String (no sign). >
+  String unsignedToString(long d) {
+    if (d == 0) { return "0"; }
+    String s = "";
+    while (d > 0) {
+      s = digitChar(d % 10) + s;
+      d = d / 10;
+    }
+    return s;
+  }
+
+  < A signed long as its decimal String. >
+  String longToString(long d) {
+    if (d < 0) { return "-" + unsignedToString(0 - d); }
+    return unsignedToString(d);
+  }
+
+  << Render x in fixed-point notation with exactly `places` fractional digits
+     (0 <= places <= 15), carrying the full precision of the double. The
+     fractional part is zero-padded on the left so, for example, a fractional
+     value of 7 at 3 places renders as ".007". Half-up rounding is applied, with
+     carry propagated into the integer part. >>
+  String toFixed(double x, int places) {
+    if (places < 0) { places = 0; }
+    if (places > MAX_PLACES) { places = MAX_PLACES; }
+    boolean neg = x < 0.0;
+    if (neg) { x = 0.0 - x; }
+    double scale = pow10(places);
+    < round the whole scaled value, then split, so the rounding carry is honest >
+    long scaled = (long) (x * scale + 0.5);
+    long ip = scaled / (long) scale;
+    long fp = scaled % (long) scale;
+    String out = unsignedToString(ip);
+    if (places > 0) {
+      String fracStr = unsignedToString(fp);
+      < left-pad the fractional digits to exactly `places` characters >
+      int pad = places - stringDigitCount(fp);
+      String zeros = "";
+      int i = 0;
+      while (i < pad) { zeros = zeros + "0"; i = i + 1; }
+      out = out + "." + zeros + fracStr;
+    }
+    if (neg) { out = "-" + out; }
+    return out;
+  }
+
+  < The number of decimal digits in a nonnegative long (1 for zero). >
+  int stringDigitCount(long d) {
+    if (d == 0) { return 1; }
+    int n = 0;
+    while (d > 0) { n = n + 1; d = d / 10; }
+    return n;
+  }
+
+  << Render x with `sig` significant digits (1 <= sig <= 15). Chooses the number
+     of fractional places from the magnitude of the integer part so the total
+     significant-digit budget is honored for values of ordinary scale. >>
+  String toSignificant(double x, int sig) {
+    if (sig < 1) { sig = 1; }
+    if (sig > MAX_PLACES) { sig = MAX_PLACES; }
+    double ax = x < 0.0 ? 0.0 - x : x;
+    long ip = (long) ax;
+    int intDigits = stringDigitCount(ip);
+    int places = sig - intDigits;
+    if (ip == 0) { places = sig; }
+    if (places < 0) { places = 0; }
+    if (places > MAX_PLACES) { places = MAX_PLACES; }
+    return toFixed(x, places);
   }
 }
