@@ -263,7 +263,7 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "060a51fd42456a368528082abed35e74f1865c8de2e054ecbfd0c09c20e937a6"
+      "sha256": "c4722da5d37b609782cc280d20bf3a7fb48cb2135f8c1be4a6f901c2488bc5ac"
     },
     {
       "path": "impl/core/sleela_core.h",
@@ -45318,6 +45318,10 @@
       "sha256": "753c4533dbf61a29b508e061cd7f59a9d8e7e89127786b8dc22a085febfffab5"
     },
     {
+      "path": "lib/math/examples/BigArrayGCVerify.sleela",
+      "sha256": "91984fdbaa5de52edf13335ac8bd51b066e72c2ea429cec612ff7986c5c4c6cd"
+    },
+    {
       "path": "lib/math/examples/BigIntegerDemo.sleela",
       "sha256": "9c0f23991b8eb55a7615b861a61fdfb09dd9ac0b89c14c63f7d6f0ee9f178407"
     },
@@ -49447,7 +49451,7 @@
     },
     {
       "path": "runtime/garbage_collector.c",
-      "sha256": "7ecdb2375bece7eb60f6e2f55d78877964b39e1c0d963933834989d07a9cd450"
+      "sha256": "2e143a889f30ff3194cf1c744f8418fd19f6783f0ee0338395c34aa1fbf9fe5a"
     },
     {
       "path": "runtime/garbage_collector.h",

@@ -61,9 +61,21 @@ typedef struct SLThread {
     SLValue result;
     char err[256];
     int underflow;   /* set by POP() on stack underflow; checked each instruction */
+    uint32_t safepoint_tick; /* counts instructions; the GC safepoint is polled
+                              * once per SL_GC_SAFEPOINT_STRIDE instructions
+                              * rather than on every one, so a tight numeric loop
+                              * does not pay a mutex per opcode. */
     pthread_t handle;
     int started;
 } SLThread;
+
+/* How often run_thread polls the GC safepoint. Collection still only *acts* at
+ * the heap byte threshold; polling 1-in-N instructions removes the per-opcode
+ * thread-mutex from the hot path. Between polls the heap can grow by at most
+ * this many instructions' worth of allocation, which the allocator's own byte
+ * limit still bounds (it fails closed). Allocation-heavy opcodes also poll
+ * directly, so a burst of large allocations is never deferred by the stride. */
+#define SL_GC_SAFEPOINT_STRIDE 1024u
 
 typedef struct {
     pthread_mutex_t mtx;
@@ -1251,7 +1263,14 @@ static SLResult run_thread(SLThread* t) {
         if (t->underflow) TERR("stack underflow");
         if (ip < 0 || ip >= vm->codelen) TERR("ip out of range");
         SLInstr in = vm->code[ip++];
-        slvm_gc_safepoint(vm, t, 4);
+        /* Poll the GC safepoint once per stride rather than every instruction,
+         * so a tight loop (e.g. filling a million-element array) does not pay a
+         * thread-mutex per opcode. Allocation opcodes poll directly (see below),
+         * so large allocations are never deferred past the heap threshold. */
+        if (++t->safepoint_tick >= SL_GC_SAFEPOINT_STRIDE) {
+            t->safepoint_tick = 0;
+            slvm_gc_safepoint(vm, t, 4);
+        }
         switch (in.op) {
         case OP_NOP: break;
         case OP_HALT: return SLR_HALT;
@@ -1883,6 +1902,8 @@ static SLResult run_thread(SLThread* t) {
 
         /* ---- struct support ------------------------------------------- */
         case OP_NEWSTRUCT: {
+            t->safepoint_tick = 0;
+            slvm_gc_safepoint(vm, t, 4);
             int h=struct_alloc(vm,in.a);
             if(h<0) TERR("struct instantiation failed (unknown type or store exhausted)");
             PUSH(slval_struct(h));
@@ -2011,6 +2032,10 @@ static SLResult run_thread(SLThread* t) {
         case OP_NEWARRAY: {
             SLValue nv=POP();
             if(nv.type!=SL_INT) TERR("array size must be an integer");
+            /* Allocation opcode: poll the GC directly so a burst of large
+             * allocations within one safepoint stride cannot outrun collection. */
+            t->safepoint_tick = 0;
+            slvm_gc_safepoint(vm, t, 4);
             int h=array_alloc(vm,(int)nv.as.i);
             if(h<0) TERR("array allocation failed (negative/too-large size or store exhausted)");
             PUSH(slval_array(h));
