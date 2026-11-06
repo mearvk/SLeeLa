@@ -1,11 +1,21 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.64  
-**Packages:** 113  
-**SLeeLa source units:** 11907  
-**Module-facade symbols:** 80  
-**Total symbol records:** 11987  
+**Revision:** 0.65  
+**Packages:** 114  
+**SLeeLa source units:** 11913  
+**Module-facade symbols:** 81  
+**Total symbol records:** 11994  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.65 adds the `slrtp` package — the Sleela Retrouval Tactical
+> Processor, SLeeLa's AOP-style interception framework (aspects, pointcuts,
+> join points, and before / after-returning / after-throwing / around advice).
+> Seven new `#sleela 3.0` units under `lib/slrtp/` (SLPackage, SLRTPJoinPoint,
+> SLRTPPointcut, SLRTPAdvice, SLRTPAspect, SLRTPProcessor, and a runnable
+> slrtp-demo), one new package and one new facade. Because the VM has no
+> bytecode weaver and the checker does not upcast, interception is explicit and
+> advice is data-driven (a pointcut plus a built-in action). Counts rise from
+> 113/11907/80/11987 to 114/11913/81/11994.
 
 > Revision 0.64 makes very large numbers computable in SLeeLa by fixing two VM
 > bottlenecks exposed by big-integer work. (1) **Batched GC safepoint**: the

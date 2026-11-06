@@ -47498,6 +47498,34 @@
       "sha256": "9db24132a62dcba63da7749e86b14957db033709ed8b6bbe3a36311eaa6a2122"
     },
     {
+      "path": "lib/slrtp/SLPackage.sleela",
+      "sha256": "19943ddc09e7ade15437090392ade5b903bc5727de3fca0232b6c242669cf4ba"
+    },
+    {
+      "path": "lib/slrtp/SLRTPAdvice.sleela",
+      "sha256": "47fbfc1f8597685e358f15357ec8d41a201dac7ca00eeb56e27ff41c4554d003"
+    },
+    {
+      "path": "lib/slrtp/SLRTPAspect.sleela",
+      "sha256": "08f406ab07035fe025628f229bc87e729bbbfe965dc1f48778bfc3f9ca68d55c"
+    },
+    {
+      "path": "lib/slrtp/SLRTPJoinPoint.sleela",
+      "sha256": "860dca6d13cb5ef208626277c74a3eaf24b1c7527958a3d43dc961646fd9853f"
+    },
+    {
+      "path": "lib/slrtp/SLRTPPointcut.sleela",
+      "sha256": "67fe472bc29db82892880e14715c0f632036bd89d3c6cb9b663625f530a645ed"
+    },
+    {
+      "path": "lib/slrtp/SLRTPProcessor.sleela",
+      "sha256": "52c1ec5541cbe0c505805f88041d905b1172a3dec4f75db65e0d173ad96c1c8b"
+    },
+    {
+      "path": "lib/slrtp/slrtp-demo.sleela",
+      "sha256": "4894a147590f408df11a993260c84fee13149865001186575fac19a184bd3891"
+    },
+    {
       "path": "lib/social-model/SLPackage.sleela",
       "sha256": "f8190d7998e50234cb0c0b343a0847f2457b9be81bec70616cb574d673c7a4d6"
     },

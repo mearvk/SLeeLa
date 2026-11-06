@@ -1,0 +1,114 @@
+<< lib/slrtp/SLRTPJoinPoint.sleela
+   SLeeLa Standard Library Definition.
+   Definition: A join point in SLRTP (Sleela Retrouval Tactical Processor) --
+   one described point in a program's execution that advice can act on, akin to
+   a Java/AspectJ join point. It names the target type and method, the current
+   phase (before / after-returning / after-throwing / around), the call's
+   argument summary, and carries the mutable return / proceed state that around
+   advice reads and rewrites. >>
+#sleela 3.0
+material;
+class SLRTPJoinPoint {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-06";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-06";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 7;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << Phase codes. A join point is visited once per phase around the target
+     call. AROUND wraps the call and may skip or substitute it. >>
+  int PHASE_BEFORE = 0;
+  int PHASE_AFTER_RETURNING = 1;
+  int PHASE_AFTER_THROWING = 2;
+  int PHASE_AROUND = 3;
+
+  << Identity of the intercepted call. >>
+  String typeName = "";
+  String methodName = "";
+  int phase = 0;
+
+  << A compact, string-rendered summary of the call arguments. SLRTP stays
+     string-first so a join point is printable and matchable without reflection
+     the VM does not provide. >>
+  String args = "";
+  int argCount = 0;
+
+  << Result state. returnValue is the string-rendered result an around advice
+     can read or overwrite; thrown holds an error marker for the throwing phase
+     (empty means no error). proceeded records whether around advice allowed the
+     real call to run. >>
+  String returnValue = "";
+  String thrown = "";
+  boolean proceeded = true;
+
+  << Build a fully-specified join point. >>
+  void describe(String type, String method, int ph, String argSummary, int count) {
+    typeName = type;
+    methodName = method;
+    phase = ph;
+    args = argSummary;
+    argCount = count;
+  }
+
+  String getTypeName() { return typeName; }
+  String getMethodName() { return methodName; }
+  int getPhase() { return phase; }
+  String getArgs() { return args; }
+  int getArgCount() { return argCount; }
+  String getReturnValue() { return returnValue; }
+  void setReturnValue(String v) { returnValue = v; }
+  String getThrown() { return thrown; }
+  void setThrown(String v) { thrown = v; }
+  boolean didProceed() { return proceeded; }
+  void setProceeded(boolean v) { proceeded = v; }
+
+  << The human-readable name of the current phase. >>
+  String phaseName() {
+    if (phase == PHASE_BEFORE) { return "before"; }
+    if (phase == PHASE_AFTER_RETURNING) { return "afterReturning"; }
+    if (phase == PHASE_AFTER_THROWING) { return "afterThrowing"; }
+    return "around";
+  }
+
+  << A stable signature string: "type.method". Used by pointcut matching and in
+     log/trace output. >>
+  String signature() {
+    return typeName + "." + methodName;
+  }
+}

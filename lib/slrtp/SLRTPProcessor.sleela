@@ -1,0 +1,171 @@
+<< lib/slrtp/SLRTPProcessor.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The Sleela Retrouval Tactical Processor -- SLRTP's weaver and
+   dispatcher, akin to a Java/Spring AOP proxy that runs registered advice
+   around a call. Because SLeeLa has no bytecode weaver, interception is
+   EXPLICIT: a caller wraps a method body with runBefore / runAround /
+   runAfterReturning / runAfterThrowing, passing a join point. The processor
+   finds every registered advice whose pointcut matches and fires it in
+   registration order; an around advice may short-circuit the real call (SKIP)
+   or rewrite its result (SUBSTITUTE). The processor keeps a bounded trace log
+   so a program or test can inspect what fired without reading stdout. >>
+#sleela 3.0
+material;
+class SLRTPProcessor {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-06";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-06";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 7;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << Registered advice, held in a fixed-capacity array with a live count. The
+     cap is generous for a single processor; register() fails closed past it. >>
+  int MAX_ADVICE = 64;
+  SLRTPAdvice[] advice = new SLRTPAdvice[64];
+  int adviceCount = 0;
+
+  << A bounded trace ring of the most recent fired-advice lines, so behaviour
+     is observable without stdout. traceCount is the live length. >>
+  int MAX_TRACE = 256;
+  String[] trace = new String[256];
+  int traceCount = 0;
+
+  << Count of join points dispatched and of around calls that were skipped. >>
+  int dispatched = 0;
+  int shortCircuits = 0;
+
+  << Register an advice. Returns the slot index, or -1 when full. >>
+  int register(SLRTPAdvice a) {
+    if (adviceCount >= MAX_ADVICE) { return -1; }
+    advice[adviceCount] = a;
+    adviceCount = adviceCount + 1;
+    return adviceCount - 1;
+  }
+
+  int getAdviceCount() { return adviceCount; }
+  int getDispatched() { return dispatched; }
+  int getShortCircuits() { return shortCircuits; }
+  int getTraceCount() { return traceCount; }
+  String traceAt(int i) { return trace[i]; }
+
+  << Append one line to the bounded trace ring (drops oldest when full). >>
+  void recordTrace(String line) {
+    if (traceCount < MAX_TRACE) {
+      trace[traceCount] = line;
+      traceCount = traceCount + 1;
+    } else {
+      int i = 1;
+      while (i < MAX_TRACE) { trace[i - 1] = trace[i]; i = i + 1; }
+      trace[MAX_TRACE - 1] = line;
+    }
+  }
+
+  << Fire every registered advice whose pointcut matches this join point, in
+     registration order. Returns true when some advice short-circuited an
+     around call (SKIP / SUBSTITUTE), telling the caller not to run the real
+     body. Records a trace line per fired advice. >>
+  boolean dispatch(SLRTPJoinPoint jp) {
+    dispatched = dispatched + 1;
+    boolean shortCircuit = false;
+    int i = 0;
+    while (i < adviceCount) {
+      SLRTPAdvice a = advice[i];
+      if (a.appliesTo(jp)) {
+        boolean cut = a.fire(jp);
+        recordTrace(a.getLastTrace());
+        if (cut) { shortCircuit = true; }
+      }
+      i = i + 1;
+    }
+    if (shortCircuit) { shortCircuits = shortCircuits + 1; }
+    return shortCircuit;
+  }
+
+  << ---- Phase-specific entry points a caller wraps a method body with. ---- >>
+
+  << BEFORE phase: run matching before/around advice prior to the real call. >>
+  void runBefore(String type, String method, String args, int argCount) {
+    SLRTPJoinPoint jp = new SLRTPJoinPoint();
+    jp.describe(type, method, jp.PHASE_BEFORE, args, argCount);
+    dispatch(jp);
+  }
+
+  << AFTER-RETURNING phase: run after a successful call, carrying the result so
+     an advice can observe it. >>
+  void runAfterReturning(String type, String method, String args, int argCount, String result) {
+    SLRTPJoinPoint jp = new SLRTPJoinPoint();
+    jp.describe(type, method, jp.PHASE_AFTER_RETURNING, args, argCount);
+    jp.setReturnValue(result);
+    dispatch(jp);
+  }
+
+  << AFTER-THROWING phase: run after the call raised, carrying an error marker. >>
+  void runAfterThrowing(String type, String method, String args, int argCount, String error) {
+    SLRTPJoinPoint jp = new SLRTPJoinPoint();
+    jp.describe(type, method, jp.PHASE_AFTER_THROWING, args, argCount);
+    jp.setThrown(error);
+    dispatch(jp);
+  }
+
+  << AROUND phase: the caller passes the value the real call WOULD return
+     (computed lazily by the caller only when proceeding is allowed is not
+     possible here, so the caller computes it up front and SLRTP may replace or
+     keep it). The returned join point's returnValue is the effective result,
+     and didProceed() reports whether the real call's value should be used. A
+     SUBSTITUTE advice overwrites returnValue; a SKIP advice marks not-proceeded
+     while leaving returnValue as the caller's default. >>
+  SLRTPJoinPoint runAround(String type, String method, String args, int argCount, String proposedResult) {
+    SLRTPJoinPoint jp = new SLRTPJoinPoint();
+    jp.describe(type, method, jp.PHASE_AROUND, args, argCount);
+    jp.setReturnValue(proposedResult);
+    jp.setProceeded(true);
+    dispatch(jp);
+    return jp;
+  }
+
+  << Print the recorded trace to stdout (for demos / debugging). >>
+  void dumpTrace() {
+    int i = 0;
+    while (i < traceCount) {
+      String line = trace[i];
+      print(line);
+      i = i + 1;
+    }
+  }
+}

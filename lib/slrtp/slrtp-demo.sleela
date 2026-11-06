@@ -1,0 +1,95 @@
+<< lib/slrtp/slrtp-demo.sleela
+   SLeeLa Standard Library Definition.
+   Definition: A runnable demonstration of SLRTP (Sleela Retrouval Tactical
+   Processor), SLeeLa's AOP-style interception framework. It builds a tracing
+   aspect and a guard aspect, installs them in a processor, and shows a target
+   service weaving the processor around its own method -- before advice, an
+   around advice that substitutes a cached result, and after-returning advice.
+
+   Run it:
+     sleela run lib/slrtp/slrtp-demo.sleela
+
+   Sibling classes (SLRTPJoinPoint, SLRTPPointcut, SLRTPAdvice, SLRTPProcessor,
+   SLRTPAspect) are auto-linked from this directory; no imports are needed. >>
+#sleela 3.0
+class SlrtpDemo {
+
+  << A target "service" whose charge() method is advised by SLRTP. It weaves
+     the processor explicitly: before -> around (which may short-circuit) ->
+     the real body -> after-returning. This is the pattern a real program
+     follows, since SLeeLa has no automatic bytecode weaver. >>
+  String charge(SLRTPProcessor p, String account, int cents) {
+    String type = "pay.Service";
+    String method = "charge";
+    String args = account + "," + cents;
+
+    p.runBefore(type, method, args, 2);
+
+    << Around: propose the result the real body would produce, then let advice
+       keep, skip, or substitute it. >>
+    String proposed = "CHARGED " + account + " " + cents;
+    SLRTPJoinPoint jp = p.runAround(type, method, args, 2, proposed);
+
+    String result = jp.getReturnValue();
+    if (jp.didProceed()) {
+      << The real body "runs" here (proposed is its output). >>
+      result = proposed;
+    }
+
+    p.runAfterReturning(type, method, args, 2, result);
+    return result;
+  }
+
+  void main() {
+    SLRTPProcessor p = new SLRTPProcessor();
+
+    << Aspect 1: trace every charge, in every phase. >>
+    SLRTPPointcut pcAll = new SLRTPPointcut();
+    pcAll.select("pay.Service", "charge", "*");
+    SLRTPAdvice trace = new SLRTPAdvice();
+    trace.define("trace-charge", pcAll, trace.ACTION_LOG, "");
+
+    SLRTPAspect tracing = new SLRTPAspect();
+    tracing.named("tracing");
+    tracing.add(trace);
+
+    << Aspect 2: a guard that, AROUND charge, substitutes a cached receipt --
+       the real charge never runs. This is around advice short-circuiting the
+       call, exactly like a caching or authorization aspect. >>
+    SLRTPPointcut pcAround = new SLRTPPointcut();
+    pcAround.select("pay.Service", "charge", "around");
+    SLRTPAdvice guard = new SLRTPAdvice();
+    guard.define("cache-guard", pcAround, guard.ACTION_SUBSTITUTE, "CACHED-RECEIPT-42");
+
+    SLRTPAspect guarding = new SLRTPAspect();
+    guarding.named("guarding");
+    guarding.add(guard);
+
+    int n1 = tracing.installInto(p);
+    int n2 = guarding.installInto(p);
+    print("installed advice: tracing=" + n1 + " guarding=" + n2
+          + " total=" + p.getAdviceCount());
+
+    String out = charge(p, "acct-7", 1500);
+    print("charge() returned: " + out);
+
+    print("dispatched join points: " + p.getDispatched()
+          + "  around short-circuits: " + p.getShortCircuits()
+          + "  trace-advice hits: " + trace.getHits());
+
+    print("---- SLRTP trace ----");
+    p.dumpTrace();
+
+    << Show a second call with the guard removed by using a fresh processor and
+       only the tracing aspect -- now the real charge proceeds. >>
+    SLRTPProcessor p2 = new SLRTPProcessor();
+    SLRTPPointcut pcAll2 = new SLRTPPointcut();
+    pcAll2.select("*", "*", "*");
+    SLRTPAdvice trace2 = new SLRTPAdvice();
+    trace2.define("trace-all", pcAll2, trace2.ACTION_LOG, "");
+    p2.register(trace2);
+    String out2 = charge(p2, "acct-9", 250);
+    print("second charge() (no guard) returned: " + out2);
+    print("done");
+  }
+}
