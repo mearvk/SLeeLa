@@ -1,0 +1,67 @@
+<< lib/math/examples/PiReferenceDemo.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Reports the SLeeLa Modium static pi reference and the math
+   precision norms, and self-verifies pi. SLeeLa prints the verification result
+   on compile (check) and run, so a reader sees that the pi value is correct. >>
+#sleela 2.5
+material;
+class PiReferenceDemo {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class example. >>
+  String metaVersion = "1.0.0";
+  int metaId = 7904;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-06";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-06";
+  int metaScienceRating = 6;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  void main() {
+    print("SLeeLa math precision norms + Modium pi reference");
+
+    SLMathNorms norms = new SLMathNorms();
+    norms.initDefaults();
+    print("irrational carry = " + norms.getIrrationalCarry() + " digits");
+    print("repeating carry  = " + norms.getRepeatingCarry() + " digits");
+    print("finance carry    = " + norms.getFinanceCarry() + " digits (floor "
+          + norms.financeFloor() + ")");
+    print("finance carry valid = " + norms.financeCarryValid());
+    boolean lowered = norms.setFinanceCarry(500);
+    print("set finance carry 500 accepted = " + lowered
+          + " (pinned to " + norms.getFinanceCarry() + ")");
+
+    SLPiReference pi = new SLPiReference();
+    print("pi digits = " + pi.digitCount());
+    print("pi checksum = " + pi.checksum());
+    print("pi verify = " + pi.verify());
+    print(pi.report());
+    print("pi head = " + pi.head());
+  }
+}

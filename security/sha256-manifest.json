@@ -44802,6 +44802,10 @@
       "sha256": "8fc4c3e2c3775fe05003809654e4cdcf95e3920c2675ae8404f57fcfef7a0ec4"
     },
     {
+      "path": "lib/math/SLMathNorms.sleela",
+      "sha256": "1f5891987e06553d666530e1b7deb1cb5e52ad09e4d4840bc527d24241940d6f"
+    },
+    {
       "path": "lib/math/SLMatrix.sleela",
       "sha256": "bbdfe93dee17e4e678969ca82342e318ee3cfde7bc1a4f502ead6ffbca0b4f23"
     },
@@ -44972,6 +44976,10 @@
     {
       "path": "lib/math/SLPhysicalConstant.sleela",
       "sha256": "bc26738fdf7496026ff9a7b582d17d89086b72fe0de20da89381d0d72b911ad1"
+    },
+    {
+      "path": "lib/math/SLPiReference.sleela",
+      "sha256": "a5f726849e0eaa162f0152028afe45de12e8c88becd388ee4bbcfca2a3d94813"
     },
     {
       "path": "lib/math/SLPlane.sleela",
@@ -45312,6 +45320,10 @@
     {
       "path": "lib/math/examples/MathDemo.sleela",
       "sha256": "25fd0b15a91093caa7d87b4901630f707c8a532b86cb5fb717f8a973a77d73a5"
+    },
+    {
+      "path": "lib/math/examples/PiReferenceDemo.sleela",
+      "sha256": "ebfadc69cdc2858c598af8aa5f30dcbb9ba9e8dd566449c869731f30bbf10b08"
     },
     {
       "path": "lib/memory/SLAddress.sleela",
@@ -47091,7 +47103,7 @@
     },
     {
       "path": "lib/registry/SLRegistry.sleela",
-      "sha256": "bb7df0196265c4d59f540ae8c608465509f0648b8d8cd48a58f47eeceb42193b"
+      "sha256": "fb4a6022dd57b03a963c69aa7fc0bfb738de58897337599e20d2c8cfc3c76b5a"
     },
     {
       "path": "lib/registry/SLRegistryIdentity.sleela",

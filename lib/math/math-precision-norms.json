@@ -1,0 +1,27 @@
+{
+  "schema": "sleela.math.precision-norms/1.0",
+  "description": "Math precision norms for SLeeLa. See MATH.PRECISION.NORMS.md for the human-readable guide. Edit the values below; SLMathNorms and the SLeeLa registry read these as default start values.",
+  "norms": {
+    "irrationalDigitCarry": {
+      "value": 2048,
+      "unit": "digits",
+      "appliesTo": "irrational constants (pi, e, sqrt2, ...)",
+      "minimum": 1
+    },
+    "repeatingDigitCarry": {
+      "value": 58,
+      "unit": "digits",
+      "appliesTo": "repeating / recurring decimals (rationals such as 1/3, 1/7)",
+      "minimum": 1
+    },
+    "financeCarry": {
+      "value": 1023,
+      "unit": "digits",
+      "appliesTo": "Finance Verbs (monetary add/subtract/multiply/allocate/convert/accrue/round)",
+      "minimum": 1023,
+      "note": "An irregular concept: must never be less than 1023 digits of decimal precision."
+    }
+  },
+  "steward": "MEARVK LLC",
+  "year": "2026"
+}

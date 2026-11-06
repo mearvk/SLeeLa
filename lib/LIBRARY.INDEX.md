@@ -1,11 +1,26 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.59  
+**Revision:** 0.60  
 **Packages:** 111  
-**SLeeLa source units:** 11887  
+**SLeeLa source units:** 11890  
 **Module-facade symbols:** 78  
-**Total symbol records:** 11965  
+**Total symbol records:** 11968  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.60 adds the math precision norms and the Modium pi reference.
+> `SLMathNorms` carries the editable norms -- irrational-digit carry 2048,
+> repeating-digit carry 58, and a Finance-Verb carry with a hard floor of 1023
+> digits (requests below the floor are rejected and pinned). The norms are
+> documented and user-editable in `lib/math/MATH.PRECISION.NORMS.md` and
+> `lib/math/math-precision-norms.json`. `SLPiReference` is the Modium static
+> reference variable for pi: it carries pi inline to the 2048-digit irrational
+> norm, records its digit count and digit checksum, and self-verifies (head/tail
+> composition + echo) using only the string equality and concatenation SLeeLa
+> guarantees -- the sibling `examples/PiReferenceDemo` reports pi correctness on
+> compile and run. The SLeeLa registry seeds a `Math` key with the three norms,
+> the pi digit count, and the pi head as default start values. (A deeper pi
+> reference set in the millions of digits is produced out-of-band and resolved
+> by handle; the inline catalog value is pinned at the 2048-digit norm.)
 
 > Revision 0.59 brings the `math` package to life. All **243** `lib/math`
 > classes, which previously carried only a generic `state`/`count` stub, now
