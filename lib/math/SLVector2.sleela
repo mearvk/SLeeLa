@@ -45,4 +45,23 @@ class SLVector2 {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  double sqrt(double x) {
+    if (x <= 0.0) { return 0.0; }
+    double g = x;
+    int i = 0;
+    while (i < 60) { g = (g + x / g) / 2.0; i = i + 1; }
+    return g;
+  }
+  double x;
+  double y;
+  void set(double px, double py) { x = px; y = py; }
+  double dot(SLVector2 o) { return x * o.x + y * o.y; }
+  double length() { return sqrt(x * x + y * y); }
+  double cross(SLVector2 o) { return x * o.y - y * o.x; }
+  void add(SLVector2 o) { x = x + o.x; y = y + o.y; }
+  void scale(double s) { x = x * s; y = y * s; }
+  double getX() { return x; }
+  double getY() { return y; }
+}

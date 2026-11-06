@@ -45,4 +45,57 @@ class SLInverse {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << Inverse of an n x n matrix via Gauss-Jordan; returns false if singular.
+     The inverse is written into inv (row-major, n x n). >>
+  boolean of(double[] src, double[] inv, int n) {
+    double[] a = new double[n * n];
+    int i = 0;
+    while (i < n * n) { a[i] = src[i]; i = i + 1; }
+    int d = 0;
+    while (d < n * n) { inv[d] = 0.0; d = d + 1; }
+    int k = 0;
+    while (k < n) { inv[k * n + k] = 1.0; k = k + 1; }
+    int col = 0;
+    while (col < n) {
+      int pivot = col;
+      double best = a[col * n + col];
+      if (best < 0.0) { best = 0.0 - best; }
+      int r = col + 1;
+      while (r < n) {
+        double v = a[r * n + col];
+        if (v < 0.0) { v = 0.0 - v; }
+        if (v > best) { best = v; pivot = r; }
+        r = r + 1;
+      }
+      if (a[pivot * n + col] == 0.0) { return false; }
+      if (pivot != col) {
+        int c = 0;
+        while (c < n) {
+          double t = a[col * n + c]; a[col * n + c] = a[pivot * n + c]; a[pivot * n + c] = t;
+          double u = inv[col * n + c]; inv[col * n + c] = inv[pivot * n + c]; inv[pivot * n + c] = u;
+          c = c + 1;
+        }
+      }
+      double p = a[col * n + col];
+      int c2 = 0;
+      while (c2 < n) { a[col * n + c2] = a[col * n + c2] / p; inv[col * n + c2] = inv[col * n + c2] / p; c2 = c2 + 1; }
+      int rr = 0;
+      while (rr < n) {
+        if (rr != col) {
+          double f = a[rr * n + col];
+          int c3 = 0;
+          while (c3 < n) {
+            a[rr * n + c3] = a[rr * n + c3] - f * a[col * n + c3];
+            inv[rr * n + c3] = inv[rr * n + c3] - f * inv[col * n + c3];
+            c3 = c3 + 1;
+          }
+        }
+        rr = rr + 1;
+      }
+      col = col + 1;
+    }
+    return true;
+  }
+}

@@ -45,4 +45,21 @@ class SLFactorial {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Factorial n! for nonnegative n, as a 64-bit long (exact through 20!). >
+  long compute(int n) {
+    if (n < 0) { return 0; }
+    long r = 1;
+    int i = 2;
+    while (i <= n) { r = r * i; i = i + 1; }
+    return r;
+  }
+  < Falling factorial n*(n-1)*...*(n-k+1). >
+  long falling(int n, int k) {
+    long r = 1;
+    int i = 0;
+    while (i < k) { r = r * (n - i); i = i + 1; }
+    return r;
+  }
+}

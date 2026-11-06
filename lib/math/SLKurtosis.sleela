@@ -47,10 +47,29 @@ class SLKurtosis {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  double mean(double[] xs, int n) {
+    double s = 0.0; int i = 0;
+    while (i < n) { s = s + xs[i]; i = i + 1; }
+    return n == 0 ? 0.0 : s / n;
+  }
+  < Excess kurtosis: m4 / m2^2 - 3. >
+  double of(double[] xs, int n) {
+    if (n <= 0) { return 0.0; }
+    double m = mean(xs, n);
+    double m2 = 0.0;
+    double m4 = 0.0;
+    int i = 0;
+    while (i < n) {
+      double d = xs[i] - m;
+      double d2 = d * d;
+      m2 = m2 + d2;
+      m4 = m4 + d2 * d2;
+      i = i + 1;
+    }
+    m2 = m2 / n;
+    m4 = m4 / n;
+    if (m2 == 0.0) { return 0.0; }
+    return m4 / (m2 * m2) - 3.0;
+  }
 }

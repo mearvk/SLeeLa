@@ -47,10 +47,14 @@ class SLMax {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  double of(double a, double b) { if (a >= b) { return a; } return b; }
+  int ofInt(int a, int b) { if (a >= b) { return a; } return b; }
+  double ofArray(double[] xs, int n) {
+    if (n <= 0) { return 0.0; }
+    double m = xs[0];
+    int i = 1;
+    while (i < n) { if (xs[i] > m) { m = xs[i]; } i = i + 1; }
+    return m;
+  }
 }

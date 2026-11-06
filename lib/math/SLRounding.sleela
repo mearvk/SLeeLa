@@ -47,10 +47,15 @@ class SLRounding {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  < Round half-up to the nearest integer (as a long). >
+  long nearest(double x) {
+    if (x >= 0.0) { long f = (long) x; if (x - f >= 0.5) { return f + 1; } return f; }
+    long f = (long) x;
+    if (f - x > 0.5) { return f - 1; }
+    return f;
+  }
+  long floorOf(double x) { long f = (long) x; if (f > x) { return f - 1; } return f; }
+  long ceilOf(double x) { long f = (long) x; if (f < x) { return f + 1; } return f; }
+  double truncate(double x) { long f = (long) x; return f; }
 }

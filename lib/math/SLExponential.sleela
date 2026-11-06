@@ -45,4 +45,19 @@ class SLExponential {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < e^x via a Taylor series; adequate for |x| within a modest range. >
+  double exp(double x) {
+    double term = 1.0;
+    double sum = 1.0;
+    int n = 1;
+    while (n < 60) {
+      term = term * x / n;
+      sum = sum + term;
+      n = n + 1;
+    }
+    return sum;
+  }
+  double e() { return exp(1.0); }
+}

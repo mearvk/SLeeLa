@@ -45,4 +45,28 @@ class SLPercentile {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Linear-interpolation percentile p in [0,100] over sorted data `a`. >
+  double of(double[] a, int n, double p) {
+    if (n <= 0) { return 0.0; }
+    sortInPlace(a, n);
+    if (p <= 0.0) { return a[0]; }
+    if (p >= 100.0) { return a[n - 1]; }
+    double rank = (p / 100.0) * (n - 1);
+    int lo = (int) rank;
+    double frac = rank - lo;
+    if (lo + 1 >= n) { return a[n - 1]; }
+    return a[lo] + frac * (a[lo + 1] - a[lo]);
+  }
+  void sortInPlace(double[] a, int n) {
+    int i = 1;
+    while (i < n) {
+      double key = a[i];
+      int j = i - 1;
+      while (j >= 0 && a[j] > key) { a[j + 1] = a[j]; j = j - 1; }
+      a[j + 1] = key;
+      i = i + 1;
+    }
+  }
+}

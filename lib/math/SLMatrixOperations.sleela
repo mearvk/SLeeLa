@@ -45,4 +45,31 @@ class SLMatrixOperations {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Matrix product C = A(ra x ca) * B(ca x cb), all row-major flat arrays. >
+  void multiply(double[] a, double[] b, double[] c, int ra, int ca, int cb) {
+    int i = 0;
+    while (i < ra) {
+      int j = 0;
+      while (j < cb) {
+        double s = 0.0;
+        int k = 0;
+        while (k < ca) { s = s + a[i * ca + k] * b[k * cb + j]; k = k + 1; }
+        c[i * cb + j] = s;
+        j = j + 1;
+      }
+      i = i + 1;
+    }
+  }
+  < Elementwise sum C = A + B for r x c matrices. >
+  void add(double[] a, double[] b, double[] c, int r, int cc) {
+    int i = 0;
+    while (i < r * cc) { c[i] = a[i] + b[i]; i = i + 1; }
+  }
+  < Scalar multiply. >
+  void scale(double[] a, double s, double[] c, int r, int cc) {
+    int i = 0;
+    while (i < r * cc) { c[i] = a[i] * s; i = i + 1; }
+  }
+}

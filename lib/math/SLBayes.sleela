@@ -47,10 +47,13 @@ class SLBayes {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << Posterior P(A|B) = P(B|A) P(A) / P(B) with the total-probability denominator
+     P(B) = P(B|A) P(A) + P(B|notA) P(notA). >>
+  double posterior(double pBgivenA, double pA, double pBgivenNotA) {
+    double pNotA = 1.0 - pA;
+    double pB = pBgivenA * pA + pBgivenNotA * pNotA;
+    if (pB == 0.0) { return 0.0; }
+    return (pBgivenA * pA) / pB;
+  }
 }

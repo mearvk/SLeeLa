@@ -47,10 +47,25 @@ class SLProbabilityMass {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  < Validate that a discrete PMF over n outcomes sums to 1 (within tol). >
+  boolean valid(double[] probs, int n, double tol) {
+    double s = 0.0;
+    int i = 0;
+    while (i < n) {
+      if (probs[i] < 0.0) { return false; }
+      s = s + probs[i];
+      i = i + 1;
+    }
+    double d = s - 1.0;
+    if (d < 0.0) { d = 0.0 - d; }
+    return d <= tol;
+  }
+  < Cumulative mass through index k inclusive. >
+  double cumulative(double[] probs, int k) {
+    double s = 0.0;
+    int i = 0;
+    while (i <= k) { s = s + probs[i]; i = i + 1; }
+    return s;
+  }
 }

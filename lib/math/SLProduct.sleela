@@ -47,10 +47,12 @@ class SLProduct {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  double of(double[] xs, int n) {
+    double p = 1.0;
+    int i = 0;
+    while (i < n) { p = p * xs[i]; i = i + 1; }
+    return p;
+  }
+  double times(double a, double b) { return a * b; }
 }

@@ -47,10 +47,8 @@ class SLReciprocal {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  < The multiplicative inverse 1/x; returns 0.0 for x == 0 (no infinity). >
+  double of(double x) { if (x == 0.0) { return 0.0; } return 1.0 / x; }
+  boolean defined(double x) { return x != 0.0; }
 }

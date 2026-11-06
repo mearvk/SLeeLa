@@ -45,4 +45,20 @@ class SLPower {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Integer power x to the n by binary exponentiation (negative n inverts). >
+  double intPow(double x, int n) {
+    if (n < 0) { if (x == 0.0) { return 0.0; } return 1.0 / intPow(x, 0 - n); }
+    double r = 1.0;
+    while (n > 0) {
+      if (n % 2 == 1) { r = r * x; }
+      x = x * x;
+      n = n / 2;
+    }
+    return r;
+  }
+  < Square and cube helpers. >
+  double square(double x) { return x * x; }
+  double cube(double x) { return x * x * x; }
+}

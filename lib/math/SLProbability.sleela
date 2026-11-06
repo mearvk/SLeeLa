@@ -45,4 +45,23 @@ class SLProbability {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Clamp a raw value to a valid probability in [0, 1]. >
+  double clamp(double p) {
+    if (p < 0.0) { return 0.0; }
+    if (p > 1.0) { return 1.0; }
+    return p;
+  }
+  double complement(double p) { return 1.0 - clamp(p); }
+  < Probability of independent events both occurring. >
+  double andIndependent(double a, double b) { return clamp(a) * clamp(b); }
+  < Probability of either of two mutually-exclusive events. >
+  double orExclusive(double a, double b) { return clamp(clamp(a) + clamp(b)); }
+  < Inclusive-or for independent events: a + b - a*b. >
+  double orIndependent(double a, double b) {
+    double ca = clamp(a);
+    double cb = clamp(b);
+    return ca + cb - ca * cb;
+  }
+}

@@ -45,4 +45,29 @@ class SLVector {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  double sqrt(double x) {
+    if (x <= 0.0) { return 0.0; }
+    double g = x;
+    int i = 0;
+    while (i < 60) { g = (g + x / g) / 2.0; i = i + 1; }
+    return g;
+  }
+  < Dense n-vector operations over caller-held double[] arrays. >
+  double dot(double[] a, double[] b, int n) {
+    double s = 0.0;
+    int i = 0;
+    while (i < n) { s = s + a[i] * b[i]; i = i + 1; }
+    return s;
+  }
+  double norm(double[] a, int n) { return sqrt(dot(a, a, n)); }
+  void add(double[] a, double[] b, double[] out, int n) {
+    int i = 0;
+    while (i < n) { out[i] = a[i] + b[i]; i = i + 1; }
+  }
+  void scale(double[] a, double s, double[] out, int n) {
+    int i = 0;
+    while (i < n) { out[i] = a[i] * s; i = i + 1; }
+  }
+}
