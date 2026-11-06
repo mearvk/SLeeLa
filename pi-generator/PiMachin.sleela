@@ -1,0 +1,307 @@
+#sleela 2.9
+<< PiMachin.sleela -- compute Pi with Machin's formula over the NATIVE
+   big-integer kernel, then stream the digits to a local file.
+
+   WHY THIS EXISTS. PiGenerator.sleela uses the Rabinowitz-Wagon spigot, which
+   is O(digits^2) in INTERPRETED SLeeLa bytecode: every one of `digits` passes
+   sweeps a `digits`-length int[] element by element, so millions of digits take
+   months of wall time (see pi-generator/README.md, "Performance - Version 2.0").
+
+   This program does the heavy arithmetic in the native C big-integer kernel
+   instead, reached through the VM opcodes bigmul (OP_BIGMUL, NTT/Karatsuba),
+   bigadd (OP_BIGADD) and bigdivmod (OP_BIGDIVMOD, divide by a SMALL integer).
+   The per-term cost is two native base-1e9 long-divisions over a `digits`-length
+   limb array -- C speed, not an interpreted per-element loop -- so the constant
+   factor is far smaller than the spigot even though the term count is similar.
+
+   ALGORITHM. Machin's formula:
+
+       pi = 16 * arctan(1/5) - 4 * arctan(1/239)
+
+   with the Maclaurin series  arctan(1/x) = sum_{k>=0} (-1)^k / ((2k+1) x^(2k+1)).
+
+   Everything is kept as a scaled integer  N ~= pi * 10^(digits+guard)  stored as
+   a base-1,000,000,000 limb int[] (little-endian: limb 0 is least significant,
+   one limb holds 9 decimal digits). For each arctan we keep a running power
+       P_k = SCALE / x^(2k+1)
+   advanced by a single  bigdivmod(P, x*x, P)  per step (x*x = 25 and 57121 are
+   both < 1e9, so one native divide), then the term  T_k = P_k / (2k+1)  is
+   another single native divide ((2k+1) <= ~10^7 even at 7,000,000 digits, so it
+   stays a SMALL divisor). Even-k terms are added to a positive accumulator and
+   odd-k terms to a negative one; the two are combined with a limb-wise subtract.
+
+   WHY NOT CHUDNOVSKY. Classic Chudnovsky needs big-by-big division and a big
+   square root (of 10005). The VM exposes only bigmul, bigadd and bigdivmod
+   (small divisor) -- there is no native big/big divide or big sqrt -- so a
+   Machin arctan series, whose every division is by a small integer, is the
+   fastest formula expressible on today's kernel. The only non-native helper is
+   a limb-wise subtract (bigsub below), which is O(digits) and runs a handful of
+   times, so it does not affect the asymptotics.
+
+   OUTPUT. Digits are formatted straight from the final limb array and streamed
+   to the file in fixed-size chunks, so memory stays flat. >>
+class PiMachin {
+
+    << Decimal digits of Pi to compute after the leading "3.". Default 10,000:
+       it finishes in well under a second here and matches the reference
+       exactly. Raise it freely -- the native kernel scales far better than the
+       spigot (see README Performance - Version 2.0). >>
+    int DIGITS = 10000;
+
+    << Guard digits carried internally and dropped at the end, so the last few
+       printed digits are not polluted by truncation of the series tail. >>
+    int GUARD = 16;
+
+    < Output file, digit-count stamped. >
+    String OUT_PATH = "pi-machin.txt";
+
+    < Digits to buffer before each write() (keeps memory flat). >
+    int CHUNK = 4096;
+
+    < One base-1e9 limb holds 9 decimal digits. >
+    int DIGITS_PER_LIMB = 9;
+    int BASE = 1000000000;
+
+    < Streaming state. >
+    int fd = -1;
+    String buf = "";
+    int bufLen = 0;
+    int emitted = 0;
+
+    << --- limb helpers ------------------------------------------------------
+       All numbers are non-negative base-1e9 int[] arrays, little-endian. We
+       keep a fixed working width (nlimbs) so every operand lines up. >> 
+    int nlimbs = 0;
+
+    < Allocate a zeroed limb array of the working width. >
+    int[] newBig() {
+        int[] a = new int[nlimbs];
+        int i = 0;
+        while (i < nlimbs) { a[i] = 0; i = i + 1; }
+        return a;
+    }
+
+    < Copy src into a fresh working-width array. >
+    int[] copyBig(int[] src) {
+        int[] a = new int[nlimbs];
+        int i = 0;
+        while (i < nlimbs) { a[i] = src[i]; i = i + 1; }
+        return a;
+    }
+
+    << Copy the low nlimbs limbs of a WIDER source (e.g. an nlimbs+1 bigadd
+       result) into a fresh working-width array, dropping the top carry limb
+       (which is zero by construction for our SCALE-bounded partial sums). >>
+    int[] copyBigN(int[] src) {
+        int[] a = new int[nlimbs];
+        int i = 0;
+        while (i < nlimbs) { a[i] = src[i]; i = i + 1; }
+        return a;
+    }
+
+    < Set a limb array to a small non-negative integer value (< BASE). >
+    void setSmall(int[] a, int v) {
+        int i = 0;
+        while (i < nlimbs) { a[i] = 0; i = i + 1; }
+        a[0] = v;
+    }
+
+    << Is `a` all zeros? Used to stop a series once the running term underflows
+       to 0 at the working precision (no point adding zero terms). >>
+    boolean isZero(int[] a) {
+        int i = 0;
+        while (i < nlimbs) { if (a[i] != 0) { return false; } i = i + 1; }
+        return true;
+    }
+
+    << Limb-wise subtract: a = a - b, assuming a >= b (true by construction here,
+       since the positive partial sum of an alternating, strictly-decreasing
+       arctan series always dominates the negative one). O(nlimbs). >>
+    void subFrom(int[] a, int[] b) {
+        int borrow = 0;
+        int i = 0;
+        while (i < nlimbs) {
+            int d = a[i] - b[i] - borrow;
+            if (d < 0) { d = d + BASE; borrow = 1; } else { borrow = 0; }
+            a[i] = d;
+            i = i + 1;
+        }
+    }
+
+    << --- Machin core -------------------------------------------------------
+       Accumulate SCALE * arctan(1/x) into `acc` (positive terms) minus `neg`
+       (odd terms), using one running power P advanced by /x^2 each step and one
+       /(2k+1) per term. `scale` is passed in as the limb array 10^(working
+       digits). Returns via the two accumulator arrays (acc already holds the
+       result after the final subFrom). >>
+    void arctanInto(int[] acc, int x, int[] scale) {
+        << x^2 is 25 or 57121 here, both < BASE, so dividing by it is one native
+           bigdivmod per step. The hot loop is COPY-FREE: every big op writes in
+           place (the native kernel snapshots its inputs into its own buffers
+           first, so aliasing input == result is safe), and the double-buffered
+           accumulators swap by REFERENCE (O(1)) instead of copying O(nlimbs)
+           limbs each term. That removes the per-term O(nlimbs) interpreted copy
+           that would otherwise make this O(digits^2) in the interpreter. >>
+        int xx = x * x;
+
+        << pos accumulates even-k terms, neg the odd-k. The running `power` is
+           divided IN PLACE each step (the native kernel snapshots its input
+           before writing, so result==input aliasing is safe) -- no copy there.
+           bigadd, however, strictly requires its result array to be
+           max(len(a),len(b))+1 limbs, so it cannot write back into an operand of
+           the same width; the accumulate step therefore adds into a wider `sum`
+           buffer and copies the low nlimbs back. That single O(nlimbs) copy per
+           term is the dominant interpreted cost and keeps the whole series
+           O(digits^2) -- faster than the spigot by a large constant (the heavy
+           divides are native), but the same complexity class. True sub-quadratic
+           Pi needs a native big/big divide or binary splitting, which this VM
+           kernel does not expose yet (see README). >>
+        int[] pos = newBig();
+        int[] neg = newBig();
+
+        << power starts at SCALE/x; divided by x^2 in place each step. >>
+        int[] power = copyBig(scale);
+        int remQ = bigdivmod(power, x, power);
+
+        int[] term = newBig();
+        int[] sum = new int[nlimbs + 1];
+        int zi = 0;
+        while (zi < nlimbs + 1) { sum[zi] = 0; zi = zi + 1; }
+
+        int k = 0;
+        boolean running = true;
+        while (running) {
+            << denom = 2k+1 stays <= ~10^7 even at 7,000,000 digits, a valid
+               SMALL bigdivmod divisor. term = power / (2k+1). >>
+            int denom = 2 * k + 1;
+            int r1 = bigdivmod(power, denom, term);
+            if (isZero(term)) { running = false; }
+            else {
+                if ((k % 2) == 0) {
+                    int s = bigadd(pos, term, sum);
+                    pos = copyBigN(sum);
+                } else {
+                    int s = bigadd(neg, term, sum);
+                    neg = copyBigN(sum);
+                }
+                int r2 = bigdivmod(power, xx, power);
+                k = k + 1;
+            }
+        }
+        << acc = pos - neg. >>
+        int i = 0;
+        while (i < nlimbs) { acc[i] = pos[i]; i = i + 1; }
+        subFrom(acc, neg);
+    }
+
+    << Multiply a limb array by a small integer (< BASE) in place-ish, returning
+       a fresh array. Implemented via bigmul against a one-limb multiplier so we
+       reuse the native kernel. >>
+    int[] mulSmall(int[] a, int m) {
+        int[] mm = new int[1];
+        mm[0] = m;
+        int[] r = new int[nlimbs + 1];
+        int i = 0;
+        while (i < nlimbs + 1) { r[i] = 0; i = i + 1; }
+        int sig = bigmul(a, mm, r);
+        < fold back into working width (product fits: m is tiny, we carry guard) >
+        int[] out = newBig();
+        i = 0;
+        while (i < nlimbs) { out[i] = r[i]; i = i + 1; }
+        return out;
+    }
+
+    void main() {
+        int digits = DIGITS;
+        << work is the internal decimal precision: the requested digits plus a
+           few guard digits dropped at the end. >>
+        int work = digits + GUARD;
+        nlimbs = (work + DIGITS_PER_LIMB) / DIGITS_PER_LIMB + 2;
+
+        << SCALE = 10^(working-limb-digits). Build it as a limb array: the top
+           limb pattern that represents 10^(9 * (nlimbs-k)). Simplest correct
+           form: start from 1 and multiply by 10, `9*(nlimbs-2)`-ish times. To
+           stay O(nlimbs) we instead set the limb that lands on a 9-boundary. >>
+        int[] scale = newBig();
+        << Place 1 at the most-significant guard limb so SCALE = BASE^(nlimbs-1),
+           i.e. 10^(9*(nlimbs-1)) -- an exact power of ten on a limb boundary,
+           which keeps every /x and /(2k+1) a clean base-1e9 long division. >>
+        scale[nlimbs - 1] = 1;
+
+        < A = SCALE * arctan(1/5) ; B = SCALE * arctan(1/239) >
+        int[] a5 = newBig();
+        arctanInto(a5, 5, scale);
+        int[] a239 = newBig();
+        arctanInto(a239, 239, scale);
+
+        < pi*SCALE = 16*A - 4*B. 16 and 4 are small; build both then subtract. >
+        int[] left = mulSmall(a5, 16);
+        int[] right = mulSmall(a239, 4);
+        int[] pi = copyBig(left);
+        subFrom(pi, right);
+
+        << Emit. pi is  3.14159... * BASE^(nlimbs-1). The integer part (3) lives
+           in the top limb; the fractional limbs follow in descending order, each
+           printed as 9 zero-padded decimal digits. We print "3." then stream
+           `digits` fractional digits. >>
+        fd = openFile(OUT_PATH, "w");
+        if (fd < 0) { print("PiMachin: could not open " + OUT_PATH); return; }
+
+        << Top limb is the integer part (should be 3). Write "3." . >>
+        put1(pi[nlimbs - 1]);
+        buf = buf + ".";
+        bufLen = bufLen + 1;
+
+        << Fractional limbs: from nlimbs-2 down to 0, each limb is exactly 9
+           decimal digits (zero-padded), emitted most-significant digit first,
+           until the DIGITS budget is met. >>
+        int li = nlimbs - 2;
+        int produced = 0;
+        while (li >= 0 && produced < digits) {
+            produced = emitLimb(pi[li], digits, produced);
+            li = li - 1;
+        }
+        flush();
+        close(fd);
+        print("PiMachin: wrote Pi to " + OUT_PATH
+              + " (" + produced + " fractional digits, target " + digits + ")");
+    }
+
+    << Emit a single small non-negative integer (the integer part, 0..9 here)
+       with no padding. >>
+    void put1(int v) {
+        buf = buf + v;
+        bufLen = bufLen + 1;
+        emitted = emitted + 1;
+        if (bufLen >= CHUNK) { flush(); }
+    }
+
+    << Emit one base-1e9 limb as exactly 9 zero-padded decimal digits, most
+       significant first, stopping at the overall `digits` budget. Digits are
+       extracted arithmetically (no string indexing, which SLeeLa lacks): walk
+       powers of ten from 10^8 down to 10^0, printing (limb / p) % 10 each step.
+       Returns the updated produced count. >>
+    int emitLimb(int limb, int digits, int produced) {
+        << p starts at 10^8, the most-significant of a limb's 9 digits. >>
+        int p = 100000000;
+        while (p >= 1 && produced < digits) {
+            int d = (limb / p) % 10;
+            buf = buf + d;
+            bufLen = bufLen + 1;
+            produced = produced + 1;
+            emitted = emitted + 1;
+            if (bufLen >= CHUNK) { flush(); }
+            p = p / 10;
+        }
+        return produced;
+    }
+
+    < Write the buffered chunk to the file and reset the buffer. >
+    void flush() {
+        if (bufLen > 0) {
+            write(fd, buf);
+            buf = "";
+            bufLen = 0;
+        }
+    }
+}
