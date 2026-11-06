@@ -12,8 +12,8 @@ SUBJECT_INCLUDES := -Isubjects/native -Isubjects/math -Isubjects/physics \
 # sleela_thread/net/io abstraction layer), so the only per-OS differences are
 # the thread flag, the link libraries, and the executable suffix.
 #   * Linux/macOS (POSIX): -pthread, link libdl (dlopen) + libm.
-#   * Windows 10+ (MinGW):  Win32 threads (no -pthread), link Winsock (ws2_32);
-#                           no libdl (LoadLibrary is used via sleela_library),
+#   * Windows 10+ (MinGW):  Win32 threads (no -pthread), link Winsock (ws2_32)
+#                           and IP Helper (iphlpapi); no libdl (LoadLibrary is used via sleela_library),
 #                           binaries get a .exe suffix.
 # GNU Make on Windows/MinGW sets OS=Windows_NT.
 # ---------------------------------------------------------------------------
@@ -21,7 +21,7 @@ ifeq ($(OS),Windows_NT)
   PLATFORM := windows
   EXE := .exe
   THREADFLAG :=
-  PLATFORM_LIBS := -lws2_32 -lopengl32 -lgdi32 -lm
+  PLATFORM_LIBS := -lws2_32 -liphlpapi -lopengl32 -lgdi32 -lm
 else
   EXE :=
   THREADFLAG := -pthread

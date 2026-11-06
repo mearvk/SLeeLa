@@ -1,4 +1,7 @@
-#sleela 2.1
+#sleela 3.0
+
+# Regression coverage: qualified java.lang.Object inheritance, the Class<?>
+# generic API signature, and legal overloaded Object.wait declarations.
 
 public interface Marker {
   public void mark() {

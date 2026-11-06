@@ -32,6 +32,11 @@ static Type typeOf(const std::string& n){
  if(n.size()>=2 && n.compare(n.size()-2,2,"[]")==0){
   Type t; t.kind=Kind::Array; t.name=n; t.elem=n.substr(0,n.size()-2); return t;
  }
+ // Generic arguments are signature metadata in syntax 2.2+; the VM type is
+ // the raw reference type, so Class<?> has the same runtime type as Class.
+ const std::size_t generic = n.find('<');
+ if(generic != std::string::npos && n.back() == '>')
+  return{Kind::Struct,n.substr(0,generic),{}};
  if(unsignedTypeName(n)){return{Kind::Unsigned,n,{}};}
  if(n=="void"){return{Kind::Void,{},{}};}
  if(n=="int"){return{Kind::Int,{},{}};}
@@ -102,6 +107,11 @@ class Analyzer{
   // An array type "T[]" is known when its element type T is known. Nested
   // arrays ("T[][]") recurse. Element type must not be void.
   if(t.size()>=2 && t.compare(t.size()-2,2,"[]")==0){std::string inner=t.substr(0,t.size()-2);return inner!="void"&&known(inner);}
+  const std::size_t generic = t.find('<');
+  if(generic != std::string::npos){
+   if(syntax<SyntaxVersion{2,2} || t.empty() || t.back()!='>') return false;
+   return known(t.substr(0,generic));
+  }
   return t=="void"||t=="int"||t=="long"||t=="int64"||t=="int128"||unsignedTypeName(t)||signedWideTypeName(t)||t=="double"||t=="bool"||t=="boolean"||t=="string"||t=="String"||t=="Any"||structs.count(t)||classNames.count(t);
  }
  Type tn(const std::string&t)const{return known(t)?typeOf(t):Type{Kind::Error,t};}
@@ -177,6 +187,10 @@ class Analyzer{
    int n=1;
    for(char ch:v){ if(ch==','){++n;} }
    return n;};
+  // Java API declarations may overload a method name (for example,
+  // java.lang.Object.wait). Reject duplicate parameter signatures, not
+  // distinct overloads. Expression lookup remains name-keyed in this release.
+  std::map<std::string,std::vector<const Method*>> methodDeclarations;
   for(const auto&c:p.classes){
    std::map<std::string,Type> instanceFields;
    // First, for 2.9, tally @mix groups (name -> count) and remember any manual
@@ -214,7 +228,17 @@ class Analyzer{
    // the full base+derived layout is registered.)
    if(instanceFields.size()>64)err("class '"+c.name+"' has "+std::to_string(instanceFields.size())+" instance fields, but the VM admits at most 64 fields per class/struct layout. Reduce the field count -- for example, pack a group of related fields into a single array field reached through accessor methods (methods cost no layout slot), or split the class.");
    fields[c.name]=instanceFields;
-   for(const auto&m:c.methods){const std::string key=c.name+"::"+m.name;if(methods.count(key)&&!p.authorMarked)err("duplicate method '"+key+"'");
+   for(const auto&m:c.methods){const std::string key=c.name+"::"+m.name;
+    bool duplicateSignature=false;
+    for(const Method* prior:methodDeclarations[key]){
+     if(prior->params.size()!=m.params.size()) continue;
+     bool sameParameters=true;
+     for(std::size_t i=0;i<m.params.size();++i)
+      if(prior->params[i].type!=m.params[i].type){sameParameters=false;break;}
+     if(sameParameters){duplicateSignature=true;break;}
+    }
+    if(duplicateSignature&&!p.authorMarked)err("duplicate method '"+key+"'");
+    methodDeclarations[key].push_back(&m);
     if(!known(m.retType))err("unknown return type '"+m.retType+"' for method '"+m.name+"'");
     if(m.isProtected&&!m.isStatic)err("protected method '"+m.name+"' must also be static");
     methods[key]={&m,c.name};if(m.name=="main")methods["main"]={&m,c.name};}
@@ -229,15 +253,29 @@ class Analyzer{
    // index classes by name for superclass lookup
    std::map<std::string,const ClassDecl*> byName;
    for(const auto&c:p.classes) byName[c.name]=&c;
+   // Resolve a qualified Java superclass against the simple class name of the
+   // uniquely selected /lib source unit. Only library-origin classes may be
+   // used for this fallback, so a local class named Object cannot impersonate
+   // java.lang.Object.
+   auto resolveBaseName=[&](const std::string& declared)->std::string{
+    if(byName.count(declared)) return declared;
+    const std::size_t dot=declared.rfind('.');
+    if(dot!=std::string::npos){
+     const std::string simple=declared.substr(dot+1);
+     auto it=byName.find(simple);
+     if(it!=byName.end() && it->second->fromLibrary) return simple;
+    }
+    return declared;
+   };
    // validate: known base, no cycles
    for(const auto&c:p.classes){
-    const std::string&sup=c.java.superclass;
+    const std::string sup=resolveBaseName(c.java.superclass);
     if(sup.empty()) continue;
-    if(!byName.count(sup)){ if(classNames.count(sup)==0 && structs.count(sup)==0) err("class '"+c.name+"' extends unknown type '"+sup+"'"); continue; }
+    if(!byName.count(sup)){ if(classNames.count(sup)==0 && structs.count(sup)==0) err("class '"+c.name+"' extends unknown type '"+c.java.superclass+"'"); continue; }
     // cycle detection: walk the extends chain from c; if we return to a class
     // already on the path, the inheritance is cyclic.
     { std::set<std::string> seen; std::string cur2=c.name;
-      while(byName.count(cur2)){ seen.insert(cur2); const std::string&s2=byName[cur2]->java.superclass;
+      while(byName.count(cur2)){ seen.insert(cur2); const std::string s2=resolveBaseName(byName[cur2]->java.superclass);
         if(s2.empty()) break; if(seen.count(s2)){ err("cyclic inheritance involving class '"+c.name+"'"); break; } cur2=s2; } }
    }
    // merge base members into each derived class, resolving the chain base-first
@@ -246,7 +284,7 @@ class Analyzer{
     if(done.count(name)||!byName.count(name)) return;
     if(!inProgress.insert(name).second) return; // cycle guard (reported above)
     const ClassDecl* c=byName[name];
-    const std::string&sup=c->java.superclass;
+    const std::string sup=resolveBaseName(c->java.superclass);
     if(!sup.empty()&&byName.count(sup)&&!inProgress.count(sup)){
      resolve(sup); // ensure base is fully resolved first
      // inherit instance fields the derived class does not redeclare (the base's
