@@ -320,14 +320,39 @@ def main(argv=None):
     for f in code_files:
         validate_code_models(f, code_schema)
 
+    # SLeeLa-specialized Code LLM profile (single JSON object)
+    sleela_dir = root / "sleela"
+    sleela_profile = sleela_dir / "sleela-language-profile.json"
+    sleela_ok = 0
+    if sleela_profile.exists():
+        sleela_ok = 1
+        where = str(sleela_profile)
+        try:
+            prof = load_json(sleela_profile)
+            if prof.get("primary_language") != "sleela":
+                err(where, "SLeeLa profile must set primary_language 'sleela'")
+            lk = prof.get("language_knowledge", {})
+            rw = lk.get("reserved_words", [])
+            for must in ("record", "native", "enum", "class", "struct"):
+                if must not in rw:
+                    err(where, f"reserved_words should list '{must}'")
+            if lk.get("limits", {}).get("max_class_or_struct_fields") != 64:
+                err(where, "max_class_or_struct_fields must be 64 (SL_MAX_STRUCT_FIELDS)")
+            tasks = prof.get("tasks", [])
+            for t in tasks:
+                if t not in CODE_TASKS:
+                    err(where, f"invalid task '{t}'")
+        except (OSError, json.JSONDecodeError) as e:
+            err(where, f"cannot read/parse: {e}")
+
     if errors:
         print(f"validate: FAILED with {len(errors)} issue(s):", file=sys.stderr)
         for e in errors:
             print(f"  - {e}", file=sys.stderr)
         return 1
     scope = (f"base + {len(corpus_files)} corpus file(s) + {len(cap_files)} capacity + "
-             f"{len(code_files)} code-model profile(s)")
-    print(f"validate: OK — {scope} pass schema, ID, licensing, capacity, and code checks"
+             f"{len(code_files)} code-model + {sleela_ok} SLeeLa profile(s)")
+    print(f"validate: OK — {scope} pass schema, ID, licensing, capacity, code, and SLeeLa checks"
           + ("" if HAVE_JSONSCHEMA else " (built-in schema subset; install jsonschema for full checks)"))
     return 0
 

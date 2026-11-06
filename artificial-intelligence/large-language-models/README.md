@@ -128,6 +128,12 @@ reasoning layer as `SLLMR_SUBJECT_CODE` and is declared by a user-owned
 verifier (compile / test / trace) supports them; otherwise they stay UNKNOWN.
 See `CODE-MODELS.md`. No code model, weights, or compiler are bundled.
 
+A **SLeeLa-specialized Code LLM** lives in `sleela/`: it pairs the code-model
+type with a verifier (`sllmsl_*`) that knows SLeeLa's real rules (reserved words
+such as `record`/`native`/`enum`, the `<< >>` comment forms, the 64-field class
+cap, the Metadata Class metapattern) and bridges to the real `impl/build/sleela`
+compiler for ground truth. See `sleela/README.md`.
+
 ## Inference
 
 The inference backend supplies three operations:

@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0",
+  "model_id": "sleela/sleela-code-llm",
+  "base_family": "code-language-model",
+  "primary_language": "sleela",
+  "tasks": ["summarize", "dry-run", "refactor", "translate", "debug", "complete"],
+  "check_mode": "compile",
+  "fill_in_middle": true,
+  "note": "A Code LLM specialized for the SLeeLa programming language. Verification is the SLeeLa compiler itself (impl/build/sleela check/run); until that runs, the native static verifier catches SLeeLa's known gotchas. The model is user-supplied; SLeeLa ships the rule knowledge and verifier contract, not weights.",
+  "language_knowledge": {
+    "spec": "SLEELA.syntax",
+    "syntax_versions": "1.0 .. 3.0 (declared per file with '#sleela X.Y')",
+    "compiler": {
+      "source_built": "impl/build/sleela (syntax up to 3.0)",
+      "prebuilt": "working-binaries/sleela (syntax up to 1.11 only)",
+      "verify": "impl/build/sleela check <file>  (and run <file> to execute)"
+    },
+    "reserved_words": [
+      "abstract","assert","boolean","break","case","catch","class","const","continue",
+      "default","do","double","else","enum","extends","false","final","finally","for",
+      "if","implements","import","instanceof","int","interface","long","native","new",
+      "null","package","private","protected","public","record","return","sealed","static",
+      "strictfp","struct","super","switch","synchronized","this","throw","throws",
+      "transient","true","try","void","volatile","while","yield"
+    ],
+    "runtime_reserved": {
+      "close": "no-arg method named close() collides with the Munction reach-handle builtin at RUNTIME (parses fine). Rename, e.g. sealMoment()/requestClose()."
+    },
+    "comment_forms": {
+      "line": ["#", "//"],
+      "angle_line": "< ... >  (single line; opener and closer on one line; must be first non-whitespace on its line)",
+      "angle_block": "<< ... >>  (multi-line; required for any comment spanning >1 line)",
+      "unsupported": "/* ... */ is NOT a comment; '/*' lexes as '/' then '*'",
+      "pitfalls": [
+        "A '<' single-line comment that spans multiple lines fails to parse; use '<< >>' for multi-line.",
+        "An inline trailing '< comment >' after code on the same line is a parse error; put it on its own line.",
+        "An apostrophe (') inside an angle comment is a lexical error; reword to avoid possessives/contractions."
+      ]
+    },
+    "limits": {
+      "max_class_or_struct_fields": 64,
+      "remedy": "Pack related handles into one array field reached via accessor methods (methods cost no layout slot), or split the class."
+    },
+    "metadata_class_metapattern": {
+      "required_for": "every new SLeeLa class (team standing preference; see .kiro/steering/metadata-class-standard.md)",
+      "header": "// ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----",
+      "baseline_attributes": ["metaVersion","metaId","metaAuthor","metaDate","metaCopyright","metaTrademark","metaCorporation","metaOrigin","metaBirthDate","metaScienceRating","metaNationalSchedule"],
+      "rule": "values must be faithful to the subject's real origin; unknown => 'none'/'unknown', never fabricated"
+    }
+  }
+}
