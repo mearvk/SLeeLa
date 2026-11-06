@@ -134,6 +134,18 @@ such as `record`/`native`/`enum`, the `<< >>` comment forms, the 64-field class
 cap, the Metadata Class metapattern) and bridges to the real `impl/build/sleela`
 compiler for ground truth. See `sleela/README.md`.
 
+## RRS — Reasonable Responsibility Solidity (a kind of LLM)
+
+`rrs/` is a reasoning model built as **three congruent models chained feed-
+forward** over a ternary **1 / 0 / 2** signal (affirm / eliminate / power-add):
+(1) a **Conjunctive** stage where reasonable assumptions surface and a prelude
+reclaims some as elimination under strict AND; (2) a **Reasonable Responsibility**
+prelude-to-continue gate; (3) a **Solidity / Firmament** culmination to a graded
+**potestas** verdict (power in the Latin sense — capacity, not force). Faith /
+trial-of-faith is **subtracted** (eliminated, never affirmed). It runs directly
+or mounts onto the reasoning engine as a conjunctive verifier. No weights. See
+`rrs/RRS.md`.
+
 ## Loader-handler idiom (bring your own classes/data)
 
 `loader/` is a small, careful way for users to load **their own classes/data** —
