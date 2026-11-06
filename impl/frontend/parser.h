@@ -46,6 +46,11 @@ private:
     // Resolve the per-iteration sleep (milliseconds) a loop's leading timing
     // annotations (@loopDelay / @loopBudget) request. Returns 0 when none apply.
     long loopTimingMillis(const std::vector<annotation::Annotation>& anns);
+    // Resolve a loop's leading @spill annotation into a LoopSpill: the one-shot
+    // pause (ms) that a spill's timer-start requests, plus up to two descriptive
+    // subjects (judges / witnesses "of performs"). Returns hasSpill=false when no
+    // @spill annotation is present. Errors on a malformed or over-subscribed spill.
+    LoopSpill loopSpill(const std::vector<annotation::Annotation>& anns);
     ExprP parseExpr();
     StmtP parseIf(); StmtP parseWhile(); StmtP parseDo(); StmtP parseFor(); StmtP parseSwitch(); StmtP parseTry(); StmtP parseSynchronized(); ExprP parseAssignment(); ExprP parseGuideChain(); ExprP parseStructOffload(); ExprP parseConditional(); ExprP parseOr(); ExprP parseAnd(); ExprP parseBitOr(); ExprP parseBitXor(); ExprP parseBitAnd(); ExprP parseEquality();
     ExprP parseComparison(); ExprP parseShift(); ExprP parseAdditive(); ExprP parseMultiplicative();

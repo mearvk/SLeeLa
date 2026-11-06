@@ -172,6 +172,76 @@ long Parser::loopTimingMillis(const std::vector<annotation::Annotation>& anns){
     if(sawTiming && resultMs<0) resultMs=0;
     return resultMs;
 }
+// Resolve a loop's leading @spill annotation into a LoopSpill.
+//
+//   @spill                                  a bare timer-start checkpoint
+//                                           (pause of 0 ms before iteration)
+//   @spill(ms = <N>)                        pause N ms once before iterating
+//   @spill(<N>)                             bare number defaults to ms
+//   @spill(seconds = <N>)                   pause N seconds once
+//   @spill(judges = <subject>)              name the judge "of performs"
+//   @spill(witnesses = <subject>)           name the witness "of performs"
+//   @spill(seconds = 1, judges = Panel, witnesses = AuditLog)   all together
+//
+// A @spill "counts as a timer start itself": unlike @loopDelay/@loopBudget
+// (which sleep every iteration), the spill pause fires ONCE before the loop's
+// first iteration, so the loop can seemingly pause before it starts. The two
+// optional subjects -- the judges and witnesses of the loop's performs -- are
+// retained as loop metadata and are each single annotation tokens (values with
+// embedded whitespace are collapsed, matching the loose annotation grammar).
+//
+// Only one @spill may appear on a loop, and each of judges/witnesses may be
+// named at most once. The argument text is the same loose, space-joined string
+// produced by parseAnnotation; this reads "<key> <value>" pairs plus a bare
+// number (defaulting to ms), mirroring loopTimingMillis.
+LoopSpill Parser::loopSpill(const std::vector<annotation::Annotation>& anns){
+    LoopSpill out;
+    bool sawSpill=false;
+    for(const auto& a:anns){
+        if(a.name!="spill") continue;
+        if(sawSpill) error("a loop may carry only one @spill annotation");
+        sawSpill=true; out.hasSpill=true;
+        long ms=-1, seconds=-1, bareNum=-1;
+        bool sawJudges=false, sawWitnesses=false;
+        const std::string& v=a.value;
+        size_t i=0; std::string pendingKey;
+        while(i<v.size()){
+            unsigned char ch=(unsigned char)v[i];
+            if(std::isspace(ch)){ ++i; continue; }
+            if(std::isdigit(ch)){
+                size_t j=i; long num=0; while(j<v.size() && std::isdigit((unsigned char)v[j])){ num=num*10+(v[j]-'0'); ++j; }
+                if(pendingKey=="ms"||pendingKey=="millis"||pendingKey=="milliseconds") ms=num;
+                else if(pendingKey=="seconds"||pendingKey=="sec"||pendingKey=="s") seconds=num;
+                else if(pendingKey.empty()) bareNum=num;
+                else error("@spill does not understand a number for '"+pendingKey+"'");
+                pendingKey.clear(); i=j; continue;
+            }
+            // Read a bareword token (identifier / collapsed subject value).
+            size_t j=i; while(j<v.size() && !std::isspace((unsigned char)v[j])) ++j;
+            std::string word=v.substr(i,j-i); i=j;
+            if(word=="="||word==",") continue; // separators between key/value pairs
+            std::string lw=word; for(char& c:lw) c=(char)std::tolower((unsigned char)c);
+            if(lw=="ms"||lw=="millis"||lw=="milliseconds"||lw=="seconds"||lw=="sec"||lw=="s"){ pendingKey=lw; continue; }
+            if(lw=="judges"||lw=="judge"){ pendingKey="judges"; continue; }
+            if(lw=="witnesses"||lw=="witness"){ pendingKey="witnesses"; continue; }
+            // Otherwise this word is a value for the pending subject key.
+            if(pendingKey=="judges"){
+                if(sawJudges) error("@spill names 'judges' more than once");
+                out.spillJudges=word; sawJudges=true; pendingKey.clear();
+            } else if(pendingKey=="witnesses"){
+                if(sawWitnesses) error("@spill names 'witnesses' more than once");
+                out.spillWitnesses=word; sawWitnesses=true; pendingKey.clear();
+            } else {
+                error("@spill does not understand '"+word+"'; expected ms/seconds, judges, or witnesses");
+            }
+        }
+        if(ms>=0) out.spillPauseMs=ms;
+        else if(seconds>=0) out.spillPauseMs=seconds*1000;
+        else if(bareNum>=0) out.spillPauseMs=bareNum; // bare number defaults to ms
+        else out.spillPauseMs=0;                       // marker spill: checkpoint, no sleep
+    }
+    return out;
+}
 Program Parser::parseProgram(){
     collectStructNames(); Program p; bool contentStarted=false;
     while(!check(Tok::Eof)){
@@ -777,20 +847,23 @@ StmtP Parser::parseSynchronized(){expect(Tok::KwSynchronized,"'synchronized'");e
 StmtP Parser::parseTry(){expect(Tok::KwTry,"'try'");auto s=std::make_unique<TryStmt>();s->body=parseBlock();while(accept(Tok::KwCatch)){expect(Tok::LParen,"'('");CatchClause c; c.type=expect(Tok::Ident,"exception type").text;c.variable=expect(Tok::Ident,"exception variable").text;expect(Tok::RParen,"')'");c.body=parseBlock();s->catches.push_back(std::move(c));}if(accept(Tok::KwFinally))s->finallyBlock=parseBlock();if(s->catches.empty()&&!s->finallyBlock)error("try requires catch or finally");return s;}
 StmtP Parser::parseSwitch(){expect(Tok::KwSwitch,"'switch'");expect(Tok::LParen,"'('");auto s=std::make_unique<SwitchStmt>();s->selector=parseExpr();expect(Tok::RParen,"')'");expect(Tok::LBrace,"'{'");while(!check(Tok::RBrace)&&!check(Tok::Eof)){SwitchCase sc;if(accept(Tok::KwDefault)){sc.isDefault=true;expect(Tok::Colon,"':'");}else{expect(Tok::KwCase,"'case'");sc.labels.push_back(parseExpr());while(accept(Tok::Comma))sc.labels.push_back(parseExpr());expect(Tok::Colon,"':'");}while(!check(Tok::KwCase)&&!check(Tok::KwDefault)&&!check(Tok::RBrace)&&!check(Tok::Eof))sc.statements.push_back(parseStatement());s->cases.push_back(std::move(sc));}expect(Tok::RBrace,"'}'");return s;}
 StmtP Parser::parseStatement(){
- // A statement may carry leading annotations. Today the only statement-level
- // annotations are the loop-timing ones (@loopDelay / @loopBudget), which must
- // precede a for/while/do loop and set its per-iteration sleep.
+ // A statement may carry leading annotations. The statement-level annotations
+ // are the loop-timing ones (@loopDelay / @loopBudget), which set a loop's
+ // per-iteration sleep, and @spill, which marks the loop entry as a timer-start
+ // checkpoint (a one-shot pause before iterating) and may name the judges and
+ // witnesses of the loop's performs. All must precede a for/while/do loop.
  if(check(Tok::At)){
    auto anns=parseAnnotations(annotation::UseSite::LocalVariable);
    long ms=loopTimingMillis(anns);
+   LoopSpill spill=loopSpill(anns);
    StmtP loop;
    if(check(Tok::KwWhile)) loop=parseWhile();
    else if(check(Tok::KwFor)) loop=parseFor();
    else if(check(Tok::KwDo)) loop=parseDo();
-   else error("a loop-timing annotation (@loopDelay / @loopBudget) must precede a 'for', 'while', or 'do' loop");
-   if(auto w=dynamic_cast<WhileStmt*>(loop.get())) w->loopSleepMs=ms;
-   else if(auto f=dynamic_cast<ForStmt*>(loop.get())) f->loopSleepMs=ms;
-   else if(auto d=dynamic_cast<DoStmt*>(loop.get())) d->loopSleepMs=ms;
+   else error("a loop annotation (@loopDelay / @loopBudget / @spill) must precede a 'for', 'while', or 'do' loop");
+   if(auto w=dynamic_cast<WhileStmt*>(loop.get())){ w->loopSleepMs=ms; w->spill=spill; }
+   else if(auto f=dynamic_cast<ForStmt*>(loop.get())){ f->loopSleepMs=ms; f->spill=spill; }
+   else if(auto d=dynamic_cast<DoStmt*>(loop.get())){ d->loopSleepMs=ms; d->spill=spill; }
    return loop;
  }
  if(check(Tok::LBrace))return parseBlock();

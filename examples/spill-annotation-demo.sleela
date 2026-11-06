@@ -1,0 +1,59 @@
+#sleela 3.0
+<< spill-annotation-demo.sleela -- the runnable reference for the syntax 3.0
+   @spill loop annotation (SLEELA.syntax section 33).
+
+   @spill is a STATEMENT-LEVEL, BEHAVIORAL annotation that attaches to a
+   for/while/do loop. Unlike @loopDelay/@loopBudget, which pause on EVERY
+   iteration, @spill "counts as a timer start itself": it marks the loop entry
+   as a timer-start checkpoint and pauses ONCE, before the first iteration, so
+   the loop can seemingly pause before it starts.
+
+   A @spill may also name up to two subjects -- the judges and the witnesses of
+   the loop's performs (the observers of what the loop does). The subjects are
+   loop metadata and have no runtime effect.
+
+     @spill                                  bare checkpoint, 0 ms pause
+     @spill(<N>)                             pause N ms once before iterating
+     @spill(ms = <N>)                        pause N ms once
+     @spill(seconds = <N>)                   pause N seconds once
+     @spill(judges = <subject>)              name the judge of performs
+     @spill(witnesses = <subject>)           name the witness of performs
+     @spill(seconds = 1, judges = Panel, witnesses = AuditLog)   all together
+
+   It lowers to OP_SLEEP, emitted ONCE before the loop (not per iteration).
+
+   Run it (it takes a couple of seconds by design):
+     sleela run examples/spill-annotation-demo.sleela >>
+class SpillAnnotationDemo {
+
+    void main() {
+        print("1) for with a bare @spill: a checkpoint, no pause");
+        @spill
+        for (int i = 0; i < 3; i = i + 1) {
+            print("   for tick " + i);
+        }
+
+        print("2) while with @spill(ms = 300): pause ~300ms ONCE before start");
+        int j = 0;
+        @spill(ms = 300)
+        while (j < 3) {
+            print("   while tick " + j);
+            j = j + 1;
+        }
+
+        print("3) for with named judges and witnesses of performs");
+        @spill(ms = 200, judges = ReviewPanel, witnesses = AuditLog)
+        for (int k = 0; k < 2; k = k + 1) {
+            print("   judged/witnessed tick " + k);
+        }
+
+        print("4) @spill (once, up front) combined with @loopDelay (per pass)");
+        @spill(seconds = 1)
+        @loopDelay(ms = 200)
+        for (int m = 0; m < 2; m = m + 1) {
+            print("   spilled-then-delayed tick " + m);
+        }
+
+        print("done");
+    }
+}

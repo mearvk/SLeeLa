@@ -263,7 +263,7 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "33fa0d61e4e68775f7955c2d6b556374ea8b2cb01ede98d53cbade6f528eb6e3"
+      "sha256": "01a438a5ed762db981790b6297631c71613372408ba18b5d9d0d132c0c80a098"
     },
     {
       "path": "impl/core/sleela_core.h",
@@ -507,7 +507,7 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "4e88d58d0cd83f17d3de8f793fdcb7a2b813c843b83ea0a859b8e9447ccdc8a0"
+      "sha256": "37de0939a6357b7aea80b8380e567ba68da235cb945166ec3592abdbe903c147"
     },
     {
       "path": "impl/frontend/common_rails_banner.hpp",
@@ -515,7 +515,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "ef394f2444864197ed1fbb3239ea3dc75ba93ab5b48d0c41b506c43089cf9a6c"
+      "sha256": "3df6a952802276f37edf2848fb62312c5a6f0c3b4d2bb015ac31295e35b20d8b"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -611,11 +611,11 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "0de9fad64e19de9bdfdbc941e860ea1674676d06163e394448bc9249da79458c"
+      "sha256": "53fe75fcf3581b426540329e2f242939770dbb06475d9ae35d8dc9b5422ebf8e"
     },
     {
       "path": "impl/frontend/parser.h",
-      "sha256": "dbf5d6bc2177b5d0360efc3498e3edf0acc62fd341f2eaf7df3789d24134eb87"
+      "sha256": "58dcc2b36f54cf1f2d0416dcbae1b274d41f6aab34f7406486bfcf7a86c6d329"
     },
     {
       "path": "impl/frontend/permissible.cpp",
@@ -627,7 +627,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "10da9792b0ce7f799587c038cf48e4673beb05362f68d76ac62aa4ef8ae4f058"
+      "sha256": "f76ddc4a21385e793f29839c73a12fd387d90b127c77bc12e112c525d5a23df1"
     },
     {
       "path": "impl/frontend/semantic.h",

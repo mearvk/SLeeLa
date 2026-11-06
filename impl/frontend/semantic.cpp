@@ -365,9 +365,9 @@ class Analyzer{
    if(!x->value){err("non-void method '"+cur->name+"' must return a value");return;}
    Type g=expr(*x->value);if(!assignable(want,g))err("method '"+cur->name+"' returns "+nameOf(g)+", expected "+nameOf(want));return;}
   if(auto i=dynamic_cast<const IfStmt*>(&s)){requireBool(expr(*i->cond),"if condition");stmt(*i->thenS);if(i->elseS)stmt(*i->elseS);return;}
-  if(auto w=dynamic_cast<const WhileStmt*>(&s)){requireBool(expr(*w->cond),"while condition");stmt(*w->body);return;}
-  if(auto f=dynamic_cast<const ForStmt*>(&s)){push();if(f->init)stmt(*f->init);if(f->cond)requireBool(expr(*f->cond),"for condition");if(f->threadStable)requireBool(expr(*f->threadStable),"for thread-stability guard");if(f->heapHealthy)requireBool(expr(*f->heapHealthy),"for VM heap-health guard");if(f->update)stmt(*f->update);stmt(*f->body);pop();return;}
-  if(auto d=dynamic_cast<const DoStmt*>(&s)){stmt(*d->body);requireBool(expr(*d->cond),"do-while condition");return;}
+  if(auto w=dynamic_cast<const WhileStmt*>(&s)){checkLoopSpill(w->spill);requireBool(expr(*w->cond),"while condition");stmt(*w->body);return;}
+  if(auto f=dynamic_cast<const ForStmt*>(&s)){checkLoopSpill(f->spill);push();if(f->init)stmt(*f->init);if(f->cond)requireBool(expr(*f->cond),"for condition");if(f->threadStable)requireBool(expr(*f->threadStable),"for thread-stability guard");if(f->heapHealthy)requireBool(expr(*f->heapHealthy),"for VM heap-health guard");if(f->update)stmt(*f->update);stmt(*f->body);pop();return;}
+  if(auto d=dynamic_cast<const DoStmt*>(&s)){checkLoopSpill(d->spill);stmt(*d->body);requireBool(expr(*d->cond),"do-while condition");return;}
   if(dynamic_cast<const BreakStmt*>(&s))return;
   if(dynamic_cast<const ContinueStmt*>(&s))return;
   if(auto t=dynamic_cast<const ThrowStmt*>(&s)){expr(*t->value);return;}
@@ -379,6 +379,17 @@ class Analyzer{
   err("unknown statement kind");
  }
  void requireBool(const Type&t,const char*w){if(t.kind!=Kind::Bool&&t.kind!=Kind::Unknown)err(std::string(w)+" must be bool, got "+nameOf(t));}
+ // Validate a loop's @spill annotation. The parser already enforces the surface
+ // grammar (a single @spill, at most one judges and one witnesses subject, a
+ // non-negative pause). This is the semantic backstop: the pause must not be
+ // negative, and a spill may name at most two subjects -- the judges and the
+ // witnesses of the loop's performs.
+ void checkLoopSpill(const LoopSpill& spill){
+  if(!spill.hasSpill)return;
+  if(spill.spillPauseMs<0)err("@spill pause must be non-negative");
+  int subjects=(spill.spillJudges.empty()?0:1)+(spill.spillWitnesses.empty()?0:1);
+  if(subjects>2)err("@spill may name at most two subjects (judges and witnesses)");
+ }
  // Syntax 1.8 constructor invocation `new T(args...)`. Supported: a single
  // declared constructor whose arity matches and whose parameter types accept
  // the supplied arguments. NOT supported in 1.8: overload resolution (more than

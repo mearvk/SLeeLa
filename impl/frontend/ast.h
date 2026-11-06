@@ -149,10 +149,22 @@ struct IfStmt:Stmt{ExprP cond;StmtP thenS,elseS;};
 // loopSleepMs: milliseconds to sleep per iteration, set by the @loopDelay /
 // @loopBudget loop-timing annotations (0 = no delay). The compiler emits an
 // OP_SLEEP with this operand at the top of each iteration's body.
-struct WhileStmt:Stmt{ExprP cond;StmtP body;long loopSleepMs=0;};
-struct ForStmt:Stmt{StmtP init;ExprP cond;StmtP update,body;ExprP threadStable,heapHealthy;long loopSleepMs=0;};
+//
+// LoopSpill: the @spill loop annotation. A spill marks the loop entry as a
+// timer-start checkpoint -- it "counts as a timer start itself", letting the
+// loop pause once before the first iteration begins (spillPauseMs), as opposed
+// to the per-iteration @loopDelay/@loopBudget sleep. A spill may also carry up
+// to two descriptive subjects -- the judges and witnesses "of performs" that
+// observe the loop's performance -- which are retained as loop metadata.
+//   hasSpill       : a @spill annotation was present on the loop
+//   spillPauseMs   : one-shot pause (ms) emitted ONCE before the loop top
+//   spillJudges    : subject observing the loop as a judge   ("" if none)
+//   spillWitnesses : subject observing the loop as a witness ("" if none)
+struct LoopSpill{bool hasSpill=false;long spillPauseMs=0;std::string spillJudges,spillWitnesses;};
+struct WhileStmt:Stmt{ExprP cond;StmtP body;long loopSleepMs=0;LoopSpill spill;};
+struct ForStmt:Stmt{StmtP init;ExprP cond;StmtP update,body;ExprP threadStable,heapHealthy;long loopSleepMs=0;LoopSpill spill;};
 // --- Java statement forms (surface completeness). --------------------------
-struct DoStmt:Stmt{StmtP body;ExprP cond;long loopSleepMs=0;};
+struct DoStmt:Stmt{StmtP body;ExprP cond;long loopSleepMs=0;LoopSpill spill;};
 struct BreakStmt:Stmt{std::string label;};
 struct ContinueStmt:Stmt{std::string label;};
 struct ThrowStmt:Stmt{ExprP value;};

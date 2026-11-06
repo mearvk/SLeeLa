@@ -2390,3 +2390,74 @@ sleep(<milliseconds>);   // block the current thread for N milliseconds
 ```
 
 `sleep(ms)` takes one integer argument and returns no value.
+
+## 33. Syntax 3.0 — the `@spill` loop timer-start annotation
+
+This section is **normative**. Like `@loopDelay` / `@loopBudget` (section 32),
+`@spill` is a **statement-level, behavioral** annotation that attaches to a
+`for`, `while`, or `do` loop. Where the loop-timing annotations insert a pause
+on **every** iteration, `@spill` marks the loop's entry as a **timer-start
+checkpoint**: it counts as a timer start in its own right and pauses **once,
+before the loop begins its first iteration**. This lets a loop "spill" — pause
+seemingly before it starts — so an observer can be positioned before the first
+pass runs.
+
+### 33.1 Placement
+
+A `@spill` annotation is written on its own, immediately **before** the loop
+keyword it governs, and may be combined with a loop-timing annotation:
+
+```
+@spill
+for (int i = 0; i < n; i = i + 1) { ... }
+
+@spill(seconds = 1)
+while (ready()) { ... }
+
+@spill(ms = 250, judges = Panel, witnesses = AuditLog)
+@loopDelay(ms = 50)
+for (int i = 0; i < n; i = i + 1) { ... }
+```
+
+It is a parse error to place `@spill` before anything other than a `for`,
+`while`, or `do` loop, and a loop may carry at most one `@spill`.
+
+### 33.2 The timer-start pause
+
+`@spill` is itself a timer start, so its pause fires **once** up front, before
+the loop's initializer and condition are evaluated — not per iteration. Accepted
+forms for the pause duration:
+
+- `@spill` — a bare timer-start checkpoint; pauses 0 ms (no sleep) but still
+  marks the loop entry as a spill.
+- `@spill(<N>)` — pause `N` **milliseconds** once before iterating (a bare
+  number defaults to milliseconds).
+- `@spill(ms = <N>)` — pause `N` milliseconds once.
+- `@spill(seconds = <N>)` — pause `N` seconds once.
+
+The pause must be non-negative.
+
+### 33.3 Subjects — the judges and witnesses of performs
+
+A `@spill` may name up to **two** descriptive subjects — the **judges** and the
+**witnesses** of the loop's *performs* (the observers of what the loop does).
+They are retained as loop metadata and have no runtime effect; each may be
+named at most once:
+
+- `@spill(judges = <subject>)` — the subject that judges the loop's performs.
+- `@spill(witnesses = <subject>)` — the subject that witnesses the loop's
+  performs.
+
+Each subject is a single annotation token (values with embedded whitespace are
+collapsed, matching the loose annotation argument grammar). The pause and the
+subjects may be combined in any order, e.g.
+`@spill(seconds = 1, judges = Panel, witnesses = AuditLog)`.
+
+### 33.4 Lowering
+
+`@spill` lowers to the same `OP_SLEEP` mechanism as the loop-timing annotations
+(section 32.4), but emitted **once, before the loop** rather than at the top of
+each iteration: the compiler pushes the resolved millisecond pause and emits
+`OP_SLEEP`. A spill whose pause is 0 is a pure checkpoint and emits no
+instruction. The `judges` and `witnesses` subjects are carried on the loop's AST
+node and do not emit bytecode.

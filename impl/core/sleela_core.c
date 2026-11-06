@@ -1501,6 +1501,20 @@ static SLResult run_thread(SLThread* t) {
                 }
             }
         } break;
+        case OP_SLEEP: {
+            /* Block the current thread for the popped millisecond count. Backs
+             * the sleep(ms) built-in, the per-iteration pause of the @loopDelay
+             * / @loopBudget loop-timing annotations, and the one-shot
+             * timer-start pause of the @spill loop annotation. The operand is
+             * pushed just before (OP_CONST <ms>), so pop it here and read it as
+             * an integer; 0 or negative is a no-op (sltime_sleep_millis clamps).
+             * Non-integer operands are rejected. */
+            SLValue ms = POP();
+            if (t->underflow) { t->underflow = 0; TERR("sleep: stack underflow"); }
+            if (ms.type != SL_INT && ms.type != SL_INT128) TERR("sleep: millisecond count must be an integer");
+            int64_t millis = (int64_t)as_i128(ms);
+            sltime_sleep_millis(millis);
+        } break;
         case OP_RAN_MEM: {
             /* `ran::mem` -- the System memory already Ran in RAM, read as the
              * current live byte count. When the memory manager is enabled this
