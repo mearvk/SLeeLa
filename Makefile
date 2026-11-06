@@ -377,7 +377,7 @@ common-rails:
 # Build the registry core and materialize the baseline registry table (text
 # store + MySQL export) a fresh install reviews. Part of `all`.
 registry:
-	./build-registry.sh
+	bash ./build-registry.sh
 
 registry-test:
 	$(MAKE) -C registry test
