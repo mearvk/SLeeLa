@@ -19,6 +19,9 @@ public:
  std::string token(std::uint32_t id) const;
  std::vector<std::uint32_t> encode(std::string_view text) const;
  std::size_t size() const noexcept;
+ // Borrowed native handle for interop with the C base-vocabulary/builder APIs.
+ // Ownership stays with this object; do not destroy the returned handle.
+ sllmv_vocabulary* native_handle() const noexcept { return handle_; }
 private:
  sllmv_vocabulary* handle_=nullptr;
  static void check(sllmv_status status);

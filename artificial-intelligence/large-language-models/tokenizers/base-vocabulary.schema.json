@@ -1,0 +1,104 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sleela.dev/ai/llm/tokenizers/base-vocabulary-1.0.json",
+  "title": "SLeeLa base tokenizer vocabulary (version 1.0)",
+  "description": "Declarative, provenance-tracked seed vocabulary the LLM tokenizer is initialized with. Token IDs are explicit, stable, insertion-order indices (they must equal the entry's array position). Special tokens occupy the lowest, reserved IDs. This file is the token-ID table only; it is NOT a lexical dictionary and carries no definitions.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "vocabulary_id", "tokenizer", "provenance", "specials", "tokens"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "vocabulary_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*$",
+      "description": "Stable identifier for this base vocabulary, referenced by a model's tokenizer_id."
+    },
+    "abi_version": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Mirrors SLLMV_BASE_ABI_VERSION of the native loader this file targets."
+    },
+    "tokenizer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "normalization", "unicode"],
+      "properties": {
+        "algorithm": {
+          "type": "string",
+          "enum": ["whitespace", "byte-fallback", "bpe", "wordpiece", "unigram"],
+          "description": "The tokenizer algorithm this base set is intended for. The bundled native store implements 'whitespace'; other values document intent for an application-supplied tokenizer."
+        },
+        "normalization": {
+          "type": "string",
+          "enum": ["none", "nfc", "nfkc", "lowercase", "nfc+lowercase", "nfkc+lowercase"]
+        },
+        "unicode": {
+          "type": "string",
+          "description": "Unicode version the token strings were curated against, e.g. '15.1', or 'ascii' for an ASCII-only set."
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["author", "date", "origin", "license", "description"],
+      "properties": {
+        "author": { "type": "string", "minLength": 1 },
+        "date": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+        "origin": { "type": "string", "minLength": 1 },
+        "license": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "license"],
+            "properties": {
+              "name": { "type": "string", "minLength": 1 },
+              "url": { "type": "string" },
+              "license": { "type": "string", "minLength": 1 },
+              "note": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "specials": {
+      "type": "array",
+      "description": "Reserved special tokens. Each occupies a fixed low ID equal to its array position; specials always precede ordinary tokens.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "token", "role"],
+        "properties": {
+          "id": { "type": "integer", "minimum": 0 },
+          "token": { "type": "string", "minLength": 1 },
+          "role": {
+            "type": "string",
+            "enum": ["pad", "unk", "bos", "eos", "sep", "mask", "system", "user", "assistant", "tool", "reserved"]
+          },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "tokens": {
+      "type": "array",
+      "description": "Ordinary tokens in ID order. Each is a distinct, non-empty UTF-8 string. The first ordinary token's ID is the count of specials.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "token"],
+        "properties": {
+          "id": { "type": "integer", "minimum": 0 },
+          "token": { "type": "string", "minLength": 1 },
+          "category": {
+            "type": "string",
+            "enum": ["whitespace", "digit", "punctuation", "symbol", "function-word", "core-word", "affix", "byte"],
+            "description": "Informational grouping; does not affect the token ID."
+          }
+        }
+      }
+    }
+  }
+}

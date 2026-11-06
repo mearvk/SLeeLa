@@ -26,6 +26,8 @@ Provider-neutral native APIs for SLeeLa applications that connect to local or ho
 | `large_language_models.hpp/.cpp` | C++17 RAII inference facade |
 | `large_language_models_vocabulary.h/.c` | C vocabulary/word-set store, stable token IDs, lookup, and whitespace-token encoding |
 | `large_language_models_vocabulary.hpp/.cpp` | C++17 RAII vocabulary wrapper with string and vector helpers |
+| `large_language_models_base_vocabulary.h/.c` | C11 seed-vocabulary loader (`sllmbv_*`, ABI v1): populates the store with the curated base word set, special tokens at fixed low IDs, fail-closed ID verification |
+| `large_language_models_base_vocabulary.hpp/.cpp` | C++17 RAII facade for seeding the default base vocabulary |
 | `large_language_models_training.h/.c` | C training-backend ABI, batch training, evaluation, metrics, and checkpoint requests |
 | `large_language_models_training.hpp/.cpp` | C++17 RAII training facade |
 | `large_language_models_data.h/.c` | Bounded-memory connector read interface, local-file connector, and streaming JSONL reader |
@@ -67,6 +69,26 @@ This is deliberately a vocabulary primitive, not a claim to implement every toke
 Dictionary definitions belong in a separate lexical store. Lexical records can contain headwords, parts of speech, sense IDs, definitions, examples, synonyms, semantic relations, source/version metadata, and license notices. They must not be mixed into model token-ID tables.
 
 The `vocabulary/samples/` directory contains one carefully labelled example for each of three sources using the headword `computer`: Open English WordNet 2025, Oxford Advanced Learner's Dictionary, and Merriam-Webster. Only the OEWN senses are included as definition text. Oxford and Merriam-Webster entries are metadata-only reference records because their dictionary content is proprietary; use authorized APIs/licenses before importing definitions. The sample documentation records source links and attribution requirements.
+
+### Careful word sets: seed vocabulary, curated corpus, builder, and gate
+
+The subsystem now ships an end-to-end path for the controlled word sets a model
+builds its premises on:
+
+1. **Seed (base) vocabulary** — `tokenizers/base-vocabulary.json` declares the
+   reserved special tokens (at fixed low IDs: `<pad>`=0, `<unk>`=1, `<bos>`=2,
+   `<eos>`=3, ...) plus a curated core, loaded natively by
+   `large_language_models_base_vocabulary.{h,c}` with fail-closed ID checks.
+2. **Curated lexical corpus** — `vocabulary/corpus/core-en.jsonl`, provenance-
+   and license-tracked records (SLeeLa-authored, importable, or reference-only).
+3. **Builder/bridge** — `tools/build_vocabulary.py` maps corpus surface strings
+   into tokenizer IDs without ever taking an ID from a headword, and refuses to
+   import `reference_only` content.
+4. **Validation/licensing gate** — `tools/validate_vocabulary.py` (CI:
+   `.github/workflows/llm-vocabulary.yml`) checks schemas, the ID contract, and
+   the licensing discipline, failing closed with exact locations.
+
+See `tokenizers/README.md` and `vocabulary/corpus/README.md` for the contract.
 
 ## Inference
 
