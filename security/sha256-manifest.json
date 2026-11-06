@@ -44403,7 +44403,7 @@
     },
     {
       "path": "lib/math/SLAngle.sleela",
-      "sha256": "f7f9b5a2e9ff2ae062a1e8be254f669755c4d893d21e1092c6b34eb4b78fbb57"
+      "sha256": "e0d7337f4b955dd07ca44a5de18f1104f684101902a2b83feb16c686dcf31dbf"
     },
     {
       "path": "lib/math/SLApproximation.sleela",
@@ -44451,7 +44451,7 @@
     },
     {
       "path": "lib/math/SLCartesianCoordinate.sleela",
-      "sha256": "51343592cc3fbc764f6b059c5cc208976a81ed72d7f563edb8ff165ffa83d990"
+      "sha256": "864a4188af46a7ce48e4aeac9e0469f7000fc91de748218f24d0c160e8b712d3"
     },
     {
       "path": "lib/math/SLChiSquareTest.sleela",
@@ -44511,7 +44511,7 @@
     },
     {
       "path": "lib/math/SLCoordinate.sleela",
-      "sha256": "2d9b038a462bf1b7daf69af9b47171349f954cd74e5f032ef4a51bb11b6c8b40"
+      "sha256": "f8fb2716737d423c579dcc9ffe6fe0c00c34c60890ddc1ba419998a4a5e6a58a"
     },
     {
       "path": "lib/math/SLCoordinateDescent.sleela",
@@ -44527,7 +44527,7 @@
     },
     {
       "path": "lib/math/SLCosine.sleela",
-      "sha256": "696462f8ad847df5df35a8de880d537c3d0fdcc1856c546036e9b196caa6c8b8"
+      "sha256": "56ff77147fea9dc82b25562cadd73ea8e40916fcb87ffc4eda9a44eaa62b4e2d"
     },
     {
       "path": "lib/math/SLCovariance.sleela",
@@ -44563,7 +44563,7 @@
     },
     {
       "path": "lib/math/SLDimension.sleela",
-      "sha256": "70afb9d61a9ed34030483c55c192c07d94f9c3a11967110b640e738f100913c7"
+      "sha256": "4f45c405535500fb1c58d7c96707e43df66c21977731b797ea663dee6d726e4b"
     },
     {
       "path": "lib/math/SLDiscreteFourier.sleela",
@@ -44571,7 +44571,7 @@
     },
     {
       "path": "lib/math/SLDistance.sleela",
-      "sha256": "2b7e4c7b71d3bce725242c37cde86e7aaa2037a507f9e7967e22fd4ce30d3373"
+      "sha256": "eea6500c66aa8ab3dc2dc227e43d85a0334698018129d4d0752e31a87a01520b"
     },
     {
       "path": "lib/math/SLDistribution.sleela",
@@ -44683,7 +44683,7 @@
     },
     {
       "path": "lib/math/SLGeometry.sleela",
-      "sha256": "b82c8c55f2a9ece34cd7b5d4e9bc990efad68d4e724b36b0e09ee5ea0bf9dd54"
+      "sha256": "a2f60f32f87d2a6a904ec4217c2944eb6306ac0c7f34d5e99077feef5215addb"
     },
     {
       "path": "lib/math/SLGradient.sleela",
@@ -44775,7 +44775,7 @@
     },
     {
       "path": "lib/math/SLLTangent.sleela",
-      "sha256": "c1075bd71b7ebfc3839b5fb92546f111e31811964899bf352c6f46b2b0fe3516"
+      "sha256": "b42c9094434d0acc538c218b5d51bf92c77ea21c77798ee1df13a9caebc5ae9a"
     },
     {
       "path": "lib/math/SLLagrangeInterpolation.sleela",
@@ -44803,7 +44803,7 @@
     },
     {
       "path": "lib/math/SLLine.sleela",
-      "sha256": "08ae0703c704a84e204fc447087440ad9c047ea4182f6d71fb9b0f4b6b04c249"
+      "sha256": "3440fc05b4167742bcd9a997ea8e2232508ac5313fb0315b58392562b8d4e679"
     },
     {
       "path": "lib/math/SLLinearAlgebra.sleela",
@@ -44999,7 +44999,7 @@
     },
     {
       "path": "lib/math/SLPathLength.sleela",
-      "sha256": "64e8e23f2a22563274a1ab4fd368908d521b482ff509d987599433bd76a1990c"
+      "sha256": "81b924dab098bb19dc7fa82106c81a995bc0bfea2feab40f004ec622b6ed2bff"
     },
     {
       "path": "lib/math/SLPercentile.sleela",
@@ -45019,11 +45019,11 @@
     },
     {
       "path": "lib/math/SLPlane.sleela",
-      "sha256": "c9b4ee2705773a0c81e4592b1f659709cf0a8ce04777fafa131b97f85de1b31c"
+      "sha256": "0ad6bb5fc6d33c7411d5fb29c85006ea473aa84ea4501582a33a7892e71c7ffa"
     },
     {
       "path": "lib/math/SLPoint.sleela",
-      "sha256": "10d89d6d29db61c8143dddc0409548ae28bd7c536e1db6fb59ae8f2a240574ba"
+      "sha256": "1e106fb594b400f5c030f9c0dfce14421c2a28f83e436e9395b4f9e615406191"
     },
     {
       "path": "lib/math/SLPoissonDistribution.sleela",
@@ -45031,7 +45031,7 @@
     },
     {
       "path": "lib/math/SLPolarCoordinate.sleela",
-      "sha256": "674c131500227fa7a27e359ed565c4bbeba87cc4cd9e118cff7f78e066a6122b"
+      "sha256": "858d25ed71a9c96c604d4f13bdd3f5a454312e296987737cde1f965dc21a33eb"
     },
     {
       "path": "lib/math/SLPolynomial.sleela",
@@ -45091,7 +45091,7 @@
     },
     {
       "path": "lib/math/SLQuaternion.sleela",
-      "sha256": "14a956465d8d0f1693746a227c4a8b247f21bbc32bfa8b763b99c0f55e9c9c5b"
+      "sha256": "e35d95ad8927c5cc6036f36b377c02240fe4623b41dacffd2940749f296a1424"
     },
     {
       "path": "lib/math/SLRandomDistribution.sleela",
@@ -45111,7 +45111,7 @@
     },
     {
       "path": "lib/math/SLRay.sleela",
-      "sha256": "f7d486e942d8da6f7d08bbc4f17b8f9e274a155e60931da713168b6ed8f0d30e"
+      "sha256": "3d752d956cdfe0fc5e9964bf3f9b9363b3b9e516560c28492f2050c80b9eb9cc"
     },
     {
       "path": "lib/math/SLReciprocal.sleela",
@@ -45155,7 +45155,7 @@
     },
     {
       "path": "lib/math/SLRotation.sleela",
-      "sha256": "9b1bc06c6b255c8b1054d530e1e6cdc7b3b74ecca1ac8a5f5f10b07418a1d447"
+      "sha256": "9f48080802e5f8468d52bfe16e4de2416cbd668eb1c8114a15c91c98ceb889ed"
     },
     {
       "path": "lib/math/SLRounding.sleela",
@@ -45171,7 +45171,7 @@
     },
     {
       "path": "lib/math/SLScale.sleela",
-      "sha256": "4bb74dbecd0eea0eb91cb3ece82ebf4d16e37810e14cc4d4abd5071e1caa5d4b"
+      "sha256": "e8ecc78a1a1ece3ca4297d9885474fdd239db8bd2ff07f3b60d65fbf5f71446b"
     },
     {
       "path": "lib/math/SLSecantMethod.sleela",
@@ -45215,7 +45215,7 @@
     },
     {
       "path": "lib/math/SLSine.sleela",
-      "sha256": "a6486ce858368eecdbf7a2cd75a0e3eecbe4c38024348d3558cab10d37a1adf2"
+      "sha256": "380dcf7d18255fe96923c8687a3420ca9d2f825e14553e1389fe714b9de6e702"
     },
     {
       "path": "lib/math/SLSkewness.sleela",
@@ -45255,7 +45255,7 @@
     },
     {
       "path": "lib/math/SLTangent.sleela",
-      "sha256": "da775a5332b7fccda935263ad38642fb698edc97fa727c1781f7b27a4571b207"
+      "sha256": "e68f97299a7eaec564d47d8b776ae7bdf2682eadd69d208eacbc461db1fb92c5"
     },
     {
       "path": "lib/math/SLTensor.sleela",
@@ -45271,11 +45271,11 @@
     },
     {
       "path": "lib/math/SLTransform.sleela",
-      "sha256": "16c1f12f80504d1409fa6aa5b3d8183d6ef0aa26e1990d6ca8fc13b8c6e83cb6"
+      "sha256": "648b5474a59e03d1f560c4ad47f83366c77bb01dec1b32253f89c3a395334ea4"
     },
     {
       "path": "lib/math/SLTranslation.sleela",
-      "sha256": "52cd5b37790a679bac3436197ba535428e3b85c4b1e36f076b10237f875957a1"
+      "sha256": "5bb87d2e976bd5cc8d9fb171d0af5dec4dc49d34e21c666e240e01f90a950cce"
     },
     {
       "path": "lib/math/SLTranspose.sleela",
@@ -45287,7 +45287,7 @@
     },
     {
       "path": "lib/math/SLTrigonometry.sleela",
-      "sha256": "b90a292ac0ca24895a55a0d53cb4f557aeba93af1743026e4a302b65e313f99c"
+      "sha256": "68b9fbbd3fad55c2549d6a6fa858bbd218c55b1dde9dd1572d0018834feb1520"
     },
     {
       "path": "lib/math/SLUnderflow.sleela",

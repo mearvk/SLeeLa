@@ -45,4 +45,48 @@ class SLTransform {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  double pi() { return 3.141592653589793; }
+  double reduce(double x) {
+    double twoPi = 6.283185307179586;
+    while (x > 3.141592653589793) { x = x - twoPi; }
+    while (x < 0.0 - 3.141592653589793) { x = x + twoPi; }
+    return x;
+  }
+  double sin(double x) {
+    x = reduce(x);
+    double term = x;
+    double sum = x;
+    int n = 1;
+    while (n < 20) {
+      term = term * (0.0 - x * x) / ((2 * n) * (2 * n + 1));
+      sum = sum + term;
+      n = n + 1;
+    }
+    return sum;
+  }
+  double cos(double x) {
+    x = reduce(x);
+    double term = 1.0;
+    double sum = 1.0;
+    int n = 1;
+    while (n < 20) {
+      term = term * (0.0 - x * x) / ((2 * n - 1) * (2 * n));
+      sum = sum + term;
+      n = n + 1;
+    }
+    return sum;
+  }
+  << A 2D affine transform as a flat 3x3 row-major matrix applied to a point.
+     Builders compose rotation, scale, and translation. >>
+  void identity(double[] m) {
+    int i = 0;
+    while (i < 9) { m[i] = 0.0; i = i + 1; }
+    m[0] = 1.0; m[4] = 1.0; m[8] = 1.0;
+  }
+  void apply(double[] m, double x, double y, double[] out) {
+    out[0] = m[0] * x + m[1] * y + m[2];
+    out[1] = m[3] * x + m[4] * y + m[5];
+  }
+}

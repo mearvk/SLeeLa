@@ -45,4 +45,26 @@ class SLPlane {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  double sqrt(double x) {
+    if (x <= 0.0) { return 0.0; }
+    double g = x;
+    int i = 0;
+    while (i < 60) { g = (g + x / g) / 2.0; i = i + 1; }
+    return g;
+  }
+  << A plane a x + b y + c z = d. signedDistance gives the signed distance of a
+     point from the plane (negative on the opposite side of the normal). >>
+  double a;
+  double b;
+  double c;
+  double d;
+  void set(double pa, double pb, double pc, double pd) { a = pa; b = pb; c = pc; d = pd; }
+  double signedDistance(double x, double y, double z) {
+    double num = a * x + b * y + c * z - d;
+    double den = sqrt(a * a + b * b + c * c);
+    if (den == 0.0) { return 0.0; }
+    return num / den;
+  }
+}

@@ -45,4 +45,20 @@ class SLAngle {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  double pi() { return 3.141592653589793; }
+  double radians;
+  void setRadians(double r) { radians = r; }
+  void setDegrees(double d) { radians = d * pi() / 180.0; }
+  double getRadians() { return radians; }
+  double getDegrees() { return radians * 180.0 / pi(); }
+  < Normalize to the half-open interval from 0 up to two pi. >
+  double normalized() {
+    double twoPi = 6.283185307179586;
+    double a = radians;
+    while (a < 0.0) { a = a + twoPi; }
+    while (a >= twoPi) { a = a - twoPi; }
+    return a;
+  }
+}

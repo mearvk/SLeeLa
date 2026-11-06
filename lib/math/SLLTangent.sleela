@@ -45,4 +45,14 @@ class SLLTangent {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < A line tangent to a curve at a point: slope m through (x0, y0). >
+  double slope;
+  double x0;
+  double y0;
+  void set(double m, double px, double py) { slope = m; x0 = px; y0 = py; }
+  < Evaluate the tangent line y = y0 + m (x - x0). >
+  double at(double x) { return y0 + slope * (x - x0); }
+  double getSlope() { return slope; }
+}

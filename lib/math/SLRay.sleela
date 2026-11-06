@@ -45,4 +45,17 @@ class SLRay {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << A ray from an origin point in a direction; a parameter t >= 0 selects a
+     point along it. >>
+  double ox;
+  double oy;
+  double dx;
+  double dy;
+  void set(double originX, double originY, double dirX, double dirY) {
+    ox = originX; oy = originY; dx = dirX; dy = dirY;
+  }
+  double pointX(double t) { return ox + t * dx; }
+  double pointY(double t) { return oy + t * dy; }
+}
