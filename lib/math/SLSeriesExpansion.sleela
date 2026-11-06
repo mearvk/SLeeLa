@@ -45,4 +45,22 @@ class SLSeriesExpansion {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < e^x partial sum through n terms (Maclaurin). >
+  double expSeries(double x, int n) {
+    double term = 1.0;
+    double sum = 1.0;
+    int k = 1;
+    while (k < n) { term = term * x / k; sum = sum + term; k = k + 1; }
+    return sum;
+  }
+  < Geometric 1/(1-x) partial sum through n terms, |x| < 1. >
+  double geometricSeries(double x, int n) {
+    double term = 1.0;
+    double sum = 0.0;
+    int k = 0;
+    while (k < n) { sum = sum + term; term = term * x; k = k + 1; }
+    return sum;
+  }
+}

@@ -45,4 +45,20 @@ class SLBigDecimal {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << An arbitrary-precision decimal as an unscaled big-integer value times
+     10^(-scale). This contract carries the unscaled/scale pair and conversion;
+     full decimal arithmetic belongs behind a VM bridge. >>
+  long unscaled;
+  int scale;
+  void set(long value, int decimalPlaces) { unscaled = value; scale = decimalPlaces; }
+  double toDouble() {
+    double d = unscaled;
+    int i = 0;
+    while (i < scale) { d = d / 10.0; i = i + 1; }
+    return d;
+  }
+  long getUnscaled() { return unscaled; }
+  int getScale() { return scale; }
+}

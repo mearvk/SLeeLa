@@ -47,10 +47,11 @@ class SLGradientDescent {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << One gradient-descent parameter update x := x - rate * grad, elementwise. >>
+  void step(double[] x, double[] grad, double rate, int n) {
+    int i = 0;
+    while (i < n) { x[i] = x[i] - rate * grad[i]; i = i + 1; }
+  }
+  double scalarStep(double x, double grad, double rate) { return x - rate * grad; }
 }

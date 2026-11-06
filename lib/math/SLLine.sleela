@@ -45,4 +45,19 @@ class SLLine {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << A line in slope-intercept form y = m x + b, with a vertical flag. >>
+  double slope;
+  double intercept;
+  boolean vertical;
+  void fromPoints(double x1, double y1, double x2, double y2) {
+    if (x2 == x1) { vertical = true; slope = 0.0; intercept = x1; return; }
+    vertical = false;
+    slope = (y2 - y1) / (x2 - x1);
+    intercept = y1 - slope * x1;
+  }
+  double at(double x) { return slope * x + intercept; }
+  boolean parallelTo(SLLine o) { return !vertical && !o.vertical && slope == o.slope; }
+  double getSlope() { return slope; }
+}

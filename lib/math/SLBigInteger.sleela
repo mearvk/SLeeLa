@@ -45,4 +45,22 @@ class SLBigInteger {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << A fixed-width big integer modelled as a sign plus base-1e9 limbs in a flat
+     int[] (least significant first). This front-end contract exposes the limb
+     model and small-value helpers; heavy arithmetic belongs behind a VM bridge. >>
+  int[] limbs;
+  int count;
+  int sign;
+  void fromLong(long v) {
+    sign = v < 0 ? 0 - 1 : 1;
+    if (v < 0) { v = 0 - v; }
+    limbs = new int[4];
+    count = 0;
+    if (v == 0) { limbs[0] = 0; count = 1; return; }
+    while (v > 0) { limbs[count] = (int) (v % 1000000000); v = v / 1000000000; count = count + 1; }
+  }
+  int limbCount() { return count; }
+  int getSign() { return sign; }
+}

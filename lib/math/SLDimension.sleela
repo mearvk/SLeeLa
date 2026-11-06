@@ -47,10 +47,11 @@ class SLDimension {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  int value;
+  void set(int d) { value = d; }
+  int get() { return value; }
+  boolean isScalar() { return value == 0; }
+  boolean isVector() { return value == 1; }
+  boolean compatibleWith(SLDimension o) { return value == o.value; }
 }

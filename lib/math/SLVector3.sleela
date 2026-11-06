@@ -45,4 +45,30 @@ class SLVector3 {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  double sqrt(double x) {
+    if (x <= 0.0) { return 0.0; }
+    double g = x;
+    int i = 0;
+    while (i < 60) { g = (g + x / g) / 2.0; i = i + 1; }
+    return g;
+  }
+  double x;
+  double y;
+  double z;
+  void set(double px, double py, double pz) { x = px; y = py; z = pz; }
+  double dot(SLVector3 o) { return x * o.x + y * o.y + z * o.z; }
+  double length() { return sqrt(x * x + y * y + z * z); }
+  void add(SLVector3 o) { x = x + o.x; y = y + o.y; z = z + o.z; }
+  void scale(double s) { x = x * s; y = y * s; z = z * s; }
+  < Cross product written into `out`. >
+  void cross(SLVector3 o, SLVector3 out) {
+    out.x = y * o.z - z * o.y;
+    out.y = z * o.x - x * o.z;
+    out.z = x * o.y - y * o.x;
+  }
+  double getX() { return x; }
+  double getY() { return y; }
+  double getZ() { return z; }
+}

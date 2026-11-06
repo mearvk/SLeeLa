@@ -45,4 +45,34 @@ class SLExpression {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << A postfix (RPN) arithmetic expression over a token stream: tokens are
+     operator codes (0=+,1=-,2=*,3=/) interleaved with operand pushes. This
+     evaluate() consumes a flat token/value pair stream. >>
+  double evaluatePostfix(int[] ops, double[] vals, int n) {
+    double[] stack = new double[n + 1];
+    int sp = 0;
+    int i = 0;
+    while (i < n) {
+      if (ops[i] == 0 - 1) {
+        stack[sp] = vals[i];
+        sp = sp + 1;
+      } else {
+        if (sp < 2) { return 0.0; }
+        double b = stack[sp - 1];
+        double a = stack[sp - 2];
+        sp = sp - 2;
+        double r = 0.0;
+        if (ops[i] == 0) { r = a + b; }
+        if (ops[i] == 1) { r = a - b; }
+        if (ops[i] == 2) { r = a * b; }
+        if (ops[i] == 3) { r = b == 0.0 ? 0.0 : a / b; }
+        stack[sp] = r;
+        sp = sp + 1;
+      }
+      i = i + 1;
+    }
+    return sp > 0 ? stack[sp - 1] : 0.0;
+  }
+}

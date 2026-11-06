@@ -45,4 +45,44 @@ class SLTrigonometry {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  double pi() { return 3.141592653589793; }
+  double reduce(double x) {
+    double twoPi = 6.283185307179586;
+    while (x > 3.141592653589793) { x = x - twoPi; }
+    while (x < 0.0 - 3.141592653589793) { x = x + twoPi; }
+    return x;
+  }
+  double sin(double x) {
+    x = reduce(x);
+    double term = x;
+    double sum = x;
+    int n = 1;
+    while (n < 20) {
+      term = term * (0.0 - x * x) / ((2 * n) * (2 * n + 1));
+      sum = sum + term;
+      n = n + 1;
+    }
+    return sum;
+  }
+  double cos(double x) {
+    x = reduce(x);
+    double term = 1.0;
+    double sum = 1.0;
+    int n = 1;
+    while (n < 20) {
+      term = term * (0.0 - x * x) / ((2 * n - 1) * (2 * n));
+      sum = sum + term;
+      n = n + 1;
+    }
+    return sum;
+  }
+  double tan(double x) {
+    double c = cos(x);
+    if (c == 0.0) { return 0.0; }
+    return sin(x) / c;
+  }
+  double degToRad(double d) { return d * pi() / 180.0; }
+  double radToDeg(double r) { return r * 180.0 / pi(); }
+}

@@ -45,4 +45,20 @@ class SLLcm {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Least common multiple via gcd: lcm(a,b) = |a*b| / gcd(a,b). >
+  int gcd(int a, int b) {
+    if (a < 0) { a = 0 - a; }
+    if (b < 0) { b = 0 - b; }
+    while (b != 0) { int t = b; b = a % b; a = t; }
+    return a;
+  }
+  int compute(int a, int b) {
+    if (a == 0 || b == 0) { return 0; }
+    int g = gcd(a, b);
+    int p = (a / g) * b;
+    if (p < 0) { p = 0 - p; }
+    return p;
+  }
+}

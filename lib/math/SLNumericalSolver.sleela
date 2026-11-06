@@ -45,4 +45,61 @@ class SLNumericalSolver {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  double sqrt(double x) {
+    if (x <= 0.0) { return 0.0; }
+    double g = x;
+    int i = 0;
+    while (i < 60) { g = (g + x / g) / 2.0; i = i + 1; }
+    return g;
+  }
+  << Solve a linear system A x = b (A row-major n x n) by Gaussian elimination
+     with partial pivoting; the solution is written into x. Returns false if the
+     matrix is singular. >>
+  boolean solveLinear(double[] aIn, double[] bIn, double[] x, int n) {
+    double[] a = new double[n * n];
+    double[] b = new double[n];
+    int i = 0;
+    while (i < n * n) { a[i] = aIn[i]; i = i + 1; }
+    i = 0;
+    while (i < n) { b[i] = bIn[i]; i = i + 1; }
+    int col = 0;
+    while (col < n) {
+      int pivot = col;
+      double best = a[col * n + col];
+      if (best < 0.0) { best = 0.0 - best; }
+      int r = col + 1;
+      while (r < n) {
+        double v = a[r * n + col];
+        if (v < 0.0) { v = 0.0 - v; }
+        if (v > best) { best = v; pivot = r; }
+        r = r + 1;
+      }
+      if (a[pivot * n + col] == 0.0) { return false; }
+      if (pivot != col) {
+        int k = 0;
+        while (k < n) { double t = a[col * n + k]; a[col * n + k] = a[pivot * n + k]; a[pivot * n + k] = t; k = k + 1; }
+        double tb = b[col]; b[col] = b[pivot]; b[pivot] = tb;
+      }
+      int rr = col + 1;
+      while (rr < n) {
+        double f = a[rr * n + col] / a[col * n + col];
+        int k = col;
+        while (k < n) { a[rr * n + k] = a[rr * n + k] - f * a[col * n + k]; k = k + 1; }
+        b[rr] = b[rr] - f * b[col];
+        rr = rr + 1;
+      }
+      col = col + 1;
+    }
+    int bi = n - 1;
+    while (bi >= 0) {
+      double s = b[bi];
+      int k = bi + 1;
+      while (k < n) { s = s - a[bi * n + k] * x[k]; k = k + 1; }
+      x[bi] = s / a[bi * n + bi];
+      bi = bi - 1;
+    }
+    return true;
+  }
+}

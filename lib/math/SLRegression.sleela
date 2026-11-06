@@ -45,4 +45,25 @@ class SLRegression {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  double slope;
+  double intercept;
+  void fit(double[] xs, double[] ys, int n) {
+    double sx = 0.0;
+    double sy = 0.0;
+    double sxx = 0.0;
+    double sxy = 0.0;
+    int i = 0;
+    while (i < n) {
+      sx = sx + xs[i]; sy = sy + ys[i];
+      sxx = sxx + xs[i] * xs[i]; sxy = sxy + xs[i] * ys[i];
+      i = i + 1;
+    }
+    double denom = n * sxx - sx * sx;
+    if (denom == 0.0) { slope = 0.0; intercept = sy / n; return; }
+    slope = (n * sxy - sx * sy) / denom;
+    intercept = (sy - slope * sx) / n;
+  }
+  double predict(double x) { return slope * x + intercept; }
+}

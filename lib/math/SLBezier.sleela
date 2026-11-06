@@ -45,4 +45,18 @@ class SLBezier {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << Cubic Bezier evaluation with control points p0..p3 at parameter t via the
+     Bernstein basis. quadratic() handles the 3-point case. >>
+  double cubic(double p0, double p1, double p2, double p3, double t) {
+    double u = 1.0 - t;
+    double uu = u * u;
+    double tt = t * t;
+    return uu * u * p0 + 3.0 * uu * t * p1 + 3.0 * u * tt * p2 + tt * t * p3;
+  }
+  double quadratic(double p0, double p1, double p2, double t) {
+    double u = 1.0 - t;
+    return u * u * p0 + 2.0 * u * t * p1 + t * t * p2;
+  }
+}

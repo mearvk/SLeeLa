@@ -47,10 +47,16 @@ class SLNumericFormatter {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << Format helpers reported as numeric parts rather than strings: integerPart
+     and the first `places` fractional digits as an integer. >>
+  long integerPart(double x) { return (long) x; }
+  long fractionalDigits(double x, int places) {
+    double frac = x - (long) x;
+    if (frac < 0.0) { frac = 0.0 - frac; }
+    double f = 1.0;
+    int i = 0;
+    while (i < places) { f = f * 10.0; i = i + 1; }
+    return (long) (frac * f + 0.5);
+  }
 }

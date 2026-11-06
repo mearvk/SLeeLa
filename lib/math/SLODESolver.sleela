@@ -47,10 +47,13 @@ class SLODESolver {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << Explicit Euler step for dy/dt = f(t,y). The caller supplies the evaluated
+     slope fval = f(t,y); the method returns y at t+h. >>
+  double eulerStep(double y, double fval, double h) { return y + h * fval; }
+  << Heun (improved Euler) step given slopes at the start (k1) and at the Euler
+     prediction endpoint (k2). >>
+  double heunStep(double y, double k1, double k2, double h) {
+    return y + h * (k1 + k2) / 2.0;
+  }
 }

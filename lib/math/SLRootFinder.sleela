@@ -45,4 +45,11 @@ class SLRootFinder {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  double absd(double x) { if (x < 0.0) { return 0.0 - x; } return x; }
+  < Fixed-point / sign test helpers for a sampled root search. >
+  boolean signChange(double fa, double fb) { return fa * fb < 0.0; }
+  double bisectStep(double a, double b) { return (a + b) / 2.0; }
+  boolean within(double fx, double tol) { return absd(fx) <= tol; }
+}

@@ -47,10 +47,20 @@ class SLChiSquareTest {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << Pearson chi-square statistic sum((observed - expected)^2 / expected) over n
+     categories. >>
+  double statistic(double[] observed, double[] expected, int n) {
+    double s = 0.0;
+    int i = 0;
+    while (i < n) {
+      if (expected[i] != 0.0) {
+        double d = observed[i] - expected[i];
+        s = s + d * d / expected[i];
+      }
+      i = i + 1;
+    }
+    return s;
+  }
+  int degreesOfFreedom(int categories) { return categories - 1; }
 }

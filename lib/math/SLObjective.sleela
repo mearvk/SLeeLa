@@ -45,4 +45,15 @@ class SLObjective {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << A quadratic objective f(x) = a x^2 + b x + c with its gradient and the exact
+     minimizer (when a > 0). >>
+  double a;
+  double b;
+  double c;
+  void set(double pa, double pb, double pc) { a = pa; b = pb; c = pc; }
+  double value(double x) { return a * x * x + b * x + c; }
+  double gradient(double x) { return 2.0 * a * x + b; }
+  double minimizer() { if (a == 0.0) { return 0.0; } return 0.0 - b / (2.0 * a); }
+}

@@ -45,4 +45,23 @@ class SLHypothesisTest {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << One-sample z-statistic (sampleMean - mu0) / (sigma / sqrt(n)) and a simple
+     two-sided decision at a given critical value (e.g. 1.96 for alpha 0.05). >>
+  double sqrt(double x) {
+    if (x <= 0.0) { return 0.0; }
+    double g = x;
+    int i = 0;
+    while (i < 60) { g = (g + x / g) / 2.0; i = i + 1; }
+    return g;
+  }
+  double zStatistic(double sampleMean, double mu0, double sigma, int n) {
+    if (sigma <= 0.0 || n <= 0) { return 0.0; }
+    return (sampleMean - mu0) / (sigma / sqrt(n));
+  }
+  boolean rejectTwoSided(double z, double critical) {
+    double a = z < 0.0 ? 0.0 - z : z;
+    return a > critical;
+  }
+}

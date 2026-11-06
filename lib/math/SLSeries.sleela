@@ -45,4 +45,19 @@ class SLSeries {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Partial sum of a sampled series (first k terms). >
+  double partialSum(double[] terms, int k) {
+    double s = 0.0;
+    int i = 0;
+    while (i < k) { s = s + terms[i]; i = i + 1; }
+    return s;
+  }
+  < Geometric series limit a/(1-r) for |r| < 1. >
+  double geometricLimit(double a, double r) {
+    double ar = r < 0.0 ? 0.0 - r : r;
+    if (ar >= 1.0) { return 0.0; }
+    return a / (1.0 - r);
+  }
+}

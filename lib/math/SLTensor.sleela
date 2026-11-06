@@ -45,4 +45,26 @@ class SLTensor {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << A rank-k tensor stored as a flat double[] with an int[] shape. Linear
+     indexing maps a coordinate vector to the flat offset (row-major). >>
+  int[] shape;
+  int rank;
+  int total;
+  void configure(int[] dims, int k) {
+    rank = k;
+    shape = new int[k];
+    total = 1;
+    int i = 0;
+    while (i < k) { shape[i] = dims[i]; total = total * dims[i]; i = i + 1; }
+  }
+  int offset(int[] coord) {
+    int off = 0;
+    int i = 0;
+    while (i < rank) { off = off * shape[i] + coord[i]; i = i + 1; }
+    return off;
+  }
+  int size() { return total; }
+  int getRank() { return rank; }
+}

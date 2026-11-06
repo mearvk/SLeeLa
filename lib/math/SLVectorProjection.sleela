@@ -47,10 +47,20 @@ class SLVectorProjection {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  < Scalar projection of a onto b: (a.b)/|b|^2 as the coefficient. >
+  double coefficient(double[] a, double[] b, int n) {
+    double ab = 0.0;
+    double bb = 0.0;
+    int i = 0;
+    while (i < n) { ab = ab + a[i] * b[i]; bb = bb + b[i] * b[i]; i = i + 1; }
+    if (bb == 0.0) { return 0.0; }
+    return ab / bb;
+  }
+  < Vector projection of a onto b, written into `out`. >
+  void project(double[] a, double[] b, double[] out, int n) {
+    double c = coefficient(a, b, n);
+    int i = 0;
+    while (i < n) { out[i] = c * b[i]; i = i + 1; }
+  }
 }

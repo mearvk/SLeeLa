@@ -45,4 +45,28 @@ class SLLogarithm {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << Natural logarithm via the atanh series: ln(x) = 2*sum((y^(2k+1))/(2k+1)),
+     with y = (x-1)/(x+1), valid for positive x. >>
+  double ln(double x) {
+    if (x <= 0.0) { return 0.0; }
+    double y = (x - 1.0) / (x + 1.0);
+    double y2 = y * y;
+    double term = y;
+    double sum = 0.0;
+    int k = 0;
+    while (k < 200) {
+      sum = sum + term / (2 * k + 1);
+      term = term * y2;
+      k = k + 1;
+    }
+    return 2.0 * sum;
+  }
+  < Logarithm of x in an arbitrary base b: ln(x)/ln(b). >
+  double logBase(double x, double b) {
+    double lb = ln(b);
+    if (lb == 0.0) { return 0.0; }
+    return ln(x) / lb;
+  }
+}

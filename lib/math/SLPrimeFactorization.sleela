@@ -45,4 +45,29 @@ class SLPrimeFactorization {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Count the prime factors of n with multiplicity, for n of at least 1. >
+  int factorCount(int n) {
+    if (n < 2) { return 0; }
+    int c = 0;
+    int d = 2;
+    while (d * d <= n) {
+      while (n % d == 0) { n = n / d; c = c + 1; }
+      d = d + 1;
+    }
+    if (n > 1) { c = c + 1; }
+    return c;
+  }
+  < The largest prime factor of n. >
+  int largestFactor(int n) {
+    int last = 1;
+    int d = 2;
+    while (d * d <= n) {
+      while (n % d == 0) { n = n / d; last = d; }
+      d = d + 1;
+    }
+    if (n > 1) { last = n; }
+    return last;
+  }
+}

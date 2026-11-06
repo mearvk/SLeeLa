@@ -45,4 +45,24 @@ class SLLinearAlgebra {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Matrix-vector product y = A(r x c) * x. >
+  void matVec(double[] a, double[] x, double[] y, int r, int c) {
+    int i = 0;
+    while (i < r) {
+      double s = 0.0;
+      int j = 0;
+      while (j < c) { s = s + a[i * c + j] * x[j]; j = j + 1; }
+      y[i] = s;
+      i = i + 1;
+    }
+  }
+  < Trace of an n x n matrix (sum of the diagonal). >
+  double trace(double[] a, int n) {
+    double s = 0.0;
+    int i = 0;
+    while (i < n) { s = s + a[i * n + i]; i = i + 1; }
+    return s;
+  }
+}

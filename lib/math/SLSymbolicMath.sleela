@@ -47,10 +47,13 @@ class SLSymbolicMath {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << Symbolic rules over monomials represented as (coefficient, exponent) pairs:
+     differentiation and integration of a single power term. >>
+  < d/dx of c x^n is (c n) x^(n-1); returns the new coefficient; newExp via field. >
+  int newExp;
+  double differentiate(double c, int n) { newExp = n - 1; return c * n; }
+  < Indefinite integral of c x^n is (c/(n+1)) x^(n+1); newExp holds n+1. >
+  double integrate(double c, int n) { newExp = n + 1; return c / (n + 1); }
+  int getNewExp() { return newExp; }
 }

@@ -45,4 +45,27 @@ class SLProgression {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Arithmetic progression: n-th term a + (n-1) d (1-indexed). >
+  double arithmeticTerm(double a, double d, int k) { return a + (k - 1) * d; }
+  < Sum of the first k arithmetic terms. >
+  double arithmeticSum(double a, double d, int k) {
+    return k * (2.0 * a + (k - 1) * d) / 2.0;
+  }
+  < Geometric progression: n-th term a r^(n-1). >
+  double geometricTerm(double a, double r, int k) {
+    double p = 1.0;
+    int i = 1;
+    while (i < k) { p = p * r; i = i + 1; }
+    return a * p;
+  }
+  < Sum of the first k geometric terms. >
+  double geometricSum(double a, double r, int k) {
+    if (r == 1.0) { return a * k; }
+    double rp = 1.0;
+    int i = 0;
+    while (i < k) { rp = rp * r; i = i + 1; }
+    return a * (1.0 - rp) / (1.0 - r);
+  }
+}

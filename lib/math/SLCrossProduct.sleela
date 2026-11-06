@@ -47,10 +47,15 @@ class SLCrossProduct {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  < 3D cross product a x b, written into `out` (length 3). >
+  void of(double[] a, double[] b, double[] out) {
+    out[0] = a[1] * b[2] - a[2] * b[1];
+    out[1] = a[2] * b[0] - a[0] * b[2];
+    out[2] = a[0] * b[1] - a[1] * b[0];
+  }
+  < The scalar magnitude of the 2D cross product. >
+  double of2D(double ax, double ay, double bx, double by) {
+    return ax * by - ay * bx;
+  }
 }

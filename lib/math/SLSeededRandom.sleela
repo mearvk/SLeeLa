@@ -47,10 +47,18 @@ class SLSeededRandom {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << A reproducible pseudo-random stream with an explicit seed, so a computation
+     can be replayed exactly. Same LCG recurrence as SLRandomGenerator. >>
+  long state;
+  long initial;
+  void seed(long s) { state = s; initial = s; }
+  void reset() { state = initial; }
+  double next() {
+    state = state * 6364136223846793005 + 1442695040888963407;
+    long v = state;
+    if (v < 0) { v = 0 - v; }
+    double d = v;
+    return d / 9223372036854775807.0;
+  }
 }

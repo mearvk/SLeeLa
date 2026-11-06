@@ -47,10 +47,34 @@ class SLSetOperations {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  boolean contains(int[] a, int na, int v) {
+    int i = 0;
+    while (i < na) { if (a[i] == v) { return true; } i = i + 1; }
+    return false;
+  }
+  << Union of sets a and b into out (assumes each input has distinct values).
+     Returns the size of the union. >>
+  int union(int[] a, int na, int[] b, int nb, int[] out) {
+    int w = 0;
+    int i = 0;
+    while (i < na) { out[w] = a[i]; w = w + 1; i = i + 1; }
+    int j = 0;
+    while (j < nb) { if (!contains(a, na, b[j])) { out[w] = b[j]; w = w + 1; } j = j + 1; }
+    return w;
+  }
+  < Intersection of a and b into out; returns its size. >
+  int intersection(int[] a, int na, int[] b, int nb, int[] out) {
+    int w = 0;
+    int i = 0;
+    while (i < na) { if (contains(b, nb, a[i])) { out[w] = a[i]; w = w + 1; } i = i + 1; }
+    return w;
+  }
+  < Difference a minus b into out; returns its size. >
+  int difference(int[] a, int na, int[] b, int nb, int[] out) {
+    int w = 0;
+    int i = 0;
+    while (i < na) { if (!contains(b, nb, a[i])) { out[w] = a[i]; w = w + 1; } i = i + 1; }
+    return w;
+  }
 }

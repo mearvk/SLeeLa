@@ -47,10 +47,19 @@ class SLResidual {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  double absd(double x) { if (x < 0.0) { return 0.0 - x; } return x; }
+  < Residual r = b - A*x for one equation row (dot of row with x). >
+  double of(double[] row, double[] x, double b, int n) {
+    double s = 0.0;
+    int i = 0;
+    while (i < n) { s = s + row[i] * x[i]; i = i + 1; }
+    return b - s;
+  }
+  double normInf(double[] r, int n) {
+    double m = 0.0;
+    int i = 0;
+    while (i < n) { double v = absd(r[i]); if (v > m) { m = v; } i = i + 1; }
+    return m;
+  }
 }

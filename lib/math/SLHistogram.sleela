@@ -47,10 +47,23 @@ class SLHistogram {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << Tally sampled values into `bins` equal-width buckets spanning [lo, hi];
+     counts written into out (length bins). >>
+  void build(double[] xs, int n, double lo, double hi, int bins, int[] out) {
+    int b = 0;
+    while (b < bins) { out[b] = 0; b = b + 1; }
+    if (hi <= lo || bins <= 0) { return; }
+    double width = (hi - lo) / bins;
+    int i = 0;
+    while (i < n) {
+      double v = xs[i];
+      if (v >= lo && v <= hi) {
+        int idx = (int) ((v - lo) / width);
+        if (idx >= bins) { idx = bins - 1; }
+        out[idx] = out[idx] + 1;
+      }
+      i = i + 1;
+    }
+  }
 }

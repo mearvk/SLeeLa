@@ -47,10 +47,25 @@ class SLOverflow {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  long maxLong() { return 9223372036854775807; }
+  << Would a + b overflow a signed 64-bit long? Detected by the classic
+     sign rule: if a and b share a sign but the sum carries the opposite
+     sign, the addition wrapped. >>
+  boolean addOverflows(long a, long b) {
+    long s = a + b;
+    if (a > 0 && b > 0 && s < 0) { return true; }
+    if (a < 0 && b < 0 && s >= 0) { return true; }
+    return false;
+  }
+  << Would a * b overflow? Checked by dividing the product back out. >>
+  boolean mulOverflows(long a, long b) {
+    if (a == 0 || b == 0) { return false; }
+    long p = a * b;
+    return p / a != b;
+  }
+  boolean exceedsDouble(double x, double limit) {
+    double a = x < 0.0 ? 0.0 - x : x;
+    return a > limit;
+  }
 }

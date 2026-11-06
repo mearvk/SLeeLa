@@ -47,10 +47,17 @@ class SLSimpsonRule {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  < Composite Simpson rule over sampled ys (length n+1), n even, on [a,b]. >
+  double composite(double[] ys, double a, double b, int n) {
+    if (n < 2 || n % 2 != 0) { return 0.0; }
+    double h = (b - a) / n;
+    double s = ys[0] + ys[n];
+    int i = 1;
+    while (i < n) {
+      if (i % 2 == 1) { s = s + 4.0 * ys[i]; } else { s = s + 2.0 * ys[i]; }
+      i = i + 1;
+    }
+    return s * h / 3.0;
+  }
 }

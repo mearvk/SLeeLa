@@ -47,10 +47,18 @@ class SLPrecision {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  < Number of correct significant digits implied by a relative error. >
+  int significantDigits(double relativeError) {
+    double e = relativeError < 0.0 ? 0.0 - relativeError : relativeError;
+    if (e == 0.0) { return 15; }
+    int d = 0;
+    while (e < 1.0 && d < 15) { e = e * 10.0; d = d + 1; }
+    return d;
+  }
+  boolean withinTolerance(double a, double b, double tol) {
+    double diff = a - b;
+    if (diff < 0.0) { diff = 0.0 - diff; }
+    return diff <= tol;
+  }
 }

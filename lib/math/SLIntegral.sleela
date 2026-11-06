@@ -45,4 +45,17 @@ class SLIntegral {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Definite integral of a sampled function by the trapezoidal rule. >
+  double trapezoid(double[] xs, double[] ys, int n) {
+    if (n < 2) { return 0.0; }
+    double s = 0.0;
+    int i = 0;
+    while (i < n - 1) {
+      s = s + (xs[i + 1] - xs[i]) * (ys[i] + ys[i + 1]) / 2.0;
+      i = i + 1;
+    }
+    return s;
+  }
+}

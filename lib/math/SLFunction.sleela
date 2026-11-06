@@ -45,4 +45,22 @@ class SLFunction {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << A sampled single-variable function f(x) given by paired xs/ys; evaluation
+     uses linear interpolation between the bracketing samples. >>
+  double evaluate(double[] xs, double[] ys, int n, double x) {
+    if (n <= 0) { return 0.0; }
+    if (x <= xs[0]) { return ys[0]; }
+    if (x >= xs[n - 1]) { return ys[n - 1]; }
+    int i = 0;
+    while (i < n - 1) {
+      if (x >= xs[i] && x <= xs[i + 1]) {
+        double t = (x - xs[i]) / (xs[i + 1] - xs[i]);
+        return ys[i] + t * (ys[i + 1] - ys[i]);
+      }
+      i = i + 1;
+    }
+    return ys[n - 1];
+  }
+}

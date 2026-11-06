@@ -45,4 +45,18 @@ class SLExpressionTree {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << A binary expression tree in flat arrays: node i has op kind[i] (-1 = leaf),
+     leaf value val[i], and child indices left[i]/right[i]. evaluate walks it. >>
+  double evaluate(int[] kind, double[] val, int[] left, int[] right, int node) {
+    if (kind[node] == 0 - 1) { return val[node]; }
+    double a = evaluate(kind, val, left, right, left[node]);
+    double b = evaluate(kind, val, left, right, right[node]);
+    if (kind[node] == 0) { return a + b; }
+    if (kind[node] == 1) { return a - b; }
+    if (kind[node] == 2) { return a * b; }
+    if (kind[node] == 3) { return b == 0.0 ? 0.0 : a / b; }
+    return 0.0;
+  }
+}

@@ -52,6 +52,7 @@
 <li><a href="../package/examples.html">examples</a></li>
 <li><a href="../package/filesystem.html">filesystem</a></li>
 <li><a href="../package/gameplay.html">gameplay</a></li>
+<li><a href="../package/governance.html">governance</a></li>
 <li><a href="../package/gui.html">gui</a></li>
 <li><a href="../package/html.html">html</a></li>
 <li><a href="../package/http.html">http</a></li>
@@ -134,7 +135,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; registry</div>
 <h1>Package <code>registry</code></h1>
-<div class="lead">This package contains <strong>4</strong> source unit(s) defining <strong>4</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>10</strong> source unit(s) defining <strong>10</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="slregistry">SLRegistry <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/registry/SLRegistry.sleela)</span></h2>
 <div data-u="slregistry slregistry">
@@ -143,19 +144,37 @@
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
-<tr><td><code>MAX_KEYS</code></td><td><span class="sig">static final int MAX_KEYS = 64</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>LEGACY_OBJECT_WINDOW</code></td><td><span class="sig">static final int LEGACY_OBJECT_WINDOW = 8</span></td><td class="desc">Eight direct object slots remain as the legacy display window. The complete membership index is the growable string-reference list.</td></tr>
 <tr><td><code>version</code></td><td><span class="sig">String version</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>count</code></td><td><span class="sig">int    count</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>keyPaths</code></td><td><span class="sig">SLList keyPaths</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
 <tr><td><code>boot</code></td><td><span class="sig">void boot()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>addKey</code></td><td><span class="sig">boolean addKey(SLRegistryKey k)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>keyPathAt</code></td><td><span class="sig">String keyPathAt(int idx)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>keyAt</code></td><td><span class="sig">SLRegistryKey keyAt(int idx)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>seedDefaults</code></td><td><span class="sig">void seedDefaults()</span></td><td class="desc">Seed the baseline a new install starts from (mirrors sl_reg_seed_defaults): System, System/VM, Settings, Features, Artifacts.</td></tr>
 <tr><td><code>featureEnabled</code></td><td><span class="sig">boolean featureEnabled(String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>show</code></td><td><span class="sig">void show()</span></td><td class="desc">Terminal review (mirrors sl_reg_review).</td></tr>
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slregistryidentity">SLRegistryIdentity <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/registry/SLRegistryIdentity.sleela)</span></h2>
+<div data-u="slregistryidentity slregistryidentity">
+<h3 id="SLRegistryIdentity">SLRegistryIdentity <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>id</code></td><td><span class="sig">String id</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nameSpace</code></td><td><span class="sig">String nameSpace</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>kind</code></td><td><span class="sig">String kind</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>schemaVersion</code></td><td><span class="sig">String schemaVersion</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(String stableId, String ns, String recordKind, String schema)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>present</code></td><td><span class="sig">boolean present()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="slregistrykey">SLRegistryKey <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/registry/SLRegistryKey.sleela)</span></h2>
@@ -165,9 +184,10 @@
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
-<tr><td><code>MAX_VALUES</code></td><td><span class="sig">static final int MAX_VALUES = 8</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>LEGACY_OBJECT_WINDOW</code></td><td><span class="sig">static final int LEGACY_OBJECT_WINDOW = 8</span></td><td class="desc">Eight object references remain as the legacy display window. A growable string list indexes all names for native record resolution.</td></tr>
 <tr><td><code>path</code></td><td><span class="sig">String path</span></td><td class="desc">full key path, e.g. &quot;Settings&quot;</td></tr>
 <tr><td><code>count</code></td><td><span class="sig">int    count</span></td><td class="desc">live values</td></tr>
+<tr><td><code>valueNames</code></td><td><span class="sig">SLList valueNames</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>hasProvenance</code></td><td><span class="sig">int hasProvenance</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>provenance</code></td><td><span class="sig">SLRegistryProvenance provenance</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
@@ -175,10 +195,24 @@
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
 <tr><td><code>configure</code></td><td><span class="sig">void configure(String keyPath)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>add</code></td><td><span class="sig">boolean add(SLRegistryValue val)</span></td><td class="desc">append a value (numbered-field store in place of an array)</td></tr>
+<tr><td><code>valueNameAt</code></td><td><span class="sig">String valueNameAt(int idx)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>valueAt</code></td><td><span class="sig">SLRegistryValue valueAt(int idx)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>attachProvenance</code></td><td><span class="sig">void attachProvenance(SLRegistryProvenance p)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>tracked</code></td><td><span class="sig">boolean tracked()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>show</code></td><td><span class="sig">void show()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slregistrylifecycle">SLRegistryLifecycle <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/registry/SLRegistryLifecycle.sleela)</span></h2>
+<div data-u="slregistrylifecycle slregistrylifecycle">
+<h3 id="SLRegistryLifecycle">SLRegistryLifecycle <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>state</code></td><td><span class="sig">String state</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(String initialState)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>permits</code></td><td><span class="sig">boolean permits(String next)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="slregistryprovenance">SLRegistryProvenance <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/registry/SLRegistryProvenance.sleela)</span></h2>
@@ -204,6 +238,86 @@
 <tr><td><code>isSealed</code></td><td><span class="sig">boolean isSealed()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>verify</code></td><td><span class="sig">boolean verify(String expected)</span></td><td class="desc">Verify requires the host to recompute SHA-256(sealInput()) and compare. expected = that recomputation; returns true if it matches the stored seal.</td></tr>
 <tr><td><code>render</code></td><td><span class="sig">String render()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slregistryrecord">SLRegistryRecord <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/registry/SLRegistryRecord.sleela)</span></h2>
+<div data-u="slregistryrecord slregistryrecord">
+<h3 id="SLRegistryRecord">SLRegistryRecord <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>id</code></td><td><span class="sig">String id</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nameSpace</code></td><td><span class="sig">String nameSpace</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>kind</code></td><td><span class="sig">String kind</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>schemaVersion</code></td><td><span class="sig">String schemaVersion</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>state</code></td><td><span class="sig">String state</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>locator</code></td><td><span class="sig">String locator</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>version</code></td><td><span class="sig">String version</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>contentDigest</code></td><td><span class="sig">String contentDigest</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>payloadKind</code></td><td><span class="sig">String payloadKind</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>payload</code></td><td><span class="sig">String payload</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>integrityStatus</code></td><td><span class="sig">String integrityStatus</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>revision</code></td><td><span class="sig">long revision</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>capacityBytes</code></td><td><span class="sig">long capacityBytes</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ownerLabel</code></td><td><span class="sig">String ownerLabel</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>formatVersion</code></td><td><span class="sig">String formatVersion</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>deviceSeal</code></td><td><span class="sig">String deviceSeal</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>aliases</code></td><td><span class="sig">SLList aliases</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>relationshipIds</code></td><td><span class="sig">SLList relationshipIds</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(String recordId, String ns, String recordKind, String displayName)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>identified</code></td><td><span class="sig">boolean identified()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hasIntegrityEvidence</code></td><td><span class="sig">boolean hasIntegrityEvidence()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slregistryrelationship">SLRegistryRelationship <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/registry/SLRegistryRelationship.sleela)</span></h2>
+<div data-u="slregistryrelationship slregistryrelationship">
+<h3 id="SLRegistryRelationship">SLRegistryRelationship <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>type</code></td><td><span class="sig">String type</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>targetId</code></td><td><span class="sig">String targetId</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(String relationshipType, String stableTargetId)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>complete</code></td><td><span class="sig">boolean complete()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slregistryresolver">SLRegistryResolver <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/registry/SLRegistryResolver.sleela)</span></h2>
+<div data-u="slregistryresolver slregistryresolver">
+<h3 id="SLRegistryResolver">SLRegistryResolver <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>recordId</code></td><td><span class="sig">String recordId</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>status</code></td><td><span class="sig">String status</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>locator</code></td><td><span class="sig">String locator</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>reason</code></td><td><span class="sig">String reason</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(String id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>resolved</code></td><td><span class="sig">boolean resolved()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isResolvedReference</code></td><td><span class="sig">boolean isResolvedReference()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slregistryreview">SLRegistryReview <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/registry/SLRegistryReview.sleela)</span></h2>
+<div data-u="slregistryreview slregistryreview">
+<h3 id="SLRegistryReview">SLRegistryReview <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>recordCount</code></td><td><span class="sig">int recordCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>relationshipCount</code></td><td><span class="sig">int relationshipCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>verifiedCount</code></td><td><span class="sig">int verifiedCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>quarantinedCount</code></td><td><span class="sig">int quarantinedCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>report</code></td><td><span class="sig">String report</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>reset</code></td><td><span class="sig">void reset()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setReport</code></td><td><span class="sig">void setReport(String value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="slregistryvalue">SLRegistryValue <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/registry/SLRegistryValue.sleela)</span></h2>
@@ -236,7 +350,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-05 14:21 UTC.
+<code>/lib</code> tree on 2026-11-06 16:25 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>

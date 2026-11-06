@@ -45,4 +45,21 @@ class SLMode {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < The most frequent value (first-seen wins on ties). O(n^2), copy-free. >
+  double of(double[] xs, int n) {
+    if (n <= 0) { return 0.0; }
+    double best = xs[0];
+    int bestCount = 0;
+    int i = 0;
+    while (i < n) {
+      int c = 0;
+      int j = 0;
+      while (j < n) { if (xs[j] == xs[i]) { c = c + 1; } j = j + 1; }
+      if (c > bestCount) { bestCount = c; best = xs[i]; }
+      i = i + 1;
+    }
+    return best;
+  }
+}

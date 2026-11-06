@@ -47,10 +47,14 @@ class SLConfidenceLevel {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << The standard-normal critical z-value for a common confidence level given as
+     a percent (90, 95, 99); other levels return 0 (caller supplies its own). >>
+  double criticalZ(int percent) {
+    if (percent == 90) { return 1.645; }
+    if (percent == 95) { return 1.96; }
+    if (percent == 99) { return 2.576; }
+    return 0.0;
+  }
+  double alpha(int percent) { return (100 - percent) / 100.0; }
 }

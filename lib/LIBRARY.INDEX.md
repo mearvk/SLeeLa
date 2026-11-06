@@ -1,11 +1,26 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.58  
+**Revision:** 0.59  
 **Packages:** 111  
-**SLeeLa source units:** 11886  
-**Module-facade symbols:** 77  
-**Total symbol records:** 11963  
+**SLeeLa source units:** 11887  
+**Module-facade symbols:** 78  
+**Total symbol records:** 11965  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.59 brings the `math` package to life. All **243** `lib/math`
+> classes, which previously carried only a generic `state`/`count` stub, now
+> have real, compiler-verified SLeeLa implementations spanning number theory,
+> statistics and probability, distributions, regression and hypothesis tests,
+> linear algebra (determinant/inverse/eigen), calculus and numerical methods,
+> ODE/PDE steps, Fourier/Laplace/Z transforms and signal processing,
+> optimization, sequences/series/combinatorics, set theory, geometry and
+> transforms, number types (complex/rational/big), expressions and symbolic
+> rules, fields, units, graphs, and tensors. The package also gains its
+> `SLPackage` facade and a runnable `examples/MathDemo`. Elementary functions
+> (`sqrt`, `exp`, `ln`, `sin`/`cos`, nth roots) are implemented inline in pure
+> SLeeLa; matrices/tensors are flat row-major `double[]`. Every result was
+> checked against known values via `impl/build/sleela run`. (The counts also
+> reconcile pre-existing inventory drift on this branch.)
 
 > Revision 0.58 adds **VMSharp™** under the `vm` package (`lib/vm/vmsharp/`): a
 > VM manifest that can start as a self-installer bootloader for either a

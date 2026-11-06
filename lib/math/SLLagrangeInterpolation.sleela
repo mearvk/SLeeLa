@@ -47,10 +47,25 @@ class SLLagrangeInterpolation {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  < Lagrange interpolating polynomial evaluated at x, through n sample points. >
+  double evaluate(double[] xs, double[] ys, int n, double x) {
+    double sum = 0.0;
+    int i = 0;
+    while (i < n) {
+      double term = ys[i];
+      int j = 0;
+      while (j < n) {
+        if (j != i) {
+          double denom = xs[i] - xs[j];
+          if (denom == 0.0) { return 0.0; }
+          term = term * (x - xs[j]) / denom;
+        }
+        j = j + 1;
+      }
+      sum = sum + term;
+      i = i + 1;
+    }
+    return sum;
+  }
 }

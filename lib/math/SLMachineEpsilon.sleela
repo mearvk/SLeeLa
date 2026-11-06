@@ -47,10 +47,12 @@ class SLMachineEpsilon {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << Compute machine epsilon for double precision by halving until 1 + e == 1. >>
+  double compute() {
+    double e = 1.0;
+    while (1.0 + e / 2.0 != 1.0) { e = e / 2.0; }
+    return e;
+  }
+  double doubleValue() { return 0.0000000000000002220446049250313; }
 }

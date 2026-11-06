@@ -47,10 +47,17 @@ class SLAdjacencyMatrix {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << A graph adjacency matrix stored row-major (n x n). 1 (or a weight) marks an
+     edge. Supports degree and neighbour queries. >>
+  int n;
+  void configure(int size) { n = size; }
+  void addEdge(double[] m, int u, int v) { m[u * n + v] = 1.0; m[v * n + u] = 1.0; }
+  boolean adjacent(double[] m, int u, int v) { return m[u * n + v] != 0.0; }
+  int degree(double[] m, int u) {
+    int d = 0;
+    int v = 0;
+    while (v < n) { if (m[u * n + v] != 0.0) { d = d + 1; } v = v + 1; }
+    return d;
+  }
 }

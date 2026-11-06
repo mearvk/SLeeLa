@@ -45,4 +45,27 @@ class SLQuaternion {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  double sqrt(double x) {
+    if (x <= 0.0) { return 0.0; }
+    double g = x;
+    int i = 0;
+    while (i < 60) { g = (g + x / g) / 2.0; i = i + 1; }
+    return g;
+  }
+  double w;
+  double x;
+  double y;
+  double z;
+  void set(double pw, double px, double py, double pz) { w = pw; x = px; y = py; z = pz; }
+  double norm() { return sqrt(w * w + x * x + y * y + z * z); }
+  << Hamilton product this * o written into out (w,x,y,z). >>
+  void multiply(SLQuaternion o, SLQuaternion out) {
+    out.w = w * o.w - x * o.x - y * o.y - z * o.z;
+    out.x = w * o.x + x * o.w + y * o.z - z * o.y;
+    out.y = w * o.y - x * o.z + y * o.w + z * o.x;
+    out.z = w * o.z + x * o.y - y * o.x + z * o.w;
+  }
+  void conjugate(SLQuaternion out) { out.w = w; out.x = 0.0 - x; out.y = 0.0 - y; out.z = 0.0 - z; }
+}

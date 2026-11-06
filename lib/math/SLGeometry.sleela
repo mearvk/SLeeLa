@@ -45,4 +45,44 @@ class SLGeometry {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  double sqrt(double x) {
+    if (x <= 0.0) { return 0.0; }
+    double g = x;
+    int i = 0;
+    while (i < 60) { g = (g + x / g) / 2.0; i = i + 1; }
+    return g;
+  }
+  double triangleArea(double x1, double y1, double x2, double y2, double x3, double y3) {
+    double a = x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2);
+    if (a < 0.0) { a = 0.0 - a; }
+    return a / 2.0;
+  }
+  double circleArea(double r) { return 3.141592653589793 * r * r; }
+  double circleCircumference(double r) { return 6.283185307179586 * r; }
+  double polygonPerimeter(double[] xs, double[] ys, int n) {
+    double p = 0.0;
+    int i = 0;
+    while (i < n) {
+      int j = (i + 1) % n;
+      double dx = xs[j] - xs[i];
+      double dy = ys[j] - ys[i];
+      p = p + sqrt(dx * dx + dy * dy);
+      i = i + 1;
+    }
+    return p;
+  }
+  << Signed polygon area via the shoelace formula (absolute value returned). >>
+  double polygonArea(double[] xs, double[] ys, int n) {
+    double s = 0.0;
+    int i = 0;
+    while (i < n) {
+      int j = (i + 1) % n;
+      s = s + xs[i] * ys[j] - xs[j] * ys[i];
+      i = i + 1;
+    }
+    if (s < 0.0) { s = 0.0 - s; }
+    return s / 2.0;
+  }
+}

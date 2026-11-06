@@ -47,10 +47,12 @@ class SLDifference {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  double of(double a, double b) { return a - b; }
+  double absolute(double a, double b) { double d = a - b; if (d < 0.0) { return 0.0 - d; } return d; }
+  < Successive differences of a sequence written into out (length n-1). >
+  void forward(double[] xs, int n, double[] out) {
+    int i = 0;
+    while (i < n - 1) { out[i] = xs[i + 1] - xs[i]; i = i + 1; }
+  }
 }

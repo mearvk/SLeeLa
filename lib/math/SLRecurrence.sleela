@@ -47,10 +47,16 @@ class SLRecurrence {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << Evaluate a linear second-order recurrence x_k = p*x_{k-1} + q*x_{k-2}
+     from seeds x0, x1 up to index k. >>
+  double evaluate(double x0, double x1, double p, double q, int k) {
+    if (k == 0) { return x0; }
+    if (k == 1) { return x1; }
+    double a = x0;
+    double b = x1;
+    int i = 2;
+    while (i <= k) { double c = p * b + q * a; a = b; b = c; i = i + 1; }
+    return b;
+  }
 }

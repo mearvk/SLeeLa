@@ -45,4 +45,14 @@ class SLVariable {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String nameValue;
+  double value;
+  boolean bound;
+  void bind(String n, double v) { nameValue = n; value = v; bound = true; }
+  void unbind() { bound = false; }
+  double get() { return value; }
+  boolean isBound() { return bound; }
+  String variableName() { return nameValue; }
+}

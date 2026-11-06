@@ -45,4 +45,33 @@ class SLSignal {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  double sqrt(double x) {
+    if (x <= 0.0) { return 0.0; }
+    double g = x;
+    int i = 0;
+    while (i < 60) { g = (g + x / g) / 2.0; i = i + 1; }
+    return g;
+  }
+  << A sampled discrete signal with energy, power, and convolution helpers. >>
+  double energy(double[] x, int n) {
+    double s = 0.0;
+    int i = 0;
+    while (i < n) { s = s + x[i] * x[i]; i = i + 1; }
+    return s;
+  }
+  double rms(double[] x, int n) { if (n == 0) { return 0.0; } return sqrt(energy(x, n) / n); }
+  << Discrete convolution of x (length n) and h (length m) into out (length
+     n+m-1). >>
+  void convolve(double[] x, int n, double[] h, int m, double[] out) {
+    int i = 0;
+    while (i < n + m - 1) { out[i] = 0.0; i = i + 1; }
+    i = 0;
+    while (i < n) {
+      int j = 0;
+      while (j < m) { out[i + j] = out[i + j] + x[i] * h[j]; j = j + 1; }
+      i = i + 1;
+    }
+  }
+}

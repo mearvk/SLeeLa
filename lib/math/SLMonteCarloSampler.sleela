@@ -47,10 +47,20 @@ class SLMonteCarloSampler {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << Draw n uniform samples on [a,b] from a seeded stream into out; returns the
+     stream so a caller can continue it. Deterministic for a given seed. >>
+  long state;
+  void seed(long s) { state = s; }
+  double nextUniform(double a, double b) {
+    state = state * 6364136223846793005 + 1442695040888963407;
+    long v = state;
+    if (v < 0) { v = 0 - v; }
+    double u = v / 9223372036854775807.0;
+    return a + u * (b - a);
+  }
+  void sample(double a, double b, int n, double[] out) {
+    int i = 0;
+    while (i < n) { out[i] = nextUniform(a, b); i = i + 1; }
+  }
 }

@@ -47,10 +47,13 @@ class SLCoordinateDescent {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << One coordinate-descent update: minimize along a single coordinate j by
+     taking an exact step for a quadratic a*x^2 + ... with known second
+     derivative h and gradient g at that coordinate. >>
+  double coordinateStep(double x, double g, double h) {
+    if (h == 0.0) { return x; }
+    return x - g / h;
+  }
+  int nextCoordinate(int current, int n) { return (current + 1) % n; }
 }

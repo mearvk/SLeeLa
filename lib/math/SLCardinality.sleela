@@ -47,10 +47,20 @@ class SLCardinality {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  int of(int[] a, int n) { return n; }
+  < Cardinality of the union of two distinct-valued sets. >
+  int ofUnion(int[] a, int na, int[] b, int nb) {
+    int extra = 0;
+    int j = 0;
+    while (j < nb) {
+      boolean found = false;
+      int i = 0;
+      while (i < na) { if (a[i] == b[j]) { found = true; } i = i + 1; }
+      if (!found) { extra = extra + 1; }
+      j = j + 1;
+    }
+    return na + extra;
+  }
+  boolean sameCardinality(int na, int nb) { return na == nb; }
 }

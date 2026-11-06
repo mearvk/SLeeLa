@@ -47,10 +47,14 @@ class SLNumericalPrecision {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  double doubleEpsilon() { return 0.0000000000000002220446049250313; }
+  boolean nearlyEqual(double a, double b, double relTol) {
+    double diff = a - b;
+    if (diff < 0.0) { diff = 0.0 - diff; }
+    double scale = a < 0.0 ? 0.0 - a : a;
+    double sb = b < 0.0 ? 0.0 - b : b;
+    if (sb > scale) { scale = sb; }
+    return diff <= relTol * scale;
+  }
 }

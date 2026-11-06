@@ -45,4 +45,25 @@ class SLModulo {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Euclidean remainder that is always in [0, m) for positive m. >
+  int mod(int a, int m) {
+    if (m == 0) { return 0; }
+    int r = a % m;
+    if (r < 0) { r = r + (m < 0 ? 0 - m : m); }
+    return r;
+  }
+  < Modular exponentiation of base to the power exp, modulo m, for nonnegative exp. >
+  long powMod(long base, long exp, long m) {
+    if (m == 1) { return 0; }
+    long r = 1;
+    base = base % m;
+    while (exp > 0) {
+      if (exp % 2 == 1) { r = (r * base) % m; }
+      exp = exp / 2;
+      base = (base * base) % m;
+    }
+    return r;
+  }
+}

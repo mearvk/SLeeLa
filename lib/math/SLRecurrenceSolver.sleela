@@ -47,10 +47,22 @@ class SLRecurrenceSolver {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  double sqrt(double x) {
+    if (x <= 0.0) { return 0.0; }
+    double g = x;
+    int i = 0;
+    while (i < 60) { g = (g + x / g) / 2.0; i = i + 1; }
+    return g;
+  }
+  << Roots of the characteristic equation t^2 - p t - q = 0 of a second-order
+     linear recurrence, written into out[0], out[1]; returns false if complex. >>
+  boolean characteristicRoots(double p, double q, double[] out) {
+    double disc = p * p + 4.0 * q;
+    if (disc < 0.0) { return false; }
+    double s = sqrt(disc);
+    out[0] = (p + s) / 2.0;
+    out[1] = (p - s) / 2.0;
+    return true;
+  }
 }

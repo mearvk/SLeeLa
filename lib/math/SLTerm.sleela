@@ -45,4 +45,17 @@ class SLTerm {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << A monomial term coefficient * x^exponent. >>
+  double coefficient;
+  int exponent;
+  void set(double c, int e) { coefficient = c; exponent = e; }
+  double evaluate(double x) {
+    double p = 1.0;
+    int i = 0;
+    while (i < exponent) { p = p * x; i = i + 1; }
+    return coefficient * p;
+  }
+  double derivativeCoefficient() { return coefficient * exponent; }
+}

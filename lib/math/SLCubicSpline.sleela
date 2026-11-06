@@ -47,10 +47,16 @@ class SLCubicSpline {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << Evaluate a single cubic Hermite segment between (p0 at t=0) and (p1 at t=1)
+     with endpoint tangents m0, m1, at parameter t in [0,1]. >>
+  double hermite(double p0, double p1, double m0, double m1, double t) {
+    double t2 = t * t;
+    double t3 = t2 * t;
+    double h00 = 2.0 * t3 - 3.0 * t2 + 1.0;
+    double h10 = t3 - 2.0 * t2 + t;
+    double h01 = 0.0 - 2.0 * t3 + 3.0 * t2;
+    double h11 = t3 - t2;
+    return h00 * p0 + h10 * m0 + h01 * p1 + h11 * m1;
+  }
 }

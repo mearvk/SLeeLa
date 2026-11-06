@@ -47,10 +47,14 @@ class SLZScore {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  < The standard score (x - mean) / stddev. >
+  double of(double x, double mean, double stdDev) {
+    if (stdDev == 0.0) { return 0.0; }
+    return (x - mean) / stdDev;
+  }
+  < Recover the raw value from a z-score. >
+  double unstandardize(double z, double mean, double stdDev) {
+    return mean + z * stdDev;
+  }
 }

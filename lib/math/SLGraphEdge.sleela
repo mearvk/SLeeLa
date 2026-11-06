@@ -47,10 +47,13 @@ class SLGraphEdge {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  int from;
+  int to;
+  double weight;
+  void set(int u, int v, double w) { from = u; to = v; weight = w; }
+  int getFrom() { return from; }
+  int getTo() { return to; }
+  double getWeight() { return weight; }
+  boolean connects(int a, int b) { return (from == a && to == b) || (from == b && to == a); }
 }

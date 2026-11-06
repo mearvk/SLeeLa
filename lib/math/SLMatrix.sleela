@@ -45,4 +45,21 @@ class SLMatrix {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Row-major dense matrix stored as a flat double[] of length rows*cols. >
+  int rows;
+  int cols;
+  void shape(int r, int c) { rows = r; cols = c; }
+  double at(double[] m, int r, int c) { return m[r * cols + c]; }
+  void put(double[] m, int r, int c, double v) { m[r * cols + c] = v; }
+  int getRows() { return rows; }
+  int getCols() { return cols; }
+  < Identity matrix of order n written into `m`. >
+  void identity(double[] m, int n) {
+    int i = 0;
+    while (i < n * n) { m[i] = 0.0; i = i + 1; }
+    int d = 0;
+    while (d < n) { m[d * n + d] = 1.0; d = d + 1; }
+  }
+}

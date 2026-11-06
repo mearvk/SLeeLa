@@ -47,10 +47,11 @@ class SLSecantMethod {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  < One secant update using the two previous iterates and their f-values. >
+  double step(double x0, double x1, double f0, double f1) {
+    double denom = f1 - f0;
+    if (denom == 0.0) { return x1; }
+    return x1 - f1 * (x1 - x0) / denom;
+  }
 }

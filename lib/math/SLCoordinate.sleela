@@ -45,4 +45,12 @@ class SLCoordinate {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  double[] components;
+  int dim;
+  void configure(int d) { dim = d; components = new double[d]; }
+  void setComponent(int i, double v) { components[i] = v; }
+  double getComponent(int i) { return components[i]; }
+  int getDim() { return dim; }
+}

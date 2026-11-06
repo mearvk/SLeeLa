@@ -47,10 +47,29 @@ class SLProbabilityDensity {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  double sqrt(double x) {
+    if (x <= 0.0) { return 0.0; }
+    double g = x;
+    int i = 0;
+    while (i < 60) { g = (g + x / g) / 2.0; i = i + 1; }
+    return g;
+  }
+  < Standard-normal probability density function at x. >
+  double normalPdf(double x, double mean, double stdDev) {
+    if (stdDev <= 0.0) { return 0.0; }
+    double z = (x - mean) / stdDev;
+    double twoPi = 6.283185307179586;
+    double coeff = 1.0 / (stdDev * sqrt(twoPi));
+    return coeff * expNeg(z * z / 2.0);
+  }
+  < e to the minus t for nonnegative t, via a Taylor series on the argument. >
+  double expNeg(double t) {
+    double term = 1.0;
+    double sum = 1.0;
+    int k = 1;
+    while (k < 60) { term = term * t / k; sum = sum + term; k = k + 1; }
+    if (sum == 0.0) { return 0.0; }
+    return 1.0 / sum;
+  }
 }

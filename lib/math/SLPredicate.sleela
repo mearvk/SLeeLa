@@ -47,10 +47,18 @@ class SLPredicate {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << A threshold predicate on a double: kind 0 = (x > t), 1 = (x >= t),
+     2 = (x < t), 3 = (x <= t), 4 = (x == t). >>
+  int kind;
+  double threshold;
+  void set(int k, double t) { kind = k; threshold = t; }
+  boolean test(double x) {
+    if (kind == 0) { return x > threshold; }
+    if (kind == 1) { return x >= threshold; }
+    if (kind == 2) { return x < threshold; }
+    if (kind == 3) { return x <= threshold; }
+    if (kind == 4) { return x == threshold; }
+    return false;
+  }
 }

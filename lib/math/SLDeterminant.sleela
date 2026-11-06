@@ -45,4 +45,48 @@ class SLDeterminant {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Determinant of an n x n row-major matrix via Gaussian elimination on a copy. >
+  double of(double[] src, int n) {
+    double[] a = new double[n * n];
+    int i = 0;
+    while (i < n * n) { a[i] = src[i]; i = i + 1; }
+    double det = 1.0;
+    int col = 0;
+    while (col < n) {
+      int pivot = col;
+      double best = a[col * n + col];
+      if (best < 0.0) { best = 0.0 - best; }
+      int r = col + 1;
+      while (r < n) {
+        double v = a[r * n + col];
+        if (v < 0.0) { v = 0.0 - v; }
+        if (v > best) { best = v; pivot = r; }
+        r = r + 1;
+      }
+      if (a[pivot * n + col] == 0.0) { return 0.0; }
+      if (pivot != col) {
+        int k = 0;
+        while (k < n) {
+          double t = a[col * n + k];
+          a[col * n + k] = a[pivot * n + k];
+          a[pivot * n + k] = t;
+          k = k + 1;
+        }
+        det = 0.0 - det;
+      }
+      double p = a[col * n + col];
+      det = det * p;
+      int rr = col + 1;
+      while (rr < n) {
+        double f = a[rr * n + col] / p;
+        int k = col;
+        while (k < n) { a[rr * n + k] = a[rr * n + k] - f * a[col * n + k]; k = k + 1; }
+        rr = rr + 1;
+      }
+      col = col + 1;
+    }
+    return det;
+  }
+}

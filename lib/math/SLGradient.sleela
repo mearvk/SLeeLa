@@ -45,4 +45,15 @@ class SLGradient {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << Numerical gradient of a sampled multivariate function given its value at
+     each coordinate's +/- neighbour and the step, written into out. >>
+  void compute(double[] fPlus, double[] fMinus, int dims, double h, double[] out) {
+    int i = 0;
+    while (i < dims) {
+      out[i] = h == 0.0 ? 0.0 : (fPlus[i] - fMinus[i]) / (2.0 * h);
+      i = i + 1;
+    }
+  }
+}

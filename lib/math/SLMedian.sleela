@@ -45,4 +45,24 @@ class SLMedian {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Median of a copy of the data (values are sorted in place in `a`). >
+  double of(double[] a, int n) {
+    if (n <= 0) { return 0.0; }
+    sortInPlace(a, n);
+    int mid = n / 2;
+    if (n % 2 == 1) { return a[mid]; }
+    return (a[mid - 1] + a[mid]) / 2.0;
+  }
+  void sortInPlace(double[] a, int n) {
+    int i = 1;
+    while (i < n) {
+      double key = a[i];
+      int j = i - 1;
+      while (j >= 0 && a[j] > key) { a[j + 1] = a[j]; j = j - 1; }
+      a[j + 1] = key;
+      i = i + 1;
+    }
+  }
+}

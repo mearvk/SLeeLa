@@ -47,10 +47,21 @@ class SLAverage {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  double of(double[] xs, int n) {
+    if (n <= 0) { return 0.0; }
+    double s = 0.0;
+    int i = 0;
+    while (i < n) { s = s + xs[i]; i = i + 1; }
+    return s / n;
+  }
+  < Weighted average: sum(w*x) / sum(w). >
+  double weighted(double[] xs, double[] ws, int n) {
+    double sw = 0.0;
+    double sx = 0.0;
+    int i = 0;
+    while (i < n) { sx = sx + ws[i] * xs[i]; sw = sw + ws[i]; i = i + 1; }
+    if (sw == 0.0) { return 0.0; }
+    return sx / sw;
+  }
 }

@@ -47,10 +47,25 @@ class SLLinearProgram {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << A linear program in standard form: maximize c.x subject to constraints.
+     Evaluates the objective and checks feasibility of a candidate vertex x. >>
+  double objective(double[] c, double[] x, int n) {
+    double s = 0.0;
+    int i = 0;
+    while (i < n) { s = s + c[i] * x[i]; i = i + 1; }
+    return s;
+  }
+  << Feasible if A x <= b for all m rows (A row-major m x n). >>
+  boolean feasible(double[] a, double[] b, double[] x, int m, int n, double tol) {
+    int r = 0;
+    while (r < m) {
+      double s = 0.0;
+      int ci = 0;
+      while (ci < n) { s = s + a[r * n + ci] * x[ci]; ci = ci + 1; }
+      if (s > b[r] + tol) { return false; }
+      r = r + 1;
+    }
+    return true;
+  }
 }

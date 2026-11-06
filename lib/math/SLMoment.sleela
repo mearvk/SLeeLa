@@ -47,10 +47,40 @@ class SLMoment {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  double mean(double[] xs, int n) {
+    double s = 0.0; int i = 0;
+    while (i < n) { s = s + xs[i]; i = i + 1; }
+    return n == 0 ? 0.0 : s / n;
+  }
+  < The k-th raw moment about the origin: E[X^k]. >
+  double raw(double[] xs, int n, int k) {
+    if (n <= 0) { return 0.0; }
+    double s = 0.0;
+    int i = 0;
+    while (i < n) {
+      double p = 1.0;
+      int j = 0;
+      while (j < k) { p = p * xs[i]; j = j + 1; }
+      s = s + p;
+      i = i + 1;
+    }
+    return s / n;
+  }
+  < The k-th central moment about the mean. >
+  double central(double[] xs, int n, int k) {
+    if (n <= 0) { return 0.0; }
+    double m = mean(xs, n);
+    double s = 0.0;
+    int i = 0;
+    while (i < n) {
+      double d = xs[i] - m;
+      double p = 1.0;
+      int j = 0;
+      while (j < k) { p = p * d; j = j + 1; }
+      s = s + p;
+      i = i + 1;
+    }
+    return s / n;
+  }
 }

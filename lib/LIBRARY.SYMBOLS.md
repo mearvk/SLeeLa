@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11886
+library-source-files: 11887
 library-packages: 111
-module-facade-symbols: 77
-total-symbol-records: 11963
+module-facade-symbols: 78
+total-symbol-records: 11965
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -10951,6 +10951,7 @@ math	SLOrder.sleela	lib/math/SLOrder.sleela	source
 math	SLOrdinaryDifferentialEquation.sleela	lib/math/SLOrdinaryDifferentialEquation.sleela	source
 math	SLOverflow.sleela	lib/math/SLOverflow.sleela	source
 math	SLPDE.sleela	lib/math/SLPDE.sleela	source
+math	SLPackage.sleela	lib/math/SLPackage.sleela	facade
 math	SLPartialDerivative.sleela	lib/math/SLPartialDerivative.sleela	source
 math	SLPathLength.sleela	lib/math/SLPathLength.sleela	source
 math	SLPercentile.sleela	lib/math/SLPercentile.sleela	source
@@ -11041,6 +11042,7 @@ math	SLVectorNorm.sleela	lib/math/SLVectorNorm.sleela	source
 math	SLVectorProjection.sleela	lib/math/SLVectorProjection.sleela	source
 math	SLZScore.sleela	lib/math/SLZScore.sleela	source
 math	SLZTransform.sleela	lib/math/SLZTransform.sleela	source
+math	MathDemo.sleela	lib/math/examples/MathDemo.sleela	source
 memory	SLAddress.sleela	lib/memory/SLAddress.sleela	source
 memory	SLAllocator.sleela	lib/memory/SLAllocator.sleela	source
 memory	SLArena.sleela	lib/memory/SLArena.sleela	source

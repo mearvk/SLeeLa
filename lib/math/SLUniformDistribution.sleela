@@ -45,4 +45,20 @@ class SLUniformDistribution {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  double a;
+  double b;
+  void configure(double lo, double hi) { a = lo; b = hi; }
+  double pdf(double x) {
+    if (x < a || x > b || b <= a) { return 0.0; }
+    return 1.0 / (b - a);
+  }
+  double cdf(double x) {
+    if (x <= a) { return 0.0; }
+    if (x >= b) { return 1.0; }
+    return (x - a) / (b - a);
+  }
+  double mean() { return (a + b) / 2.0; }
+  double variance() { return (b - a) * (b - a) / 12.0; }
+}

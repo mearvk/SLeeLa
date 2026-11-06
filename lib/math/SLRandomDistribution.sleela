@@ -47,10 +47,18 @@ class SLRandomDistribution {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << Sample a discrete outcome from a cumulative distribution given a uniform
+     deviate u in [0,1). Returns the first index whose cumulative mass exceeds u. >>
+  int sampleIndex(double[] cumulative, int n, double u) {
+    int i = 0;
+    while (i < n) { if (u < cumulative[i]) { return i; } i = i + 1; }
+    return n - 1;
+  }
+  < Build a cumulative array from probabilities. >
+  void toCumulative(double[] probs, int n, double[] out) {
+    double s = 0.0;
+    int i = 0;
+    while (i < n) { s = s + probs[i]; out[i] = s; i = i + 1; }
+  }
 }

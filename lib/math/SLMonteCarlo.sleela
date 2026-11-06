@@ -45,4 +45,20 @@ class SLMonteCarlo {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << Monte Carlo mean estimate: the average of n sampled evaluations is an
+     unbiased estimator of the expectation. Takes the sampled values directly. >>
+  double estimate(double[] samples, int n) {
+    double s = 0.0;
+    int i = 0;
+    while (i < n) { s = s + samples[i]; i = i + 1; }
+    return n == 0 ? 0.0 : s / n;
+  }
+  << Estimate of pi from n points: the fraction falling inside the unit quarter
+     circle, times four. inside is the count with x*x + y*y <= 1. >>
+  double estimatePi(int inside, int n) {
+    if (n == 0) { return 0.0; }
+    return 4.0 * inside / n;
+  }
+}

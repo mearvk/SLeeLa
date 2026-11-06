@@ -627,7 +627,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "4c96c306fa96ba996fae7b54eea66cd0d0b67b9bc01b10a6ec46f41e8a227403"
+      "sha256": "9dbd4c18de3e4e1e8fddab0d2a5b1bd9e751ee477bdcfa73ecabf8300ef16390"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -44335,975 +44335,983 @@
     },
     {
       "path": "lib/math/SLANOVA.sleela",
-      "sha256": "8c4178aa40dd7247af2a64894b50b95e912a36e989625db52f95caa473d9613d"
+      "sha256": "a9fea7a85717dfbc2b549e36048cef9288bfb4e82e2617df8a7e91cd5afa8221"
     },
     {
       "path": "lib/math/SLAbsoluteValue.sleela",
-      "sha256": "433332f2fd771a5dabcd57da7534ae04dc8962b4d6eacaf899fc8b37877f5c68"
+      "sha256": "9255570341d6c2f754776836cb85fa2351ce91a735bc1fff1dcc357e1a1bc1f8"
     },
     {
       "path": "lib/math/SLAccumulation.sleela",
-      "sha256": "5389f59031a8ac651343888b4b7fd5d16f0a28b7eccd322c253f1dd489289354"
+      "sha256": "94c73c220fdb112a5ca42f7c522f6338013bb00ee261cfa4516e98bbc9f73022"
     },
     {
       "path": "lib/math/SLAdjacencyMatrix.sleela",
-      "sha256": "e8e6a66aa2676929b6d965b943abcb8bb62ed9d46b6eb12b42984c22636dced6"
+      "sha256": "b6effc0ec41a6dd60e1be2b3b2cc8980493f4805e18d0fb48fb868adff81cc93"
     },
     {
       "path": "lib/math/SLAlgebra.sleela",
-      "sha256": "1512cd492e6e529189ea2b43450118bd684930f196006dcd80ef1177a69169de"
+      "sha256": "c62bdf843812eb53592846daeaa1e3ce545e0db1e14bac6e83a6e437d5c7ecfe"
     },
     {
       "path": "lib/math/SLAngle.sleela",
-      "sha256": "f7f9b5a2e9ff2ae062a1e8be254f669755c4d893d21e1092c6b34eb4b78fbb57"
+      "sha256": "e0d7337f4b955dd07ca44a5de18f1104f684101902a2b83feb16c686dcf31dbf"
     },
     {
       "path": "lib/math/SLApproximation.sleela",
-      "sha256": "8e38257404a6e394f91e71371f369386fc31de587ee0e65837795f3bc0b31f49"
+      "sha256": "063fabc5a2107ca251832b776499cce6a23a365761893a41f59c9e8c9f8a91fa"
     },
     {
       "path": "lib/math/SLArithmetic.sleela",
-      "sha256": "581e4a1b0f50018cd0ec3f7762b48ce1d50cbc36b5aa792ce504e80a453905ae"
+      "sha256": "8468fd82b69c54e338d801dc16907c5e2ba1eb431f9ec96e992a48813df086ae"
     },
     {
       "path": "lib/math/SLAverage.sleela",
-      "sha256": "7e01ed1e5003e48762ce95ba186959ebc31104b10223c131c89a13202c08afd5"
+      "sha256": "1c2008e418ea2f44bfc792f5c916d29c072e2d7aad498489549d549273252f81"
     },
     {
       "path": "lib/math/SLBayes.sleela",
-      "sha256": "f3203d47af74904df3202a00691ae634f544d7e3b0b4c8e1e7b7014b96ad41ad"
+      "sha256": "e5269cdb1ca2728c8d89ec18e7f6fa641bcf267b1db9ee877788c738969dd138"
     },
     {
       "path": "lib/math/SLBezier.sleela",
-      "sha256": "1794bc7320632f3bdec9728cc58e816da3675b4fed8d39281d73d4ba6e3f3f17"
+      "sha256": "9929e2eebfbce639516f431b15c8c40c0d3b43796d1b21c8b9c9d046654ccfbc"
     },
     {
       "path": "lib/math/SLBigDecimal.sleela",
-      "sha256": "dd0d701e83b46d75b299a7feea2d7fd47fb003c855d7bdf2ac5015e8c3ad4a6c"
+      "sha256": "4c6b90301b5f9e55180bf07cf759d32b5f802b822f4cca201a397ff263087bde"
     },
     {
       "path": "lib/math/SLBigInteger.sleela",
-      "sha256": "be1d1edee8748fb86903fd2d307020e5986588252a63e8ef5c521c190c54545b"
+      "sha256": "5a224a68a8fafc810485062a3611a7f0ff5fd923c45edfb6d750ad0bca968869"
     },
     {
       "path": "lib/math/SLBinomialCoefficient.sleela",
-      "sha256": "ac300cbee5149142d5d181caf653aafbf27f153d752d6a043c8a155b17ce4899"
+      "sha256": "5e0d70feed51404521082ca970c455e970f5fdf7454cc5d33a1b4a14275e61bf"
     },
     {
       "path": "lib/math/SLBinomialDistribution.sleela",
-      "sha256": "73ba6ed4fdd1ab50a4d18b6be4194ad9a2399e4bfd9cd42de517f32884961353"
+      "sha256": "b113bbf447a6c41eb687bc0d247a2b2950159bcebdefc20a7c89f9ae85fd8675"
     },
     {
       "path": "lib/math/SLBisectionSolver.sleela",
-      "sha256": "c07221748ee6f00978274a965f7ee5bd71559e888d5c24cb9f43bb987b8986fe"
+      "sha256": "247322617113af45a5aa5e4fc1f55e4a94ceba63dde242d26df30cad00c2f9ac"
     },
     {
       "path": "lib/math/SLCardinality.sleela",
-      "sha256": "362dcf579b3eac12d96e7e465aa13b13f01f2ac98ddbd05dbf58a2ca452f8a3a"
+      "sha256": "bc25bbf1b6d19b1069768cde9c9feaa0331e372bba44e9c1f51bad1f0e254548"
     },
     {
       "path": "lib/math/SLCartesianCoordinate.sleela",
-      "sha256": "51343592cc3fbc764f6b059c5cc208976a81ed72d7f563edb8ff165ffa83d990"
+      "sha256": "864a4188af46a7ce48e4aeac9e0469f7000fc91de748218f24d0c160e8b712d3"
     },
     {
       "path": "lib/math/SLChiSquareTest.sleela",
-      "sha256": "e991a1681bf6624c1fa0bbfb9758818d9f1e07f957d768be020521f97fbfcacf"
+      "sha256": "f9b1a2e01798e16458eed381abf8cccbe385e95ff69935fd64bc84ac81114e3d"
     },
     {
       "path": "lib/math/SLClamp.sleela",
-      "sha256": "133112c9240e4bc742fb105a4f7ad28d057f518f09607a35f405034f59b2a1de"
+      "sha256": "a5e59a1be088f4bacdbae5264236f5df6bb00b18b2d2bab17fda38523028f6f3"
     },
     {
       "path": "lib/math/SLCoefficient.sleela",
-      "sha256": "86dc75710c5bc7bb2e38994d08fa3b5d4a1bb6de99e60ef8a8f4edca57b87ee5"
+      "sha256": "51723b94cb0be92762eef78b3b5f41e8652766807f79d872f144add38627b5fd"
     },
     {
       "path": "lib/math/SLCombination.sleela",
-      "sha256": "2963728c063a788f53af3419bddc2922d776eefa4d2d74795218938499ea52d5"
+      "sha256": "f94fe4e1e6edeff426d5311c15fe38fc63fd21e3a4e9a8a34d738a6d6444d5c6"
     },
     {
       "path": "lib/math/SLCombinationGenerator.sleela",
-      "sha256": "f75364355a8c8e11ffeec9c45a5ebae2b9b3776fee49e8f7a03431853f037ef5"
+      "sha256": "0b2ab5b3cc598cf66906713f2638a07874cf3f994a605129c8392e9ad27729a4"
     },
     {
       "path": "lib/math/SLCombinatorics.sleela",
-      "sha256": "9ace31a7e5542b8df36995a739d512d9adc695c84c3733688e25ea0cc7f222ce"
+      "sha256": "c6ab7a9853d9836d63ff121c9dd1dcdb2e62b10a41ada89cc5295e6f19969129"
     },
     {
       "path": "lib/math/SLComparator.sleela",
-      "sha256": "7fb746c5bc516b5a05b213c478655344b3ffaf6a6b9759914f3fefde79b94342"
+      "sha256": "4716e8e8017f7b50300281fe0d4431c3e1f5471cf7e07fbdf28aec297928ca3a"
     },
     {
       "path": "lib/math/SLComplex.sleela",
-      "sha256": "c878c2b6e86451193d4d46ccee3be58d079e8e9e7aacf901b00c237d139e635c"
+      "sha256": "3dc20cf4ee642c98262cad944a81298d04a45236cf7475c22c0efb7273ba6456"
     },
     {
       "path": "lib/math/SLConditionNumber.sleela",
-      "sha256": "f95a1b01a07d022a6ece831804a79060728bdf8517551e7ada185465891c2f67"
+      "sha256": "00b4345c3bb941d7af9e978fdb9802f43e199d4c03bd1dc237523f755a7ea569"
     },
     {
       "path": "lib/math/SLConfidenceInterval.sleela",
-      "sha256": "4088ab89a711dc0719d97a616a45a0bf0422c2992fcfb7405eddb7878713e801"
+      "sha256": "cf8d48d2572f0fc06a4831688957bc6bb8be99cbc3aac12fae60d584a90e4a8d"
     },
     {
       "path": "lib/math/SLConfidenceLevel.sleela",
-      "sha256": "2ffee5616c8e8411dbdcb2a4b594e2693a025c47d9cb58cbd973837e26d26689"
+      "sha256": "61734e52b6bb740d91f9b1c6ddeae36bc481dbde5bb1130c118166fd6b9bd0cc"
     },
     {
       "path": "lib/math/SLConstant.sleela",
-      "sha256": "94b9f4e12a3d9914571c87909e20b9e82cd4192456e9807994294bb0fde5b162"
+      "sha256": "49edfafa8efcabb6e030c8fb8e31883e9330a336a48457ac1eef488183383bf3"
     },
     {
       "path": "lib/math/SLConstraint.sleela",
-      "sha256": "d5cc6b01d80885e9c965519cb6e4a69a4e7f1a1971fd4b22024ae8ced069eb09"
+      "sha256": "f10c04ef39459b3cae21a5bb91e4312b5df8141ddbc8f24dbf89a05abc32addd"
     },
     {
       "path": "lib/math/SLConvergence.sleela",
-      "sha256": "ab41a2ee35f8f1383f90653019cd5eb397c6ab22397464a69f9b4802fc77802d"
+      "sha256": "d6dd8a74690de16480500a93ec06abbe16409f4da0c48b11d427986b183b3281"
     },
     {
       "path": "lib/math/SLCoordinate.sleela",
-      "sha256": "2d9b038a462bf1b7daf69af9b47171349f954cd74e5f032ef4a51bb11b6c8b40"
+      "sha256": "f8fb2716737d423c579dcc9ffe6fe0c00c34c60890ddc1ba419998a4a5e6a58a"
     },
     {
       "path": "lib/math/SLCoordinateDescent.sleela",
-      "sha256": "d2068b1e1c034f0eb3cffb0e6677e1680e3db2ff20705fbd77d0f203cd5f1030"
+      "sha256": "011d7afd0aebd16f74d43d4029f58389f56b3e2de0550b823516617ef1acdb42"
     },
     {
       "path": "lib/math/SLCorrelation.sleela",
-      "sha256": "b5ba3e0b8782c7b5d2bdce34beb3736f3857487a3f1b6c0d8db40404d3a48d60"
+      "sha256": "da19a6a42140f7738c00367a4047c17b4af55cb1fe60b1d61a6e3233905b6490"
     },
     {
       "path": "lib/math/SLCorrelationMatrix.sleela",
-      "sha256": "3958d182ac3574b3c692a713fc7d5521ed9ad1553fcf0a4e6c235b354894dbe9"
+      "sha256": "763009ac8a4f2ac7ae181fd68cc8e0c8faa1439e66c3c67503339ae79f42acd9"
     },
     {
       "path": "lib/math/SLCosine.sleela",
-      "sha256": "696462f8ad847df5df35a8de880d537c3d0fdcc1856c546036e9b196caa6c8b8"
+      "sha256": "56ff77147fea9dc82b25562cadd73ea8e40916fcb87ffc4eda9a44eaa62b4e2d"
     },
     {
       "path": "lib/math/SLCovariance.sleela",
-      "sha256": "c45ee0eb2f633bc3885fe656a364be8549c537363c1c3917f7a2fe887a9b830a"
+      "sha256": "eadcab0959ed33f8391621b8c292ced0258c8b06c0a4035dc841d3872bc2a2fb"
     },
     {
       "path": "lib/math/SLCovarianceMatrix.sleela",
-      "sha256": "1c7182fdd0762c715bbf86faa9e524d20e2a64f418c15e25d69a97702bb9e58f"
+      "sha256": "92062f43762d9cc83c7288b62fbcd919c99edbece793275e43d42efad257691e"
     },
     {
       "path": "lib/math/SLCrossProduct.sleela",
-      "sha256": "fbca9210c7883fc5f5aec5cf2d85a6ab21bbb4d8e54f84af9cd48aba1cc9c331"
+      "sha256": "3794de1ecb701b6573aee98fe034c0426e0a3229b84cd3044e4a136d790657b8"
     },
     {
       "path": "lib/math/SLCubicSpline.sleela",
-      "sha256": "faa8e0aa64e7dc143b6a977b09dec4b1e53495d1a6a423fa33fe246c65a5bb31"
+      "sha256": "e908de547120470babb64414e4117da7003d42db2a2e61ffc5386c2a275c1377"
     },
     {
       "path": "lib/math/SLDataSummary.sleela",
-      "sha256": "f09c718599041d577430a5145938f7b9123c18b9771d105d4be89fd44ae21df4"
+      "sha256": "99089bd468095451b801d8ff765dbba3d2d5e67d60ac48e081b03ce8f428dc3a"
     },
     {
       "path": "lib/math/SLDerivative.sleela",
-      "sha256": "fcc98a76726dc1a7b41007ef9d7a9f48d104fe67d7dbe2447b72a14ab2a9e5ed"
+      "sha256": "441dd2ea40ff2890c075978030dde1372fe09c0a72e12eb7ca668aed2fb3e09c"
     },
     {
       "path": "lib/math/SLDeterminant.sleela",
-      "sha256": "c087b6cf17d28d1fe71cce5109af318acfd9ab8fff0271460ffc961a6ccc51b6"
+      "sha256": "4f53e7b8dd9c17f4f34a2c5c3f01e24a9e045b03f01ce57715f49d5baca2df90"
     },
     {
       "path": "lib/math/SLDifference.sleela",
-      "sha256": "f788bd064314b2fc4c349e7d9612213df994d5f5cae44e2dbaaa861f3473ba20"
+      "sha256": "eeb63ae7ec5954d0f2de4aa9ca31a4673efbf218b325872d3f2a5d89013ed778"
     },
     {
       "path": "lib/math/SLDimension.sleela",
-      "sha256": "70afb9d61a9ed34030483c55c192c07d94f9c3a11967110b640e738f100913c7"
+      "sha256": "4f45c405535500fb1c58d7c96707e43df66c21977731b797ea663dee6d726e4b"
     },
     {
       "path": "lib/math/SLDiscreteFourier.sleela",
-      "sha256": "eb54e11c5e3c71b55ca637c3f2e0cc1eb282cf21ea6a964b24e9dfe3db117adc"
+      "sha256": "d7575f33c707a0b9bf881c6d88e48bd239786ad6a6ce36cf4ba4520439f8edf7"
     },
     {
       "path": "lib/math/SLDistance.sleela",
-      "sha256": "2b7e4c7b71d3bce725242c37cde86e7aaa2037a507f9e7967e22fd4ce30d3373"
+      "sha256": "eea6500c66aa8ab3dc2dc227e43d85a0334698018129d4d0752e31a87a01520b"
     },
     {
       "path": "lib/math/SLDistribution.sleela",
-      "sha256": "324e8fdfb04a07db64434a49889c2063d3a9a0d4cfa8279e86e0d7dae8e4f4f8"
+      "sha256": "486e6d68d24a75a0d5474e05f143fbfa4b27209aaed55e0b8f439ed07480f183"
     },
     {
       "path": "lib/math/SLDivisor.sleela",
-      "sha256": "8bbe6b8a689c9a51564098a3a9dade85f841dd2c02b7ea4c72fdba2d4e2af4b5"
+      "sha256": "d82977b8094db24874b71b9e36d01ca695b3645bff171c9bf466894fc119738c"
     },
     {
       "path": "lib/math/SLDotProduct.sleela",
-      "sha256": "f50f1cafa29e308ed8ef61d446fa3b519a5fef5ae92d9ea6d7fc8e6b5ed2340f"
+      "sha256": "4c7310af36e1bc99e8ddff96f3365406b3b1d4afdf37d0f60ca94868f34f4670"
     },
     {
       "path": "lib/math/SLDoubleMath.sleela",
-      "sha256": "d311e5bacb2ebc39773689af94c8c330d1b06d12ee941b9fd6fb5d7c16b5621d"
+      "sha256": "2e75bf5092ad47bb93c9a696356cc713a8befe9c7e596ab95af709262ec03725"
     },
     {
       "path": "lib/math/SLEigenvalue.sleela",
-      "sha256": "0ef3d6cc5e6f866800aea8d092365b86b0f9bebd7e677c4e4841b4b558eae6bb"
+      "sha256": "d515324c24d8c83deabc18b267e4b9e3149e8add6034d3e05827104c81780729"
     },
     {
       "path": "lib/math/SLEigenvector.sleela",
-      "sha256": "3eae110d0ecdf219730c28205aa4a8dff05a657e3b3ee08473e148aba4a5ece9"
+      "sha256": "a7593d66a9bd0c82a9b7d521192d1a35cfa6160b98be2361b2e2a39129727176"
     },
     {
       "path": "lib/math/SLEquation.sleela",
-      "sha256": "ba4d29c91253fc09a676b942453b1b6c212e3b8288ea6e190458b7bafd9ab36c"
+      "sha256": "7b729cbd63f1783316bd114f33a7a543f035a5955727be5ced5a2f68e93828fa"
     },
     {
       "path": "lib/math/SLErrorBound.sleela",
-      "sha256": "e867a43b1bd8cb51c07701eac9e932e3f0367bd3efb15066074a91fd597d00f8"
+      "sha256": "350ed4328ac1ec86becd8ccf51c4b31f297fd5bc01fd9cbf15df350c453b4a18"
     },
     {
       "path": "lib/math/SLExpectation.sleela",
-      "sha256": "2db26ba819f37357b6655cc4ce39e85c86880da17997d6d584b886975faa374e"
+      "sha256": "eec07b3cdd42adf90a1474d78cb7be20160589adf827e7be789eec81f9216576"
     },
     {
       "path": "lib/math/SLExponential.sleela",
-      "sha256": "14242882fc87d39d46389f93479ffc849e3cc748ffc6064c09b20285b8911dc5"
+      "sha256": "0b60a166b842dbe6190f83ab69a27c6bef189a9ed8edbcb2e17d2e83670939c3"
     },
     {
       "path": "lib/math/SLExpression.sleela",
-      "sha256": "93bc52f61712cd3016707c0ae849e60b7fd32211367b0c67b3e304a25366f32d"
+      "sha256": "563f8b97b38ec67fc6a5da9e43bbe361cfeb1f4f30ccb6eb6079da2e1d2a5792"
     },
     {
       "path": "lib/math/SLExpressionEvaluator.sleela",
-      "sha256": "478e6c0a760717a95a4e826aef1b74955e9e59afcc142100f13ed6d9ff8c1825"
+      "sha256": "32a579a780afd2e307b633eecb27bd4e55e12b58c531e4e0fc71d18df7e95a78"
     },
     {
       "path": "lib/math/SLExpressionTree.sleela",
-      "sha256": "ea8816054579d6f03c3e3bc78cabfb550f5ccef40f1a7ef7607e1cb9f9d56c93"
+      "sha256": "56d5767776a1a5c4ff05515bc5284886ff376c608e9cf33d985eac70c7992f55"
     },
     {
       "path": "lib/math/SLFactor.sleela",
-      "sha256": "362468617478a49d8e0f3d28ae57d264ba346d3813507798447d47430a022529"
+      "sha256": "692fbb919d64f744d6c9ac2026ea851db78c514a8d61f9c83855155b39682059"
     },
     {
       "path": "lib/math/SLFactorial.sleela",
-      "sha256": "26004c59283c6eadfba5b3b1ef06512444e2a22dc33ccee47f9824a5bf132715"
+      "sha256": "db6d7102d20ef6387de6fb54f7e7cd5188dafd72a440c06c5e0a22509fe19e17"
     },
     {
       "path": "lib/math/SLFastFourier.sleela",
-      "sha256": "a4a83025b06c4630aff1d78bda03a3f14f0ebb94b02e6f9d99b1486ace97fe40"
+      "sha256": "613887694d6070a838ca4d48a35a16d51d6bcd5da882f6bd0340ea4cb68b20eb"
     },
     {
       "path": "lib/math/SLFibonacci.sleela",
-      "sha256": "70b1bf8b2d09f0ab3ce80b128877bc810b33da5dd8e39489562ef36136f35e16"
+      "sha256": "9165f188b1c0e6611548dd3cb58cf21834e874a0568569bfc6638ca338f77bf5"
     },
     {
       "path": "lib/math/SLFiniteSet.sleela",
-      "sha256": "2fb1846a86453761ff180b7fd599b3ebf4b8bbd5ddcdf0368ebbe26914bc2ec7"
+      "sha256": "3fcef62d084948b442bfd1e6d74362846eff58a01b41e4f6ffdaf440a93928a3"
     },
     {
       "path": "lib/math/SLFixedPoint.sleela",
-      "sha256": "92980e551c2d313551dedbc76a19eb6eb582ef0dc72c67d2fec85a7cd9aa31fe"
+      "sha256": "b3f56b1cd89fea725f590beea69d9e31b77c47b8a71922a6abfdbc4d54b8484b"
     },
     {
       "path": "lib/math/SLFloatMath.sleela",
-      "sha256": "05ae20615269acefb97d462a62e4f10cc4dc3caf61f92ac2dba9f08990050b4c"
+      "sha256": "7f7e737e40a97938e869af2dde30893ffcf4877a44a7e9216d4497fb2fceb886"
     },
     {
       "path": "lib/math/SLFormula.sleela",
-      "sha256": "3432f76533ff5d84ffc175c64fbddc1624f0bcee38140d45bbee9913dc59360e"
+      "sha256": "388cf9d2fd97906bccda1d4f58c75476ccd7f4c49ec307c851dbd468a740153e"
     },
     {
       "path": "lib/math/SLFormulaParser.sleela",
-      "sha256": "87107037368cd29dd6266fc2c091d4ab07e38b67da75b74481e13bd1fd3e6d48"
+      "sha256": "6c2a9c48c65f91bcffe7ec2a0b9fd3b3ee26fd094d84ff112189d9f1643e4a47"
     },
     {
       "path": "lib/math/SLFormulaSimplifier.sleela",
-      "sha256": "d6db57695badd5d0686982984f24b631cbcbddb04fac24e9d18d68297539e5d5"
+      "sha256": "0181327953c1781bf51f890eedf2aa6ebc386a9e02e0a3320c586eb5ae291461"
     },
     {
       "path": "lib/math/SLFourier.sleela",
-      "sha256": "f4b05cbf928403c9d31ee4467bf14270db3710ffe244bdf19fda3bb5045993b2"
+      "sha256": "18b206c88e52cfe336cffcef02127c15abaef37d712dfd77059090fc83d72485"
     },
     {
       "path": "lib/math/SLFourierSeries.sleela",
-      "sha256": "f4522a79f06b1a9469663df872e737cd7081c36236d0b1d5abec57becb5a88ab"
+      "sha256": "68bb9b2b787c7079b9b3bee13ea52c11beddb45798218b9109c2ddd03c8f9593"
     },
     {
       "path": "lib/math/SLFunction.sleela",
-      "sha256": "3f7315a2fbb5fde8abf322355b19b9618158517788514b0ae8ec2663a1cf5665"
+      "sha256": "6a7335101961e968c2aa3c04f21e020438b7a20efc0b6d3458ffb6bf53ad6c53"
     },
     {
       "path": "lib/math/SLGcd.sleela",
-      "sha256": "b54e1988ada16ea8bbe3a768a06b3ba4feb8b5acd571e53e5b7ad158a108dfde"
+      "sha256": "fd47afd102b93bb159e0930f61df8ef14f4f739f4f4dbef76ebda24bc7c3670d"
     },
     {
       "path": "lib/math/SLGeometry.sleela",
-      "sha256": "b82c8c55f2a9ece34cd7b5d4e9bc990efad68d4e724b36b0e09ee5ea0bf9dd54"
+      "sha256": "a2f60f32f87d2a6a904ec4217c2944eb6306ac0c7f34d5e99077feef5215addb"
     },
     {
       "path": "lib/math/SLGradient.sleela",
-      "sha256": "950bc9b75110dcb5b3dec4e7c674bf0a26703bb07deef60af3166dd8826cfb8e"
+      "sha256": "8a1fdf2ad9f777472a66e02b5ac693d4f7e591695eb511911db2a707404bdc65"
     },
     {
       "path": "lib/math/SLGradientDescent.sleela",
-      "sha256": "96cc01c19773a605a4d638ec3fb32f79fc31de04d6587ccbf0af974ec698c758"
+      "sha256": "dc5b834c0462fc7bf7209c3f33ba2fdcfb4a516072d56f31ee241580bc48dfe4"
     },
     {
       "path": "lib/math/SLGradientField.sleela",
-      "sha256": "d2168a0bbce1b65098713e2f86ea2c35eb7baf65b92a5125dd7fa4d89d362721"
+      "sha256": "35ec688e5cd84f7edc56057b313f47c2c8a8683a04f5258be068148b5ebc709a"
     },
     {
       "path": "lib/math/SLGraph.sleela",
-      "sha256": "1acf62917efd7de473db4f55b7458a2565c813e74dcb4299413f9dc76c919376"
+      "sha256": "1992ace59340289b2e63e658c9985be91fcdc40471c47a096ba9d9f265fb20da"
     },
     {
       "path": "lib/math/SLGraphEdge.sleela",
-      "sha256": "a94b96ef65aadeba9eb056dbcaf8565a3972f87327ca8f0f5999d6a9678d9bf8"
+      "sha256": "1ab3157e0e26630e64e4dc8d98581724cfe5be924e72076c996066eebb6d71fe"
     },
     {
       "path": "lib/math/SLGraphNode.sleela",
-      "sha256": "f150b3bd3299ab008af565b6bed2b2ff8a98320a308b72ce85b69b7ee8f1d408"
+      "sha256": "374437c6ff3949032d043d9f27d2ff2e755c1c7687446ca105e45cc05f5127a4"
     },
     {
       "path": "lib/math/SLHessian.sleela",
-      "sha256": "582d94dd7f72edb36b042239e4213024672f1185d37f160ff14c986842150363"
+      "sha256": "dc0a566746df47e90e75f2b1dbe454aae2c4fbdd6c2fc67c09167364da80fd38"
     },
     {
       "path": "lib/math/SLHistogram.sleela",
-      "sha256": "6a1b005bf9e941c95230116b31579bfa60208c8e357a1c7faf59a1f87300a5f5"
+      "sha256": "6ea7162a8898081e3cbe585e1faa311c589eed7b291e64d1eaca0bc02957d8ff"
     },
     {
       "path": "lib/math/SLHypothesisTest.sleela",
-      "sha256": "e30e4d168acd2ed45ce8dfce4fbf6678b49dc1db372bd056f492ad2a424b5187"
+      "sha256": "c8edf0b45f192cefe47f2a59a176cc45972fef14eb707a57f7a5d002547c41e1"
     },
     {
       "path": "lib/math/SLInequality.sleela",
-      "sha256": "68d265656bf61c879b04f365042fd4e9da0ab1718af056f35c24bcbe3591f399"
+      "sha256": "f2ee9e0d9accc28bf7fb941e7a37bfd0cf8dc44a9e74df4d0eae288ceb522a7e"
     },
     {
       "path": "lib/math/SLInfiniteSet.sleela",
-      "sha256": "b61000876d71937eb6d702b15efe2fcb7b9cca82052fa24d19fda5ad42e339a7"
+      "sha256": "9e3a35ea251d44b66fbcc7b0d65f0b4ef040da464fb1a8d1417fd16f3bbb6a4a"
     },
     {
       "path": "lib/math/SLIntegerMath.sleela",
-      "sha256": "ee9ea49a9204f620c4f71c0d13f898c4a59f994680f10b29d801eae2a2b0a283"
+      "sha256": "eac6297d5ed6e7868a0e83b8a656db314f969eb208a039b9df63130f891f4f79"
     },
     {
       "path": "lib/math/SLIntegral.sleela",
-      "sha256": "14dff0c333b26eaf45e665f4832d8e3f6a5c5534db0195f5e5df7411b7bd36cb"
+      "sha256": "2699a0cc43a9c895252b4d864a8ecd47dc432a920e11156264855fd30d022e52"
     },
     {
       "path": "lib/math/SLInterpolation.sleela",
-      "sha256": "73fc8590f5a3de1faf3da102707138236d95e65d01712905e084bd7020ce919e"
+      "sha256": "18bc3e83ed2d00ef0920beb91b3c82ca2d342f712c8d5856b369d82352a8822d"
     },
     {
       "path": "lib/math/SLInterpolationTable.sleela",
-      "sha256": "99dc2c39de018673f61acd34db4f9bb27643c18957328aed8dd5c06ad5237e9e"
+      "sha256": "ce135d9a9ecda1dd73dd37ea55cca7c4a84137a7d4a186a43ae509f57bb439c8"
     },
     {
       "path": "lib/math/SLIntersection.sleela",
-      "sha256": "fa17bc2d073dd1912466a5a6b69099f73ddb758dcdb69ceb3f768d4582a0d16f"
+      "sha256": "2787ec6c439348172ec2daac040bfeecab7266a2441768dacf7e4e39eeea1425"
     },
     {
       "path": "lib/math/SLInterval.sleela",
-      "sha256": "783a77ec3d48f7dd27bcc6319b46a49383f3a037dc83c0aa2644ecec9066919b"
+      "sha256": "bd6c75df27bd099e34fef4b4fd21ef9dcf3549353034314770819bfc5e2e432e"
     },
     {
       "path": "lib/math/SLIntervalArithmetic.sleela",
-      "sha256": "44c0555f99ff1984ba0bfa6aaae4d80bab277b4af130602c7321546eda87b105"
+      "sha256": "14feb015c82d55d6f9df584dc70b9d155dacd8c6fa9e38a524c7243fd4c28243"
     },
     {
       "path": "lib/math/SLInverse.sleela",
-      "sha256": "ffba8f1121475fc61200e24081220d31d80708dfc933f6b90267b7aac6dc74f1"
+      "sha256": "a724fd60f07bc259b03550ea58461f63860844202ac24884612c4036ac67e8bc"
     },
     {
       "path": "lib/math/SLIteration.sleela",
-      "sha256": "b11123601a80687598dec355e6be32ca9859583dd02b6f32309de9687b637d77"
+      "sha256": "14ca106de3e2467518ec2ba2ed1d3eb5f88863c95da43f88ec80d2c2a31c704a"
     },
     {
       "path": "lib/math/SLJacobian.sleela",
-      "sha256": "fdbee33539bd40e97fa59272066f9e53b05469fb9757ef961631a01e2f252708"
+      "sha256": "db4215ed1a4dbc7893f409c5d8704f8fd0c9596f87132ae60f57f39c820b9b9b"
     },
     {
       "path": "lib/math/SLKurtosis.sleela",
-      "sha256": "36e62248b9e273cf1a5571f0b0a579e9f1c180beb557c27fbc234ca33a9c5e86"
+      "sha256": "c665572550e041f5347fb1ea9b570f12e0500ab3f799083f8b0be50ef79cf5b5"
     },
     {
       "path": "lib/math/SLLTangent.sleela",
-      "sha256": "c1075bd71b7ebfc3839b5fb92546f111e31811964899bf352c6f46b2b0fe3516"
+      "sha256": "b42c9094434d0acc538c218b5d51bf92c77ea21c77798ee1df13a9caebc5ae9a"
     },
     {
       "path": "lib/math/SLLagrangeInterpolation.sleela",
-      "sha256": "3f5c5aeec9acc04cb4ae1b6f403b042f4f577029f5295fb98d4803aaea18aa05"
+      "sha256": "de2ebe1c33d21cb9812f7dffb60efd02181ba3d2939ac39505565f54db7d567f"
     },
     {
       "path": "lib/math/SLLambda.sleela",
-      "sha256": "aaf395353c69ff93250fd0763eacf91c2df265dabad5d7e96295fb7a932d52a7"
+      "sha256": "5ff65faab3db14f6a7915b9c62f5f33abf5636c026b406d4897e828bc0ca78b9"
     },
     {
       "path": "lib/math/SLLaplace.sleela",
-      "sha256": "9f6f1246ccc4fcb6f9d51192cbeb891b1e7bafefc50326ecab0430228460f2ac"
+      "sha256": "f7208865753a93e1c06200fc0af9821853508db9ddcc3e7014767c5a8ac55ff5"
     },
     {
       "path": "lib/math/SLLcm.sleela",
-      "sha256": "d59fb2cfe3e938e39c5548ab966eff547618d76730221610fe725487dba57690"
+      "sha256": "99e40a5e3da69c5a07a9c868d08db8c2a64a1b2ad10c417ff6b152cf46ddbd9f"
     },
     {
       "path": "lib/math/SLLeastSquares.sleela",
-      "sha256": "57eeb987d2c82f17c0c611496087c959cbadb312e7ed5f25b3a4ac5f26ddde02"
+      "sha256": "e3fdacc7c8eacd4e1d918f1fb15e09671d72648dfe6b1cba10e093a0f40c9753"
     },
     {
       "path": "lib/math/SLLimit.sleela",
-      "sha256": "62c9d9aaf19f30e26ef1ce937398ffd3325d660bfed933c314048d2e08e60623"
+      "sha256": "9542e021cb34f9d0256c2b53bffad6e6140f353d11256335489d3a2c3c2befbf"
     },
     {
       "path": "lib/math/SLLine.sleela",
-      "sha256": "08ae0703c704a84e204fc447087440ad9c047ea4182f6d71fb9b0f4b6b04c249"
+      "sha256": "3440fc05b4167742bcd9a997ea8e2232508ac5313fb0315b58392562b8d4e679"
     },
     {
       "path": "lib/math/SLLinearAlgebra.sleela",
-      "sha256": "8b3e9a306eb024e141fb0fb8c05f32fc53d57b1e2d1383b5cb585525fee37886"
+      "sha256": "a26a2607f67d96bbd2354d235e8a9a973b7a18564667df1b62e812d6140840b8"
     },
     {
       "path": "lib/math/SLLinearProgram.sleela",
-      "sha256": "467f27a65a73e9e0f30ff3d507fb7e5f172a25de99b99b8aed0463e4b778c27f"
+      "sha256": "1c60dfb507ba9b9391da37bcec9c7937ddc4d8433eeb645b25f5e600164b181b"
     },
     {
       "path": "lib/math/SLLinearRegression.sleela",
-      "sha256": "68a11ebbadedf068275a2d5cd97305296d7206680d1bc97ef4db2cc1aaeffb97"
+      "sha256": "c4a09f56701c38ec1378c2d75a205dfe310bad069d0bf68d78e3227430a9e501"
     },
     {
       "path": "lib/math/SLLogarithm.sleela",
-      "sha256": "750cd71fe3fa23b62aaae4eb5f16e917ce0e4b9b0f0274df7497089822e4c895"
+      "sha256": "d4a785c42c2d236d718215103a50c42a3351d5dbecf6737165572b7dc7e7e320"
     },
     {
       "path": "lib/math/SLLongMath.sleela",
-      "sha256": "748897d9ddd27c585448d9d4706d79a17c0df71bb0d9df6c6e8350674cc86148"
+      "sha256": "dde3e73f8d758b04227f673f7418c7a81429eeb5a219714a98af87adc490fc74"
     },
     {
       "path": "lib/math/SLMachineEpsilon.sleela",
-      "sha256": "fc54d87ded6f60bdb45c0032b739e7351de24e7b36dbff21c353f6a4e7fdf4ad"
+      "sha256": "85a3de6b3706f939584b95acb7fa913b7a27150e096ce9cbe0b3c27bc8e4600f"
     },
     {
       "path": "lib/math/SLMarkovChain.sleela",
-      "sha256": "c6b348e8e377d221e3e51819e1a144e64ca2012c7c350f5e29d746b6ff48f16f"
+      "sha256": "5a26c7588ecd4c726c33eb9d8cd12d7730f44569a37e95cf464e6d16630a0c92"
     },
     {
       "path": "lib/math/SLMath.sleela",
-      "sha256": "e19db0b47bcdef1eb94797170e60233c3a74c605796c3516da2f4326b10e0d67"
+      "sha256": "8b41eab8d54fd14a6f0f6df8c1aee54a64e0126ab5e067c83be3f91693c588a4"
     },
     {
       "path": "lib/math/SLMathContext.sleela",
-      "sha256": "e1e59d37b7d00801cc45b885877f55edf15f355ae2eb63b1b3f38c3cc615302c"
+      "sha256": "fea459e2efdea3693c4e9aed96b5e350ef3554fb2a14e259f91de11c492161fb"
     },
     {
       "path": "lib/math/SLMathEngine.sleela",
-      "sha256": "d0e094e082168cc3f84fa7ab7dc576f5c818fa4b8222a594a3099d407306ef25"
+      "sha256": "980babc47228a28c6201cdc871e305715038e3c24f3244fe10661961eedfd776"
     },
     {
       "path": "lib/math/SLMathEvaluator.sleela",
-      "sha256": "6f390ca9fcaf537d3eaef89ce1fc3de63616615075db9e43478c26f4a2868eea"
+      "sha256": "8fc4c3e2c3775fe05003809654e4cdcf95e3920c2675ae8404f57fcfef7a0ec4"
     },
     {
       "path": "lib/math/SLMatrix.sleela",
-      "sha256": "337d42fda28b548da6da2acc71a071cd6a06d267524b946a8f05aedb524be01f"
+      "sha256": "bbdfe93dee17e4e678969ca82342e318ee3cfde7bc1a4f502ead6ffbca0b4f23"
     },
     {
       "path": "lib/math/SLMatrixOperations.sleela",
-      "sha256": "088b74d3a45f7a706324ebc83aca3860e7d8a943bb049152e561f355469da7ac"
+      "sha256": "a880adaa745b4b1604a355ad8d8faf122db4d4c4b922cb5e1d393153fc097004"
     },
     {
       "path": "lib/math/SLMax.sleela",
-      "sha256": "e4990271543fb479cc7037f4475d43a7bfce501c543cdd48ad4323231e851491"
+      "sha256": "6005726126f4fc8fa27bcf23ee9caa8d4612297478b2f2537ca9876db477e4ba"
     },
     {
       "path": "lib/math/SLMean.sleela",
-      "sha256": "3c3793bb0e44e2375b07643b7da2d7a3d97a402fc5691c9554804d15b9319e06"
+      "sha256": "8b8d1b5e8f3678f0753a000e5565eb6fd209f828daf550e5280ca4ca99635d89"
     },
     {
       "path": "lib/math/SLMedian.sleela",
-      "sha256": "e1e7d3a65e1cf4de18cc6688156e347836aa5f840b1482f5d162420678a5b5a4"
+      "sha256": "8f9213fd71ef94a0dbef9873e6ac48f611ef2d692eaa3a1e481f2dab4e1f586a"
     },
     {
       "path": "lib/math/SLMetric.sleela",
-      "sha256": "f1fd1daee20a068699f14a23ca2fb64a9062ae31c7a47d3fde980a6e17ceb698"
+      "sha256": "92714206840acf11304a2c06ab4186653bca2c87a236c134afc2d4f0868a145f"
     },
     {
       "path": "lib/math/SLMin.sleela",
-      "sha256": "e2abd5bfcecf6bbbf9776d9d8f761a86d5a1b9951b20b3c3ff0d123a27b1ea94"
+      "sha256": "3ef0d7994da669205e30c3dc6ede8ed602836522276b7fadcfcd711a1ab91760"
     },
     {
       "path": "lib/math/SLMode.sleela",
-      "sha256": "5ee78dd5f46da1d705f0ddac30fe1057cf208cb01c323e871a9870d9c21cd82a"
+      "sha256": "45f97fe6a7abe9103c79d293f379b3007a7603cb36e502e1f718f26fda4e5978"
     },
     {
       "path": "lib/math/SLModulo.sleela",
-      "sha256": "5fa8501da83b4e8daed3f9d3db1247281ec0dfea5a98966cb8f6cdc06baae71c"
+      "sha256": "b915dc2140e5241a45f07252e07dd4f759967a9e4287968025193038b9c49b5d"
     },
     {
       "path": "lib/math/SLMoment.sleela",
-      "sha256": "e0749794e2c2085a03a5a746a09c33464c66ef690f5d4666a7d9b0213b1b44f3"
+      "sha256": "ba81149c579d5b6a6fe026fa98bef8fe4b03f2d7142c6efd718f0a8066615c63"
     },
     {
       "path": "lib/math/SLMonteCarlo.sleela",
-      "sha256": "88b8e3f0ff0538c65ee3e0287d144a3c9a35b9438aa016f484e45d6598580e71"
+      "sha256": "c998f027e9a691f9abc23f314c681538d08550ae73b644797490c22c0dac8607"
     },
     {
       "path": "lib/math/SLMonteCarloSampler.sleela",
-      "sha256": "984bf572158c0003b8bf6b1e26b9e50007c152ef6dd91f028a4c1c0317531974"
+      "sha256": "1736aea5b42600ba88fa4a7fa1c1b95eadf6024c607e3f6f54c0faf6fd8ad804"
     },
     {
       "path": "lib/math/SLNewtonInterpolation.sleela",
-      "sha256": "905d5bd4870a9d4f9242b431322f12a07142d7a52d53547969da41bec3774235"
+      "sha256": "baf94f629899d32b67996c32b6f80563e9bfa9e1aeafd226291a3874a2ba4356"
     },
     {
       "path": "lib/math/SLNewtonMethod.sleela",
-      "sha256": "7e88f4e7a1fa44e4e470d67c06e3426bbb604a5e660fc99c54c3e8513827b468"
+      "sha256": "9d55bc99b3a232ad1177731877cfdc8d9c3e1e1a1baf3e3cd2e5b4fa19cf93ec"
     },
     {
       "path": "lib/math/SLNewtonOptimization.sleela",
-      "sha256": "69277b2f917e429538a3334fa841c82a7a4f264e70ec89c1432baa9ff29e7676"
+      "sha256": "19c2a9b539a8b971389a9f59c678d9e6760b311be0870ee7908d03ed7e948619"
     },
     {
       "path": "lib/math/SLNewtonSolver.sleela",
-      "sha256": "d1209b603114b08d651a4f7d2afc95511b9e5b5477fc9db5e1afb5131138e358"
+      "sha256": "29f0a3771e58eb79dba2e8916f6f1aa0c066f3ebeaefcb69f969183d1fc3fc90"
     },
     {
       "path": "lib/math/SLNormalDistribution.sleela",
-      "sha256": "db91cabdf92c5b4049e1595a5e221083c87eae9cbf35b746c94a0d9ceb4ba563"
+      "sha256": "82387267f768e07300f999f4c323ff384157208ba0a2ec8a4c73644c907fdace"
     },
     {
       "path": "lib/math/SLNumber.sleela",
-      "sha256": "52d95e8a70065d5a242141c2dae82be97a0c635312ca4c9f132f8855da94c11e"
+      "sha256": "16caa6643f1c134a2c1cc678bdc04c487b74af61290150a1b30479019800e9f9"
     },
     {
       "path": "lib/math/SLNumeric.sleela",
-      "sha256": "61cd4e6b3fda0e0c0ad8fb5897de078e10d00159b88ef98db7dbd2c31e3e73b8"
+      "sha256": "6575a93aa7c9293e30a4457ab907722dc32fdfa4525376ce7488891f27401764"
     },
     {
       "path": "lib/math/SLNumericFormatter.sleela",
-      "sha256": "c39595993567027d36fd32654e04336fce4cf74dc99804e24d95b30a58413a64"
+      "sha256": "ccc970e8c6a3f6847ff94f9baea018d5b02e28fba08d67e8d63a6fc7cd5172cc"
     },
     {
       "path": "lib/math/SLNumericParser.sleela",
-      "sha256": "fe069ec842f08960b76e2c7ddbe9b04f6176b31c3140fdb0dcc78d91926609c3"
+      "sha256": "313d545fa3ccfe3041c3967687a6bafc61bad81896cd866f71d223374b48b3c0"
     },
     {
       "path": "lib/math/SLNumericalDerivative.sleela",
-      "sha256": "4cf5f946801ecd96062d27dcd4a0d733328a4a3aa6c0093d17ce49be74a1a1ef"
+      "sha256": "b38e7724064add22cb81420dd403e8dfea00ba4ad1aaad8e82e2a07738cbc13f"
     },
     {
       "path": "lib/math/SLNumericalIntegration.sleela",
-      "sha256": "0ba0c9eee56ae9b887e84979ecdfbbce2d901043820444d2056dcd60841484f8"
+      "sha256": "31a9cd0a64333a7a945efb1f74b581dbdc347c6b4e7820b896a4c626dec07f02"
     },
     {
       "path": "lib/math/SLNumericalMath.sleela",
-      "sha256": "e3d50ccc1aa0147c3aea4383fe9006611385d6bc1cf87e7640f4d544e53e3a2a"
+      "sha256": "8c7dc503128c47c5945fe3430fee1b08b1fc9e8cef300748e3d50b344747eaa2"
     },
     {
       "path": "lib/math/SLNumericalPrecision.sleela",
-      "sha256": "54973873be7000ef287eda0000df25e98bfe1a35f4c69b812abbc1a179d5ed35"
+      "sha256": "4627c889be26931cb1ef79999be48970c1296f6728f562b7d15d1c11cff357cf"
     },
     {
       "path": "lib/math/SLNumericalRoot.sleela",
-      "sha256": "abce9704769b17a315e73347fb6b8a9e500f7962f7005144b49f883e3fa7fa41"
+      "sha256": "6009ac4301aff3e3847b75455ff65fb570931124f754ec44f4c6e72f3548ae2d"
     },
     {
       "path": "lib/math/SLNumericalSequence.sleela",
-      "sha256": "87f1c467d0c02015c6217208c4a77d84066c08a8a7b4812c411a935e446642cb"
+      "sha256": "38b87da2f49e3c029b123947728b55c7463faff89b4194fedd39f2d64d42ac72"
     },
     {
       "path": "lib/math/SLNumericalSolver.sleela",
-      "sha256": "a2ee0cc8a247a8df7740de0f0f9337789bc31143d68e1e34686d505a5284a876"
+      "sha256": "717efce7fcdc1563b5a0376d1fbcd3ed41902c3154b604be533011fc438075b1"
     },
     {
       "path": "lib/math/SLODESolver.sleela",
-      "sha256": "f8897b8af22a9250e62fde70598f406ac31d86160d27228ea141f2fac31ed4c7"
+      "sha256": "9e3461907bafc59ec711848d14beb2cf7f30e609e1c26be50235c59d88a460a2"
     },
     {
       "path": "lib/math/SLObjective.sleela",
-      "sha256": "27f9f128894bc668cbe85d47435c372167203cbdbf748f150c6a672528255e58"
+      "sha256": "af20911614c3377db19d7710557c765d89ba811f81e987b1ecca7c06077bbdd1"
     },
     {
       "path": "lib/math/SLOptimization.sleela",
-      "sha256": "5d79349589fc7906dc70c22f8d51b6d3bff82240acf23f511b70a17a3c68c9d4"
+      "sha256": "14189efe8df5fd134470df7f4e8b267ccc00a1e5a6a2cf72c7d8695c819f9ecf"
     },
     {
       "path": "lib/math/SLOptimizationProblem.sleela",
-      "sha256": "c947920ae0acf08f412f165090ff98bb1c7000c6ee4bc22bd86e88b133ac6edd"
+      "sha256": "7646a1dde41b7c6bb8513702e41aacf5e8d2c922c7eb171d4f126dab25eb841a"
     },
     {
       "path": "lib/math/SLOrder.sleela",
-      "sha256": "2e5c0dad5eede03b0536e82278b785f4f96aa096606fa64d1bf170fa76e35328"
+      "sha256": "01b3f8eb3ebcac82acb22cffc3e57de12ae7be7b35cbbb70122514f60facb072"
     },
     {
       "path": "lib/math/SLOrdinaryDifferentialEquation.sleela",
-      "sha256": "4cfd6fd2fff0b68555ad05a6cdb9a8cb21cebc2d57e5707386c877c6167025ac"
+      "sha256": "4cd42ca5e9b3679cf80e5f54573765d103be467ae26e7674d35626322338b9a5"
     },
     {
       "path": "lib/math/SLOverflow.sleela",
-      "sha256": "08e15f805e063a61dd44ef28b1fceeefbee49d5c0fe76940a346b00bc31cdc27"
+      "sha256": "6f1ae58a7178da72378af378593ef2266009bd389f4f8c62c424687d300814f0"
     },
     {
       "path": "lib/math/SLPDE.sleela",
-      "sha256": "4a89574e130a509ba0dac3576b41582b416a82ce7fadc546f4be9f516a004e54"
+      "sha256": "e5f2e254b71d115b2184f44706a9a68a93b60e9a54ebd2dfd082ffec566e0e00"
+    },
+    {
+      "path": "lib/math/SLPackage.sleela",
+      "sha256": "35bfa3f23d31303a6f0149411bc23015a12b05968a4e93b056afb9c3592558b5"
     },
     {
       "path": "lib/math/SLPartialDerivative.sleela",
-      "sha256": "27bd706d31c095a6b835a4b06648b5f27cc1e2853c11f334822d33df971f3da7"
+      "sha256": "e7b53145bcf67119b7ea230183442efd71c7cf7e028c9b687c49cd73a274af17"
     },
     {
       "path": "lib/math/SLPathLength.sleela",
-      "sha256": "64e8e23f2a22563274a1ab4fd368908d521b482ff509d987599433bd76a1990c"
+      "sha256": "81b924dab098bb19dc7fa82106c81a995bc0bfea2feab40f004ec622b6ed2bff"
     },
     {
       "path": "lib/math/SLPercentile.sleela",
-      "sha256": "6fe49fc414efe45dc84d07abd89d703095430378d00543e12627b9782f69f70e"
+      "sha256": "17ab4fc6107ed7a2b07119f1a8687322e9658afda3a5594bdfc293f4f03f6260"
     },
     {
       "path": "lib/math/SLPermutation.sleela",
-      "sha256": "ca29e470284cfc4db5071bb7cda54c619d5b3900587c713d76708af497402fa9"
+      "sha256": "5a4152102ead9607081c2595c62ffc1bd5acf966b15c50ddcee696ebf6482451"
     },
     {
       "path": "lib/math/SLPermutationGenerator.sleela",
-      "sha256": "1f1308d88227edbb1a70897693cb783f314293ebe79863753e4f52fb9763456e"
+      "sha256": "d0f05ccca74b31c67080b3fb31c72d7d641ddccd01faa6338cdd1cfa095522cf"
     },
     {
       "path": "lib/math/SLPhysicalConstant.sleela",
-      "sha256": "ff856ceb4b6fef6eb8512fe7fcb7ba334c01f48169c725e1b8fd26ed8834f98d"
+      "sha256": "bc26738fdf7496026ff9a7b582d17d89086b72fe0de20da89381d0d72b911ad1"
     },
     {
       "path": "lib/math/SLPlane.sleela",
-      "sha256": "c9b4ee2705773a0c81e4592b1f659709cf0a8ce04777fafa131b97f85de1b31c"
+      "sha256": "0ad6bb5fc6d33c7411d5fb29c85006ea473aa84ea4501582a33a7892e71c7ffa"
     },
     {
       "path": "lib/math/SLPoint.sleela",
-      "sha256": "10d89d6d29db61c8143dddc0409548ae28bd7c536e1db6fb59ae8f2a240574ba"
+      "sha256": "1e106fb594b400f5c030f9c0dfce14421c2a28f83e436e9395b4f9e615406191"
     },
     {
       "path": "lib/math/SLPoissonDistribution.sleela",
-      "sha256": "0fc80b005d9bcc1353774f71ae9e4c4299c140b86aa774950f6d36156c5ec30b"
+      "sha256": "ca3f599ef264b83f3e90f71217fed1943787f6775cf327ca05878af0d78d6940"
     },
     {
       "path": "lib/math/SLPolarCoordinate.sleela",
-      "sha256": "674c131500227fa7a27e359ed565c4bbeba87cc4cd9e118cff7f78e066a6122b"
+      "sha256": "858d25ed71a9c96c604d4f13bdd3f5a454312e296987737cde1f965dc21a33eb"
     },
     {
       "path": "lib/math/SLPolynomial.sleela",
-      "sha256": "ba5a9b37e68c328952ae4325000cc8f35743a98f7055a90e75d473609dca55ef"
+      "sha256": "da92c9908d3e472f5d6515f076b14e3b481ceb6e07530f017ee8541a49f3023a"
     },
     {
       "path": "lib/math/SLPolynomialRegression.sleela",
-      "sha256": "a558f0cd959796cf8fbd0ca0d38b8078c2217498f962abe70ba03a344675f58e"
+      "sha256": "8802c855a0241f11926d23a73c26307f5e2cee40d8d58a5cb30b9339377238f9"
     },
     {
       "path": "lib/math/SLPower.sleela",
-      "sha256": "7ef7aa4d5e38dea5ba8172853f5eb9e1f4f002d25a8ab281c6ef2ffe83feeb20"
+      "sha256": "6fc9d043710f47752f2305422abff4b3f8cefd40f2a2ee5c849111f4625c541b"
     },
     {
       "path": "lib/math/SLPrecision.sleela",
-      "sha256": "378cc18af5b0327b29c005bc1317b0c27a6c436f03576947b48c7ccd950a9cae"
+      "sha256": "01adb5a16861bf490144b30f83a7833406425c5100e690ebcd44de71d1568466"
     },
     {
       "path": "lib/math/SLPredicate.sleela",
-      "sha256": "dc9d8c95e74f056dfd187b7b4fb1ccfb13b86f6f20cec24416de6ee7d2b6bcb2"
+      "sha256": "f5d8e02926e656f18609f6196e25c3855e9b0f3d24ff133b6302879352da122d"
     },
     {
       "path": "lib/math/SLPrime.sleela",
-      "sha256": "1b42395527618677925459931bbec641b8e4966656ebab42c635cf9ce21e7feb"
+      "sha256": "4b1cc94ce953072180279da4d68c16011e53e6aed304452ff1ad56ff13d2a2f3"
     },
     {
       "path": "lib/math/SLPrimeFactorization.sleela",
-      "sha256": "4889fe1ea688a0384cf86550aeb9762f41b9f95c853eaf6a6b2f3c70ef54b9c3"
+      "sha256": "449233b139f9380ec0e6428364fd0164ca216f624acc575c1bcfcebe0cdc7cf4"
     },
     {
       "path": "lib/math/SLProbability.sleela",
-      "sha256": "8d989bfba17047d71039ab4a4ee754ba736d6c4d3512b66c0ef0d68f0ffe3a96"
+      "sha256": "3e829f5ac88a7946d70317c8b031cb00d9ef63403545d921d7503b23005e8f38"
     },
     {
       "path": "lib/math/SLProbabilityDensity.sleela",
-      "sha256": "bd349104cff425f282bbe676e70c8bc85a6c574b05b6c7846d2e010a70ffff17"
+      "sha256": "6b87438aff5344d6affc17ebc263cafea88fd4982b23e9d2d1ad530405c357ad"
     },
     {
       "path": "lib/math/SLProbabilityMass.sleela",
-      "sha256": "c8e5033443484be13601c98bd7ff3c3c0cde123d54ece347cf25962265ff25b1"
+      "sha256": "77bede1149e0f28eb3832a0f14e471679dc9e8995d39b2e9a7362ee47b0607f5"
     },
     {
       "path": "lib/math/SLProduct.sleela",
-      "sha256": "04c57cb9f7fb31d111c4501b8599f2c4b07476b702d2b4d9dd6384d06f2d88d1"
+      "sha256": "6c96d5c7fc025312f4a6c1d404bfa390db346e74041bd5cafd8e45fb841ce817"
     },
     {
       "path": "lib/math/SLProgression.sleela",
-      "sha256": "50fb1120ab4551b722112bdd6ed54c2285cb57cb6c5bfe50f893b85ea7af05d7"
+      "sha256": "6b267a8ec62904a930fc4fdc970a57ea3f25bfefc32cfc3e1e100d4f015b77d2"
     },
     {
       "path": "lib/math/SLQuadraticProgram.sleela",
-      "sha256": "b986f538e70e3c5e0115089375fb27b80740f34989842c85759ce77914ea1421"
+      "sha256": "a1d49666cb9a58e1338e25e2d514d292b57c3640c07d5d65aac8b8a48d92c646"
     },
     {
       "path": "lib/math/SLQuantity.sleela",
-      "sha256": "6afdb6369a8988d811acfcfa2278b80bb05856fc0add643e9d429d4c2200e735"
+      "sha256": "60f20d29a776ccc9311b55df200494f25a2d7c53bfefc53f0b80214ee734dfcc"
     },
     {
       "path": "lib/math/SLQuaternion.sleela",
-      "sha256": "14a956465d8d0f1693746a227c4a8b247f21bbc32bfa8b763b99c0f55e9c9c5b"
+      "sha256": "e35d95ad8927c5cc6036f36b377c02240fe4623b41dacffd2940749f296a1424"
     },
     {
       "path": "lib/math/SLRandomDistribution.sleela",
-      "sha256": "997f11ed1ec46cf11f8dcc4d8f8cd6a3f870e4ce3b36d42c89bde5b65e9fb6bc"
+      "sha256": "851f55395fd6c22a5644a5dd1a632f3a7debfa30d8235dd96f6faf8279efda3b"
     },
     {
       "path": "lib/math/SLRandomGenerator.sleela",
-      "sha256": "4760799f2493985a2192021b1acba68310900c3fb8d200bd6f38375dd8be517c"
+      "sha256": "662f3d66a4609f5025bc7f72719d9b86e3610ae6be8c345073bdbb5e09f90383"
     },
     {
       "path": "lib/math/SLRandomVariable.sleela",
-      "sha256": "3d81803127ea74a3d692d80f73fd5c6eed252bc40e2de82e63d72ecc3054280e"
+      "sha256": "e037d413c2c5ddfe5f9d923404debe1c190b28255e9ee6a1cb3d2fc60793fc3c"
     },
     {
       "path": "lib/math/SLRational.sleela",
-      "sha256": "260a7f9ea2c53ff3b37f3d4f57d39ab19fe628d2a8cef3696086b2c1b7b0b0d8"
+      "sha256": "9c41b9598a0166b188750cbea77a44d68067e13e268d1bfaff94c95572a35e44"
     },
     {
       "path": "lib/math/SLRay.sleela",
-      "sha256": "f7d486e942d8da6f7d08bbc4f17b8f9e274a155e60931da713168b6ed8f0d30e"
+      "sha256": "3d752d956cdfe0fc5e9964bf3f9b9363b3b9e516560c28492f2050c80b9eb9cc"
     },
     {
       "path": "lib/math/SLReciprocal.sleela",
-      "sha256": "fd0053b90ecaa6981ea463b95f254891c6f18130136607b1a354299adcf3a339"
+      "sha256": "5d589935162d9343bbae517d5c0434a096651a3c3e9c4106008662911ac8488d"
     },
     {
       "path": "lib/math/SLRecurrence.sleela",
-      "sha256": "28fc4c78f76d8bd5a96d0952638810e685b77da80f41680b90afd13e6a7f5098"
+      "sha256": "91f05617c5d547439e2cc4c9ef4b06ae39a0802a71e8670c9c074862720cd65e"
     },
     {
       "path": "lib/math/SLRecurrenceSolver.sleela",
-      "sha256": "eef00570c96ba4e7d5dfb466e14c02533a653cd21ee14ba0bf6b69bf5893d8b8"
+      "sha256": "619b7345054f3063b7d8425fe85b32b32f22a6e8944849d7903ce0dff0e63055"
     },
     {
       "path": "lib/math/SLRegression.sleela",
-      "sha256": "06cfe0f0df49882dc7372fbcf8fd235601bf61ffa3a862871e8769e81d9d1d5b"
+      "sha256": "4cb693781a58c3685ce080e861a3d56336189c4edfa13e12e3c705c0d223322e"
     },
     {
       "path": "lib/math/SLRegressionModel.sleela",
-      "sha256": "c82d81e076b8be519b744216eb9d6dec2fb8b3c8735067fc0beb8b0dde1980f0"
+      "sha256": "0bc94555cce4cfed47722d2998942f51eb176074cead4be09a2c58beb8225803"
     },
     {
       "path": "lib/math/SLRegularization.sleela",
-      "sha256": "a5057da72b361c75ca9f71a35e670e7616d96bf8d74d6e63d2796fe2e635c82a"
+      "sha256": "e2ba9798891331c1f8752a06ebb608d047b42515de6f127478dcde77372805eb"
     },
     {
       "path": "lib/math/SLRelation.sleela",
-      "sha256": "be840d4d702e6b4faeb191ba024e510b89c8661d19f19b807527b512b98db332"
+      "sha256": "627fdbcd0a840763a2ad105612adbe9275e7e3d8a77c74ad97938987d009ffe7"
     },
     {
       "path": "lib/math/SLResidual.sleela",
-      "sha256": "423b806d1e9be0d3eb78ef7077702d66e2b0dbeed58ccf5939e9806e19ba8ac1"
+      "sha256": "dc82ca4fd2efc9435b2356af87294172392a0d837a135bb9d5e68875d75e3ea3"
     },
     {
       "path": "lib/math/SLRoot.sleela",
-      "sha256": "c7f8ba719dde01b2f8bb50fc7de946956bfe2ba6628f840b1c8c2890678db2ff"
+      "sha256": "2a2d9ae2c3a751d3de73307c50da49d5fcdf6322b04a075c352e89b7b7b8c36e"
     },
     {
       "path": "lib/math/SLRootFinder.sleela",
-      "sha256": "1c726478c9f25eb023455ecb1cb3e18e5d862ae1976bddf850db177a4d5c2b09"
+      "sha256": "55fe3bf1d692a1cc1b4b5a84dbc76c3980fdc08f4278ac691b0177366e67ef19"
     },
     {
       "path": "lib/math/SLRotation.sleela",
-      "sha256": "9b1bc06c6b255c8b1054d530e1e6cdc7b3b74ecca1ac8a5f5f10b07418a1d447"
+      "sha256": "9f48080802e5f8468d52bfe16e4de2416cbd668eb1c8114a15c91c98ceb889ed"
     },
     {
       "path": "lib/math/SLRounding.sleela",
-      "sha256": "eeeed48200359db8ab45bdee64fdc6aecd750a5247704a2622664de20b3d8782"
+      "sha256": "6cb2f5fc6e2a6fc9220a4529e00a1fa0cff93a5346fcc8dd4f1919b90aae996f"
     },
     {
       "path": "lib/math/SLRungeKutta.sleela",
-      "sha256": "d254730989173c840caf6309962f41c4765eb8f45666e756d1bcadffc85c77f5"
+      "sha256": "1dbe754051aaf16b82339c2279ca8eb69218f3f2ec71e5c564e5990262fd4e9b"
     },
     {
       "path": "lib/math/SLScalarField.sleela",
-      "sha256": "f986866ad0396784fd96a50d60aa6d2bfe858bbae81094333d4fe62490f1ec3d"
+      "sha256": "5231721e3a768c68e78e931ba0a37e94e4ee3f1fe85be2368bb7185191eaadb8"
     },
     {
       "path": "lib/math/SLScale.sleela",
-      "sha256": "4bb74dbecd0eea0eb91cb3ece82ebf4d16e37810e14cc4d4abd5071e1caa5d4b"
+      "sha256": "e8ecc78a1a1ece3ca4297d9885474fdd239db8bd2ff07f3b60d65fbf5f71446b"
     },
     {
       "path": "lib/math/SLSecantMethod.sleela",
-      "sha256": "0d2392a8ae9370d8ccad5d8d443fc0052ece1e9914cff3f92b612e82a10f1419"
+      "sha256": "a3fcc97d9eaae7cfa516d73c2ae5835eb9af56b63a6d7fe36479936dc5383781"
     },
     {
       "path": "lib/math/SLSeededRandom.sleela",
-      "sha256": "459df7c1f00375df6c6a7b32319b8457dbf1f846c4d71a3ab14dc9a722ab2a50"
+      "sha256": "51749ecc6bbbbf4a755a5c45e350e601c1327844bf1d2297fe3aea5c3ed22187"
     },
     {
       "path": "lib/math/SLSequence.sleela",
-      "sha256": "f8d00e1b40132bc155d225c263ad21ad329495c7e5027cdcea96c2d9f3998774"
+      "sha256": "fd26db2d69882b79f3dd10f1245a1b9aab4a7009f4a070abc82bcd0496b926cb"
     },
     {
       "path": "lib/math/SLSeries.sleela",
-      "sha256": "5e65e638f838ce265af3352c7feadd26a8d02d737da87562aafd08f2acab760d"
+      "sha256": "7a20c06e2aacf533a0b4e863b77ff515c27bfe5a7089b8dd0694a33379037c4a"
     },
     {
       "path": "lib/math/SLSeriesExpansion.sleela",
-      "sha256": "836133fb7cb68b4a0191a149c269d51f38bc205e01235ab0d3191cec9a87fdea"
+      "sha256": "f4f87386405dbe40a65a7729d6c48fc8f7cbd473a654fdb53f38d458205e7553"
     },
     {
       "path": "lib/math/SLSetOperations.sleela",
-      "sha256": "499f2d29d1be0472150d1430eab41f570aaf1f6d6a620c3e8373d6e281faffda"
+      "sha256": "8148004345905bec175b739f257f78b0fcb49fae11975c182a163158e5dcb420"
     },
     {
       "path": "lib/math/SLSetTheory.sleela",
-      "sha256": "2a7782e4b4ec430a4c6ccb5d43b0b92e9d20d9a73956771f1e5f0abb7e4cbab5"
+      "sha256": "84cd595441a218bfb638f618c652727acc6db3feda9ba5eb2e3c4ca3f943d669"
     },
     {
       "path": "lib/math/SLSignal.sleela",
-      "sha256": "db90f30b332fe573e7aebacbc34e71b36c33fcb3434d086078fa75f8b6a86bcc"
+      "sha256": "3abfb577ac01e88a54dbdaafd42cce7691c646fa5ee7ddf011ebbc14c0cb2f99"
     },
     {
       "path": "lib/math/SLSignum.sleela",
-      "sha256": "031704d6b5f69c96ff4e5feb48413529e5c38689f35726830ab0323c9e1e2934"
+      "sha256": "2b8c81f4fd73eead733cf2a2f88f91cda5a0b8e5c7443a53b39b269fb67b0964"
     },
     {
       "path": "lib/math/SLSimpsonRule.sleela",
-      "sha256": "eddb8f88ca5681b90890320927028b151b233c67b2341964d6a9de951feb406a"
+      "sha256": "c98787b5e8f6ebd9c6215bd5b4677be27ce4b0778e782c42938a0eb2084f6be3"
     },
     {
       "path": "lib/math/SLSine.sleela",
-      "sha256": "a6486ce858368eecdbf7a2cd75a0e3eecbe4c38024348d3558cab10d37a1adf2"
+      "sha256": "380dcf7d18255fe96923c8687a3420ca9d2f825e14553e1389fe714b9de6e702"
     },
     {
       "path": "lib/math/SLSkewness.sleela",
-      "sha256": "9115cae44036355ab277634d41bca0a9b01fe123148a230cf43593be65c18dc2"
+      "sha256": "8c844046af3f0019949af41d6e2eb91eb9b2527b93a9ac4029adec26ec43f6cf"
     },
     {
       "path": "lib/math/SLSpline.sleela",
-      "sha256": "745c39b8d6d2390b0c32640a97e70719c6f582e08764eaaca023c0fe4d74985c"
+      "sha256": "cb5fd835cb4c976a7a0671db2e29fddfb4b6bcbacc1ad7b88a770f5cff1ed51e"
     },
     {
       "path": "lib/math/SLStandardDeviation.sleela",
-      "sha256": "f60a952b7de0f89433f12a7d222d639ae0ccf226cf6d3949bd0682fdd54ffaab"
+      "sha256": "20bfbeca0ee252e592e79f0519214dfbf19be4cf0376cebd02136e4cb3e928a9"
     },
     {
       "path": "lib/math/SLStandardError.sleela",
-      "sha256": "c7de50ff33adb6aef0b8a2030deae964dca8011fa899be973b467fb551360184"
+      "sha256": "b8cc5a0aefd5f3e6512681017bb545f51a813f25e88d4ee489df754c2fdc81c9"
     },
     {
       "path": "lib/math/SLStatistics.sleela",
-      "sha256": "b3b4b0241bdb8d3ef4ed157bf9350e20da98c0ceaace6b68be98d68e58a8fb19"
+      "sha256": "432de005e3a0fa88f1829bf9779f4d9da6e4b5564c8bca6c36775f1929ba6106"
     },
     {
       "path": "lib/math/SLSum.sleela",
-      "sha256": "1044759d6338d8c73ec8cc622b0894a9ec5db9ea8fec89e9143ce0ad3c1662e4"
+      "sha256": "e57303c31711d4035bacc563de31dee7be75b2401f13474b5afd94dd11a2ad40"
     },
     {
       "path": "lib/math/SLSymbolicMath.sleela",
-      "sha256": "4551d86ed56aab90d4441e6c0b53e795e8f257f786e13baccdc8c0f25561874d"
+      "sha256": "2ef731d2abed679f80446444701cd7af5f3d9c25de7abb4f722c18bae0908fb2"
     },
     {
       "path": "lib/math/SLSymmetricDifference.sleela",
-      "sha256": "0bf55629151e71bae70c04486d7dfb3b87db81608b627b13341486ab78e0ce46"
+      "sha256": "79f7356957c2020b5d4b4834d454ca6a3f31bbe4aca4a554886e7c83bca1eb57"
     },
     {
       "path": "lib/math/SLTTest.sleela",
-      "sha256": "68e0c52a608cf7d932c537f87c888f4b0d495dee0bdc195f23c74e3005adf690"
+      "sha256": "44e2c13be4941e7d9a182480d272c9009862026c81fa75383dd3d3bb5fc9a5e3"
     },
     {
       "path": "lib/math/SLTangent.sleela",
-      "sha256": "da775a5332b7fccda935263ad38642fb698edc97fa727c1781f7b27a4571b207"
+      "sha256": "e68f97299a7eaec564d47d8b776ae7bdf2682eadd69d208eacbc461db1fb92c5"
     },
     {
       "path": "lib/math/SLTensor.sleela",
-      "sha256": "ad6606145b4f4666fcf834cecf2d88e5249da59018d9ad292ef64331cd07d0cb"
+      "sha256": "7a9534ce0f7ffa4b8b1e42da178b83bb5cbd1f4a6fa78799a36154db0c751feb"
     },
     {
       "path": "lib/math/SLTerm.sleela",
-      "sha256": "4008c64f597b7fa0152a5ac820bd3e22099f3315fecf2f9e9681cb099e0b24fb"
+      "sha256": "4a31b030257ca061696f495eb79a6c98439c568cc7270f6960cb86a660624a9a"
     },
     {
       "path": "lib/math/SLTopology.sleela",
-      "sha256": "cef4588873473ea433f0cbd10dc132988c69d393d7db630c43140a95ac2a7186"
+      "sha256": "3a226fd7e84929815992fbe34237fc7b0b17e0bfa6502e9004894e971387163e"
     },
     {
       "path": "lib/math/SLTransform.sleela",
-      "sha256": "16c1f12f80504d1409fa6aa5b3d8183d6ef0aa26e1990d6ca8fc13b8c6e83cb6"
+      "sha256": "648b5474a59e03d1f560c4ad47f83366c77bb01dec1b32253f89c3a395334ea4"
     },
     {
       "path": "lib/math/SLTranslation.sleela",
-      "sha256": "52cd5b37790a679bac3436197ba535428e3b85c4b1e36f076b10237f875957a1"
+      "sha256": "5bb87d2e976bd5cc8d9fb171d0af5dec4dc49d34e21c666e240e01f90a950cce"
     },
     {
       "path": "lib/math/SLTranspose.sleela",
-      "sha256": "7ef9c8eba07eda5faca0b378c47c264b70b78483e0bbe675a7c615cbd20d7364"
+      "sha256": "a9a0db8a28ccaa10ec33dc7ef4186aa584aa6a368850052a2fb0821a5469d717"
     },
     {
       "path": "lib/math/SLTrapezoidRule.sleela",
-      "sha256": "cf7bbc038782c063c2fa9f316f74fcde6d77692c43703ea7301ea5aa3d82268f"
+      "sha256": "b66106119eb301d9881186b5be2e4e8a0b2d33c69839f5e1a08433344c74c8fd"
     },
     {
       "path": "lib/math/SLTrigonometry.sleela",
-      "sha256": "b90a292ac0ca24895a55a0d53cb4f557aeba93af1743026e4a302b65e313f99c"
+      "sha256": "68b9fbbd3fad55c2549d6a6fa858bbd218c55b1dde9dd1572d0018834feb1520"
     },
     {
       "path": "lib/math/SLUnderflow.sleela",
-      "sha256": "87ab7772a19fd740b22b95e7fa98d72d3ea9caf21cdfa8de9659e951b960c065"
+      "sha256": "14f18c35e34aa398aff004a228921ea15d92a6cfbee45881c65af18613883e8a"
     },
     {
       "path": "lib/math/SLUniformDistribution.sleela",
-      "sha256": "9c707e5e17e2ad39828b64d7d9e6c7941d13b234e7e9669e4115378296421579"
+      "sha256": "0ac6cc0e07679b957f6972eaea0d481aec631f0ea00abc5b91cfe8a8bf5fab41"
     },
     {
       "path": "lib/math/SLUnion.sleela",
-      "sha256": "36b6ca32afbef1b267ec626b1ded3906530e30dae811ebcef0b31e4ff86def27"
+      "sha256": "fd3c49a2140c393e9fbeb4c86253f7764addcb791d14cca10fbb75b79d110b52"
     },
     {
       "path": "lib/math/SLUnit.sleela",
-      "sha256": "daba70367ad960f99d0648b5b54dd8659cec47d36ff92de809325c770351d7b0"
+      "sha256": "85d9037dc2486027f6c13430b76eb43483c7301af7b09708092d6d98f234cf8d"
     },
     {
       "path": "lib/math/SLUnitConverter.sleela",
-      "sha256": "648db8e6e5b8c80bb1a598f75616a2ceb126b8e61bfc8a8ba8f3ed485483c48e"
+      "sha256": "2157ec24375c448b2626752bac6139044aa81b4ee9d19e1a0cc5b4b3c56e1564"
     },
     {
       "path": "lib/math/SLVariable.sleela",
-      "sha256": "409bbc679c38df97f53b55e48052a45b9af0e89efa9ebe309be11729911e8a8b"
+      "sha256": "513b2910eda732c18a6786343b4d6517ab0a8aca884edfa909d5b56d973b25b3"
     },
     {
       "path": "lib/math/SLVariance.sleela",
-      "sha256": "de52303f7d5473becc9545d5cf59a7e6116ed09d3a3a18316d0a698d61b3bf0c"
+      "sha256": "b3957bb27efed1c92140987fd0c9fd4b104c2488f815e9a0c152acccfa1d5f02"
     },
     {
       "path": "lib/math/SLVector.sleela",
-      "sha256": "7b4674aaad2f59b91c8caae85c23488199d2e59c29a6bc2fa585f4abc022fb0a"
+      "sha256": "ed87be28f491fc1a2816f04c1282d3b54dce358c65d6037b2602d7d00d47ecb6"
     },
     {
       "path": "lib/math/SLVector2.sleela",
-      "sha256": "87d3d6668a5021ceaabef9c3dddc6e4a4524a3a8dc01eabcfa4bbc2bd9358367"
+      "sha256": "cd56efc67c089d0f797ddca39fded550a5d9486b0d64aa544ad8cd315bd6a052"
     },
     {
       "path": "lib/math/SLVector3.sleela",
-      "sha256": "2626fb5f6a7cd4ae5c84a8876bfbedfcbecab0df1460c19f00cf50f4d87bf60a"
+      "sha256": "8a3462ef023c963dc23df4b8079815687c038a4f9434b2a8ddd1f951f54c0140"
     },
     {
       "path": "lib/math/SLVector4.sleela",
-      "sha256": "bd50a986142221d63bd92c6dad3494bb3ae1da4d4e6b408a145d3a34cd1e478b"
+      "sha256": "4f37205a6a12bdad106488d2b3460fb36669384d5a480aed885b4fe6592734a1"
     },
     {
       "path": "lib/math/SLVectorField.sleela",
-      "sha256": "b71ed27cff34d0b05bea9f3aad0e82a946aeae53a536c72c4e4183b90fd0730f"
+      "sha256": "b0c2d2e27c7b459b9e6240bda8330e4c3f7a22d70697027978a2a0b7ee997a4b"
     },
     {
       "path": "lib/math/SLVectorNorm.sleela",
-      "sha256": "a9d619210d02fe907cf06b7a22f33f6da681aeb64496711d33993f7d5ec736a0"
+      "sha256": "486d9eba4db0a8d29f9a35f90ef6f808058eedacd1370c1d621d31c318fd23ae"
     },
     {
       "path": "lib/math/SLVectorProjection.sleela",
-      "sha256": "e4e28a1a63bd79dc4fd3b45e8362dfe30e6b57d517aad4f7dd0b2b5a4dc61186"
+      "sha256": "f099fe8333dfe1e6d9efa52e095948a038167ea88111c49ce6d6158e520342de"
     },
     {
       "path": "lib/math/SLZScore.sleela",
-      "sha256": "99623c9c5d332144246dfdb0d30e144cc2329bf14cd1dbca367ebc8e9076a785"
+      "sha256": "134d77eee41388f53bbf5f64fba919eb52ff0fccb931977577674d08198e86f6"
     },
     {
       "path": "lib/math/SLZTransform.sleela",
-      "sha256": "5291e31d7ce1ea5578e599aed23c8060bf7dc798770f45e3b125cbfe1a804ca4"
+      "sha256": "753c4533dbf61a29b508e061cd7f59a9d8e7e89127786b8dc22a085febfffab5"
+    },
+    {
+      "path": "lib/math/examples/MathDemo.sleela",
+      "sha256": "d50c51458132c8a16d95c51bb10511a56760ad13d3307bd6931d3876aed37eb5"
     },
     {
       "path": "lib/memory/SLAddress.sleela",

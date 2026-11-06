@@ -47,10 +47,15 @@ class SLUnitConverter {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << Convert between two affine units sharing an SI base: first to base from the
+     source unit, then from base to the target unit. >>
+  double convert(double value, double srcScale, double srcOffset,
+                 double dstScale, double dstOffset) {
+    double si = value * srcScale + srcOffset;
+    if (dstScale == 0.0) { return 0.0; }
+    return (si - dstOffset) / dstScale;
+  }
+  < Celsius to Fahrenheit convenience. >
+  double celsiusToFahrenheit(double c) { return c * 9.0 / 5.0 + 32.0; }
 }

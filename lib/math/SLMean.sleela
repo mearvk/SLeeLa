@@ -45,4 +45,22 @@ class SLMean {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Arithmetic mean of the first n elements. >
+  double arithmetic(double[] xs, int n) {
+    if (n <= 0) { return 0.0; }
+    double s = 0.0;
+    int i = 0;
+    while (i < n) { s = s + xs[i]; i = i + 1; }
+    return s / n;
+  }
+  < Harmonic mean (all elements must be nonzero). >
+  double harmonic(double[] xs, int n) {
+    if (n <= 0) { return 0.0; }
+    double s = 0.0;
+    int i = 0;
+    while (i < n) { if (xs[i] == 0.0) { return 0.0; } s = s + 1.0 / xs[i]; i = i + 1; }
+    return n / s;
+  }
+}

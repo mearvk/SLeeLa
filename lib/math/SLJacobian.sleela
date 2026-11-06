@@ -47,10 +47,15 @@ class SLJacobian {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int state;
-  int count;
-  void reset(){state=0;count=0;}
-  void activate(){state=1;count=count+1;}
-  boolean active(){return state==1;}
-  int status(){return state;}
+
+  << The Jacobian matrix of a vector function by finite differences, given the
+     function values at the plus and minus perturbation of each input. The
+     (i,j) entry is (fPlus[i,j] - fMinus[i,j]) / (2h). All matrices row-major. >>
+  void build(double[] fPlus, double[] fMinus, int m, int n, double h, double[] out) {
+    int i = 0;
+    while (i < m * n) {
+      out[i] = h == 0.0 ? 0.0 : (fPlus[i] - fMinus[i]) / (2.0 * h);
+      i = i + 1;
+    }
+  }
 }

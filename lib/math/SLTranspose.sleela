@@ -45,4 +45,15 @@ class SLTranspose {
   int getScienceRating() { return metaScienceRating; }
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
-  void setNationalSchedule(String v) { metaNationalSchedule = v; } int state; int count; void reset(){state=0;count=0;} void activate(){state=1;count=count+1;} boolean active(){return state==1;} int status(){return state;} }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Transpose an r x c row-major matrix into out (c x r). >
+  void of(double[] a, double[] out, int r, int c) {
+    int i = 0;
+    while (i < r) {
+      int j = 0;
+      while (j < c) { out[j * r + i] = a[i * c + j]; j = j + 1; }
+      i = i + 1;
+    }
+  }
+}
