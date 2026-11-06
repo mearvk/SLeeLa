@@ -28,6 +28,18 @@ primary decision** (install the main package), choose a scope, and then — on
 success — may optionally add curated **enhancement modules** (audio, video,
 signal-processing, codecs, compression, gui, ui, database, connector).
 
+After the four module blocks, the installer offers a fifth block of **top-level
+programs** — stand-alone subsystems that live as their own top-level directories
+rather than `lib/` packages, so they are selected and staged explicitly:
+
+- **`pi-generator`** — the SLeeLa Pi spigot program that streams digits to a file.
+- **`artificial-intelligence`** — the AI subsystem: `large-language-models`
+  (RRS / RLM, code LLMs, parametry, the RRS signal monitor), `neural-nets`,
+  `character-recognition`, and `rrs`.
+
+The block defaults to **yes** (include all); decline it to choose each program
+individually, or they are all pulled in by the "install EVERYTHING" fast path.
+
 After the module blocks, the installer also offers the **SleelaTerminal** — the
 original GUI terminal and `slsh` shell (a separate C++ component under
 `sleela-terminal/`, not a `lib/` package). Answer **yes** and it is built and
