@@ -288,14 +288,18 @@ _Static_assert(OP__COUNT == 159, "the extended ISA must contain 159 opcodes");
 #define SL_MAX_STRUCTS 4096       /* live struct instances per VM              */
 #define SL_MAX_STRTEXT 65536      /* max bytes for a built/concatenated String */
 #define SL_MAX_ARRAYS 4096        /* live array instances per VM               */
-/* Maximum elements in a single array. Raised from 2^20 to 2^24 so a single
- * big-integer limb array can hold a multi-million-limb number -- e.g. a
- * 10,000,000-decimal-digit value is ~1,111,112 base-1e9 limbs, and its product
- * ~2,222,223 limbs, both well under this ceiling. Each element is a boxed
- * SLValue (24 bytes), so one full 16,777,216-element array is ~384 MB of the
- * memory manager's live budget; the manager's byte limit still bounds how many
- * such arrays can be live at once (it fails closed on exhaustion). */
-#define SL_MAX_ARRAY_LEN 16777216 /* maximum elements in a single array (2^24)  */
+/* Maximum elements in a single array. Raised 2^20 -> 2^24 -> 2^25 so a single
+ * flat array can hold the state a multi-million-digit computation needs -- e.g.
+ * the Rabinowitz-Wagon Pi spigot uses floor(10*digits/3)+1 cells, so 7,000,000
+ * decimal digits need ~23,333,334 cells, which fits under 2^25 (33,554,432) but
+ * not under the old 2^24. Big-integer limb arrays benefit too (a 10,000,000-
+ * digit value is ~1,111,112 base-1e9 limbs; its product ~2,222,223). Each
+ * element is a boxed SLValue (32 bytes), so one full 33,554,432-element array
+ * is ~1 GiB; the GC byte limit (runtime/garbage_collector.c, default raised to
+ * 1 GiB, overridable via SLEELA_GC_LIMIT_BYTES) and the optional memory manager
+ * (SLEELA_MEMORY_MANAGER, up to 2 GiB) together bound how much can be live at
+ * once -- both fail closed on exhaustion. */
+#define SL_MAX_ARRAY_LEN 33554432 /* maximum elements in a single array (2^25)  */
 typedef enum { SLR_OK = 0, SLR_ERROR, SLR_HALT } SLResult;
 typedef struct SLVM SLVM;
 typedef int (*SLAudioNativeRenderFn)(

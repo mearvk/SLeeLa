@@ -41,7 +41,12 @@ void gc_init(GarbageCollector *g, size_t threshold) {
     if (!g) { return; }
     memset(g,0,sizeof(*g)); g->bytes_threshold=threshold?threshold:1024u*1024u;
     g->young_bytes_threshold=g->bytes_threshold/4u; if (g->young_bytes_threshold<64u*1024u) g->young_bytes_threshold=64u*1024u;
-    g->bytes_limit = 512u * 1024u * 1024u;
+    /* Default managed-heap byte limit. Raised 512 MiB -> 1 GiB so a single
+     * large flat array (SL_MAX_ARRAY_LEN now 2^25 ~= 1 GiB worst case) can be
+     * allocated -- e.g. the 7,000,000-digit Pi spigot state array is ~712 MiB,
+     * above the old 512 MiB limit. Overridable via SLEELA_GC_LIMIT_BYTES; stays
+     * within the optional memory manager's 2 GiB cap. Fails closed when hit. */
+    g->bytes_limit = 1024u * 1024u * 1024u;
     const char *limit_text = getenv("SLEELA_GC_LIMIT_BYTES");
     if (limit_text && *limit_text) {
         char *end = NULL;

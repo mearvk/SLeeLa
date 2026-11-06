@@ -267,7 +267,7 @@
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "3d871487a76ca249efc09a6c34ee89a3b60c015399d1b2ba08d23093916e205a"
+      "sha256": "d97ecfebe184735c6154e9cbd5936814c40732a1ab6411fa0c51d5504e52baad"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -49455,7 +49455,7 @@
     },
     {
       "path": "runtime/garbage_collector.c",
-      "sha256": "2e143a889f30ff3194cf1c744f8418fd19f6783f0ee0338395c34aa1fbf9fe5a"
+      "sha256": "40c5313cc74bc778808938249e5b7b84c3e55e10917fa71c4c21391668bef5e5"
     },
     {
       "path": "runtime/garbage_collector.h",
