@@ -52,6 +52,7 @@
 <li><a href="../package/examples.html">examples</a></li>
 <li><a href="../package/filesystem.html">filesystem</a></li>
 <li><a href="../package/gameplay.html">gameplay</a></li>
+<li><a href="../package/governance.html">governance</a></li>
 <li><a href="../package/gui.html">gui</a></li>
 <li><a href="../package/html.html">html</a></li>
 <li><a href="../package/http.html">http</a></li>
@@ -76,6 +77,7 @@
 <li><a href="../package/java28.html">java28</a></li>
 <li><a href="../package/journey.html">journey</a></li>
 <li><a href="../package/languages.html">languages</a></li>
+<li><a href="../package/large-language-models.html">large-language-models</a></li>
 <li><a href="../package/ledger.html">ledger</a></li>
 <li><a href="../package/linux-editors.html">linux-editors</a></li>
 <li><a href="../package/manifesto.html">manifesto</a></li>
@@ -100,6 +102,7 @@
 <li><a href="../package/regex.html">regex</a></li>
 <li><a href="../package/registry.html">registry</a></li>
 <li><a href="../package/rmi.html">rmi</a></li>
+<li><a href="../package/rrs.html">rrs</a></li>
 <li><a href="../package/runtime.html">runtime</a></li>
 <li><a href="../package/security.html">security</a></li>
 <li><a href="../package/server-edition.html">server-edition</a></li>
@@ -134,7 +137,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; vm</div>
 <h1>Package <code>vm</code></h1>
-<div class="lead">This package contains <strong>108</strong> source unit(s) defining <strong>280</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>125</strong> source unit(s) defining <strong>297</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="basic-vm">basic-vm <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/vm/tutorials/examples/basic-vm.sleela)</span></h2>
 <div data-u="basic-vm basicvmtutorialexample">
@@ -1760,6 +1763,46 @@
 <tr><td><code>available</code></td><td><span class="sig">boolean available()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="slpackage">SLPackage <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/vm/vmsharp/SLPackage.sleela)</span></h2>
+<div data-u="slpackage vmsharppackage">
+<h3 id="VMSharpPackage">VMSharpPackage <span class="pill">class</span></h3>
+<p class="desc">VMSharp(TM) package entry point and source-level component index. VMSharp is a VM manifest that can start as a self-installer bootloader for a minimal desktop or a user-designated OS download/install, on x86/x64 AMD or Intel processors. The classes are declarative models; no firmware is flashed, no disk is written, and the declared per-use/install levy is disclosed, not auto-collected. Authored for the User MEARVK LLC, respectful of United States law and of the persons and groupings of peoples it concerns. Family: vm.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>packageName</code></td><td><span class="sig">String packageName = &quot;vmsharp&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>manifestClass</code></td><td><span class="sig">String manifestClass = &quot;VMSharp&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bootloaderClass</code></td><td><span class="sig">String bootloaderClass = &quot;VMSharpBootloader&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>installPlanClass</code></td><td><span class="sig">String installPlanClass = &quot;VMSharpInstallPlan&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>levyClass</code></td><td><span class="sig">String levyClass = &quot;VMSharpLevy&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>includedAppClass</code></td><td><span class="sig">String includedAppClass = &quot;VMSharpIncludedApp&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>networkStackClass</code></td><td><span class="sig">String networkStackClass = &quot;VMSharpNetworkStack&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>repoAcquisitionClass</code></td><td><span class="sig">String repoAcquisitionClass = &quot;VMSharpRepoAcquisition&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>osCreatorRunClass</code></td><td><span class="sig">String osCreatorRunClass = &quot;VMSharpOSCreatorRun&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>installWizardClass</code></td><td><span class="sig">String installWizardClass = &quot;VMSharpInstallWizard&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>installOptionClass</code></td><td><span class="sig">String installOptionClass = &quot;VMSharpInstallOption&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>usbMediaClass</code></td><td><span class="sig">String usbMediaClass = &quot;VMSharpUsbMedia&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>usbMakefiles</code></td><td><span class="sig">String usbMakefiles = &quot;usb/Makefile (dispatch), usb/Makefile.linux, usb/Makefile.windows, usb/Makefile.macos&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>diskLayoutClass</code></td><td><span class="sig">String diskLayoutClass = &quot;VMSharpDiskLayout&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>getPackageName</code></td><td><span class="sig">String getPackageName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getManifestClass</code></td><td><span class="sig">String getManifestClass()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getBootloaderClass</code></td><td><span class="sig">String getBootloaderClass()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getInstallPlanClass</code></td><td><span class="sig">String getInstallPlanClass()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getLevyClass</code></td><td><span class="sig">String getLevyClass()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getIncludedAppClass</code></td><td><span class="sig">String getIncludedAppClass()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getNetworkStackClass</code></td><td><span class="sig">String getNetworkStackClass()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getRepoAcquisitionClass</code></td><td><span class="sig">String getRepoAcquisitionClass()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getOSCreatorRunClass</code></td><td><span class="sig">String getOSCreatorRunClass()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getInstallWizardClass</code></td><td><span class="sig">String getInstallWizardClass()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getInstallOptionClass</code></td><td><span class="sig">String getInstallOptionClass()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getUsbMediaClass</code></td><td><span class="sig">String getUsbMediaClass()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getUsbMakefiles</code></td><td><span class="sig">String getUsbMakefiles()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getDiskLayoutClass</code></td><td><span class="sig">String getDiskLayoutClass()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="slvm">SLVM <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/vm/SLVM.sleela)</span></h2>
 <div data-u="slvm slvm">
 <h3 id="SLVM">SLVM <span class="pill">class</span></h3>
@@ -2949,10 +2992,435 @@
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="vmsharp">VMSharp <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/vm/vmsharp/VMSharp.sleela)</span></h2>
+<div data-u="vmsharp vmsharp">
+<h3 id="VMSharp">VMSharp <span class="pill">class</span></h3>
+<p class="desc">VMSharp(TM) -- the loadable manifest for a VM that can start as a</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>id</code></td><td><span class="sig">String id = &quot;vmsharp&quot;</span></td><td class="desc">---- identity ----</td></tr>
+<tr><td><code>codename</code></td><td><span class="sig">String codename = &quot;VMSharp&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>label</code></td><td><span class="sig">String label = &quot;self-installer bootloader VM: minimal desktop or designated OS install&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>owner</code></td><td><span class="sig">String owner = &quot;MEARVK LLC&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bootloader</code></td><td><span class="sig">VMSharpBootloader bootloader</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>plan</code></td><td><span class="sig">VMSharpInstallPlan plan</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>levy</code></td><td><span class="sig">VMSharpLevy levy</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>includedApps</code></td><td><span class="sig">VMSharpIncludedApp[] includedApps</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>includedCount</code></td><td><span class="sig">int includedCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>loadIncludedApps</code></td><td><span class="sig">void loadIncludedApps()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getId</code></td><td><span class="sig">String getId()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getCodename</code></td><td><span class="sig">String getCodename()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getLabel</code></td><td><span class="sig">String getLabel()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getOwner</code></td><td><span class="sig">String getOwner()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getBootloader</code></td><td><span class="sig">VMSharpBootloader getBootloader()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getPlan</code></td><td><span class="sig">VMSharpInstallPlan getPlan()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getLevy</code></td><td><span class="sig">VMSharpLevy getLevy()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>includedAppCount</code></td><td><span class="sig">int includedAppCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>includedApp</code></td><td><span class="sig">VMSharpIncludedApp includedApp(int i)</span></td><td class="desc">The included app at index i (0-based), or null if out of range.</td></tr>
+<tr><td><code>beginIncludedInstall</code></td><td><span class="sig">boolean beginIncludedInstall(VMSharpIncludedApp app)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canBootOn</code></td><td><span class="sig">boolean canBootOn(String arch, String vendor)</span></td><td class="desc">Can VMSharp boot on the given processor? Delegates to the bootloader model.</td></tr>
+<tr><td><code>startMinimalDesktop</code></td><td><span class="sig">void startMinimalDesktop()</span></td><td class="desc">Start in Minimal Desktop mode (ready immediately once CPU is admitted).</td></tr>
+<tr><td><code>startDownloadAndDesignate</code></td><td><span class="sig">void startDownloadAndDesignate()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>describe</code></td><td><span class="sig">void describe()</span></td><td class="desc">One-line manifest summary for `sleela vm list` style enumeration.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="vmsharpbootloader">VMSharpBootloader <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/vm/vmsharp/VMSharpBootloader.sleela)</span></h2>
+<div data-u="vmsharpbootloader vmsharpbootloader">
+<h3 id="VMSharpBootloader">VMSharpBootloader <span class="pill">class</span></h3>
+<p class="desc">VMSharp(TM) self-installer bootloader MODEL. It models the boot handoff and CPU-architecture admission for VMSharp on commodity desktop processors: 32-bit x86 and 64-bit x64, whether AMD or Intel. It is a declarative state/gating model -- it reports which architectures and vendors are admitted and which boot firmware interface (BIOS/MBR or UEFI) is selected -- and it does NOT flash firmware, write a boot sector, modify a partition table, or touch real hardware. The authoritative live CPU facts come from the OSLS read-only inspection call oslsGetCPUInfo (vendor/model); this class decides admission from the architecture and vendor it is given. Honesty boundary: a real bootable image is produced only by the pinned OS Creator toolchain, not by this source class. This model is what the VMSharp manifest and installer plan reason over before any such image is built.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>supportsArch</code></td><td><span class="sig">boolean supportsArch(String arch)</span></td><td class="desc">---- supported architectures and vendors ---- &quot;x86&quot; (IA-32, 32-bit) and &quot;x64&quot; (x86-64/AMD64, 64-bit) are admitted.</td></tr>
+<tr><td><code>supportsVendor</code></td><td><span class="sig">boolean supportsVendor(String vendor)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>admits</code></td><td><span class="sig">boolean admits(String arch, String vendor)</span></td><td class="desc">A processor is admitted when both its architecture and its vendor are.</td></tr>
+<tr><td><code>firmwareFor</code></td><td><span class="sig">String firmwareFor(String arch)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>admissionReport</code></td><td><span class="sig">String admissionReport(String arch, String vendor)</span></td><td class="desc">A short human-readable admission verdict for a boot screen.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="vmsharpdemo">VMSharpDemo <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/vm/vmsharp/examples/VMSharpDemo.sleela)</span></h2>
+<div data-u="vmsharpdemo vmsharpdemo">
+<h3 id="VMSharpDemo">VMSharpDemo <span class="pill">class</span></h3>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="vmsharpdisklayout">VMSharpDiskLayout <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/vm/vmsharp/VMSharpDiskLayout.sleela)</span></h2>
+<div data-u="vmsharpdisklayout vmsharpdisklayout">
+<h3 id="VMSharpDiskLayout">VMSharpDiskLayout <span class="pill">class</span></h3>
+<p class="desc">VMSharp(TM) initial hard-drive MANIFEST and partitioning MODEL.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>rootFilesystem</code></td><td><span class="sig">String rootFilesystem = &quot;ext4&quot;</span></td><td class="desc">---- the choice ----</td></tr>
+<tr><td><code>espFilesystem</code></td><td><span class="sig">String espFilesystem = &quot;fat32&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>rootSizeGiB</code></td><td><span class="sig">int rootSizeGiB = 0</span></td><td class="desc">rootSizeGiB 0 means use the remaining space after ESP and swap.</td></tr>
+<tr><td><code>swapSizeGiB</code></td><td><span class="sig">int swapSizeGiB = 4</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>espSizeMiB</code></td><td><span class="sig">int espSizeMiB = 512</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>partitionTable</code></td><td><span class="sig">String partitionTable = &quot;gpt&quot;</span></td><td class="desc">partitionTable: gpt (UEFI) or msdos (BIOS).</td></tr>
+<tr><td><code>targetDevice</code></td><td><span class="sig">String targetDevice = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>deviceDesignated</code></td><td><span class="sig">boolean deviceDesignated = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>rootable</code></td><td><span class="sig">boolean rootable(String fs)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>efiSystemPartition</code></td><td><span class="sig">boolean efiSystemPartition(String fs)</span></td><td class="desc">May this filesystem hold the EFI System Partition (must be FAT)?</td></tr>
+<tr><td><code>mkfsTool</code></td><td><span class="sig">String mkfsTool(String fs)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>chooseRootFilesystem</code></td><td><span class="sig">boolean chooseRootFilesystem(String fs)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getRootFilesystem</code></td><td><span class="sig">String getRootFilesystem()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>rootChoices</code></td><td><span class="sig">String rootChoices()</span></td><td class="desc">A newline menu of the root filesystems VMSharp offers (EXT4 default first).</td></tr>
+<tr><td><code>setRootSizeGiB</code></td><td><span class="sig">void setRootSizeGiB(int g)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setSwapSizeGiB</code></td><td><span class="sig">void setSwapSizeGiB(int g)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setEspSizeMiB</code></td><td><span class="sig">void setEspSizeMiB(int m)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>useGpt</code></td><td><span class="sig">void useGpt()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>useMsdos</code></td><td><span class="sig">void useMsdos()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getPartitionTable</code></td><td><span class="sig">String getPartitionTable()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>designateTarget</code></td><td><span class="sig">void designateTarget(String device)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getTargetDevice</code></td><td><span class="sig">String getTargetDevice()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isTargetDesignated</code></td><td><span class="sig">boolean isTargetDesignated()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>partitionManifest</code></td><td><span class="sig">SLList partitionManifest()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>partitionCount</code></td><td><span class="sig">int partitionCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>partitionPlan</code></td><td><span class="sig">SLList partitionPlan()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>partitionPlanSteps</code></td><td><span class="sig">int partitionPlanSteps()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isReady</code></td><td><span class="sig">boolean isReady()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">String summary()</span></td><td class="desc">A one-line layout summary.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="vmsharpincludedapp">VMSharpIncludedApp <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/vm/vmsharp/VMSharpIncludedApp.sleela)</span></h2>
+<div data-u="vmsharpincludedapp vmsharpincludedapp">
+<h3 id="VMSharpIncludedApp">VMSharpIncludedApp <span class="pill">class</span></h3>
+<p class="desc">A VMSharp(TM) INCLUDED APP -- an application the VMSharp image carries as a pre-designated install so it can be brought up on the VMSharp Desktop without the user having to designate a source by hand. This class is a declarative record of ONE included app: its name, audience, upstream source repository and branch, build toolchain, the build and run commands, and the entry point. It also carries a &quot;quiet, perfect install&quot; profile -- a description of an unattended, deterministic install that reports success or fails closed, never a partial or silent-wrong state. Honesty boundary: this class records an install PLAN faithful to the real upstream project. It does NOT clone, download, compile, or run anything, and it moves no funds. A real build/install is performed only by the pinned toolchain the VMSharp OS Creator drives, honoring the user&#x27;s confirmation and the VMSharpLevy disclosure. Authored for the User MEARVK LLC, respectful of United States law and of the persons and groupings of peoples it concerns.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>appName</code></td><td><span class="sig">String appName = &quot;&quot;</span></td><td class="desc">---- app identity ----</td></tr>
+<tr><td><code>audience</code></td><td><span class="sig">String audience = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sourceRepo</code></td><td><span class="sig">String sourceRepo = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sourceBranch</code></td><td><span class="sig">String sourceBranch = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toolchain</code></td><td><span class="sig">String toolchain = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>buildCommand</code></td><td><span class="sig">String buildCommand = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>runCommand</code></td><td><span class="sig">String runCommand = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>entryPoint</code></td><td><span class="sig">String entryPoint = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>quietInstall</code></td><td><span class="sig">boolean quietInstall = true</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>perfectInstall</code></td><td><span class="sig">boolean perfectInstall = true</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(String name, String who, String repo, String branch,</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAppName</code></td><td><span class="sig">String getAppName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAudience</code></td><td><span class="sig">String getAudience()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getSourceRepo</code></td><td><span class="sig">String getSourceRepo()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getSourceBranch</code></td><td><span class="sig">String getSourceBranch()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getToolchain</code></td><td><span class="sig">String getToolchain()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getBuildCommand</code></td><td><span class="sig">String getBuildCommand()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getRunCommand</code></td><td><span class="sig">String getRunCommand()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getEntryPoint</code></td><td><span class="sig">String getEntryPoint()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isQuietInstall</code></td><td><span class="sig">boolean isQuietInstall()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isPerfectInstall</code></td><td><span class="sig">boolean isPerfectInstall()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isFullySpecified</code></td><td><span class="sig">boolean isFullySpecified()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sourceDesignation</code></td><td><span class="sig">String sourceDesignation()</span></td><td class="desc">The source designation string a VMSharpInstallPlan consumes (repo at branch).</td></tr>
+<tr><td><code>installSummary</code></td><td><span class="sig">String installSummary()</span></td><td class="desc">A one-line disclosure a quiet-install screen can present before proceeding.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="vmsharpinstalloption">VMSharpInstallOption <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/vm/vmsharp/VMSharpInstallOption.sleela)</span></h2>
+<div data-u="vmsharpinstalloption vmsharpinstalloption">
+<h3 id="VMSharpInstallOption">VMSharpInstallOption <span class="pill">class</span></h3>
+<p class="desc">One selectable option on a VMSharp(TM) install screen -- a key, a title, a one-line description, and a selected/enabled state. It is the finish-level UI component the install screens render and the user selects, the VMSharp-package sibling of lib/ui SLMenuItem / lib/core SLOption kept self-contained so the install wizard runs without the native UI bridge. Declarative: it holds selection state and renders to text; it performs no install action itself. Authored for the User MEARVK LLC, respectful of United States law and of the persons and groupings of peoples it concerns. Family: vm.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>key</code></td><td><span class="sig">String key = &quot;&quot;</span></td><td class="desc">---- the option ----</td></tr>
+<tr><td><code>title</code></td><td><span class="sig">String title = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>description</code></td><td><span class="sig">String description = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>selected</code></td><td><span class="sig">boolean selected = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>enabled</code></td><td><span class="sig">boolean enabled = true</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(String optKey, String optTitle, String optDescription)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getKey</code></td><td><span class="sig">String getKey()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getTitle</code></td><td><span class="sig">String getTitle()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getDescription</code></td><td><span class="sig">String getDescription()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isSelected</code></td><td><span class="sig">boolean isSelected()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isEnabled</code></td><td><span class="sig">boolean isEnabled()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>select</code></td><td><span class="sig">void select()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>deselect</code></td><td><span class="sig">void deselect()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>enable</code></td><td><span class="sig">void enable()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>disable</code></td><td><span class="sig">void disable()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>render</code></td><td><span class="sig">String render()</span></td><td class="desc">Render one option line: a marker, the key, the title, and a disabled tag.</td></tr>
+<tr><td><code>renderDetail</code></td><td><span class="sig">String renderDetail()</span></td><td class="desc">A second indented line with the description, for a detailed screen.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="vmsharpinstallplan">VMSharpInstallPlan <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/vm/vmsharp/VMSharpInstallPlan.sleela)</span></h2>
+<div data-u="vmsharpinstallplan vmsharpinstallplan">
+<h3 id="VMSharpInstallPlan">VMSharpInstallPlan <span class="pill">class</span></h3>
+<p class="desc">VMSharp(TM) startup/install plan MODEL. VMSharp can start in one of two modes once its bootloader admits the processor: 1. MinimalDesktop -- bring up a minimal desktop session from the image. 2. DownloadAndDesignate -- fetch an OS image the user designates by URL, then install it to a target the user designates. This class is a declarative plan and ordered step list. It performs no download, no disk write, no partitioning, and no install. OS installation is a STATE-CHANGING operation: this model requires an explicit user designation (a confirmed target) and a confirmed source before its plan is considered ready, mirroring the OSLS boundary that keeps state-changing work off the read-only path. Nothing here mutates a host. Respectful of United States law and of the persons and groupings of peoples it concerns: the plan never proceeds without explicit, recorded designation.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>MODE_MINIMAL_DESKTOP</code></td><td><span class="sig">int MODE_MINIMAL_DESKTOP = 1</span></td><td class="desc">---- the two startup modes ----</td></tr>
+<tr><td><code>MODE_DOWNLOAD_AND_DESIGNATE</code></td><td><span class="sig">int MODE_DOWNLOAD_AND_DESIGNATE = 2</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mode</code></td><td><span class="sig">int mode = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sourceDesignation</code></td><td><span class="sig">String sourceDesignation = &quot;&quot;</span></td><td class="desc">For DownloadAndDesignate: the user-designated OS image source and target.</td></tr>
+<tr><td><code>targetDesignation</code></td><td><span class="sig">String targetDesignation = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sourceConfirmed</code></td><td><span class="sig">boolean sourceConfirmed = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>targetConfirmed</code></td><td><span class="sig">boolean targetConfirmed = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>getMode</code></td><td><span class="sig">int getMode()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getModeName</code></td><td><span class="sig">String getModeName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>chooseMinimalDesktop</code></td><td><span class="sig">void chooseMinimalDesktop()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>chooseDownloadAndDesignate</code></td><td><span class="sig">void chooseDownloadAndDesignate()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>designateSource</code></td><td><span class="sig">void designateSource(String source)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>designateTarget</code></td><td><span class="sig">void designateTarget(String target)</span></td><td class="desc">Record the user-designated install target. Recording does NOT write it.</td></tr>
+<tr><td><code>getSourceDesignation</code></td><td><span class="sig">String getSourceDesignation()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getTargetDesignation</code></td><td><span class="sig">String getTargetDesignation()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isReady</code></td><td><span class="sig">boolean isReady()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>steps</code></td><td><span class="sig">SLList steps()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>stepCount</code></td><td><span class="sig">int stepCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="vmsharpinstallwizard">VMSharpInstallWizard <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/vm/vmsharp/VMSharpInstallWizard.sleela)</span></h2>
+<div data-u="vmsharpinstallwizard vmsharpinstallwizard">
+<h3 id="VMSharpInstallWizard">VMSharpInstallWizard <span class="pill">class</span></h3>
+<p class="desc">The VMSharp(TM) install wizard -- the ordered set of install</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>OPTION_LIMITED_DESKTOP</code></td><td><span class="sig">int OPTION_LIMITED_DESKTOP = 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>OPTION_OS_SENSITIVITY</code></td><td><span class="sig">int OPTION_OS_SENSITIVITY = 2</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>vm</code></td><td><span class="sig">VMSharp vm</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>creatorRun</code></td><td><span class="sig">VMSharpOSCreatorRun creatorRun</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>options</code></td><td><span class="sig">VMSharpInstallOption[] options</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>optionCount</code></td><td><span class="sig">int optionCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cpuArch</code></td><td><span class="sig">String cpuArch = &quot;&quot;</span></td><td class="desc">the host CPU facts the wizard was given (from oslsGetCPUInfo)</td></tr>
+<tr><td><code>cpuVendor</code></td><td><span class="sig">String cpuVendor = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cpuAdmitted</code></td><td><span class="sig">boolean cpuAdmitted = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>chosen</code></td><td><span class="sig">int chosen = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>manifest</code></td><td><span class="sig">VMSharp manifest()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>osCreatorRun</code></td><td><span class="sig">VMSharpOSCreatorRun osCreatorRun()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getOptionCount</code></td><td><span class="sig">int getOptionCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>optionAt</code></td><td><span class="sig">VMSharpInstallOption optionAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>welcomeScreen</code></td><td><span class="sig">String welcomeScreen()</span></td><td class="desc">---- Screen 1: welcome ----</td></tr>
+<tr><td><code>recordCpu</code></td><td><span class="sig">void recordCpu(String arch, String vendor)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isCpuAdmitted</code></td><td><span class="sig">boolean isCpuAdmitted()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cpuScreen</code></td><td><span class="sig">String cpuScreen()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>modeSelectScreen</code></td><td><span class="sig">String modeSelectScreen()</span></td><td class="desc">---- Screen 3: mode selection ----</td></tr>
+<tr><td><code>choose</code></td><td><span class="sig">boolean choose(String key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getChosen</code></td><td><span class="sig">int getChosen()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>desktopScreen</code></td><td><span class="sig">String desktopScreen()</span></td><td class="desc">---- Screen 4a: limited Desktop confirm ----</td></tr>
+<tr><td><code>osSensitivityScreen</code></td><td><span class="sig">String osSensitivityScreen(String resolvedAddresses, boolean acquired)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>diskLayoutScreen</code></td><td><span class="sig">String diskLayoutScreen(String rootFs, String targetDisk)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>levyScreen</code></td><td><span class="sig">String levyScreen()</span></td><td class="desc">---- Screen 5: levy disclosure ----</td></tr>
+<tr><td><code>canConfirm</code></td><td><span class="sig">boolean canConfirm()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>confirmScreen</code></td><td><span class="sig">String confirmScreen()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="vmsharpinstallwizarddemo">VMSharpInstallWizardDemo <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/vm/vmsharp/examples/VMSharpInstallWizardDemo.sleela)</span></h2>
+<div data-u="vmsharpinstallwizarddemo vmsharpinstallwizarddemo">
+<h3 id="VMSharpInstallWizardDemo">VMSharpInstallWizardDemo <span class="pill">class</span></h3>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="vmsharplevy">VMSharpLevy <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/vm/vmsharp/VMSharpLevy.sleela)</span></h2>
+<div data-u="vmsharplevy vmsharplevy">
+<h3 id="VMSharpLevy">VMSharpLevy <span class="pill">class</span></h3>
+<p class="desc">VMSharp(TM) per-use/per-install levy model. This records a DECLARED fiscal figure and its destination; it is descriptive fiscal metadata, not a payment, collection, escrow, or fund-transfer mechanism. No money moves as a result of this class: it carries the stated amount (USD 380 per use/install), the named destination (a United States national retirement process), and a simple running tally a caller may increment when it has independently and lawfully effected a real charge elsewhere. Honesty boundary: this class never contacts a payment network, never holds funds, and asserts nothing about whether any charge was actually made. The amount and destination are faithful to the owner&#x27;s stated intent; the class is the auditable record of that intent, respectful of United States law and of the persons and groupings of peoples it concerns.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>perInstallUsd</code></td><td><span class="sig">int perInstallUsd = 380</span></td><td class="desc">---- the declared levy ---- Amount in whole US dollars charged per VMSharp use/install, as stated.</td></tr>
+<tr><td><code>destination</code></td><td><span class="sig">String destination = &quot;United States national retirement process&quot;</span></td><td class="desc">The declared destination: a United States national retirement process.</td></tr>
+<tr><td><code>currency</code></td><td><span class="sig">String currency = &quot;USD&quot;</span></td><td class="desc">The currency of the declared figure.</td></tr>
+<tr><td><code>recordedUses</code></td><td><span class="sig">int recordedUses = 0</span></td><td class="desc">Running count of uses/installs the caller has recorded (not charges made).</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>getPerInstallUsd</code></td><td><span class="sig">int getPerInstallUsd()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getDestination</code></td><td><span class="sig">String getDestination()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getCurrency</code></td><td><span class="sig">String getCurrency()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getRecordedUses</code></td><td><span class="sig">int getRecordedUses()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>recordUse</code></td><td><span class="sig">void recordUse()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>declaredTotalUsd</code></td><td><span class="sig">int declaredTotalUsd()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>disclosure</code></td><td><span class="sig">String disclosure()</span></td><td class="desc">A one-line disclosure a boot/install screen can present to the user.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="vmsharpnetworkstack">VMSharpNetworkStack <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/vm/vmsharp/VMSharpNetworkStack.sleela)</span></h2>
+<div data-u="vmsharpnetworkstack vmsharpnetworkstack">
+<h3 id="VMSharpNetworkStack">VMSharpNetworkStack <span class="pill">class</span></h3>
+<p class="desc">VMSharp(TM) networking-stack MODEL. It describes how VMSharp reaches an external host (e.g. github.com) so it can acquire a repository: the transport (HTTPS over TCP/IP), the default port, the reachability check, and the ordered procedural a reach follows (resolve -&gt; connect -&gt; TLS handshake -&gt; request -&gt; receive). It composes with the OSLS read-only call oslsNetworkResolve for name resolution. It is a declarative model of the stack and its procedure -- it opens no socket, makes no connection, and transfers no bytes; a real transfer is performed by the host network stack under the VMSharp OS, honoring the user&#x27;s confirmation. Authored for the User MEARVK LLC, respectful of United States law and of the persons and groupings of peoples it concerns. Family: vm.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>transport</code></td><td><span class="sig">String transport = &quot;HTTPS&quot;</span></td><td class="desc">---- the stack ----</td></tr>
+<tr><td><code>port</code></td><td><span class="sig">int port = 443</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>host</code></td><td><span class="sig">String host = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>resolvedAddresses</code></td><td><span class="sig">String resolvedAddresses = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>resolved</code></td><td><span class="sig">boolean resolved = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>getTransport</code></td><td><span class="sig">String getTransport()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getPort</code></td><td><span class="sig">int getPort()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getHost</code></td><td><span class="sig">String getHost()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getResolvedAddresses</code></td><td><span class="sig">String getResolvedAddresses()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isResolved</code></td><td><span class="sig">boolean isResolved()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>recordResolution</code></td><td><span class="sig">void recordResolution(String hostName, String addresses)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isReachable</code></td><td><span class="sig">boolean isReachable()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>procedure</code></td><td><span class="sig">SLList procedure()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>procedureSteps</code></td><td><span class="sig">int procedureSteps()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">String summary()</span></td><td class="desc">A one-line summary of the transport this stack uses for a host.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="vmsharposcreatordemo">VMSharpOSCreatorDemo <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/vm/vmsharp/examples/VMSharpOSCreatorDemo.sleela)</span></h2>
+<div data-u="vmsharposcreatordemo vmsharposcreatordemo">
+<h3 id="VMSharpOSCreatorDemo">VMSharpOSCreatorDemo <span class="pill">class</span></h3>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="vmsharposcreatorrun">VMSharpOSCreatorRun <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/vm/vmsharp/VMSharpOSCreatorRun.sleela)</span></h2>
+<div data-u="vmsharposcreatorrun vmsharposcreatorrun">
+<h3 id="VMSharpOSCreatorRun">VMSharpOSCreatorRun <span class="pill">class</span></h3>
+<p class="desc">VMSharp(TM) -&gt; OS Creator run MODEL (first brush). It wires the</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>targetOwner</code></td><td><span class="sig">String targetOwner = &quot;mearvk&quot;</span></td><td class="desc">---- the target OS source warehouse ----</td></tr>
+<tr><td><code>targetRepo</code></td><td><span class="sig">String targetRepo = &quot;OS.Sensitivity.III&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>targetBranch</code></td><td><span class="sig">String targetBranch = &quot;main&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>targetHost</code></td><td><span class="sig">String targetHost = &quot;github.com&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>destDir</code></td><td><span class="sig">String destDir = &quot;vmsharp-os-sensitivity-iii&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>netStack</code></td><td><span class="sig">VMSharpNetworkStack netStack</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>acq</code></td><td><span class="sig">VMSharpRepoAcquisition acq</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>disk</code></td><td><span class="sig">VMSharpDiskLayout disk</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>reachable</code></td><td><span class="sig">boolean reachable</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>acquired</code></td><td><span class="sig">boolean acquired</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>network</code></td><td><span class="sig">VMSharpNetworkStack network()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>acquisition</code></td><td><span class="sig">VMSharpRepoAcquisition acquisition()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>diskLayout</code></td><td><span class="sig">VMSharpDiskLayout diskLayout()</span></td><td class="desc">The initial hard-drive layout (filesystem choice + partition manifest).</td></tr>
+<tr><td><code>getTargetRepo</code></td><td><span class="sig">String getTargetRepo()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getTargetHost</code></td><td><span class="sig">String getTargetHost()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>recordReach</code></td><td><span class="sig">void recordReach(String addresses)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>markAcquired</code></td><td><span class="sig">boolean markAcquired()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isReachable</code></td><td><span class="sig">boolean isReachable()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isAcquired</code></td><td><span class="sig">boolean isAcquired()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>acquisitionCommand</code></td><td><span class="sig">String acquisitionCommand()</span></td><td class="desc">The acquisition command for the chosen method into the destination dir.</td></tr>
+<tr><td><code>provenanceLine</code></td><td><span class="sig">String provenanceLine()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>osCreatorCommand</code></td><td><span class="sig">String osCreatorCommand()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>osCreatorReady</code></td><td><span class="sig">boolean osCreatorReady()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>runPlan</code></td><td><span class="sig">SLList runPlan()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>runPlanSteps</code></td><td><span class="sig">int runPlanSteps()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="vmsharprepoacquisition">VMSharpRepoAcquisition <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/vm/vmsharp/VMSharpRepoAcquisition.sleela)</span></h2>
+<div data-u="vmsharprepoacquisition vmsharprepoacquisition">
+<h3 id="VMSharpRepoAcquisition">VMSharpRepoAcquisition <span class="pill">class</span></h3>
+<p class="desc">VMSharp(TM) repository-acquisition MODEL. Given a GitHub repo</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>METHOD_CLONE</code></td><td><span class="sig">int METHOD_CLONE = 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>METHOD_TARBALL</code></td><td><span class="sig">int METHOD_TARBALL = 2</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>METHOD_ZIP</code></td><td><span class="sig">int METHOD_ZIP = 3</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>owner</code></td><td><span class="sig">String owner = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>repo</code></td><td><span class="sig">String repo = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>branch</code></td><td><span class="sig">String branch = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>method</code></td><td><span class="sig">int method = 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(String repoOwner, String repoName, String repoBranch)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>useClone</code></td><td><span class="sig">void useClone()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>useTarball</code></td><td><span class="sig">void useTarball()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>useZip</code></td><td><span class="sig">void useZip()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getOwner</code></td><td><span class="sig">String getOwner()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getRepo</code></td><td><span class="sig">String getRepo()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getBranch</code></td><td><span class="sig">String getBranch()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getMethod</code></td><td><span class="sig">int getMethod()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getMethodName</code></td><td><span class="sig">String getMethodName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cloneUrl</code></td><td><span class="sig">String cloneUrl()</span></td><td class="desc">The https clone URL for this repo.</td></tr>
+<tr><td><code>tarballUrl</code></td><td><span class="sig">String tarballUrl()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>zipUrl</code></td><td><span class="sig">String zipUrl()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>acquisitionCommand</code></td><td><span class="sig">String acquisitionCommand(String dest)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>resourceUrl</code></td><td><span class="sig">String resourceUrl()</span></td><td class="desc">The resource URL the network stack would reach for the selected method.</td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">String summary()</span></td><td class="desc">A one-line acquisition summary.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="vmsharpusbmedia">VMSharpUsbMedia <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/vm/vmsharp/VMSharpUsbMedia.sleela)</span></h2>
+<div data-u="vmsharpusbmedia vmsharpusbmedia">
+<h3 id="VMSharpUsbMedia">VMSharpUsbMedia <span class="pill">class</span></h3>
+<p class="desc">VMSharp(TM) USB boot-media MODEL. It describes initializing</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>BRAND_LINUX</code></td><td><span class="sig">int BRAND_LINUX = 1</span></td><td class="desc">---- the three OS brands whose Makefiles stage/install the media ----</td></tr>
+<tr><td><code>BRAND_WINDOWS</code></td><td><span class="sig">int BRAND_WINDOWS = 2</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>BRAND_MACOS</code></td><td><span class="sig">int BRAND_MACOS = 3</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>PREF_SEQUITUR</code></td><td><span class="sig">String PREF_SEQUITUR = &quot;sequitur&quot;</span></td><td class="desc">---- the engineering-preference profiles ----</td></tr>
+<tr><td><code>PREF_IQ</code></td><td><span class="sig">String PREF_IQ = &quot;iq&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>PREF_HAVINGNESS</code></td><td><span class="sig">String PREF_HAVINGNESS = &quot;havingness&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>engineeringPreference</code></td><td><span class="sig">String engineeringPreference = &quot;sequitur&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>usbDevice</code></td><td><span class="sig">String usbDevice = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>deviceDesignated</code></td><td><span class="sig">boolean deviceDesignated = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>staged</code></td><td><span class="sig">boolean staged = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>written</code></td><td><span class="sig">boolean written = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setEngineeringPreference</code></td><td><span class="sig">void setEngineeringPreference(String pref)</span></td><td class="desc">Set the engineering preference; unknown values fall back to sequitur.</td></tr>
+<tr><td><code>getEngineeringPreference</code></td><td><span class="sig">String getEngineeringPreference()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>makefileForBrand</code></td><td><span class="sig">String makefileForBrand(int brand)</span></td><td class="desc">The per-brand Makefile that stages and installs the media.</td></tr>
+<tr><td><code>stage</code></td><td><span class="sig">void stage()</span></td><td class="desc">`make` stages the VMSharp files into a staging dir (no device needed).</td></tr>
+<tr><td><code>isStaged</code></td><td><span class="sig">boolean isStaged()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>designateDevice</code></td><td><span class="sig">void designateDevice(String device)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getUsbDevice</code></td><td><span class="sig">String getUsbDevice()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isDeviceDesignated</code></td><td><span class="sig">boolean isDeviceDesignated()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>markWritten</code></td><td><span class="sig">boolean markWritten()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isWritten</code></td><td><span class="sig">boolean isWritten()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isBootReady</code></td><td><span class="sig">boolean isBootReady()</span></td><td class="desc">The media is bootable-ready only after it is staged AND written.</td></tr>
+<tr><td><code>bootMediaPlan</code></td><td><span class="sig">SLList bootMediaPlan()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bootMediaSteps</code></td><td><span class="sig">int bootMediaSteps()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>firmwareFor</code></td><td><span class="sig">String firmwareFor(String arch)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">String summary()</span></td><td class="desc">A one-line media summary.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="vmsharpusbmediademo">VMSharpUsbMediaDemo <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/vm/vmsharp/examples/VMSharpUsbMediaDemo.sleela)</span></h2>
+<div data-u="vmsharpusbmediademo vmsharpusbmediademo">
+<h3 id="VMSharpUsbMediaDemo">VMSharpUsbMediaDemo <span class="pill">class</span></h3>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-05 14:21 UTC.
+<code>/lib</code> tree on 2026-11-06 15:49 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
