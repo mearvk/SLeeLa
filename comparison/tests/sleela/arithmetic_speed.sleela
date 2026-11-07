@@ -56,7 +56,7 @@ class SleelaArithmeticSpeed {
         for (int i = 0; i < 250000; i = i + 1) { sink = a + b; }
         long t1 = timeMonotonicNanos();
         print("DOUBLE_ADD_NS=" + (t1 - t0));
-        print("DOUBLE_ADD_CHECK=" + sink);
+        print("DOUBLE_ADD_CHECK=" + (long) (sink * 1000000.0 + 0.5));
     }
     void doubleSub() {
         double a = 8765.4321;
@@ -67,7 +67,7 @@ class SleelaArithmeticSpeed {
         for (int i = 0; i < 250000; i = i + 1) { sink = a - b; }
         long t1 = timeMonotonicNanos();
         print("DOUBLE_SUB_NS=" + (t1 - t0));
-        print("DOUBLE_SUB_CHECK=" + sink);
+        print("DOUBLE_SUB_CHECK=" + (long) (sink * 1000000.0 + 0.5));
     }
     void doubleMul() {
         double a = 123.456;
@@ -78,7 +78,7 @@ class SleelaArithmeticSpeed {
         for (int i = 0; i < 250000; i = i + 1) { sink = a * b; }
         long t1 = timeMonotonicNanos();
         print("DOUBLE_MUL_NS=" + (t1 - t0));
-        print("DOUBLE_MUL_CHECK=" + sink);
+        print("DOUBLE_MUL_CHECK=" + (long) (sink * 1000000.0 + 0.5));
     }
     void doubleDiv() {
         double a = 86419.752;
@@ -89,7 +89,7 @@ class SleelaArithmeticSpeed {
         for (int i = 0; i < 250000; i = i + 1) { sink = a / b; }
         long t1 = timeMonotonicNanos();
         print("DOUBLE_DIV_NS=" + (t1 - t0));
-        print("DOUBLE_DIV_CHECK=" + sink);
+        print("DOUBLE_DIV_CHECK=" + (long) (sink * 1000000.0 + 0.5));
     }
     void main() {
         intAdd();
