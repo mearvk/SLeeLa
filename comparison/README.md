@@ -1,6 +1,6 @@
 # SLeeLa Computational Standards
 
-Edition 1.1 | Baseline: SLeeLa Syntax 3.0 | Status: executable baseline passed on Ubuntu, macOS, and Windows
+Edition 1.2 | Baseline: SLeeLa Syntax 3.0 | Status: baseline and numeric/Unicode edge vectors passed on configured platforms
 
 ## Purpose
 This directory establishes a common computational vocabulary and repeatable comparison method for SLeeLa, Java/JVM, native C, and native C++. It supports language design, compiler qualification, runtime engineering, interoperability, and performance research.
@@ -67,7 +67,7 @@ python3 comparison/tests/run_native_java.py
 
 GitHub Actions workflow: [Comparison Standards Conformance](../.github/workflows/comparison-conformance.yml). It runs native/Java parity on Ubuntu, macOS, and Windows, and builds/runs the SLeeLa VM vector on Ubuntu. Each job retains its result/output artifact.
 
-**Current result:** corrected runs [42331591283](https://github.com/mearvk/SLeeLa/actions/runs/42331591283), [42331589662](https://github.com/mearvk/SLeeLa/actions/runs/42331589662), and [42331561514](https://github.com/mearvk/SLeeLa/actions/runs/42331561514) completed successfully. Latest run 42331591283 passed all four jobs: Ubuntu, macOS, Windows, and SLeeLa Syntax 3.0 VM. The first run [42331126707](https://github.com/mearvk/SLeeLa/actions/runs/42331126707) exposed a Windows Java launcher issue and a too-strict SLeeLa stdout comparison; both were corrected and verified in the successful reruns.
+**Current result:** baseline runs [42331591283](https://github.com/mearvk/SLeeLa/actions/runs/42331591283), [42331589662](https://github.com/mearvk/SLeeLa/actions/runs/42331589662), and [42331561514](https://github.com/mearvk/SLeeLa/actions/runs/42331561514) completed successfully. Numeric/Unicode edge run [42332366905](https://github.com/mearvk/SLeeLa/actions/runs/42332366905) also passed all four jobs. Its Ubuntu, macOS, and Windows jobs each passed seven edge assertions in C11, C++17, and Java 21+; the SLeeLa Syntax 3.0 VM baseline job passed on Ubuntu. The first run [42331126707](https://github.com/mearvk/SLeeLa/actions/runs/42331126707) exposed a Windows Java launcher issue and a too-strict SLeeLa stdout comparison; both were corrected and verified in the successful reruns.
 
 See [RUNNING.PASS.JAVA.001.md](RUNNING.PASS.JAVA.001.md) for the detailed evidence ledger, platform results, corrective engineering record, artifact names, graphs, and remaining qualification limits.
 
