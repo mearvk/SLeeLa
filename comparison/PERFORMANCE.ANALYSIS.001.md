@@ -5,7 +5,7 @@
 **Recorded:** 2026-11-06  
 **Repository:** `mearvk/SLeeLa` · **Branch:** `master`  
 **Language baseline:** SLeeLa Syntax 3.0 · C11 · C++17 · Java 21+  
-**Status:** BENCHMARK PROTOCOL DEFINED — measurements not yet run
+**Status:** CI CONFORMANCE ATTEMPT COMPLETED — PARTIAL; performance measurements not run
 
 ## 1. Purpose
 
@@ -265,9 +265,62 @@ Correctness and performance must be separate CI concerns.
 | Basic data-type workload definitions | Defined |
 | RAM latency/bandwidth workload definitions | Defined |
 | Reproducible execution protocol | Defined |
-| Benchmark harness implementation | Not yet implemented by this assessment |
-| Measurements | Not yet run |
+| Benchmark harness implementation | Partial CI matrix runner exists; full performance harness not implemented |
+| CI correctness checks | Partial: Ubuntu/macOS language suites passed; Windows setup and VM matrix failed (details in §13) |\n| Performance measurements | Not yet run |
 | Performance ranking | Not established |
+
+
+## 13. CI execution record — run 42337765442
+
+**Workflow:** [Complete SLeeLa VM and Language Conformance](https://github.com/mearvk/SLeeLa/actions/runs/42337765442)  
+**Workflow file:** `.github/workflows/complete-vm-conformance.yml`  
+**Commit tested:** `bd7eb049b6158bf129564aea43b58bfeeed993cd`  
+**Run status:** `completed` · **Conclusion:** `failure`  
+**Recorded by GitHub:** 2026-11-07 (UTC)
+
+This run was a correctness/build conformance attempt, not a performance benchmark. Its results must not be interpreted as execution-speed, RAM-bandwidth, or latency measurements.
+
+### 13.1 Language comparator matrix
+
+| Runner | C11 / C++17 / Java 21+ job | Outcome | Evidence |
+|---|---|---|---|
+| Ubuntu latest | Completed | **PASS** | Toolchain setup and shared comparison suites succeeded |
+| macOS latest | Completed | **PASS** | Java 21 setup and shared comparison suites succeeded |
+| Windows latest | Incomplete | **FAIL — environment setup** | MSYS2 could not locate package `mingw-w64-ucrt-x86_64-gcc-c++`; language suites were skipped |
+
+The Ubuntu and macOS results establish that the configured comparison suites completed successfully on those hosted runners for this commit. They do not establish performance rankings, and they do not establish Windows compatibility.
+
+### 13.2 Basic Native and Premium VM matrix
+
+| Check | Outcome | Interpretation |
+|---|---|---|
+| Integrity manifest generation | PASS | Checkout-specific manifest generated |
+| Basic Native VM/compiler build | PASS | Build completed |
+| Premium SLVM 1–11 builds | PASS | All eleven build targets completed |
+| Basic Native VM output validation | FAIL — runner parsing | Program emitted expected values `42`, `15`, and `hello`, followed by runtime/security diagnostics; runner treated the extra lines as unexpected output |
+| Premium VM execution checks | NOT RUN | Matrix runner stopped at the Basic Native output assertion |
+| Premium VM admission self-checks | SKIPPED | Dependent step did not execute |
+| Standard VM Modium checks | SKIPPED | Dependent step did not execute |
+| Standard VM inventory | PASS — 10/10 registered | Registration only; no Standard VM execution is claimed |
+
+The Basic Native failure is presently a test-harness output-parsing defect, not evidence that the program produced incorrect workload values. The runner should validate the expected result lines while allowing or separately classifying known runtime, memory-manager, and security diagnostics. It should retain both the raw output and the parsed result.
+
+The eleven Premium VM binaries were built, but this run provides **no execution result** for SLVM/1 through SLVM/11. Build success must not be reported as runtime conformance.
+
+### 13.3 Required corrective actions
+
+1. Update `comparison/tests/run_all_vm_matrix.py` to parse the expected result lines without rejecting known diagnostic output. Preserve raw stdout/stderr and fail only on missing, malformed, or incorrect result values or a nonzero process exit.
+2. Correct the Windows MSYS2 package selection in the workflow. Confirm the package name against the selected UCRT64 repository and verify that both the C and C++ compilers are installed before running the comparison suites.
+3. Rerun the complete workflow after those corrections.
+4. Confirm all Premium VM execution checks and admission self-checks actually run and pass; do not infer their status from successful builds.
+5. Confirm the Standard VM registry/Modium checks run. Continue to mark Standard generations 1–10 as registered but not independently bootable unless an executable route is added and tested.
+6. Implement and run the separate controlled performance harness defined in this document. The conformance workflow does not produce the DT-* or MEM-* timing measurements specified in §§3–4.
+
+### 13.4 Assessment after this CI run
+
+The CI run provides partial correctness/build evidence: Ubuntu and macOS language comparator jobs passed, all Premium VM build targets compiled, and all ten Standard VM registrations were detected. Windows toolchain setup failed. The VM execution matrix did not complete because its Basic Native output parser rejected diagnostic lines after the expected values; consequently, no Premium VM execution result is available from this run.
+
+**Performance status remains NOT MEASURED.** No throughput, startup, RAM bandwidth, memory latency, allocation-rate, or performance-ranking claim is supported by this CI run.
 
 ## 12. Repository references
 
@@ -283,4 +336,4 @@ Correctness and performance must be separate CI concerns.
 
 ---
 
-**Conclusion:** SCS-PERF-001 establishes the scope and measurement standard for Basic SLeeLa, Standard generations 1–10, Premium generations 1–11, C11, C++17, and Java 21+. It does not contain measured performance results. The next implementation step is to add equivalent workload sources, runners, and controlled benchmark execution, then publish the measured result record without promoting unbootable Standard layers or unmeasured targets to PASS.
+**Conclusion:** SCS-PERF-001 establishes the scope and measurement standard for Basic SLeeLa, Standard generations 1–10, Premium generations 1–11, C11, C++17, and Java 21+. CI run 42337765442 completed with a failure and provides partial build/conformance evidence only; it does not contain measured performance results. Correct the VM output parser and Windows toolchain setup, rerun the matrix, and implement controlled DT-/MEM-suite benchmarking before publishing performance results. Do not promote unbootable Standard layers, unexecuted Premium VMs, or unmeasured targets to PASS.
