@@ -57,3 +57,15 @@ abusable lunisolar intercalation with a fixed, purely solar leap rule.
 - **The Metonic 19-year cycle** (Greek): survives in ecclesiastical computus.
 - **The failure mode of discretionary intercalation** (Roman): the motivation
   for a mechanical, non-political leap rule — delivered by Julius Caesar.
+
+## Greece as a dated, weighed record (document 07)
+
+This document states the Greek *principle*. For the Greek-specific **timeline
+from BC to 1600** — each event noted, its concession to an outside calendar
+authority recorded, and a 1–10 weighing of its contribution to the Unified
+Calendar lineage — see [`07-greece-bc-to-1600.md`](07-greece-bc-to-1600.md). Its
+headline weighings: the Metonic cycle (432 BCE) and the Nicaea computus (325 CE)
+carry weight 10 and 9 as Greek mathematics still running inside the modern
+calendar; the 45 BCE Julian concession (9) and the 1582 Gregorian *refusal* (10)
+fix Greece as the originator of the solar year's arithmetic and the last major
+holder of the Julian baseline through 1600.
