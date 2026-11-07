@@ -1,6 +1,6 @@
 # Conformance Matrix
 Standard SCS-MATRIX-001 | Edition 1.1  
-Status: baseline and numeric/Unicode batch 002 passed on configured platforms; feature qualification remains scoped.
+Status: baseline and batch 002 passed; batch 003 array/string suite pending CI; feature qualification remains scoped.
 
 ## 1. Legend
 Native/defined = language/runtime model; Managed = managed runtime; Library/API = library/platform facility; Explicit contract = must be defined and tested; Varies = target-dependent; Separate path = requires explicit interoperability.
@@ -34,7 +34,7 @@ These are architecture/documentation statements, not proof that every feature or
 | Primitive representation | Runtime tests and ABI probes | Not assessed |
 | Arithmetic / basic control flow / ASCII output | Shared baseline vectors | **PASS** — Ubuntu, macOS, Windows; SLeeLa VM on Ubuntu |
 | Fixed-width integer edges / UTF-8 byte and code-point counts | SCS-TEST-002 edge vectors | **PASS** — C11, C++17, Java on Ubuntu, macOS, Windows; SLeeLa VM not yet covered |
-| Arrays/strings beyond ASCII | Bounds and encoding tests | Not assessed |
+| Arrays/strings beyond ASCII | SCS-TEST-003 array bounds and strict UTF-8 vectors | Pending CI — C11, C++17, Java; SLeeLa VM not yet covered |
 | Memory ownership | Runtime and native sanitizer tests | Not assessed |
 | C ABI | Header consumer tests across compilers | Not assessed |
 | C++ wrapper | Exception containment and ABI tests | Not assessed |
