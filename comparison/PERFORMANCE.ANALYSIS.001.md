@@ -352,8 +352,8 @@ The CI run provides partial correctness/build evidence: Ubuntu and macOS languag
 |---|---|---|
 | C11 / C++17 / Java 21+ — Ubuntu | Completed | **PASS** |
 | C11 / C++17 / Java 21+ — macOS | Completed | **PASS** |
-| C11 / C++17 / Java 21+ — Windows | In progress after checkout | **PENDING** |
-| Basic Native VM + Premium SLVM 1–11 | In progress after checkout | **PENDING** |
+| C11 / C++17 / Java 21+ — Windows | Completed | **FAIL — MSYS2 package unavailable** |
+| Basic Native VM + Premium SLVM 1–11 | Basic Native VM/compiler build in progress; later steps not started | **PENDING** |
 
 The retry confirms the Linux and macOS language-comparator correctness suites again. It does not yet resolve the Windows package-installation issue or establish the Basic/Premium VM execution outcome. The run must be inspected again after the remaining jobs finish; no final overall PASS is claimed here.
 
@@ -400,3 +400,19 @@ Every measured target must record the host CPU and architecture, OS/kernel, RAM 
 - **Standard VM generations 1–10:** registration/inventory only; no whole-program execution or speed result.
 
 No timing values, rankings, or ratios have been inferred from correctness results or build completion. The next CI change must add a dedicated benchmark workflow and executable benchmark harness; ordinary hosted-runner timings should be labeled informational unless run on controlled, repeatable hardware.
+
+
+
+### 14.5 Retry update — Windows failure confirmed; workflow correction committed
+
+The Windows job subsequently completed with the same setup failure. Its log confirms:
+
+```text
+error: target not found: mingw-w64-ucrt-x86_64-gcc-c++
+```
+
+The language-comparison step was skipped, and no Windows comparison result artifacts were produced. This is an environment/package-selection failure, not a C11, C++17, or Java test failure.
+
+A correction was committed to `.github/workflows/complete-vm-conformance.yml` at commit `acf089533b6eeebaea0038ebd557c63ede5d6120`: the nonexistent `mingw-w64-ucrt-x86_64-gcc-c++` package was removed. The repository's separate Comparison Standards workflow already uses `mingw-w64-ucrt-x86_64-gcc` as the UCRT64 compiler package for both C and C++, and its Windows comparator job has previously passed. The corrected complete-conformance workflow still requires a fresh successful Windows run before Windows qualification can be claimed.
+
+At the time of this update, the VM job for run `42337765442` remained in the Basic Native VM/compiler build step. Premium builds, VM execution, Premium self-checks, and Standard manifest checks had not yet been reported as completed. No outcome is inferred for those pending steps.
