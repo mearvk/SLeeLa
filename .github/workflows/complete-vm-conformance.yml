@@ -163,6 +163,12 @@ jobs:
             "${vm}" --selfcheck
           done
 
+      - name: Run steady-state SLeeLa VM arithmetic benchmarks
+        env:
+          SLEELA_SHA256_MANIFEST: /tmp/sleela-ci-manifest.json
+          SLEELA_SHEET: ${{ github.workspace }}/SHEET.sheet
+        run: python3 comparison/tests/run_sleela_vm_arithmetic_speed.py
+
       - name: Verify all Standard VM Modium manifests
         run: python3 tools/generate-modium.py --check
 
@@ -173,6 +179,7 @@ jobs:
           name: sleela-complete-vm-matrix
           path: |
             comparison-vm-matrix-results.json
+            comparison-sleela-vm-arithmetic-results.json
             /tmp/sleela-ci-manifest.json
           if-no-files-found: warn
   arithmetic-speed:
