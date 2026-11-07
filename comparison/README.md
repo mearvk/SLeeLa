@@ -12,7 +12,9 @@ This directory establishes a common computational vocabulary and repeatable comp
 4. [ABI and Interoperability](ABI-AND-INTEROPERABILITY.md)
 5. [Conformance Matrix](CONFORMANCE-MATRIX.md)
 6. [Common Test Vectors](COMMON-TEST-VECTORS.md)
-7. [Running PASS Record — Java/JVM, Native C/C++, and SLeeLa VM](RUNNING.PASS.JAVA.JVM.XXX.md)
+7. [Running PASS Record 001 — Java/JVM, Native C/C++, and SLeeLa VM](RUNNING.PASS.JAVA.001.md)
+8. [Numeric and Unicode Edge Vectors](NUMERIC-UNICODE-EDGE-VECTORS.md)
+9. [Running PASS Record 002 — next batch](RUNNING.PASS.JAVA.002.md) (published after CI completes)
 
 ## Architectural principle
 One computational specification, multiple implementation environments.
@@ -55,6 +57,7 @@ The initial executable baseline is in tests/:
 - tests/sleela/common_vectors.sleela: SLeeLa Syntax 3.0 VM equivalents.
 - tests/run_native_java.py: compiles and runs C, C++, and Java, then compares their output to the shared expected vector.
 - tests/check_sleela_output.py: verifies the final program-output lines separately from SLeeLa runtime diagnostics.
+- tests/run_edge_vectors.py: runs fixed-width integer and UTF-8/code-point vectors in C11, C++17, and Java.
 
 Run the native/Java parity checks locally with Python 3, a C11 compiler, a C++17 compiler, and JDK 21 (or a compatible JDK):
 
@@ -66,6 +69,6 @@ GitHub Actions workflow: [Comparison Standards Conformance](../.github/workflows
 
 **Current result:** corrected runs [42331591283](https://github.com/mearvk/SLeeLa/actions/runs/42331591283), [42331589662](https://github.com/mearvk/SLeeLa/actions/runs/42331589662), and [42331561514](https://github.com/mearvk/SLeeLa/actions/runs/42331561514) completed successfully. Latest run 42331591283 passed all four jobs: Ubuntu, macOS, Windows, and SLeeLa Syntax 3.0 VM. The first run [42331126707](https://github.com/mearvk/SLeeLa/actions/runs/42331126707) exposed a Windows Java launcher issue and a too-strict SLeeLa stdout comparison; both were corrected and verified in the successful reruns.
 
-See [RUNNING.PASS.JAVA.JVM.XXX.md](RUNNING.PASS.JAVA.JVM.XXX.md) for the detailed evidence ledger, platform results, corrective engineering record, artifact names, graphs, and remaining qualification limits.
+See [RUNNING.PASS.JAVA.001.md](RUNNING.PASS.JAVA.JVM.XXX.md) for the detailed evidence ledger, platform results, corrective engineering record, artifact names, graphs, and remaining qualification limits.
 
-This is a deliberately small first slice: it exercises arithmetic, loop accumulation, and ASCII output. It does not yet qualify integer overflow, floating-point edge cases, Unicode indexing, memory ownership, C ABI interoperability, Java process delegation, JNI, concurrency, or performance. Those remain unassessed until executable tests and retained CI results exist.
+The first baseline exercises arithmetic, loop accumulation, and ASCII output. The second batch adds signed 32-bit boundaries, defined unsigned wrap, signed division/remainder, UTF-8 byte length, and Unicode code-point counting for C/C++/Java. SLeeLa VM coverage for those added edge cases remains unqualified until equivalent VM vectors are implemented and run. It does not yet qualify integer overflow, floating-point edge cases, Unicode indexing, memory ownership, C ABI interoperability, Java process delegation, JNI, concurrency, or performance. Those remain unassessed until executable tests and retained CI results exist.
