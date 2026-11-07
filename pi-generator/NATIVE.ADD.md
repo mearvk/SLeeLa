@@ -100,6 +100,22 @@ R2 (finishes the tail) → R4. After R1+R2 the final scaling joins the
 quasi-linear recursion and the whole generator should be ~O(d·log²d) end to end
 — the "millions of digits in minutes" regime.
 
+### Outcome so far (implemented)
+
+| # | Status | Result |
+|---|---|---|
+| **R1** | **Landed** (different mechanism than first planned) | Instead of a Newton-reciprocal isqrt, the fast win came from a **tight seed**: seed `bigisqrt` from the top two limbs (64-bit floor-sqrt, +1 for a strict overestimate; ×31623 for an odd low-limb count) so Newton descends to `floor(sqrt)` in ~2-3 iterations instead of ~`log2(BASE^(na/2))`. Verified exact. **10k: 10 s → 4 s; 50k: 194 s → 87 s (~2.2–2.5×).** Phase split at 50k is now bs 0.4 s / isqrt 62.6 s (was 170 s) / div 10.5 s. |
+| **R2** | **Scaffolded, gated off** | A Newton-reciprocal `sl_bigdiv` is in the tree but did not converge to an exact quotient in base 1e9 (it fell back to schoolbook 100% of the time), so it is gated to dispatch straight to the exact schoolbook divide. An exactness-or-fallback guard (verify `0≤rem<den`, else schoolbook) makes it provably safe; the big-divide speed win is **deferred** until the reciprocal is corrected. |
+| **R3** | **Reassessed as low-value here** | The isqrt operand is inherently `10005·S²` (~2W limbs) to yield a W-limb `√10005·S`; there is no cheap way to halve it without changing the result precision. Superseded in practice by R1's iteration cut. |
+| **R4** | **Not needed yet** | bs is now ~0.5% of runtime; trimming its churn is noise until R2 lands and isqrt/div stop dominating. |
+
+**What's left for the full quasi-linear regime:** a *correct* Newton-reciprocal
+`bigdiv` (R2). isqrt is still ~85% of a 50k run because each of its (now few)
+iterations still calls the schoolbook O(n²) divide; once that divide is
+quasi-linear, isqrt and the final scaling both drop to ~O(n log n) and the whole
+generator reaches the "millions in minutes" target. The reciprocal kernel and
+its safe fallback are already wired in — only the convergence math remains.
+
 ## TL;DR — ranked by impact, then by size
 
 > Historical note: the ranking below predates v3.0 and is kept for the roadmap

@@ -169,21 +169,24 @@ limb holds 9 decimal digits, so the working value is ≈ `digits ÷ 9` limbs.
 
 | Decimal digits | Limbs (digits ÷ 9) | Spigot (`PiGenerator`) | Machin (`PiMachin`) | Chudnovsky (`PiChudnovsky`) | Notes |
 |---:|---:|---:|---:|---:|---|
-| 1,000 | 112 | 2 s | <1 s | 2 s | fixed setup dominates; all three near-equal |
-| 10,000 | 1,112 | 51 s | 3 s | 9 s | Chudnovsky: binary-splitting recursion engaged |
-| 50,000 | 5,556 | — (hours) | ~5 min (est.) | 194 s | spigot off-chart; Chudnovsky's O(d²) final divide/√ now dominates |
+| 1,000 | 112 | 2 s | <1 s | 1 s | fixed setup dominates; all three near-equal |
+| 10,000 | 1,112 | 51 s | 3 s | 4 s | Chudnovsky after the R1 fast-isqrt seed (was 9 s) |
+| 50,000 | 5,556 | — (hours) | ~5 min (est.) | 87 s | spigot off-chart; was 194 s before R1 |
 
 > Kernel: native `bigmul` (NTT/Karatsuba) + `bigadd` + `bigdivmod` + the v3.0
 > additions `bigsub` / `bigdiv` / `bigisqrt`. Measured with the source-built
 > compiler (`impl/build/sleela`) on this machine; each figure is a single timed
 > run and varies a few percent run to run. Spigot and Machin are O(digits²); the
 > 50,000-digit spigot run does not complete in a practical window (hours) and
-> Machin's is an extrapolation from its 10,000-digit point. Chudnovsky's 1,000-
-> and 10,000-digit outputs were checked digit-for-digit against an independent
-> reference. Chudnovsky 10,000 → 50,000 is ~21× for 5× the digits (implied
-> exponent ≈ 1.9): the binary-splitting recursion is quasi-linear, but the single
-> schoolbook final `bigdiv`/`bigisqrt` is O(n²) and now sets the slope — see the
-> exponent note below.
+> Machin's is an extrapolation from its 10,000-digit point. Chudnovsky outputs
+> were checked digit-for-digit against an independent reference at 1,000 /
+> 10,000 / 50,000. The Chudnovsky column now reflects the **R1 fast-isqrt seed**
+> (see NATIVE.ADD.md): 10k 9 s → 4 s, 50k 194 s → 87 s (~2.2–2.5×). The
+> binary-splitting recursion is quasi-linear (~0.5% of the run); `bigisqrt` is
+> now ~85% because each of its few Newton iterations still calls the schoolbook
+> O(n²) `bigdiv`. Making that divide quasi-linear (a correct Newton reciprocal,
+> R2 — scaffolded but not yet converging) is what reaches the ~O(d·log²d)
+> regime.
 
 ### The graph — wall time vs digit count (the three generators)
 
@@ -199,7 +202,7 @@ xychart-beta
     y-axis "Wall time (seconds)" 0 --> 300
     line "spigot"     [2, 51, 300]
     line "machin"     [1, 3, 300]
-    line "chudnovsky" [2, 9, 194]
+    line "chudnovsky" [1, 4, 87]
 ```
 
 ### Plain-text plot (same data)
@@ -208,15 +211,13 @@ xychart-beta
  time (s)
  300 |                                   x spigot (50k: hours, off-axis)
      |                                   o machin (50k: ~5 min, off-axis)
- 200 |                                   * chudnovsky (50k: 194 s)
-     |
  100 |
-     |
+  87 |                                   * chudnovsky (50k: 87 s, after R1)
   50 |                 x spigot (10k: 51 s)
      |
-   9 |                 * chudnovsky (10k)
+   4 |                 * chudnovsky (10k, after R1)
    3 |  . *o           o machin (10k: 3 s)
-   0 |  *o (1k: ~1-2 s all three)
+   0 |  *o (1k: ~1 s all three)
      +------------------------------------------------------------
         1k              10k                           50k   digits
 ```
