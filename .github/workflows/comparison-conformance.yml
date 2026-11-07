@@ -61,8 +61,14 @@ jobs:
           distribution: temurin
           java-version: '21'
 
-      - name: Run shared C, C++, and Java vectors
-        shell: ${{ runner.os == 'Windows' && 'msys2 {0}' || 'bash' }}
+      - name: Run shared C, C++, and Java vectors (POSIX)
+        if: runner.os != 'Windows'
+        shell: bash
+        run: python3 comparison/tests/run_native_java.py
+
+      - name: Run shared C, C++, and Java vectors (Windows)
+        if: runner.os == 'Windows'
+        shell: msys2 {0}
         run: python3 comparison/tests/run_native_java.py
 
       - name: Retain comparison result record
