@@ -4,7 +4,7 @@
 **Repository:** `mearvk/SLeeLa`  
 **Baseline:** SLeeLa Syntax 3.0  
 **Last consolidated:** 2026-11-07  
-**Status:** Native local and hosted CI arithmetic results recorded; all 12 runnable SLeeLa VM arithmetic targets measured and checksum-validated
+**Status:** Arithmetic datasets recorded and checksum-validated; corrective cross-platform VM and native-portability workflows are still in progress (snapshot 2026-11-07)
 
 ## 1. Executive summary
 
@@ -25,6 +25,28 @@ The corrected integrated workflow measured all twelve runnable SLeeLa VM targets
 | SLeeLa Premium SLVM 1–11 | `int`, `double`; +, -, *, / | Workflow run 42342660507 | **PASS** — 11/11 targets; 88 cases × 5 samples; checksums validated |
 
 **Workflow checked:** [Complete SLeeLa VM and Language Conformance — run 42340090666](https://github.com/mearvk/SLeeLa/actions/runs/42340090666). The run completed with 4 of 5 jobs successful. The arithmetic speed job passed; the VM job failed after the twelve targets were runnable and the Premium self-checks passed, when the new benchmark runner attempted to read an undefined `checks` variable. That defect is fixed in the current source. The VM timing results from this first attempt remain unavailable.
+
+
+
+## Latest cross-platform CI qualification — 2026-11-07
+
+The corrective workflows are still running at the time of this report update. Their current state is recorded as a snapshot, not a final pass/fail determination:
+
+- [Complete VM and Language Conformance — run 42343381660](https://github.com/mearvk/SLeeLa/actions/runs/42343381660):
+
+Basic Native VM + Premium SLVM 1-11: in_progress
+Arithmetic speed — C11, C++17, Java 21+: completed (success)
+C11, C++17, Java 21+ (macos-latest): completed (success)
+C11, C++17, Java 21+ (ubuntu-latest): completed (success)
+C11, C++17, Java 21+ (windows-latest): in_progress
+
+- [Native C and C++ Portability — run 42343381645](https://github.com/mearvk/SLeeLa/actions/runs/42343381645):
+
+Native runtime (ubuntu-latest): in_progress
+Native runtime (macos-latest): in_progress
+Native runtime (Windows 10+ / MinGW-w64): in_progress
+
+The previously validated arithmetic dataset remains: SLeeLa Basic Native plus Premium SLVM 1–11, 96/96 target-operation cases and 480/480 sample checksum validations; C11/C++17/Java 21+ comparator suite, 128/128 cases on the recorded hosted Linux run. The in-progress reruns are intended to close the separate Modium-manifest and native-portability gaps. Do not mark cross-platform VM conformance or native portability complete until these runs finish successfully. This status snapshot should be replaced with final job conclusions after completion.
 
 ## 3. Native C11 / C++17 / Java 21+ arithmetic results
 
