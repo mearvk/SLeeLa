@@ -8,6 +8,10 @@ CLI = pathlib.Path(os.environ.get("SLEELA_BIN", ROOT / "impl" / "build" / ("slee
 SOURCE = ROOT / "comparison" / "tests" / "sleela" / "arithmetic_speed.sleela"
 OPS = ("INT_ADD", "INT_SUB", "INT_MUL", "INT_DIV",
        "DOUBLE_ADD", "DOUBLE_SUB", "DOUBLE_MUL", "DOUBLE_DIV")
+EXPECTED = {"INT_ADD": 8888888, "INT_SUB": 7530865, "INT_MUL": 83810205,
+            "INT_DIV": 10802469, "DOUBLE_ADD": 1999.9991,
+            "DOUBLE_SUB": 7530.8651, "DOUBLE_MUL": 9740.6784,
+            "DOUBLE_DIV": 10802.469}
 RESULT = {
     "suite": "SCS-PERF-SLEELA-VM-001", "status": "RUNNING",
     "host": {"os": platform.platform(), "machine": platform.machine(),
@@ -30,9 +34,15 @@ def invoke(label, command):
     missing = sorted(set(OPS) - set(found))
     if missing:
         raise AssertionError(f"{label}: missing timing records {missing}; output:\n{p.stdout}")
+    missing_checks = sorted(set(OPS) - set(checks))
+    if missing_checks:
+        raise AssertionError(f"{label}: missing correctness records {missing_checks}; output:\\n{p.stdout}")
     for op, ns in found.items():
         if ns <= 0:
             raise AssertionError(f"{label}: non-positive timing for {op}: {ns}")
+        expected = float(EXPECTED[op])
+        if abs(checks[op] - expected) > max(1e-9, abs(expected) * 1e-12):
+            raise AssertionError(f"{label}: {op} checksum {checks[op]} != {expected}")
     return found, p.stdout
 def main():
     if not CLI.is_file() or not SOURCE.is_file():
