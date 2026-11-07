@@ -132,11 +132,12 @@ jobs:
         run: |
           ./impl/build/sleela run comparison/tests/sleela/common_vectors.sleela > /tmp/sleela-comparison.out
           python3 comparison/tests/check_sleela_output.py /tmp/sleela-comparison.out
+          python3 comparison/tests/run_sleela_array_string_vectors.py
 
       - name: Retain SLeeLa VM output
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: comparison-vectors-sleela-vm
-          path: /tmp/sleela-comparison.out
+          path: |\n            /tmp/sleela-comparison.out\n            comparison-sleela-array-string-results.json
           if-no-files-found: warn
