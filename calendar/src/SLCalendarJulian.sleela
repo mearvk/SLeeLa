@@ -1,0 +1,100 @@
+<< calendar/src/SLCalendarJulian.sleela
+   SLeeLa Calendar System.
+   Definition: the Julian calendar baseline (Julius Caesar, 45 BCE) — a purely
+   solar reckoning with a leap day every fourth year. This is the baseline
+   against which the Gregorian reform and all national adoptions are measured.
+   See calendar/01-julian-baseline.md. >>
+#sleela 2.5
+material;
+
+<< Family: calendar. SLCalendarJulian implements the Julian leap rule and the
+   day-count arithmetic needed to convert a (year, month, day) triple to and
+   from a serial day number. It intentionally carries almost no mutable state:
+   the calendar is an arithmetic function of the date, so the logic lives in
+   methods. Proleptic: the rule is projected to any year, before or after 45
+   BCE, so the class can place ancient dates. Month is 1..12, day is 1..31. >>
+class SLCalendarJulian {
+
+  << The Julian leap rule: a year is a leap year exactly when it is divisible
+     by four. Average year length is 365.25 days. >>
+  boolean isLeapYear(int year) {
+    return (year % 4) == 0;
+  }
+
+  << Days in a given month of a given year (month 1..12). February has 29 days
+     in a Julian leap year, otherwise 28. >>
+  int daysInMonth(int year, int month) {
+    if (month == 2) {
+      if (isLeapYear(year)) { return 29; }
+      return 28;
+    }
+    if (month == 4) { return 30; }
+    if (month == 6) { return 30; }
+    if (month == 9) { return 30; }
+    if (month == 11) { return 30; }
+    return 31;
+  }
+
+  << Days in a given year: 366 in a leap year, else 365. >>
+  int daysInYear(int year) {
+    if (isLeapYear(year)) { return 366; }
+    return 365;
+  }
+
+  << Serial day number for a date on the proleptic Julian calendar, counted so
+     that the result is directly comparable with SLCalendarGregorian.toSerial()
+     (both use the same epoch, the proleptic Gregorian date 0000-03-01 as a
+     fixed-point reference). This lets the converter diff the two. >>
+  int toSerial(int year, int month, int day) {
+    int y = year;
+    int m = month;
+    << shift so that March is month 0 and leap day sits at year end >>
+    if (m <= 2) {
+      y = y - 1;
+      m = m + 12;
+    }
+    int monthDays = ((153 * (m - 3)) + 2) / 5;
+    << Julian leap-day count: one every four years, no century correction >>
+    int leapDays = y / 4;
+    return (y * 365) + leapDays + monthDays + (day - 1);
+  }
+
+  << ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >>
+  << Eleven catalogued attributes with getter/setter pairs so a loader or
+     catalog can read each record. Values are faithful to the real origin. >>
+  String metaVersion = "1.0.0";
+  int metaId = 1;
+  String metaAuthor = "Julius Caesar / Sosigenes of Alexandria";
+  String metaDate = "2026-11-07";
+  String metaCopyright = "Public domain (historical calendar)";
+  String metaTrademark = "none";
+  String metaCorporation = "mearvk LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "0046-BCE";
+  < maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}

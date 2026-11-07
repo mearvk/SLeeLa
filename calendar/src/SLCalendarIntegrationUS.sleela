@@ -1,0 +1,120 @@
+<< calendar/src/SLCalendarIntegrationUS.sleela
+   SLeeLa Calendar System.
+   Definition: the System of Integration respective to the United States — the
+   four-layer stack (Gregorian calendar; time-zone/DST law; NIST/USNO + UTC;
+   ISO 8601 interchange) that realizes the Unified Calendar in one concrete
+   reference frame. See calendar/06-system-of-integration-united-states.md. >>
+#sleela 2.5
+material;
+
+<< Family: calendar. SLCalendarIntegrationUS composes the Gregorian reckoner and
+   the O.S./N.S. converter, and exposes the U.S. civil-time facts as named
+   methods: the 1752 colonial adoption skip, the governing statutes, the
+   standards authorities, and the ISO 8601 interchange form. It is the operative
+   unit that ties the whole calendar history to a single governing system. >>
+class SLCalendarIntegrationUS {
+
+  SLCalendarGregorian gregorian;
+  SLCalendarConverter converter;
+
+  << Layer 1 — the calendar layer, inherited by the American colonies. >>
+  int colonialAdoptionYear() { return 1752; }
+  int colonialAdoptionSkipDays() { return 11; }
+  String colonialAdoptionNote() {
+    return "Wed 2 Sep 1752 (O.S.) followed by Thu 14 Sep 1752 (N.S.)";
+  }
+
+  << Layer 2 — the standardization layer (U.S. civil law). >>
+  int standardTimeZonesYear() { return 1883; }
+  String standardTimeActCitation() { return "Standard Time Act of 1918"; }
+  String uniformTimeActCitation() { return "Uniform Time Act of 1966"; }
+  String dstRuleCitation() { return "Energy Policy Act of 2005"; }
+
+  << Layer 3 — the authority / measurement layer (U.S. standards bodies). >>
+  String civilTimeStandard() { return "UTC(NIST)"; }
+  String defenseTimeStandard() { return "UTC(USNO)"; }
+  String reconciliationMethod() { return "leap seconds (UTC), not leap days"; }
+
+  << Layer 4 — the interchange layer. ISO 8601 date for a proleptic Gregorian
+     triple, zero-padded. >>
+  String isoDate(int year, int month, int day) {
+    String ys = pad4(year);
+    String ms = pad2(month);
+    String ds = pad2(day);
+    return ys + "-" + ms + "-" + ds;
+  }
+
+  String interchangeStandard() { return "ISO 8601 / RFC 3339"; }
+
+  << Day of week for a U.S. civil (Gregorian) date: 0 = Sunday .. 6 = Saturday. >>
+  int dayOfWeek(int year, int month, int day) {
+    if (gregorian == null) { setup(); }
+    return gregorian.dayOfWeek(year, month, day);
+  }
+
+  << The O.S./N.S. offset for a given date, delegated to the converter. >>
+  int oldStyleOffset(int year, int month, int day) {
+    if (converter == null) { setup(); }
+    return converter.offsetForDate(year, month, day);
+  }
+
+  << Prepare composed reckoners. >>
+  void setup() {
+    gregorian = new SLCalendarGregorian();
+    converter = new SLCalendarConverter();
+    converter.create();
+  }
+
+  << Zero-pad helpers for the ISO interchange form. >>
+  String pad2(int v) {
+    if (v < 10) { return "0" + v; }
+    return "" + v;
+  }
+  String pad4(int v) {
+    if (v < 10) { return "000" + v; }
+    if (v < 100) { return "00" + v; }
+    if (v < 1000) { return "0" + v; }
+    return "" + v;
+  }
+
+  << ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >>
+  << Full executive-grade record: this class represents a jurisdictional
+     integration artifact, so it carries identity, legality, and fiduciary
+     fields. Values faithful to the real origin. >>
+  String metaVersion = "1.0.0";
+  int metaId = 4;
+  String metaAuthor = "mearvk LLC Calendar Team";
+  String metaDate = "2026-11-07";
+  String metaCopyright = "(c) 2026 mearvk LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "mearvk LLC";
+  String metaOrigin = "United States";
+  String metaBirthDate = "2026";
+  < maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  << a real, citable instrument >>
+  String metaNationalSchedule = "Uniform Time Act of 1966 (15 U.S.C. 260-267)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}

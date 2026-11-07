@@ -1,0 +1,96 @@
+<< calendar/src/CalendarDemo.sleela
+   SLeeLa Calendar System.
+   Definition: a runnable demonstration that exercises the Julian baseline, the
+   Gregorian reform, the O.S./N.S. converter, the U.S. System of Integration,
+   and the Unified Calendar. Validates the family through a sibling main().
+   Run with: sleela run calendar/src/CalendarDemo.sleela >>
+#sleela 2.5
+material;
+
+<< Worker-class demo: carries the baseline identity metadata and a main() that
+   links the calendar library classes in this directory. >>
+class CalendarDemo {
+
+  void main() {
+    print("== SLeeLa Calendar System ==");
+
+    << Julian baseline >>
+    SLCalendarJulian julian = new SLCalendarJulian();
+    print("Julian 1900 leap? " + julian.isLeapYear(1900));
+    print("Julian days in Feb 1900: " + julian.daysInMonth(1900, 2));
+
+    << Gregorian reform >>
+    SLCalendarGregorian greg = new SLCalendarGregorian();
+    print("Gregorian 1900 leap? " + greg.isLeapYear(1900));
+    print("Gregorian 2000 leap? " + greg.isLeapYear(2000));
+    print("Gregorian days in Feb 1900: " + greg.daysInMonth(1900, 2));
+
+    << O.S./N.S. offsets — should be 10 (1582), 11 (1752), 13 (1918) >>
+    SLCalendarConverter conv = new SLCalendarConverter();
+    conv.create();
+    print("Offset 1582-10-15: " + conv.offsetForDate(1582, 10, 15));
+    print("Offset 1752-09-14: " + conv.offsetForDate(1752, 9, 14));
+    print("Offset 1918-02-14: " + conv.offsetForDate(1918, 2, 14));
+
+    << U.S. System of Integration >>
+    SLCalendarIntegrationUS us = new SLCalendarIntegrationUS();
+    us.setup();
+    print("US adoption: " + us.colonialAdoptionNote());
+    print("US adoption skip: " + us.colonialAdoptionSkipDays());
+    print("US civil standard: " + us.civilTimeStandard());
+    print("US interchange: " + us.interchangeStandard());
+    print("US ISO date for 2026-11-7: " + us.isoDate(2026, 11, 7));
+    print("Weekday 2000-01-01 (6=Sat): " + us.dayOfWeek(2000, 1, 1));
+
+    << The Unified Calendar >>
+    SLUnifiedCalendar uni = new SLUnifiedCalendar();
+    uni.create();
+    print("Civil rule: " + uni.civilRule());
+    print("Physical ref: " + uni.physicalReference());
+    print("Interchange: " + uni.interchangeForm());
+    print("Canonical date 2026-11-7: " + uni.canonicalDate(2026, 11, 7));
+    print("Overlay 'chinese' kind: " + uni.overlayKind("chinese"));
+    print("Overlay 'hijri' kind: " + uni.overlayKind("hijri"));
+    print("Admits 'orthodox'? " + uni.admitsOverlay("orthodox"));
+    print("Agreement: " + uni.agreement());
+
+    print("== done ==");
+  }
+
+  << ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >>
+  String metaVersion = "1.0.0";
+  int metaId = 6;
+  String metaAuthor = "mearvk LLC Calendar Team";
+  String metaDate = "2026-11-07";
+  String metaCopyright = "(c) 2026 mearvk LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "mearvk LLC";
+  String metaOrigin = "United States";
+  String metaBirthDate = "2026";
+  < maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}

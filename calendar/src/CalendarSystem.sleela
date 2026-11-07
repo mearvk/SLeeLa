@@ -1,0 +1,518 @@
+<< calendar/src/CalendarSystem.sleela
+   SLeeLa Calendar System — self-contained runnable unit.
+   Definition: the whole calendar family in one compilation unit, because the
+   toolchain resolves inter-class references within a single file. The classes
+   mirror the per-class source files in this directory (SLCalendarJulian,
+   SLCalendarGregorian, SLCalendarConverter, SLCalendarIntegrationUS,
+   SLUnifiedCalendar) and the documents in calendar/*.md. The CalendarSystemDemo
+   class at the end carries main() and exercises the family.
+   Run with: sleela run calendar/src/CalendarSystem.sleela >>
+#sleela 2.5
+material;
+
+<< ============================================================= >>
+<< SLCalendarJulian — the Julian baseline (doc 01).                >>
+<< ============================================================= >>
+class SLCalendarJulian {
+
+  << The Julian leap rule: leap exactly when divisible by four. >>
+  boolean isLeapYear(int year) {
+    return (year % 4) == 0;
+  }
+
+  int daysInMonth(int year, int month) {
+    if (month == 2) {
+      if (isLeapYear(year)) { return 29; }
+      return 28;
+    }
+    if (month == 4) { return 30; }
+    if (month == 6) { return 30; }
+    if (month == 9) { return 30; }
+    if (month == 11) { return 30; }
+    return 31;
+  }
+
+  int daysInYear(int year) {
+    if (isLeapYear(year)) { return 366; }
+    return 365;
+  }
+
+  << Serial day number on the proleptic Julian calendar, shared epoch. >>
+  int toSerial(int year, int month, int day) {
+    int y = year;
+    int m = month;
+    if (m <= 2) {
+      y = y - 1;
+      m = m + 12;
+    }
+    int monthDays = ((153 * (m - 3)) + 2) / 5;
+    int leapDays = y / 4;
+    return (y * 365) + leapDays + monthDays + (day - 1);
+  }
+
+  << ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >>
+  String metaVersion = "1.0.0";
+  int metaId = 1;
+  String metaAuthor = "Julius Caesar / Sosigenes of Alexandria";
+  String metaDate = "2026-11-07";
+  String metaCopyright = "Public domain (historical calendar)";
+  String metaTrademark = "none";
+  String metaCorporation = "mearvk LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "0046-BCE";
+  int metaScienceRating = 8;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}
+
+<< ============================================================= >>
+<< SLCalendarGregorian — the Gregorian reform (doc 02).            >>
+<< ============================================================= >>
+class SLCalendarGregorian {
+
+  << The Gregorian leap rule: 4/100/400. >>
+  boolean isLeapYear(int year) {
+    if ((year % 400) == 0) { return true; }
+    if ((year % 100) == 0) { return false; }
+    if ((year % 4) == 0) { return true; }
+    return false;
+  }
+
+  int daysInMonth(int year, int month) {
+    if (month == 2) {
+      if (isLeapYear(year)) { return 29; }
+      return 28;
+    }
+    if (month == 4) { return 30; }
+    if (month == 6) { return 30; }
+    if (month == 9) { return 30; }
+    if (month == 11) { return 30; }
+    return 31;
+  }
+
+  int daysInYear(int year) {
+    if (isLeapYear(year)) { return 366; }
+    return 365;
+  }
+
+  int toSerial(int year, int month, int day) {
+    int y = year;
+    int m = month;
+    if (m <= 2) {
+      y = y - 1;
+      m = m + 12;
+    }
+    int monthDays = ((153 * (m - 3)) + 2) / 5;
+    int leapDays = (y / 4) - (y / 100) + (y / 400);
+    return (y * 365) + leapDays + monthDays + (day - 1);
+  }
+
+  << Day of week, 0 = Sunday .. 6 = Saturday, anchored on Sat 2000-01-01. >>
+  int dayOfWeek(int year, int month, int day) {
+    int serial = toSerial(year, month, day);
+    int anchorSerial = toSerial(2000, 1, 1);
+    int diff = serial - anchorSerial;
+    int w = (6 + diff) % 7;
+    if (w < 0) { w = w + 7; }
+    return w;
+  }
+
+  << ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >>
+  String metaVersion = "1.0.0";
+  int metaId = 2;
+  String metaAuthor = "Pope Gregory XIII / Aloysius Lilius / Christopher Clavius";
+  String metaDate = "2026-11-07";
+  String metaCopyright = "Public domain (historical calendar)";
+  String metaTrademark = "none";
+  String metaCorporation = "mearvk LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "1582";
+  int metaScienceRating = 10;
+  String metaNationalSchedule = "Inter gravissimas (papal bull, 1582)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}
+
+<< ============================================================= >>
+<< SLCalendarConverter — Old Style / New Style offset (docs 02/04/06). >>
+<< ============================================================= >>
+class SLCalendarConverter {
+
+  SLCalendarJulian julian;
+  SLCalendarGregorian gregorian;
+
+  void create() {
+    julian = new SLCalendarJulian();
+    gregorian = new SLCalendarGregorian();
+  }
+
+  << How many days the Julian (Old Style) date label lags behind the Gregorian
+     (New Style) one for a given year. Closed form for the Julian-vs-Gregorian
+     divergence: floor(y/100) - floor(y/400) - 2. The calendars agreed in the
+     2nd/3rd century (the -2), then diverge by one day at each century that is
+     not a multiple of 400. Gives 10 in 1582, 11 in 1752, 13 in 1918. >>
+  int offsetForDate(int year, int month, int day) {
+    if (gregorian == null) { create(); }
+    int centuries = year / 100;
+    int fourHundreds = year / 400;
+    return (centuries - fourHundreds) - 2;
+  }
+
+  int skipPortugal1582() { return 10; }
+  int skipBritishColonies1752() { return 11; }
+  int skipRussia1918() { return 13; }
+
+  << ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >>
+  String metaVersion = "1.0.0";
+  int metaId = 3;
+  String metaAuthor = "mearvk LLC Calendar Team";
+  String metaDate = "2026-11-07";
+  String metaCopyright = "(c) 2026 mearvk LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "mearvk LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026";
+  int metaScienceRating = 9;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}
+
+<< ============================================================= >>
+<< SLCalendarIntegrationUS — the U.S. System of Integration (doc 06). >>
+<< ============================================================= >>
+class SLCalendarIntegrationUS {
+
+  SLCalendarGregorian gregorian;
+  SLCalendarConverter converter;
+
+  << Layer 1 — the calendar layer (inherited 1752). >>
+  int colonialAdoptionYear() { return 1752; }
+  int colonialAdoptionSkipDays() { return 11; }
+  String colonialAdoptionNote() {
+    return "Wed 2 Sep 1752 (O.S.) followed by Thu 14 Sep 1752 (N.S.)";
+  }
+
+  << Layer 2 — the standardization layer (U.S. civil law). >>
+  int standardTimeZonesYear() { return 1883; }
+  String standardTimeActCitation() { return "Standard Time Act of 1918"; }
+  String uniformTimeActCitation() { return "Uniform Time Act of 1966"; }
+  String dstRuleCitation() { return "Energy Policy Act of 2005"; }
+
+  << Layer 3 — the authority / measurement layer. >>
+  String civilTimeStandard() { return "UTC(NIST)"; }
+  String defenseTimeStandard() { return "UTC(USNO)"; }
+  String reconciliationMethod() { return "leap seconds (UTC), not leap days"; }
+
+  << Layer 4 — the interchange layer (ISO 8601). >>
+  String isoDate(int year, int month, int day) {
+    String ys = pad4(year);
+    String ms = pad2(month);
+    String ds = pad2(day);
+    return ys + "-" + ms + "-" + ds;
+  }
+  String interchangeStandard() { return "ISO 8601 / RFC 3339"; }
+
+  int dayOfWeek(int year, int month, int day) {
+    if (gregorian == null) { setup(); }
+    return gregorian.dayOfWeek(year, month, day);
+  }
+
+  int oldStyleOffset(int year, int month, int day) {
+    if (converter == null) { setup(); }
+    return converter.offsetForDate(year, month, day);
+  }
+
+  void setup() {
+    gregorian = new SLCalendarGregorian();
+    converter = new SLCalendarConverter();
+    converter.create();
+  }
+
+  String pad2(int v) {
+    if (v < 10) { return "0" + v; }
+    return "" + v;
+  }
+  String pad4(int v) {
+    if (v < 10) { return "000" + v; }
+    if (v < 100) { return "00" + v; }
+    if (v < 1000) { return "0" + v; }
+    return "" + v;
+  }
+
+  << ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >>
+  String metaVersion = "1.0.0";
+  int metaId = 4;
+  String metaAuthor = "mearvk LLC Calendar Team";
+  String metaDate = "2026-11-07";
+  String metaCopyright = "(c) 2026 mearvk LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "mearvk LLC";
+  String metaOrigin = "United States";
+  String metaBirthDate = "2026";
+  int metaScienceRating = 9;
+  String metaNationalSchedule = "Uniform Time Act of 1966 (15 U.S.C. 260-267)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}
+
+<< ============================================================= >>
+<< SLUnifiedCalendar — the agreed endpoint (doc 99).               >>
+<< ============================================================= >>
+class SLUnifiedCalendar {
+
+  SLCalendarIntegrationUS us;
+  SLCalendarGregorian gregorian;
+
+  void create() {
+    us = new SLCalendarIntegrationUS();
+    us.setup();
+    gregorian = new SLCalendarGregorian();
+  }
+
+  << Rule 1 — civil reckoning (proleptic Gregorian). >>
+  String civilRule() {
+    return "proleptic Gregorian: leap if div by 4, except centuries, except div by 400";
+  }
+  boolean isLeapYear(int year) {
+    if (gregorian == null) { create(); }
+    return gregorian.isLeapYear(year);
+  }
+
+  << Rule 2 — physical reference. >>
+  String physicalReference() { return "UTC; reconciled by leap seconds"; }
+
+  << Rule 3 — interchange form. >>
+  String interchangeForm() { return "ISO 8601 / RFC 3339, proleptic Gregorian, UTC frame"; }
+
+  String canonicalDate(int year, int month, int day) {
+    if (us == null) { create(); }
+    return us.isoDate(year, month, day);
+  }
+
+  int dayOfWeek(int year, int month, int day) {
+    if (us == null) { create(); }
+    return us.dayOfWeek(year, month, day);
+  }
+
+  << The overlay principle: cultural calendars are admitted, never abolished. >>
+  String overlayKind(String name) {
+    if (name == "chinese") { return "lunisolar"; }
+    if (name == "greek") { return "lunisolar"; }
+    if (name == "hijri") { return "lunar"; }
+    if (name == "orthodox") { return "julian-liturgical"; }
+    return "unknown";
+  }
+  boolean admitsOverlay(String name) {
+    String kind = overlayKind(name);
+    return kind != "unknown";
+  }
+
+  String agreement() {
+    return "one civil calendar (proleptic Gregorian, UTC, ISO 8601); many preserved cultural overlays";
+  }
+
+  << ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >>
+  String metaVersion = "1.0.0";
+  int metaId = 5;
+  String metaAuthor = "mearvk LLC Calendar Team";
+  String metaDate = "2026-11-07";
+  String metaCopyright = "(c) 2026 mearvk LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "mearvk LLC";
+  String metaOrigin = "Galactic";
+  String metaBirthDate = "2026";
+  int metaScienceRating = 10;
+  String metaNationalSchedule = "ISO 8601:2019";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}
+
+<< ============================================================= >>
+<< CalendarSystemDemo — runnable entry point.                      >>
+<< ============================================================= >>
+class CalendarSystemDemo {
+
+  void main() {
+    print("== SLeeLa Calendar System ==");
+
+    SLCalendarJulian julian = new SLCalendarJulian();
+    print("Julian 1900 leap? " + julian.isLeapYear(1900));
+    print("Julian days in Feb 1900: " + julian.daysInMonth(1900, 2));
+
+    SLCalendarGregorian greg = new SLCalendarGregorian();
+    print("Gregorian 1900 leap? " + greg.isLeapYear(1900));
+    print("Gregorian 2000 leap? " + greg.isLeapYear(2000));
+    print("Gregorian days in Feb 1900: " + greg.daysInMonth(1900, 2));
+
+    SLCalendarConverter conv = new SLCalendarConverter();
+    conv.create();
+    print("Offset 1582-10-15 (expect 10): " + conv.offsetForDate(1582, 10, 15));
+    print("Offset 1752-09-14 (expect 11): " + conv.offsetForDate(1752, 9, 14));
+    print("Offset 1918-02-14 (expect 13): " + conv.offsetForDate(1918, 2, 14));
+
+    SLCalendarIntegrationUS us = new SLCalendarIntegrationUS();
+    us.setup();
+    print("US adoption: " + us.colonialAdoptionNote());
+    print("US adoption skip: " + us.colonialAdoptionSkipDays());
+    print("US civil standard: " + us.civilTimeStandard());
+    print("US interchange: " + us.interchangeStandard());
+    print("US ISO date for 2026-11-7: " + us.isoDate(2026, 11, 7));
+    print("Weekday 2000-01-01 (expect 6=Sat): " + us.dayOfWeek(2000, 1, 1));
+
+    SLUnifiedCalendar uni = new SLUnifiedCalendar();
+    uni.create();
+    print("Civil rule: " + uni.civilRule());
+    print("Physical ref: " + uni.physicalReference());
+    print("Interchange: " + uni.interchangeForm());
+    print("Canonical date 2026-11-7: " + uni.canonicalDate(2026, 11, 7));
+    print("Overlay 'chinese' kind: " + uni.overlayKind("chinese"));
+    print("Overlay 'hijri' kind: " + uni.overlayKind("hijri"));
+    print("Admits 'orthodox'? " + uni.admitsOverlay("orthodox"));
+    print("Agreement: " + uni.agreement());
+
+    print("== done ==");
+  }
+
+  << ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >>
+  String metaVersion = "1.0.0";
+  int metaId = 6;
+  String metaAuthor = "mearvk LLC Calendar Team";
+  String metaDate = "2026-11-07";
+  String metaCopyright = "(c) 2026 mearvk LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "mearvk LLC";
+  String metaOrigin = "United States";
+  String metaBirthDate = "2026";
+  int metaScienceRating = 8;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}
