@@ -6,7 +6,7 @@
 #include <inttypes.h>
 
 #define N 4096
-#define ITERS 2000000ULL
+#define ITERS UINT64_C(2000000)
 static uint32_t seed = 0x53435350U;
 static uint32_t next_u32(void) { seed ^= seed << 13; seed ^= seed >> 17; seed ^= seed << 5; return seed; }
 static uint64_t now_ns(void) { struct timespec t; if (clock_gettime(CLOCK_MONOTONIC, &t)) return 0; return (uint64_t)t.tv_sec*1000000000ULL+(uint64_t)t.tv_nsec; }
