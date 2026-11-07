@@ -1,0 +1,111 @@
+name: Comparison Standards Conformance
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - 'comparison/**'
+      - 'impl/**'
+      - '.github/workflows/comparison-conformance.yml'
+  pull_request:
+    branches: [master, main]
+    paths:
+      - 'comparison/**'
+      - 'impl/**'
+      - '.github/workflows/comparison-conformance.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-java-parity:
+    name: Shared vectors (\${{ matrix.os }})
+    runs-on: \${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Install Linux toolchains
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential python3 openjdk-21-jdk
+
+      - name: Set up Java 21 on macOS
+        if: runner.os == 'macOS'
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Windows native toolchain
+        if: runner.os == 'Windows'
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: >-
+            git
+            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-python
+
+      - name: Set up Java 21 on Windows
+        if: runner.os == 'Windows'
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Run shared C, C++, and Java vectors
+        shell: \${{ runner.os == 'Windows' && 'msys2 {0}' || 'bash' }}
+        run: python3 comparison/tests/run_native_java.py
+
+      - name: Retain comparison result record
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: comparison-vectors-\${{ matrix.os }}
+          path: comparison-results.json
+          if-no-files-found: warn
+
+  sleela-vm:
+    name: SLeeLa Syntax 3.0 VM vectors (Ubuntu)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Install runtime build prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential pkg-config python3
+
+      - name: Generate an ephemeral manifest for this checkout
+        run: |
+          python3 tools/generate-sha256-manifest.py --root . --output /tmp/sleela-comparison-manifest.json
+
+      - name: Build SLeeLa compiler and VM
+        env:
+          SLEELA_SHA256_MANIFEST: /tmp/sleela-comparison-manifest.json
+        run: make -C impl all
+
+      - name: Execute shared SLeeLa VM vectors
+        env:
+          SLEELA_SHA256_MANIFEST: /tmp/sleela-comparison-manifest.json
+        run: |
+          ./impl/build/sleela run comparison/tests/sleela/common_vectors.sleela > /tmp/sleela-comparison.out
+          diff -u <(printf '42\n15\nhello\n') /tmp/sleela-comparison.out
+
+      - name: Retain SLeeLa VM output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: comparison-vectors-sleela-vm
+          path: /tmp/sleela-comparison.out
+          if-no-files-found: warn
