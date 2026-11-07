@@ -59,7 +59,6 @@ jobs:
           update: true
           install: >-
             mingw-w64-ucrt-x86_64-gcc
-            mingw-w64-ucrt-x86_64-gcc-c++
             mingw-w64-ucrt-x86_64-python
 
       - name: Set up Java 21 on Windows
