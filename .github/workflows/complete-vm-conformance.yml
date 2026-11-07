@@ -1,0 +1,151 @@
+name: Complete SLeeLa VM and Language Conformance
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - 'comparison/**'
+      - 'impl/**'
+      - 'sleela-virtual-machine/**'
+      - 'virtual-machine/vm-version/**'
+      - 'tools/**'
+      - 'Makefile'
+      - '.github/workflows/complete-vm-conformance.yml'
+  pull_request:
+    branches: [master, main]
+    paths:
+      - 'comparison/**'
+      - 'impl/**'
+      - 'sleela-virtual-machine/**'
+      - 'virtual-machine/vm-version/**'
+      - 'tools/**'
+      - 'Makefile'
+      - '.github/workflows/complete-vm-conformance.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  language-comparators:
+    name: C11, C++17, Java 21+ (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Install Linux toolchains
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential python3 openjdk-21-jdk
+
+      - name: Set up Java 21 on macOS
+        if: runner.os == 'macOS'
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Windows native toolchain
+        if: runner.os == 'Windows'
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: >-
+            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-gcc-c++
+            mingw-w64-ucrt-x86_64-python
+
+      - name: Set up Java 21 on Windows
+        if: runner.os == 'Windows'
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Add MSYS2 UCRT64 compiler to Windows PATH
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          "$env:RUNNER_TEMP/msys64/ucrt64/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Run shared C, C++, and Java suites
+        shell: bash
+        run: |
+          python3 comparison/tests/run_native_java.py
+          python3 comparison/tests/run_edge_vectors.py
+          python3 comparison/tests/run_array_string_vectors.py
+
+      - name: Retain language comparison records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: language-vectors-${{ matrix.os }}
+          path: |
+            comparison-results.json
+            comparison-edge-results.json
+            comparison-array-string-results.json
+          if-no-files-found: warn
+
+  all-runnable-vms:
+    name: Basic Native VM + Premium SLVM 1-11
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Install build prerequisites and Java 21
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential pkg-config python3 openjdk-21-jdk libx11-dev libfreetype-dev libfontconfig1-dev
+
+      - name: Generate checkout-specific integrity manifest
+        run: python3 tools/generate-sha256-manifest.py --root . --output /tmp/sleela-ci-manifest.json
+
+      - name: Build Basic Native VM and compiler
+        env:
+          SLEELA_SHA256_MANIFEST: /tmp/sleela-ci-manifest.json
+          SLEELA_SHEET: ${{ github.workspace }}/SHEET.sheet
+        run: make -C impl all
+
+      - name: Build all eleven Premium VM generations
+        env:
+          SLEELA_SHA256_MANIFEST: /tmp/sleela-ci-manifest.json
+          SLEELA_SHEET: ${{ github.workspace }}/SHEET.sheet
+        run: make premium-vms
+
+      - name: Execute Basic Native VM and all Premium VMs
+        env:
+          SLEELA_SHA256_MANIFEST: /tmp/sleela-ci-manifest.json
+          SLEELA_SHEET: ${{ github.workspace }}/SHEET.sheet
+        run: python3 comparison/tests/run_all_vm_matrix.py
+
+      - name: Run each Premium VM admission self-check
+        shell: bash
+        run: |
+          set -euo pipefail
+          for n in $(seq -w 1 11); do
+            vm="sleela-virtual-machine/0${n}/vm-build/slvm-${n}"
+            echo "=== ${vm} --selfcheck ==="
+            "${vm}" --selfcheck
+          done
+
+      - name: Verify all Standard VM Modium manifests
+        run: python3 tools/generate-modium.py --check
+
+      - name: Retain VM matrix results and integrity manifest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sleela-complete-vm-matrix
+          path: |
+            comparison-vm-matrix-results.json
+            /tmp/sleela-ci-manifest.json
+          if-no-files-found: warn
