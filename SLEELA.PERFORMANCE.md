@@ -4,7 +4,7 @@
 **Repository:** `mearvk/SLeeLa`  
 **Baseline:** SLeeLa Syntax 3.0  
 **Last consolidated:** 2026-11-07  
-**Status:** Native local and hosted CI arithmetic results recorded; SLeeLa VM arithmetic rerun pending
+**Status:** Native local and hosted CI arithmetic results recorded; all 12 runnable SLeeLa VM arithmetic targets measured and checksum-validated
 
 ## 1. Executive summary
 
@@ -12,7 +12,7 @@ This report consolidates the arithmetic performance measurements currently recor
 
 The report now contains two separately identified native arithmetic datasets: the earlier local Linux reference run and a hosted GitHub Actions Linux run. Neither should be treated as a universal language ranking or release-grade measurement.
 
-The first integrated workflow run exercised all twelve SLeeLa VM targets and passed the VM self-checks, but the arithmetic runner itself failed because it referenced an undefined checksum dictionary. The runner has since been corrected to parse and validate explicit timing and checksum records. SLeeLa VM timing values remain pending until a corrected workflow artifact is available.
+The corrected integrated workflow measured all twelve runnable SLeeLa VM targets across integer and double addition, subtraction, multiplication, and division. All 96 target-operation cases and all 480 sample checksum validations passed. The overall VM workflow later failed only because the checked-in Standard VM Modium manifests were stale; that later registry freshness check does not invalidate the completed arithmetic artifact.
 
 ## 2. Current qualification status
 
@@ -21,8 +21,8 @@ The first integrated workflow run exercised all twelve SLeeLa VM targets and pas
 | Native C11 | int widths, float32, float64; signed 128-bit extension | Local reference + hosted CI run 42340090666 | Recorded; both suites passed |
 | Native C++17 | int widths, float32, float64; signed 128-bit extension | Local reference + hosted CI run 42340090666 | Recorded; both suites passed |
 | Java 21+ | integer-width emulations, float32, float64; no primitive 128-bit | Local reference + hosted CI run 42340090666 | Recorded; both suites passed |
-| SLeeLa Basic Native VM | `int`, `double`; +, -, *, / | Workflow run 42340090666 | VM self-check passed; arithmetic runner defect fixed, rerun pending |
-| SLeeLa Premium SLVM 1–11 | `int`, `double`; +, -, *, / | Workflow run 42340090666 | 11/11 self-checks passed; arithmetic runner defect fixed, rerun pending |
+| SLeeLa Basic Native VM | `int`, `double`; +, -, *, / | Workflow run 42342660507 | **PASS** — 8 cases × 5 samples; checksums validated |
+| SLeeLa Premium SLVM 1–11 | `int`, `double`; +, -, *, / | Workflow run 42342660507 | **PASS** — 11/11 targets; 88 cases × 5 samples; checksums validated |
 
 **Workflow checked:** [Complete SLeeLa VM and Language Conformance — run 42340090666](https://github.com/mearvk/SLeeLa/actions/runs/42340090666). The run completed with 4 of 5 jobs successful. The arithmetic speed job passed; the VM job failed after the twelve targets were runnable and the Premium self-checks passed, when the new benchmark runner attempted to read an undefined `checks` variable. That defect is fixed in the current source. The VM timing results from this first attempt remain unavailable.
 
@@ -182,22 +182,34 @@ The measured loop includes VM loop-counter, branch, assignment, and interpreter-
 
 ### 4.2 SLeeLa results matrix
 
+The hosted CI measurements are now complete. See section 4.3 for the validated medians and the exact workflow artifact. All twelve targets passed all eight arithmetic cases.
+
+### 4.3 Hosted VM arithmetic results — validated
+
+**Workflow:** [Complete SLeeLa VM and Language Conformance — run 42342660507](https://github.com/mearvk/SLeeLa/actions/runs/42342660507)  
+**Commit:** `ff75886e08bbff7f325d1ca84b0e86b930bda54c`  
+**Artifact:** [sleela-complete-vm-matrix](https://github.com/mearvk/SLeeLa/actions/runs/42342660507/artifacts/13562815822) — contains `comparison-sleela-vm-arithmetic-results.json`.  
+**Arithmetic status:** **PASS — 12/12 targets, 96/96 target-operation cases, 480/480 sample checksums.**
+
+The hosted Linux runner reported Linux 7.0.0-1019-azure, x86_64, 4 logical cores. Each target ran eight cases (int and double × +, -, *, /), with 250,000 measured iterations per case, 50,000 warm-up iterations, and five samples. Values below are median nanoseconds per operation. The integer checksums were exact; double checksums were validated at a 1e-6 resolution after correcting lossy default double-to-text formatting. This is a distinct in-VM workload from the native-language matrix in section 3; do not treat the figures as directly comparable without matching harnesses and timing boundaries.
+
 | Target | int + | int - | int * | int / | double + | double - | double * | double / |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| Basic Native | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
-| Premium SLVM 1 | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
-| Premium SLVM 2 | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
-| Premium SLVM 3 | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
-| Premium SLVM 4 | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
-| Premium SLVM 5 | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
-| Premium SLVM 6 | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
-| Premium SLVM 7 | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
-| Premium SLVM 8 | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
-| Premium SLVM 9 | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
-| Premium SLVM 10 | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
-| Premium SLVM 11 | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
+| Basic Native | 72.107 | 72.178 | 72.112 | 72.260 | 80.552 | 79.124 | 79.768 | 82.920 |
+| Premium SLVM 1 | 72.537 | 72.321 | 72.519 | 72.485 | 80.881 | 79.682 | 80.465 | 83.057 |
+| Premium SLVM 2 | 72.542 | 72.277 | 72.241 | 72.410 | 80.656 | 79.702 | 79.910 | 83.378 |
+| Premium SLVM 3 | 72.566 | 72.518 | 72.520 | 72.323 | 80.486 | 79.809 | 79.854 | 83.057 |
+| Premium SLVM 4 | 72.571 | 72.498 | 72.218 | 72.297 | 80.579 | 79.710 | 79.971 | 82.897 |
+| Premium SLVM 5 | 73.074 | 72.515 | 72.187 | 72.255 | 80.518 | 79.746 | 79.889 | 82.993 |
+| Premium SLVM 6 | 72.807 | 72.650 | 72.436 | 72.318 | 80.738 | 79.554 | 79.916 | 83.165 |
+| Premium SLVM 7 | 72.718 | 72.185 | 72.607 | 72.309 | 80.954 | 79.656 | 79.950 | 83.103 |
+| Premium SLVM 8 | 75.779 | 75.111 | 75.329 | 75.530 | 82.888 | 81.717 | 82.721 | 84.797 |
+| Premium SLVM 9 | 72.805 | 72.520 | 72.297 | 72.237 | 80.581 | 79.734 | 79.749 | 83.080 |
+| Premium SLVM 10 | 72.576 | 72.340 | 72.238 | 72.332 | 80.506 | 79.608 | 80.119 | 83.183 |
+| Premium SLVM 11 | 81.842 | 81.706 | 81.853 | 82.468 | 87.858 | 87.165 | 87.606 | 91.017 |
 
-No SLeeLa timing values are inferred from C, C++, or Java results. The table must be populated only from the completed workflow artifact after validating all twelve targets and their arithmetic checksums.
+**Qualification note:** all twelve runnable targets completed every arithmetic case and checksum check. The overall VM workflow was nevertheless marked failed after the arithmetic suite passed, because the subsequent `tools/generate-modium.py --check` step found the checked-in `MODIUM.json` and `rebuild.sql` artifacts stale for Standard VM generations 001–010. That is a generated-registry freshness failure, not an arithmetic or VM execution failure. The arithmetic artifact is valid and retained above.
+
 
 ## 5. Memory and RAM performance
 
@@ -224,7 +236,7 @@ Boolean values are excluded from arithmetic. A separate suite should measure log
 3. The C/C++/Java and SLeeLa VM suites use different harness paths and operation counts. Direct ranking should wait until a deliberately matched workload and timing model are established.
 4. This report does not claim a universal fastest language or VM.
 5. No memory bandwidth, random RAM latency, cache sweep, allocation, or garbage-collection performance is included in the arithmetic data.
-6. SLeeLa VM numbers remain pending until the run artifact is available and inspected.
+6. SLeeLa VM measurements are available for the eight tested int/double cases; other integer widths, float32, memory access, and Boolean logic remain unmeasured for SLeeLa.
 
 ## 8. Source reports and reproduction
 
@@ -244,8 +256,8 @@ SLeeLa VM reproduction after the Basic Native and Premium VMs are built:
 python3 comparison/tests/run_sleela_vm_arithmetic_speed.py
 ```
 
-The SLeeLa runner writes `comparison-sleela-vm-arithmetic-results.json`; the integrated workflow retains it in the `sleela-complete-vm-matrix` artifact.
+The SLeeLa runner writes `comparison-sleela-vm-arithmetic-results.json`; the integrated workflow retains it in the `sleela-complete-vm-matrix` artifact. The validated run is 42342660507 (artifact 13562815822).
 
 ---
 
-**Current conclusion:** C11, C++17, and Java 21+ have both local reference data and a completed hosted Linux CI arithmetic dataset (128/128 cases passed). The initial integrated workflow confirmed 12/12 SLeeLa VM targets and 11/11 Premium VM self-checks, but its arithmetic runner failed before collecting VM timings. The runner, diagnostic-output filtering, class-dispatch output check, and Windows OSLS link dependencies have now been corrected and pushed; the corrected CI rerun must supply the SLeeLa Basic Native and Premium SLVM 1–11 timing artifact before those table cells can be populated. RAM performance and Boolean logic performance still require separate benchmark suites.
+**Current conclusion:** C11, C++17, and Java 21+ have local reference data and a completed hosted Linux arithmetic dataset (128/128 cases passed). SLeeLa Basic Native and Premium SLVM 1–11 now have validated arithmetic measurements (96/96 target-operation cases; 480/480 checksum samples passed). The overall VM workflow remains red because the later Standard VM Modium freshness check detected stale generated files. RAM performance, broader SLeeLa numeric widths, float32, and Boolean logic still require separate benchmark suites.
