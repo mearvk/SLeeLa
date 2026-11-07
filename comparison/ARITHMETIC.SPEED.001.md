@@ -89,95 +89,87 @@ The reported values are median nanoseconds per operation (ns/op). Lower is faste
 - The test uses independent indexed operands and checksum folding. It measures the complete loop/index/operand/arithmetic/checksum path, not an isolated hardware instruction latency.
 - No memory bandwidth, random RAM latency, cache sweep, allocation, or garbage-collection performance is measured here.
 
-## 5. SLeeLa VM status and column interpretation
+## 5. SLeeLa VM arithmetic results — hosted CI, validated
 
-The twelve SLeeLa VM columns have been added to the result matrix so that every runnable VM tested is represented explicitly:
+**Workflow:** [Complete SLeeLa VM and Language Conformance — run 42342660507](https://github.com/mearvk/SLeeLa/actions/runs/42342660507)  
+**Commit:** `ff75886e08bbff7f325d1ca84b0e86b930bda54c`  
+**Artifact:** [sleela-complete-vm-matrix](https://github.com/mearvk/SLeeLa/actions/runs/42342660507/artifacts/13562815822) — `comparison-sleela-vm-arithmetic-results.json`  
+**Arithmetic result:** **PASS — 12/12 runnable targets, 96/96 target-operation cases, 480/480 sample checksum validations.**
 
-- **Basic Native VM** — the baseline SLeeLa runtime in `impl/core`.
-- **Premium SLVM/1** through **Premium SLVM/11** — the eleven runnable Premium VM generations.
+The arithmetic benchmark completed before the workflow's later Modium freshness check. That subsequent check failed because the checked-in `MODIUM.json` and `rebuild.sql` artifacts for Standard VM generations 001–010 were out of date. It did not fail the VM arithmetic test, invalidate its JSON artifact, or indicate a runtime arithmetic defect.
 
-Every SLeeLa VM timing cell is marked **NOT MEASURED**. This is deliberate: the latest hosted arithmetic job did not pass its result-integrity gate, so no SLeeLa timing is accepted or published. The VM execution smoke matrix did pass for all twelve runnable targets, but that is correctness/conformance evidence, not an arithmetic timing result.
+### 5.1 Host and measurement protocol
 
-The SLeeLa benchmark attempted 250,000 iterations per case, used 50,000 warm-up iterations, collected five samples per target/operation, and used `timeMonotonicNanos()`. Process startup and Premium admission were outside the timed region. The run stopped at the first Basic Native VM check:
+| Property | Value |
+|---|---|
+| Host OS | Linux 7.0.0-1019-azure, x86_64, glibc 2.43 |
+| Logical cores | 4 |
+| Targets | Basic Native + Premium SLVM/1–11 |
+| Numeric cases | `int` and `double` |
+| Operators | Addition, subtraction, multiplication, division |
+| Iterations per case | 250,000 |
+| Warm-up | 50,000 iterations per case |
+| Samples | 5 per target/case |
+| Timing source | SLeeLa `timeMonotonicNanos()` |
+| Timed region | In-VM measured loop; process startup, compilation, VM selection/admission, and warm-up excluded |
+| Statistic | Median nanoseconds per operation (ns/op) |
 
-```text
-Basic Native: DOUBLE_ADD
-Actual checksum:   2000.0
-Expected checksum: 1999.9991
-Tolerance:         1.9999991e-09
-```
+The benchmark covers the full in-VM loop, including loop-counter, branch, assignment, interpreter dispatch, arithmetic, and checksum work. It is not isolated hardware instruction latency. The double result is emitted as a scaled integer at 1e-6 resolution to avoid the runtime's lossy default floating-point text formatting. The checker validates the scaled checksums exactly; integer cases remain exact.
 
-Because the first target failed its checksum, the runner produced no accepted timing rows and did not proceed to publish measurements for the remaining VM targets. The mismatch must be resolved at the workload/result-definition or arithmetic-implementation level before timings are accepted; the tolerance must not be loosened merely to make the job green.
+### 5.2 Median timing matrix — ns/op
 
-**Important column rule:** all values in the three native-language columns are measured median nanoseconds per operation from the reference run. All SLeeLa VM columns currently contain the status text **NOT MEASURED**, not zero, not a speed estimate, and not a claim that the VMs failed execution.
+| SLeeLa target | int + | int - | int * | int / | double + | double - | double * | double / |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Basic Native | 72.107 | 72.178 | 72.112 | 72.260 | 80.552 | 79.124 | 79.768 | 82.920 |
+| Premium SLVM/1 | 72.537 | 72.321 | 72.519 | 72.485 | 80.881 | 79.682 | 80.465 | 83.057 |
+| Premium SLVM/2 | 72.542 | 72.277 | 72.241 | 72.410 | 80.656 | 79.702 | 79.910 | 83.378 |
+| Premium SLVM/3 | 72.566 | 72.518 | 72.520 | 72.323 | 80.486 | 79.809 | 79.854 | 83.057 |
+| Premium SLVM/4 | 72.571 | 72.498 | 72.218 | 72.297 | 80.579 | 79.710 | 79.971 | 82.897 |
+| Premium SLVM/5 | 73.074 | 72.515 | 72.187 | 72.255 | 80.518 | 79.746 | 79.889 | 82.993 |
+| Premium SLVM/6 | 72.807 | 72.650 | 72.436 | 72.318 | 80.738 | 79.554 | 79.916 | 83.165 |
+| Premium SLVM/7 | 72.718 | 72.185 | 72.607 | 72.309 | 80.954 | 79.656 | 79.950 | 83.103 |
+| Premium SLVM/8 | 75.779 | 75.111 | 75.329 | 75.530 | 82.888 | 81.717 | 82.721 | 84.797 |
+| Premium SLVM/9 | 72.805 | 72.520 | 72.297 | 72.237 | 80.581 | 79.734 | 79.749 | 83.080 |
+| Premium SLVM/10 | 72.576 | 72.340 | 72.238 | 72.332 | 80.506 | 79.608 | 80.119 | 83.183 |
+| Premium SLVM/11 | 81.842 | 81.706 | 81.853 | 82.468 | 87.858 | 87.165 | 87.606 | 91.017 |
 
-## 6. Reproduction
+### 5.3 Arithmetic correctness and VM execution qualification
 
-From the repository root:
+- Basic Native: 8/8 arithmetic cases passed; all five checksums per case matched.
+- Premium SLVM/1–11: 88/88 arithmetic cases passed; all five checksums per case matched.
+- Aggregate: 96/96 target-operation cases and 480/480 sample checksum validations passed.
+- The VM matrix artifact also records all 12 runnable targets passing the shared execution smoke test (outputs `42`, `15`, `hello`).
+- All 11 Premium VM admission self-checks passed.
+- Standard VM generations 001–010 remain registered but not independently bootable; they are excluded from runnable timing columns.
+
+### 5.4 Comparison limitations
+
+The native C11/C++17/Java benchmark in sections 2–4 is a different harness with different operation counts and typed workloads. The SLeeLa VM numbers above should not be used for a direct speed ranking against those native-language numbers until a matched workload, host, compiler configuration, and timing boundary are established. The VM figures are useful as an internal baseline across the twelve runnable SLeeLa targets.
+
+The SLeeLa workload currently measures only the language-level `int` and `double` types. It does not establish performance for every fixed-width integer type, float32, Boolean logic, RAM bandwidth/latency, allocation, or garbage collection.
+
+## 6. Memory and RAM performance
+
+The arithmetic runs do not measure RAM latency or bandwidth. A separate suite is required for sequential read/write bandwidth, random-access latency, cache-resident versus larger-than-cache working sets, strides, allocation, and garbage collection. The host's visible RAM figure is metadata, not a memory-speed result.
+
+## 7. Boolean and logical-operation performance
+
+Boolean arithmetic is not applicable. A separate suite should measure logical AND, OR, NOT, equality/inequality, and short-circuit behavior, with truth-table and side-effect validation before timings are accepted.
+
+## 8. Reproduction and source artifacts
+
+Native-language reference reproduction:
 
 ```sh
 python3 comparison/tests/run_arithmetic_speed.py
 ```
 
-The runner writes `comparison-arithmetic-speed-results.json` with environment metadata, five timing samples, medians, and checksums. The GitHub Actions workflow retains this JSON as the `arithmetic-speed-linux` artifact. Hosted CI measurements are informational only; use a controlled, pinned host for release comparisons.
+SLeeLa VM reproduction after building the Basic Native and Premium VMs:
 
-**Conclusion:** the arithmetic sweep passed locally with 40/40 common cross-language checksum cases matching. No universal fastest-language conclusion is drawn from this single host.
+```sh
+python3 comparison/tests/run_sleela_vm_arithmetic_speed.py
+```
 
+The VM runner writes `comparison-sleela-vm-arithmetic-results.json`; hosted CI retains it in the `sleela-complete-vm-matrix` artifact linked above. The raw five-sample arrays, checksums, target metadata, and host information are preserved in that JSON.
 
-## 7. SLeeLa VM execution qualification — hosted CI
-
-**Workflow:** [Complete VM and Language Conformance](https://github.com/mearvk/SLeeLa/actions/runs/42341824853)  
-**VM job:** Basic Native VM + Premium SLVM 1–11  
-**Artifact:** [sleela-complete-vm-matrix](https://github.com/mearvk/SLeeLa/actions/runs/42341824853/artifacts/13561938012)  
-**Commit tested:** `a781abac5ff3c982b60febca890b5b8be87b8c8d`  
-**Host:** Ubuntu 26.04.1, x86_64, 4 logical CPUs  
-**Overall VM job:** **FAIL — arithmetic checksum gate**. The separate execution matrix and Premium admission checks passed.
-
-### 7.1 Runnable VM results
-
-| SLeeLa target | Build | Basic execution smoke test | Premium admission self-check | Arithmetic timing |
-|---|---|---|---|---|
-| Basic Native VM | PASS | **PASS** — `42`, `15`, `hello` | N/A — baseline | **NOT MEASURED** — first checksum gate failed |
-| Premium SLVM/1 | PASS | **PASS** — `42`, `15`, `hello` | PASS | **NOT MEASURED** |
-| Premium SLVM/2 | PASS | **PASS** — `42`, `15`, `hello` | PASS | **NOT MEASURED** |
-| Premium SLVM/3 | PASS | **PASS** — `42`, `15`, `hello` | PASS | **NOT MEASURED** |
-| Premium SLVM/4 | PASS | **PASS** — `42`, `15`, `hello` | PASS | **NOT MEASURED** |
-| Premium SLVM/5 | PASS | **PASS** — `42`, `15`, `hello` | PASS | **NOT MEASURED** |
-| Premium SLVM/6 | PASS | **PASS** — `42`, `15`, `hello` | PASS | **NOT MEASURED** |
-| Premium SLVM/7 | PASS | **PASS** — `42`, `15`, `hello` | PASS | **NOT MEASURED** |
-| Premium SLVM/8 | PASS | **PASS** — `42`, `15`, `hello` | PASS | **NOT MEASURED** |
-| Premium SLVM/9 | PASS | **PASS** — `42`, `15`, `hello` | PASS | **NOT MEASURED** |
-| Premium SLVM/10 | PASS | **PASS** — `42`, `15`, `hello` | PASS | **NOT MEASURED** |
-| Premium SLVM/11 | PASS | **PASS** — `42`, `15`, `hello` | PASS | **NOT MEASURED** |
-
-**Aggregate:** 12/12 runnable targets passed the execution smoke test; 11/11 Premium admission self-checks passed; 0/12 SLeeLa targets have accepted arithmetic timing results from this run.
-
-### 7.2 Standard VM registry entries — excluded from executable timing columns
-
-The ten Standard/think-tank entries were inventoried, but are not independently bootable through the documented runner. They are therefore not included as runnable VM timing columns and must not be confused with the Premium SLVM generations.
-
-| Standard generation | Registry identity | Execution status | Arithmetic timing |
-|---:|---|---|---|
-| 1 | `idea-vm-001` | REGISTERED — NOT BOOTABLE | NOT RUN |
-| 2 | `idea-vm-002` | REGISTERED — NOT BOOTABLE | NOT RUN |
-| 3 | `idea-vm-003` | REGISTERED — NOT BOOTABLE | NOT RUN |
-| 4 | `idea-vm-004` | REGISTERED — NOT BOOTABLE | NOT RUN |
-| 5 | `idea-vm-005` | REGISTERED — NOT BOOTABLE | NOT RUN |
-| 6 | `idea-vm-006` | REGISTERED — NOT BOOTABLE | NOT RUN |
-| 7 | `idea-vm-007` | REGISTERED — NOT BOOTABLE | NOT RUN |
-| 8 | `idea-vm-008` | REGISTERED — NOT BOOTABLE | NOT RUN |
-| 9 | `idea-vm-009` | REGISTERED — NOT BOOTABLE | NOT RUN |
-| 10 | `idea-vm-010` | REGISTERED — NOT BOOTABLE | NOT RUN |
-
-### 7.3 Interpretation and next qualification gate
-
-The successful smoke tests show that the Basic Native VM and Premium SLVM/1–11 built and executed the shared program correctly. They do not establish arithmetic throughput. The benchmark artifact records `status: FAIL`, an empty `targets` object, and the checksum error above; there are no hidden or partial timing rows to transfer into the performance matrix.
-
-Before filling any SLeeLa `ns/op` cell:
-
-1. Correct the DOUBLE_ADD expected checksum or the runtime arithmetic behavior based on an independent mathematical check.
-2. Rerun the complete SLeeLa arithmetic suite.
-3. Require all eight operation/type records per target to validate before accepting any target's timing rows.
-4. Publish the median `ns/op` values only from the validated JSON artifact, preserving the five raw samples and host metadata.
-
-No SLeeLa-versus-C/C++/Java speed ranking is established by the current run.
+**Conclusion:** native C11, C++17, and Java 21+ retain their separately recorded local and hosted arithmetic datasets. SLeeLa Basic Native and Premium SLVM/1–11 now have validated internal arithmetic timings for the eight tested int/double operator cases. No cross-language speed ranking or RAM-performance claim is made.
