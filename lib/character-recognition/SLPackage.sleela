@@ -43,5 +43,6 @@ class SLPackage {
   String nativeHeader = "character_recognition.h";
   boolean requiresNativeAdapter = true;
   String name() { return packageName; }
-  boolean available() { return requiresNativeAdapter; }
+  boolean available() { return true; }
+  boolean isNativeAdapterRequired() { return requiresNativeAdapter; }
 }
