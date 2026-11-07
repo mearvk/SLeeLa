@@ -497,6 +497,10 @@ The C and C++ implementations share the same C-compatible workload source, compi
 
 This batch measures native C11, C++17, and Java 21+ arithmetic. It does not yet measure SLeeLa VM arithmetic. SLeeLa's core runtime currently exposes `int` (64-bit), `double`, and `boolean` as primitive VM value tags; width-family annotations and the 128-bit path require separate runtime qualification before they can be claimed as equivalent native primitive cases. The Basic Native VM and Premium SLVM 1–11 must receive the same SLeeLa workload through an internal monotonic timer or another measurement boundary that excludes compiler, process-start, and admission costs. Until that is implemented, SLeeLa VM arithmetic speed remains **NOT MEASURED**.
 
-### 15.4 Current run
+### 15.4 Executed reference run
 
-The arithmetic job was added to `.github/workflows/complete-vm-conformance.yml` and is running as part of the latest workflow revision. Results are not published in this document until the job completes and its JSON artifact is checked. No performance numbers or ranking are inferred from the benchmark implementation alone.
+A local reference execution was completed and recorded in [Arithmetic Speed Series — Iteration 001](ARITHMETIC.SPEED.001.md). It passed 40/40 shared C11/C++17/Java checksum cases and four additional signed-128-bit cases in C/C++. Five measured samples were collected per case. The full median table and host/toolchain metadata are in that report.
+
+This is a single Linux container reference run (AMD EPYC 9V74 allocation, 3 logical CPUs), not a controlled release benchmark. It establishes that the harness executes and validates its shared vectors; it does not establish a universal performance ranking. The separate GitHub Actions arithmetic job is still pending and will retain its own run-specific JSON artifact.
+
+The SLeeLa Basic Native and Premium VM timing series remains **NOT MEASURED**. The report explicitly separates this from the native-language reference run.
