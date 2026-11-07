@@ -1,0 +1,99 @@
+name: SLeeLa VM Arithmetic Table Completion
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - '.github/workflows/sleela-vm-arithmetic-table.yml'
+      - 'comparison/tests/run_sleela_vm_arithmetic_speed.py'
+      - 'comparison/tests/sleela/arithmetic_speed.sleela'
+      - 'comparison/tests/update_sleela_arithmetic_table.py'
+      - 'impl/**'
+      - 'sleela-virtual-machine/**'
+      - 'virtual-machine/vm-version/**'
+      - 'tools/**'
+      - 'Makefile'
+  pull_request:
+    branches: [master, main]
+    paths:
+      - '.github/workflows/sleela-vm-arithmetic-table.yml'
+      - 'comparison/tests/run_sleela_vm_arithmetic_speed.py'
+      - 'comparison/tests/sleela/arithmetic_speed.sleela'
+      - 'comparison/tests/update_sleela_arithmetic_table.py'
+      - 'impl/**'
+      - 'sleela-virtual-machine/**'
+      - 'virtual-machine/vm-version/**'
+      - 'tools/**'
+      - 'Makefile'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sleela-vm-arithmetic:
+    name: Basic Native + Premium SLVM 1–11 arithmetic
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install build prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential pkg-config python3 libx11-dev libfreetype-dev libfontconfig1-dev
+
+      - name: Generate checkout-specific integrity manifest
+        run: python3 tools/generate-sha256-manifest.py --root . --output /tmp/sleela-ci-manifest.json
+
+      - name: Build Basic Native VM and compiler
+        env:
+          SLEELA_SHA256_MANIFEST: /tmp/sleela-ci-manifest.json
+          SLEELA_SHEET: ${{ github.workspace }}/SHEET.sheet
+        run: make -C impl all
+
+      - name: Build Premium SLVM generations 1–11
+        env:
+          SLEELA_SHA256_MANIFEST: /tmp/sleela-ci-manifest.json
+          SLEELA_SHEET: ${{ github.workspace }}/SHEET.sheet
+        run: make premium-vms
+
+      - name: Run five-sample arithmetic matrix on all twelve targets
+        env:
+          SLEELA_SHA256_MANIFEST: /tmp/sleela-ci-manifest.json
+          SLEELA_SHEET: ${{ github.workspace }}/SHEET.sheet
+        run: python3 comparison/tests/run_sleela_vm_arithmetic_speed.py
+
+      - name: Populate SLeeLa columns in ARITHMETIC.SPEED.001.md
+        env:
+          GITHUB_RUN_ID: ${{ github.run_id }}
+        run: python3 comparison/tests/update_sleela_arithmetic_table.py
+
+      - name: Commit completed SLeeLa table
+        if: github.event_name != 'pull_request' && github.ref_name == 'master'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add comparison/ARITHMETIC.SPEED.001.md
+          if ! git diff --cached --quiet; then
+            git commit -m "Complete SLeeLa VM arithmetic comparison table"
+            git push origin HEAD:master
+          else
+            echo "SLeeLa arithmetic table already contains these results."
+          fi
+
+      - name: Retain timings, checksums, and completed table
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sleela-vm-arithmetic-table-results
+          path: |
+            comparison-sleela-vm-arithmetic-results.json
+            comparison/ARITHMETIC.SPEED.001.md
+            /tmp/sleela-ci-manifest.json
+          if-no-files-found: warn
