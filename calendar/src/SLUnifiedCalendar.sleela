@@ -1,0 +1,115 @@
+<< calendar/src/SLUnifiedCalendar.sleela
+   SLeeLa Calendar System.
+   Definition: the Unified Calendar — the agreed endpoint. The proleptic
+   Gregorian civil calendar, referenced to UTC, expressed in ISO 8601, with
+   every historical and cultural calendar admitted as a convertible overlay.
+   Realized concretely through the U.S. System of Integration.
+   See calendar/99-unified-calendar.md. >>
+#sleela 2.5
+material;
+
+<< Family: calendar. SLUnifiedCalendar is the top of the family. It composes the
+   U.S. System of Integration (the operative frame) and exposes the three
+   unified rules (civil reckoning, physical reference, interchange form) plus
+   the overlay principle that keeps cultural calendars convertible rather than
+   abolished. >>
+class SLUnifiedCalendar {
+
+  SLCalendarIntegrationUS us;
+  SLCalendarGregorian gregorian;
+
+  << Prepare the unified calendar and its integration frame. >>
+  void create() {
+    us = new SLCalendarIntegrationUS();
+    us.setup();
+    gregorian = new SLCalendarGregorian();
+  }
+
+  << Rule 1 — the civil reckoning (proleptic Gregorian). >>
+  String civilRule() {
+    return "proleptic Gregorian: leap if div by 4, except centuries, except div by 400";
+  }
+  boolean isLeapYear(int year) {
+    if (gregorian == null) { create(); }
+    return gregorian.isLeapYear(year);
+  }
+
+  << Rule 2 — the physical reference. >>
+  String physicalReference() { return "UTC; reconciled by leap seconds"; }
+
+  << Rule 3 — the interchange form. >>
+  String interchangeForm() { return "ISO 8601 / RFC 3339, proleptic Gregorian, UTC frame"; }
+
+  << The canonical ISO 8601 civil date for a (year, month, day), via the U.S.
+     integration frame. >>
+  String canonicalDate(int year, int month, int day) {
+    if (us == null) { create(); }
+    return us.isoDate(year, month, day);
+  }
+
+  << Day of week, 0 = Sunday .. 6 = Saturday. >>
+  int dayOfWeek(int year, int month, int day) {
+    if (us == null) { create(); }
+    return us.dayOfWeek(year, month, day);
+  }
+
+  << The overlay principle: a named cultural calendar is admitted as an overlay
+     that maps to the unified civil date, never abolished. Kinds mirror the
+     documents: lunisolar (China, Greek), lunar (Hijri), julian-liturgical
+     (Orthodox). >>
+  String overlayKind(String name) {
+    if (name == "chinese") { return "lunisolar"; }
+    if (name == "greek") { return "lunisolar"; }
+    if (name == "hijri") { return "lunar"; }
+    if (name == "orthodox") { return "julian-liturgical"; }
+    return "unknown";
+  }
+  boolean admitsOverlay(String name) {
+    String kind = overlayKind(name);
+    return kind != "unknown";
+  }
+
+  << The agreement in one line. >>
+  String agreement() {
+    return "one civil calendar (proleptic Gregorian, UTC, ISO 8601); many preserved cultural overlays";
+  }
+
+  << ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >>
+  << Full executive-grade record: this class represents the agreed standard
+     itself. Values faithful to the real origin. >>
+  String metaVersion = "1.0.0";
+  int metaId = 5;
+  String metaAuthor = "mearvk LLC Calendar Team";
+  String metaDate = "2026-11-07";
+  String metaCopyright = "(c) 2026 mearvk LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "mearvk LLC";
+  String metaOrigin = "Galactic";
+  String metaBirthDate = "2026";
+  < maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 10;
+  String metaNationalSchedule = "ISO 8601:2019";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+}
