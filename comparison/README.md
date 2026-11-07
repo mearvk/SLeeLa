@@ -1,6 +1,6 @@
 # SLeeLa Computational Standards
 
-Edition 1.2 | Baseline: SLeeLa Syntax 3.0 | Status: baseline and numeric/Unicode edge vectors passed on configured platforms
+Edition 1.3 | Baseline: SLeeLa Syntax 3.0 | Status: batch 001/002 passed; batch 003 pending CI
 
 ## Purpose
 This directory establishes a common computational vocabulary and repeatable comparison method for SLeeLa, Java/JVM, native C, and native C++. It supports language design, compiler qualification, runtime engineering, interoperability, and performance research.
@@ -15,6 +15,7 @@ This directory establishes a common computational vocabulary and repeatable comp
 7. [Running PASS Record 001 — Java/JVM, Native C/C++, and SLeeLa VM](RUNNING.PASS.JAVA.001.md)
 8. [Numeric and Unicode Edge Vectors](NUMERIC-UNICODE-EDGE-VECTORS.md)
 9. [Running PASS Record 002 — Numeric and Unicode edge-vector iteration](RUNNING.PASS.JAVA.002.md)
+10. [Array, Bounds, and String Vectors](ARRAY-STRING-BOUNDS-VECTORS.md)
 
 ## Architectural principle
 One computational specification, multiple implementation environments.
@@ -58,6 +59,7 @@ The initial executable baseline is in tests/:
 - tests/run_native_java.py: compiles and runs C, C++, and Java, then compares their output to the shared expected vector.
 - tests/check_sleela_output.py: verifies the final program-output lines separately from SLeeLa runtime diagnostics.
 - tests/run_edge_vectors.py: runs fixed-width integer and UTF-8/code-point vectors in C11, C++17, and Java.
+- tests/run_array_string_vectors.py: runs checked array access and strict UTF-8 vectors in C11, C++17, and Java.
 
 Run the native/Java parity checks locally with Python 3, a C11 compiler, a C++17 compiler, and JDK 21 (or a compatible JDK):
 
@@ -72,3 +74,8 @@ GitHub Actions workflow: [Comparison Standards Conformance](../.github/workflows
 See [RUNNING.PASS.JAVA.001.md](RUNNING.PASS.JAVA.001.md) for the detailed evidence ledger, platform results, corrective engineering record, artifact names, graphs, and remaining qualification limits.
 
 The first baseline exercises arithmetic, loop accumulation, and ASCII output. Iteration 002 adds signed 32-bit boundaries, defined unsigned wrap, signed division/remainder, UTF-8 byte length, and Unicode code-point counting for C/C++/Java. See [RUNNING.PASS.JAVA.002.md](RUNNING.PASS.JAVA.002.md): the updated edge-vector workflow completed successfully on all three native/Java platforms. SLeeLa VM coverage for those added edge cases remains unqualified until equivalent VM vectors are implemented and run. It does not yet qualify integer overflow, floating-point edge cases, Unicode indexing, memory ownership, C ABI interoperability, Java process delegation, JNI, concurrency, or performance. Those remain unassessed until executable tests and retained CI results exist.
+
+
+## Iteration 003 — array and string semantics
+
+The next batch is implemented in [ARRAY-STRING-BOUNDS-VECTORS.md](ARRAY-STRING-BOUNDS-VECTORS.md), with C11, C++17, and Java implementations under tests/. It is wired into the cross-platform workflow and retains `comparison-array-string-results.json` per OS. The batch remains pending until a completed CI run verifies all ten assertions on Ubuntu, macOS, and Windows. SLeeLa VM parity for these array/string cases is not yet claimed.
