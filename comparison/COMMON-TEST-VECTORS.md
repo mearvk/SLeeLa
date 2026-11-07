@@ -16,7 +16,11 @@ The initial shared vector is intentionally narrow and deterministic:
 
 C, C++, and Java are compiled and compared by `tests/run_native_java.py` on Ubuntu, macOS, and Windows. The SLeeLa Syntax 3.0 source is executed in a separate Ubuntu VM job. The CI workflow retains result artifacts. A configured job remains pending evidence until a completed run is visible.
 
-## 2. Integer boundaries
+## 2. Executed numeric/Unicode batch 002
+
+The executable suite in [NUMERIC-UNICODE-EDGE-VECTORS.md](NUMERIC-UNICODE-EDGE-VECTORS.md) adds fixed-width signed limits, defined unsigned wrap, signed division/remainder, UTF-8 byte count, and Unicode code-point count. It currently targets C11, C++17, and Java 21+ on Ubuntu, macOS, and Windows. Its status remains pending until the new CI workflow completes successfully. SLeeLa VM parity for these added vectors is not yet claimed.
+
+## 3. Integer boundaries
 | ID | Operation | Observation |
 |---|---|---|
 | INT-001 | Represent zero | Exact zero |
