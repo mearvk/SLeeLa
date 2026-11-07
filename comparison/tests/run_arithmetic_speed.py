@@ -5,7 +5,9 @@ import csv,json,os,pathlib,platform,shlex,subprocess,tempfile,statistics
 ROOT=pathlib.Path(__file__).resolve().parents[2]
 SRC=ROOT/"comparison/tests/native/arithmetic_speed.c"; JAVA=ROOT/"comparison/tests/java/ArithmeticSpeed.java"
 RESULT={"suite":"SCS-PERF-ARITH-001","status":"RUNNING","host":{"os":platform.platform(),"machine":platform.machine(),"processor":platform.processor(),"logical_cores":os.cpu_count()},"targets":{},"notes":["Hosted-runner timings are informational, not release-grade rankings.","C/C++ use exact-width integer types; Java unsigned narrow types are masked emulations.","i128 is tested in C/C++ only when __int128 is supported; Java has no primitive i128.","Boolean is excluded from +,-,*,/ because arithmetic on booleans is not defined."]}
-def run(cmd): return subprocess.run(cmd,cwd=ROOT,check=True,text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE).stdout
+def run(cmd):
+ env=os.environ.copy();env["SLEELA_BENCH_SEED"]="0x53435350"
+ return subprocess.run(cmd,cwd=ROOT,check=True,text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,env=env).stdout
 def parse(s):
  rows=list(csv.DictReader(s.splitlines()))
  for r in rows:r["operations"]=int(r["operations"]);r["ns_per_operation"]=float(r["ns_per_operation"]);r["checksum"]=int(r["checksum"])
