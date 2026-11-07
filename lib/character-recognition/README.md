@@ -33,6 +33,8 @@ A similarity score is not a probability or legal confidence rating. Preserve
 the original scan and review the transcript and JSONL sidecar. The native API
 does not modify the source image.
 
+The adapter's core operations map to `slcr_model_create`, `slcr_model_add`, `slcr_normalize_glyph`, `slcr_model_recognize`, and `slcr_model_destroy`; persistence, segmentation, and transcript functions remain available through their documented native API.
+
 Compile `character_recognition.c` as C11 and link the native object. PGM
 loading and segmentation allocate native buffers; ownership and matching free
 calls must be respected by the adapter.
