@@ -8,10 +8,11 @@ CLI = pathlib.Path(os.environ.get("SLEELA_BIN", ROOT / "impl" / "build" / ("slee
 SOURCE = ROOT / "comparison" / "tests" / "sleela" / "arithmetic_speed.sleela"
 OPS = ("INT_ADD", "INT_SUB", "INT_MUL", "INT_DIV",
        "DOUBLE_ADD", "DOUBLE_SUB", "DOUBLE_MUL", "DOUBLE_DIV")
+CHECK_SCALE = 1_000_000  # Six decimal places, emitted as an exact integer.
 EXPECTED = {"INT_ADD": 8888888, "INT_SUB": 7530865, "INT_MUL": 83810205,
-            "INT_DIV": 10802469, "DOUBLE_ADD": 1999.9991,
-            "DOUBLE_SUB": 7530.8651, "DOUBLE_MUL": 9740.6784,
-            "DOUBLE_DIV": 10802.469}
+            "INT_DIV": 10802469, "DOUBLE_ADD": 1_999_999_100,
+            "DOUBLE_SUB": 7_530_865_100, "DOUBLE_MUL": 9_740_678_400,
+            "DOUBLE_DIV": 10_802_469_000}
 TIMING_RE = re.compile(r"(INT|DOUBLE)_(ADD|SUB|MUL|DIV)_NS=(\d+)")
 CHECK_RE = re.compile(
     r"(INT|DOUBLE)_(ADD|SUB|MUL|DIV)_CHECK="
@@ -59,12 +60,15 @@ def invoke(label, command):
         ns = timings[op]
         if ns <= 0:
             raise AssertionError(f"{label}: non-positive timing for {op}: {ns}")
-        expected = float(EXPECTED[op])
-        tolerance = max(1e-9, abs(expected) * 1e-12)
-        if abs(checks[op] - expected) > tolerance:
+        expected = EXPECTED[op]
+        # Floating values are scaled and rounded inside the SLeeLa workload,
+        # then printed as integers. This avoids the runtime double-to-text %g
+        # formatting limit while validating the result to 1e-6 precision.
+        actual = int(checks[op])
+        if actual != expected:
             raise AssertionError(
-                f"{label}: {op} checksum {checks[op]} != {expected} "
-                f"(tolerance {tolerance})"
+                f"{label}: {op} scaled checksum {actual} != {expected} "
+                f"(scale {CHECK_SCALE}, 1e-6 resolution)"
             )
     return timings, checks, p.stdout
 
