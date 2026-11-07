@@ -194,3 +194,13 @@ Native runtime (macos-latest): in_progress
 Native runtime (Windows 10+ / MinGW-w64): in_progress
 
 These jobs have not yet produced final cross-platform qualification results. The previously validated SLeeLa arithmetic benchmark remains PASS (12/12 runnable targets; 96/96 target-operation cases; 480/480 sample checksum validations). The separate C11/C++17/Java 21+ hosted comparator result remains PASS (128/128 cases). The cross-platform reruns must not be conflated with those completed arithmetic measurements.
+
+
+## Final corrective CI results — 2026-11-07
+
+The two corrective workflows have now completed.
+
+- [Complete VM and Language Conformance — run 42343381660](https://github.com/mearvk/SLeeLa/actions/runs/42343381660): **PASS, 5/5 jobs**. Basic Native + Premium SLVM 1–11 passed; the arithmetic-speed job passed; C11/C++17/Java 21+ comparator jobs passed on Ubuntu, macOS, and Windows.
+- [Native C and C++ Portability — run 42343381645](https://github.com/mearvk/SLeeLa/actions/runs/42343381645): **FAIL, 0/3 platform jobs fully passed**. Linux and macOS built the native runtime, passed ISA verification, OSLS registry tests, and OSLS VM compiler/dispatch tests, then stopped in the test-math Makefile recipe with an unterminated shell quote / unexpected EOF. Windows built the native runtime and passed ISA verification, but OSLS CTest failed one osls_test assertion: the relative normalized path was compared against POSIX ../c instead of the Windows separator form ..\\c.
+
+These failures are test-harness portability issues observed after the earlier native build and several OSLS checks succeeded. They do not overturn the successful VM/language conformance workflow or the separately validated arithmetic measurements. Native portability is NOT qualified on any of the three operating systems until the shell recipe and Windows path expectation are corrected and the workflow is rerun.
