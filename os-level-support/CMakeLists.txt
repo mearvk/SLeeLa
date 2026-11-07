@@ -5,6 +5,9 @@ target_include_directories(os_level_support PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_compile_features(os_level_support PUBLIC c_std_99 cxx_std_11)
 if(WIN32)
   target_compile_definitions(os_level_support PRIVATE _CRT_SECURE_NO_WARNINGS)
+  # osls_extended* uses GetAdaptersAddresses (IP Helper) and Winsock APIs.
+  # PUBLIC propagates the required import libraries to consumers of this target.
+  target_link_libraries(os_level_support PUBLIC ws2_32 iphlpapi)
 endif()
 include(CTest)
 if(BUILD_TESTING)
@@ -13,6 +16,11 @@ if(BUILD_TESTING)
   add_test(NAME osls_test COMMAND osls_test)
   add_executable(osls_vm_bridge_test test_osls_vm_bridge.c osls_vm_bridge.c osls.c osls_extended.c osls_extended2.c)
   target_include_directories(osls_vm_bridge_test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+  if(WIN32)
+    # This test compiles the OSLS sources directly rather than linking the
+    # os_level_support library, so it must declare the Windows system libs too.
+    target_link_libraries(osls_vm_bridge_test PRIVATE ws2_32 iphlpapi)
+  endif()
   add_test(NAME osls_vm_bridge_test COMMAND osls_vm_bridge_test)
 endif()
 add_subdirectory(loader)
