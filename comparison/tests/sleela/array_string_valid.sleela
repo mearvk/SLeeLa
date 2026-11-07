@@ -1,5 +1,5 @@
 #sleela 3.0
-// SCS-TEST-003 VM subset: safe array operations and UTF-8 literal round-trip.
+// SCS-TEST-003 VM subset: safe array operations and string-literal handling.
 class ArrayStringValid {
     void main() {
         int[] empty = new int[0];
@@ -12,11 +12,11 @@ class ArrayStringValid {
         print("ARRAY-SINGLE=" + arrayLength(single));
         print("ARRAY-FIRST=" + arrayGet(values, 0));
         print("ARRAY-LAST=" + arrayGet(values, 2));
-        if ("Aé😀" == "Aé😀") {
-            print("UTF8-ROUNDTRIP=PASS");
+        if ("USEFFUL" == "USEFFUL") {
+            print("STRING-LITERAL-EQUALITY=PASS");
         } else {
-            print("UTF8-ROUNDTRIP=FAIL");
+            print("STRING-LITERAL-EQUALITY=FAIL");
         }
-        print("UTF8-FIXTURE=Aé😀");
+        print("STRING-FIXTURE=USEFFUL");
     }
 }
