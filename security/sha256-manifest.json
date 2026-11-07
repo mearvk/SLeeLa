@@ -49511,7 +49511,7 @@
     },
     {
       "path": "os-level-support/test_osls.c",
-      "sha256": "96c5cee34c6db76b4433920fe10a1d540a5b010d020675e1fbe662b4a2ac3904"
+      "sha256": "5771456bef8a22f1c3721d40ee0d674eed9eae6821df84b72eaa525f58ba434d"
     },
     {
       "path": "os-level-support/test_osls_vm_bridge.c",
