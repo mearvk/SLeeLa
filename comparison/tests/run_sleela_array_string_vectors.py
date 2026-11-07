@@ -23,10 +23,14 @@ EXPECTED_VALID = [
     "STRING-LITERAL-EQUALITY=PASS",
     "STRING-FIXTURE=USEFFUL",
 ]
-# The runtime writes operational telemetry to stderr. Since stdout and stderr
-# are captured together by this runner, remove only the documented telemetry
-# records before comparing the program's exact output.
-DIAGNOSTIC_PREFIXES = ("[memory-manager]",)
+# The runtime emits documented security and operational telemetry on stdout
+# before the program's own output. Strip only those known diagnostic records.
+DIAGNOSTIC_PREFIXES = (
+    "[memory-manager]",
+    "[security]",
+    "[defender]",
+    "verification: PASS (",
+)
 RESULT = {"suite": "SCS-TEST-003-sleela-vm", "cases": {}, "status": "FAIL"}
 
 
