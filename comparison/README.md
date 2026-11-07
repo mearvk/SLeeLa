@@ -16,6 +16,7 @@ This directory establishes a common computational vocabulary and repeatable comp
 8. [Numeric and Unicode Edge Vectors](NUMERIC-UNICODE-EDGE-VECTORS.md)
 9. [Running PASS Record 002 — Numeric and Unicode edge-vector iteration](RUNNING.PASS.JAVA.002.md)
 10. [Array, Bounds, and String Vectors](ARRAY-STRING-BOUNDS-VECTORS.md)
+11. [Arithmetic Speed Series — Iteration 001](ARITHMETIC.SPEED.001.md)
 
 ## Architectural principle
 One computational specification, multiple implementation environments.
