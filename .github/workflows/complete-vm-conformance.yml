@@ -175,3 +175,23 @@ jobs:
             comparison-vm-matrix-results.json
             /tmp/sleela-ci-manifest.json
           if-no-files-found: warn
+  arithmetic-speed:
+    name: Arithmetic speed — C11, C++17, Java 21+
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Install benchmark toolchains
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential python3 openjdk-21-jdk
+      - name: Run repeated arithmetic throughput sweep
+        run: python3 comparison/tests/run_arithmetic_speed.py
+      - name: Retain raw arithmetic measurements
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: arithmetic-speed-linux
+          path: comparison-arithmetic-speed-results.json
+          if-no-files-found: warn
