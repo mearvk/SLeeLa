@@ -1,4 +1,4 @@
-<< SLeeLa result record mirroring slcr_result. >>
+<< SLeeLa result record mirroring slcr_result. The accepted flag is a host-side convenience derived from the configured minimum similarity; it is not a native slcr_result field. >>
 #sleela 3.0
 material;
 class SLCharacterResult {
