@@ -1,0 +1,104 @@
+#sleela 3.0
+// SCS-PERF-SLEELA-VM-001
+// Timed regions contain only the arithmetic loop. Process startup, compilation,
+// VM selection, and Premium admission occur before this source begins executing.
+class SleelaArithmeticSpeed {
+    void intAdd() {
+        int a = 1234567;
+        int b = 7654321;
+        int sink = 0;
+        for (int i = 0; i < 50000; i = i + 1) { sink = a + b; }
+        long t0 = timeMonotonicNanos();
+        for (int i = 0; i < 250000; i = i + 1) { sink = a + b; }
+        long t1 = timeMonotonicNanos();
+        print("INT_ADD_NS=" + (t1 - t0));
+        print("INT_ADD_CHECK=" + sink);
+    }
+    void intSub() {
+        int a = 8765432;
+        int b = 1234567;
+        int sink = 0;
+        for (int i = 0; i < 50000; i = i + 1) { sink = a - b; }
+        long t0 = timeMonotonicNanos();
+        for (int i = 0; i < 250000; i = i + 1) { sink = a - b; }
+        long t1 = timeMonotonicNanos();
+        print("INT_SUB_NS=" + (t1 - t0));
+        print("INT_SUB_CHECK=" + sink);
+    }
+    void intMul() {
+        int a = 12345;
+        int b = 6789;
+        int sink = 0;
+        for (int i = 0; i < 50000; i = i + 1) { sink = a * b; }
+        long t0 = timeMonotonicNanos();
+        for (int i = 0; i < 250000; i = i + 1) { sink = a * b; }
+        long t1 = timeMonotonicNanos();
+        print("INT_MUL_NS=" + (t1 - t0));
+        print("INT_MUL_CHECK=" + sink);
+    }
+    void intDiv() {
+        int a = 86419752;
+        int b = 8;
+        int sink = 0;
+        for (int i = 0; i < 50000; i = i + 1) { sink = a / b; }
+        long t0 = timeMonotonicNanos();
+        for (int i = 0; i < 250000; i = i + 1) { sink = a / b; }
+        long t1 = timeMonotonicNanos();
+        print("INT_DIV_NS=" + (t1 - t0));
+        print("INT_DIV_CHECK=" + sink);
+    }
+    void doubleAdd() {
+        double a = 1234.567;
+        double b = 765.4321;
+        double sink = 0.0;
+        for (int i = 0; i < 50000; i = i + 1) { sink = a + b; }
+        long t0 = timeMonotonicNanos();
+        for (int i = 0; i < 250000; i = i + 1) { sink = a + b; }
+        long t1 = timeMonotonicNanos();
+        print("DOUBLE_ADD_NS=" + (t1 - t0));
+        print("DOUBLE_ADD_CHECK=" + sink);
+    }
+    void doubleSub() {
+        double a = 8765.4321;
+        double b = 1234.567;
+        double sink = 0.0;
+        for (int i = 0; i < 50000; i = i + 1) { sink = a - b; }
+        long t0 = timeMonotonicNanos();
+        for (int i = 0; i < 250000; i = i + 1) { sink = a - b; }
+        long t1 = timeMonotonicNanos();
+        print("DOUBLE_SUB_NS=" + (t1 - t0));
+        print("DOUBLE_SUB_CHECK=" + sink);
+    }
+    void doubleMul() {
+        double a = 123.456;
+        double b = 78.9;
+        double sink = 0.0;
+        for (int i = 0; i < 50000; i = i + 1) { sink = a * b; }
+        long t0 = timeMonotonicNanos();
+        for (int i = 0; i < 250000; i = i + 1) { sink = a * b; }
+        long t1 = timeMonotonicNanos();
+        print("DOUBLE_MUL_NS=" + (t1 - t0));
+        print("DOUBLE_MUL_CHECK=" + sink);
+    }
+    void doubleDiv() {
+        double a = 86419.752;
+        double b = 8.0;
+        double sink = 0.0;
+        for (int i = 0; i < 50000; i = i + 1) { sink = a / b; }
+        long t0 = timeMonotonicNanos();
+        for (int i = 0; i < 250000; i = i + 1) { sink = a / b; }
+        long t1 = timeMonotonicNanos();
+        print("DOUBLE_DIV_NS=" + (t1 - t0));
+        print("DOUBLE_DIV_CHECK=" + sink);
+    }
+    void main() {
+        intAdd();
+        intSub();
+        intMul();
+        intDiv();
+        doubleAdd();
+        doubleSub();
+        doubleMul();
+        doubleDiv();
+    }
+}
