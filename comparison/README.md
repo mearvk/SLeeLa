@@ -14,7 +14,7 @@ This directory establishes a common computational vocabulary and repeatable comp
 6. [Common Test Vectors](COMMON-TEST-VECTORS.md)
 7. [Running PASS Record 001 — Java/JVM, Native C/C++, and SLeeLa VM](RUNNING.PASS.JAVA.001.md)
 8. [Numeric and Unicode Edge Vectors](NUMERIC-UNICODE-EDGE-VECTORS.md)
-9. Running PASS Record 002 will be added after the next batch completes CI verification.
+9. [Running PASS Record 002 — Numeric and Unicode edge-vector iteration](RUNNING.PASS.JAVA.002.md)
 
 ## Architectural principle
 One computational specification, multiple implementation environments.
@@ -69,6 +69,6 @@ GitHub Actions workflow: [Comparison Standards Conformance](../.github/workflows
 
 **Current result:** corrected runs [42331591283](https://github.com/mearvk/SLeeLa/actions/runs/42331591283), [42331589662](https://github.com/mearvk/SLeeLa/actions/runs/42331589662), and [42331561514](https://github.com/mearvk/SLeeLa/actions/runs/42331561514) completed successfully. Latest run 42331591283 passed all four jobs: Ubuntu, macOS, Windows, and SLeeLa Syntax 3.0 VM. The first run [42331126707](https://github.com/mearvk/SLeeLa/actions/runs/42331126707) exposed a Windows Java launcher issue and a too-strict SLeeLa stdout comparison; both were corrected and verified in the successful reruns.
 
-See [RUNNING.PASS.JAVA.001.md](RUNNING.PASS.JAVA.JVM.XXX.md) for the detailed evidence ledger, platform results, corrective engineering record, artifact names, graphs, and remaining qualification limits.
+See [RUNNING.PASS.JAVA.001.md](RUNNING.PASS.JAVA.001.md) for the detailed evidence ledger, platform results, corrective engineering record, artifact names, graphs, and remaining qualification limits.
 
-The first baseline exercises arithmetic, loop accumulation, and ASCII output. The second batch adds signed 32-bit boundaries, defined unsigned wrap, signed division/remainder, UTF-8 byte length, and Unicode code-point counting for C/C++/Java. SLeeLa VM coverage for those added edge cases remains unqualified until equivalent VM vectors are implemented and run. It does not yet qualify integer overflow, floating-point edge cases, Unicode indexing, memory ownership, C ABI interoperability, Java process delegation, JNI, concurrency, or performance. Those remain unassessed until executable tests and retained CI results exist.
+The first baseline exercises arithmetic, loop accumulation, and ASCII output. Iteration 002 adds signed 32-bit boundaries, defined unsigned wrap, signed division/remainder, UTF-8 byte length, and Unicode code-point counting for C/C++/Java. See [RUNNING.PASS.JAVA.002.md](RUNNING.PASS.JAVA.002.md): the earlier baseline run passed, while the updated edge-vector workflow was still queued at the last recorded check. SLeeLa VM coverage for those added edge cases remains unqualified until equivalent VM vectors are implemented and run. It does not yet qualify integer overflow, floating-point edge cases, Unicode indexing, memory ownership, C ABI interoperability, Java process delegation, JNI, concurrency, or performance. Those remain unassessed until executable tests and retained CI results exist.
