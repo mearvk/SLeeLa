@@ -43,3 +43,23 @@ Record SLeeLa syntax, compiler version, VM artifact ABI, Java/JDK release, C/C++
 
 ## Qualification levels
 SCS-0 Described; SCS-1 Compiles; SCS-2 Executes; SCS-3 Semantic tests pass; SCS-4 ABI/interoperability tests pass; SCS-5 Platform-qualified. A level applies to a feature and toolchain, not to a whole language by implication.
+
+## Executable baseline
+
+The initial executable baseline is in `tests/`:
+
+- `tests/native/common_vectors.c`: C11 arithmetic, bounded loop, and ASCII output.
+- `tests/native/common_vectors.cpp`: C++17 equivalents.
+- `tests/java/CommonVectors.java`: Java equivalents.
+- `tests/sleela/common_vectors.sleela`: SLeeLa Syntax 3.0 VM equivalents.
+- `tests/run_native_java.py`: compiles and runs C, C++, and Java, then compares their output to the shared expected vector.
+
+Run the native/Java parity checks locally with Python 3, a C11 compiler, a C++17 compiler, and JDK 21 (or a compatible JDK):
+
+```sh
+python3 comparison/tests/run_native_java.py
+```
+
+GitHub Actions workflow: [Comparison Standards Conformance](../.github/workflows/comparison-conformance.yml). It runs native/Java parity on Ubuntu, macOS, and Windows, and builds/runs the SLeeLa VM vector on Ubuntu. Each job retains its result/output artifact.
+
+This is a deliberately small first slice: it exercises arithmetic, loop accumulation, and ASCII output. It does not yet qualify integer overflow, floating-point edge cases, Unicode indexing, memory ownership, C ABI interoperability, Java process delegation, JNI, concurrency, or performance. Those remain unassessed until executable tests and retained CI results exist. Workflow configuration is not evidence of a successful run.
