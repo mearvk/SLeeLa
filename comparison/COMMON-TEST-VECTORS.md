@@ -1,6 +1,6 @@
 # Common Computational Test Vectors
 Standard SCS-TEST-001 | Edition 1.0  
-Status: specification with an initial executable baseline; CI results must be read from the workflow run and artifacts.
+Status: baseline and SCS-TEST-002 edge suite passed on configured CI platforms; VM edge parity remains unqualified.
 
 ## 1. Reporting
 Each implementation records test ID, source file, compiler/runtime versions, command, expected and actual output, exit status, and PASS/FAIL/SKIP. A skip names the missing prerequisite.
@@ -18,7 +18,7 @@ C, C++, and Java are compiled and compared by `tests/run_native_java.py` on Ubun
 
 ## 2. Executed numeric/Unicode batch 002
 
-The executable suite in [NUMERIC-UNICODE-EDGE-VECTORS.md](NUMERIC-UNICODE-EDGE-VECTORS.md) adds fixed-width signed limits, defined unsigned wrap, signed division/remainder, UTF-8 byte count, and Unicode code-point count. It currently targets C11, C++17, and Java 21+ on Ubuntu, macOS, and Windows. Its status remains pending until the new CI workflow completes successfully. SLeeLa VM parity for these added vectors is not yet claimed.
+The executable suite in [NUMERIC-UNICODE-EDGE-VECTORS.md](NUMERIC-UNICODE-EDGE-VECTORS.md) adds fixed-width signed limits, defined unsigned wrap, signed division/remainder, UTF-8 byte count, and Unicode code-point count. It currently targets C11, C++17, and Java 21+ on Ubuntu, macOS, and Windows. Run [42332366905](https://github.com/mearvk/SLeeLa/actions/runs/42332366905) completed successfully: C11, C++17, and Java 21+ each passed all seven assertions on Ubuntu, macOS, and Windows. SLeeLa VM parity for these added vectors is not yet claimed.
 
 ## 3. Integer boundaries
 | ID | Operation | Observation |
