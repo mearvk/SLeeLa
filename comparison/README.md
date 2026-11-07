@@ -1,6 +1,6 @@
 # SLeeLa Computational Standards
 
-Edition 1.0 | Baseline: SLeeLa Syntax 3.0 | Status: executable baseline with first-run results and corrective rerun pending
+Edition 1.1 | Baseline: SLeeLa Syntax 3.0 | Status: executable baseline passed on Ubuntu, macOS, and Windows
 
 ## Purpose
 This directory establishes a common computational vocabulary and repeatable comparison method for SLeeLa, Java/JVM, native C, and native C++. It supports language design, compiler qualification, runtime engineering, interoperability, and performance research.
@@ -12,6 +12,7 @@ This directory establishes a common computational vocabulary and repeatable comp
 4. [ABI and Interoperability](ABI-AND-INTEROPERABILITY.md)
 5. [Conformance Matrix](CONFORMANCE-MATRIX.md)
 6. [Common Test Vectors](COMMON-TEST-VECTORS.md)
+7. [Running PASS Record — Java/JVM, Native C/C++, and SLeeLa VM](RUNNING.PASS.JAVA.JVM.XXX.md)
 
 ## Architectural principle
 One computational specification, multiple implementation environments.
@@ -46,14 +47,14 @@ SCS-0 Described; SCS-1 Compiles; SCS-2 Executes; SCS-3 Semantic tests pass; SCS-
 
 ## Executable baseline
 
-The initial executable baseline is in `tests/`:
+The initial executable baseline is in tests/:
 
-- `tests/native/common_vectors.c`: C11 arithmetic, bounded loop, and ASCII output.
-- `tests/native/common_vectors.cpp`: C++17 equivalents.
-- `tests/java/CommonVectors.java`: Java equivalents.
-- `tests/sleela/common_vectors.sleela`: SLeeLa Syntax 3.0 VM equivalents.
-- `tests/run_native_java.py`: compiles and runs C, C++, and Java, then compares their output to the shared expected vector.
-- `tests/check_sleela_output.py`: verifies the final program-output lines separately from SLeeLa runtime diagnostics.
+- tests/native/common_vectors.c: C11 arithmetic, bounded loop, and ASCII output.
+- tests/native/common_vectors.cpp: C++17 equivalents.
+- tests/java/CommonVectors.java: Java equivalents.
+- tests/sleela/common_vectors.sleela: SLeeLa Syntax 3.0 VM equivalents.
+- tests/run_native_java.py: compiles and runs C, C++, and Java, then compares their output to the shared expected vector.
+- tests/check_sleela_output.py: verifies the final program-output lines separately from SLeeLa runtime diagnostics.
 
 Run the native/Java parity checks locally with Python 3, a C11 compiler, a C++17 compiler, and JDK 21 (or a compatible JDK):
 
@@ -63,6 +64,8 @@ python3 comparison/tests/run_native_java.py
 
 GitHub Actions workflow: [Comparison Standards Conformance](../.github/workflows/comparison-conformance.yml). It runs native/Java parity on Ubuntu, macOS, and Windows, and builds/runs the SLeeLa VM vector on Ubuntu. Each job retains its result/output artifact.
 
-First completed run [42331126707](https://github.com/mearvk/SLeeLa/actions/runs/42331126707): Ubuntu and macOS shared vectors passed; Windows C and C++ passed but Java launch failed under MSYS2 Python; the SLeeLa VM built and emitted expected program output, but strict comparison included runtime diagnostics. Both causes have been addressed in the workflow and validator. Corrected rerun is pending; no cross-platform all-green claim is made yet.
+**Current result:** corrected runs [42331591283](https://github.com/mearvk/SLeeLa/actions/runs/42331591283), [42331589662](https://github.com/mearvk/SLeeLa/actions/runs/42331589662), and [42331561514](https://github.com/mearvk/SLeeLa/actions/runs/42331561514) completed successfully. Latest run 42331591283 passed all four jobs: Ubuntu, macOS, Windows, and SLeeLa Syntax 3.0 VM. The first run [42331126707](https://github.com/mearvk/SLeeLa/actions/runs/42331126707) exposed a Windows Java launcher issue and a too-strict SLeeLa stdout comparison; both were corrected and verified in the successful reruns.
 
-This is a deliberately small first slice: it exercises arithmetic, loop accumulation, and ASCII output. It does not yet qualify integer overflow, floating-point edge cases, Unicode indexing, memory ownership, C ABI interoperability, Java process delegation, JNI, concurrency, or performance. Those remain unassessed until executable tests and retained CI results exist. Workflow configuration is not evidence of a successful run.
+See [RUNNING.PASS.JAVA.JVM.XXX.md](RUNNING.PASS.JAVA.JVM.XXX.md) for the detailed evidence ledger, platform results, corrective engineering record, artifact names, graphs, and remaining qualification limits.
+
+This is a deliberately small first slice: it exercises arithmetic, loop accumulation, and ASCII output. It does not yet qualify integer overflow, floating-point edge cases, Unicode indexing, memory ownership, C ABI interoperability, Java process delegation, JNI, concurrency, or performance. Those remain unassessed until executable tests and retained CI results exist.
