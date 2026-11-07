@@ -1,6 +1,7 @@
 << SLeeLa lifecycle contract for the opaque slnn_network handle.
-   Prediction/training are performed by the registered native adapter, not
-   simulated by this declaration. >>
+   This front-end class never fabricates native ownership. Prediction and
+   training return STATUS_NATIVE_ADAPTER_REQUIRED until a host adapter is
+   registered by the embedding runtime. >>
 #sleela 3.0
 material;
 class SLNeuralNetwork {
@@ -13,40 +14,36 @@ class SLNeuralNetwork {
   static final int STATUS_NATIVE_ADAPTER_REQUIRED = 6;
 
   boolean configured = false;
-  boolean nativeHandleOwned = false;
   int inputCount = 0;
   int outputCount = 0;
 
   int configure(SLNeuralNetworkConfig config) {
     if (config == null || !config.valid()) { return STATUS_INVALID_ARGUMENT; }
-    inputCount = config.getLayerSizes()[0];
-    outputCount = config.getLayerSizes()[config.getLayerSizes().length - 1];
+    int[] sizes = config.getLayerSizes();
+    inputCount = sizes[0];
+    outputCount = sizes[sizes.length - 1];
     configured = true;
-    nativeHandleOwned = false;
     return STATUS_OK;
   }
 
   boolean isConfigured() { return configured; }
-  boolean isNativeReady() { return nativeHandleOwned; }
+  boolean isNativeReady() { return false; }
   int getInputCount() { return inputCount; }
   int getOutputCount() { return outputCount; }
 
   int predict(double[] input, double[] output) {
     if (!configured || input == null || output == null) { return STATUS_INVALID_ARGUMENT; }
     if (input.length != inputCount || output.length != outputCount) { return STATUS_SIZE_MISMATCH; }
-    if (!nativeHandleOwned) { return STATUS_NATIVE_ADAPTER_REQUIRED; }
     return STATUS_NATIVE_ADAPTER_REQUIRED;
   }
 
   int trainSample(double[] input, double[] target, double learningRate) {
-    if (!configured || input == null || target == null || learningRate <= 0) { return STATUS_INVALID_ARGUMENT; }
+    if (!configured || input == null || target == null || learningRate <= 0.0) { return STATUS_INVALID_ARGUMENT; }
     if (input.length != inputCount || target.length != outputCount) { return STATUS_SIZE_MISMATCH; }
-    if (!nativeHandleOwned) { return STATUS_NATIVE_ADAPTER_REQUIRED; }
     return STATUS_NATIVE_ADAPTER_REQUIRED;
   }
 
   void close() {
-    nativeHandleOwned = false;
     configured = false;
     inputCount = 0;
     outputCount = 0;
