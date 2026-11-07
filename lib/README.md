@@ -15,7 +15,14 @@ SLeeLa is treated as a Turing-complete language whose front end should be expres
 
 The library uses one SLeeLa source file per front-end object. This makes the object inventory measurable and gives the project a path toward a roughly 2,000-object standard library without hiding declarations inside aggregate files.
 
-Families: `core/`, `collections/`, `text/`, `xml/`, `sleeladoc/`, `io/`, `vm/`, `os/`, `os-level-support/`, `net/`, `wifi/`, `security/`, `opcodes/`, `sldocument/`, `coorenagraph/`, `moral-capacitor/`.
+Families: `core/`, `collections/`, `text/`, `xml/`, `sleeladoc/`, `io/`, `vm/`, `os/`, `os-level-support/`, `net/`, `wifi/`, `security/`, `opcodes/`, `sldocument/`, `coorenagraph/`, `moral-capacitor/`, `large-language-models/`, `rrs/`, `neural-nets/`, and `character-recognition/`.
+
+The AI-facing packages are SLeeLa mirrors of native subsystems under
+[`artificial-intelligence/`](../artificial-intelligence/). The LLM and RRS
+packages are established; `neural-nets/` and `character-recognition/` provide
+SLeeLa configuration, lifecycle, and result contracts while retaining native
+C/C++ as the authoritative execution layer. See each package README for bridge
+requirements and capability limits.
 
 ### Moral Capacitor™ — the ethical gate for every family
 
@@ -86,7 +93,7 @@ built in CI: `build-linux.yml`, `build-macos.yml`, `build-windows.yml`).
 
 ## Library discovery
 
-The /lib tree is recursively indexed by the compiler and Nordshrift loader. Current canonical collection: **106 package families / 11,662 .sleela source classes / 74 `SLPackage.sleela` module facades / 11,736 total symbol records** (verified filesystem count via `tools/generate-library-symbols.py`, reconciled with `LIBRARY.INDEX.md` Revision 0.53). See `LIBRARY.SYMBOLS.md` for the complete collection.
+The /lib tree is recursively indexed by the compiler and Nordshrift loader. Current canonical collection: **116 package families / 11,918 .sleela source classes / 83 `SLPackage.sleela` module facades / 12,001 total symbol records** (verified filesystem count via `tools/generate-library-symbols.py`, reconciled with `LIBRARY.INDEX.md` Revision 0.53). See `LIBRARY.SYMBOLS.md` for the complete collection.
 
 The `sldocument` family defines the `.sldocument` format: an ordered, top-down SLeeLa document that compiles against and with standard `.sleela` source. Its annotated method steps run in order (`@order` / `@function` / bare method name), and each step usually returns a single binary **veritable-and-kind** value (`SLVeritable`). These documents suit tasks more sophisticated than bash scripting and clear national-program work where order is already established. The compile/invoke primitives sit below the explicit VM/OS bridge in `native/src/sleela_sldocument.cpp`. See `sldocument/SLDOCUMENT.md`.
 
