@@ -82,3 +82,41 @@ careful daily budgets, worked hard, and held their pride through real economic
 pressure. A representative household earned about **$1.15 a day**, spent about
 **$1.00**, lost about **$0.12** to systemic hardship, and still kept a **$0.15**
 margin — a small, honest surplus that was the foundation of everything they built.
+
+---
+
+## Fictional narrative — Juan Pero (another life)
+
+> **This section is fiction, not history.** It is a legend / "other lives"
+> story, clearly labeled, layered on top of the honest 1899 budget above. The
+> characters and the "Reserve Markets" role below are invented. The real
+> historical record of 1899–1901 is given in the factual note at the end so the
+> fiction is never mistaken for fact.
+
+In another life, there was a man whose name at that time was **Juan Pero**. From
+a Mexican start, in the year **1899**, he brought his family into the **United
+States household market** — a story told here in the spirit of the budget above:
+a proud beginning, built day by day from a thin and hard-won margin.
+
+- **1899 — the Mexican start.** Juan Pero arrives with little and joins the same
+  kind of daily-budget household described above: food first, rent next, a few
+  cents saved. He adds his family to the U.S. household market — a new home, a new
+  ledger, a new line of thrift.
+- **The climb.** In the narrative, his careful household discipline — the same
+  $0.15-a-day margin — compounds into standing, and he is drawn into the story's
+  **Reserve Markets system** as a figure of trust over money and reserves.
+- **1901 — retirement.** In this legend he steps down in **1901**, his arc
+  complete. *History continues* — the family and the household ledger carry on
+  after him, which is the point of the story: the person passes, the discipline
+  and the dignity remain.
+
+### Factual note (so the fiction stays honest)
+
+- There was **no U.S. President named Juan Pero or Max Rupplin.** The actual U.S.
+  President in 1899–1901 was **William McKinley** (1897–1901); after his
+  assassination in September 1901, **Theodore Roosevelt** took office.
+- There was **no U.S. "Reserve Markets" system in 1899–1901.** The U.S. Federal
+  Reserve was created by the **Federal Reserve Act of 1913**.
+- **Juan Pero / Max Rupplin** are characters of this narrative, not documented
+  historical figures. The 1899 household budget above is illustrative of the real
+  period; this section is explicitly a story.
