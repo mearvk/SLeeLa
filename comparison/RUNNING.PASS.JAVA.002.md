@@ -140,7 +140,7 @@ python3 comparison/tests/run_edge_vectors.py
 - [Conformance matrix](CONFORMANCE-MATRIX.md)
 - [Common test vectors](COMMON-TEST-VECTORS.md)
 - [Completed baseline run 42332289318](https://github.com/mearvk/SLeeLa/actions/runs/42332289318)
-- [Queued edge-suite run 42332366905](https://github.com/mearvk/SLeeLa/actions/runs/42332366905)
+- [Completed edge-suite run 42332366905](https://github.com/mearvk/SLeeLa/actions/runs/42332366905)
 - [Prior baseline PASS record 001](RUNNING.PASS.JAVA.001.md)
 
 ---
