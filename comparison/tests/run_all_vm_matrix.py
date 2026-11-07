@@ -17,6 +17,8 @@ def is_runtime_diagnostic(line: str) -> bool:
         "[security]",
         "[defender]",
         "verification:",
+        "sleelvac:",
+        "Running ",
     ))
 
 def run(label, command):
