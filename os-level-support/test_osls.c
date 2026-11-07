@@ -48,13 +48,26 @@ int main(void) {
         assert(osls_get_native_error(&nerr) == OSLS_OK);
         /* Pure path computation. */
         assert(osls_path_normalize("/a/b/../c/./d", pbuf, sizeof(pbuf)) == OSLS_OK);
+#if defined(_WIN32)
+        /* Normalized paths use the host platform's separator. */
+        assert(strcmp(pbuf, "\\a\\c\\d") == 0);
+#else
         assert(strcmp(pbuf, "/a/c/d") == 0);
+#endif
         assert(osls_path_normalize("a/b/../../../c", pbuf, sizeof(pbuf)) == OSLS_OK);
         assert(strcmp(pbuf, "../c") == 0);
         assert(osls_path_join("/usr/local", "bin/x", pbuf, sizeof(pbuf)) == OSLS_OK);
+#if defined(_WIN32)
+        assert(strcmp(pbuf, "\\usr\\local\\bin\\x") == 0);
+#else
         assert(strcmp(pbuf, "/usr/local/bin/x") == 0);
+#endif
         assert(osls_path_join("/usr", "/abs", pbuf, sizeof(pbuf)) == OSLS_OK);
+#if defined(_WIN32)
+        assert(strcmp(pbuf, "\\abs") == 0);
+#else
         assert(strcmp(pbuf, "/abs") == 0);
+#endif
         assert(osls_path_resolve(".", pbuf, sizeof(pbuf)) == OSLS_OK && pbuf[0] != '\0');
         assert(osls_get_path_info(".", &pinfo) == OSLS_OK);
         assert(osls_get_memory_info(NULL) == OSLS_INVALID_ARGUMENT);
