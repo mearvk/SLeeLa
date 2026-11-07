@@ -294,3 +294,7 @@ The SLeeLa runner writes `comparison-sleela-vm-arithmetic-results.json`; the int
 ---
 
 **Current conclusion:** C11, C++17, and Java 21+ have local reference data and a completed hosted Linux arithmetic dataset (128/128 cases passed). SLeeLa Basic Native and Premium SLVM 1–11 now have validated arithmetic measurements (96/96 target-operation cases; 480/480 checksum samples passed). The overall VM workflow remains red because the later Standard VM Modium freshness check detected stale generated files. RAM performance, broader SLeeLa numeric widths, float32, and Boolean logic still require separate benchmark suites.
+
+## 9. Common eight-case comparison — Iteration 002
+
+A consolidated table now places the eight shared hosted-Linux cases (i64 and f64 × +, -, *, /) side by side for C11, C++17, Java 21+, Basic Native, and Premium SLVM 1–11: [Arithmetic Comparison — Common Eight Cases](comparison/ARITHMETIC.SPEED.002.md). This is a common-coverage view only. The source datasets still use different iteration counts, operand patterns, and timing boundaries, so cross-language and native-versus-VM timing ratios remain invalid. A genuinely equivalent comparison requires a new matched-protocol CI run.
