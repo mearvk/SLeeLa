@@ -162,13 +162,28 @@ scale is one `bigdiv`. Big integers are carried signed (sign + magnitude) in
 SLeeLa on top of the native ops. Verified digit-for-digit against an independent
 reference at 50, 1,000, and 10,000 digits.
 
-Measured, v3.0, same machine:
+### Measured data — v3.0 (native big-integer kernel)
 
-| Digits | Spigot | Machin | Chudnovsky |
-|---:|---:|---:|---:|
-| 1,000 | ~2 s | <1 s | ~2 s |
-| 10,000 | ~51 s | ~3 s | ~9 s |
-| 50,000 | — (hours, est.) | ~5 min (est.) | ~194 s |
+Whole-program wall time for each generator at a given digit count. One base-1e9
+limb holds 9 decimal digits, so the working value is ≈ `digits ÷ 9` limbs.
+
+| Decimal digits | Limbs (digits ÷ 9) | Spigot (`PiGenerator`) | Machin (`PiMachin`) | Chudnovsky (`PiChudnovsky`) | Notes |
+|---:|---:|---:|---:|---:|---|
+| 1,000 | 112 | 2 s | <1 s | 2 s | fixed setup dominates; all three near-equal |
+| 10,000 | 1,112 | 51 s | 3 s | 9 s | Chudnovsky: binary-splitting recursion engaged |
+| 50,000 | 5,556 | — (hours) | ~5 min (est.) | 194 s | spigot off-chart; Chudnovsky's O(d²) final divide/√ now dominates |
+
+> Kernel: native `bigmul` (NTT/Karatsuba) + `bigadd` + `bigdivmod` + the v3.0
+> additions `bigsub` / `bigdiv` / `bigisqrt`. Measured with the source-built
+> compiler (`impl/build/sleela`) on this machine; each figure is a single timed
+> run and varies a few percent run to run. Spigot and Machin are O(digits²); the
+> 50,000-digit spigot run does not complete in a practical window (hours) and
+> Machin's is an extrapolation from its 10,000-digit point. Chudnovsky's 1,000-
+> and 10,000-digit outputs were checked digit-for-digit against an independent
+> reference. Chudnovsky 10,000 → 50,000 is ~21× for 5× the digits (implied
+> exponent ≈ 1.9): the binary-splitting recursion is quasi-linear, but the single
+> schoolbook final `bigdiv`/`bigisqrt` is O(n²) and now sets the slope — see the
+> exponent note below.
 
 ### The graph — wall time vs digit count (the three generators)
 
