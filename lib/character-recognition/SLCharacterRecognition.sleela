@@ -14,27 +14,26 @@ class SLCharacterRecognition {
   double minimumSimilarity = 0.70;
   int threshold = 180;
   boolean modelConfigured = false;
-  boolean nativeModelOwned = false;
 
   void setThreshold(int value) {
     if (value >= 0 && value <= 255) { threshold = value; }
   }
   int getThreshold() { return threshold; }
   void setMinimumSimilarity(double value) {
-    if (value >= 0.0 && value <= 1.0) { minimumSimilarity = value; }
+    if (value == value && value >= 0.0 && value <= 1.0) { minimumSimilarity = value; }
   }
   double getMinimumSimilarity() { return minimumSimilarity; }
 
   int configureModel() {
     modelConfigured = true;
-    nativeModelOwned = false;
     return STATUS_OK;
   }
   boolean isConfigured() { return modelConfigured; }
-  boolean isNativeReady() { return nativeModelOwned; }
+  boolean isNativeReady() { return false; }
 
   int normalizeGlyph(byte[] grayscale, int width, int height, byte[] output) {
     if (grayscale == null || output == null || width < 1 || height < 1) { return STATUS_ERROR; }
+    if (width > grayscale.length / height || grayscale.length != width * height) { return STATUS_ERROR; }
     if (output.length != GLYPH_PIXELS) { return STATUS_ERROR; }
     return STATUS_NATIVE_ADAPTER_REQUIRED;
   }
@@ -46,7 +45,6 @@ class SLCharacterRecognition {
   }
 
   void close() {
-    nativeModelOwned = false;
     modelConfigured = false;
   }
 }
