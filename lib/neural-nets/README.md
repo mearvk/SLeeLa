@@ -21,6 +21,8 @@ map activation values without reordering them. It owns the opaque
 codes 0–5 directly; status 6 is SLeeLa's `STATUS_NATIVE_ADAPTER_REQUIRED`
 and is not a native ABI status.
 
+The adapter creates handles with `slnn_network_create`, predicts with `slnn_network_predict`, trains with `slnn_network_train_sample`, and releases them with `slnn_network_destroy`.
+
 Compile/link `neural_nets.c` (C11) and, when using C++, `neural_nets.cpp`
 (C++17). The network is fully connected and CPU-backed. It supports linear,
 ReLU, tanh, and sigmoid activations, deterministic seeded initialization,
