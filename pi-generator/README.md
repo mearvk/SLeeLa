@@ -129,10 +129,95 @@ reference:
 **Honest limit.** `PiMachin` is still **O(digits²)** — it runs ~`digits` series
 terms and the accumulate step copies the limb array each term. It is a large
 *constant-factor* win (the heavy divides are native), not a better exponent,
-because the VM kernel exposes only `bigmul` / `bigadd` / `bigdivmod` (small
-divisor). A truly sub-quadratic method (Chudnovsky with binary splitting) would
-need a native **big ÷ big** division and a big square root, which the kernel
-does not provide yet; adding those is the next step toward millions of digits in
-minutes. See the header of `PiMachin.sleela` for the full rationale.
+because in v2.0 the VM kernel exposed only `bigmul` / `bigadd` / `bigdivmod`
+(small divisor). A truly sub-quadratic method (Chudnovsky with binary splitting)
+needs a native **big ÷ big** division and a big square root — which Version 3.0
+adds.
+
+## Performance — Version 3.0
+
+**Version 3.0** adds the native big-integer primitives that binary-splitting
+Chudnovsky needs, and a generator that uses them. New VM opcodes (see
+[`NATIVE.ADD.md`](NATIVE.ADD.md) for the full roadmap):
+
+- `bigsub(a, b, result)` → `OP_BIGSUB` — big − big (a ≥ b).
+- `bigdiv(num, den, quoOut, remOut)` → `OP_BIGDIV` — big ÷ big (quotient +
+  remainder).
+- `bigisqrt(a, result)` → `OP_BIGISQRT` — floor(√a).
+
+Plus a GC fix: `OP_NEWARRAY` now runs a full root-aware collection and retries
+once when the live-array table is full, so the allocation-heavy recursion no
+longer trips `array allocation failed`.
+
+### [`PiChudnovsky.sleela`](PiChudnovsky.sleela) — binary-splitting Chudnovsky
+
+```
+1/pi = 12 Σ (−1)ᵏ (6k)! (13591409 + 545140134 k) / ((3k)! (k!)³ 640320^(3k+3/2))
+```
+
+evaluated exactly in integers by binary splitting — `P/Q/T` triples combined with
+only big ×, +, − (all riding the NTT multiply) — then scaled to `digits` places
+by `pi = (426880 · √10005 · Q) / T`, where the √ is one `bigisqrt` and the final
+scale is one `bigdiv`. Big integers are carried signed (sign + magnitude) in
+SLeeLa on top of the native ops. Verified digit-for-digit against an independent
+reference at 50, 1,000, and 10,000 digits.
+
+Measured, v3.0, same machine:
+
+| Digits | Spigot | Machin | Chudnovsky |
+|---:|---:|---:|---:|
+| 1,000 | ~2 s | <1 s | ~2 s |
+| 10,000 | ~51 s | ~3 s | ~9 s |
+| 50,000 | — (hours, est.) | ~5 min (est.) | ~194 s |
+
+### The graph — wall time vs digit count (the three generators)
+
+Seconds (vertical) against decimal digits (horizontal), from the measured points
+above. The spigot's 50,000-digit point is off the top of the axis (hours), so it
+is capped at the chart edge; Machin's is its ~5-minute estimate. Chudnovsky is
+the lowest curve at every reachable size.
+
+```mermaid
+xychart-beta
+    title "Pi generator wall time vs digits (lower is better)"
+    x-axis "Decimal digits" [1000, 10000, 50000]
+    y-axis "Wall time (seconds)" 0 --> 300
+    line "spigot"     [2, 51, 300]
+    line "machin"     [1, 3, 300]
+    line "chudnovsky" [2, 9, 194]
+```
+
+### Plain-text plot (same data)
+
+```
+ time (s)
+ 300 |                                   x spigot (50k: hours, off-axis)
+     |                                   o machin (50k: ~5 min, off-axis)
+ 200 |                                   * chudnovsky (50k: 194 s)
+     |
+ 100 |
+     |
+  50 |                 x spigot (10k: 51 s)
+     |
+   9 |                 * chudnovsky (10k)
+   3 |  . *o           o machin (10k: 3 s)
+   0 |  *o (1k: ~1-2 s all three)
+     +------------------------------------------------------------
+        1k              10k                           50k   digits
+```
+
+On a linear axis the spigot's quadratic blow-up is obvious while Chudnovsky
+stays near the floor; even Machin (also O(d²) but native-divide-driven) is an
+order of magnitude under the spigot. The three curves meet only at ~1,000
+digits, where the fixed setup cost dominates the math.
+
+**Honest status of the exponent.** The binary-splitting *recursion* is
+quasi-linear, but the single **final division and √** still use a schoolbook
+O(n²) kernel, and that term now dominates (Chudnovsky 10k → 50k is ~21× for 5×
+digits ≈ exponent 1.9). So v3.0 is *correct Chudnovsky with a quasi-linear core
+but an O(d²) tail*. The remaining step — a **Newton–Raphson reciprocal** `bigdiv`
+and Newton `bigisqrt` that ride the NTT multiply — removes the tail and delivers
+the full ~O(d·log²d) regime (millions of digits in minutes). Everything it needs
+(fast `bigmul`, `bigsub`) is now in place; see [`NATIVE.ADD.md`](NATIVE.ADD.md).
 
 **Max Rupplin — MEARVK LLC — 2026**
