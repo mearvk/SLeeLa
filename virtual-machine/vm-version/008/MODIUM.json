@@ -10,9 +10,9 @@
       "name": "SLVmVersion008.sleela",
       "parent": ".",
       "path": "SLVmVersion008.sleela",
-      "seal": "8d125d11465d5c06e5dbeb5e1e125e732450164119d331cfdb21f9ccee292b7e",
-      "sha256": "b5616babe08ad4077012eb4fd3d6acf14ece7ba0d00edd7f901966b66f2ed768",
-      "size": 1263
+      "seal": "8fa3141483c21f89356893af2004e0a2e0af20c48e7806b5ca492bbebaa449a0",
+      "sha256": "eb04b318045ca373052ee19ba1921c75a0b7b4abe9449930e590dec583753627",
+      "size": 1513
     },
     {
       "ancestry": [],
@@ -1062,6 +1062,6 @@
   ],
   "generated_for": "idea-vm-008",
   "kind": "modium-file-resolution",
-  "manifest_seal": "9e50d7f81e38492d305f9f1cccccf7778c280610994d04d0237a1eb5f7cb4c7b",
+  "manifest_seal": "50d012e5ac343f7ed69ad0bac669dd1996154a16826f3b71f82ab6b0b6d52258",
   "root": "virtual-machine/vm-version/008"
 }
