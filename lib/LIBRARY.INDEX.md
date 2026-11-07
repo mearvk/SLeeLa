@@ -1,9 +1,11 @@
 # SLeeLa /lib Library Index
 
+> Revision 0.68 tightens the AI-facing facade contracts: neural-network configuration now owns defensive copies of layer sizes, adapter-only operations cannot claim native readiness, and character-recognition validates input-buffer dimensions and finite similarity thresholds. The native C APIs remain the execution authority until the embedding runtime supplies adapters.
+
 > Revision 0.67 adds two AI-facing SLeeLa standard-library packages. **`neural-nets`** (`lib/neural-nets/`) mirrors the native C ABI v1 with `SLNeuralNetworkConfig`, `SLNeuralNetwork`, and a package facade; it exposes the validated network configuration and lifecycle contract while inference/training remain explicit native-adapter operations. **`character-recognition`** (`lib/character-recognition/`) mirrors the native C11 glyph-recognition API with `SLCharacterRecognition`, `SLCharacterResult`, and a package facade; normalization and recognition remain native-adapter operations. Both packages document their exact native boundaries and limitations. The authoritative C/C++ implementations remain under `artificial-intelligence/`; these SLeeLa packages do not duplicate kernels or claim native execution without an adapter.
 
 
-**Revision:** 0.67  
+**Revision:** 0.68  
 **Packages:** 116  
 **SLeeLa source units:** 11918  
 **Module-facade symbols:** 83  
