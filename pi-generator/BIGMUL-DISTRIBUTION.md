@@ -132,4 +132,24 @@ Run with the source-built compiler:
 `impl/build/sleela run <file>.sleela` (with `SLEELA_HOME`/`SLEELA_LIB` set to the
 repo root and `repo/lib`).
 
+## Version 3.0 — kernel siblings and a higher cap
+
+The multiply figures above are unchanged in **v3.0** (the `OP_BIGMUL` kernel is
+the same NTT/Karatsuba code). What changed around it:
+
+- The single-array cap was raised again, `SL_MAX_ARRAY_LEN = 2²⁴ → 2²⁵`
+  (33,554,432, `impl/core/sleela_core.h`), so the operand ceiling for a single
+  `bigmul()` call is now ~2× wider than the v2.0 column assumed.
+- `OP_BIGMUL` gained three companions over the same base-1e9 limb
+  representation — `bigsub` (`OP_BIGSUB`), `bigdiv` (`OP_BIGDIV`, big ÷ big), and
+  `bigisqrt` (`OP_BIGISQRT`) — which together make binary-splitting Chudnovsky
+  expressible. `bigdiv`/`bigisqrt` currently use a schoolbook O(n²) inner loop,
+  so they are *not* on the NTT curve shown here; a Newton-reciprocal rewrite
+  that rides `OP_BIGMUL` is the planned follow-up (see `NATIVE.ADD.md`).
+
+The **whole-program Pi runtime graph** (spigot vs Machin vs Chudnovsky, which is
+where `OP_BIGMUL` pays off end to end) lives in
+[`README.md`](README.md#performance--version-30) under "Performance — Version
+3.0", since it measures generators rather than a single multiply.
+
 **MEARVK LLC — SLeeLa — 2026**
