@@ -24,6 +24,7 @@ that standing is kept (recorded faithfully, e.g. in each class's Metadata
 - [CSPML data source and Salt & Salary research reference](CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — external U.S. place, socioeconomic, workforce, education, and public-school data provenance and integration guidance.
 - [Generated API documentation](docs/api/README.md) — current HTML reference, versioned API edition, and regeneration instructions
 - [API catalogue](api/README.md)
+- [Computational comparison standards](comparison/README.md) — SLeeLa VM, Java/JVM, and native C/C++ type, memory, ABI, and conformance standards.
 - [Recursion stanchion — C and C++ prototypes](recursion/stanchion/README.md) — primitive-specialized examples for Boolean, Byte, Character, Integer, Long, Float, and Double, alongside generic, applied, scientific, and teaching recursion patterns.
 - [Platform support and validation matrix](docs/PLATFORM-SUPPORT.md)
 - [Brand guide](docs/BRAND-GUIDE.md)
