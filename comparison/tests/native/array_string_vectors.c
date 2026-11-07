@@ -13,6 +13,6 @@ static bool valid(const unsigned char*s,size_t n){
 }
 static size_t cps(const unsigned char*s,size_t n){size_t c=0;for(size_t i=0;i<n;){unsigned char b=s[i];i+=b<0x80?1:(b<0xE0?2:(b<0xF0?3:4));c++;}return c;}
 int main(void){int a[]={11,22,33},one[]={7},v=0,first=0,last=0;const unsigned char s[]={'A',0xC3,0xA9,0xF0,0x9F,0x98,0x80},bad[]={0xC0,0xAF};size_t n=sizeof s;
-printf("EMPTY_LENGTH=0\nSINGLE_LENGTH=%zu\nFIRST_VALUE=%d\nLAST_VALUE=%d\n",sizeof(one)/sizeof(one[0]),get(a,3,0,&v)?v:-1,get(a,3,2,&v)?v:-1);
+get(a,3,0,&first);get(a,3,2,&last);printf("EMPTY_LENGTH=0\nSINGLE_LENGTH=%zu\nFIRST_VALUE=%d\nLAST_VALUE=%d\n",sizeof(one)/sizeof(one[0]),first,last);
 printf("NEGATIVE_INDEX=%s\nONE_PAST_END=%s\n",get(a,3,-1,&v)?"ACCEPTED":"REJECTED",get(a,3,3,&v)?"ACCEPTED":"REJECTED");
 printf("UTF8_ROUNDTRIP=%s\nUTF8_INVALID=%s\nUTF8_BYTES=%zu\nUNICODE_CODEPOINTS=%zu\n",valid(s,n)&&memcmp(s,"A\xC3\xA9\xF0\x9F\x98\x80",n)==0?"PASS":"FAIL",valid(bad,sizeof bad)?"ACCEPTED":"REJECTED",n,cps(s,n));return 0;}
