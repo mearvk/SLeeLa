@@ -41,11 +41,11 @@ The six valid-case output lines and two expected-failure cases are checked by co
 
 The workflow was triggered by the push to master and is being tracked here:
 
-- [Comparison Standards Conformance run 42336314226](https://github.com/mearvk/SLeeLa/actions/runs/42336314226)
-- Workflow commit: fecbbb7e4e4cca7d993fc1af8782f769254d9d73
-- At the time this record was written, the run was **queued** and had not produced job results.
+- [Comparison Standards Conformance run 42336349023](https://github.com/mearvk/SLeeLa/actions/runs/42336314226)
+- Workflow commit: 901b15d45d7806c8752d99310f82828030660333
+- At the time this record was updated, the workflow is **in progress**. The Ubuntu, Windows, and macOS shared-vector jobs have completed successfully. The SLeeLa VM job has completed its setup and is building the compiler/VM; its vector execution has not yet completed.
 
-A queued workflow is not a PASS. This record must be updated with the completed run conclusion, VM job log evidence, and retained artifact before the SLeeLa VM subset can be marked qualified.
+The completed shared-platform jobs are successful, but the SLeeLa VM job is still in progress. A partially completed workflow is not a PASS. The VM job must finish successfully, and its output/artifact must be inspected before the VM subset can be marked qualified.
 
 ## 5. What remains unqualified
 
@@ -78,4 +78,4 @@ The runner expects impl/build/sleela, or an alternate executable supplied throug
 
 ---
 
-**Current conclusion:** implementation and workflow integration are committed. SLeeLa VM qualification is pending the completed CI run and inspection of its VM job logs and retained JSON artifact.
+**Current conclusion:** implementation and workflow integration are committed. The three shared native/Java platform jobs have passed in this run. SLeeLa VM qualification remains pending the VM build, vector execution, and inspection of its retained JSON artifact.
