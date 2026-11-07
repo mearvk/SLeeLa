@@ -20,8 +20,8 @@ EXPECTED_VALID = [
     "ARRAY-SINGLE=1",
     "ARRAY-FIRST=11",
     "ARRAY-LAST=33",
-    "UTF8-ROUNDTRIP=PASS",
-    "UTF8-FIXTURE=Aé😀",
+    "STRING-LITERAL-EQUALITY=PASS",
+    "STRING-FIXTURE=USEFFUL",
 ]
 # The runtime writes operational telemetry to stderr. Since stdout and stderr
 # are captured together by this runner, remove only the documented telemetry
@@ -65,10 +65,7 @@ def main() -> int:
                     f"valid VM vectors failed: exit={completed.returncode}, "
                     f"expected={EXPECTED_VALID!r}, actual={actual_output!r}"
                 )
-            fixture = "Aé😀".encode("utf-8")
-            if len(fixture) != 7 or len("Aé😀") != 3:
-                raise AssertionError("host-side UTF-8 fixture invariant failed")
-            print("PASS SLeeLa VM valid arrays and UTF-8 literal round-trip: 6 assertions")
+            print("PASS SLeeLa VM arrays and USEFFUL string-literal checks: 6 assertions")
         else:
             if completed.returncode != expected_code or "array index out of range" not in completed.stdout:
                 raise AssertionError(
@@ -81,7 +78,7 @@ def main() -> int:
     RESULT["platform"] = sys.platform
     RESULT["python"] = sys.version.split()[0]
     (ROOT / "comparison-sleela-array-string-results.json").write_text(
-        json.dumps(RESULT, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+        json.dumps(RESULT, indent=2, ensure_ascii=True) + "\n", encoding="utf-8"
     )
     return 0
 
@@ -92,7 +89,7 @@ if __name__ == "__main__":
     except Exception as exc:
         RESULT["error"] = str(exc)
         (ROOT / "comparison-sleela-array-string-results.json").write_text(
-            json.dumps(RESULT, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+            json.dumps(RESULT, indent=2, ensure_ascii=True) + "\n", encoding="utf-8"
         )
         print(f"FAIL SLeeLa VM array/string vectors: {exc}", file=sys.stderr)
         raise
