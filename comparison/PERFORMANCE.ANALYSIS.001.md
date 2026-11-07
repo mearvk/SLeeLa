@@ -5,7 +5,7 @@
 **Recorded:** 2026-11-06  
 **Repository:** `mearvk/SLeeLa` · **Branch:** `master`  
 **Language baseline:** SLeeLa Syntax 3.0 · C11 · C++17 · Java 21+  
-**Status:** CI CONFORMANCE ATTEMPT COMPLETED — PARTIAL; performance measurements not run
+**Status:** CONFORMANCE RETRY IN PROGRESS — PARTIAL; no performance measurements available
 
 ## 1. Purpose
 
@@ -337,3 +337,66 @@ The CI run provides partial correctness/build evidence: Ubuntu and macOS languag
 ---
 
 **Conclusion:** SCS-PERF-001 establishes the scope and measurement standard for Basic SLeeLa, Standard generations 1–10, Premium generations 1–11, C11, C++17, and Java 21+. CI run 42337765442 completed with a failure and provides partial build/conformance evidence only; it does not contain measured performance results. Correct the VM output parser and Windows toolchain setup, rerun the matrix, and implement controlled DT-/MEM-suite benchmarking before publishing performance results. Do not promote unbootable Standard layers, unexecuted Premium VMs, or unmeasured targets to PASS.
+
+
+## 14. Conformance retry and benchmark-readiness audit — 2026-11-06
+
+**Workflow:** [Complete SLeeLa VM and Language Conformance](https://github.com/mearvk/SLeeLa/actions/runs/42337765442)  
+**Action:** Re-ran failed jobs using GitHub Actions' failed-job retry. Successful jobs were not rerun.  
+**Commit under test:** `bd7eb049b6158bf129564aea43b58bfeeed993cd`  
+**Observation:** the retry was still running when this record was written. The states below are a live snapshot, not a final workflow conclusion.
+
+### 14.1 Retry status snapshot
+
+| Job | Retry state observed | Conclusion at snapshot |
+|---|---|---|
+| C11 / C++17 / Java 21+ — Ubuntu | Completed | **PASS** |
+| C11 / C++17 / Java 21+ — macOS | Completed | **PASS** |
+| C11 / C++17 / Java 21+ — Windows | In progress after checkout | **PENDING** |
+| Basic Native VM + Premium SLVM 1–11 | In progress after checkout | **PENDING** |
+
+The retry confirms the Linux and macOS language-comparator correctness suites again. It does not yet resolve the Windows package-installation issue or establish the Basic/Premium VM execution outcome. The run must be inspected again after the remaining jobs finish; no final overall PASS is claimed here.
+
+### 14.2 Benchmark implementation audit
+
+The current workflow `.github/workflows/complete-vm-conformance.yml` performs toolchain installation, correctness-vector execution, VM builds, VM output validation, Premium admission self-checks, and Standard VM manifest checks. It does **not** execute a timed performance workload.
+
+The inspected comparison runners are correctness-only:
+
+- `comparison/tests/run_native_java.py` compiles C11 and C++17 and runs Java, then compares the three expected output lines `42`, `15`, and `hello`.
+- `comparison/tests/run_all_vm_matrix.py` checks the same three output values for the Basic Native VM and Premium runners and inventories ten Standard VM manifests. It does not record elapsed time, operation count, memory bandwidth, memory latency, or allocation rate.
+- The shared SLeeLa source `comparison/tests/sleela/common_vectors.sleela` is a short arithmetic/loop/string correctness smoke test, not a benchmark workload.
+
+A repository search for benchmark timing, pointer-chase, memory-bandwidth, and operations-per-second implementations found no executable performance harness in the comparison area. Accordingly, **no speed or RAM figures can be reported from this CI run**. This is an implementation gap, not a zero-speed result and not a failed performance result.
+
+### 14.3 Measurements required before a performance claim
+
+The next benchmark implementation must execute equivalent, checksum-validated workloads for the Basic Native VM, all eleven runnable Premium VMs, C11, C++17, and Java 21+. Standard generations 1–10 remain layer-accounting targets only until they have a supported bootable execution path.
+
+| Measurement group | Required tests | Required output |
+|---|---|---|
+| Integer types | Boolean; 8/16/32/64-bit signed and unsigned arithmetic; 128-bit support where available; division/remainder; comparisons | ns/op, ops/s, checksum, support/representation |
+| Floating point | float32 and float64 arithmetic, conversions, comparisons | ns/op, ops/s, precision mode, validation tolerance |
+| Control flow | dependent and independent loops, branches, function calls | ns/iteration, iterations/s, calls/s |
+| Arrays and strings | sequential/random element access, read/write, string traversal/comparison/construction | elements/s, bytes/s, checksum |
+| Memory bandwidth | sequential read, sequential write, copy, read-modify-write | bytes/s and GiB/s, bytes transferred |
+| Memory latency | randomized dependent pointer chase, random read/write, strided access | ns/access, accesses/s, stride and working-set size |
+| Cache/working set | 4 KiB through safely capped large allocations | latency and bandwidth per allocation size; detected cache topology |
+| Allocation/GC | allocation/free, array growth, managed allocation and reclamation | allocations/s, ns/allocation, peak bytes, GC pauses and reclaimed bytes |
+| Startup and admission | cold process launch, VM admission, artifact load, shutdown | separate phase timings; not mixed with steady-state throughput |
+
+Every measured target must record the host CPU and architecture, OS/kernel, RAM capacity, available cache topology, compiler/JDK versions, exact optimization/runtime flags, allocator/GC, workload size, warm-up count, at least five measured repetitions, median/min/max and dispersion, raw samples, checksum, and artifact hash. Java requires warm-up and a separate cold-start measurement. C/C++ must avoid undefined behavior and dead-code elimination. SLeeLa Basic and Premium comparisons must use the same compiled workload artifact where the runtime interface permits it.
+
+### 14.4 Current performance conclusion
+
+- **Basic data-type speed:** NOT MEASURED.
+- **Integer and floating-point throughput:** NOT MEASURED.
+- **RAM sequential bandwidth:** NOT MEASURED.
+- **Random memory-access latency:** NOT MEASURED.
+- **Cache/working-set behavior:** NOT MEASURED.
+- **Allocation and GC behavior:** NOT MEASURED.
+- **Basic Native vs Premium VM speed:** NOT MEASURED.
+- **SLeeLa vs C11 / C++17 / Java 21+ ranking:** NOT ESTABLISHED.
+- **Standard VM generations 1–10:** registration/inventory only; no whole-program execution or speed result.
+
+No timing values, rankings, or ratios have been inferred from correctness results or build completion. The next CI change must add a dedicated benchmark workflow and executable benchmark harness; ordinary hosted-runner timings should be labeled informational unless run on controlled, repeatable hardware.
