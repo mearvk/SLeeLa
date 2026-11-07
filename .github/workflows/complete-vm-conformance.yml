@@ -58,6 +58,7 @@ jobs:
           msystem: UCRT64
           update: true
           install: >-
+            git
             mingw-w64-ucrt-x86_64-gcc
             mingw-w64-ucrt-x86_64-python
 
@@ -68,18 +69,44 @@ jobs:
           distribution: temurin
           java-version: '21'
 
+      - name: Set up native Windows Python
+        if: runner.os == 'Windows'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
       - name: Add MSYS2 UCRT64 compiler to Windows PATH
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
           "$env:RUNNER_TEMP/msys64/ucrt64/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
-      - name: Run shared C, C++, and Java suites
+      - name: Verify Windows native toolchain
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          gcc --version
+          g++ --version
+          python --version
+          java -version
+
+      - name: Run shared C, C++, and Java suites (POSIX)
+        if: runner.os != 'Windows'
         shell: bash
         run: |
           python3 comparison/tests/run_native_java.py
           python3 comparison/tests/run_edge_vectors.py
           python3 comparison/tests/run_array_string_vectors.py
+
+      - name: Run shared C, C++, and Java suites (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $env:CC = "gcc"
+          $env:CXX = "g++"
+          python comparison/tests/run_native_java.py
+          python comparison/tests/run_edge_vectors.py
+          python comparison/tests/run_array_string_vectors.py
 
       - name: Retain language comparison records
         if: always()
