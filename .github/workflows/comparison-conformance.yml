@@ -139,5 +139,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: comparison-vectors-sleela-vm
-          path: |\n            /tmp/sleela-comparison.out\n            comparison-sleela-array-string-results.json
+          path: |
+            /tmp/sleela-comparison.out
+            comparison-sleela-array-string-results.json
           if-no-files-found: warn
