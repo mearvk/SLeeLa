@@ -913,12 +913,9 @@ define RUN_SUBJECT_VALUES
 	  f=impl/tests/subjects/$(1)_values.sleela; \
 	  echo "=== $(1) numeric assertions ($$f) ==="; \
 	  out="$$($(CURDIR)/$(SLEELA_BIN) run $$f 2>/dev/null)" || { echo "  FAIL ($$f did not run)"; exit 1; }; \
-	  printf '%s
-' "$$out" | grep -E '^(PASS|FAIL) '; \
-	  fails=$$(printf '%s
-' "$$out" | grep -c '^FAIL '); \
-	  passes=$$(printf '%s
-' "$$out" | grep -c '^PASS '); \
+	  printf '%s\n' "$$out" | grep -E '^(PASS|FAIL) '; \
+	  fails=$$(printf '%s\n' "$$out" | grep -c '^FAIL '); \
+	  passes=$$(printf '%s\n' "$$out" | grep -c '^PASS '); \
 	  expected=$$(grep -oE 'EXPECTED_PASS=[0-9]+' $$f | head -1 | cut -d= -f2); \
 	  if [ "$$fails" -ne 0 ]; then echo "  $(1): $$fails FAILED"; exit 1; fi; \
 	  if [ -n "$$expected" ] && [ "$$passes" -ne "$$expected" ]; then echo "  $(1): expected $$expected checks, got $$passes"; exit 1; fi; \

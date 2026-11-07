@@ -55,7 +55,11 @@ int main(void) {
         assert(strcmp(pbuf, "/a/c/d") == 0);
 #endif
         assert(osls_path_normalize("a/b/../../../c", pbuf, sizeof(pbuf)) == OSLS_OK);
+#if defined(_WIN32)
+        assert(strcmp(pbuf, "..\\c") == 0);
+#else
         assert(strcmp(pbuf, "../c") == 0);
+#endif
         assert(osls_path_join("/usr/local", "bin/x", pbuf, sizeof(pbuf)) == OSLS_OK);
 #if defined(_WIN32)
         assert(strcmp(pbuf, "\\usr\\local\\bin\\x") == 0);
