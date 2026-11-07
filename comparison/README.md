@@ -1,6 +1,6 @@
 # SLeeLa Computational Standards
 
-Edition 1.3 | Baseline: SLeeLa Syntax 3.0 | Status: batch 001/002 passed; batch 003 pending CI
+Edition 1.4 | Baseline: SLeeLa Syntax 3.0 | Status: baseline and edge batches passed; arithmetic VM qualification pending CI
 
 ## Purpose
 This directory establishes a common computational vocabulary and repeatable comparison method for SLeeLa, Java/JVM, native C, and native C++. It supports language design, compiler qualification, runtime engineering, interoperability, and performance research.
@@ -16,7 +16,7 @@ This directory establishes a common computational vocabulary and repeatable comp
 8. [Numeric and Unicode Edge Vectors](NUMERIC-UNICODE-EDGE-VECTORS.md)
 9. [Running PASS Record 002 — Numeric and Unicode edge-vector iteration](RUNNING.PASS.JAVA.002.md)
 10. [Array, Bounds, and String Vectors](ARRAY-STRING-BOUNDS-VECTORS.md)
-11. [Arithmetic Speed Series — Iteration 001](ARITHMETIC.SPEED.001.md)
+11. [Arithmetic Speed Series — Iteration 001 (C11/C++17/Java)](ARITHMETIC.SPEED.001.md)\n12. [SLeeLa VM Arithmetic Speed — Iteration 001](ARITHMETIC.SPEED.SLEELA.001.md)
 
 ## Architectural principle
 One computational specification, multiple implementation environments.
@@ -80,3 +80,8 @@ The first baseline exercises arithmetic, loop accumulation, and ASCII output. It
 ## Iteration 003 — array and string semantics
 
 The next batch is implemented in [ARRAY-STRING-BOUNDS-VECTORS.md](ARRAY-STRING-BOUNDS-VECTORS.md), with C11, C++17, and Java implementations under tests/. It is wired into the cross-platform workflow and retains `comparison-array-string-results.json` per OS. The batch remains pending until a completed CI run verifies all ten assertions on Ubuntu, macOS, and Windows. SLeeLa VM parity for these array/string cases is not yet claimed.
+
+
+## Iteration 004 — SLeeLa VM arithmetic throughput
+
+The in-VM arithmetic workload and runner are now committed under `tests/sleela/arithmetic_speed.sleela` and `tests/run_sleela_vm_arithmetic_speed.py`. The workflow runs the workload after building the Basic Native VM and Premium SLVM 1–11. It times `int` and `double` addition, subtraction, multiplication, and division using `timeMonotonicNanos()`; startup, build, VM selection, and Premium admission are outside the measured interval. Five samples are collected for each operation on each of the twelve targets. The report and retained CI artifact are pending the first completed execution; no timings are claimed yet. See [SLeeLa VM Arithmetic Speed — Iteration 001](ARITHMETIC.SPEED.SLEELA.001.md).
