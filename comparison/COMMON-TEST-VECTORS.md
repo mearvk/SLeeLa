@@ -1,6 +1,6 @@
 # Common Computational Test Vectors
 Standard SCS-TEST-001 | Edition 1.0  
-Status: baseline and SCS-TEST-002 edge suite passed on configured CI platforms; VM edge parity remains unqualified.
+Status: baseline and SCS-TEST-002 passed; SCS-TEST-003 array/string suite pending CI.
 
 ## 1. Reporting
 Each implementation records test ID, source file, compiler/runtime versions, command, expected and actual output, exit status, and PASS/FAIL/SKIP. A skip names the missing prerequisite.
@@ -69,3 +69,8 @@ Run applicable tests on Linux, Windows, and macOS for each claimed architecture/
 
 ## 10. Benchmark separation
 These are correctness tests. Performance workloads must be separately versioned and must not weaken correctness requirements.
+
+
+## 4. Array, bounds, and string iteration 003
+
+The executable suite in [ARRAY-STRING-BOUNDS-VECTORS.md](ARRAY-STRING-BOUNDS-VECTORS.md) defines ten observations for empty/single arrays, first/last access, rejected negative and one-past-end indexes, UTF-8 round-trip, strict rejection of an overlong UTF-8 sequence, byte length, and code-point count. It targets C11, C++17, and Java 21+ on Ubuntu, macOS, and Windows. Its status remains pending until the updated workflow completes successfully. SLeeLa VM array/string parity is not claimed.
