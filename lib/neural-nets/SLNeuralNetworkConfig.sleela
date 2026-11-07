@@ -1,4 +1,5 @@
-<< Language-level configuration mirror of slnn_network_config. >>
+<< Language-level configuration mirror of slnn_network_config. The 32-bit
+   SLeeLa seed is widened to the native uint64_t field by the host adapter. >>
 #sleela 3.0
 material;
 class SLNeuralNetworkConfig {
@@ -12,14 +13,27 @@ class SLNeuralNetworkConfig {
   int hiddenActivation = ACTIVATION_RELU;
   int outputActivation = ACTIVATION_LINEAR;
   int seed = 0;
-  int layerCount;
+  int layerCount = 0;
 
   void setLayerSizes(int[] sizes) {
-    layerSizes = sizes;
-    if (sizes == null) { layerCount = 0; }
-    else { layerCount = sizes.length - 1; }
+    if (sizes == null) {
+      layerSizes = null;
+      layerCount = 0;
+      return;
+    }
+    int[] copy = new int[sizes.length];
+    for (int i = 0; i < sizes.length; i++) { copy[i] = sizes[i]; }
+    layerSizes = copy;
+    layerCount = copy.length - 1;
   }
-  int[] getLayerSizes() { return layerSizes; }
+
+  int[] getLayerSizes() {
+    if (layerSizes == null) { return null; }
+    int[] copy = new int[layerSizes.length];
+    for (int i = 0; i < layerSizes.length; i++) { copy[i] = layerSizes[i]; }
+    return copy;
+  }
+
   int getLayerCount() { return layerCount; }
   void setHiddenActivation(int value) { hiddenActivation = value; }
   int getHiddenActivation() { return hiddenActivation; }
@@ -29,7 +43,7 @@ class SLNeuralNetworkConfig {
   int getSeed() { return seed; }
 
   boolean valid() {
-    if (layerSizes == null || layerCount < 1) { return false; }
+    if (layerSizes == null || layerCount < 1 || layerSizes.length != layerCount + 1) { return false; }
     if (hiddenActivation < ACTIVATION_LINEAR || hiddenActivation > ACTIVATION_SIGMOID) { return false; }
     if (outputActivation < ACTIVATION_LINEAR || outputActivation > ACTIVATION_SIGMOID) { return false; }
     for (int i = 0; i < layerSizes.length; i++) {
