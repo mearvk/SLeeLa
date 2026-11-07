@@ -457,3 +457,46 @@ The previous Windows failure belongs to the old workflow revision and therefore 
 ### 14.8 Current measured-performance status
 
 The conformance workflow still has no timed benchmark harness. The VM retry produced build and correctness evidence only. It did not measure arithmetic throughput, data-type latency, memory bandwidth, random RAM-access latency, cache behavior, allocation rate, or GC pause time. All such performance values remain **NOT MEASURED**. The VM build successes must not be converted into performance claims.
+
+
+## 15. Arithmetic speed series — SCS-PERF-ARITH-001
+
+The first executable arithmetic-throughput batch has been added to the comparison workflow.
+
+### 15.1 Operation and type coverage
+
+Each workload measures the four operators independently: addition (`+`), subtraction (`-`), multiplication (`*`), and division (`/`). Every case executes 2,000,000 operations per measured sample over a deterministic 4,096-element operand set. Operands are constrained to small, nonzero values so that signed overflow and division by zero are avoided and the same vector can be used across integer widths.
+
+| Type | C11 | C++17 | Java 21+ | Representation note |
+|---|---|---|---|---|
+| signed 8-bit | Yes | Yes | Yes | Exact-width C/C++; Java byte arithmetic with narrowing |
+| unsigned 8-bit | Yes | Yes | Yes | Java masked emulation |
+| signed 16-bit | Yes | Yes | Yes | Exact-width C/C++; Java short arithmetic with narrowing |
+| unsigned 16-bit | Yes | Yes | Yes | Java masked emulation |
+| signed 32-bit | Yes | Yes | Yes | Exact-width C/C++; Java int |
+| unsigned 32-bit | Yes | Yes | Yes | Java masked emulation |
+| signed 64-bit | Yes | Yes | Yes | Exact-width C/C++; Java long |
+| unsigned 64-bit | Yes | Yes | Yes | Java unsigned division helper; same small positive test domain |
+| signed 128-bit | Where compiler supports `__int128` | Where compiler supports `__int128` | Not primitive | Extension; not a three-way primitive comparison |
+| float32 | Yes | Yes | Yes | Native float operations |
+| float64 | Yes | Yes | Yes | Native double operations |
+| Boolean | N/A | N/A | N/A | Excluded from arithmetic operators; logical/conditional tests belong in a separate suite |
+
+The C and C++ implementations share the same C-compatible workload source, compiled independently in C11 and C++17 modes. The Java implementation uses its own implementation and preserves the fixed-width masks for unsigned narrow types. A cross-language checksum check qualifies that the shared input cases produced matching results before timing rows are accepted.
+
+### 15.2 Timing protocol
+
+- Native C/C++: `-O2`, one untimed warm-up process, five measured fresh-process sweeps.
+- Java: three warm-up sweeps inside each JVM process, then one measured sweep; five independent measured processes.
+- Each row retains operation count, median ns/operation, all five sample times, and checksum.
+- The CI runner records OS, architecture, processor description, and logical core count.
+- The CI job runs on Ubuntu only. Its shared hosted-runner timings are informational and must not be treated as stable release rankings or compared against results from another host.
+- Division uses nonzero divisors. Integer operands are constrained so all signed operations remain in range. Floating-point results use a checksum after scaling; this is a result-integrity guard, not a precision benchmark.
+
+### 15.3 Scope boundary
+
+This batch measures native C11, C++17, and Java 21+ arithmetic. It does not yet measure SLeeLa VM arithmetic. SLeeLa's core runtime currently exposes `int` (64-bit), `double`, and `boolean` as primitive VM value tags; width-family annotations and the 128-bit path require separate runtime qualification before they can be claimed as equivalent native primitive cases. The Basic Native VM and Premium SLVM 1–11 must receive the same SLeeLa workload through an internal monotonic timer or another measurement boundary that excludes compiler, process-start, and admission costs. Until that is implemented, SLeeLa VM arithmetic speed remains **NOT MEASURED**.
+
+### 15.4 Current run
+
+The arithmetic job was added to `.github/workflows/complete-vm-conformance.yml` and is running as part of the latest workflow revision. Results are not published in this document until the job completes and its JSON artifact is checked. No performance numbers or ranking are inferred from the benchmark implementation alone.
