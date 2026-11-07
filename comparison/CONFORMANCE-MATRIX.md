@@ -1,6 +1,6 @@
 # Conformance Matrix
 Standard SCS-MATRIX-001 | Edition 1.0  
-Status: baseline planning matrix with initial executable tests; not a qualification report.
+Status: initial CI results recorded; qualification remains platform- and feature-specific.
 
 ## 1. Legend
 Native/defined = language/runtime model; Managed = managed runtime; Library/API = library/platform facility; Explicit contract = must be defined and tested; Varies = target-dependent; Separate path = requires explicit interoperability.
@@ -28,22 +28,32 @@ Repository documentation describes SLeeLa Syntax 3.0 as current; C ABI as prefer
 These are architecture/documentation statements, not proof that every feature or platform is qualified.
 
 ## 4. Qualification checklist
-| Area | Evidence required | Initial status |
+| Area | Evidence required | Current status |
 |---|---|---|
-| Syntax/parser | Versioned compiler tests/logs | Not assessed |
+| Syntax/parser | Versioned compiler tests/logs | Not assessed by this comparison suite |
 | Primitive representation | Runtime tests and ABI probes | Not assessed |
-| Arithmetic / basic control flow / ASCII output | Shared baseline vectors | Harness implemented; first CI run pending |
+| Arithmetic / basic control flow / ASCII output | Shared baseline vectors | Ubuntu PASS; macOS PASS; Windows C/C++ PASS but Java launch failed in first run; corrected Windows runner pending rerun |
 | Arrays/strings beyond ASCII | Bounds and encoding tests | Not assessed |
 | Memory ownership | Runtime and native sanitizer tests | Not assessed |
 | C ABI | Header consumer tests across compilers | Not assessed |
 | C++ wrapper | Exception containment and ABI tests | Not assessed |
 | Java process | Probe, arguments, streams, exit tests | Not assessed |
 | JNI/embedded JVM | Lifecycle, references, threads, shutdown | Not assessed |
-| Cross-platform C/C++/Java baseline | Ubuntu, Windows, macOS workflow artifacts | Workflow configured; run pending |
-| SLeeLa VM baseline | Syntax 3.0 VM execution artifact | Workflow configured; run pending |
+| Cross-platform C/C++/Java baseline | Ubuntu, Windows, macOS workflow artifacts | First run: Ubuntu PASS, macOS PASS, Windows partial; corrected rerun pending |
+| SLeeLa VM baseline | Syntax 3.0 VM execution artifact | Build PASS; vector output matched after excluding runtime diagnostic preamble in revised validator; rerun pending |
 | Performance | Reproducible benchmark report | Not assessed |
 
-## 5. Result record
+## 5. First-run evidence
+Workflow run [42331126707](https://github.com/mearvk/SLeeLa/actions/runs/42331126707) completed with overall failure.
+
+- Ubuntu shared-vector job: PASS.
+- macOS shared-vector job: PASS.
+- Windows shared-vector job: C11 and C++17 passed; Java compilation failed because MSYS2 Python could not resolve Windows `javac` (WinError 2). The workflow now uses native Windows Python and the MSYS2 compiler path.
+- SLeeLa VM job: compiler/VM build passed. The VM printed the expected three program lines, but also emitted verification and memory-manager diagnostics to stdout; strict whole-output comparison therefore failed. A validator now checks the expected final three program-output lines and reports the diagnostic preamble separately.
+
+The revised workflow has not yet completed at the time this matrix was updated. Do not treat the fixes as passing until a new completed GitHub run confirms them.
+
+## 6. Result record
     test_suite:
     repository_commit:
     sleela_syntax:
