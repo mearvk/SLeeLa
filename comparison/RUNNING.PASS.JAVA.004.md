@@ -1,81 +1,142 @@
-# Running Verification Record — Java/JVM, Native C/C++, and SLeeLa (Iteration 003 VM Extension)
+# Verification Record: Java/JVM, Native C/C++, and SLeeLa VM
 
 **Record ID:** RUNNING.PASS.JAVA.004  
-**Edition:** 1.0  
+**Edition:** 1.1  
 **Recorded:** 2026-11-07 (UTC)  
-**Repository:** mearvk/SLeeLa · **Branch:** master · **SLeeLa baseline:** Syntax 3.0  
-**Record status:** PENDING — implementation committed; GitHub Actions run queued at time of record
+**Repository:** `mearvk/SLeeLa`  
+**Branch:** `master`  
+**Language baseline:** SLeeLa Syntax 3.0  
+**Overall result:** **FAILURE - SLeeLa VM vector execution failed**
 
-## 1. Purpose and qualification boundary
+## 1. Executive summary
 
-This extension closes part of the SLeeLa VM evidence gap left by Iteration 003. The earlier native/Java run qualified the ten SCS-TEST-003 observations in C11, C++17, and Java 21+ on Ubuntu, macOS, and Windows. Its separate SLeeLa job ran only the pre-existing arithmetic/control-flow baseline.
+This record adds SLeeLa VM checks for array bounds and UTF-8 string-literal handling to the existing cross-platform comparison suite.
 
-This extension adds executable SLeeLa VM checks for the array operations that the current language surface exposes, plus a narrow UTF-8 string-literal equality/emission check. It does not claim that the VM has a strict UTF-8 decoder, a code-point-count API, or a malformed-byte-input API suitable for the remaining UTF-8 vectors.
+The GitHub Actions workflow completed. The SLeeLa compiler and VM built successfully, but the SLeeLa VM vector-execution step failed. The three shared-vector platform jobs (Ubuntu, macOS, and Windows) passed.
 
-## 2. VM cases added
+This is a mixed result, not a full PASS. The native/Java platform results and the SLeeLa VM result are reported separately below.
 
-| Case | VM operation | Expected result |
+## 2. Scope and qualification boundary
+
+The extension covers:
+
+- Empty and single-element array lengths.
+- Valid first-element and last-element reads.
+- Rejection of a negative array index.
+- Rejection of an index equal to the array length.
+- Equality comparison of identical UTF-8 string literals.
+- Exact emission of a UTF-8 test fixture.
+
+The UTF-8 fixture is the literal text `Aé😀`. The non-ASCII characters are intentional test data, not corrupted text. Preserve this fixture exactly in source files and expected-output checks.
+
+This test does not establish that the VM provides a strict UTF-8 decoder, a code-point-count API, or a malformed-byte-input API.
+
+## 3. Test matrix
+
+| Case | Operation | Expected result |
 |---|---|---|
-| ARRAY-EMPTY | arrayLength(new int[0]) | 0 |
-| ARRAY-SINGLE | arrayLength(new int[1]) | 1 |
-| ARRAY-FIRST | Read index 0 from [11,22,33] | 11 |
-| ARRAY-LAST | Read index 2 from [11,22,33] | 33 |
-| UTF8-LITERAL-EQUALITY | Compare identical Aé😀 string literals | PASS |
-| UTF8-LITERAL-EMISSION | Emit the Aé😀 fixture | Exact fixture |
+| ARRAY-EMPTY | Length of an empty integer array | `0` |
+| ARRAY-SINGLE | Length of a one-element integer array | `1` |
+| ARRAY-FIRST | Read index 0 from `[11,22,33]` | `11` |
+| ARRAY-LAST | Read index 2 from `[11,22,33]` | `33` |
+| UTF8-LITERAL-EQUALITY | Compare identical `Aé😀` literals | Equal |
+| UTF8-LITERAL-EMISSION | Emit `Aé😀` | Exact fixture |
 | ARRAY-NEGATIVE | Read index -1 from a three-element array | Runtime rejection |
 | ARRAY-PAST-END | Read index 3 from a three-element array | Runtime rejection |
 
-The two invalid-index cases run as separate processes because the VM terminates the current program on a runtime bounds error. The runner requires a nonzero exit and the "array index out of range" diagnostic for each.
+The invalid-index cases run in separate processes because a runtime bounds error terminates the current program. The runner expects a nonzero exit and the diagnostic `array index out of range`.
 
-The six valid-case output lines and two expected-failure cases are checked by comparison/tests/run_sleela_array_string_vectors.py.
+## 4. Test implementation
 
-## 3. Source and runner inventory
+The repository test files are:
 
-- comparison/tests/sleela/array_string_valid.sleela — empty/single array lengths, valid first/last access, UTF-8 literal equality and emission.
-- comparison/tests/sleela/array_negative_index.sleela — negative-index rejection.
-- comparison/tests/sleela/array_past_end.sleela — one-past-end rejection.
-- comparison/tests/run_sleela_array_string_vectors.py — executes all three programs and writes comparison-sleela-array-string-results.json.
-- .github/workflows/comparison-conformance.yml — invokes the VM runner after the existing shared VM baseline and retains its JSON result in the SLeeLa VM artifact.
+- `comparison/tests/sleela/array_string_valid.sleela`
+- `comparison/tests/sleela/array_negative_index.sleela`
+- `comparison/tests/sleela/array_past_end.sleela`
+- `comparison/tests/run_sleela_array_string_vectors.py`
 
-## 4. CI execution
+The runner executes the valid and invalid cases and writes `comparison-sleela-array-string-results.json`.
 
-The workflow was triggered by the push to master and is being tracked here:
+Workflow integration is in:
 
-- [Comparison Standards Conformance run 42336349023](https://github.com/mearvk/SLeeLa/actions/runs/42336314226)
-- Workflow commit: 901b15d45d7806c8752d99310f82828030660333
-- At the time this record was updated, the workflow is **in progress**. The Ubuntu, Windows, and macOS shared-vector jobs have completed successfully. The SLeeLa VM job has completed its setup and is building the compiler/VM; its vector execution has not yet completed.
+- `.github/workflows/comparison-conformance.yml`
 
-The completed shared-platform jobs are successful, but the SLeeLa VM job is still in progress. A partially completed workflow is not a PASS. The VM job must finish successfully, and its output/artifact must be inspected before the VM subset can be marked qualified.
+## 5. CI result
 
-## 5. What remains unqualified
+**Workflow:** Comparison Standards Conformance  
+**Run:** [GitHub Actions run 42336314226](https://github.com/mearvk/SLeeLa/actions/runs/42336314226)  
+**Run number:** 54  
+**Head commit:** `fecbbb7e4e4cca7d993fc1af8782f769254d9d73`  
+**Commit message:** Correct SLeeLa VM assertion count  
+**Final workflow conclusion:** `failure`
 
-Even after this subset passes, the following SCS-TEST-003 observations remain unqualified on the SLeeLa VM:
+| Job | Result | Interpretation |
+|---|---|---|
+| SLeeLa Syntax 3.0 VM vectors (Ubuntu) | **FAIL** | Build succeeded; vector execution failed |
+| Shared vectors (macOS) | **PASS** | Job completed successfully |
+| Shared vectors (Windows) | **PASS** | Job completed successfully |
+| Shared vectors (Ubuntu) | **PASS** | Job completed successfully |
 
-- Strict rejection of malformed UTF-8, including the overlong byte sequence C0 AF.
-- VM-measured UTF-8 byte length of Aé😀.
-- VM-measured Unicode code-point count of Aé😀.
+The failed SLeeLa job completed these steps successfully:
 
-The fixture's seven-byte UTF-8 encoding and three-code-point count are known test-data properties; this runner does not claim that the VM computed those metrics.
+1. Runner setup and source checkout.
+2. Runtime build-prerequisite installation.
+3. Ephemeral manifest generation.
+4. SLeeLa compiler and VM build.
+5. Retention of SLeeLa VM output.
 
-The existing native/Java results remain separately documented in [RUNNING.PASS.JAVA.003.md](RUNNING.PASS.JAVA.003.md). This record does not replace or broaden those platform results.
+The failing step was **Execute shared SLeeLa VM vectors**. The job summary establishes the failing step, but does not by itself identify which individual assertion caused the failure. Inspect the retained output and job logs before changing expected behavior or declaring a test defect.
 
-## 6. Reproduction
+## 6. Qualification status
 
-From the repository root, after building the VM with the same manifest and SHEET environment used by CI:
+### Qualified by this workflow run
+
+- Shared comparison vectors on Ubuntu.
+- Shared comparison vectors on macOS.
+- Shared comparison vectors on Windows.
+
+### Not qualified by this workflow run
+
+- SLeeLa VM array and string vector suite as a whole.
+- Negative-index and past-end runtime rejection on the SLeeLa VM.
+- UTF-8 literal equality and exact emission on the SLeeLa VM.
+
+A successful compiler/VM build is not evidence that the VM test suite passed.
+
+### Still outside this test's coverage
+
+- Strict rejection of malformed UTF-8, including the overlong byte sequence `C0 AF`.
+- VM-measured UTF-8 byte length of `Aé😀`.
+- VM-measured Unicode code-point count of `Aé😀`.
+
+The fixture's UTF-8 representation is seven bytes and contains three Unicode code points. Those are properties of the test data; this record does not claim that the VM computed either measurement.
+
+## 7. Reproduction
+
+From the repository root, build the VM using the CI manifest and environment, then run:
 
 ```sh
 python3 comparison/tests/run_sleela_array_string_vectors.py
 ```
 
-The runner expects impl/build/sleela, or an alternate executable supplied through SLEELA_BIN.
+The runner expects `impl/build/sleela`, or an alternate executable provided through `SLEELA_BIN`.
 
-## 7. Evidence links
+## 8. Next corrective actions
 
-- [Iteration 003 native/Java and baseline VM record](RUNNING.PASS.JAVA.003.md)
-- [SCS-TEST-003 normative vectors](ARRAY-STRING-BOUNDS-VECTORS.md)
+1. Open the [failed SLeeLa VM job](https://github.com/mearvk/SLeeLa/actions/runs/42336314226/job/128293940906).
+2. Inspect the retained VM output and `comparison-sleela-array-string-results.json`.
+3. Identify the exact failing case and distinguish a VM defect from a test expectation or runner defect.
+4. Make the smallest justified correction.
+5. Rerun the workflow and update this record only from the new run's completed results.
+
+## 9. References
+
+- [Previous comparison record: RUNNING.PASS.JAVA.003.md](RUNNING.PASS.JAVA.003.md)
+- [Normative array and string vectors](ARRAY-STRING-BOUNDS-VECTORS.md)
 - [Comparison conformance workflow](../.github/workflows/comparison-conformance.yml)
-- [Tracked workflow run 42336314226](https://github.com/mearvk/SLeeLa/actions/runs/42336314226)
+- [Workflow run 42336314226](https://github.com/mearvk/SLeeLa/actions/runs/42336314226)
+- [Failed SLeeLa VM job](https://github.com/mearvk/SLeeLa/actions/runs/42336314226/job/128293940906)
 
 ---
 
-**Current conclusion:** implementation and workflow integration are committed. The three shared native/Java platform jobs have passed in this run. SLeeLa VM qualification remains pending the VM build, vector execution, and inspection of its retained JSON artifact.
+**Final assessment:** The shared native/Java comparison jobs passed on all three operating-system runners. The SLeeLa VM compiled successfully, but its vector execution failed. Keep SLeeLa VM qualification open until the failing case is diagnosed and a subsequent run passes.
