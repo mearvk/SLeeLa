@@ -1,0 +1,8 @@
+#sleela 3.0
+// SCS-TEST-003 VM one-past-end rejection; expected runtime failure.
+class ArrayPastEnd {
+    void main() {
+        int[] values = new int[3];
+        print(arrayGet(values, 3));
+    }
+}
