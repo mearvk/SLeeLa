@@ -1,6 +1,6 @@
 # Conformance Matrix
 Standard SCS-MATRIX-001 | Edition 1.1  
-Status: baseline passed; numeric/Unicode batch 002 is queued for CI verification; feature qualification remains scoped.
+Status: baseline and numeric/Unicode batch 002 passed on configured platforms; feature qualification remains scoped.
 
 ## 1. Legend
 Native/defined = language/runtime model; Managed = managed runtime; Library/API = library/platform facility; Explicit contract = must be defined and tested; Varies = target-dependent; Separate path = requires explicit interoperability.
@@ -33,7 +33,7 @@ These are architecture/documentation statements, not proof that every feature or
 | Syntax/parser | Versioned compiler tests/logs | Not assessed by this comparison suite |
 | Primitive representation | Runtime tests and ABI probes | Not assessed |
 | Arithmetic / basic control flow / ASCII output | Shared baseline vectors | **PASS** — Ubuntu, macOS, Windows; SLeeLa VM on Ubuntu |
-| Fixed-width integer edges / UTF-8 byte and code-point counts | SCS-TEST-002 edge vectors | Pending CI — C11, C++17, Java; SLeeLa VM not yet covered |
+| Fixed-width integer edges / UTF-8 byte and code-point counts | SCS-TEST-002 edge vectors | **PASS** — C11, C++17, Java on Ubuntu, macOS, Windows; SLeeLa VM not yet covered |
 | Arrays/strings beyond ASCII | Bounds and encoding tests | Not assessed |
 | Memory ownership | Runtime and native sanitizer tests | Not assessed |
 | C ABI | Header consumer tests across compilers | Not assessed |
@@ -46,7 +46,7 @@ These are architecture/documentation statements, not proof that every feature or
 
 ## 5. Corrected CI evidence
 
-Latest completed run: [42331591283](https://github.com/mearvk/SLeeLa/actions/runs/42331591283), conclusion success, commit 83e87b1344e7c941821132127568510e24396b21.
+Latest baseline run: [42331591283](https://github.com/mearvk/SLeeLa/actions/runs/42331591283), conclusion success. Numeric/Unicode batch 002: [42332366905](https://github.com/mearvk/SLeeLa/actions/runs/42332366905), conclusion success, commit 087b9c2d77d0a32cf345c9ec6289a98ea0da00dd.
 
 | Job | Result |
 |---|---|
@@ -59,7 +59,7 @@ Two additional corrected runs also completed successfully: [42331589662](https:/
 
 The initial run [42331126707](https://github.com/mearvk/SLeeLa/actions/runs/42331126707) failed for two diagnosed reasons: Windows Java tool discovery under MSYS2 Python, and whole-stdout comparison that treated SLeeLa runtime diagnostics as application output. The workflow now uses native Windows Python with Java 21 and the UCRT64 compiler path; the SLeeLa validator checks the final three nonblank application-output lines. The corrections passed in the completed runs above.
 
-See [RUNNING.PASS.JAVA.001.md](RUNNING.PASS.JAVA.001.md) for the complete run ledger, detailed steps, artifact inventory, graphs, and scope limits.
+See [RUNNING.PASS.JAVA.001.md](RUNNING.PASS.JAVA.001.md) for baseline evidence and [RUNNING.PASS.JAVA.002.md](RUNNING.PASS.JAVA.002.md) for the numeric/Unicode edge-vector evidence and remaining scope limits.
 
 ## 6. Result record
     test_suite:
