@@ -55,7 +55,55 @@ Newton `bigisqrt` that ride the NTT multiply — is what removes the tail and
 finally delivers the full ~O(d·log²d) regime. It is the single highest-value
 follow-up; everything needed for it (fast `bigmul`, `bigsub`) is now in place.
 
+## Reassessment (post-v3.0) — the speed equation re-measured
+
+The original roadmap below was written *before* Chudnovsky existed and ranked
+"add binary splitting" as the top win. That is now done, so the bottleneck has
+moved. Here is the current speed equation, from a **phase-timed** Chudnovsky run
+(`timeMonotonicNanos()` around each stage):
+
+| Phase | 10,000 digits | 50,000 digits | Scaling (5× digits) |
+|---|---:|---:|---|
+| Binary-splitting recursion (`bs`) | 72 ms (1%) | 399 ms (0.2%) | **5.5× → ~linear (done)** |
+| Final `bigisqrt` | **6,405 ms (94%)** | **170,025 ms (94%)** | **26.5× → ~O(n²·log n)** |
+| Final `bigdiv` | 368 ms (5%) | 10,495 ms (6%) | 28.5× → ~O(n²) |
+
+So the total time is ≈ `isqrt + div`, and **`bigisqrt` alone is ~94%**. The
+recursion — the thing v3.0 set out to make fast — is already negligible and
+scales linearly. The whole speed equation now reduces to **two schoolbook
+kernels in the final scaling**, and one of them dominates by ~17×.
+
+Why `bigisqrt` is so much worse than a single divide: its Newton loop runs
+~log₂(limbs) iterations and **each iteration calls the schoolbook O(n²)
+`bigdiv`**, so it is effectively O(n²·log n) — strictly worse than the single
+O(n²) final divide. That is the 94%.
+
+### Re-ranked improvements — by order of magnitude, then by size
+
+| # | Improvement | Magnitude | Size |
+|---|---|---|---|
+| **R1** | **Newton-reciprocal `bigisqrt`** — compute 1/√ (and the √ correction) with Newton iterations that ride the NTT `bigmul`, instead of a schoolbook `bigdiv` per iteration. Kills the 94% term. | **~50–100×** on the dominant phase; turns 50k from ~194 s toward ~15 s | **Medium** (one C kernel; isqrt already exists to diff against) |
+| **R2** | **Newton-reciprocal `bigdiv`** — replace the schoolbook final division with `num · (1/den)` via a Newton reciprocal on the NTT multiply. Removes the remaining ~5–6% O(n²) tail. | **~10–30×** on the divide phase (now ~2nd); once R1 lands this becomes the new top term | **Medium** (shares the reciprocal core with R1) |
+| **R3** | **Reduce the final working precision / scale** — the `bigisqrt` operand is `10005·S²` (≈ 2× the digit width); computing √ at exactly the needed precision instead of the squared scale halves the isqrt input size. Pure SLeeLa-side change in `PiChudnovsky.sleela`. | **~2–4×** on isqrt until R1 lands (constant factor) | **Small** (generator-only; no VM change) |
+| **R4** | **Trim bs() allocation churn** — the recursion is already ~linear in time but allocates many short-lived limb arrays (it leans on the OP_NEWARRAY GC-retry). Reusing buffers / in-place ops trims the 1% and the GC pressure. | **~1.1–1.3×** overall (bs is only 1%) | **Small–Medium** |
+| **R5** | Interpreter/representation wins from the original roadmap (direct-threaded dispatch, unboxed arrays) | **1.2–3×** broad, but near-irrelevant to Chudnovsky (99% of its time is in native kernels, not the interpreter) | Medium–Large |
+
+**The one thing that matters now: R1 (Newton-reciprocal `bigisqrt`).** It targets
+94% of the runtime; nothing else is close. R2 is the natural companion (shared
+reciprocal core) and becomes the top term once R1 lands. R3 is a cheap,
+VM-free stopgap that helps today. R4/R5 are polish — note that for *this*
+workload the interpreter speedups (R5) barely register, because post-v3.0
+Chudnovsky spends ~99% of its time inside native C kernels, not in bytecode.
+
+**Recommended order:** R3 (small, immediate, no VM change) → R1 (the big one) →
+R2 (finishes the tail) → R4. After R1+R2 the final scaling joins the
+quasi-linear recursion and the whole generator should be ~O(d·log²d) end to end
+— the "millions of digits in minutes" regime.
+
 ## TL;DR — ranked by impact, then by size
+
+> Historical note: the ranking below predates v3.0 and is kept for the roadmap
+> rationale. The current, measured ranking is the Reassessment section above.
 
 Two orderings are requested. First by **order of magnitude of speedup**
 (biggest win first); within each tier, smallest implementation first.
