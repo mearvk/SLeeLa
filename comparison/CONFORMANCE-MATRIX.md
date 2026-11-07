@@ -1,6 +1,6 @@
 # Conformance Matrix
 Standard SCS-MATRIX-001 | Edition 1.0  
-Status: baseline planning matrix, not a test-results report.
+Status: baseline planning matrix with initial executable tests; not a qualification report.
 
 ## 1. Legend
 Native/defined = language/runtime model; Managed = managed runtime; Library/API = library/platform facility; Explicit contract = must be defined and tested; Varies = target-dependent; Separate path = requires explicit interoperability.
@@ -32,14 +32,15 @@ These are architecture/documentation statements, not proof that every feature or
 |---|---|---|
 | Syntax/parser | Versioned compiler tests/logs | Not assessed |
 | Primitive representation | Runtime tests and ABI probes | Not assessed |
-| Arithmetic | Shared test vectors | Not assessed |
-| Arrays/strings | Bounds and encoding tests | Not assessed |
+| Arithmetic / basic control flow / ASCII output | Shared baseline vectors | Harness implemented; first CI run pending |
+| Arrays/strings beyond ASCII | Bounds and encoding tests | Not assessed |
 | Memory ownership | Runtime and native sanitizer tests | Not assessed |
 | C ABI | Header consumer tests across compilers | Not assessed |
 | C++ wrapper | Exception containment and ABI tests | Not assessed |
 | Java process | Probe, arguments, streams, exit tests | Not assessed |
 | JNI/embedded JVM | Lifecycle, references, threads, shutdown | Not assessed |
-| Cross-platform | Linux, Windows, macOS logs | Not assessed |
+| Cross-platform C/C++/Java baseline | Ubuntu, Windows, macOS workflow artifacts | Workflow configured; run pending |
+| SLeeLa VM baseline | Syntax 3.0 VM execution artifact | Workflow configured; run pending |
 | Performance | Reproducible benchmark report | Not assessed |
 
 ## 5. Result record
@@ -62,4 +63,4 @@ These are architecture/documentation statements, not proof that every feature or
     blocked:
     result_artifact:
 
-Never replace Not assessed with PASS without an actual retained test run.
+Never replace Not assessed with PASS without an actual retained test run. A workflow definition or queued run is not a completed result.
