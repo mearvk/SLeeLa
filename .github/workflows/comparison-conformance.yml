@@ -79,6 +79,7 @@ jobs:
         run: |
           python3 comparison/tests/run_native_java.py
           python3 comparison/tests/run_edge_vectors.py
+          python3 comparison/tests/run_array_string_vectors.py
 
       - name: Run shared C, C++, and Java vectors (Windows)
         if: runner.os == 'Windows'
@@ -88,6 +89,7 @@ jobs:
           $env:CXX = "g++"
           python comparison/tests/run_native_java.py
           python comparison/tests/run_edge_vectors.py
+          python comparison/tests/run_array_string_vectors.py
 
       - name: Retain comparison result record
         if: always()
@@ -97,6 +99,7 @@ jobs:
           path: |
             comparison-results.json
             comparison-edge-results.json
+            comparison-array-string-results.json
           if-no-files-found: warn
 
   sleela-vm:
