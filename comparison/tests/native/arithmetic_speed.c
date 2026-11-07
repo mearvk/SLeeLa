@@ -7,8 +7,8 @@
 
 #define N 4096
 #define ITERS 2000000ULL
-static uint64_t seed = 0x5343535045524631ULL;
-static uint32_t next_u32(void) { seed ^= seed << 13; seed ^= seed >> 7; seed ^= seed << 17; return (uint32_t)seed; }
+static uint32_t seed = 0x53435350U;
+static uint32_t next_u32(void) { seed ^= seed << 13; seed ^= seed >> 17; seed ^= seed << 5; return seed; }
 static uint64_t now_ns(void) { struct timespec t; if (clock_gettime(CLOCK_MONOTONIC, &t)) return 0; return (uint64_t)t.tv_sec*1000000000ULL+(uint64_t)t.tv_nsec; }
 
 #define BENCH_INT(T, TAG, MASK, SIGNED_CAST) \
@@ -26,7 +26,7 @@ static void bench_##TAG(const char *op, T *a, T *b) { \
 }
 
 #define RUN_TYPE(T, TAG, CAST) do { \
-  static T a[N], b[N]; \
+  static T a[N], b[N]; seed = 0x53435350U; \
   for(size_t i=0;i<N;i++){ a[i]=(T)(5+(next_u32()%6)); b[i]=(T)(1+(next_u32()%5)); } \
   bench_##TAG("+",a,b); bench_##TAG("-",a,b); bench_##TAG("*",a,b); bench_##TAG("/",a,b); \
 } while(0)
