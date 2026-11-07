@@ -55,7 +55,7 @@ def main() -> int:
             fixture = "Aé😀".encode("utf-8")
             if len(fixture) != 7 or len("Aé😀") != 3:
                 raise AssertionError("host-side UTF-8 fixture invariant failed")
-            print("PASS SLeeLa VM valid arrays and UTF-8 literal round-trip: 5 assertions")
+            print("PASS SLeeLa VM valid arrays and UTF-8 literal round-trip: 6 assertions")
         else:
             if completed.returncode == 0 or "array index out of range" not in completed.stdout:
                 raise AssertionError(
