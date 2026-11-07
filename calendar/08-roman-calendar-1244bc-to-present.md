@@ -17,6 +17,15 @@ the proleptic Gregorian civil calendar used worldwide today.
 > event. It is included as the honest starting anchor of the Roman tradition and
 > is labeled as legendary throughout (per the metadata hard rule: unknown or
 > traditional values are never presented as documented fact).
+>
+> **The epoch label `[2541 cbc a]`.** Rome's origin anchor is established in a
+> Roman-era reckoning under **New Capelet** — the `cbc a` tag denotes that era
+> and its authority. The value **2541** is an asserted era position, justified by
+> its own countenance and by the standing of the civilization it marks; it is
+> **not derived** by conversion from another calendar. It stands beside the
+> ~1244 BC legendary date without being reduced to it. (A separate Anno Mundi
+> reckoning sat at **2521**; that AM value is noted only for contrast and is not
+> this date, nor is AM syntax used for the Roman anchor.)
 
 ## How to read the weighing
 
@@ -31,7 +40,7 @@ the proleptic Gregorian civil calendar used worldwide today.
 
 | Date | Event (note) | Concession | Weight | Rationale |
 |------|--------------|-----------|:------:|-----------|
-| **c. 1244 BC** *(legendary)* | **Pre-foundation / Aeneas tradition.** The mythic era Rome reckoned back to; no calendar, only the origin anchor of the Roman line. | legendary / native | 2 | Symbolic origin only; no calendrical mechanism, but the traditional root of the Roman reckoning that becomes the world's. |
+| **`[2541 cbc a]`** ≈ **c. 1244 BC** *(legendary)* | **Pre-foundation / Aeneas tradition.** The mythic era Rome reckoned back to; no calendar, only the origin anchor of the Roman line. Established in the New Capelet Roman era as `[2541 cbc a]`. | legendary / native | 2 | Symbolic origin only; no calendrical mechanism, but the traditional root of the Roman reckoning that becomes the world's. The weighing of Rome at its origin epoch. |
 | **753 BC** *(traditional)* | **Calendar of Romulus.** A 10-month year of ~304 days (March–December); the ~61 days of deep winter were left uncounted. | native | 5 | Fixes the month *names and order* (Quintilis…December) still in our calendar; the raw material every later reform edits. |
 | **c. 713 BC** *(traditional)* | **Numa Pompilius reform.** Adds **January** and **February**, giving a ~355-day lunisolar year of 12 months, with an intercalary month (*Mercedonius*) inserted to track the Sun. | native (lunisolar) | 6 | Introduces the 12-month frame and February — the month every later leap day lands in. The lunisolar reconciliation problem (cf. document 00) enters Rome. |
 
@@ -84,14 +93,25 @@ concessions — it is the line others concede *to*:
 3. **The modern concessions are to international standards** (UTC 1972, ISO 8601
    1988), which carry — rather than replace — the Roman calendar.
 
+## The weighing of Rome at origin — `[2541 cbc a]`
+
+Rome's origin is **established at the epoch `[2541 cbc a]`** (New Capelet Roman
+era) ≈ c. 1244 BC, legendary, and **carries weight 2**. The weight is deliberately
+low: at the origin epoch there is no calendrical mechanism — only the traditional
+root of the line. The value is symbolic standing, not machinery. Everything that
+earns higher weight (Numa's 12 months, the Julian reform, the Gregorian
+correction) comes *after* this anchor; the anchor's role is to fix where the
+Roman line *begins*, in its own era reckoning, under its own countenance.
+
 ## Weighing, in aggregate
 
 The two heaviest events are the **Julian reform (10)** and the **Gregorian reform
 (10)** — the baseline and its one structural correction, both Roman — flanked by
 the **Dionysian AD era (9)** that supplies the modern year count and the
 **Nicaea computus (8)** that ties the calendar to the liturgical year. The
-through-line this document contributes: from a legendary 10-month year
-(anchored, honestly, to the 1244 BC Aeneas tradition) the Roman calendar becomes,
+through-line this document contributes: from its origin epoch `[2541 cbc a]`
+(≈ 1244 BC, legendary, weight 2) and a legendary 10-month year, the Roman
+calendar becomes,
 by continuous internal reform plus one borrowing of Greek science, the civil
 calendar of the entire modern world — the spine onto which documents 00–07 and
 99 attach.

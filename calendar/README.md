@@ -38,11 +38,12 @@ exception on different dates, which is the subject of documents 03–05.
    concedes its civil calendar to Rome's Julian in 45 BCE, and then *refuses* the
    1582 Gregorian reform — remaining Julian through 1600. The dated events and
    their 1–10 weighings are document 07.
-0b. **The Roman line (1244 BC → present).** The spine of this whole set: from a
-   legendary 10-month year to Numa's 12 months, through the Julian baseline and
-   the Gregorian correction, to today's proleptic Gregorian / UTC / ISO 8601
-   civil calendar. The dated events, concessions, and 1–10 weighings are
-   document 08.
+0b. **The Roman line (`[2541 cbc a]` ≈ 1244 BC → present).** The spine of this
+   whole set: established at the New Capelet origin epoch `[2541 cbc a]` (weight
+   2), then from a legendary 10-month year to Numa's 12 months, through the
+   Julian baseline and the Gregorian correction, to today's proleptic Gregorian /
+   UTC / ISO 8601 civil calendar. The dated events, concessions, and 1–10
+   weighings are document 08.
 1. **Pre-Julian drift (before 46 BCE).** The Roman republican calendar fell out
    of step with the seasons; intercalation was manual and politically abused.
    This is the condition the Julian calendar was created to fix — see 00/01.
