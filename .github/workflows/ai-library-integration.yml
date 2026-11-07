@@ -1,0 +1,51 @@
+name: AI Library Integration
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'artificial-intelligence/neural-nets/**'
+      - 'artificial-intelligence/character-recognition/**'
+      - 'lib/neural-nets/**'
+      - 'lib/character-recognition/**'
+      - 'lib/LIBRARY.INDEX.md'
+      - 'lib/LIBRARY.SYMBOLS.md'
+      - 'lib/README.md'
+      - 'test-suites/test-library-inventory.sh'
+      - 'tests/**'
+      - 'tools/generate-library-symbols.py'
+      - '.github/workflows/ai-library-integration.yml'
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'artificial-intelligence/neural-nets/**'
+      - 'artificial-intelligence/character-recognition/**'
+      - 'lib/neural-nets/**'
+      - 'lib/character-recognition/**'
+      - 'lib/LIBRARY.INDEX.md'
+      - 'lib/LIBRARY.SYMBOLS.md'
+      - 'lib/README.md'
+      - 'test-suites/test-library-inventory.sh'
+      - 'tests/**'
+      - 'tools/generate-library-symbols.py'
+      - '.github/workflows/ai-library-integration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ai-library-integration:
+    name: Native AI and /lib inventory
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Verify generated library inventory
+        run: |
+          python3 tools/generate-library-symbols.py --print-counts
+          bash test-suites/test-library-inventory.sh
+      - name: Build and test neural-network native API
+        run: make -C tests ai-neural-nets-xor
+      - name: Build and test character-recognition native API
+        run: make -C tests ai-character-recognition character-recognition-cli
