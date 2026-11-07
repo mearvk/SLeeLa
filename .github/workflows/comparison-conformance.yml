@@ -61,6 +61,18 @@ jobs:
           distribution: temurin
           java-version: '21'
 
+      - name: Set up native Windows Python
+        if: runner.os == 'Windows'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Add MSYS2 UCRT64 compiler to Windows PATH
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          "$env:RUNNER_TEMP/msys64/ucrt64/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
       - name: Run shared C, C++, and Java vectors (POSIX)
         if: runner.os != 'Windows'
         shell: bash
@@ -68,8 +80,11 @@ jobs:
 
       - name: Run shared C, C++, and Java vectors (Windows)
         if: runner.os == 'Windows'
-        shell: msys2 {0}
-        run: python3 comparison/tests/run_native_java.py
+        shell: pwsh
+        run: |
+          $env:CC = "gcc"
+          $env:CXX = "g++"
+          python comparison/tests/run_native_java.py
 
       - name: Retain comparison result record
         if: always()
@@ -108,7 +123,7 @@ jobs:
           SLEELA_SHEET: ${{ github.workspace }}/SHEET.sheet
         run: |
           ./impl/build/sleela run comparison/tests/sleela/common_vectors.sleela > /tmp/sleela-comparison.out
-          diff -u <(printf '42\n15\nhello\n') /tmp/sleela-comparison.out
+          python3 comparison/tests/check_sleela_output.py /tmp/sleela-comparison.out
 
       - name: Retain SLeeLa VM output
         if: always()
