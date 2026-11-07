@@ -44,5 +44,6 @@ class SLPackage {
   int nativeAbiVersion = 1;
   boolean requiresNativeAdapter = true;
   String name() { return packageName; }
-  boolean available() { return requiresNativeAdapter; }
+  boolean available() { return true; }
+  boolean isNativeAdapterRequired() { return requiresNativeAdapter; }
 }
