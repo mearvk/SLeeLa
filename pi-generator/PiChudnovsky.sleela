@@ -1,0 +1,359 @@
+#sleela 2.9
+<< PiChudnovsky.sleela -- compute Pi with the Chudnovsky algorithm evaluated by
+   BINARY SPLITTING over the native big-integer kernel. This is the Tier A1
+   improvement from pi-generator/NATIVE.ADD.md: it changes the complexity class
+   from the O(digits^2) spigot/Machin to roughly O(digits * log^2 digits), so
+   millions of digits become tractable rather than months-long.
+
+   It uses the native opcodes added for this purpose:
+     bigmul   (OP_BIGMUL, NTT/Karatsuba)   big * big
+     bigadd   (OP_BIGADD)                  big + big
+     bigsub   (OP_BIGSUB)                  big - big   (a >= b)
+     bigdiv   (OP_BIGDIV)                  big / big   (quotient + remainder)
+     bigisqrt (OP_BIGISQRT)                floor(sqrt(big))
+   plus bigdivmod (OP_BIGDIVMOD) for divide-by-small.
+
+   MATH. Chudnovsky:
+
+       1/pi = 12 * sum_{k>=0} (-1)^k (6k)! (13591409 + 545140134 k)
+                              / ( (3k)! (k!)^3 640320^(3k+3/2) )
+
+   Binary splitting evaluates the partial sum 0..N exactly in integers via
+
+       P(a,b), Q(a,b), T(a,b)   with, for the leaf (a, a+1):
+         P = (6a-5)(2a-1)(6a-1),           P(0,1) = 1
+         Q = a^3 * (640320^3 / 24),        Q(0,1) = 1
+         T = P * (13591409 + 545140134 a), sign (-1)^a
+       and the combine
+         P = P_am * P_mb
+         Q = Q_am * Q_mb
+         T = T_am * Q_mb + P_am * T_mb
+
+   Then, to `digits` places with scale S = 10^(digits+guard):
+
+       pi = (426880 * sqrt(10005) * Q) / T
+          = (426880 * Q * floor(sqrt(10005 * S^2))) / T      (integer-scaled)
+
+   T can be negative mid-recursion, so big integers here are SIGNED: a limb
+   magnitude array plus a parallel sign (+1/-1). Each Chudnovsky term adds ~14.18
+   digits, so N = digits/14 + a small guard.
+
+   HONEST NOTE. The big/big divide and isqrt here use a schoolbook inner loop
+   (see impl/core/sleela_core.c), so the single final scaling is not yet
+   quasi-linear; the binary-splitting RECURSION, however, is all + - * and rides
+   the NTT multiply, which is where the asymptotic win comes from. Replacing the
+   final divide/isqrt with Newton (reciprocal) iterations is the next refinement
+   noted in NATIVE.ADD.md. Verified exact against an independent reference. >>
+class PiChudnovsky {
+
+    << Decimal digits of Pi after the leading "3.". >>
+    int DIGITS = 1000;
+    int GUARD = 24;
+    String OUT_PATH = "pi-chudnovsky.txt";
+    int CHUNK = 4096;
+    int BASE = 1000000000;
+    int DIGITS_PER_LIMB = 9;
+
+    << Working limb width for scale-sized values. Set in main(). >>
+    int W = 0;
+
+    int fd = -1;
+    String buf = "";
+    int bufLen = 0;
+    int emitted = 0;
+
+    << ---- small limb helpers (little-endian base-1e9) ---------------------- >>
+
+    << Significant limb count of a (ignoring high zero limbs), min 1. >>
+    int sig(int[] a, int n) {
+        int i = n - 1;
+        while (i > 0 && a[i] == 0) { i = i - 1; }
+        return i + 1;
+    }
+
+    << Fresh zeroed array of width w. >>
+    int[] zeros(int w) {
+        int[] a = new int[w];
+        int i = 0;
+        while (i < w) { a[i] = 0; i = i + 1; }
+        return a;
+    }
+
+    << A one-limb (or few-limb) big from a small non-negative int < BASE. >>
+    int[] fromSmall(int v, int w) {
+        int[] a = zeros(w);
+        a[0] = v;
+        return a;
+    }
+
+    << Build a big from a non-negative 64-bit-ish value expressed as hi*BASE+lo
+       (both < BASE). Width w. >>
+    int[] fromPair(int hi, int lo, int w) {
+        int[] a = zeros(w);
+        a[0] = lo;
+        a[1] = hi;
+        return a;
+    }
+
+    << Right-size a to exactly its significant limbs (fresh array). This keeps
+       bigmul operand widths proportional to magnitude, which is essential: the
+       binary-splitting values grow with depth, and bigmul needs a result of
+       len(a)+len(b) limbs, so passing full-width (mostly-zero) operands would
+       demand quadratically larger buffers. >>
+    int[] trim(int[] a, int n) {
+        int sn = sig(a, n);
+        int[] r = new int[sn];
+        int i = 0;
+        while (i < sn) { r[i] = a[i]; i = i + 1; }
+        return r;
+    }
+
+    << Product a*b, result sized exactly len(a)+len(b). Operands are trimmed. >>
+    int[] mul(int[] a, int na, int[] b, int nb) {
+        int[] ta = trim(a, na);
+        int[] tb = trim(b, nb);
+        int la = arrayLength(ta);
+        int lb = arrayLength(tb);
+        int[] r = zeros(la + lb);
+        int s = bigmul(ta, tb, r);
+        return r;
+    }
+
+    << Sum a+b, result sized max(len)+1. Operands trimmed. >>
+    int[] add(int[] a, int na, int[] b, int nb) {
+        int[] ta = trim(a, na);
+        int[] tb = trim(b, nb);
+        int mx = arrayLength(ta);
+        int lb = arrayLength(tb);
+        if (lb > mx) { mx = lb; }
+        int[] r = zeros(mx + 1);
+        int s = bigadd(ta, tb, r);
+        return r;
+    }
+
+    << Compare magnitudes: -1 if a<b, 0 if equal, 1 if a>b. >>
+    int cmpMag(int[] a, int na, int[] b, int nb) {
+        int sa = sig(a, na);
+        int sb = sig(b, nb);
+        if (sa != sb) { if (sa < sb) { return -1; } return 1; }
+        int i = sa - 1;
+        while (i >= 0) {
+            if (a[i] != b[i]) { if (a[i] < b[i]) { return -1; } return 1; }
+            i = i - 1;
+        }
+        return 0;
+    }
+
+    << ---- signed big integers --------------------------------------------
+       Represented as (sign, mag) where sign is +1 or -1 and mag is a width-W
+       magnitude array. Zero carries sign +1. Returned values are fresh arrays;
+       signs are returned via the parallel `sgn*` fields set by each op (SLeeLa
+       methods return one value, so the sign rides a field). >>
+    int rsign = 1;
+
+    boolean isZeroMag(int[] a, int n) {
+        int i = 0;
+        while (i < n) { if (a[i] != 0) { return false; } i = i + 1; }
+        return true;
+    }
+
+    << signed add: (sa,a) + (sb,b) -> (rsign, result), significant-length sized. >>
+    int[] addSigned(int sa, int[] a, int na, int sb, int[] b, int nb) {
+        if (sa == sb) {
+            int[] r = add(a, na, b, nb);
+            rsign = sa;
+            return r;
+        }
+        << opposite signs: subtract smaller magnitude from larger >>
+        int c = cmpMag(a, na, b, nb);
+        if (c == 0) { rsign = 1; return zeros(1); }
+        int[] ta = trim(a, na);
+        int[] tb = trim(b, nb);
+        if (c > 0) {
+            int[] r = zeros(arrayLength(ta));
+            int s = bigsub(ta, tb, r);
+            rsign = sa;
+            return r;
+        }
+        int[] r = zeros(arrayLength(tb));
+        int s = bigsub(tb, ta, r);
+        rsign = sb;
+        return r;
+    }
+
+    << signed multiply magnitudes; sign is product of signs. >>
+    int[] mulSigned(int sa, int[] a, int na, int sb, int[] b, int nb) {
+        int[] r = mul(a, na, b, nb);
+        rsign = sa * sb;
+        return r;
+    }
+
+    << ---- binary-splitting state -----------------------------------------
+       Each bs() level returns P, Q, T through fields (SLeeLa methods return a
+       single value; we stash the triple + T's sign in fields and read them in
+       the caller immediately after the call). P and Q are always non-negative;
+       T is signed via tSign. >>
+    int[] outP;
+    int[] outQ;
+    int[] outT;
+    int tSign;
+
+    int C3_24hi = 0;
+    int C3_24lo = 0;
+
+    << Leaf (a, a+1). All results are significant-length arrays. >>
+    void leaf(int a) {
+        if (a == 0) {
+            outP = fromSmall(1, 1);
+            outQ = fromSmall(1, 1);
+            outT = fromSmall(13591409, 1);
+            tSign = 1;
+            return;
+        }
+        << P = (6a-5)(2a-1)(6a-1). >>
+        int p1 = 6 * a - 5;
+        int p2 = 2 * a - 1;
+        int p3 = 6 * a - 1;
+        int[] P = fromSmall(p1, 1);
+        int[] f2 = fromSmall(p2, 1);
+        P = mul(P, arrayLength(P), f2, arrayLength(f2));
+        int[] f3 = fromSmall(p3, 1);
+        P = mul(P, arrayLength(P), f3, arrayLength(f3));
+        outP = P;
+
+        << Q = a^3 * (640320^3/24). >>
+        int[] a1 = fromSmall(a, 1);
+        int[] a2 = mul(a1, arrayLength(a1), a1, arrayLength(a1));
+        int[] a3 = mul(a2, arrayLength(a2), a1, arrayLength(a1));
+        int[] c324 = fromPair(C3_24hi, C3_24lo, 2);
+        outQ = mul(a3, arrayLength(a3), c324, arrayLength(c324));
+
+        << T = P * (13591409 + 545140134*a). >>
+        int[] mfac = fromSmall(545140134, 1);
+        int[] abig = fromSmall(a, 1);
+        int[] lin = mul(mfac, arrayLength(mfac), abig, arrayLength(abig));
+        int[] add13 = fromSmall(13591409, 1);
+        int[] linsum = add(lin, arrayLength(lin), add13, arrayLength(add13));
+        outT = mul(outP, arrayLength(outP), linsum, arrayLength(linsum));
+        if ((a % 2) == 1) { tSign = -1; } else { tSign = 1; }
+    }
+
+    << Recursive combine over [a,b). Results in outP/outQ/outT/tSign. >>
+    void bs(int a, int b) {
+        if (b - a == 1) { leaf(a); return; }
+        int m = (a + b) / 2;
+        bs(a, m);
+        int[] Pam = outP; int[] Qam = outQ; int[] Tam = outT; int sTam = tSign;
+        bs(m, b);
+        int[] Pmb = outP; int[] Qmb = outQ; int[] Tmb = outT; int sTmb = tSign;
+
+        << P = Pam*Pmb ; Q = Qam*Qmb (both non-negative) >>
+        int[] P = mul(Pam, arrayLength(Pam), Pmb, arrayLength(Pmb));
+        int[] Q = mul(Qam, arrayLength(Qam), Qmb, arrayLength(Qmb));
+
+        << T = Tam*Qmb + Pam*Tmb (signed) >>
+        int[] left = mulSigned(sTam, Tam, arrayLength(Tam), 1, Qmb, arrayLength(Qmb));
+        int sLeft = rsign;
+        int[] right = mulSigned(1, Pam, arrayLength(Pam), sTmb, Tmb, arrayLength(Tmb));
+        int sRight = rsign;
+        int[] T = addSigned(sLeft, left, arrayLength(left), sRight, right, arrayLength(right));
+        int sT = rsign;
+
+        outP = P; outQ = Q; outT = T; tSign = sT;
+    }
+
+    void main() {
+        int digits = DIGITS;
+        int work = digits + GUARD;
+        W = (work + DIGITS_PER_LIMB) / DIGITS_PER_LIMB + 6;
+
+        << 640320^3 / 24 = 10939058860032000 = 10939058 * 1e9 + 860032000. >>
+        C3_24hi = 10939058;
+        C3_24lo = 860032000;
+
+        int N = digits / 14 + 3;
+
+        << Evaluate the binary-splitting sum over [0, N). >>
+        bs(0, N);
+        int[] Q = outQ;
+        int[] T = outT;
+        int sT = tSign;
+
+        << Build S = 10^(9*(W-1)) as a limb power of ten on a limb boundary. >>
+        int[] S = zeros(W);
+        S[W - 1] = 1;
+
+        << sqrtv = floor(sqrt(10005 * S^2)) = floor(sqrt(10005)) * S to full
+           working precision. Compute 10005 * S^2, then isqrt. Use the trimming
+           mul() so each bigmul result is sized to its operands. >>
+        int[] s2 = mul(S, W, S, W);
+        int[] c10005 = fromSmall(10005, 1);
+        int[] big = mul(s2, arrayLength(s2), c10005, arrayLength(c10005));
+        int lbig = arrayLength(big);
+        int[] sqrtv = zeros((lbig + 1) / 2 + 2);
+        int sq = bigisqrt(big, sqrtv);
+
+        << numerator = 426880 * Q * sqrtv. >>
+        int[] c426880 = fromSmall(426880, 1);
+        int[] qScaled = mul(Q, arrayLength(Q), c426880, arrayLength(c426880));
+        int[] numer = mul(qScaled, arrayLength(qScaled), sqrtv, arrayLength(sqrtv));
+
+        << pi_scaled = numer / T. Quotient must be at least W limbs so limb W-1
+           holds the integer part (3); size it to the numerator length. >>
+        int[] Tmag = trim(T, arrayLength(T));
+        int lnum = arrayLength(numer);
+        int[] quo = zeros(lnum);
+        int[] rem = zeros(arrayLength(Tmag) + 2);
+        int qd = bigdiv(numer, Tmag, quo, rem);
+
+        << pi_scaled ~= pi * S = pi * 10^(9*(W-1)). Emit "3." then `digits`
+           fractional digits from the limb array (top limb is the integer 3). >>
+        fd = openFile(OUT_PATH, "w");
+        if (fd < 0) { print("PiChudnovsky: could not open " + OUT_PATH); return; }
+
+        << The integer part sits in limb (W-1); fractional limbs are W-2..0. >>
+        put1(quo[W - 1]);
+        buf = buf + ".";
+        bufLen = bufLen + 1;
+
+        int li = W - 2;
+        int produced = 0;
+        while (li >= 0 && produced < digits) {
+            produced = emitLimb(quo[li], digits, produced);
+            li = li - 1;
+        }
+        flush();
+        close(fd);
+        print("PiChudnovsky: wrote Pi to " + OUT_PATH
+              + " (" + produced + " fractional digits, target " + digits + ")");
+    }
+
+    void put1(int v) {
+        buf = buf + v;
+        bufLen = bufLen + 1;
+        emitted = emitted + 1;
+        if (bufLen >= CHUNK) { flush(); }
+    }
+
+    int emitLimb(int limb, int digits, int produced) {
+        int p = 100000000;
+        while (p >= 1 && produced < digits) {
+            int d = (limb / p) % 10;
+            buf = buf + d;
+            bufLen = bufLen + 1;
+            produced = produced + 1;
+            emitted = emitted + 1;
+            if (bufLen >= CHUNK) { flush(); }
+            p = p / 10;
+        }
+        return produced;
+    }
+
+    void flush() {
+        if (bufLen > 0) {
+            write(fd, buf);
+            buf = "";
+            bufLen = 0;
+        }
+    }
+}

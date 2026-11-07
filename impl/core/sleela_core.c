@@ -1400,6 +1400,142 @@ static uint32_t sl_bigdivmod_small(const uint32_t* dividend, int n, uint32_t div
     return (uint32_t)rem;
 }
 
+/* ------------------------------------------------------------------------
+ * A1 primitives: big subtract, big compare, big/big divide, big isqrt.
+ * All operate on base-1e9 little-endian limb arrays (limb 0 least significant),
+ * the same representation bigmul/bigadd/bigdivmod use. These back a binary-
+ * splitting Chudnovsky Pi generator (see pi-generator/NATIVE.ADD.md): the
+ * recursion needs only +, -, x, and the single final scaling needs one big/big
+ * divide and one big isqrt.
+ * ------------------------------------------------------------------------ */
+
+/* Compare magnitudes a (na limbs) and b (nb limbs). Returns -1/0/1. */
+static int sl_bigcmp(const uint32_t* a, int na, const uint32_t* b, int nb) {
+    while (na > 1 && a[na - 1] == 0) na--;
+    while (nb > 1 && b[nb - 1] == 0) nb--;
+    if (na != nb) return na < nb ? -1 : 1;
+    for (int i = na - 1; i >= 0; --i) {
+        if (a[i] != b[i]) return a[i] < b[i] ? -1 : 1;
+    }
+    return 0;
+}
+
+/* r = a - b, base 1e9, assuming a >= b (caller guarantees). r must have room
+ * for na limbs. Returns the significant result-limb count. r may alias a. */
+static int sl_bigsub(const uint32_t* a, int na, const uint32_t* b, int nb, uint32_t* r) {
+    int64_t borrow = 0;
+    for (int i = 0; i < na; ++i) {
+        int64_t cur = (int64_t)a[i] - borrow - (i < nb ? (int64_t)b[i] : 0);
+        if (cur < 0) { cur += (int64_t)SL_BIG_BASE; borrow = 1; } else { borrow = 0; }
+        r[i] = (uint32_t)cur;
+    }
+    return sl_big_significant(r, na);
+}
+
+/* q = num / den, rem = num % den, for big/big. Base-1e9 schoolbook long
+ * division: build the quotient most-significant limb first, binary-searching
+ * each quotient limb q in [0,BASE) so that den*q <= R < den*(q+1) over the
+ * running remainder R. num has nn limbs, den nd limbs (den != 0). q holds >= nn
+ * limbs, rem holds >= nd limbs; *rem_len receives the remainder length. Returns
+ * 0 on success, -1 on allocation failure. O(nn*nd). */
+static int sl_bigdiv_school(const uint32_t* num, int nn, const uint32_t* den, int nd,
+                            uint32_t* q, uint32_t* rem, int* rem_len) {
+    while (nd > 1 && den[nd - 1] == 0) nd--;
+    for (int i = 0; i < nn; ++i) q[i] = 0;
+    if (nd == 1) {
+        uint64_t r = 0;
+        for (int i = nn - 1; i >= 0; --i) {
+            uint64_t cur = r * SL_BIG_BASE + num[i];
+            q[i] = (uint32_t)(cur / den[0]);
+            r = cur % den[0];
+        }
+        rem[0] = (uint32_t)r; *rem_len = 1;
+        return 0;
+    }
+    uint32_t* R = (uint32_t*)calloc((size_t)(nd + 2), sizeof(uint32_t));
+    uint32_t* T = (uint32_t*)calloc((size_t)(nd + 2), sizeof(uint32_t));
+    if (!R || !T) { free(R); free(T); return -1; }
+    int rn = 1;                       /* R starts at 0 */
+    for (int i = nn - 1; i >= 0; --i) {
+        /* R = R*BASE + num[i] : shift up one limb, insert new low limb */
+        for (int j = rn; j >= 1; --j) R[j] = R[j - 1];
+        R[0] = num[i];
+        rn++;
+        while (rn > 1 && R[rn - 1] == 0) rn--;
+        /* binary search quotient limb */
+        uint32_t lo = 0, hi = (uint32_t)(SL_BIG_BASE - 1), qd = 0;
+        while (lo <= hi) {
+            uint32_t mid = lo + (hi - lo) / 2;
+            uint64_t carry = 0; int tn;
+            for (int j = 0; j < nd; ++j) {
+                uint64_t p = (uint64_t)den[j] * mid + carry;
+                T[j] = (uint32_t)(p % SL_BIG_BASE);
+                carry = p / SL_BIG_BASE;
+            }
+            tn = nd;
+            if (carry) { T[nd] = (uint32_t)carry; tn = nd + 1; } else { while (tn > 1 && T[tn-1]==0) tn--; }
+            if (sl_bigcmp(T, tn, R, rn) <= 0) { qd = mid; if (mid == (uint32_t)(SL_BIG_BASE-1)) break; lo = mid + 1; }
+            else { if (mid == 0) break; hi = mid - 1; }
+        }
+        q[i] = qd;
+        if (qd) {
+            uint64_t carry = 0; int tn;
+            for (int j = 0; j < nd; ++j) {
+                uint64_t p = (uint64_t)den[j] * qd + carry;
+                T[j] = (uint32_t)(p % SL_BIG_BASE);
+                carry = p / SL_BIG_BASE;
+            }
+            tn = nd; if (carry) { T[nd] = (uint32_t)carry; tn = nd + 1; }
+            int64_t borrow = 0;
+            for (int j = 0; j < rn; ++j) {
+                int64_t cur = (int64_t)R[j] - borrow - (j < tn ? (int64_t)T[j] : 0);
+                if (cur < 0) { cur += (int64_t)SL_BIG_BASE; borrow = 1; } else borrow = 0;
+                R[j] = (uint32_t)cur;
+            }
+            while (rn > 1 && R[rn - 1] == 0) rn--;
+        }
+    }
+    for (int j = 0; j < rn; ++j) rem[j] = R[j];
+    *rem_len = rn;
+    free(R); free(T);
+    return 0;
+}
+
+/* r = floor(sqrt(a)), base 1e9. a has na limbs; r must hold >= (na+1)/2 + 1
+ * limbs. Newton's method with the schoolbook divide as the inner step. Returns
+ * significant limb count of r, or -1 on failure. a is non-negative. */
+static int sl_bigisqrt(const uint32_t* a, int na, uint32_t* r) {
+    while (na > 1 && a[na - 1] == 0) na--;
+    if (na == 1) {
+        uint64_t v = a[0], x = 0;
+        while ((x + 1) * (x + 1) <= v) x++;
+        r[0] = (uint32_t)x; return 1;
+    }
+    int cap = (na + 1) / 2 + 2;
+    uint32_t* x = (uint32_t*)calloc((size_t)(cap + 2), sizeof(uint32_t));
+    uint32_t* q = (uint32_t*)calloc((size_t)(na + 2), sizeof(uint32_t));
+    uint32_t* rem = (uint32_t*)calloc((size_t)(na + 2), sizeof(uint32_t));
+    uint32_t* s = (uint32_t*)calloc((size_t)(na + 2), sizeof(uint32_t));
+    if (!x || !q || !rem || !s) { free(x); free(q); free(rem); free(s); return -1; }
+    int xi = (na + 1) / 2; x[xi] = 1; int xn = xi + 1;   /* guess BASE^ceil(na/2) */
+    for (int iter = 0; iter < 1000; ++iter) {
+        int reml = 0;
+        if (sl_bigdiv_school(a, na, x, xn, q, rem, &reml) != 0) break;
+        int ql = sl_big_significant(q, na);
+        int sn = sl_bigadd(x, xn, q, ql, s);        /* s = x + a/x */
+        sl_bigdivmod_small(s, sn, 2, s);            /* s = s / 2 */
+        sn = sl_big_significant(s, sn);
+        if (sl_bigcmp(s, sn, x, xn) >= 0) break;    /* floor-sqrt fixpoint */
+        for (int i = 0; i < sn; ++i) x[i] = s[i];
+        for (int i = sn; i < xn; ++i) x[i] = 0;
+        xn = sn;
+    }
+    int out = sl_big_significant(x, xn);
+    for (int i = 0; i < out; ++i) r[i] = x[i];
+    free(x); free(q); free(rem); free(s);
+    return out;
+}
+
 static SLResult run_thread(SLThread* t);
 static void* thread_trampoline(void* arg) { run_thread((SLThread*)arg); return NULL; }
 
@@ -2252,6 +2388,19 @@ static SLResult run_thread(SLThread* t) {
             t->safepoint_tick = 0;
             slvm_gc_safepoint(vm, t, 4);
             int h=array_alloc(vm,(int)nv.as.i);
+            if(h<0){
+                /* The live-array table (SL_MAX_ARRAYS) or the heap is full.
+                 * Before failing, run a COMPLETE root-aware collection (the same
+                 * one OP_GC_HINT uses) and retry once: allocation-heavy code
+                 * such as the binary-splitting Chudnovsky Pi generator churns
+                 * many short-lived limb arrays within a single safepoint stride,
+                 * and the incremental safepoint above (budget 4) may not reclaim
+                 * them in time. A full collect with the real roots frees exactly
+                 * the dead ones, so genuinely-live arrays are never lost. */
+                SLGCRootContext roots = { vm, t };
+                gc_collect_with_roots(&vm->gc, gc_mark_vm_roots, &roots, 0);
+                h=array_alloc(vm,(int)nv.as.i);
+            }
             if(h<0) TERR("array allocation failed (negative/too-large size or store exhausted)");
             PUSH(slval_array(h));
         } break;
@@ -2650,6 +2799,184 @@ static SLResult run_thread(SLThread* t) {
             pthread_mutex_unlock(&vm->array_mtx);
             free(dbuf); free(qbuf);
             PUSH(slval_int((int64_t)rem));
+        } break;
+
+        case OP_BIGSUB: {
+            /* Pops result, b, a (result on top). Computes a - b (a >= b) over
+             * base-1e9 limb arrays, writes the difference into result (needs
+             * len(a) limbs), pushes the significant result-limb count. */
+            SLValue rv = POP(), bv = POP(), av = POP();
+            if (av.type != SL_ARRAY || !array_valid_handle(vm, av.as.h) ||
+                bv.type != SL_ARRAY || !array_valid_handle(vm, bv.as.h) ||
+                rv.type != SL_ARRAY || !array_valid_handle(vm, rv.as.h))
+                TERR("bigsub requires three int[] array handles (a, b, result)");
+            uint32_t *abuf = NULL, *bbuf = NULL, *rbuf = NULL;
+            int na = 0, nb = 0, sig = 0, ok = 1;
+            pthread_mutex_lock(&vm->array_mtx);
+            {
+                SLArrayInstance *aa = &vm->arrays[av.as.h];
+                SLArrayInstance *ab = &vm->arrays[bv.as.h];
+                SLArrayInstance *ar = &vm->arrays[rv.as.h];
+                na = aa->len; nb = ab->len;
+                if (na < 1 || nb < 1) { ok = 0; }
+                else if (ar->len < na) { ok = 2; }
+                else {
+                    abuf = (uint32_t*)malloc((size_t)na * sizeof(uint32_t));
+                    bbuf = (uint32_t*)malloc((size_t)nb * sizeof(uint32_t));
+                    rbuf = (uint32_t*)calloc((size_t)na, sizeof(uint32_t));
+                    if (!abuf || !bbuf || !rbuf) { ok = 3; }
+                    else {
+                        for (int i = 0; i < na; i++) {
+                            SLValue e = aa->elems[i];
+                            int64_t x = (e.type == SL_INT) ? e.as.i : (e.type == SL_INT128) ? (int64_t)e.as.i128 : -1;
+                            if (x < 0 || x >= (int64_t)SL_BIG_BASE) ok = 5;
+                            abuf[i] = (x >= 0 && x < (int64_t)SL_BIG_BASE) ? (uint32_t)x : 0;
+                        }
+                        for (int i = 0; i < nb; i++) {
+                            SLValue e = ab->elems[i];
+                            int64_t x = (e.type == SL_INT) ? e.as.i : (e.type == SL_INT128) ? (int64_t)e.as.i128 : -1;
+                            if (x < 0 || x >= (int64_t)SL_BIG_BASE) ok = 5;
+                            bbuf[i] = (x >= 0 && x < (int64_t)SL_BIG_BASE) ? (uint32_t)x : 0;
+                        }
+                    }
+                }
+            }
+            pthread_mutex_unlock(&vm->array_mtx);
+            if (ok == 0) { free(abuf); free(bbuf); free(rbuf); TERR("bigsub operands must each have at least one limb"); }
+            if (ok == 2) { free(abuf); free(bbuf); free(rbuf); TERR("bigsub result array is too small (need len(a) limbs)"); }
+            if (ok == 3) { free(abuf); free(bbuf); free(rbuf); TERR("bigsub could not allocate its limb buffers"); }
+            if (ok == 5) { free(abuf); free(bbuf); free(rbuf); TERR("bigsub limbs must be in [0, 1000000000)"); }
+            if (sl_bigcmp(abuf, na, bbuf, nb) < 0) { free(abuf); free(bbuf); free(rbuf); TERR("bigsub requires a >= b (negative result)"); }
+            sig = sl_bigsub(abuf, na, bbuf, nb, rbuf);
+            pthread_mutex_lock(&vm->array_mtx);
+            {
+                SLArrayInstance *ar = &vm->arrays[rv.as.h];
+                int wn = (na <= ar->len) ? na : ar->len;
+                for (int i = 0; i < wn; i++) { ar->elems[i].type = SL_INT; ar->elems[i].as.i = (int64_t)rbuf[i]; }
+            }
+            pthread_mutex_unlock(&vm->array_mtx);
+            free(abuf); free(bbuf); free(rbuf);
+            PUSH(slval_int(sig));
+        } break;
+
+        case OP_BIGDIV: {
+            /* Pops remOut, quoOut, den, num (num deepest). Computes
+             * quotient = num / den into quoOut (needs len(num) limbs) and
+             * remainder into remOut (needs len(den) limbs); pushes the
+             * significant quotient-limb count. */
+            SLValue remv = POP(), quov = POP(), dv = POP(), nmv = POP();
+            if (nmv.type != SL_ARRAY || !array_valid_handle(vm, nmv.as.h) ||
+                dv.type  != SL_ARRAY || !array_valid_handle(vm, dv.as.h)  ||
+                quov.type!= SL_ARRAY || !array_valid_handle(vm, quov.as.h)||
+                remv.type!= SL_ARRAY || !array_valid_handle(vm, remv.as.h))
+                TERR("bigdiv requires four int[] array handles (num, den, quoOut, remOut)");
+            uint32_t *nbuf = NULL, *dbuf = NULL, *qbuf = NULL, *rbuf = NULL;
+            int nn = 0, nd = 0, ql = 0, reml = 0, ok = 1;
+            pthread_mutex_lock(&vm->array_mtx);
+            {
+                SLArrayInstance *an = &vm->arrays[nmv.as.h];
+                SLArrayInstance *ad = &vm->arrays[dv.as.h];
+                SLArrayInstance *aq = &vm->arrays[quov.as.h];
+                SLArrayInstance *ar = &vm->arrays[remv.as.h];
+                nn = an->len; nd = ad->len;
+                if (nn < 1 || nd < 1) { ok = 0; }
+                else if (aq->len < nn || ar->len < nd) { ok = 2; }
+                else {
+                    nbuf = (uint32_t*)malloc((size_t)nn * sizeof(uint32_t));
+                    dbuf = (uint32_t*)malloc((size_t)nd * sizeof(uint32_t));
+                    qbuf = (uint32_t*)calloc((size_t)nn, sizeof(uint32_t));
+                    rbuf = (uint32_t*)calloc((size_t)(nd + 2), sizeof(uint32_t));
+                    if (!nbuf || !dbuf || !qbuf || !rbuf) { ok = 3; }
+                    else {
+                        for (int i = 0; i < nn; i++) {
+                            SLValue e = an->elems[i];
+                            int64_t x = (e.type == SL_INT) ? e.as.i : (e.type == SL_INT128) ? (int64_t)e.as.i128 : -1;
+                            if (x < 0 || x >= (int64_t)SL_BIG_BASE) ok = 5;
+                            nbuf[i] = (x >= 0 && x < (int64_t)SL_BIG_BASE) ? (uint32_t)x : 0;
+                        }
+                        for (int i = 0; i < nd; i++) {
+                            SLValue e = ad->elems[i];
+                            int64_t x = (e.type == SL_INT) ? e.as.i : (e.type == SL_INT128) ? (int64_t)e.as.i128 : -1;
+                            if (x < 0 || x >= (int64_t)SL_BIG_BASE) ok = 5;
+                            dbuf[i] = (x >= 0 && x < (int64_t)SL_BIG_BASE) ? (uint32_t)x : 0;
+                        }
+                    }
+                }
+            }
+            pthread_mutex_unlock(&vm->array_mtx);
+            if (ok == 0) { free(nbuf); free(dbuf); free(qbuf); free(rbuf); TERR("bigdiv operands must each have at least one limb"); }
+            if (ok == 2) { free(nbuf); free(dbuf); free(qbuf); free(rbuf); TERR("bigdiv output arrays too small (quoOut needs len(num), remOut needs len(den))"); }
+            if (ok == 3) { free(nbuf); free(dbuf); free(qbuf); free(rbuf); TERR("bigdiv could not allocate its limb buffers"); }
+            if (ok == 5) { free(nbuf); free(dbuf); free(qbuf); free(rbuf); TERR("bigdiv limbs must be in [0, 1000000000)"); }
+            { int dz = nd; while (dz > 1 && dbuf[dz-1] == 0) dz--; if (dz == 1 && dbuf[0] == 0) { free(nbuf); free(dbuf); free(qbuf); free(rbuf); TERR("bigdiv division by zero"); } }
+            if (sl_bigdiv_school(nbuf, nn, dbuf, nd, qbuf, rbuf, &reml) != 0) {
+                free(nbuf); free(dbuf); free(qbuf); free(rbuf);
+                TERR("bigdiv native kernel ran out of memory");
+            }
+            ql = sl_big_significant(qbuf, nn);
+            pthread_mutex_lock(&vm->array_mtx);
+            {
+                SLArrayInstance *aq = &vm->arrays[quov.as.h];
+                SLArrayInstance *ar = &vm->arrays[remv.as.h];
+                int wq = (nn <= aq->len) ? nn : aq->len;
+                for (int i = 0; i < wq; i++) { aq->elems[i].type = SL_INT; aq->elems[i].as.i = (int64_t)qbuf[i]; }
+                int wr = (reml <= ar->len) ? reml : ar->len;
+                for (int i = 0; i < wr; i++) { ar->elems[i].type = SL_INT; ar->elems[i].as.i = (int64_t)rbuf[i]; }
+                for (int i = wr; i < ar->len; i++) { ar->elems[i].type = SL_INT; ar->elems[i].as.i = 0; }
+            }
+            pthread_mutex_unlock(&vm->array_mtx);
+            free(nbuf); free(dbuf); free(qbuf); free(rbuf);
+            PUSH(slval_int(ql));
+        } break;
+
+        case OP_BIGISQRT: {
+            /* Pops result, a (result on top). Writes floor(sqrt(a)) into result
+             * (needs (len(a)+1)/2 + 1 limbs), pushes significant limb count. */
+            SLValue rv = POP(), av = POP();
+            if (av.type != SL_ARRAY || !array_valid_handle(vm, av.as.h) ||
+                rv.type != SL_ARRAY || !array_valid_handle(vm, rv.as.h))
+                TERR("bigisqrt requires two int[] array handles (a, result)");
+            uint32_t *abuf = NULL, *rbuf = NULL;
+            int na = 0, need = 0, sig = 0, ok = 1;
+            pthread_mutex_lock(&vm->array_mtx);
+            {
+                SLArrayInstance *aa = &vm->arrays[av.as.h];
+                SLArrayInstance *ar = &vm->arrays[rv.as.h];
+                na = aa->len;
+                need = (na + 1) / 2 + 1;
+                if (na < 1) { ok = 0; }
+                else if (ar->len < need) { ok = 2; }
+                else {
+                    abuf = (uint32_t*)malloc((size_t)na * sizeof(uint32_t));
+                    rbuf = (uint32_t*)calloc((size_t)(need + 2), sizeof(uint32_t));
+                    if (!abuf || !rbuf) { ok = 3; }
+                    else {
+                        for (int i = 0; i < na; i++) {
+                            SLValue e = aa->elems[i];
+                            int64_t x = (e.type == SL_INT) ? e.as.i : (e.type == SL_INT128) ? (int64_t)e.as.i128 : -1;
+                            if (x < 0 || x >= (int64_t)SL_BIG_BASE) ok = 5;
+                            abuf[i] = (x >= 0 && x < (int64_t)SL_BIG_BASE) ? (uint32_t)x : 0;
+                        }
+                    }
+                }
+            }
+            pthread_mutex_unlock(&vm->array_mtx);
+            if (ok == 0) { free(abuf); free(rbuf); TERR("bigisqrt operand must have at least one limb"); }
+            if (ok == 2) { free(abuf); free(rbuf); TERR("bigisqrt result array is too small (need (len(a)+1)/2 + 1 limbs)"); }
+            if (ok == 3) { free(abuf); free(rbuf); TERR("bigisqrt could not allocate its limb buffers"); }
+            if (ok == 5) { free(abuf); free(rbuf); TERR("bigisqrt limbs must be in [0, 1000000000)"); }
+            sig = sl_bigisqrt(abuf, na, rbuf);
+            if (sig < 0) { free(abuf); free(rbuf); TERR("bigisqrt native kernel ran out of memory"); }
+            pthread_mutex_lock(&vm->array_mtx);
+            {
+                SLArrayInstance *ar = &vm->arrays[rv.as.h];
+                int wn = (sig <= ar->len) ? sig : ar->len;
+                for (int i = 0; i < wn; i++) { ar->elems[i].type = SL_INT; ar->elems[i].as.i = (int64_t)rbuf[i]; }
+                for (int i = wn; i < ar->len; i++) { ar->elems[i].type = SL_INT; ar->elems[i].as.i = 0; }
+            }
+            pthread_mutex_unlock(&vm->array_mtx);
+            free(abuf); free(rbuf);
+            PUSH(slval_int(sig));
         } break;
 
         default: log_unsupported_opcode(vm, in.op); TERR("unsupported opcode");
