@@ -56,6 +56,28 @@ digit ≈ 1/9 of a limb (a limb holds 9 digits).
 > digits up is on the NTT path; the 1,000-digit point (112 limbs) is still
 > Karatsuba.
 
+## Measured data — v3.0 (native kernel, source-built, cap 2²⁵)
+
+| Decimal digits | Limbs (digits ÷ 9) | Native multiply time | Notes |
+|---:|---:|---:|---|
+| 0 | 0 | 0 µs | degenerate baseline (empty operand) |
+| 1,000 | 112 | 23 µs | Karatsuba path (below the NTT threshold) |
+| 10,000 | 1,112 | 1,593 µs (≈ 1.6 ms) | NTT path |
+| 100,000 | 11,112 | 33,102 µs (≈ 33.1 ms) | NTT path |
+| 1,000,000 | 111,112 | 321,422 µs (≈ 0.32 s) | NTT path |
+| 10,000,000 | 1,111,112 | 3,160,647 µs (≈ 3.16 s) | single `bigmul()` call; cap now 2²⁵ |
+
+> Kernel: schoolbook + Karatsuba + NTT (the `OP_BIGMUL` kernel is unchanged from
+> v2.0), single-array cap raised to `SL_MAX_ARRAY_LEN = 33,554,432` (2²⁵). `OP_BIGMUL`
+> now also has the sibling ops `bigsub` / `bigdiv` / `bigisqrt` alongside it.
+> Measured with the source-built compiler (`impl/build/sleela`) on this machine,
+> same operand fill (`123456789` × `987654321`) as v1.0/v2.0; each figure is a
+> single timed run and varies a few percent run to run. The large-operand points
+> are markedly faster here than the v2.0 column (e.g. 10,000,000 digits ≈ 3.16 s
+> vs 17.9 s): v2.0 was measured on the prebuilt `working-binaries/sleela`, so the
+> gap is the host/build and run-to-run variance, not a kernel change — the
+> asymptotic `O(n log n)` NTT shape is the same.
+
 ### Reading the two tables together
 
 - **The 10,000,000-digit point is the real win.** On v1.0 it could not be run as
