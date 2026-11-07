@@ -4,18 +4,15 @@
 **Edition:** 1.0  
 **Recorded:** 2026-11-07 (UTC, GitHub Actions timestamps)  
 **Repository:** mearvk/SLeeLa · **Branch:** master · **SLeeLa baseline:** Syntax 3.0  
-**Record status:** ITERATIVE — baseline PASS; numeric/Unicode edge batch pending CI verification
+**Record status:** PASS — numeric/Unicode edge batch verified on Ubuntu, macOS, and Windows; SLeeLa VM baseline verified on Ubuntu
 
 ## 1. Executive result
 
 Iteration 002 adds seven deterministic numeric and Unicode edge vectors to the C11, C++17, and Java comparison suite. The source files, runner, specification, and workflow integration are committed to `master`.
 
-The available evidence supports two separate conclusions:
+The available evidence supports the following conclusion: run [42332366905](https://github.com/mearvk/SLeeLa/actions/runs/42332366905) completed successfully against commit `087b9c2d77d0a32cf345c9ec6289a98ea0da00dd`. All four jobs passed. The Ubuntu, macOS, and Windows jobs each executed the new edge runner, and each reported seven passing assertions for C11, C++17, and Java 21+. The SLeeLa Syntax 3.0 VM baseline job also passed on Ubuntu.
 
-1. **Existing baseline:** PASS. Run [42332289318](https://github.com/mearvk/SLeeLa/actions/runs/42332289318) completed all four jobs successfully on Ubuntu, macOS, Windows, and the SLeeLa Syntax 3.0 VM job.
-2. **New edge-vector batch:** PENDING. Run [42332366905](https://github.com/mearvk/SLeeLa/actions/runs/42332366905), which is associated with the final documentation commit and the workflow containing the new edge runner, was still queued at the latest recorded check. Its four jobs had not started.
-
-Important evidence distinction: run 42332289318 was triggered from commit `e201d78`. The workflow file at that commit did **not** yet invoke `run_edge_vectors.py`. Therefore its successful result verifies the prior shared baseline, not the seven new edge vectors. The edge suite must not be marked PASS until a completed run executes the updated workflow.
+The earlier run [42332289318](https://github.com/mearvk/SLeeLa/actions/runs/42332289318) is retained as baseline evidence only: its workflow revision predated the edge-runner invocation and did not execute the seven new vectors.
 
 ## 2. Iteration 002 scope
 
@@ -67,17 +64,17 @@ The four jobs completed successfully. The VM job installed prerequisites, genera
 ### 4.2 Edge-suite workflow run
 
 **Run:** [42332366905](https://github.com/mearvk/SLeeLa/actions/runs/42332366905)  
-**Commit:** `087b9c2d77d0a32cf345c9ec6289a98ea0da00dd`  
-**Last recorded state:** QUEUED
+**Conclusion:** SUCCESS  
+**Commit:** `087b9c2d77d0a32cf345c9ec6289a98ea0da00dd`
 
-| Job | Last recorded state |
-|---|---|
-| SLeeLa Syntax 3.0 VM vectors — Ubuntu | QUEUED |
-| Shared vectors — Windows latest | QUEUED |
-| Shared vectors — macOS latest | QUEUED |
-| Shared vectors — Ubuntu latest | QUEUED |
+| Job | Conclusion | Edge-vector evidence |
+|---|---|---|
+| Shared vectors — Ubuntu latest | **PASS** | C11, C++17, Java 21+: seven assertions each |
+| Shared vectors — macOS latest | **PASS** | C11, C++17, Java 21+: seven assertions each |
+| Shared vectors — Windows latest | **PASS** | C11, C++17, Java 21+: seven assertions each |
+| SLeeLa Syntax 3.0 VM vectors — Ubuntu | **PASS** | Existing shared VM baseline executed successfully; no new edge vectors |
 
-The workflow at this revision invokes `comparison/tests/run_edge_vectors.py` on all three native/Java operating-system jobs and uploads `comparison-edge-results.json` alongside the baseline result record. No job conclusion was available at the last check. A queued run is not a test result.
+The Ubuntu, macOS, and Windows logs explicitly report `PASS C11: 7 edge-vector assertions`, `PASS C++17: 7 edge-vector assertions`, and `PASS Java 21+: 7 edge-vector assertions`. Each platform job uploaded both `comparison-results.json` and `comparison-edge-results.json`. The VM job built the compiler/VM and passed the existing SLeeLa shared-vector output check.
 
 Other workflow executions were triggered by intermediate commits while the batch was being assembled. They are not used as qualification evidence for the complete final suite.
 
@@ -92,18 +89,18 @@ Run 42332289318 retained four artifacts, all reported as unexpired when inspecte
 | `comparison-vectors-windows-latest` | Existing shared native/Java baseline result |
 | `comparison-vectors-sleela-vm` | SLeeLa VM baseline output |
 
-These artifacts belong to the baseline run and do not establish edge-vector results. The edge-runner artifact `comparison-edge-results.json` must be inspected in the completed run before the new suite is recorded as PASS. GitHub artifact retention is time-limited.
+The completed edge-suite run retained the same four artifact groups. Each of the three platform artifacts contains the baseline result and `comparison-edge-results.json`; the SLeeLa VM artifact contains the VM output. The artifacts were reported as unexpired when inspected and are available from the [completed workflow run](https://github.com/mearvk/SLeeLa/actions/runs/42332366905). GitHub artifact retention is time-limited.
 
 ## 6. Qualification matrix
 
 | Capability | C11 | C++17 | Java 21+ | SLeeLa VM |
 |---|---|---|---|---|
 | Existing arithmetic / loop / ASCII baseline | PASS — three OS jobs | PASS — three OS jobs | PASS — three OS jobs | PASS — Ubuntu |
-| Signed 32-bit minimum and maximum | Pending CI | Pending CI | Pending CI | Not implemented in this batch |
-| Unsigned 32-bit wrap | Pending CI | Pending CI | Pending CI | Not implemented in this batch |
-| Signed division and remainder | Pending CI | Pending CI | Pending CI | Not implemented in this batch |
-| UTF-8 byte length | Pending CI | Pending CI | Pending CI | Not implemented in this batch |
-| Unicode code-point count | Pending CI | Pending CI | Pending CI | Not implemented in this batch |
+| Signed 32-bit minimum and maximum | PASS — three OS jobs | PASS — three OS jobs | PASS — three OS jobs | Not implemented in this batch |
+| Unsigned 32-bit wrap | PASS — three OS jobs | PASS — three OS jobs | PASS — three OS jobs | Not implemented in this batch |
+| Signed division and remainder | PASS — three OS jobs | PASS — three OS jobs | PASS — three OS jobs | Not implemented in this batch |
+| UTF-8 byte length | PASS — three OS jobs | PASS — three OS jobs | PASS — three OS jobs | Not implemented in this batch |
+| Unicode code-point count | PASS — three OS jobs | PASS — three OS jobs | PASS — three OS jobs | Not implemented in this batch |
 
 No result in this table implies complete language conformance.
 
@@ -125,11 +122,9 @@ The workflow is a correctness suite, not a benchmark. No speed ranking is inferr
 
 ## 8. Next verification actions
 
-1. Allow run 42332366905 to start and complete.
-2. Confirm the Ubuntu, macOS, and Windows logs show successful execution of `run_edge_vectors.py`.
-3. Inspect each `comparison-edge-results.json` artifact and confirm all seven expected outputs match for C11, C++17, and Java.
-4. Confirm the SLeeLa VM baseline job remains successful; do not interpret it as edge-vector coverage.
-5. Update [CONFORMANCE-MATRIX.md](CONFORMANCE-MATRIX.md) and [COMMON-TEST-VECTORS.md](COMMON-TEST-VECTORS.md) only after the edge-run evidence is complete.
+1. Preserve run 42332366905 and its three platform edge-result artifacts as the iteration 002 evidence.
+2. Implement equivalent SLeeLa VM edge vectors before claiming VM parity for these seven observations.
+3. Expand the next qualification stage to additional integer widths, conversions, floating-point behavior, malformed UTF-8, and Unicode normalization/grapheme tests.
 
 ## 9. Reproduction and authoritative links
 
@@ -150,4 +145,4 @@ python3 comparison/tests/run_edge_vectors.py
 
 ---
 
-**Record conclusion:** Iteration 002 is committed and documented. The prior cross-platform baseline remains PASS. The seven numeric/Unicode edge vectors are implemented and wired into CI, but their cross-platform execution is pending; this record intentionally does not claim that they have passed.
+**Record conclusion:** Iteration 002 is PASS for the seven defined numeric/Unicode observations in C11, C++17, and Java 21+ on Ubuntu, macOS, and Windows. The SLeeLa Syntax 3.0 VM baseline also passed on Ubuntu. SLeeLa VM parity for the seven new edge cases remains unqualified.
