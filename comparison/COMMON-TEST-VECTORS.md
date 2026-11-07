@@ -1,9 +1,20 @@
 # Common Computational Test Vectors
 Standard SCS-TEST-001 | Edition 1.0  
-Status: test specification; no execution result is implied.
+Status: specification with an initial executable baseline; CI results must be read from the workflow run and artifacts.
 
 ## 1. Reporting
 Each implementation records test ID, source file, compiler/runtime versions, command, expected and actual output, exit status, and PASS/FAIL/SKIP. A skip names the missing prerequisite.
+
+### 1.1 Executable baseline mapping
+The initial shared vector is intentionally narrow and deterministic:
+
+| Vector | Operation | Expected output | Implementations |
+|---|---|---|---|
+| ARITH-BASE-001 | Evaluate 40 + 2 | `42` | SLeeLa VM, Java, C11, C++17 |
+| FLOW-BASE-001 | Sum integers 1 through 5 with a loop | `15` | SLeeLa VM, Java, C11, C++17 |
+| DATA-BASE-001 | Emit the ASCII string | `hello` | SLeeLa VM, Java, C11, C++17 |
+
+C, C++, and Java are compiled and compared by `tests/run_native_java.py` on Ubuntu, macOS, and Windows. The SLeeLa Syntax 3.0 source is executed in a separate Ubuntu VM job. The CI workflow retains result artifacts. A configured job remains pending evidence until a completed run is visible.
 
 ## 2. Integer boundaries
 | ID | Operation | Observation |
