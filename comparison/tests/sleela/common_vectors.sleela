@@ -1,0 +1,13 @@
+#sleela 3.0
+// Shared arithmetic, control-flow, and ASCII string smoke vectors.
+class CommonVectors {
+    void main() {
+        print(40 + 2);
+        int total = 0;
+        for (int i = 1; i <= 5; i = i + 1) {
+            total = total + i;
+        }
+        print(total);
+        print("hello");
+    }
+}
