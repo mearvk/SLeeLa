@@ -76,7 +76,9 @@ jobs:
       - name: Run shared C, C++, and Java vectors (POSIX)
         if: runner.os != 'Windows'
         shell: bash
-        run: python3 comparison/tests/run_native_java.py
+        run: |
+          python3 comparison/tests/run_native_java.py
+          python3 comparison/tests/run_edge_vectors.py
 
       - name: Run shared C, C++, and Java vectors (Windows)
         if: runner.os == 'Windows'
@@ -85,13 +87,16 @@ jobs:
           $env:CC = "gcc"
           $env:CXX = "g++"
           python comparison/tests/run_native_java.py
+          python comparison/tests/run_edge_vectors.py
 
       - name: Retain comparison result record
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: comparison-vectors-${{ matrix.os }}
-          path: comparison-results.json
+          path: |
+            comparison-results.json
+            comparison-edge-results.json
           if-no-files-found: warn
 
   sleela-vm:
