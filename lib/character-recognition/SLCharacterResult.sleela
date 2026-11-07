@@ -1,0 +1,15 @@
+<< SLeeLa result record mirroring slcr_result. >>
+#sleela 3.0
+material;
+class SLCharacterResult {
+  String label;
+  double similarity = 0.0;
+  boolean accepted = false;
+
+  void setLabel(String value) { label = value; }
+  String getLabel() { return label; }
+  void setSimilarity(double value) { similarity = value; }
+  double getSimilarity() { return similarity; }
+  void setAccepted(boolean value) { accepted = value; }
+  boolean isAccepted() { return accepted; }
+}

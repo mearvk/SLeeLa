@@ -1,0 +1,40 @@
+<< Language-level configuration mirror of slnn_network_config. >>
+#sleela 3.0
+material;
+class SLNeuralNetworkConfig {
+  static final int ACTIVATION_LINEAR = 0;
+  static final int ACTIVATION_RELU = 1;
+  static final int ACTIVATION_TANH = 2;
+  static final int ACTIVATION_SIGMOID = 3;
+  static final int ABI_VERSION = 1;
+
+  int[] layerSizes;
+  int hiddenActivation = ACTIVATION_RELU;
+  int outputActivation = ACTIVATION_LINEAR;
+  int seed = 0;
+  int layerCount;
+
+  void setLayerSizes(int[] sizes) {
+    layerSizes = sizes;
+    if (sizes == null) { layerCount = 0; }
+    else { layerCount = sizes.length - 1; }
+  }
+  int[] getLayerSizes() { return layerSizes; }
+  int getLayerCount() { return layerCount; }
+  void setHiddenActivation(int value) { hiddenActivation = value; }
+  int getHiddenActivation() { return hiddenActivation; }
+  void setOutputActivation(int value) { outputActivation = value; }
+  int getOutputActivation() { return outputActivation; }
+  void setSeed(int value) { seed = value; }
+  int getSeed() { return seed; }
+
+  boolean valid() {
+    if (layerSizes == null || layerCount < 1) { return false; }
+    if (hiddenActivation < ACTIVATION_LINEAR || hiddenActivation > ACTIVATION_SIGMOID) { return false; }
+    if (outputActivation < ACTIVATION_LINEAR || outputActivation > ACTIVATION_SIGMOID) { return false; }
+    for (int i = 0; i < layerSizes.length; i++) {
+      if (layerSizes[i] < 1) { return false; }
+    }
+    return true;
+  }
+}

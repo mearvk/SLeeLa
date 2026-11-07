@@ -1,0 +1,52 @@
+<< SLeeLa-facing contract for the slcr_* C API.
+   Native calls require an explicit host adapter; this class does not claim to
+   perform OCR in the SLeeLa VM by itself. >>
+#sleela 3.0
+material;
+class SLCharacterRecognition {
+  static final int GLYPH_WIDTH = 28;
+  static final int GLYPH_HEIGHT = 28;
+  static final int GLYPH_PIXELS = 784;
+  static final int STATUS_OK = 0;
+  static final int STATUS_ERROR = -1;
+  static final int STATUS_NATIVE_ADAPTER_REQUIRED = -2;
+
+  double minimumSimilarity = 0.70;
+  int threshold = 180;
+  boolean modelConfigured = false;
+  boolean nativeModelOwned = false;
+
+  void setThreshold(int value) {
+    if (value >= 0 && value <= 255) { threshold = value; }
+  }
+  int getThreshold() { return threshold; }
+  void setMinimumSimilarity(double value) {
+    if (value >= 0.0 && value <= 1.0) { minimumSimilarity = value; }
+  }
+  double getMinimumSimilarity() { return minimumSimilarity; }
+
+  int configureModel() {
+    modelConfigured = true;
+    nativeModelOwned = false;
+    return STATUS_OK;
+  }
+  boolean isConfigured() { return modelConfigured; }
+  boolean isNativeReady() { return nativeModelOwned; }
+
+  int normalizeGlyph(byte[] grayscale, int width, int height, byte[] output) {
+    if (grayscale == null || output == null || width < 1 || height < 1) { return STATUS_ERROR; }
+    if (output.length != GLYPH_PIXELS) { return STATUS_ERROR; }
+    return STATUS_NATIVE_ADAPTER_REQUIRED;
+  }
+
+  int recognize(byte[] normalizedGlyph, SLCharacterResult result) {
+    if (!modelConfigured || normalizedGlyph == null || result == null) { return STATUS_ERROR; }
+    if (normalizedGlyph.length != GLYPH_PIXELS) { return STATUS_ERROR; }
+    return STATUS_NATIVE_ADAPTER_REQUIRED;
+  }
+
+  void close() {
+    nativeModelOwned = false;
+    modelConfigured = false;
+  }
+}
