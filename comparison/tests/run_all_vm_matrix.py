@@ -10,15 +10,37 @@ EXPECTED = ["42", "15", "hello"]
 RESULT = {"suite": "SCS-VM-MATRIX-001", "status": "PASS",
           "expected_output": EXPECTED, "standard_vms": [], "runnable_vms": []}
 
+def is_runtime_diagnostic(line: str) -> bool:
+    """Recognize known runtime/security diagnostics without masking program output."""
+    return line.startswith((
+        "[memory-manager]",
+        "[security]",
+        "[defender]",
+        "verification:",
+    ))
+
 def run(label, command):
     p = subprocess.run(command, cwd=ROOT, text=True, stdout=subprocess.PIPE,
                        stderr=subprocess.STDOUT, check=True, timeout=180)
-    lines = [x.strip() for x in p.stdout.replace("\r\n", "\n").splitlines() if x.strip()]
-    actual = lines[-len(EXPECTED):]
+    lines = [x.strip() for x in p.stdout.replace("\\r\\n", "\\n").splitlines() if x.strip()]
+    diagnostics = [line for line in lines if is_runtime_diagnostic(line)]
+    actual = [line for line in lines if not is_runtime_diagnostic(line)]
     if actual != EXPECTED:
-        raise AssertionError(f"{label}: expected {EXPECTED!r}, got {actual!r}\n{p.stdout}")
-    RESULT["runnable_vms"].append({"target": label, "status": "PASS", "output": actual})
-    print(f"PASS {label}: {' | '.join(actual)}", flush=True)
+        raise AssertionError(
+            f"{label}: expected program output {EXPECTED!r}, got {actual!r}\\n"
+            f"recognized diagnostics ({len(diagnostics)}):\\n"
+            f"{chr(10).join(diagnostics)}\\nfull output:\\n{p.stdout}"
+        )
+    RESULT["runnable_vms"].append({
+        "target": label, "status": "PASS", "output": actual,
+        "runtime_diagnostics_count": len(diagnostics),
+        "runtime_diagnostics": diagnostics,
+    })
+    print(
+        f"PASS {label}: {' | '.join(actual)} "
+        f"(recognized runtime diagnostics: {len(diagnostics)})",
+        flush=True,
+    )
 
 def main():
     if not CLI.is_file() or not SOURCE.is_file():
