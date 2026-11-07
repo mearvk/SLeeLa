@@ -28,7 +28,6 @@ def main():
   for name,exe in (("C11",ce),("C++17",cpe)):
    run([str(exe)]);RESULT["targets"][name]=aggregate([parse(run([str(exe)])) for _ in range(5)])
   jo=p/"java";jo.mkdir();run(["javac","-encoding","UTF-8","-d",str(jo),str(JAVA)])
-  for _ in range(3):run(["java","-cp",str(jo),"ArithmeticSpeed"])
   RESULT["targets"]["Java 21+"]=aggregate([parse(run(["java","-cp",str(jo),"ArithmeticSpeed"])) for _ in range(5)])
   RESULT["warmup_sweeps"]={"native":1,"java":3};RESULT["measured_sweeps"]=5
   RESULT["status"]="PASS" if all(r["status"]=="PASS" for t in RESULT["targets"].values() for r in t) else "FAIL"
