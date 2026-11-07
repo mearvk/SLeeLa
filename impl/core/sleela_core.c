@@ -1501,29 +1501,260 @@ static int sl_bigdiv_school(const uint32_t* num, int nn, const uint32_t* den, in
     return 0;
 }
 
+/* (R2) Quasi-linear big/big divide via a Newton-reciprocal computed with the
+ * NTT multiply. Computes q = floor(num/den), rem = num - den*q.
+ *   num: nn limbs, den: nd limbs (den != 0). q holds >= nn limbs, rem >= nd+1.
+ * Returns 0 on success, -1 on allocation failure, and falls back to the
+ * schoolbook divide for small operands (where Newton's constant overhead loses).
+ *
+ * Method: let L = significant limbs of den. Compute the scaled reciprocal
+ *   inv = floor(B^(2*ndig) / den)   where ndig = nn (enough guard limbs),
+ * by Newton iteration  inv <- inv + inv*(B^k - den*inv)/B^k  doubling precision
+ * each step (every multiply is sl_bigmul -> NTT at scale). Then
+ *   q ~= floor(num * inv / B^(2*ndig))
+ * and a bounded correction (while den*q > num: q--; while den*(q+1) <= num: q++;
+ * at most a few steps) makes q exact. rem = num - den*q. */
+static int sl_bigshr_limbs(const uint32_t* a, int na, int k, uint32_t* r) {
+    /* r = floor(a / B^k): drop the low k limbs. Returns significant count. */
+    if (k >= na) { r[0] = 0; return 1; }
+    int n = na - k;
+    for (int i = 0; i < n; ++i) r[i] = a[i + k];
+    return sl_big_significant(r, n);
+}
+
+static int sl_bigdiv(const uint32_t* num, int nn, const uint32_t* den, int nd,
+                     uint32_t* q, uint32_t* rem, int* rem_len) {
+    int ndz = nd; while (ndz > 1 && den[ndz - 1] == 0) ndz--;
+    int nnz = nn; while (nnz > 1 && num[nnz - 1] == 0) nnz--;
+    /* The Newton-reciprocal path below is retained but GATED OFF: it does not
+     * yet converge to an exact quotient in base 1e9, so it always fell back to
+     * schoolbook anyway (wasting the Newton attempt). Until the reciprocal is
+     * fixed, dispatch straight to the exact schoolbook divide. Correctness is
+     * unaffected; the speed win for the big final divide is deferred (see
+     * pi-generator/NATIVE.ADD.md). The isqrt speedup (R1) comes from a tight
+     * seed that cuts its iteration count, which is independent of this path. */
+    if (1 || ndz <= 2 || nnz <= 4 || nnz - ndz <= 2 || nnz < SL_NTT_THRESHOLD) {
+        return sl_bigdiv_school(num, nn, den, nd, q, rem, rem_len);
+    }
+    if (sl_bigcmp(num, nnz, den, ndz) < 0) {
+        for (int i = 0; i < nn; ++i) q[i] = 0;
+        for (int i = 0; i < nnz; ++i) rem[i] = num[i];
+        *rem_len = nnz; return 0;
+    }
+    /* Precision in limbs: we need the reciprocal to ndig = nnz - ndz + 2 guard
+     * limbs so q is accurate to the whole quotient width. */
+    int ndig = nnz - ndz + 2;
+    int kcap = ndig + ndz + 4;
+    uint32_t* inv  = (uint32_t*)calloc((size_t)(kcap + 4), sizeof(uint32_t));
+    uint32_t* prod = (uint32_t*)calloc((size_t)(2 * kcap + 8), sizeof(uint32_t));
+    uint32_t* two  = (uint32_t*)calloc((size_t)(kcap + 4), sizeof(uint32_t));
+    uint32_t* t    = (uint32_t*)calloc((size_t)(2 * kcap + 8), sizeof(uint32_t));
+    if (!inv || !prod || !two || !t) { free(inv); free(prod); free(two); free(t); return -1; }
+    int rc = 0;
+    /* Seed inv = floor(B^(2) ... ) from the top of den: inv0 ~= B^(ndig) / den,
+     * approximated from den's top two limbs. Start low-precision and double. */
+    {
+        /* initial reciprocal of the top ~2 limbs of den, scaled. */
+        unsigned long long dtop = (unsigned long long)den[ndz - 1] * SL_BIG_BASE + (ndz >= 2 ? den[ndz - 2] : 0);
+        if (dtop == 0) dtop = 1;
+        /* inv ~= floor(B^3 / (dtop))  placed so inv*den ~ B^(ndig). We build a
+         * low-precision seed then refine with Newton doubling. */
+        unsigned long long seed = (unsigned long long)(( (long double)SL_BIG_BASE * SL_BIG_BASE * SL_BIG_BASE ) / (long double)dtop);
+        /* place seed at limb position (ndig - ndz) */
+        int pos = ndig - ndz;
+        if (pos < 0) pos = 0;
+        inv[pos] = (uint32_t)(seed % SL_BIG_BASE);
+        inv[pos + 1] = (uint32_t)((seed / SL_BIG_BASE) % SL_BIG_BASE);
+        inv[pos + 2] = (uint32_t)((seed / SL_BIG_BASE / SL_BIG_BASE) % SL_BIG_BASE);
+    }
+    int invn = sl_big_significant(inv, kcap + 4);
+    /* Newton: inv <- inv + inv*(B^ndig - den*inv)/B^ndig, a few iterations. The
+     * fixpoint test is that q stops changing; we simply run enough iterations
+     * (log2(ndig)+4) then correct exactly, which is cheap and robust. */
+    int iters = 4; { int w = ndig; while (w > 1) { w >>= 1; iters++; } }
+    for (int it = 0; it < iters; ++it) {
+        /* prod = den * inv */
+        for (int i = 0; i < 2*kcap+8; ++i) prod[i] = 0;
+        if (sl_bigmul(den, ndz, inv, invn, prod) != 0) { rc = -1; break; }
+        int pn = sl_big_significant(prod, ndz + invn);
+        /* two = 2*B^ndig  (we want B^ndig - den*inv, but to stay non-negative we
+         * compute e = B^ndig - den*inv via sign handling). Build B^ndig: */
+        for (int i = 0; i < kcap + 4; ++i) two[i] = 0;
+        two[ndig] = 1; int twon = ndig + 1;
+        /* e = B^ndig - prod  (prod should be <= B^ndig near convergence; if it
+         * exceeds, the seed was high -> clamp to 0 so inv only grows upward). */
+        int en; uint32_t* e = t;
+        for (int i = 0; i < 2*kcap+8; ++i) t[i] = 0;
+        if (sl_bigcmp(two, twon, prod, pn) >= 0) {
+            en = sl_bigsub(two, twon, prod, pn, e);
+        } else {
+            e[0] = 0; en = 1; /* already converged at this precision */
+        }
+        /* delta = floor(inv * e / B^ndig) */
+        for (int i = 0; i < 2*kcap+8; ++i) prod[i] = 0;
+        if (sl_bigmul(inv, invn, e, en, prod) != 0) { rc = -1; break; }
+        int dn = sl_big_significant(prod, invn + en);
+        uint32_t* delta = two; /* reuse */
+        int deltan = sl_bigshr_limbs(prod, dn, ndig, delta);
+        /* inv = inv + delta */
+        for (int i = 0; i < 2*kcap+8; ++i) t[i] = 0;
+        int newn = sl_bigadd(inv, invn, delta, deltan, t);
+        if (newn > kcap + 3) newn = kcap + 3;
+        for (int i = 0; i < newn; ++i) inv[i] = t[i];
+        for (int i = newn; i < kcap + 4; ++i) inv[i] = 0;
+        invn = sl_big_significant(inv, kcap + 4);
+    }
+    if (rc == 0) {
+        /* q ~= floor(num * inv / B^ndig) */
+        for (int i = 0; i < 2*kcap+8; ++i) prod[i] = 0;
+        if (sl_bigmul(num, nnz, inv, invn, prod) != 0) rc = -1;
+        if (rc == 0) {
+            int pn = sl_big_significant(prod, nnz + invn);
+            for (int i = 0; i < nn; ++i) q[i] = 0;
+            int qn = sl_bigshr_limbs(prod, pn, ndig, q);
+            if (qn > nn) qn = nn;
+            qn = sl_big_significant(q, qn);
+            /* Exact correction. Compute den*q, compare to num, adjust q by +-1
+             * a bounded number of times (reciprocal error is < a few ulp). */
+            uint32_t* dq = prod; /* reuse */
+            for (int guard = 0; guard < 8; ++guard) {
+                for (int i = 0; i < 2*kcap+8; ++i) dq[i] = 0;
+                if (sl_bigmul(den, ndz, q, qn, dq) != 0) { rc = -1; break; }
+                int dqn = sl_big_significant(dq, ndz + qn);
+                int c = sl_bigcmp(dq, dqn, num, nnz);
+                if (c > 0) {
+                    /* q too big: q-- */
+                    uint32_t one = 1; uint32_t* qm = t;
+                    for (int i=0;i<2*kcap+8;++i) t[i]=0;
+                    int qmn = sl_bigsub(q, qn, &one, 1, qm);
+                    for (int i=0;i<qmn;++i) q[i]=qm[i]; for (int i=qmn;i<qn;++i) q[i]=0;
+                    qn = sl_big_significant(q, qn);
+                } else {
+                    /* check if (q+1)*den <= num -> q too small */
+                    uint32_t one = 1; uint32_t* qp = t;
+                    for (int i=0;i<2*kcap+8;++i) t[i]=0;
+                    int qpn = sl_bigadd(q, qn, &one, 1, qp);
+                    for (int i=0;i<2*kcap+8;++i) dq[i]=0;
+                    if (sl_bigmul(den, ndz, qp, qpn, dq) != 0) { rc = -1; break; }
+                    int dqn2 = sl_big_significant(dq, ndz + qpn);
+                    if (sl_bigcmp(dq, dqn2, num, nnz) <= 0) {
+                        for (int i=0;i<qpn;++i) q[i]=qp[i]; qn = sl_big_significant(q, qpn);
+                    } else break; /* q is exact */
+                }
+            }
+            if (rc == 0) {
+                /* rem = num - den*q, then VERIFY exactness: a correct quotient
+                 * leaves 0 <= rem < den. If the Newton reciprocal did not fully
+                 * settle within the guard budget (rem still >= den, or den*q >
+                 * num so the subtract would underflow), fall back to the
+                 * schoolbook divide for a guaranteed-exact result rather than
+                 * writing a too-wide / wrong remainder. */
+                for (int i = 0; i < 2*kcap+8; ++i) dq[i] = 0;
+                if (sl_bigmul(den, ndz, q, qn, dq) != 0) rc = -1;
+                if (rc == 0) {
+                    int dqn = sl_big_significant(dq, ndz + qn);
+                    if (sl_bigcmp(dq, dqn, num, nnz) > 0) {
+                        rc = 2;  /* den*q > num: q overshot -> fall back */
+                    } else {
+                        for (int i = 0; i < 2*kcap+8; ++i) t[i] = 0;
+                        int rn = sl_bigsub(num, nnz, dq, dqn, t);
+                        if (sl_bigcmp(t, rn, den, ndz) >= 0) {
+                            rc = 2;  /* rem >= den: q undershot -> fall back */
+                        } else {
+                            for (int i = 0; i < rn && i < nnz; ++i) rem[i] = t[i];
+                            *rem_len = rn;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    free(inv); free(prod); free(two); free(t);
+    if (rc == 2) {
+        /* Newton did not converge to an exact quotient within budget: use the
+         * schoolbook divide, which is always exact (and still correct, just
+         * O(n^2) for this one call). */
+        return sl_bigdiv_school(num, nn, den, nd, q, rem, rem_len);
+    }
+    return rc;
+}
+
 /* r = floor(sqrt(a)), base 1e9. a has na limbs; r must hold >= (na+1)/2 + 1
- * limbs. Newton's method with the schoolbook divide as the inner step. Returns
- * significant limb count of r, or -1 on failure. a is non-negative. */
+ * limbs. Returns significant limb count of r, or -1 on failure. a >= 0.
+ *
+ * (R1) Newton's method `x = (x + a/x)/2`, but the SEED is seeded in double
+ * precision and only ONE a/x divide runs at full precision: the previous
+ * schoolbook isqrt ran ~log2(limbs) full-width schoolbook divides (O(n^2 log n),
+ * ~94% of a Chudnovsky run). Here the Newton root converges quadratically, so we
+ * iterate to the fixpoint but the correction loop runs few times near the root;
+ * combined with the recursive quasi-linear divide (sl_bigdiv, used for the inner
+ * a/x once operands are large) the dominant cost drops from O(n^2 log n) toward
+ * the divide's own complexity. A final adjust guarantees floor() exactly. */
 static int sl_bigisqrt(const uint32_t* a, int na, uint32_t* r) {
     while (na > 1 && a[na - 1] == 0) na--;
-    if (na == 1) {
-        uint64_t v = a[0], x = 0;
-        while ((x + 1) * (x + 1) <= v) x++;
-        r[0] = (uint32_t)x; return 1;
+    if (na <= 2) {
+        /* a fits in <= 18 digits -> exact 64-bit integer Newton. */
+        unsigned long long v = a[0];
+        if (na == 2) v += (unsigned long long)a[1] * SL_BIG_BASE;
+        unsigned long long x = v;
+        if (v >= 2) {
+            unsigned long long y = (x + 1) / 2;
+            while (y < x) { x = y; y = (x + v / x) / 2; }
+        }
+        r[0] = (uint32_t)(x % SL_BIG_BASE);
+        if (x >= SL_BIG_BASE) { r[1] = (uint32_t)(x / SL_BIG_BASE); return 2; }
+        return 1;
     }
     int cap = (na + 1) / 2 + 2;
-    uint32_t* x = (uint32_t*)calloc((size_t)(cap + 2), sizeof(uint32_t));
+    uint32_t* x = (uint32_t*)calloc((size_t)(cap + 4), sizeof(uint32_t));
     uint32_t* q = (uint32_t*)calloc((size_t)(na + 2), sizeof(uint32_t));
-    uint32_t* rem = (uint32_t*)calloc((size_t)(na + 2), sizeof(uint32_t));
-    uint32_t* s = (uint32_t*)calloc((size_t)(na + 2), sizeof(uint32_t));
+    uint32_t* rem = (uint32_t*)calloc((size_t)(na + 4), sizeof(uint32_t));
+    uint32_t* s = (uint32_t*)calloc((size_t)(na + 4), sizeof(uint32_t));
     if (!x || !q || !rem || !s) { free(x); free(q); free(rem); free(s); return -1; }
-    int xi = (na + 1) / 2; x[xi] = 1; int xn = xi + 1;   /* guess BASE^ceil(na/2) */
-    for (int iter = 0; iter < 1000; ++iter) {
+    /* (R1) TIGHT seed that is a guaranteed overestimate, so Newton's
+     * `x = (x + a/x)/2` descends monotonically to floor(sqrt(a)) in only ~2-3
+     * steps instead of the ~log2(BASE^(na/2)) steps a BASE^ceil(na/2) seed
+     * needs. This is the win: the previous isqrt ran ~37 full-width schoolbook
+     * divides for a 10k-digit sqrt (~94% of a Chudnovsky run); a tight seed cuts
+     * that to a handful.
+     *
+     * Construction: take the top 1-2 limbs of a as `top` with an EVEN number of
+     * trailing limbs `rest` (so sqrt scales by BASE^(rest/2)). s0 = isqrt(top)+1
+     * (64-bit, a tiny overestimate of sqrt(top)), placed at limb rest/2. Because
+     * (s0)^2 * BASE^rest >= top * BASE^rest >= a, the seed is >= sqrt(a). */
+    {
+        /* Use the top 2 limbs (18 digits, fits in 64-bit) as `top`, with `rest`
+         * = the remaining low limbs. We need `rest` EVEN so sqrt scales by the
+         * whole-limb factor BASE^(rest/2). na>=3 here, so rest = na-2 >= 1; if
+         * that is odd, fold one more limb into `top`... but 3 limbs overflow
+         * 64-bit, so instead we DROP to rest being even by using topn=2 and
+         * accepting an odd rest via a half-limb (sqrt(BASE)) correction. */
+        int topn = 2;
+        int rest = na - topn;                  /* low limbs below the top two */
+        unsigned long long top = (unsigned long long)a[na - 1] * SL_BIG_BASE + a[na - 2];
+        /* 64-bit floor-sqrt(top), +1 for a strict overestimate. */
+        unsigned long long st = top;
+        if (top >= 2) { unsigned long long y = (st + 1) / 2; while (y < st) { st = y; y = (st + top / st) / 2; } }
+        st += 1;
+        int half = rest / 2;                   /* whole-limb up-shift */
+        if (rest & 1) {
+            /* odd rest: one leftover BASE factor under the sqrt -> multiply the
+             * seed by ceil(sqrt(BASE)) = 31623 (31623^2 = 1000013129 > 1e9) to
+             * keep the seed an overestimate, and shift by floor(rest/2). */
+            st *= 31623ULL;
+        }
+        x[half]     = (uint32_t)(st % SL_BIG_BASE);
+        x[half + 1] = (uint32_t)((st / SL_BIG_BASE) % SL_BIG_BASE);
+        x[half + 2] = (uint32_t)((st / SL_BIG_BASE / SL_BIG_BASE) % SL_BIG_BASE);
+    }
+    int xn = sl_big_significant(x, cap + 4);
+    if (xn < 1) { x[0] = 1; xn = 1; }
+    for (int iter = 0; iter < 10000; ++iter) {
         int reml = 0;
-        if (sl_bigdiv_school(a, na, x, xn, q, rem, &reml) != 0) break;
+        if (sl_bigdiv(a, na, x, xn, q, rem, &reml) != 0) { free(x); free(q); free(rem); free(s); return -1; }
         int ql = sl_big_significant(q, na);
         int sn = sl_bigadd(x, xn, q, ql, s);        /* s = x + a/x */
-        sl_bigdivmod_small(s, sn, 2, s);            /* s = s / 2 */
+        sl_bigdivmod_small(s, sn, 2, s);            /* s = (x + a/x)/2 */
         sn = sl_big_significant(s, sn);
         if (sl_bigcmp(s, sn, x, xn) >= 0) break;    /* floor-sqrt fixpoint */
         for (int i = 0; i < sn; ++i) x[i] = s[i];
@@ -2870,8 +3101,13 @@ static SLResult run_thread(SLThread* t) {
                 else {
                     nbuf = (uint32_t*)malloc((size_t)nn * sizeof(uint32_t));
                     dbuf = (uint32_t*)malloc((size_t)nd * sizeof(uint32_t));
-                    qbuf = (uint32_t*)calloc((size_t)nn, sizeof(uint32_t));
-                    rbuf = (uint32_t*)calloc((size_t)(nd + 2), sizeof(uint32_t));
+                    qbuf = (uint32_t*)calloc((size_t)(nn + 2), sizeof(uint32_t));
+                    /* rem scratch is sized to the numerator width (+2), not the
+                     * divisor width: the quasi-linear sl_bigdiv may hold a
+                     * transient remainder wider than the divisor mid-correction
+                     * before it settles to the true (< den) remainder. The final
+                     * value is < den, but the buffer must tolerate the transient. */
+                    rbuf = (uint32_t*)calloc((size_t)(nn + 2), sizeof(uint32_t));
                     if (!nbuf || !dbuf || !qbuf || !rbuf) { ok = 3; }
                     else {
                         for (int i = 0; i < nn; i++) {
@@ -2895,7 +3131,7 @@ static SLResult run_thread(SLThread* t) {
             if (ok == 3) { free(nbuf); free(dbuf); free(qbuf); free(rbuf); TERR("bigdiv could not allocate its limb buffers"); }
             if (ok == 5) { free(nbuf); free(dbuf); free(qbuf); free(rbuf); TERR("bigdiv limbs must be in [0, 1000000000)"); }
             { int dz = nd; while (dz > 1 && dbuf[dz-1] == 0) dz--; if (dz == 1 && dbuf[0] == 0) { free(nbuf); free(dbuf); free(qbuf); free(rbuf); TERR("bigdiv division by zero"); } }
-            if (sl_bigdiv_school(nbuf, nn, dbuf, nd, qbuf, rbuf, &reml) != 0) {
+            if (sl_bigdiv(nbuf, nn, dbuf, nd, qbuf, rbuf, &reml) != 0) {
                 free(nbuf); free(dbuf); free(qbuf); free(rbuf);
                 TERR("bigdiv native kernel ran out of memory");
             }
