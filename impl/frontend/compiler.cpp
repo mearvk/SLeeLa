@@ -959,6 +959,40 @@ private:
             emit(OP_BIGDIVMOD);
             return true;
         }
+        // Native big-integer subtract: bigsub(a, b, result). Computes a - b
+        // (requires a >= b) over base-1e9 limb arrays into result (needs len(a)
+        // limbs). Evaluates to the significant result-limb count.
+        if(n=="bigsub"){
+            if(c.args.size()!=3)throw std::runtime_error("Semantic error: bigsub(a, b, result) takes exactly three int[] arguments");
+            emitExpr(c.args[0].get());   // a (deepest)
+            emitExpr(c.args[1].get());   // b
+            emitExpr(c.args[2].get());   // result (top of stack)
+            emit(OP_BIGSUB);
+            return true;
+        }
+        // Native big-integer divide of big by big:
+        // bigdiv(num, den, quoOut, remOut). Writes num/den into quoOut (needs
+        // len(num) limbs) and num%den into remOut (needs len(den) limbs).
+        // Evaluates to the significant quotient-limb count.
+        if(n=="bigdiv"){
+            if(c.args.size()!=4)throw std::runtime_error("Semantic error: bigdiv(num, den, quoOut, remOut) takes exactly four int[] arguments");
+            emitExpr(c.args[0].get());   // num (deepest)
+            emitExpr(c.args[1].get());   // den
+            emitExpr(c.args[2].get());   // quoOut
+            emitExpr(c.args[3].get());   // remOut (top of stack)
+            emit(OP_BIGDIV);
+            return true;
+        }
+        // Native big-integer floor square root: bigisqrt(a, result). Writes
+        // floor(sqrt(a)) into result (needs (len(a)+1)/2 + 1 limbs). Evaluates
+        // to the significant result-limb count.
+        if(n=="bigisqrt"){
+            if(c.args.size()!=2)throw std::runtime_error("Semantic error: bigisqrt(a, result) takes exactly two int[] arguments");
+            emitExpr(c.args[0].get());   // a (deepest)
+            emitExpr(c.args[1].get());   // result (top of stack)
+            emit(OP_BIGISQRT);
+            return true;
+        }
 
         if(n=="structPack"||n=="structUnpack"){
             if(syntax_<SyntaxVersion{1,2})throw std::runtime_error("Semantic error: struct transport built-ins require #sleela 1.2");

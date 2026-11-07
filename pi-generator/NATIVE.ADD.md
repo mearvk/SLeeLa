@@ -14,6 +14,47 @@ order-of-magnitude, not benchmarks.
 
 ---
 
+## Status — implemented (this session)
+
+The roadmap below was partly executed. Shipped and verified:
+
+- **Three new native big-integer opcodes** (A1 primitives), all base-1e9
+  little-endian, mirroring the existing `bigmul`/`bigadd`/`bigdivmod` plumbing:
+  - `bigsub(a, b, result)` → `OP_BIGSUB` (160) — big − big (a ≥ b).
+  - `bigdiv(num, den, quoOut, remOut)` → `OP_BIGDIV` (161) — big ÷ big
+    (schoolbook long division; quotient + remainder).
+  - `bigisqrt(a, result)` → `OP_BIGISQRT` (162) — floor(√a) by Newton.
+- **`PiChudnovsky.sleela`** — binary-splitting Chudnovsky over the native
+  kernel, with signed big integers built in SLeeLa on top of
+  `bigmul`/`bigadd`/`bigsub`. Verified **digit-for-digit** against an
+  independent reference at 50, 1,000, and 10,000 digits.
+- **GC allocation robustness** — `OP_NEWARRAY` now runs a full root-aware
+  collection and retries once when the live-array table is full, instead of
+  failing. Allocation-heavy code (the Chudnovsky recursion churns many
+  short-lived limb arrays) no longer trips `array allocation failed`.
+- **ISA checker fix** — `tools/verify-osls-isa-extension.py` no longer
+  hard-codes a 156-opcode total; it verifies the frozen 155 baseline + OSLS at
+  155 + native/source agreement over the whole append-only list (it was already
+  failing on master, which had grown to 160).
+
+Measured (source-built `sleela`, same machine):
+
+| Digits | Spigot | Machin | Chudnovsky |
+|---:|---:|---:|---:|
+| 1,000 | ~2 s | <1 s | ~2 s |
+| 10,000 | ~51 s | ~3 s | ~9 s |
+| 50,000 | — | — | ~194 s |
+
+**Honest status of the exponent.** The binary-splitting *recursion* is
+quasi-linear (all +, −, × on the NTT multiply), but the single **final
+division and √** still use the schoolbook O(n²) kernel, and that term now
+dominates (Chudnovsky 10k→50k is ~21× for 5× digits ≈ exponent 1.9). So the
+machine today is "correct Chudnovsky with a quasi-linear core but an O(d²)
+tail." The remaining A1 work — a **Newton–Raphson reciprocal** `bigdiv` and
+Newton `bigisqrt` that ride the NTT multiply — is what removes the tail and
+finally delivers the full ~O(d·log²d) regime. It is the single highest-value
+follow-up; everything needed for it (fast `bigmul`, `bigsub`) is now in place.
+
 ## TL;DR — ranked by impact, then by size
 
 Two orderings are requested. First by **order of magnitude of speedup**

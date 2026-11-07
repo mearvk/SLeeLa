@@ -383,3 +383,12 @@ class SLISABigAdd { String name; int code; }
 
 < OP_BIGDIVMOD 158 -- native big-integer divide/remainder of a limb array by a small integer divisor (pushes the remainder; backs base conversion and Chudnovsky scaling) >
 class SLISABigDivMod { String name; int code; }
+
+< OP_BIGSUB 159 -- native big-integer subtract over base-1e9 limb arrays (pops a, b, result int[]; requires a >= b; companion to OP_BIGADD) >
+class SLISABigSub { String name; int code; }
+
+< OP_BIGDIV 160 -- native big-integer divide of big by big (pops num, den, quoOut, remOut int[]; pushes the quotient-limb count; the single large Chudnovsky final division) >
+class SLISABigDiv { String name; int code; }
+
+< OP_BIGISQRT 161 -- native big-integer floor square root over base-1e9 limb arrays (pops a, result int[]; backs sqrt(10005) in the Chudnovsky constant) >
+class SLISABigISqrt { String name; int code; }

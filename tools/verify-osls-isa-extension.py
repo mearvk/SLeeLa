@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
-"""Verify the frozen 155-opcode ISA and append-only OSLS extension."""
+"""Verify the frozen 155-opcode ISA and the append-only extension beyond it.
+
+The first 155 opcodes (0-154) are frozen against tools/isa/osls-isa-baseline-155.txt
+and OP_OSLS_CALL is pinned at 155. Everything from 156 onward is append-only
+(OP_BIGMUL, OP_SLEEP, OP_BIGADD, OP_BIGDIVMOD, OP_BIGSUB, OP_BIGDIV,
+OP_BIGISQRT, ...); this checker only requires that the native SLOp enum and the
+source ISA registry agree on the WHOLE ordered list, not a fixed total count.
+"""
 from __future__ import annotations
 
 import re
@@ -44,8 +51,8 @@ if source_names[:155] != baseline_names:
         if expected != actual:
             fail(f"legacy opcode {index} changed: expected {expected}, found {actual}")
     fail("source ISA is missing one or more legacy opcodes")
-if len(source_names) != 156 or source_names[155] != "OP_OSLS_CALL":
-    fail(f"source ISA must contain 156 entries with OP_OSLS_CALL at 155; found {len(source_names)}")
+if len(source_names) < 156 or source_names[155] != "OP_OSLS_CALL":
+    fail(f"source ISA must contain OP_OSLS_CALL at index 155 (>=156 entries); found {len(source_names)}")
 if native_names != source_names:
     limit = min(len(native_names), len(source_names))
     for index in range(limit):
@@ -55,4 +62,5 @@ if native_names != source_names:
 if source_names[103] != "OP_OS_PLATFORM" or source_names[123] != "OP_OS_PCLOSE":
     fail("legacy OS syscall range 103–123 has changed")
 
-print("OSLS ISA verification: PASS (155 frozen legacy opcodes 0–154; OP_OS_* 103–123 unchanged; OP_OSLS_CALL appended at 155)")
+print(f"OSLS ISA verification: PASS (155 frozen legacy opcodes 0-154; OP_OS_* 103-123 unchanged; "
+      f"OP_OSLS_CALL at 155; {len(source_names)} total opcodes, native and source in agreement)")
