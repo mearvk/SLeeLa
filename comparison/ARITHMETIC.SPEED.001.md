@@ -173,3 +173,24 @@ python3 comparison/tests/run_sleela_vm_arithmetic_speed.py
 The VM runner writes `comparison-sleela-vm-arithmetic-results.json`; hosted CI retains it in the `sleela-complete-vm-matrix` artifact linked above. The raw five-sample arrays, checksums, target metadata, and host information are preserved in that JSON.
 
 **Conclusion:** native C11, C++17, and Java 21+ retain their separately recorded local and hosted arithmetic datasets. SLeeLa Basic Native and Premium SLVM/1–11 now have validated internal arithmetic timings for the eight tested int/double operator cases. No cross-language speed ranking or RAM-performance claim is made.
+
+
+## Latest cross-platform CI status — 2026-11-07
+
+The corrective reruns are still in progress at the time of this update:
+
+- [Complete VM and Language Conformance — run 42343381660](https://github.com/mearvk/SLeeLa/actions/runs/42343381660):
+
+Basic Native VM + Premium SLVM 1-11: in_progress
+Arithmetic speed — C11, C++17, Java 21+: completed (success)
+C11, C++17, Java 21+ (macos-latest): completed (success)
+C11, C++17, Java 21+ (ubuntu-latest): completed (success)
+C11, C++17, Java 21+ (windows-latest): in_progress
+
+- [Native C and C++ Portability — run 42343381645](https://github.com/mearvk/SLeeLa/actions/runs/42343381645):
+
+Native runtime (ubuntu-latest): in_progress
+Native runtime (macos-latest): in_progress
+Native runtime (Windows 10+ / MinGW-w64): in_progress
+
+These jobs have not yet produced final cross-platform qualification results. The previously validated SLeeLa arithmetic benchmark remains PASS (12/12 runnable targets; 96/96 target-operation cases; 480/480 sample checksum validations). The separate C11/C++17/Java 21+ hosted comparator result remains PASS (128/128 cases). The cross-platform reruns must not be conflated with those completed arithmetic measurements.
