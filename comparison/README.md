@@ -1,6 +1,6 @@
 # SLeeLa Computational Standards
 
-Edition 1.0 | Baseline: SLeeLa Syntax 3.0 | Status: initial standard
+Edition 1.0 | Baseline: SLeeLa Syntax 3.0 | Status: executable baseline with first-run results and corrective rerun pending
 
 ## Purpose
 This directory establishes a common computational vocabulary and repeatable comparison method for SLeeLa, Java/JVM, native C, and native C++. It supports language design, compiler qualification, runtime engineering, interoperability, and performance research.
@@ -53,6 +53,7 @@ The initial executable baseline is in `tests/`:
 - `tests/java/CommonVectors.java`: Java equivalents.
 - `tests/sleela/common_vectors.sleela`: SLeeLa Syntax 3.0 VM equivalents.
 - `tests/run_native_java.py`: compiles and runs C, C++, and Java, then compares their output to the shared expected vector.
+- `tests/check_sleela_output.py`: verifies the final program-output lines separately from SLeeLa runtime diagnostics.
 
 Run the native/Java parity checks locally with Python 3, a C11 compiler, a C++17 compiler, and JDK 21 (or a compatible JDK):
 
@@ -61,5 +62,7 @@ python3 comparison/tests/run_native_java.py
 ```
 
 GitHub Actions workflow: [Comparison Standards Conformance](../.github/workflows/comparison-conformance.yml). It runs native/Java parity on Ubuntu, macOS, and Windows, and builds/runs the SLeeLa VM vector on Ubuntu. Each job retains its result/output artifact.
+
+First completed run [42331126707](https://github.com/mearvk/SLeeLa/actions/runs/42331126707): Ubuntu and macOS shared vectors passed; Windows C and C++ passed but Java launch failed under MSYS2 Python; the SLeeLa VM built and emitted expected program output, but strict comparison included runtime diagnostics. Both causes have been addressed in the workflow and validator. Corrected rerun is pending; no cross-platform all-green claim is made yet.
 
 This is a deliberately small first slice: it exercises arithmetic, loop accumulation, and ASCII output. It does not yet qualify integer overflow, floating-point edge cases, Unicode indexing, memory ownership, C ABI interoperability, Java process delegation, JNI, concurrency, or performance. Those remain unassessed until executable tests and retained CI results exist. Workflow configuration is not evidence of a successful run.
