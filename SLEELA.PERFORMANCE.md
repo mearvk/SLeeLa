@@ -4,27 +4,27 @@
 **Repository:** `mearvk/SLeeLa`  
 **Baseline:** SLeeLa Syntax 3.0  
 **Last consolidated:** 2026-11-07  
-**Status:** Native-language arithmetic reference recorded; SLeeLa VM arithmetic CI queued
+**Status:** Native local and hosted CI arithmetic results recorded; SLeeLa VM arithmetic rerun pending
 
 ## 1. Executive summary
 
 This report consolidates the arithmetic performance measurements currently recorded for native C11, native C++17, and Java 21+, and tracks the corresponding SLeeLa VM qualification work.
 
-The currently available numeric results are from one local Linux reference execution. They are **not** hosted GitHub Actions results and should not be treated as universal language rankings or release-grade measurements.
+The report now contains two separately identified native arithmetic datasets: the earlier local Linux reference run and a hosted GitHub Actions Linux run. Neither should be treated as a universal language ranking or release-grade measurement.
 
-The SLeeLa VM arithmetic workload has been committed for the Basic Native VM and Premium SLVM 1–11, but its first integrated workflow run is still queued. Consequently, no SLeeLa VM timing is reported here yet.
+The first integrated workflow run exercised all twelve SLeeLa VM targets and passed the VM self-checks, but the arithmetic runner itself failed because it referenced an undefined checksum dictionary. The runner has since been corrected to parse and validate explicit timing and checksum records. SLeeLa VM timing values remain pending until a corrected workflow artifact is available.
 
 ## 2. Current qualification status
 
 | Environment | Arithmetic data | Execution evidence | Status |
 |---|---|---|---|
-| Native C11 | int widths, float32, float64; signed 128-bit extension | Local reference run, five samples per case | Recorded |
-| Native C++17 | int widths, float32, float64; signed 128-bit extension | Local reference run, five samples per case | Recorded |
-| Java 21+ | integer-width emulations, float32, float64; no primitive 128-bit | Local reference run, five samples per case | Recorded |
-| SLeeLa Basic Native VM | `int`, `double`; +, -, *, / | Workflow run 42340090666 | Pending — queued |
-| SLeeLa Premium SLVM 1–11 | `int`, `double`; +, -, *, / | Workflow run 42340090666 | Pending — queued |
+| Native C11 | int widths, float32, float64; signed 128-bit extension | Local reference + hosted CI run 42340090666 | Recorded; both suites passed |
+| Native C++17 | int widths, float32, float64; signed 128-bit extension | Local reference + hosted CI run 42340090666 | Recorded; both suites passed |
+| Java 21+ | integer-width emulations, float32, float64; no primitive 128-bit | Local reference + hosted CI run 42340090666 | Recorded; both suites passed |
+| SLeeLa Basic Native VM | `int`, `double`; +, -, *, / | Workflow run 42340090666 | VM self-check passed; arithmetic runner defect fixed, rerun pending |
+| SLeeLa Premium SLVM 1–11 | `int`, `double`; +, -, *, / | Workflow run 42340090666 | 11/11 self-checks passed; arithmetic runner defect fixed, rerun pending |
 
-**Workflow checked:** [Complete SLeeLa VM and Language Conformance — run 42340090666](https://github.com/mearvk/SLeeLa/actions/runs/42340090666). At the time of this report, the overall run and all five jobs were `queued`; none had produced an execution result. The run is associated with commit `70c0f6c0234b1508cb858d481ca4a6c841333706`.
+**Workflow checked:** [Complete SLeeLa VM and Language Conformance — run 42340090666](https://github.com/mearvk/SLeeLa/actions/runs/42340090666). The run completed with 4 of 5 jobs successful. The arithmetic speed job passed; the VM job failed after the twelve targets were runnable and the Premium self-checks passed, when the new benchmark runner attempted to read an undefined `checks` variable. That defect is fixed in the current source. The VM timing results from this first attempt remain unavailable.
 
 ## 3. Native C11 / C++17 / Java 21+ arithmetic results
 
@@ -104,6 +104,65 @@ The native benchmark exercises indexed operands and checksum folding. It measure
 - Java has no primitive signed 128-bit integer; no `BigInteger` replacement was included.
 - The operands avoid integer overflow and use nonzero divisors.
 - Boolean arithmetic is not applicable. Boolean performance belongs in a separate logical-operation suite.
+
+
+
+### 3.2 Hosted GitHub Actions Linux arithmetic results
+
+**Execution:** [Complete SLeeLa VM and Language Conformance — run 42340090666](https://github.com/mearvk/SLeeLa/actions/runs/42340090666), arithmetic-speed job.  
+**Artifact:** `comparison-arithmetic-speed-results.json`, artifact ID `13561852004`.  
+**Result:** PASS — 128/128 measurements/checksum cases (C11 44/44, C++17 44/44, Java 21+ 40/40). Each case used five measured samples; the values below are the medians in ns/op.
+
+Hosted runner metadata: Linux 7.0.0-1019-azure, x86_64, glibc 2.43, 4 logical cores. The CPU model was not exposed by the runner metadata. These hosted values are a separate dataset from the local reference values in section 3 and must not be merged or averaged with them.
+
+| Type | Operator | C11 | C++17 | Java 21+ |
+|---|---:|---:|---:|---:|
+| f32 | * | 1.374 | 1.659 | 4.881 |
+| f32 | + | 1.152 | 1.158 | 1.245 |
+| f32 | - | 1.248 | 1.407 | 1.288 |
+| f32 | / | 1.520 | 1.517 | 3.321 |
+| f64 | * | 1.441 | 1.153 | 1.006 |
+| f64 | + | 1.439 | 1.153 | 1.018 |
+| f64 | - | 1.441 | 1.151 | 1.107 |
+| f64 | / | 1.387 | 1.287 | 1.469 |
+| i128 | * | 1.250 | 1.247 | N/A |
+| i128 | + | 0.920 | 0.914 | N/A |
+| i128 | - | 1.151 | 0.952 | N/A |
+| i128 | / | 3.178 | 3.463 | N/A |
+| i16 | * | 0.970 | 1.151 | 1.822 |
+| i16 | + | 0.671 | 0.678 | 1.068 |
+| i16 | - | 0.874 | 1.155 | 1.781 |
+| i16 | / | 1.728 | 1.729 | 3.191 |
+| i32 | * | 1.151 | 1.081 | 1.133 |
+| i32 | + | 0.675 | 0.671 | 0.734 |
+| i32 | - | 1.151 | 0.895 | 1.117 |
+| i32 | / | 1.730 | 1.730 | 2.887 |
+| i64 | * | 1.152 | 1.153 | 0.968 |
+| i64 | + | 0.641 | 0.776 | 0.615 |
+| i64 | - | 0.866 | 1.151 | 1.100 |
+| i64 | / | 2.878 | 2.883 | 2.887 |
+| i8 | * | 0.994 | 1.161 | 6.466 |
+| i8 | + | 0.696 | 0.675 | 0.891 |
+| i8 | - | 0.908 | 1.160 | 1.344 |
+| i8 | / | 1.742 | 1.739 | 13.812 |
+| u16 | * | 1.053 | 1.153 | 1.536 |
+| u16 | + | 0.673 | 0.673 | 1.063 |
+| u16 | - | 1.057 | 1.153 | 1.344 |
+| u16 | / | 2.016 | 2.017 | 2.950 |
+| u32 | * | 0.947 | 1.152 | 0.819 |
+| u32 | + | 0.671 | 0.752 | 0.619 |
+| u32 | - | 0.864 | 1.151 | 0.621 |
+| u32 | / | 1.728 | 1.726 | 2.888 |
+| u64 | * | 1.151 | 1.113 | 0.852 |
+| u64 | + | 0.644 | 0.688 | 0.617 |
+| u64 | - | 1.182 | 0.901 | 0.630 |
+| u64 | / | 2.882 | 2.879 | 2.883 |
+| u8 | * | 1.156 | 1.085 | 1.518 |
+| u8 | + | 0.674 | 0.673 | 1.769 |
+| u8 | - | 1.160 | 0.872 | 0.979 |
+| u8 | / | 1.731 | 1.733 | 2.981 |
+
+The hosted runner and local reference benchmark are distinct executions with different hosts and timing environments. Compare only within each dataset unless a controlled matched-runner protocol is introduced.
 
 ## 4. SLeeLa VM arithmetic qualification
 
@@ -189,4 +248,4 @@ The SLeeLa runner writes `comparison-sleela-vm-arithmetic-results.json`; the int
 
 ---
 
-**Current conclusion:** C11, C++17, and Java 21+ have recorded local arithmetic reference measurements. SLeeLa Basic Native and Premium SLVM 1–11 are instrumented but remain unmeasured because the integrated CI run is queued. RAM performance and Boolean logic performance require their own benchmark suites.
+**Current conclusion:** C11, C++17, and Java 21+ have both local reference data and a completed hosted Linux CI arithmetic dataset (128/128 cases passed). The initial integrated workflow confirmed 12/12 SLeeLa VM targets and 11/11 Premium VM self-checks, but its arithmetic runner failed before collecting VM timings. The runner, diagnostic-output filtering, class-dispatch output check, and Windows OSLS link dependencies have now been corrected and pushed; the corrected CI rerun must supply the SLeeLa Basic Native and Premium SLVM 1–11 timing artifact before those table cells can be populated. RAM performance and Boolean logic performance still require separate benchmark suites.
