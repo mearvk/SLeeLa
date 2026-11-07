@@ -84,7 +84,7 @@ jobs:
       - name: Install runtime build prerequisites
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential pkg-config python3
+          sudo apt-get install -y build-essential pkg-config python3 libx11-dev libfreetype-dev libfontconfig1-dev
 
       - name: Generate an ephemeral manifest for this checkout
         run: |
@@ -93,11 +93,13 @@ jobs:
       - name: Build SLeeLa compiler and VM
         env:
           SLEELA_SHA256_MANIFEST: /tmp/sleela-comparison-manifest.json
+          SLEELA_SHEET: ${{ github.workspace }}/SHEET.sheet
         run: make -C impl all
 
       - name: Execute shared SLeeLa VM vectors
         env:
           SLEELA_SHA256_MANIFEST: /tmp/sleela-comparison-manifest.json
+          SLEELA_SHEET: ${{ github.workspace }}/SHEET.sheet
         run: |
           ./impl/build/sleela run comparison/tests/sleela/common_vectors.sleela > /tmp/sleela-comparison.out
           diff -u <(printf '42\n15\nhello\n') /tmp/sleela-comparison.out
