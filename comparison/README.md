@@ -14,7 +14,7 @@ This directory establishes a common computational vocabulary and repeatable comp
 6. [Common Test Vectors](COMMON-TEST-VECTORS.md)
 7. [Running PASS Record 001 — Java/JVM, Native C/C++, and SLeeLa VM](RUNNING.PASS.JAVA.001.md)
 8. [Numeric and Unicode Edge Vectors](NUMERIC-UNICODE-EDGE-VECTORS.md)
-9. [Running PASS Record 002 — next batch](RUNNING.PASS.JAVA.002.md) (published after CI completes)
+9. Running PASS Record 002 will be added after the next batch completes CI verification.
 
 ## Architectural principle
 One computational specification, multiple implementation environments.
