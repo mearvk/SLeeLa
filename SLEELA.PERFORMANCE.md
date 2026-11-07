@@ -4,7 +4,7 @@
 **Repository:** `mearvk/SLeeLa`  
 **Baseline:** SLeeLa Syntax 3.0  
 **Last consolidated:** 2026-11-07  
-**Status:** Arithmetic datasets recorded and checksum-validated; corrective cross-platform VM and native-portability workflows are still in progress (snapshot 2026-11-07)
+**Status:** Arithmetic datasets recorded and checksum-validated; VM/language conformance passed on all three operating systems; native portability remains blocked by regression-test harness failures (2026-11-07)
 
 ## 1. Executive summary
 
@@ -47,6 +47,17 @@ Native runtime (macos-latest): in_progress
 Native runtime (Windows 10+ / MinGW-w64): in_progress
 
 The previously validated arithmetic dataset remains: SLeeLa Basic Native plus Premium SLVM 1–11, 96/96 target-operation cases and 480/480 sample checksum validations; C11/C++17/Java 21+ comparator suite, 128/128 cases on the recorded hosted Linux run. The in-progress reruns are intended to close the separate Modium-manifest and native-portability gaps. Do not mark cross-platform VM conformance or native portability complete until these runs finish successfully. This status snapshot should be replaced with final job conclusions after completion.
+
+
+
+## Final corrective CI results — 2026-11-07
+
+The two corrective workflows have now completed.
+
+- [Complete VM and Language Conformance — run 42343381660](https://github.com/mearvk/SLeeLa/actions/runs/42343381660): **PASS, 5/5 jobs**. Basic Native + Premium SLVM 1–11 passed; the arithmetic-speed job passed; C11/C++17/Java 21+ comparator jobs passed on Ubuntu, macOS, and Windows.
+- [Native C and C++ Portability — run 42343381645](https://github.com/mearvk/SLeeLa/actions/runs/42343381645): **FAIL, 0/3 platform jobs fully passed**. Linux and macOS built the native runtime, passed ISA verification, OSLS registry tests, and OSLS VM compiler/dispatch tests, then stopped in the test-math Makefile recipe with an unterminated shell quote / unexpected EOF. Windows built the native runtime and passed ISA verification, but OSLS CTest failed one osls_test assertion: the relative normalized path was compared against POSIX ../c instead of the Windows separator form ..\\c.
+
+These failures are test-harness portability issues observed after the earlier native build and several OSLS checks succeeded. They do not overturn the successful VM/language conformance workflow or the separately validated arithmetic measurements. Native portability is NOT qualified on any of the three operating systems until the shell recipe and Windows path expectation are corrected and the workflow is rerun.
 
 ## 3. Native C11 / C++17 / Java 21+ arithmetic results
 
