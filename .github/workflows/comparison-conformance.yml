@@ -20,8 +20,8 @@ permissions:
 
 jobs:
   native-java-parity:
-    name: Shared vectors (\${{ matrix.os }})
-    runs-on: \${{ matrix.os }}
+    name: Shared vectors (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
@@ -62,14 +62,14 @@ jobs:
           java-version: '21'
 
       - name: Run shared C, C++, and Java vectors
-        shell: \${{ runner.os == 'Windows' && 'msys2 {0}' || 'bash' }}
+        shell: ${{ runner.os == 'Windows' && 'msys2 {0}' || 'bash' }}
         run: python3 comparison/tests/run_native_java.py
 
       - name: Retain comparison result record
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: comparison-vectors-\${{ matrix.os }}
+          name: comparison-vectors-${{ matrix.os }}
           path: comparison-results.json
           if-no-files-found: warn
 
