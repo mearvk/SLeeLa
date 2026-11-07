@@ -22,6 +22,7 @@ the SLeeLa source under [`src/`](src/).
 | 05 | [`05-adoption-portugal-turkey.md`](05-adoption-portugal-turkey.md) | Portugal (early, 1582) and Turkey/Ottoman (late, 1917/1926) |
 | 06 | [`06-system-of-integration-united-states.md`](06-system-of-integration-united-states.md) | The U.S.-referenced System of Integration — the operative unit |
 | 07 | [`07-greece-bc-to-1600.md`](07-greece-bc-to-1600.md) | Greece BC→1600: dated events, concessions, and 1–10 weighings |
+| 08 | [`08-roman-calendar-1244bc-to-present.md`](08-roman-calendar-1244bc-to-present.md) | Rome 1244 BC→present: the spine line, events, concessions, weighings |
 | 99 | [`99-unified-calendar.md`](99-unified-calendar.md) | The Unified Calendar synthesis |
 
 ## The ordered exceptions to the Julian baseline
@@ -37,6 +38,11 @@ exception on different dates, which is the subject of documents 03–05.
    concedes its civil calendar to Rome's Julian in 45 BCE, and then *refuses* the
    1582 Gregorian reform — remaining Julian through 1600. The dated events and
    their 1–10 weighings are document 07.
+0b. **The Roman line (1244 BC → present).** The spine of this whole set: from a
+   legendary 10-month year to Numa's 12 months, through the Julian baseline and
+   the Gregorian correction, to today's proleptic Gregorian / UTC / ISO 8601
+   civil calendar. The dated events, concessions, and 1–10 weighings are
+   document 08.
 1. **Pre-Julian drift (before 46 BCE).** The Roman republican calendar fell out
    of step with the seasons; intercalation was manual and politically abused.
    This is the condition the Julian calendar was created to fix — see 00/01.

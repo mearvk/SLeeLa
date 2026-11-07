@@ -56,3 +56,15 @@ Every item in this collection is expressed as a **deviation from Julian**:
 - **An accumulating, measurable error.** Because the error is exactly
   quantifiable (≈1 day / 128 years), the later reforms can correct it precisely
   rather than by guesswork.
+
+## The Roman line as a dated, weighed record (document 08)
+
+This document isolates the Julian reform as *the baseline*. For the full Roman
+lineage it sits inside — from the legendary pre-foundation era (1244 BC) through
+Romulus's 10 months, Numa's 12, the pontifical-intercalation breakdown, the 45
+BC Julian reform, the 8 BC Augustan fix, the Dionysian AD era, and on to the
+Gregorian correction and today's proleptic Gregorian / UTC / ISO 8601 — with each
+event noted, its concession recorded, and a 1–10 weighing — see
+[`08-roman-calendar-1244bc-to-present.md`](08-roman-calendar-1244bc-to-present.md).
+Its headline weighings: the Julian reform (45 BC) and the Gregorian reform (1582)
+both carry weight 10, the Dionysian AD era (525 CE) carries 9.
