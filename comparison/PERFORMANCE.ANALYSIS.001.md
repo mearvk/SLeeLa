@@ -416,3 +416,44 @@ The language-comparison step was skipped, and no Windows comparison result artif
 A correction was committed to `.github/workflows/complete-vm-conformance.yml` at commit `acf089533b6eeebaea0038ebd557c63ede5d6120`: the nonexistent `mingw-w64-ucrt-x86_64-gcc-c++` package was removed. The repository's separate Comparison Standards workflow already uses `mingw-w64-ucrt-x86_64-gcc` as the UCRT64 compiler package for both C and C++, and its Windows comparator job has previously passed. The corrected complete-conformance workflow still requires a fresh successful Windows run before Windows qualification can be claimed.
 
 At the time of this update, the VM job for run `42337765442` remained in the Basic Native VM/compiler build step. Premium builds, VM execution, Premium self-checks, and Standard manifest checks had not yet been reported as completed. No outcome is inferred for those pending steps.
+
+
+### 14.6 Completed VM retry — build success; output-validator defect isolated
+
+**Workflow:** [Complete SLeeLa VM and Language Conformance — prior retry](https://github.com/mearvk/SLeeLa/actions/runs/42337765442)  
+**VM job:** `128300544777`  
+**Result:** job failed at the VM matrix output-validation step, after all Premium VM builds had completed.
+
+| VM stage | Observed result | Interpretation |
+|---|---|---|
+| Basic Native VM/compiler build | **PASS** | Build completed |
+| Premium SLVM 1–11 builds | **PASS — 11/11 built** | Every Premium build step completed |
+| Standard VM inventory | **PASS — 10/10 registered** | Inventory reported; execution remains gated |
+| Basic Native VM workload | **Program values present: 42, 15, hello** | Runtime also emitted memory-manager/security diagnostics |
+| VM matrix validator | **FAIL — validator defect** | It compared the final three combined-output lines, which were diagnostics rather than program values |
+| Premium VM workload execution | **NOT RUN** | The runner stopped at the Basic Native VM validation failure |
+| Premium admission self-checks | **SKIPPED** | Earlier step failed |
+| Standard VM Modium manifest check | **SKIPPED** | Earlier step failed |
+
+The captured Basic Native VM output contains the three expected program values, followed by legitimate memory-manager statistics and security verification messages. This is not evidence of a VM computation failure. The original runner's `lines[-3:]` comparison incorrectly treated the final diagnostics as the program result.
+
+**Correction committed:** `comparison/tests/run_all_vm_matrix.py` now separates a small, explicit set of known runtime/security diagnostic prefixes from program output, requires the remaining output to match the expected values exactly, and retains recognized diagnostics in the JSON result for audit. It does not silently discard arbitrary output.
+
+Commit: `c9753ee51de4e2b9a00cc7dd058b11d915f94ede`.
+
+### 14.7 Windows workflow repair — committed, fresh run required
+
+The complete-conformance workflow's Windows setup now:
+
+- Installs the valid MSYS2 UCRT64 GCC package rather than the nonexistent `mingw-w64-ucrt-x86_64-gcc-c++` package.
+- Installs Git and native Windows Python.
+- Explicitly checks GCC, G++, Python, and Java versions before testing.
+- Runs the comparison scripts in a Windows PowerShell step with `CC=gcc` and `CXX=g++`, while keeping the POSIX Bash test step for Linux and macOS.
+
+Workflow repair commit: `d04cfb44e72c14f00f5f545787fe784f34ea778f`.
+
+The previous Windows failure belongs to the old workflow revision and therefore does not test this correction. A new run on the corrected commit is required before marking Windows PASS. The new workflow and validator commits are on `master`; their fresh Actions results must be reviewed before claiming either correction has passed.
+
+### 14.8 Current measured-performance status
+
+The conformance workflow still has no timed benchmark harness. The VM retry produced build and correctness evidence only. It did not measure arithmetic throughput, data-type latency, memory bandwidth, random RAM-access latency, cache behavior, allocation rate, or GC pause time. All such performance values remain **NOT MEASURED**. The VM build successes must not be converted into performance claims.
