@@ -930,6 +930,10 @@
       "sha256": "b5667c4467f79a2a49540c70cf6a28415d1b594b6ef16ee00d5dd6ebc5fa7e5b"
     },
     {
+      "path": "lib/advantage/examples/professionals/professionals-demo.sleela",
+      "sha256": "e87fd7da8efdb6fd1ce5c4df065f0fb6217facda5e56ee2ba84b3430e26bfab1"
+    },
+    {
       "path": "lib/advantage/grading/SLGradeBook.sleela",
       "sha256": "7c77c809a652b684a21920c892afcd285f36c7e3cb3a4f396ec2d6f161e25769"
     },

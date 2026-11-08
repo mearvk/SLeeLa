@@ -1,0 +1,110 @@
+<< lib/advantage/examples/professionals/professionals-demo.sleela
+   SLeeLa Standard Library Definition.
+   Definition: An advantage example cast for professional roles -- grade a set
+   of professionals as modules and rank them A..D. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+<< Names the grading subject classes (SLSophisticationCircuit, SLGradeBook,
+   SLModuleGrade, SLGradeSet) so the driver resolves them from
+   lib/advantage/grading/ via its /lib identifier scan; no imports needed. Each
+   professional role is scored as a module; the grader partitions winners and
+   rates every role and the winning set. >>
+class ProfessionalsDemo {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class demo
+     carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10570;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  void main() {
+    print("== advantage example: professionals, graded ==");
+    SLSophisticationCircuit circuit = new SLSophisticationCircuit();
+    < capacity 16; win=70, lose=40, absolute=80 >
+    circuit.configure(16, 70, 40, 80);
+
+    < role: 0 normal, 1 grader, 2 absolute >
+    circuit.add("engineer", 92, 0);
+    circuit.add("doctor", 96, 2);
+    circuit.add("teacher", 78, 0);
+    circuit.add("auditor", 85, 1);
+    circuit.add("clerk", 55, 0);
+    circuit.add("apprentice", 35, 0);
+
+    SLGradeBook book = new SLGradeBook();
+    book.configure(circuit);
+
+    print("  " + book.describe());
+
+    print("");
+    print("== per-professional ratings ==");
+    int i = 0;
+    while (i < circuit.size()) {
+      SLModuleGrade g = circuit.moduleAt(i);
+      print("  " + g.getLabel() + " -> " + g.letter() + g.tier());
+      i = i + 1;
+    }
+
+    print("");
+    print("== winners ==");
+    SLGradeSet win = book.winning();
+    print("  winning professionals: " + win.size()
+        + " (" + book.rateSet(win) + ")");
+    SLModuleGrade champ = circuit.champion();
+    print("  champion: " + champ.getLabel() + " (" + book.championRating() + ")");
+
+    print("");
+    print("== validation ==");
+    < doctor 96 is champion; 4 of 6 clear the win bar of 70. >
+    boolean okChamp = (champ.getLabel() == "doctor");
+    boolean okWin = (win.size() == 4);
+    boolean okRate = (champ.letter() == "A");
+    print("  champion is doctor ? " + okChamp);
+    print("  winners == 4       ? " + okWin);
+    print("  champion rating A  ? " + okRate);
+    if (okChamp) {
+      if (okWin) {
+        if (okRate) {
+          print("ALL CHECKS PASSED");
+        }
+      }
+    }
+  }
+}
