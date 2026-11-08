@@ -2354,6 +2354,18 @@
       "sha256": "6135b0ca45978e6a5a485b93be10102eec4b2c0386635e0409ad78c692b312fe"
     },
     {
+      "path": "lib/character-recognition/SLCharacterRecognition.sleela",
+      "sha256": "859157841fcffdab88c2d79ec493c8aa14ccfcf5940bb8c6cced13aa2f336680"
+    },
+    {
+      "path": "lib/character-recognition/SLCharacterResult.sleela",
+      "sha256": "8daf0ac2f99e5e962137310f70ad99736b04e726055ef4bb3050fb96e0f9edc7"
+    },
+    {
+      "path": "lib/character-recognition/SLPackage.sleela",
+      "sha256": "e6863645809ced2f76a9c0a10c3cf8649aa4e42de2c5cb507e632d99bd35531a"
+    },
+    {
       "path": "lib/character/AdvertisingModel.sleela",
       "sha256": "a98d20a1054ab9f9f5b6c87fc3580c5c5b9d0a7d83741cefad9ed4d84e522d41"
     },
@@ -45600,6 +45612,18 @@
     {
       "path": "lib/net/SLUri.sleela",
       "sha256": "681406ac41e41347822e5bef00752ad48710143d760af83d734bc63e469082bc"
+    },
+    {
+      "path": "lib/neural-nets/SLNeuralNetwork.sleela",
+      "sha256": "76d381b44a89562131e5c0e44275bac14d91c575e2eeb43ae30e16cabd741e60"
+    },
+    {
+      "path": "lib/neural-nets/SLNeuralNetworkConfig.sleela",
+      "sha256": "d1d9cdf67c20ee395029582eea775146bac3a47057d0e1ef1e133fd8c5ea65f3"
+    },
+    {
+      "path": "lib/neural-nets/SLPackage.sleela",
+      "sha256": "7f9ef5f0126598739d87beae9dda6a43dcd156b81d9164f6e59138efc103eb52"
     },
     {
       "path": "lib/nordshrift/DynamiteConnector.sleela",
