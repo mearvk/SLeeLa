@@ -1,12 +1,3 @@
-## 0.3.29-dev Development Increment
-
-This increment extends the arbitrary-width unsigned integer foundation for source types U1 through U1048576 with checked multiplication, division/remainder, width-bounded bitwise operations, and logical shifts. New representative tests cover these operations; VM value ABI integration and end-to-end source execution remain in progress.
-
-**SLeeLa — MEARVK LLC — 2026**
-
-# SLeeLa Version
-
-## Current Release Version
 ## 1.3.2-pro Pro Release Increment
 
 Advanced the shared SLeeLa Language/Runtime release identifier for both
@@ -27,6 +18,16 @@ preserved as a record of that earlier release.
 **Edition:** SLeeLa Complete / Native Foundation  
 **Status:** Pro Release  
 **Repository:** mearkv/SLeeLa
+
+## 0.3.29-dev Development Increment
+
+This increment extends the arbitrary-width unsigned integer foundation for source types U1 through U1048576 with checked multiplication, division/remainder, width-bounded bitwise operations, and logical shifts. New representative tests cover these operations; VM value ABI integration and end-to-end source execution remain in progress.
+
+**SLeeLa — MEARVK LLC — 2026**
+
+# SLeeLa Version
+
+## Current Release Version
 
 ## 0.3.30 Development Increment
 
