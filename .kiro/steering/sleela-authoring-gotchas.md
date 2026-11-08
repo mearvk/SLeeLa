@@ -10,11 +10,10 @@ syntax 1.0 – 3.0**. Keep new/edited `.sleela` code within these rules.
 
 ## Compiler choice
 
-- The committed `working-binaries/sleela` is an older Linux prebuilt snapshot:
-  it reports `SLeeLa™ Language/Runtime 0.3.30-dev`, not the current source
-  release **1.3.2-pro**. It supports **syntax 1.0 – 3.0**, but rebuild from
-  source when verifying or using the current release. Use it only as a
-  convenience snapshot:
+- The prebuilt `working-binaries/sleela` is current: it reports
+  `SLeeLa™ Language/Runtime 1.3.2-pro` and supports **syntax 1.0 – 3.0**, so it
+  checks and runs the whole tree (including `#sleela 2.x` and `#sleela 3.0`
+  files). Use it directly:
 
       ./working-binaries/sleela check <file>
       ./working-binaries/sleela run   <file>

@@ -4,13 +4,8 @@ Prebuilt native SLeeLa toolchain binaries, kept here for quick access.
 
 | Binary | What it is | Size |
 |--------|------------|------|
-| `sleela` | `SLeeLa™ Language/Runtime 0.3.30-dev` — an older committed Linux prebuilt snapshot; it is not the current `1.3.2-pro` release binary. **Supported source syntax 1.0 – 3.0**, native C/C++ Core VM. Subcommands include `check`, `run`, `compile -o <out>`, `validate-artifact`, `nordshrift [--emit\|--roundtrip] [--target=…]`, `version`. **There is no separate `sleelac`** — compilation is `sleela compile`. | ~2.6 MB |
+| `sleela` | `SLeeLa™ Language/Runtime 1.3.2-pro` — the authoritative SLeeLa compiler/runner. **Supported source syntax 1.0 – 3.0**, native C/C++ Core VM. Subcommands include `check`, `run`, `compile -o <out>`, `validate-artifact`, `nordshrift [--emit\|--roundtrip] [--target=…]`, `version`. **There is no separate `sleelac`** — compilation is `sleela compile`. | ~2.6 MB |
 | `nordshrift` | `Nordshrift 2.7.1-dev` — the SLeeLa `.sst` transpiler driver (NS-SST-0001 spec 2.2); drives SLeeLa source syntax up to 3.0. Subcommands: `check`, `build`, `objects`, `relevance --target=java\|sleela\|c`, `version`. (The SLeeLa → Nordshrift → back round-trip is `sleela nordshrift`, inside the `sleela` binary.) | ~2.3 MB |
-
-> **Release-source note:** the current source release identifier is
-> `1.3.2-pro`. The committed Linux prebuilt binaries have not been rebuilt
-> for that source change and still report `0.3.30-dev`; rebuild from source
-> before treating a prebuilt executable as the `1.3.2-pro` release.
 
 ## Important caveats
 
@@ -50,14 +45,14 @@ Built in the Kiro sandbox from this repository's `impl/` tree
 (`g++ -std=c++17 -O2`, pthread; `make build/sleela` and `make build/nordshrift`).
 Reported versions:
 
-- `sleela` — `SLeeLa™ Language/Runtime 0.3.30-dev (prebuilt snapshot)` (supported source syntax 1.0 – 3.0)
+- `sleela` — `SLeeLa™ Language/Runtime 1.3.2-pro` (supported source syntax 1.0 – 3.0)
 - `nordshrift` — `Nordshrift 2.7.1-dev` (NS-SST-0001 spec 2.2; drives SLeeLa up to 3.0)
 
 SHA-256 of the committed copies:
 
 ```
-a13240da317ae7d4d1486f9d8611624c0ee64ffa4914dd8a2b7cd6b3bc86d915  sleela
-558ec24ca11f6b20a8f0fdfdc3da574a53e0b251b1be57f1927b33ec800284f2  nordshrift
+947db740aa5fcfd57c21e1eb6c5f7497eae8b52d721767b5e6c2fd980552e8c1  sleela
+ef339ee8ade452b494f55070d27f14612213b0c2f42846053e80f06cd1cd9c2d  nordshrift
 ```
 
 ---

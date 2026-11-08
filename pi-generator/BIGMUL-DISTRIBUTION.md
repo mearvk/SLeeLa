@@ -15,7 +15,7 @@ digit ≈ 1/9 of a limb (a limb holds 9 digits).
 > on the earlier VM generation, whose multiply kernel was schoolbook + Karatsuba
 > and whose single-array cap was `SL_MAX_ARRAY_LEN = 1,048,576` (2²⁰). The newer
 > figures (**v2.0**) were taken on the current runtime
-> (`SLeeLa™ Language/Runtime 0.3.30-dev`), whose kernel adds an **NTT
+> (`SLeeLa™ Language/Runtime 1.3.2-pro`), whose kernel adds an **NTT
 > (number-theoretic transform) path** for large products and whose array cap was
 > raised to `SL_MAX_ARRAY_LEN = 16,777,216` (2²⁴). The headline consequence: the
 > **10,000,000-digit multiply is now reachable as a single `bigmul()` call**,
@@ -49,7 +49,7 @@ digit ≈ 1/9 of a limb (a limb holds 9 digits).
 
 > Kernel: schoolbook + Karatsuba + NTT, single-array cap 2²⁴.
 > Measured with the current prebuilt toolchain
-> (`working-binaries/sleela`, `SLeeLa™ Language/Runtime 0.3.30-dev`), same operand
+> (`working-binaries/sleela`, `SLeeLa™ Language/Runtime 1.3.2-pro`), same operand
 > fill as v1.0. Each figure is the median of three runs; times vary a few percent
 > run to run. The NTT path (`sl_bigmul_ntt`) engages at
 > `SL_NTT_THRESHOLD = 512` limbs (≈ 4,600 digits), so every point from 10,000

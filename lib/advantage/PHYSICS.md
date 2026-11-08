@@ -1,6 +1,7 @@
 artifact;
-preonem: [PREONEM.md](./PREONEM.md)
-standard: legislature-grade; evaluated unto time and space
+
+<!-- preonem: this document is an enacted artifact of the advantage
+     legislature, graded unto time and space. See PREONEM.md. -->
 
 # The Physics of Trust Fields — a structural-economics subject
 

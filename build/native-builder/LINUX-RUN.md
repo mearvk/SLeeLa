@@ -9,7 +9,7 @@ core products and install the main package.
 
 - **OS:** Linux (Amazon Linux 2023), x86_64
 - **Toolchain:** `cc` (GCC 11.5.0), GNU Make 4.3, Python 3.11
-- **Release:** SLeeLa 0.3.30-dev (supported source syntax 1.0 – 2.5)
+- **Release:** SLeeLa 1.3.2-pro (supported source syntax 1.0 – 2.5)
 
 ## Command
 
@@ -35,7 +35,7 @@ slbuild: run it with:  /projects/sandbox/SLeeLa/build/native-builder/bin/linux/s
    |   S L e e L a    Builder / Installer                    |
    |   THE NOW. THE INGREDIENT.                              |
    |                                                         |
-   |   release 0.3.30-dev    syntax 1.0 - 2.5    os Linux    |
+   |   release 1.3.2-pro    syntax 1.0 - 2.5    os Linux    |
    |                                                         |
    +---------------------------------------------------------+
 
@@ -79,7 +79,7 @@ slbuild: run it with:  /projects/sandbox/SLeeLa/build/native-builder/bin/linux/s
 
 ▐ Installed
 ------------------------------------------------------------------------
-  [ok] SLeeLa 0.3.30-dev main package is installed.
+  [ok] SLeeLa 1.3.2-pro main package is installed.
   Binaries: /projects/sandbox/sleela-install/bin  (sleela · sleelvac · nordshrift)
   Try:      /projects/sandbox/sleela-install/bin/sleela version
 
@@ -88,7 +88,7 @@ slbuild: run it with:  /projects/sandbox/SLeeLa/build/native-builder/bin/linux/s
   Be it recorded that the SLeeLa main package was built and installed
   in good order on this Linux host, as attested below.
 
-    Product          SLeeLa 0.3.30-dev (syntax 1.0 - 2.5)
+    Product          SLeeLa 1.3.2-pro (syntax 1.0 - 2.5)
     Host OS          Linux
     Binaries         sleela, sleelvac, nordshrift
     Library          81 packages included · 24 excluded
@@ -108,7 +108,7 @@ The installed runtime reports its version, confirming a working install:
 
 ```text
 $ /projects/sandbox/sleela-install/bin/sleela version
-SLeeLa™ Language/Runtime 0.3.30-dev (supported source syntax 1.0 – 2.5; native C/C++ Core VM)
+SLeeLa™ Language/Runtime 1.3.2-pro (supported source syntax 1.0 – 2.5; native C/C++ Core VM)
 ```
 
 - 3 binaries installed: `sleela`, `sleelvac`, `nordshrift`

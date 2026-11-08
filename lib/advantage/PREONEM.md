@@ -1,33 +1,54 @@
-# PREONEM — documentary and legislative-grade preface
+artifact;
 
-**Artifact identifier:** `SLeeLa/lib/advantage/PREONEM`
-**Scope:** Every document in `lib/advantage/` and its subordinate subjects.
-**Classification:** Documentary standard; legislative-grade drafting aspiration.
+# PREONEM — `lib/advantage`
 
-## Preonem
+> **preonem** *(n.)* — a preambular artifact placed at the head of a document
+> to declare its standing. Here it attests that the documents of the
+> `advantage` package are held as **legislature**: ordered, enacted text,
+> **graded unto time and space** — binding across the moment it is read and the
+> place it is read in, until superseded by a later enactment of the same
+> package.
 
-The documents in this package are presented as structured, reviewable artifacts
-intended to meet a legislature-grade standard of clarity, traceability,
-consistency, and reasoned construction. Their subjects are to be assessed
-**unto time and space**: across relevant temporal periods, spatial settings,
-scales, contexts, and the relationships that connect them.
+## The attestation
 
-“Legislature-grade” describes the intended quality of drafting and review. It
-does **not** declare any document enacted law, confer governmental authority,
-or replace jurisdiction-specific legal review. “Graded unto time and space”
-is a scope and evaluation principle, not a claim that every proposition is
-universally true or physically exhaustive.
+Each document in `lib/advantage/` carries the line `artifact;` as its first
+statement. That line is the **preonem**: a one-word enactment clause that marks
+the file not as loose prose but as a graded artifact of the package's
+legislature.
 
-Each document remains accountable to its evidence, definitions, assumptions,
-limits, version history, and applicable tests. Analogy must be identified as
-analogy; mathematical claims must remain checkable; proposals must remain
-distinguishable from binding rules.
+| Clause | Meaning |
+|--------|---------|
+| **artifact** | The document is an enacted artifact of the `advantage` legislature, not incidental notes. |
+| **legislature** | The package's documents form an ordered, enacted body; later revisions amend earlier ones in sequence (see the revision line in `../LIBRARY.INDEX.md`). |
+| **graded unto time** | The artifact is dated and versioned; its authority holds for its moment and yields to a later-dated enactment. |
+| **graded unto space** | The artifact's authority is scoped to the `advantage` package's jurisdiction within the SLeeLa tree (`metaOrigin` records the wider jurisdictional scale). |
 
-## Artifact marker
+## Grade unto time and space
 
-Documents in this package carry the marker:
+- **Time.** The governing instrument is the package revision in
+  `../LIBRARY.INDEX.md` and each class's `metaDate` / `metaVersion` in its
+  Metadata-Class record. An artifact's grade is its place in that temporal
+  sequence; the newest enactment governs.
+- **Space.** The governing scope is the `advantage` package and its subject
+  subfolders (`math/`, `physics/`, `integration/`, `grading/`, `output/`).
+  Each class's `metaOrigin` (National → International → Galactic) records how
+  far in space its authority is claimed to reach.
 
-`artifact;`
+## How it is applied
 
-The marker identifies the document as a governed package artifact and points
-readers to this preonem for its drafting and evaluation standard.
+Every `.md` document under `lib/advantage/` begins with:
+
+```
+artifact;
+```
+
+on its own first line, before the title. This PREONEM is the canonical
+definition that line refers to. The `.sleela` source units are not amended by
+the preonem — their enactment clauses are their own `material;` / `#sleela`
+headers and their Metadata-Class records; the preonem governs the package's
+**documents**.
+
+---
+
+**SLeeLa — MEARVK LLC — 2026.** Legislature of the `advantage` package; graded
+unto time and space.
