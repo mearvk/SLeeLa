@@ -999,15 +999,15 @@
     },
     {
       "path": "lib/advantage/output/SLAdvantageEmitter.sleela",
-      "sha256": "e1ada220f4ed5d6b1b527d96e4240edeade708028c44cef9584d62dd6e9d9be6"
+      "sha256": "5a4325ecfc229c5ea48fbf41cf9935889c2e41d1054d4ada406fd0b37945290c"
     },
     {
       "path": "lib/advantage/output/SLAdvantageSink.sleela",
-      "sha256": "18e53fbfe8f8bd6cd01b400b33eaad7d1ba9876624b5ee0a5d8ac2e5d36e5cfd"
+      "sha256": "3965d510a7fe2ac0698b8e8eb70bc9697e09629d58eec4d4d909704dea0d65b8"
     },
     {
       "path": "lib/advantage/output/output-demo.sleela",
-      "sha256": "fb4bad156211219f58baec02d3ffb8761a012aa1cca9ffef86b74cd7741d3f6c"
+      "sha256": "79502fa2d33664ee0b245d1f2a3af69ade09496538564dcc169f07f9ce0628a6"
     },
     {
       "path": "lib/advantage/physics/SLAnnouncementContact.sleela",

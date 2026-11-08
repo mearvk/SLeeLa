@@ -68,33 +68,63 @@ class SLAdvantageEmitter {
 
   SLAdvantageSink getSink() { return sink; }
 
-  < Emit a raw line to the sink's target. >
-  void line(String text) {
-    sink.emit(text);
+  < Emit a raw line to the sink's target, with its byte length for the socket >
+  < wire account. >
+  void line(String text, int textChars) {
+    sink.emit(text, textChars);
   }
 
   << Emit a labelled status line. For the COMMONRAILS target this is rendered
      by PrintRail.stateLineText, which -- like all of CommonRails -- needs
      explicit character counts because Core has no string-length primitive;
      the caller passes labelChars and messageChars. For every other target the
-     counts are ignored and the plain "[LABEL] message" is routed. >>
+     plain "[LABEL] message" is routed. The byte count handed to the sink is
+     the plain "[label] message" length (label + 2 brackets + 1 space + msg). >>
   void state(String label, int labelChars, String message, int messageChars) {
+    int plainBytes = labelChars + 3 + messageChars;
     if (sink.getTarget() == 1) {
       String rendered = rail.stateLineText(label, labelChars, message, messageChars);
-      sink.emit(rendered);
+      sink.emit(rendered, plainBytes);
     } else {
-      sink.emit("[" + label + "] " + message);
+      sink.emit("[" + label + "] " + message, plainBytes);
     }
   }
 
   < Convenience state() when CommonRails formatting is not needed: no counts. >
   void status(String label, String message) {
-    sink.emit("[" + label + "] " + message);
+    sink.emit("[" + label + "] " + message, 0);
   }
 
   < Emit "subject: body". >
   void report(String subject, String body) {
-    sink.emit(subject + ": " + body);
+    sink.emit(subject + ": " + body, 0);
+  }
+
+  << A field/value pair rendered as a single CommonRails table row for the
+     COMMONRAILS target (a bordered "| field | value |" cell), or plain
+     "field: value" otherwise. Column widths w0/w1 size the bordered cells. >>
+  void pair(String field, int fieldChars, String value, int valueChars,
+            int w0, int w1) {
+    int plainBytes = fieldChars + 2 + valueChars;
+    if (sink.getTarget() == 1) {
+      String row = rail.tableRowText(field, fieldChars, w0, value, valueChars, w1, true);
+      sink.emit(row, plainBytes);
+    } else {
+      sink.emit(field + ": " + value, plainBytes);
+    }
+  }
+
+  << A producer "component" line for the COMMONRAILS target -- the professional
+     component surface (object id, date sequence, name, message) -- or a plain
+     "name #oid: message" otherwise. >>
+  void component(String name, int nameChars, int oid, int dateSeq,
+                 String message, int messageChars) {
+    if (sink.getTarget() == 1) {
+      String comp = rail.componentLine(name, nameChars, oid, dateSeq, message);
+      sink.emit(comp, nameChars + messageChars + 8);
+    } else {
+      sink.emit(name + " #" + oid + ": " + message, nameChars + messageChars + 4);
+    }
   }
 
   < Emit a module rating line, e.g. "GRADE integration -> S10". Char counts >

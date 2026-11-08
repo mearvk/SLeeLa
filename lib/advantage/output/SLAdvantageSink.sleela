@@ -75,12 +75,19 @@ class SLAdvantageSink {
   < capture of everything emitted (framed), joined with newlines >
   String capture;
   int lines;
+  < SOCKET connector lifecycle: is the connector open, and how many content >
+  < bytes have been handed to it (the wire-faithful byte account CommonRails >
+  < also insists on, since Core has no string-length primitive). >
+  boolean connectorOpen;
+  int bytesWritten;
 
   void configure(int tgt) {
     target = tgt;
     endpoint = "none";
     capture = "";
     lines = 0;
+    connectorOpen = false;
+    bytesWritten = 0;
   }
 
   < For the SOCKET target: name the connector endpoint (modelled, not dialed). >
@@ -89,9 +96,28 @@ class SLAdvantageSink {
     endpoint = ep;
   }
 
+  << Open the connector for the SOCKET target. Under `run` there is no live
+     socket, so this marks the connector open and resets the byte account; a
+     native host maps this to slnet_connect(endpoint). Idempotent. Returns
+     true if the connector is open afterward (always true for a valid
+     endpoint, false if no endpoint was bound). >>
+  boolean openConnector() {
+    if (endpoint == "none") { return false; }
+    connectorOpen = true;
+    return true;
+  }
+
+  < Close the connector (native: slnet_close). Idempotent. >
+  void closeConnector() {
+    connectorOpen = false;
+  }
+
+  boolean isOpen() { return connectorOpen; }
+
   int getTarget() { return target; }
   String getEndpoint() { return endpoint; }
   int frameCount() { return lines; }
+  int getBytesWritten() { return bytesWritten; }
 
   < Append to the capture with a separating newline between frames. >
   void appendFrame(String framed) {
@@ -100,8 +126,23 @@ class SLAdvantageSink {
     lines = lines + 1;
   }
 
-  < Emit one already-rendered line to the configured target. >
-  void emit(String line) {
+  << The wire-write bridge for the SOCKET target. `framed` is the line already
+     prefixed with the endpoint; `byteCount` is its length in bytes, supplied
+     by the caller (Core has no string-length). Under `run` this buffers the
+     frame and accrues the byte account; the native host replaces the body
+     with slnet_write(handle, framed, byteCount). Returns the bytes accepted
+     this call (0 if the connector is not open). >>
+  int wireWrite(String framed, int byteCount) {
+    if (connectorOpen == false) { return 0; }
+    appendFrame(framed);
+    bytesWritten = bytesWritten + byteCount;
+    return byteCount;
+  }
+
+  << Emit one already-rendered line to the configured target. `byteCount` is
+     the line's byte length (used only by the SOCKET target's wire account;
+     ignored by the others). >>
+  void emit(String line, int byteCount) {
     if (target == 0) {
       print(line);
       appendFrame(line);
@@ -109,13 +150,21 @@ class SLAdvantageSink {
       print(line);
       appendFrame(line);
     } else if (target == 2) {
-      < Frame the line for the wire: prefix the endpoint so the capture shows >
-      < where it would be sent. A native host drains this to slnet_write. >
+      < Frame the line for the wire and hand it to the connector. Auto-open on >
+      < first write so simple callers need not open explicitly. The endpoint >
+      < prefix adds endpoint length + 3 ("[" "]" " ") to the byte account. >
+      if (connectorOpen == false) { openConnector(); }
       String framed = "[" + endpoint + "] " + line;
-      appendFrame(framed);
+      wireWrite(framed, byteCount + 3);
     } else {
       appendFrame(line);
     }
+  }
+
+  < Backward-compatible emit without a byte count (socket account uses 0 for >
+  < the body; the endpoint prefix is still counted). >
+  void emitLine(String line) {
+    emit(line, 0);
   }
 
   < The most recent framed line (empty if nothing emitted). >
@@ -124,7 +173,9 @@ class SLAdvantageSink {
   }
 
   < Drain and clear the capture, returning everything buffered. A native >
-  < socket producer calls this and writes the result to the connector. >
+  < socket producer calls this and writes the result to the connector. The >
+  < byte account and open state are preserved across a drain (the connector >
+  < stays open until closeConnector). >
   String drain() {
     String out = capture;
     capture = "";
@@ -141,6 +192,7 @@ class SLAdvantageSink {
 
   String describe() {
     return "sink target=" + targetName() + " endpoint=" + endpoint
-         + " frames=" + lines;
+         + " open=" + connectorOpen + " frames=" + lines
+         + " bytes=" + bytesWritten;
   }
 }

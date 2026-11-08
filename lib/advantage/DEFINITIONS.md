@@ -412,8 +412,9 @@ toolchain's CommonRails printing surface.
 | **Endpoint** | For the socket target, the connector identity (e.g. `host:port`) prefixed onto each framed line. | `SLAdvantageSink.endpoint` / `bindEndpoint` |
 | **Frame** | One emitted line as stored in the capture; the socket target prefixes it with the endpoint. | `SLAdvantageSink.emit` / `appendFrame` |
 | **Capture / drain** | The buffered frames; `lastFrame()` reads them, `drain()` returns and clears them (a native host forwards the drained text with `slnet_write`). | `SLAdvantageSink.drain` / `lastFrame` |
-| **Emitter** | The module-facing API: `line`, `state`, `status`, `report`, `grade`. Chooses *formatting* (CommonRails vs plain); the sink chooses destination. | `SLAdvantageEmitter` |
-| **CommonRails formatting** | For the commonrails target, `state(...)` is rendered by the toolchain's `PrintRail.stateLineText` (naming `PrintRail` auto-resolves `lib/common-rails`). Explicit character counts are passed because Core has no string-length primitive. | `SLAdvantageEmitter.state` |
+| **Emitter** | The module-facing API: `line`, `state`, `status`, `report`, `pair`, `component`, `grade`. Chooses *formatting* (CommonRails vs plain); the sink chooses destination. | `SLAdvantageEmitter` |
+| **CommonRails formatting** | For the commonrails target the emitter renders through the toolchain's `PrintRail`: `state` → `stateLineText`, `pair` → a bordered `tableRowText` cell, `component` → the professional `componentLine`. Naming `PrintRail` auto-resolves `lib/common-rails`; explicit character counts are passed because Core has no string-length primitive. | `SLAdvantageEmitter.state` / `pair` / `component` |
+| **Connector lifecycle** | The socket target is a real connector: `bindEndpoint` names it, `openConnector` opens it (native `slnet_connect`), `wireWrite` hands a framed line + byte count to it (native `slnet_write`), `closeConnector` closes it (native `slnet_close`); `getBytesWritten` is the running wire byte account. | `SLAdvantageSink.openConnector` / `wireWrite` / `closeConnector` |
 | **emitThrough** | A self-report method on the top-level models (`SLAdvantageDeveloperModel`, `SLVerticalIntegration`, `SLGradeBook`): hands the model's `describe()` to an emitter. | `*.emitThrough(emitter)` |
 
 ### 10.2 The four targets
@@ -422,7 +423,7 @@ toolchain's CommonRails printing surface.
 |--------|-----------|
 | `terminal` (0) | `print()` to stdout and record a copy |
 | `commonrails` (1) | format via `PrintRail`, `print()` to stdout, record a copy |
-| `socket` (2) | frame the line with the endpoint prefix and buffer it (no live dial under `run`); `drain()` yields it for a native `slnet_write` |
+| `socket` (2) | real connector lifecycle: `openConnector` → `wireWrite` (framed line + byte count, accrued in `getBytesWritten`) → `closeConnector`; buffered under `run` (no live dial), `drain()` yields it for a native `slnet_write` |
 | `silent` (3) | record only, no stdout |
 
 ### 10.3 Worked example (validated in `output-demo`)

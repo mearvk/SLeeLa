@@ -61,27 +61,34 @@ class OutputDemo {
     te.status("CIRCUIT", "grading modules");
     te.grade("integration", 11, "S10", 3);
 
-    < 2. COMMONRAILS target (formatted via PrintRail) >
+    < 2. COMMONRAILS target (formatted via PrintRail): state, pair, component >
     print("-- commonrails --");
     SLAdvantageSink cr = new SLAdvantageSink();
     cr.configure(1);
     SLAdvantageEmitter ce = new SLAdvantageEmitter();
     ce.configure(cr);
     ce.state("WORKING", 7, "trade Q* found", 14);
+    ce.pair("sophistication", 14, "27", 2, 16, 8);
+    ce.component("grader", 6, 10552, 3, "circuit ready", 13);
 
-    < 3. SOCKET / connector target (framed + buffered, not printed) >
-    print("-- socket (buffered) --");
+    < 3. SOCKET / connector target: real lifecycle (open -> write -> close) >
+    print("-- socket (connector lifecycle) --");
     SLAdvantageSink sock = new SLAdvantageSink();
     sock.configure(2);
     sock.bindEndpoint("ledger.example:9077");
+    boolean opened = sock.openConnector();
     SLAdvantageEmitter se = new SLAdvantageEmitter();
     se.configure(sock);
     se.status("CIRCUIT", "winning=5 losing=1");
     se.grade("physics", 7, "C7", 2);
+    boolean openDuring = sock.isOpen();
+    int bytes = sock.getBytesWritten();
     print("  sink: " + sock.describe());
     String drained = sock.drain();
     print("  drained frames:");
     print(drained);
+    sock.closeConnector();
+    boolean closedAfter = sock.isOpen();
 
     < 4. SILENT target (capture only) >
     SLAdvantageSink silent = new SLAdvantageSink();
@@ -113,24 +120,36 @@ class OutputDemo {
       + "\n" + "[ledger.example:9077] [GRADE] physics -> C7";
 
     boolean okTermFrames = (term.frameCount() == 2);
-    boolean okCrFrames = (cr.frameCount() == 1);
+    < commonrails now emits three lines: state + pair + component >
+    boolean okCrFrames = (cr.frameCount() == 3);
     boolean okSockDrainExact = (drained == expectedDrain);
     boolean okSockDrained = (sock.frameCount() == 0);
     boolean okSilent = (silent.getTarget() == 3) && (quiet == "sophistication: 27");
     boolean okEndpoint = (sock.getEndpoint() == "ledger.example:9077");
     boolean okModuleEmit = (modSink.frameCount() == 1);
+    < connector lifecycle: opened, stayed open during writes, byte account, >
+    < closed after. bytes = 3 (status prefix) + 24 (grade line + prefix) = 27. >
+    boolean okOpened = opened;
+    boolean okOpenDuring = openDuring;
+    boolean okBytes = (bytes == 27);
+    boolean okClosed = (closedAfter == false);
 
     print("  terminal emitted 2    ? " + okTermFrames);
-    print("  commonrails emitted 1 ? " + okCrFrames);
+    print("  commonrails emitted 3 ? " + okCrFrames);
     print("  socket drain exact    ? " + okSockDrainExact);
     print("  socket drained to 0   ? " + okSockDrained);
     print("  silent captured       ? " + okSilent);
     print("  endpoint recorded     ? " + okEndpoint);
     print("  module self-reported  ? " + okModuleEmit);
+    print("  connector opened      ? " + okOpened);
+    print("  open during writes    ? " + okOpenDuring);
+    print("  byte account == 27    ? " + okBytes);
+    print("  connector closed      ? " + okClosed);
 
     if (okTermFrames) { if (okCrFrames) { if (okSockDrainExact) {
     if (okSockDrained) { if (okSilent) { if (okEndpoint) { if (okModuleEmit) {
+    if (okOpened) { if (okOpenDuring) { if (okBytes) { if (okClosed) {
       print("ALL CHECKS PASSED");
-    } } } } } } }
+    } } } } } } } } } } }
   }
 }
