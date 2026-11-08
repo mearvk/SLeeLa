@@ -130,7 +130,7 @@ static fs::path installRootFromExecutable(){
 // SLeeLa Language/Runtime, independent of argv[0], launchers, symlinks, or
 // aliases. Both banners carry the same release number.
 // The shared release number for both tools.
-static const char* kReleaseVersion="0.3.30-dev";
+static const char* kReleaseVersion="1.3.2-pro";
 // Both banners derive the supported source-syntax range from the single source
 // of truth in version.h (minSupportedSyntax()/maxSupportedSyntax()), so the
 // reported range always matches what the toolchain actually drives.
