@@ -230,6 +230,20 @@ sl_reg_status sl_reg_seed_defaults(sl_registry *r){
     sl_reg_set_bool(r,"Features","vmSelect",1);
     sl_reg_set_bool(r,"Features","premiumVms",1);
     sl_reg_key_create(r,"Artifacts");
+    /* Math: precision-norm defaults + the pi catalog locators. Mirrors the
+     * SLeeLa model in lib/registry/SLRegistry.sleela seedDefaults(). The large
+     * pi value is referenced by LOCATOR only (per REGISTRY-3.0-MODIUM.md the
+     * registry never stores the bytes); Modium resolves the path to the
+     * installed file and loads it at subsystem startup. */
+    sl_reg_key_create(r,"Math");
+    sl_reg_set_int(r,"Math","irrationalDigitCarry",2048);
+    sl_reg_set_int(r,"Math","repeatingDigitCarry",58);
+    sl_reg_set_int(r,"Math","financeCarry",1023);
+    sl_reg_set_int(r,"Math","piReferenceDigits",2048);
+    sl_reg_set_string(r,"Math","piReference",
+        "3.141592653589793238462643383279502884197169399375105820974944");
+    sl_reg_set_int(r,"Math","piReferenceLargeDigits",100000000);
+    sl_reg_set_string(r,"Math","piReferenceLargePath","pi-generator/pi.100000000.digits");
     return SL_REG_OK;
 }
 

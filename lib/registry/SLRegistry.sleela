@@ -139,6 +139,16 @@ class SLRegistry {
     piRef.setString("piReference",
       "3.141592653589793238462643383279502884197169399375105820974944");
     mathKey.add(piRef);
+    << The large pi catalog reference: a locator (not the bytes) to the
+       100,000,000-fractional-digit value in pi-generator/pi.100000000.digits.
+       Per REGISTRY-3.0-MODIUM.md the registry stores only record identity and
+       locator metadata; Modium resolves this path to the installed file on the
+       host and loads it at subsystem startup (see sleela registry / modium).
+       Verified genuine pi in pi-generator/VERIFIED.md. >>
+    SLRegistryValue piBigDigits = new SLRegistryValue(); piBigDigits.setInt("piReferenceLargeDigits", 100000000); mathKey.add(piBigDigits);
+    SLRegistryValue piBigPath = new SLRegistryValue();
+    piBigPath.setString("piReferenceLargePath", "pi-generator/pi.100000000.digits");
+    mathKey.add(piBigPath);
     addKey(mathKey);
   }
 

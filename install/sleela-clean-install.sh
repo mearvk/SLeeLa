@@ -478,6 +478,21 @@ install_main() {
     ok "top-level programs staged: ${#TOPLEVEL_INCLUDE[@]}"
   fi
 
+  # The 100,000,000-digit pi catalog constant is part of the Standard & Beautiful
+  # install regardless of top-level-program selection: Modium/Registry load it at
+  # subsystem startup from <install-root>/pi/pi.100000000.digits. Staged here,
+  # before the manifest regenerates, so it is covered by integrity verification.
+  step "staging the 100,000,000-digit pi catalog constant"
+  mkdir -p "$STAGE_DIR/pi"
+  if [ -f "$REPO_ROOT/pi-generator/pi.100000000.digits" ]; then
+    cp -a "$REPO_ROOT/pi-generator/pi.100000000.digits" "$STAGE_DIR/pi/pi.100000000.digits"
+    [ -f "$REPO_ROOT/pi-generator/VERIFIED.md" ] && cp -a "$REPO_ROOT/pi-generator/VERIFIED.md" "$STAGE_DIR/pi/VERIFIED.md"
+    item "pi/pi.100000000.digits (verified genuine pi; see pi/VERIFIED.md)"
+    ok "pi catalog constant staged"
+  else
+    warn "pi-generator/pi.100000000.digits not found in source; large pi reference deferred"
+  fi
+
   step "staging the integrity manifest and verifier"
   cp -a "$REPO_ROOT/tools/verify-before-execution.py" "$STAGE_DIR/tools/"
   [ -f "$REPO_ROOT/SHEET.sheet" ] && cp -a "$REPO_ROOT/SHEET.sheet" "$STAGE_DIR/"

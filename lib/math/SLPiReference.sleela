@@ -81,6 +81,16 @@ class SLPiReference {
   < The number of fractional digits carried inline (the irrational-carry norm). >
   static final int PI_DIGITS = 2048;
 
+  << The deeper reference set, resolved by handle rather than carried inline:
+     the 100,000,000-fractional-digit value in pi-generator/pi.100000000.digits
+     (verified genuine pi in pi-generator/VERIFIED.md). This class carries only
+     the LOCATOR and the digit count -- the bytes live on disk and are loaded by
+     the Modium/Registry subsystem at startup (sleela registry / sleela modium),
+     consistent with REGISTRY-3.0-MODIUM.md (registry stores locator metadata,
+     Modium resolves it to a host file). >>
+  static final String PI_LARGE_PATH = "pi-generator/pi.100000000.digits";
+  static final int PI_LARGE_DIGITS = 100000000;
+
   < The sum of the fractional decimal digits -- a stable integrity checksum. >
   static final int PI_DIGIT_CHECKSUM = 9338;
 
@@ -89,6 +99,11 @@ class SLPiReference {
   int checksum() { return PI_DIGIT_CHECKSUM; }
   < The published head ("3." + first 60 fractional digits), via a method. >
   String head() { return PI_HEAD; }
+
+  < The handle (locator path) to the 100,000,000-digit deeper reference set. >
+  String largePath() { return PI_LARGE_PATH; }
+  < The fractional-digit count of the deeper reference set resolved by handle. >
+  int largeDigits() { return PI_LARGE_DIGITS; }
 
   << Self-verify pi using only string equality and concatenation:
        1. the head and its independent echo agree (no tamper);

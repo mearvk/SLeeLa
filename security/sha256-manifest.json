@@ -511,7 +511,7 @@
     },
     {
       "path": "impl/frontend/common_rails_banner.hpp",
-      "sha256": "1ee2300661e12befff46b5df195e93acfa7c224cb11eddbb45140c23c8f0d545"
+      "sha256": "83aaaa7595471b0e16af18e044a0dd0d8b7da3d19d8b38f26d09027ae835962a"
     },
     {
       "path": "impl/frontend/compiler.cpp",
@@ -531,7 +531,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "3883973174f7e6c74f90b52d5b4f7231442d966c47fc3d2cb8a93404a38520a8"
+      "sha256": "7db9ca5adf5a0f7b76def413ca828eded704adcedf5331fc2199581d86183c4d"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -45331,7 +45331,7 @@
     },
     {
       "path": "lib/math/SLPiReference.sleela",
-      "sha256": "a5f726849e0eaa162f0152028afe45de12e8c88becd388ee4bbcfca2a3d94813"
+      "sha256": "5c7887a5fe0320a8a6b862f5289c7e5d5bdf5d4ac4cfcdfe85b7da9dccf71e37"
     },
     {
       "path": "lib/math/SLPlane.sleela",
@@ -47483,7 +47483,7 @@
     },
     {
       "path": "lib/registry/SLRegistry.sleela",
-      "sha256": "fb4a6022dd57b03a963c69aa7fc0bfb738de58897337599e20d2c8cfc3c76b5a"
+      "sha256": "4dc1dc010b0667dbcc85fbb68d8fce3ae263b3041aeea12dc3e25f3af0a0072e"
     },
     {
       "path": "lib/registry/SLRegistryIdentity.sleela",

@@ -1025,7 +1025,80 @@ static std::string registryStorePath(){
     if(env&&*env) return std::string(env);
     return "sleela.sleelareg";
 }
+
+/* ---- 100-million-digit pi catalog constant -------------------------------
+ * The Modium/Registry startup loads the large pi reference whose locator is the
+ * registry Math-key default `piReferenceLargePath` (seeded in
+ * lib/registry/SLRegistry.sleela and registry/sleela_registry.c). The registry
+ * stores only the locator (per REGISTRY-3.0-MODIUM.md: Registry holds record
+ * identity + locator metadata, never the bytes); Modium resolves it to the
+ * actual file on this host and this helper performs the one-time load.
+ *
+ * Resolution is host-relative and fail-SOFT: it searches a short list of
+ * conventional locations (the repo-relative path, the installed data dir, and
+ * an upward walk like the modium scanner), and if the file is absent it simply
+ * reports "deferred" and returns 0 digits -- a missing large reference never
+ * blocks the registry/modium command. On success it returns the loaded
+ * fractional-digit count. */
+static const char* kPiLargeRelPath = "pi-generator/pi.100000000.digits";
+static const long long kPiLargeExpectedDigits = 100000000LL;
+static std::string resolvePiLargePath(){
+    namespace fsx=std::filesystem;
+    /* 1) installed data dir, if we were told where we live */
+    if(const char* home=std::getenv("SLEELA_HOME")){ fsx::path p=fsx::path(home)/"pi"/"pi.100000000.digits"; if(fsx::exists(p)) return p.string(); }
+    /* 2) common installed data roots (mirrors do-install's $(DATA_DIR)/pi) */
+    const char* roots[]={"/usr/local/share/sleela/pi/pi.100000000.digits",
+                         nullptr};
+    for(int i=0;roots[i];++i){ if(fsx::exists(roots[i])) return std::string(roots[i]); }
+    if(const char* h=std::getenv("HOME")){
+        fsx::path u=fsx::path(h)/".local"/"share"/"sleela"/"pi"/"pi.100000000.digits";
+        if(fsx::exists(u)) return u.string();
+    }
+    /* 3) repo-relative: upward walk from CWD (like modiumScanOne) */
+    fsx::path base=fsx::current_path();
+    for(int up=0;up<8;++up){ fsx::path cand=base/kPiLargeRelPath; if(fsx::exists(cand)) return cand.string(); if(base.has_parent_path()) base=base.parent_path(); else break; }
+    return std::string();
+}
+/* Load + lightly validate the large pi file; returns fractional-digit count
+ * (0 if absent/invalid). Validation is cheap and streaming: confirm it begins
+ * "3." and count decimal digits -- we do NOT hold the whole 100MB in a single
+ * std::string or hash it here (that is VERIFIED.md's job, run out-of-band). */
+static long long loadPiLargeConstant(const std::string& path){
+    if(path.empty()) return 0;
+    std::ifstream in(path,std::ios::binary);
+    if(!in) return 0;
+    char head[2]={0,0}; in.read(head,2);
+    if(in.gcount()<2 || head[0]!='3' || head[1]!='.') return 0;  // not a decimal pi value
+    /* The 2-byte head "3." is already consumed above; count the FRACTIONAL
+     * digits that follow (the part the digit count refers to). The leading '3'
+     * is deliberately not re-counted here. */
+    long long frac=0; char buf[1<<16];
+    while(in){ in.read(buf,sizeof buf); std::streamsize g=in.gcount();
+        for(std::streamsize i=0;i<g;++i){ if(buf[i]>='0'&&buf[i]<='9') ++frac; } }
+    return frac;  /* fractional-digit count (leading '3' excluded) */
+}
+/* Print the transient red "Loading <Subsystem>(TM)" banner (Option B: subsystem
+ * startup only), load the large pi catalog constant, and report the outcome on
+ * one calm line. TTY-gated throughout via the banner helper, so piped/test
+ * output is unaffected. `subsystem` is "Modium" or "Registry". */
+static void subsystemStartup(const char* subsystem){
+    sleela::rails::transientLoading(std::cout, 1, subsystem);   // red flash, then vanishes
+    std::string path=resolvePiLargePath();
+    long long frac=loadPiLargeConstant(path);                  // fractional-digit count
+    if(!sleela::rails::brandColorEnabled(1)) return;            // off-terminal: stay silent
+    if(frac>0){
+        std::cout<<"\033[31m"<<subsystem<<"\u2122"<<"\033[0m"
+                 <<" catalog pi: loaded "<<frac<<" fractional digits";
+        if(frac!=kPiLargeExpectedDigits) std::cout<<" (expected "<<kPiLargeExpectedDigits<<")";
+        std::cout<<"\n";
+    } else {
+        std::cout<<"\033[31m"<<subsystem<<"\u2122"<<"\033[0m"
+                 <<" catalog pi: deferred (large reference not installed)\n";
+    }
+}
+
 static int registryCmd(int argc,char**argv){
+    subsystemStartup("Registry");   // transient red "Loading Registry(TM)" + large-pi load
     std::string store=registryStorePath();
     sl_registry* r=sl_reg_create();
     if(!r){std::cerr<<"sleela registry: out of memory\n";return 1;}
@@ -1467,6 +1540,7 @@ static int modiumStoreCmd(int argc,char** argv){
 }
 
 static int modiumCmd(int argc,char**argv){
+    subsystemStartup("Modium");   // transient red "Loading Modium(TM)" + large-pi load
     std::string sub=(argc>=3)?argv[2]:"status";
     if(sub=="store") return modiumStoreCmd(argc,argv);
     bool exact=false,sealMode=false; for(int i=2;i<argc;++i){std::string a=argv[i]; if(a=="--exact")exact=true; else if(a=="--seal")sealMode=true;}

@@ -34,6 +34,12 @@
 #  include <unistd.h>
 #  define SLEELA_ISATTY(fd) isatty(fd)
 #endif
+// Portable short sleep for the transient "Loading ..." hold (header-only, no
+// extra link deps): std::this_thread::sleep_for is fine for a one-shot banner.
+#include <chrono>
+#include <thread>
+#define SLEELA_BANNER_SLEEP_MS(ms) \
+    std::this_thread::sleep_for(std::chrono::milliseconds(ms))
 
 namespace sleela { namespace rails {
 
@@ -77,6 +83,44 @@ inline void brandNordshrift(std::ostream& o, int fd) { brand(o, fd, "Nordshrift"
 // in the same customary red + classic as Sleela and Sleelvac. TTY-gated, so it
 // decorates interactive output only and never pollutes machine-parsed logs.
 inline void brandAdvantage(std::ostream& o, int fd)  { brand(o, fd, "Advantage"); }
+
+// ---------------------------------------------------------------------------
+// Transient subsystem "Loading ..." banner (Beautiful Design, Option B).
+//
+// Prints a short red "Loading <Subsystem>(TM)" line while a subsystem warms up
+// (the Registry seeding its defaults, Modium resolving its catalog), then makes
+// that line DISAPPEAR before the subsystem's normal output begins -- so the
+// user sees a brief, calm "loading" flash that leaves no residue above the real
+// output. This is used ONLY by the dedicated subsystem entry points
+// (`sleela registry`, `sleela modium`) and the installer first-run, NOT by
+// every `sleela run` of a user program.
+//
+// Mechanics mirror the SleelaTerminal transient banner (sleela-terminal/slsh.cpp):
+//   \r        -- return to column 1
+//   \033[2K   -- erase the entire current line
+// The line is drawn, briefly held, then erased in place with "\r\033[2K", so
+// the cursor ends exactly where the banner began and the following output
+// overwrites nothing.
+//
+// STRICT TTY GATE + NO-OP OFF-TERMINAL: like brand(), the whole effect is
+// emitted only to an interactive terminal (brandColorEnabled). Under a pipe, a
+// redirect, or test capture nothing is written -- so machine-parsed registry /
+// modium output stays byte-for-byte identical and no escape codes leak.
+//
+// `holdMillis` is how long the line is visible before it is erased; a short
+// hold (default ~450ms) reads as "loaded" without stalling the command.
+inline void transientLoading(std::ostream& o, int streamFd,
+                             const std::string& subsystem,
+                             unsigned holdMillis = 450) {
+    if (!brandColorEnabled(streamFd)) return;   // off-terminal: emit nothing at all
+    // draw: red "Loading <Subsystem>(TM)" with no trailing newline (same line).
+    o << "\033[31m" << "Loading " << subsystem << "\u2122" << "\033[0m" << std::flush;
+    // hold briefly so the flash is perceptible.
+    SLEELA_BANNER_SLEEP_MS(holdMillis);
+    // erase in place: carriage return + clear the whole line, leaving the cursor
+    // at column 1 of the now-blank line so normal output begins cleanly.
+    o << "\r\033[2K" << std::flush;
+}
 
 // A professional component line for a tool/unit currently being worked on:
 //   -- : [Object ID: 0000000001] [Date: <date>] [Current: @<name>] . <msg> .

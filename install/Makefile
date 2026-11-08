@@ -409,6 +409,14 @@ do-install:
 	cp -a "$(REPO_ROOT)/docs/." "$(DATA_DIR)/docs/"
 	if [ -d "$(REPO_ROOT)/examples" ]; then cp -a "$(REPO_ROOT)/examples/." "$(DATA_DIR)/examples/"; fi
 	install -m 644 "$(REPO_ROOT)/README.md" "$(DATA_DIR)/README.md"
+	@echo "Installing the 100,000,000-digit pi catalog constant (Modium/Registry startup load)"
+	install -d "$(DATA_DIR)/pi"
+	if [ -f "$(REPO_ROOT)/pi-generator/pi.100000000.digits" ]; then \
+		install -m 644 "$(REPO_ROOT)/pi-generator/pi.100000000.digits" "$(DATA_DIR)/pi/pi.100000000.digits"; \
+		if [ -f "$(REPO_ROOT)/pi-generator/VERIFIED.md" ]; then install -m 644 "$(REPO_ROOT)/pi-generator/VERIFIED.md" "$(DATA_DIR)/pi/VERIFIED.md"; fi; \
+	else \
+		echo "  (pi.100000000.digits not present in source tree; large pi reference deferred)"; \
+	fi
 	if [ ! -e "$(CONFIG_DIR)/startup.conf" ]; then install -m 644 "$(REPO_ROOT)/install/startup.conf.example" "$(CONFIG_DIR)/startup.conf"; fi
 	printf '%s\\n' "$(PREFIX)" > "$(RUNTIME_DIR)/install-prefix"
 	printf '%s\\n' "$(BINDIR)/sleela" "$(BINDIR)/sleelvac" "$(BINDIR)/nordshrift" > "$(RUNTIME_DIR)/installed-binaries"
