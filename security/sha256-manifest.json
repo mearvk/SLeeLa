@@ -930,8 +930,48 @@
       "sha256": "b5667c4467f79a2a49540c70cf6a28415d1b594b6ef16ee00d5dd6ebc5fa7e5b"
     },
     {
+      "path": "lib/advantage/examples/primers/grading-primer.sleela",
+      "sha256": "8d30cb78446180a3195dea580c56c2f1937d2de3f2f6919759bf32fd24d72364"
+    },
+    {
+      "path": "lib/advantage/examples/primers/integration-primer.sleela",
+      "sha256": "a2e2351ec0ec595fea4fd645d86b1e0f884fbcf255d5d8c9659c21e82c997c23"
+    },
+    {
+      "path": "lib/advantage/examples/primers/math-primer.sleela",
+      "sha256": "9360d6e26395cf4cc698adeb335e23afd86d27b3da435a0d7dd7696efdc7d9d6"
+    },
+    {
+      "path": "lib/advantage/examples/primers/onion-primer.sleela",
+      "sha256": "de6660554d73488c138afb874e6a60e3d34aa8b960867a5c125c845492b8cfde"
+    },
+    {
+      "path": "lib/advantage/examples/primers/output-primer.sleela",
+      "sha256": "e4717929eca71972ac6fbf418b4f2c7ae703b4ad3bbb69a0af0b9a767458b646"
+    },
+    {
+      "path": "lib/advantage/examples/primers/physics-primer.sleela",
+      "sha256": "8c0810afbc438c1492742b1327f9944ff9ecb2d55f1859019e02713dc4458559"
+    },
+    {
+      "path": "lib/advantage/examples/professionals/consumer-example.sleela",
+      "sha256": "035393807c84c0ea8cd61b54b3df8563eb054ee6d452095eb72056b1ef665fdd"
+    },
+    {
+      "path": "lib/advantage/examples/professionals/healer-example.sleela",
+      "sha256": "4be0aea1f799fd929605f19f21a9d3caad1196d2059268e6ecca1fc8e1b4d99c"
+    },
+    {
+      "path": "lib/advantage/examples/professionals/helper-example.sleela",
+      "sha256": "66f244eae6fa090bd7fee5880a2c3682a6bd8019b2a2ed4ab1f47e3ccff2d780"
+    },
+    {
       "path": "lib/advantage/examples/professionals/professionals-demo.sleela",
       "sha256": "e87fd7da8efdb6fd1ce5c4df065f0fb6217facda5e56ee2ba84b3430e26bfab1"
+    },
+    {
+      "path": "lib/advantage/examples/professionals/trader-example.sleela",
+      "sha256": "4bf4d55acfda3df9bc959a0bb061adb226862eb48e2f2c47ac990ab194cf966e"
     },
     {
       "path": "lib/advantage/grading/SLGradeBook.sleela",

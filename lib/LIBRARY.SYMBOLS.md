@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11951
+library-source-files: 11961
 library-packages: 117
 module-facade-symbols: 84
-total-symbol-records: 12035
+total-symbol-records: 12045
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -14,7 +14,17 @@ advantage	SLAdvantageSequitur.sleela	lib/advantage/SLAdvantageSequitur.sleela	so
 advantage	SLAdvantageUserModel.sleela	lib/advantage/SLAdvantageUserModel.sleela	source
 advantage	SLPackage.sleela	lib/advantage/SLPackage.sleela	facade
 advantage	advantage-demo.sleela	lib/advantage/advantage-demo.sleela	source
+advantage	grading-primer.sleela	lib/advantage/examples/primers/grading-primer.sleela	source
+advantage	integration-primer.sleela	lib/advantage/examples/primers/integration-primer.sleela	source
+advantage	math-primer.sleela	lib/advantage/examples/primers/math-primer.sleela	source
+advantage	onion-primer.sleela	lib/advantage/examples/primers/onion-primer.sleela	source
+advantage	output-primer.sleela	lib/advantage/examples/primers/output-primer.sleela	source
+advantage	physics-primer.sleela	lib/advantage/examples/primers/physics-primer.sleela	source
+advantage	consumer-example.sleela	lib/advantage/examples/professionals/consumer-example.sleela	source
+advantage	healer-example.sleela	lib/advantage/examples/professionals/healer-example.sleela	source
+advantage	helper-example.sleela	lib/advantage/examples/professionals/helper-example.sleela	source
 advantage	professionals-demo.sleela	lib/advantage/examples/professionals/professionals-demo.sleela	source
+advantage	trader-example.sleela	lib/advantage/examples/professionals/trader-example.sleela	source
 advantage	SLGradeBook.sleela	lib/advantage/grading/SLGradeBook.sleela	source
 advantage	SLGradeSet.sleela	lib/advantage/grading/SLGradeSet.sleela	source
 advantage	SLModuleGrade.sleela	lib/advantage/grading/SLModuleGrade.sleela	source

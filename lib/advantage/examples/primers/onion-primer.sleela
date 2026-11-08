@@ -1,0 +1,199 @@
+<< lib/advantage/advantage-demo.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Runnable demonstration + validation of the advantage onion
+   model (user's model and developer's model). >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Exercises the Sequitur onion end to end. `run` auto-links the sibling >
+< classes (SLAdvantageLayer, SLAdvantageDividend, SLAdvantageSequitur, >
+< SLAdvantageUserModel, SLAdvantageDeveloperModel) in this directory, so no >
+< imports are needed. This file carries the main() that validates them. >
+class OnionPrimer {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     demo carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10519;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  void main() {
+    print("== advantage onion: Sequitur list ==");
+
+    < Show the ordered Sequitur of the onion, outer to inner. >
+    SLAdvantageSequitur onion = new SLAdvantageSequitur();
+    onion.buildStandard();
+    print("layers (outer -> inner): " + onion.size());
+    int i = 0;
+    while (i < onion.size()) {
+      SLAdvantageLayer l = onion.layerAt(i);
+      print("  " + l.describe());
+      i = i + 1;
+    }
+
+    print("");
+    print("== developer's model (full control) ==");
+    SLAdvantageDeveloperModel dev = new SLAdvantageDeveloperModel();
+    dev.init("throughput", "quarterly-plan", 100);
+    < Shape each stage of the onion by hand. >
+    < review confirms the premise, no numeric change >
+    dev.setReview(0);
+    < concerns shave a risk buffer off >
+    dev.setConcerns(-5);
+    < the quantitative core adds the main gain >
+    dev.setMaths(20);
+    < additions grow the dividend >
+    dev.setAdditions(15);
+    < subtraction removes a known cost >
+    dev.setSubtraction(-8);
+    < regrouping recovers a little via reorg >
+    dev.setRegrouping(3);
+    < iteration decides to loop; no direct amount >
+    dev.setIteration(0);
+    int devAdv = dev.runPass();
+    print("  " + dev.describe());
+    print("  net advantage after one inward pass = " + devAdv);
+
+    < Navigate the onion by hand: step inward and outward. >
+    dev.seek(0);
+    dev.deeper();
+    dev.deeper();
+    print("  walked cursor inward to depth " + dev.depth());
+    dev.shallower();
+    print("  walked cursor outward to depth " + dev.depth());
+
+    print("");
+    print("== user's model (simple outcome) ==");
+    SLAdvantageUserModel user = new SLAdvantageUserModel();
+    user.start("savings", "household-budget", 50);
+    < plain dial: bigger upside >
+    user.grow(30);
+    < plain dial: a cost/haircut >
+    user.shrink(-12);
+    < plain dial: quantitative + reorg >
+    user.rethink(10, 2);
+    int userAdv = user.advantage();
+    print("  " + user.summary());
+    print("  net advantage = " + userAdv + ", value now = " + user.currentValue());
+
+    < Iterate further through the onion, keeping the best. >
+    int harder = user.advantageHarder(3);
+    print("  best advantage after iterating = " + harder);
+
+    print("");
+    print("== dynamic alter: favor the owner ==");
+    SLAdvantageDeveloperModel biz = new SLAdvantageDeveloperModel();
+    biz.init("margin", "pricing-model", 200);
+    biz.setOwner("the proprietor");
+    biz.setMaths(10);
+    biz.setAdditions(5);
+    biz.setSubtraction(-6);
+    biz.setRegrouping(1);
+    < Commit this tuned shape as the known-good restitution baseline, so a >
+    < later restitute() returns here rather than to the empty init() shape. >
+    biz.commitBaseline();
+    int baseAdv = biz.runPass();
+    print("  baseline advantage = " + baseAdv);
+    < Favor the owner by strength 4: maths +4, additions +4, regrouping +4, >
+    < and subtraction softened from -6 toward 0 by +4 (-6 -> -2) = +4. >
+    < Total shape gain = 4 + 4 + 4 + 4 = +16. >
+    int gained = biz.favorOwner(4);
+    biz.getDividend().rebase();
+    int favAdv = biz.runPass();
+    print("  owner-favored advantage = " + favAdv + " (shape gain " + gained + ")");
+
+    print("");
+    print("== dynamic update + full restitute ==");
+    < Re-point the same engine onto a different model and base at runtime. >
+    biz.updateModel("promo-model", "promo-margin", 120);
+    biz.getDividend().rebase();
+    int promoAdv = biz.runPass();
+    print("  after updateModel: " + biz.describe());
+    print("  promo advantage = " + promoAdv);
+    < Full restitute: everything returns to the init() baseline (model name, >
+    < label, base 200, and the ORIGINAL onion shape before favorOwner). >
+    biz.restitute();
+    biz.getDividend().rebase();
+    int restoredAdv = biz.runPass();
+    print("  after restitute: " + biz.describe());
+    print("  restored advantage = " + restoredAdv);
+
+    print("");
+    print("== validation ==");
+    < Expected developer advantage: 0 + 0 - 5 + 20 + 15 - 8 + 3 + 0 = 25. >
+    boolean okDev = (devAdv == 25);
+    < Expected user advantage: additions 30, subtraction -12, maths 10, >
+    < regrouping 2 => 30 - 12 + 10 + 2 = 30. >
+    boolean okUser = (userAdv == 30);
+    boolean okIter = (harder == 30);
+    < baseline: 10 + 5 - 6 + 1 = 10. >
+    boolean okBase = (baseAdv == 10);
+    < favored: 14 + 9 - 2 + 5 = 26; shape gain 16. >
+    boolean okFavor = (favAdv == 26);
+    boolean okGain = (gained == 16);
+    < restitute returns to the original shape => advantage back to 10. >
+    boolean okRestore = (restoredAdv == 10);
+    boolean okModel = (biz.getDividend().getModel() == "pricing-model");
+    print("  developer pass == 25 ? " + okDev);
+    print("  user advantage == 30 ? " + okUser);
+    print("  iterate best  == 30 ? " + okIter);
+    print("  baseline      == 10 ? " + okBase);
+    print("  favored       == 26 ? " + okFavor);
+    print("  shape gain    == 16 ? " + okGain);
+    print("  restored      == 10 ? " + okRestore);
+    print("  model restituted   ? " + okModel);
+    if (okDev) {
+      if (okUser) {
+        if (okIter) {
+          if (okBase) {
+            if (okFavor) {
+              if (okGain) {
+                if (okRestore) {
+                  if (okModel) {
+                    print("ALL CHECKS PASSED");
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

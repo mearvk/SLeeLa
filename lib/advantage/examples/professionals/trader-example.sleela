@@ -1,0 +1,98 @@
+<< lib/advantage/examples/professionals/trader-example.sleela
+   SLeeLa Standard Library Definition.
+   Definition: A professional example -- the TRADER -- finds the joint-profit
+   optimum and strikes a Nash-fair wholesale price. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+<< A trader coordinates a buyer and a seller as one system (advantage/math):
+   first find the order quantity Q* that maximizes the total surplus
+   (marginal revenue = marginal cost), then set a wholesale price that splits
+   that surplus fairly by the Nash bargaining solution. Curves (concave buyer
+   revenue, convex seller cost):
+     R_B(Q) = 100*Q - Q^2     C_S(Q) = 20*Q + Q^2
+   Hand-computed anchors: Q* = 20, total surplus = 800, Nash price (alpha=0.5,
+   zero reservations) = 60 splitting 400/400. Names SLJointProfitMax /
+   SLNashBargaining, resolved from lib/advantage/math/ by the /lib scan. >>
+class TraderExample {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity record for a worker-class example. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10571;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  boolean near(double a, double b, double tol) {
+    double d = a - b;
+    if (d < 0.0) { d = 0.0 - d; }
+    return d < tol;
+  }
+
+  void main() {
+    print("== professional: the Trader ==");
+    SLJointProfitMax curves = new SLJointProfitMax();
+    curves.configureCurves(100.0, 1.0, 20.0, 1.0);
+    double qstar = curves.optimalQuantity();
+    double pool = curves.maxJointProfit();
+    print("  optimal order quantity Q* = " + qstar);
+    print("  total surplus pool        = " + pool);
+
+    SLNashBargaining nash = new SLNashBargaining();
+    nash.configure(curves);
+    double price = nash.nashPrice(0.0, 0.0, 0.5);
+    double seller = nash.sellerProfit(price, qstar);
+    double buyer = nash.buyerProfit(price, qstar);
+    print("  Nash wholesale price P*   = " + price);
+    print("  seller profit             = " + seller);
+    print("  buyer profit              = " + buyer);
+
+    print("");
+    print("== validation ==");
+    boolean okQ = near(qstar, 20.0, 0.00001);
+    boolean okPool = near(pool, 800.0, 0.00001);
+    boolean okPrice = near(price, 60.0, 0.00001);
+    boolean okSplit = near(seller, 400.0, 0.00001) && near(buyer, 400.0, 0.00001);
+    print("  Q* == 20        ? " + okQ);
+    print("  surplus == 800  ? " + okPool);
+    print("  Nash P* == 60   ? " + okPrice);
+    print("  split 400/400   ? " + okSplit);
+    if (okQ) { if (okPool) { if (okPrice) { if (okSplit) {
+      print("ALL CHECKS PASSED");
+    } } } }
+  }
+}

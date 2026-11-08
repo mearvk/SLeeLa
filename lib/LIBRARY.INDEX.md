@@ -1,5 +1,7 @@
 # SLeeLa /lib Library Index
 
+> Revision 0.77 populates `lib/advantage/examples/`: a `primers/` subfolder with one runnable primer per subject (onion, math, physics, integration, grading, output) and four more careful `professionals/` examples (trader -> math, healer -> physics, helper -> integration, consumer -> onion), each self-validating. Ten new source examples.
+
 > Revision 0.76 adds the `lib/advantage/examples/` source folder with a `professionals/` subfolder: a runnable `professionals-demo` that grades professional roles (engineer, doctor, teacher, auditor, clerk, apprentice) A–D via the grading subject (champion doctor A9, 4 winners). One new source example.
 
 > Revision 0.75 adds an `output/` seam to the **`advantage`** package (`lib/advantage/output/`) so modules can emit instead of staying silent: `SLAdvantageSink` routes rendered lines to the terminal (stdout), a CommonRails-formatted surface, a socket/connector (framed + buffered for a native slnet_write, exposed via drain()/lastFrame()), or a silent capture; `SLAdvantageEmitter` is the module-facing API (line/state/status/report/grade) that formats via the toolchain's PrintRail for the CommonRails target. The three top-level models (`SLAdvantageDeveloperModel`, `SLVerticalIntegration`, `SLGradeBook`) gained an `emitThrough(emitter)` self-report method. A runnable `output-demo` validates all four targets plus a live module self-report. Honest limit: a live socket is not available under `run`, so the socket target buffers framed lines for a native host to forward.
@@ -21,11 +23,11 @@
 > Revision 0.67 adds two AI-facing SLeeLa standard-library packages. **`neural-nets`** (`lib/neural-nets/`) mirrors the native C ABI v1 with `SLNeuralNetworkConfig`, `SLNeuralNetwork`, and a package facade; it exposes the validated network configuration and lifecycle contract while inference/training remain explicit native-adapter operations. **`character-recognition`** (`lib/character-recognition/`) mirrors the native C11 glyph-recognition API with `SLCharacterRecognition`, `SLCharacterResult`, and a package facade; normalization and recognition remain native-adapter operations. Both packages document their exact native boundaries and limitations. The authoritative C/C++ implementations remain under `artificial-intelligence/`; these SLeeLa packages do not duplicate kernels or claim native execution without an adapter.
 
 
-**Revision:** 0.76  
+**Revision:** 0.77  
 **Packages:** 117  
-**SLeeLa source units:** 11951  
+**SLeeLa source units:** 11961  
 **Module-facade symbols:** 84  
-**Total symbol records:** 12035  
+**Total symbol records:** 12045  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.66 brings three big-number improvements that make a 10,000,000-digit

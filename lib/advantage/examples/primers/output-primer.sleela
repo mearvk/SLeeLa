@@ -1,0 +1,158 @@
+<< lib/advantage/output/output-demo.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Runnable demonstration + validation of the advantage output
+   seam (terminal / CommonRails / socket-connector / silent). >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< `run` auto-links the sibling classes in advantage/output (SLAdvantageSink, >
+< SLAdvantageEmitter), and naming PrintRail pulls in lib/common-rails. >
+< Shows every advantage module emitting through one API to four destinations. >
+class OutputPrimer {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class demo
+     carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10569;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  void main() {
+    print("== advantage output seam ==");
+
+    < 1. TERMINAL target >
+    print("-- terminal --");
+    SLAdvantageSink term = new SLAdvantageSink();
+    term.configure(0);
+    SLAdvantageEmitter te = new SLAdvantageEmitter();
+    te.configure(term);
+    te.status("CIRCUIT", "grading modules");
+    te.grade("integration", 11, "S10", 3);
+
+    < 2. COMMONRAILS target (formatted via PrintRail): state, pair, component >
+    print("-- commonrails --");
+    SLAdvantageSink cr = new SLAdvantageSink();
+    cr.configure(1);
+    SLAdvantageEmitter ce = new SLAdvantageEmitter();
+    ce.configure(cr);
+    ce.state("WORKING", 7, "trade Q* found", 14);
+    ce.pair("sophistication", 14, "27", 2, 16, 8);
+    ce.component("grader", 6, 10552, 3, "circuit ready", 13);
+
+    < 3. SOCKET / connector target: real lifecycle (open -> write -> close) >
+    print("-- socket (connector lifecycle) --");
+    SLAdvantageSink sock = new SLAdvantageSink();
+    sock.configure(2);
+    sock.bindEndpoint("ledger.example:9077");
+    boolean opened = sock.openConnector();
+    SLAdvantageEmitter se = new SLAdvantageEmitter();
+    se.configure(sock);
+    se.status("CIRCUIT", "winning=5 losing=1");
+    se.grade("physics", 7, "C7", 2);
+    boolean openDuring = sock.isOpen();
+    int bytes = sock.getBytesWritten();
+    print("  sink: " + sock.describe());
+    String drained = sock.drain();
+    print("  drained frames:");
+    print(drained);
+    sock.closeConnector();
+    boolean closedAfter = sock.isOpen();
+
+    < 4. SILENT target (capture only) >
+    SLAdvantageSink silent = new SLAdvantageSink();
+    silent.configure(3);
+    SLAdvantageEmitter qe = new SLAdvantageEmitter();
+    qe.configure(silent);
+    qe.report("sophistication", "27");
+    String quiet = silent.lastFrame();
+
+    < 5. A real module self-reports through the seam (emitThrough). Build a >
+    < tiny vertical-integration model and let IT emit to a silent sink. >
+    print("-- module self-report (emitThrough) --");
+    SLVerticalIntegration vi = new SLVerticalIntegration();
+    vi.configure("demo-chain");
+    vi.addKind("supply", 5);
+    vi.addKind("storefront", 14);
+    SLAdvantageSink modSink = new SLAdvantageSink();
+    modSink.configure(3);
+    SLAdvantageEmitter me = new SLAdvantageEmitter();
+    me.configure(modSink);
+    vi.emitThrough(me);
+    print("  module emitted " + modSink.frameCount() + " frame(s) to " + modSink.targetName());
+
+    print("");
+    print("== validation ==");
+    < The socket capture is deterministic: two framed lines joined by newline, >
+    < each prefixed with the connector endpoint. >
+    String expectedDrain = "[ledger.example:9077] [CIRCUIT] winning=5 losing=1"
+      + "\n" + "[ledger.example:9077] [GRADE] physics -> C7";
+
+    boolean okTermFrames = (term.frameCount() == 2);
+    < commonrails now emits three lines: state + pair + component >
+    boolean okCrFrames = (cr.frameCount() == 3);
+    boolean okSockDrainExact = (drained == expectedDrain);
+    boolean okSockDrained = (sock.frameCount() == 0);
+    boolean okSilent = (silent.getTarget() == 3) && (quiet == "sophistication: 27");
+    boolean okEndpoint = (sock.getEndpoint() == "ledger.example:9077");
+    boolean okModuleEmit = (modSink.frameCount() == 1);
+    < connector lifecycle: opened, stayed open during writes, byte account, >
+    < closed after. bytes = 3 (status prefix) + 24 (grade line + prefix) = 27. >
+    boolean okOpened = opened;
+    boolean okOpenDuring = openDuring;
+    boolean okBytes = (bytes == 27);
+    boolean okClosed = (closedAfter == false);
+
+    print("  terminal emitted 2    ? " + okTermFrames);
+    print("  commonrails emitted 3 ? " + okCrFrames);
+    print("  socket drain exact    ? " + okSockDrainExact);
+    print("  socket drained to 0   ? " + okSockDrained);
+    print("  silent captured       ? " + okSilent);
+    print("  endpoint recorded     ? " + okEndpoint);
+    print("  module self-reported  ? " + okModuleEmit);
+    print("  connector opened      ? " + okOpened);
+    print("  open during writes    ? " + okOpenDuring);
+    print("  byte account == 27    ? " + okBytes);
+    print("  connector closed      ? " + okClosed);
+
+    if (okTermFrames) { if (okCrFrames) { if (okSockDrainExact) {
+    if (okSockDrained) { if (okSilent) { if (okEndpoint) { if (okModuleEmit) {
+    if (okOpened) { if (okOpenDuring) { if (okBytes) { if (okClosed) {
+      print("ALL CHECKS PASSED");
+    } } } } } } } } } } }
+  }
+}

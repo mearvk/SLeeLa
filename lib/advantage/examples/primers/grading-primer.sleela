@@ -1,0 +1,148 @@
+<< lib/advantage/grading/grading-demo.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Runnable demonstration + validation of the sophistication
+   circuit grader (modules, sets, ratings). >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< `run` auto-links the sibling classes in advantage/grading (SLModuleGrade, >
+< SLGradeSet, SLSophisticationCircuit, SLGradeBook), so no imports are needed. >
+<  >
+< Field of eight modules graded at win=70, lose=40, absolute=80. Roles: >
+< judge is a grader; standard and flawed-abs are absolute. >
+class GradingPrimer {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class demo
+     carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10559;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  void main() {
+    print("== sophistication circuit grader ==");
+    SLSophisticationCircuit circuit = new SLSophisticationCircuit();
+    < capacity 16; win=70, lose=40, absolute=80 >
+    circuit.configure(16, 70, 40, 80);
+
+    < role: 0 normal, 1 grader, 2 absolute >
+    circuit.add("onion", 65, 0);
+    circuit.add("trade", 92, 0);
+    circuit.add("physics", 78, 0);
+    circuit.add("integration", 100, 0);
+    circuit.add("weak", 30, 0);
+    circuit.add("judge", 85, 1);
+    circuit.add("standard", 88, 2);
+    circuit.add("flawed-abs", 55, 2);
+
+    SLGradeBook book = new SLGradeBook();
+    book.configure(circuit);
+
+    print("  " + circuit.describe());
+    print("  " + book.describe());
+
+    print("");
+    print("== per-module ratings ==");
+    int i = 0;
+    while (i < circuit.size()) {
+      SLModuleGrade g = circuit.moduleAt(i);
+      print("  " + g.describe() + " -> " + g.letter() + g.tier());
+      i = i + 1;
+    }
+
+    print("");
+    print("== set ratings ==");
+    SLGradeSet all = book.all();
+    SLGradeSet win = book.winning();
+    SLGradeSet lose = book.losing();
+    SLGradeSet grad = book.graders();
+    SLGradeSet abs = book.absolutes();
+    print("  " + all.describe());
+    print("  " + win.describe());
+    print("  " + lose.describe());
+    print("  " + grad.describe());
+    print("  " + abs.describe());
+    SLModuleGrade champ = circuit.champion();
+    print("  champion = " + champ.getLabel() + " (" + book.championRating() + ")");
+
+    print("");
+    print("== validation ==");
+    boolean okAll    = (all.size() == 8);
+    boolean okAllR   = (all.meanScore() == 74);
+    boolean okOverall = (book.overallLetter() == "C");
+    boolean okWin    = (win.size() == 5);
+    boolean okWinMean = (win.meanScore() == 88);
+    boolean okWinLetter = (win.letter() == "B");
+    boolean okLose   = (lose.size() == 1);
+    boolean okGrad   = (grad.size() == 1);
+    boolean okAbs    = (abs.size() == 1);
+    boolean okWinRate = (book.winRate() == 62);
+    boolean okChamp  = (champ.getLabel() == "integration");
+    boolean okChampR = (book.championRating() == "S10");
+    < judge is a grader AND a winner (meta-graded). >
+    SLModuleGrade judge = circuit.moduleAt(5);
+    boolean okJudgeGrader = judge.isGrader();
+    boolean okJudgeRating = (judge.letter() == "B") && (judge.tier() == 8);
+    < flawed-abs is absolute but below the bar, so excluded from the set. >
+    SLModuleGrade flawed = circuit.moduleAt(7);
+    boolean okFlawedAbs = flawed.isAbsolute();
+
+    print("  all size == 8          ? " + okAll);
+    print("  all mean == 74         ? " + okAllR);
+    print("  overall letter == C    ? " + okOverall);
+    print("  winning size == 5      ? " + okWin);
+    print("  winning mean == 88     ? " + okWinMean);
+    print("  winning letter == B    ? " + okWinLetter);
+    print("  losing size == 1       ? " + okLose);
+    print("  grader size == 1       ? " + okGrad);
+    print("  absolute size == 1     ? " + okAbs);
+    print("  win rate == 62         ? " + okWinRate);
+    print("  champion integration   ? " + okChamp);
+    print("  champion rating S10    ? " + okChampR);
+    print("  judge is grader        ? " + okJudgeGrader);
+    print("  judge rating B8        ? " + okJudgeRating);
+    print("  flawed is absolute     ? " + okFlawedAbs);
+
+    if (okAll) { if (okAllR) { if (okOverall) { if (okWin) {
+    if (okWinMean) { if (okWinLetter) { if (okLose) { if (okGrad) {
+    if (okAbs) { if (okWinRate) { if (okChamp) { if (okChampR) {
+    if (okJudgeGrader) { if (okJudgeRating) { if (okFlawedAbs) {
+      print("ALL CHECKS PASSED");
+    } } } } } } } } } } } } } } }
+  }
+}
