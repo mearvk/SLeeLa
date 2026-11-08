@@ -141,7 +141,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; advantage</div>
 <h1>Package <code>advantage</code></h1>
-<div class="lead">This package contains <strong>69</strong> source unit(s) defining <strong>69</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>73</strong> source unit(s) defining <strong>73</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="advantage-demo">advantage-demo <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/advantage-demo.sleela)</span></h2>
 <div data-u="advantage-demo advantagedemo">
@@ -150,6 +150,17 @@
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="business-exchange">business-exchange <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/medium-results/business-exchange.sleela)</span></h2>
+<div data-u="business-exchange businessexchange">
+<h3 id="BusinessExchange">BusinessExchange <span class="pill">class</span></h3>
+<p class="desc">MEDIUM-RESULT (Business). Demonstrates connecting, controlling, and executing a trade over open exchange in the USA using the advantage connect medium (SLNetConnector, SLClockConnector, SLSqlConnector, SLMoneyConnector) together with the network subject (SLMarketScout, SLNegotiationRound, SLCashflow). A small-business wholesale buy/sell.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>near</code></td><td><span class="sig">boolean near(double a, double b, double tol)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
@@ -211,6 +222,17 @@
 <div data-u="cotton-bales-trade cottonbalestrade">
 <h3 id="CottonBalesTrade">CottonBalesTrade <span class="pill">class</span></h3>
 <p class="desc">NETWORK-TRADE 06 of 12 -- COTTON-BALES. Scout a network of venue quotes, pick the cheapest buy and dearest sell, negotiate a fair clearing price, and emit a cash receipt. Rung: both frictions together: fee AND carry on the same trade.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>near</code></td><td><span class="sig">boolean near(double a, double b, double tol)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="economics-exchange">economics-exchange <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/medium-results/economics-exchange.sleela)</span></h2>
+<div data-u="economics-exchange economicsexchange">
+<h3 id="EconomicsExchange">EconomicsExchange <span class="pill">class</span></h3>
+<p class="desc">MEDIUM-RESULT (Economics). Connect, control, and execute a coordinated buyer+seller trade over open exchange in the USA, using the math subject (joint profit max + Nash bargaining) for the clearing price and the connect medium for the connection, settlement, and record. Theme: Economics -- maximize the surplus, then split it fairly.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -1515,6 +1537,17 @@
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="trade-exchange">trade-exchange <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/medium-results/trade-exchange.sleela)</span></h2>
+<div data-u="trade-exchange tradeexchange">
+<h3 id="TradeExchange">TradeExchange <span class="pill">class</span></h3>
+<p class="desc">MEDIUM-RESULT (Trade). Connect, control, and execute a cross-venue commodity trade over open exchange in the USA using the connect medium and the network subject. Theme: Trade -- routing a lumber lot from the cheapest mill to the dearest buyer.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>near</code></td><td><span class="sig">boolean near(double a, double b, double tol)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="trade-math-demo">trade-math-demo <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/math/trade-math-demo.sleela)</span></h2>
 <div data-u="trade-math-demo trademathdemo">
 <h3 id="TradeMathDemo">TradeMathDemo <span class="pill">class</span></h3>
@@ -1537,10 +1570,21 @@
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="youthfulness-exchange">youthfulness-exchange <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/medium-results/youthfulness-exchange.sleela)</span></h2>
+<div data-u="youthfulness-exchange youthfulnessexchange">
+<h3 id="YouthfulnessExchange">YouthfulnessExchange <span class="pill">class</span></h3>
+<p class="desc">MEDIUM-RESULT (Youthfulness). A guided, guardrailed first trade for a young/new participant over open US exchange: connect with a disciplined clock, scout a small venue network, negotiate a BUYER-favored price (the newcomer keeps more surplus), and settle a tiny amount with a hard spend cap so a decline is handled safely. Theme: Youthfulness -- learning the exchange with training wheels.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>near</code></td><td><span class="sig">boolean near(double a, double b, double tol)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-08 17:54 UTC.
+<code>/lib</code> tree on 2026-11-08 19:21 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
