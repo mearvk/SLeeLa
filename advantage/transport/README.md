@@ -32,8 +32,10 @@ binaries.
 ## Build
 
 ```sh
-make            # builds transport, bulkfetch, and libadvantagetransport.a
+make            # transport, bulkfetch, libadvantagetransport.a + .so
 make lib        # just the static library
+make shared     # just the shared library (+ soname/dev symlinks)
+make pc         # generate the pkg-config file
 make test       # runs the safety + functional battery (test.sh)
 ```
 
@@ -41,7 +43,31 @@ Requires OpenSSL development headers (`libssl`/`libcrypto`); bulk fetching
 uses pthreads. For `sftp://` and `ssh://` fetches, the OpenSSH `scp` binary
 must be on `PATH` at runtime.
 
-### Linking the static library
+### Install
+
+```sh
+make install PREFIX=/usr/local        # honors DESTDIR for staged installs
+make uninstall PREFIX=/usr/local
+```
+
+Installs: `transport` + `bulkfetch` to `$(BINDIR)`; `libadvantagetransport.a`
+and the versioned shared library (`libadvantagetransport.so.1.0.0` + `.so.1`
+soname + `.so` dev symlink) to `$(LIBDIR)`; headers to
+`$(PREFIX)/include/advantage/transport/`; and `advantagetransport.pc` to
+`$(LIBDIR)/pkgconfig/`. Overridable: `PREFIX`, `BINDIR`, `LIBDIR`,
+`INCLUDEDIR`, `PKGCONFIGDIR`, `DESTDIR`.
+
+### Linking from another program
+
+After install, via **pkg-config**:
+
+```sh
+c++ your_app.cpp $(pkg-config --cflags --libs advantagetransport) \
+    $(pkg-config --libs openssl) -lpthread -o your_app
+# headers resolve as: #include <acquire.h>, <bulk.h>, <keystore.h>, ...
+```
+
+Or against the in-tree **static library** without installing:
 
 ```sh
 c++ your_app.cpp -I/path/to/transport \
@@ -49,8 +75,8 @@ c++ your_app.cpp -I/path/to/transport \
     $(pkg-config --libs openssl) -lpthread -o your_app
 ```
 
-The public headers (`acquire.h`, `bulk.h`, `keystore.h`, `kex.h`, `digest.h`,
-`uri.h`, `http_client.h`, `sftp_client.h`) expose the full API.
+Public headers: `acquire.h`, `bulk.h`, `keystore.h`, `kex.h`, `digest.h`,
+`uri.h`, `http_client.h`, `sftp_client.h`.
 
 ## Usage
 

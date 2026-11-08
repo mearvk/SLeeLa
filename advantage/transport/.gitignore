@@ -1,0 +1,10 @@
+# Build artifacts for the advantage transport module.
+*.o
+*.pic.o
+*.a
+*.so
+*.so.*
+*.pc
+transport
+bulkfetch
+advantage-store/
