@@ -1,0 +1,3 @@
+# Build artifacts for the advantage trade examples.
+*.o
+trade_examples
