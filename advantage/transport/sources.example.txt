@@ -1,0 +1,22 @@
+# sources.example.txt - a bulk-fetch list YOU control.
+#
+# One entry per line:  URL  [optional-sha256-pin]
+# Blank lines and lines starting with '#' are ignored.
+#
+# Only point this at sources you are authorized to fetch. The bulk fetcher
+# applies the transport layer's secure defaults (TLS certificate + hostname
+# verification for https, strict SSH host-key checking for sftp/ssh). An
+# optional SHA-256 pin on a line makes that fetch fail closed unless the bytes
+# match exactly.
+#
+# Replace the examples below with your own endpoints -- e.g. package registry
+# metadata, data/index feeds, document mirrors, or internal service URLs.
+
+# --- local examples (work offline, good for a smoke test) -------------------
+file:///etc/hostname
+file:///etc/os-release
+
+# --- remote examples (edit to real endpoints you control) -------------------
+# https://registry.example.com/index.json
+# https://data.example.com/series/latest.csv  <put-sha256-here-to-pin>
+# sftp://user@mirror.example.com/pub/manifest.txt
