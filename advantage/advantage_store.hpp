@@ -12,6 +12,15 @@
 
 namespace advantage {
 
+// A declared remote origin for additional knowledge strings. Parsed from an
+// optional <knowledgeSource url="..." sha256="..."/> element. Declaring one
+// does NOT fetch anything: base parsing is pure and offline. Fetching is an
+// explicit, opt-in step handled by enrich.hpp with strict safety gates.
+struct KnowledgeSource {
+    std::string url;      // e.g. "https://host/path" or "file:///path"
+    std::string sha256;   // optional content pin (lowercase hex), may be empty
+};
+
 // One source of leverage loaded from <sourceAdvantage> in the XML.
 struct SourceAdvantage {
     std::string id;
@@ -20,6 +29,15 @@ struct SourceAdvantage {
     std::string description;
     std::vector<std::string> assumptions;  // <assumptions><assumption>...
     std::vector<std::string> knowledge;     // <knowledge><string>...
+
+    // Knowledge strings pulled in from a remote source during enrichment.
+    // Kept separate from the authored `knowledge` so provenance is never
+    // confused: local/authored vs. fetched/untrusted.
+    std::vector<std::string> remoteKnowledge;
+
+    // Optional declared remote origin(s) for knowledge. Not fetched by the
+    // base loader.
+    std::vector<KnowledgeSource> knowledgeSources;
 };
 
 // The whole document: a version string and the set of source advantages.

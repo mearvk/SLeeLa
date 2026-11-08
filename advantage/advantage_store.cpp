@@ -168,6 +168,14 @@ bool loadFromString(const std::string& xml,
                 current = &out.sources.back();
                 current->id = attr(tag.attrs, "id");
                 current->kind = attr(tag.attrs, "kind");
+            } else if (tag.name == "knowledgeSource") {
+                // Declared remote origin. Recorded only; never fetched here.
+                if (current) {
+                    KnowledgeSource ks;
+                    ks.url = attr(tag.attrs, "url");
+                    ks.sha256 = attr(tag.attrs, "sha256");
+                    if (!ks.url.empty()) current->knowledgeSources.push_back(ks);
+                }
             } else if (tag.name == "assumptions") {
                 inAssumptions = true;
             } else if (tag.name == "knowledge") {

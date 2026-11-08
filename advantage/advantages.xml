@@ -46,6 +46,13 @@
   <sourceAdvantage id="genius" kind="intellect">
     <name>Genius</name>
     <description>Exceptional insight that reaches answers by a shorter path.</description>
+    <!--
+      Optional remote knowledge. Declaring a source does NOT fetch anything:
+      the base loader is pure/offline. Fetching happens only via the opt-in,
+      allowlisted enrichment path (see enrich.hpp). These examples are inert
+      unless you run `analyze --enrich --allow-host <host>` (or a file:// URL).
+    -->
+    <knowledgeSource url="file:///dev/null"/>
     <assumptions>
       <assumption>The insight is genuine and can be checked against reality.</assumption>
       <assumption>Brilliance does not guarantee being right every time.</assumption>
