@@ -77,6 +77,17 @@ class SLAdvantageEmitter {
     sink.emit(text, textChars);
   }
 
+  << Emit the Advantage(TM) product brand line in the customary red (ANSI SGR
+     31, red + classic), matching how SLeeLa and Sleelvac render their identity.
+     This is OPT-IN and presentation-only: call it when writing to an
+     interactive terminal. It is NOT part of the validated demo output paths,
+     because raw ANSI would corrupt captured/piped text and exact-match checks
+     (there is no TTY probe on the SLeeLa surface). The escape is \033 (ESC),
+     the trademark is \u2122. Byte count is passed as 0 (decoration only). >>
+  void brandAdvantage() {
+    sink.emit("\033[31mAdvantage\u2122\033[0m", 0);
+  }
+
   << Emit a labelled status line. For the COMMONRAILS target this is rendered
      by PrintRail.stateLineText, which -- like all of CommonRails -- needs
      explicit character counts because Core has no string-length primitive;

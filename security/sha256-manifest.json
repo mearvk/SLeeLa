@@ -511,7 +511,7 @@
     },
     {
       "path": "impl/frontend/common_rails_banner.hpp",
-      "sha256": "24361490601cf9ba9ac3f25bd4b1ca64aed4a6a9228d71e8eb7d6447d71757b9"
+      "sha256": "1ee2300661e12befff46b5df195e93acfa7c224cb11eddbb45140c23c8f0d545"
     },
     {
       "path": "impl/frontend/compiler.cpp",
@@ -1043,7 +1043,7 @@
     },
     {
       "path": "lib/advantage/output/SLAdvantageEmitter.sleela",
-      "sha256": "46e8b54dd37b1ba6a5a4879adf30887c5e7c82881396ce941a34ff43f3ee3e4b"
+      "sha256": "75d9809a7106047f36d22f6cfbacc82025e466d76f758e01c27fd144c20ec554"
     },
     {
       "path": "lib/advantage/output/SLAdvantageSink.sleela",

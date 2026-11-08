@@ -5,15 +5,42 @@ gasoline;
 <!-- preonem: this document is an enacted artifact of the advantage
      legislature, graded unto time and space. See PREONEM.md. -->
 
-# lib/advantage — the Sequitur onion model
+# Advantage™ — the SLeeLa library of advantage
 
-The `advantage` package encapsulates the process of **advantaging a unique
-dividend with respect to a model**: an ordered, layered procedure you can
-navigate inward (deeper) and outward (shallower), and iterate up or down.
+> **Advantage™** is the SLeeLa standard-library family for *advantaging a
+> unique dividend with respect to a model*. The name is a trademark of the
+> SLeeLa project (MEARVK LLC). Where the toolchain prints its product identity
+> to an interactive terminal, **Advantage™** is rendered in the customary
+> **red** (ANSI SGR 31, red + classic), the same treatment given to **SLeeLa™**
+> and **Sleelvac™** — presentation-only and TTY-gated, so captured or piped
+> output stays plain and machine-parsable.
 
-**Documentation:** [`DEFINITIONS.md`](./DEFINITIONS.md) — consolidated glossary
-of every term across the whole package · [`MATH.md`](./MATH.md) — trade
-economics · [`PHYSICS.md`](./PHYSICS.md) — trust-field physics.
+**Advantage™** turns a vague intuition — "work this to our advantage" — into a
+concrete, inspectable, testable process. At its heart is the **Sequitur onion
+model**: an ordered sequence of layers, wrapped like an onion around a value
+(the *dividend*), that you navigate inward toward the core and outward toward
+the skin, folding each layer's signed contribution into the running value. Over
+that spine sit five subject families — trade economics, trust-field physics,
+vertical integration, sophistication grading, and a routable output seam — each
+a self-contained, validated module with its own literature.
+
+**Documentation (the Advantage™ literature):**
+
+- [`DEFINITIONS.md`](./DEFINITIONS.md) — the consolidated glossary of every
+  term across the whole package.
+- [`MATH.md`](./MATH.md) — the bilateral trade-economics subject (joint profit
+  maximization, Nash bargaining, the bilateral newsvendor critical ratio).
+- [`PHYSICS.md`](./PHYSICS.md) — the trust-field "physics" subject (metric
+  tensor, transactional geodesic, announcement contact structure, trust-decay
+  SDE), a faithful mathematics presented as an explicit modelling analogy.
+- [`PREONEM.md`](./PREONEM.md) — the preonem standard under which every
+  document here is an enacted `artifact; pure; gasoline;` of the Advantage™
+  legislature, graded unto time and space.
+- `examples/` — runnable [`primers/`](./examples/primers) (one per subject) and
+  careful [`professionals/`](./examples/professionals) examples (trader, healer,
+  helper, consumer).
+
+## The Sequitur onion
 
 "Sequitur" means *it follows* — each layer follows the previous in logical
 order. The layers form an **onion**, outer skin to inner core:
@@ -28,6 +55,25 @@ order. The layers form an **onion**, outer skin to inner core:
 | 5 | `subtraction` | shrink | what the layer takes away |
 | 6 | `regrouping` | reorg | reorganize concepts; carry/borrow across the model |
 | 7 | `iteration` | loop | decide to go further down or back up the onion |
+
+## The Advantage™ subjects at a glance
+
+Advantage™ is organized as a spine (the onion) plus five subject families. Each
+subject is a directory of SLeeLa classes with a runnable demo and, for the two
+quantitative ones, a full prose treatment.
+
+| Subject | Directory | What it advantages | Literature |
+|---------|-----------|--------------------|------------|
+| **Onion model** | (root) | a unique dividend, by a layered, navigable process | this README · [`DEFINITIONS.md`](./DEFINITIONS.md) |
+| **Trade economics** | [`math/`](./math) | a surplus shared between a buyer and a seller | [`MATH.md`](./MATH.md) |
+| **Trust-field physics** | [`physics/`](./physics) | trust as geometry — distance, curvature, decay | [`PHYSICS.md`](./PHYSICS.md) |
+| **Vertical integration** | [`integration/`](./integration) | a value chain, as recursively composable compartments | [`DEFINITIONS.md` §8](./DEFINITIONS.md#8-vertical-integration-subject-integration) |
+| **Sophistication grading** | [`grading/`](./grading) | the ranking of modules and whole sets, A–D | [`DEFINITIONS.md` §9](./DEFINITIONS.md#9-sophistication-grading-subject-grading) |
+| **Output seam** | [`output/`](./output) | where a module's own voice goes | [`DEFINITIONS.md` §10](./DEFINITIONS.md#10-output-seam-output) |
+
+Read [`DEFINITIONS.md`](./DEFINITIONS.md) first for the vocabulary; then the
+subject documents for depth; then run the demos and primers to see each one
+prove itself.
 
 ## Classes
 
@@ -209,3 +255,25 @@ ratio = 80/95 ≈ 0.8421.
   `lib/LIBRARY.SYMBOLS.md` (`tools/generate-library-symbols.py`), update the
   four `EXPECTED_*` in `test-suites/test-library-inventory.sh` and the header
   counts in `lib/LIBRARY.INDEX.md`, and regenerate `security/sha256-manifest.json`.
+- The quantitative subjects cite their real sources: Cournot (1838) for the
+  `MR = MC` rule, Nash (1950) for the bargaining solution, Arrow–Harris–Marschak
+  (1951) for the newsvendor critical ratio, and Cox–Ingersoll–Ross (1985) for
+  the trust-decay diffusion. The economic reading of the `physics/` subject is
+  an explicit modelling analogy, not a claim that trust is a literal field.
+
+## Acknowledgments
+
+With thanks to **NC State University (NCSU)**, the **University of North
+Carolina at Wilmington (UNCW)**, the **University of North Carolina (UNC)**, and
+**Duke University** — the North Carolina research community whose teaching and
+scholarship inform the economics, geometry, stochastic-calculus, and
+software-design thinking behind the Advantage™ library. The library's models are
+the SLeeLa project's own constructions; the gratitude is for the education that
+made them possible, and no endorsement by any institution is implied.
+
+---
+
+**Advantage™** — a trademark of the SLeeLa project, MEARVK LLC. Part of the
+SLeeLa™ standard library; built, checked, and run by **Sleelvac™** /
+**SLeeLa™ Language/Runtime 1.3.2-pro**. Rendered in the customary red where the
+toolchain prints its product identity to a terminal. SLeeLa — MEARVK LLC — 2026.

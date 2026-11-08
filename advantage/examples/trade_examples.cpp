@@ -22,11 +22,28 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cstdio>
+#if defined(_WIN32)
+#  include <io.h>
+#  define ADV_ISATTY(fd) _isatty(fd)
+#else
+#  include <unistd.h>
+#  define ADV_ISATTY(fd) isatty(fd)
+#endif
 
 #include "../advantage.hpp"            // advantage::value / advantage::mean
 #include "../transport/digest.h"       // advantage::sha256_hex
 
 namespace {
+
+// Advantage(TM) brand line, in the customary red + classic (ANSI SGR 31), the
+// same treatment SLeeLa and Sleelvac use for their product identity. Presentation
+// only and TTY-gated: emitted solely to an interactive terminal, so piped or
+// captured output stays plain and machine-parsable. fd 1 = stdout.
+void brandAdvantage(std::ostream& o, int fd) {
+    if (ADV_ISATTY(fd) == 0) return;
+    o << "\033[31m" << "Advantage\u2122" << "\033[0m\n";
+}
 
 // ----- helpers --------------------------------------------------------------
 
@@ -183,6 +200,7 @@ void printModels(const std::vector<Model>& models) {
 }  // namespace
 
 int main() {
+    brandAdvantage(std::cout, 1);   // red Advantage(TM) brand, TTY-gated
     std::cout << "=== advantage trade examples (consuming the C/C++ model) ===\n\n";
 
     auto trades = buildTrades();

@@ -69,10 +69,14 @@ inline void brand(std::ostream& o, int streamFd, const std::string& product) {
     if (!brandColorEnabled(streamFd)) return;               // plain contexts: no brand line
     o << "\033[31m" << product << "\u2122" << "\033[0m\n";   // red + classic, then reset
 }
-// Convenience: the three product identities, to stdout (fd 1) or stderr (fd 2).
+// Convenience: the product identities, to stdout (fd 1) or stderr (fd 2).
 inline void brandSleelvac(std::ostream& o, int fd)   { brand(o, fd, "Sleelvac"); }
 inline void brandSleela(std::ostream& o, int fd)     { brand(o, fd, "Sleela"); }
 inline void brandNordshrift(std::ostream& o, int fd) { brand(o, fd, "Nordshrift"); }
+// Advantage(TM): the /lib/advantage library family's product identity, rendered
+// in the same customary red + classic as Sleela and Sleelvac. TTY-gated, so it
+// decorates interactive output only and never pollutes machine-parsed logs.
+inline void brandAdvantage(std::ostream& o, int fd)  { brand(o, fd, "Advantage"); }
 
 // A professional component line for a tool/unit currently being worked on:
 //   -- : [Object ID: 0000000001] [Date: <date>] [Current: @<name>] . <msg> .
