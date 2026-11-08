@@ -9,7 +9,7 @@
 **Standard-library target: 2,048 objects**  
 **Unique Foundational C++ Class Files (contract-verified): 50**
 
-> This document is the authoritative starting inventory for the SLeeLa 0.3.0-dev development line. The **50 unique foundational C++ class files** are directly included and contract-checked by `test-suites/cpp/test_class_contracts.cpp`. This is a verified foundational class-file count, not a claim that no other repository source file contains a class, struct, interface, or class-like declaration.
+> This document is the authoritative starting inventory for the SLeeLa 1.3.2-pro release line. The **50 unique foundational C++ class files** are directly included and contract-checked by `test-suites/cpp/test_class_contracts.cpp`. This is a verified foundational class-file count, not a claim that no other repository source file contains a class, struct, interface, or class-like declaration.
 
 ## 1. Verified Foundational Class Files
 
@@ -243,7 +243,7 @@ Each class contains its term, grammatical category, and source-level definition 
 
 ## 8. Module Coverage
 
-The current 0.3.0-dev tree includes these inventory roots:
+The current 1.3.2-pro tree includes these inventory roots:
 
 - `antivirus/`
 - `api/`

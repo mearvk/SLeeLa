@@ -1,6 +1,6 @@
 # SLeeLa Build and Makefile Inventory
 
-SLeeLa Version: 0.3.0-dev  
+SLeeLa Version: 1.3.2-pro  
 Inventory Date: 2026-10-05  
 Purpose: Repository-wide build-surface audit
 

@@ -174,12 +174,12 @@ until its Moral is met.*
 # Version / Compiler Work Closure — Items 1–7
 
 **Status:** COMPLETE — 2026-09-27  
-**Current development line:** SLeeLa 0.3.0-dev / Sleelvac 0.3.0-dev / Nordshrift 2.6-dev  
+**Current development line:** SLeeLa 1.3.2-pro / Sleelvac 1.3.2-pro / Nordshrift 2.7.1-dev  
 
 The first seven version-and-toolchain work items are now closed. Future work must preserve the version identities established here and update version numbers as implementation milestones advance.
 
 1. **Sleelvac / compiler identity — COMPLETE**
-   - Sleelvac is identified as **0.3.0-dev**.
+   - Sleelvac is identified as **1.3.2-pro**.
    - Compiler documentation and implementation identity are synchronized.
 
 2. **Version-string cleanup — COMPLETE**

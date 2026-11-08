@@ -1,7 +1,7 @@
 # SLeeLa Daily Engineering TODO — Top-Down Numerical Drilldown
 
 **Project:** SLeeLa  
-**Version line:** 0.3.0-dev  
+**Version line:** 1.3.2-pro  
 **Method:** Top-down numerical engineering closure  
 **Rule:** A requirement advances only when implementation is followed by executable evidence.
 
@@ -331,12 +331,12 @@ For every subsystem:
 # Version / Compiler Work Closure — Items 1–7
 
 **Status:** COMPLETE — 2026-09-27  
-**Current development line:** SLeeLa 0.3.0-dev / Sleelvac 0.3.0-dev / Nordshrift 2.6-dev  
+**Current development line:** SLeeLa 1.3.2-pro / Sleelvac 1.3.2-pro / Nordshrift 2.7.1-dev  
 
 The first seven version-and-toolchain work items are now closed. Future work must preserve the version identities established here and update version numbers as implementation milestones advance.
 
 1. **Sleelvac / compiler identity — COMPLETE**
-   - Sleelvac is identified as **0.3.0-dev**.
+   - Sleelvac is identified as **1.3.2-pro**.
    - Compiler documentation and implementation identity are synchronized.
 
 2. **Version-string cleanup — COMPLETE**
@@ -360,7 +360,7 @@ The first seven version-and-toolchain work items are now closed. Future work mus
    - The compatibility gate now proves all three states: supported syntax 1.3 is accepted, below-floor 1.2 is rejected, and above-ceiling 1.4 is rejected.
 
 7. **Complete version registry / documentation closure — COMPLETE**
-   - Audited the complete registry against the independently versioned component VERSION files and synchronized the registry with the actual 0.3.0-dev / 2.6-dev state.
+   - Audited the complete registry against the independently versioned component VERSION files and synchronized the registry with the actual 1.3.2-pro / 2.7.1-dev state.
    - Corrected the registry so Nordshrift 2.7-dev and 2.8-dev are explicitly roadmap gates rather than represented as completed milestones.
    - Version history now records completed Nordshrift gates through 2.6-dev and identifies 2.7-dev/2.8-dev as the next planned verification work.
 
