@@ -1,0 +1,190 @@
+name: Advantage Library Verification
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - "lib/advantage/**"
+      - "tools/generate-sleeladoc-api.py"
+      - "security/sha256-manifest.json"
+      - "impl/**"
+      - "Makefile"
+      - ".github/workflows/advantage-verification.yml"
+  pull_request:
+    branches: [main, master]
+    paths:
+      - "lib/advantage/**"
+      - "tools/generate-sleeladoc-api.py"
+      - "security/sha256-manifest.json"
+      - "impl/**"
+      - "Makefile"
+      - ".github/workflows/advantage-verification.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: advantage-verification-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify-advantage:
+    name: Build runtime, execute six demos, verify documentation
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      SLEELA_HOME: ${{ github.workspace }}
+      SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install native compiler dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential g++ make python3 \
+            libx11-dev libfontconfig1-dev libfreetype6-dev
+
+      - name: Build the source-authoritative SLeeLa runtime
+        run: |
+          cd impl
+          make build/sleela
+          cd ..
+          test -x impl/build/sleela
+          impl/build/sleela version | tee "$RUNNER_TEMP/sleela-version.txt"
+
+      - name: Verify Advantage documentary artifacts
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          root = Path(".")
+          base = root / "lib/advantage"
+          required_docs = [
+              "PREONEM.md",
+              "DEFINITIONS.md",
+              "MATH.md",
+              "PHYSICS.md",
+              "EXAMPLES.md",
+          ]
+          for name in required_docs:
+              path = base / name
+              if not path.is_file():
+                  raise SystemExit(f"missing required document: {path}")
+              text = path.read_text(encoding="utf-8")
+              if "artifact;" not in text:
+                  raise SystemExit(f"missing artifact marker: {path}")
+              if name != "PREONEM.md" and "PREONEM.md" not in text:
+                  raise SystemExit(f"missing PREONEM reference: {path}")
+
+          readme = (base / "README.md").read_text(encoding="utf-8")
+          if "EXAMPLES.md" not in readme:
+              raise SystemExit("README.md does not link the examples guide")
+
+          demos = [
+              "advantage-demo.sleela",
+              "math/trade-math-demo.sleela",
+              "physics/physics-demo.sleela",
+              "integration/integration-demo.sleela",
+              "grading/grading-demo.sleela",
+              "output/output-demo.sleela",
+          ]
+          examples = (base / "EXAMPLES.md").read_text(encoding="utf-8")
+          for relative in demos:
+              path = base / relative
+              if not path.is_file():
+                  raise SystemExit(f"missing runnable demonstration: {path}")
+              if relative not in examples:
+                  raise SystemExit(f"EXAMPLES.md does not document {relative}")
+          print(f"DOCUMENTATION CHECKS PASSED ({len(required_docs)} documents; {len(demos)} demos)")
+          PY
+
+      - name: Generate and verify Advantage API documentation
+        run: |
+          OUT="$RUNNER_TEMP/advantage-api"
+          python3 tools/generate-sleeladoc-api.py --out "$OUT"
+          test -s "$OUT/package/advantage.html"
+          python3 - "$OUT/package/advantage.html" <<'PY'
+          from pathlib import Path
+          import sys
+
+          page = Path(sys.argv[1]).read_text(encoding="utf-8")
+          required = [
+              "SLPackage",
+              "SLAdvantageLayer",
+              "SLAdvantageDividend",
+              "SLAdvantageSequitur",
+              "SLAdvantageUserModel",
+              "SLAdvantageDeveloperModel",
+          ]
+          missing = [name for name in required if name not in page]
+          if missing:
+              raise SystemExit("generated Advantage API page is missing: " + ", ".join(missing))
+          print("ADVANTAGE API DOCUMENTATION CHECK PASSED")
+          PY
+
+      - name: Execute all six Advantage demonstrations
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/advantage-logs"
+          demos=(
+            "lib/advantage/advantage-demo.sleela"
+            "lib/advantage/math/trade-math-demo.sleela"
+            "lib/advantage/physics/physics-demo.sleela"
+            "lib/advantage/integration/integration-demo.sleela"
+            "lib/advantage/grading/grading-demo.sleela"
+            "lib/advantage/output/output-demo.sleela"
+          )
+          for demo in "${demos[@]}"; do
+            name="$(basename "$demo" .sleela)"
+            log="$RUNNER_TEMP/advantage-logs/$name.log"
+            echo "::group::Run $demo"
+            ./impl/build/sleela run "$demo" 2>&1 | tee "$log"
+            if ! grep -Fq "ALL CHECKS PASSED" "$log"; then
+              echo "Demo did not emit its required success sentinel: $demo" >&2
+              exit 1
+            fi
+            echo "::notice title=Advantage demo passed::$demo"
+            echo "::endgroup::"
+          done
+          printf '%s\n' "${demos[@]}" > "$RUNNER_TEMP/advantage-logs/passed-demos.txt"
+
+      - name: Publish verification report
+        if: always()
+        run: |
+          {
+            echo "# Advantage Library Verification"
+            echo
+            echo "- Commit: `$GITHUB_SHA`"
+            echo "- Ref: `$GITHUB_REF`"
+            echo "- Runner: `$RUNNER_OS` / `$RUNNER_ARCH`"
+            echo "- Runtime build: source-built from `impl/`"
+            echo
+            echo "The job is successful only when documentation checks, generated API checks, and all six runnable demonstrations pass."
+            echo
+            echo "## Demonstrations"
+            for name in advantage-demo trade-math-demo physics-demo integration-demo grading-demo output-demo; do
+              if [ -f "$RUNNER_TEMP/advantage-logs/$name.log" ] && grep -Fq "ALL CHECKS PASSED" "$RUNNER_TEMP/advantage-logs/$name.log"; then
+                echo "- PASS — `$name`"
+              else
+                echo "- NOT VERIFIED — `$name`"
+              fi
+            done
+          } | tee "$RUNNER_TEMP/ADVANTAGE.VERIFICATION.md" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload verification logs and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: advantage-verification-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/ADVANTAGE.VERIFICATION.md
+            ${{ runner.temp }}/sleela-version.txt
+            ${{ runner.temp }}/advantage-logs/
+          if-no-files-found: warn
+          retention-days: 30
