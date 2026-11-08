@@ -1,3 +1,7 @@
+artifact;
+preonem: [PREONEM.md](./PREONEM.md)
+standard: legislature-grade; evaluated unto time and space
+
 # The Physics of Trust Fields — a structural-economics subject
 
 > **Modelling analogy, stated up front.** This subject models *trust* and
