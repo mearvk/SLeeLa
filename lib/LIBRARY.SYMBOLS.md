@@ -1,19 +1,21 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11924
+library-source-files: 11926
 library-packages: 117
 module-facade-symbols: 84
-total-symbol-records: 12008
+total-symbol-records: 12010
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
 advantage	SLAdvantageDividend.sleela	lib/advantage/SLAdvantageDividend.sleela	source
 advantage	SLAdvantageLayer.sleela	lib/advantage/SLAdvantageLayer.sleela	source
 advantage	SLAdvantageSequitur.sleela	lib/advantage/SLAdvantageSequitur.sleela	source
+advantage	SLAdvantageTrade.sleela	lib/advantage/SLAdvantageTrade.sleela	source
 advantage	SLAdvantageUserModel.sleela	lib/advantage/SLAdvantageUserModel.sleela	source
 advantage	SLPackage.sleela	lib/advantage/SLPackage.sleela	facade
 advantage	advantage-demo.sleela	lib/advantage/advantage-demo.sleela	source
+advantage	advantage-trade-demo.sleela	lib/advantage/advantage-trade-demo.sleela	source
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
 alphabet	AlphabetBuilder.sleela	lib/alphabet/AlphabetBuilder.sleela	source
 alphabet	ArabicAlphabet.sleela	lib/alphabet/ArabicAlphabet.sleela	source

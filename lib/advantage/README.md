@@ -28,7 +28,9 @@ order. The layers form an **onion**, outer skin to inner core:
 | `SLAdvantageSequitur.sleela` | `SLAdvantageSequitur` | The ordered, navigable onion; cursor moves inward/outward; runs passes |
 | `SLAdvantageUserModel.sleela` | `SLAdvantageUserModel` | **User's model** — simple, outcome-facing encapsulation |
 | `SLAdvantageDeveloperModel.sleela` | `SLAdvantageDeveloperModel` | **Developer's model** — full-control encapsulation of the process |
-| `advantage-demo.sleela` | `AdvantageDemo` | Runnable demo + validation (`main`) |
+| `SLAdvantageTrade.sleela` | `SLAdvantageTrade` | **Bilateral trade economics** — joint profit max, Nash bargaining, newsvendor critical ratio |
+| `advantage-demo.sleela` | `AdvantageDemo` | Runnable demo + validation of the onion model (`main`) |
+| `advantage-trade-demo.sleela` | `AdvantageTradeDemo` | Runnable demo + validation of the trade math (`main`) |
 
 ## The two models
 
@@ -75,15 +77,51 @@ The demo's final sections exercise all of this: a baseline advantage of 10,
 promo model, and a `restitute` that returns the model and advantage to their
 committed baseline.
 
+## Bilateral trade economics (`SLAdvantageTrade`)
+
+Math for advantaging a dividend across a **buyer** and a **seller** as one
+coordinated system, then dividing the surplus. Curves are quadratic so every
+result is closed-form and exactly checkable:
+
+```
+R_B(Q) = rbA*Q - rbB*Q^2     (buyer revenue / utility)
+C_S(Q) = csA*Q + csB*Q^2     (seller cost)
+```
+
+1. **Joint Profit Maximization — the integrated surplus.**
+   `jointProfit(Q) = buyerRevenue(Q) − sellerCost(Q)`; the optimal quantity
+   `optimalQuantity()` solves `marginalRevenue(Q) = marginalCost(Q)`, i.e.
+   `Q* = (rbA − csA) / (2·(rbB + csB))`. `maxJointProfit()` evaluates the pool
+   at `Q*`.
+2. **Bilateral monopoly & Nash bargaining.** `sellerProfit(P,Q)=P·Q−C_S(Q)`,
+   `buyerProfit(P,Q)=R_B(Q)−P·Q`. `nashObjective(...)` is the geometric product
+   `[Π_S−Π_S⁰]^α · [Π_B−Π_B⁰]^(1−α)`; `nashPrice(s0,b0,α)` returns the
+   closed-form wholesale price that awards the seller a fraction `α` of the
+   bargainable surplus (α=0.5 splits it down the middle).
+3. **Bilateral newsvendor (stochastic demand).** Overage/underage costs on both
+   ends (`overageSeller`, `underageSeller`, `overageBuyer`, `underageBuyer`) and
+   the centralized critical ratio
+   `criticalRatio(r,cs,vb) = (r−cs)/((r−cs)+(cs−vb))` that avoids double
+   marginalization. `coordinationGap(...)` measures how far the buyer's
+   standalone ratio falls short of the system ratio (how much a buyback /
+   revenue-share contract must lift it).
+
+Self-contained `expD`/`lnD`/`powAB` helpers (Taylor + atanh series, range-
+reduced) supply the fractional-exponent and root math with no cross-package
+imports.
+
 ## Run it
 
 ```sh
-./working-binaries/sleela run lib/advantage/advantage-demo.sleela
+./working-binaries/sleela run lib/advantage/advantage-demo.sleela        # onion model
+./working-binaries/sleela run lib/advantage/advantage-trade-demo.sleela  # trade math
 ```
 
 `run` auto-links the sibling classes in this directory (no imports needed).
-The demo prints the Sequitur, exercises both models, navigates the onion, and
-validates the arithmetic (developer pass = 25, user advantage = 30).
+The onion demo validates the layered arithmetic (developer pass = 25, user
+advantage = 30). The trade demo validates every model against hand-computed
+anchors: Q* = 20, Π_total = 800, Nash price = 60 (400/400 split), critical
+ratio = 80/95 ≈ 0.8421.
 
 ## Notes
 

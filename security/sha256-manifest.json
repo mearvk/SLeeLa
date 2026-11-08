@@ -918,6 +918,10 @@
       "sha256": "b0a5a0044d7971a21a259685ad86ed0b13e4acabb0e809bc8087147cfe15e94d"
     },
     {
+      "path": "lib/advantage/SLAdvantageTrade.sleela",
+      "sha256": "816c23327a39ea76451765fb8c4157f20ce8694760fde4364558daec8c4658d3"
+    },
+    {
       "path": "lib/advantage/SLAdvantageUserModel.sleela",
       "sha256": "dd2679bdeccbd104f37b09e11729ee6e0e9a2e566f59e7c1856448b141bd97ce"
     },
@@ -928,6 +932,10 @@
     {
       "path": "lib/advantage/advantage-demo.sleela",
       "sha256": "efc019ffe04d00e514f1fab16ece120c22aef0f883ba03a9f7ccadea308b1225"
+    },
+    {
+      "path": "lib/advantage/advantage-trade-demo.sleela",
+      "sha256": "52ea9b86b9c475a6c197bc0d14f1ec443b71f31f65e7cd5a3a78e2dc98fe3ab7"
     },
     {
       "path": "lib/alphabet/Alphabet.sleela",
