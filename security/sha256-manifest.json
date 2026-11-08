@@ -491,7 +491,7 @@
     },
     {
       "path": "impl/frontend/annotation_pipeline.cpp",
-      "sha256": "8caa2452180093007f7213f4ab28469d38ffbca7f2f383b3d486874f9e46da10"
+      "sha256": "3a751d7bdda1316bef4616a98b04653b66ceb39c9f0d9a1893d077912567fd7b"
     },
     {
       "path": "impl/frontend/annotation_pipeline.h",
@@ -531,7 +531,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "7db9ca5adf5a0f7b76def413ca828eded704adcedf5331fc2199581d86183c4d"
+      "sha256": "4587cc2ad94d9a04cf1704188d221977aec0819cfa005e64875db73d2e0dd917"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -611,7 +611,7 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "7c044ad3cacd1a0e8ed42f6c5d163f4946931214e451bcc7e057020bae9d4e84"
+      "sha256": "b585a9e770b63d3ab785b0b4a361b73982aab21799c70b3b145aae0d44c3f844"
     },
     {
       "path": "impl/frontend/parser.h",

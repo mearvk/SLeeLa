@@ -89,7 +89,14 @@ void Parser::parseThrows(std::vector<std::string>& out){
 }
 annotation::Annotation Parser::parseAnnotation(annotation::UseSite site){
     expect(Tok::At,"'@'");
-    std::string name=parseQualifiedName();
+    // An annotation name lives in its own namespace after '@', so a word that is
+    // a reserved modifier keyword elsewhere is still a valid annotation name.
+    // @native in particular reuses the `native` modifier keyword (Tok::KwNative)
+    // as the ahead-of-time-native marker; accept it (and any single keyword
+    // token) as the annotation name rather than requiring a bare identifier.
+    std::string name;
+    if(check(Tok::KwNative)){ name="native"; ++i_; }
+    else name=parseQualifiedName();
     std::string value;
     bool marker=true;
     if(accept(Tok::LParen)){

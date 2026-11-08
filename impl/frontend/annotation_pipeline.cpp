@@ -3,7 +3,7 @@
 #include <set>
 namespace sleela::frontend {
 bool isKnownLanguageAnnotation(const std::string& name) noexcept {
-    static const std::set<std::string> names = {"scope","area","next","responsibility","provider","source","requires","capability","group","counter","stage","release","runbook","supporter","modium","registry"};
+    static const std::set<std::string> names = {"scope","area","next","responsibility","provider","source","requires","capability","group","counter","stage","release","runbook","supporter","modium","registry","native"};
     return names.count(name) != 0;
 }
 bool annotationMayRepeat(const std::string& name) noexcept {
@@ -13,8 +13,15 @@ std::vector<AnnotationDiagnostic> validateLanguageAnnotations(const annotation::
     std::vector<AnnotationDiagnostic> out;
     std::set<std::string> seen;
     for (const auto& a : annotations.all()) {
-        if (a.name.empty() || a.value.empty()) {
-            out.push_back({AnnotationDiagnostic::Severity::Error, "annotation name and value must not be empty"});
+        if (a.name.empty()) {
+            out.push_back({AnnotationDiagnostic::Severity::Error, "annotation name must not be empty"});
+            continue;
+        }
+        // Marker annotations (no parentheses, e.g. @native) legitimately carry
+        // no value; only a value-form annotation (written with parentheses) is
+        // required to be non-empty.
+        if (!a.marker && a.value.empty()) {
+            out.push_back({AnnotationDiagnostic::Severity::Error, "annotation '@" + a.name + "(...)' must not have an empty value"});
             continue;
         }
         if (!isKnownLanguageAnnotation(a.name)) {
