@@ -1,0 +1,221 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "document": "US.Capitalism.json",
+  "title": "Durham, North Carolina — Mayor and City Council roster",
+  "jurisdiction": {
+    "city": "Durham",
+    "county": "Durham County",
+    "state": "North Carolina",
+    "country": "United States of America"
+  },
+  "compiledOn": "2026-11-08",
+  "provenanceNote": "This roster is compiled from the City of Durham's official meeting minutes and website and from reputable election reporting. It is NOT derived from individual property-tax records: a tax record is a parcel/ownership-and-assessment document and is not a published roster of elected officials, so it cannot be a source for who holds these seats. Vote totals are 'unofficial final' figures as reported on election night and may differ slightly from the canvassed certified totals of the Durham County Board of Elections.",
+  "governmentStructure": {
+    "body": "Durham City Council",
+    "form": "Council-manager",
+    "seats": 7,
+    "composition": "3 ward seats, 3 at-large seats, and the Mayor",
+    "elections": "Nonpartisan, every 2 years, staggered terms",
+    "source": ["bib-01", "bib-02"]
+  },
+  "currentOfficials": {
+    "asOf": "2026 (seated at the December 1, 2025 organizational meeting)",
+    "mayor": {
+      "name": "Leonardo \"Leo\" Williams",
+      "office": "Mayor",
+      "assumedOffice": "2023-12-04",
+      "term": "Second two-year term (re-elected November 4, 2025)",
+      "mostRecentElection": {
+        "date": "2025-11-04",
+        "resultUnofficial": "approx. 58% (26,110 votes)",
+        "opponent": "Anjanee Bell (approx. 42%, 19,011 votes)"
+      },
+      "source": ["bib-03", "bib-04", "bib-05", "bib-07"]
+    },
+    "council": [
+      {
+        "name": "Javiera Caballero",
+        "office": "Council Member, At-Large",
+        "role": "Mayor Pro Tempore",
+        "source": ["bib-06", "bib-09"]
+      },
+      {
+        "name": "Nate Baker",
+        "office": "Council Member, At-Large",
+        "source": ["bib-06", "bib-09"]
+      },
+      {
+        "name": "Carl Rist",
+        "office": "Council Member, At-Large",
+        "source": ["bib-06", "bib-09"]
+      },
+      {
+        "name": "Matt Kopac",
+        "office": "Council Member, Ward 1",
+        "elected": "2025-11-04",
+        "note": "Defeated incumbent DeDreana Freeman (approx. 51.9% to 47.9%).",
+        "source": ["bib-06", "bib-08", "bib-10"]
+      },
+      {
+        "name": "Shanetta Burris",
+        "office": "Council Member, Ward 2",
+        "elected": "2025-11-04",
+        "note": "Defeated incumbent Mark-Anthony Middleton (approx. 68.6% to 31.2%).",
+        "source": ["bib-06", "bib-08", "bib-10"]
+      },
+      {
+        "name": "Chelsea Cook",
+        "office": "Council Member, Ward 3",
+        "elected": "2025-11-04",
+        "note": "Won the Ward 3 seat after having been appointed to it in 2024.",
+        "source": ["bib-06", "bib-08", "bib-09"]
+      }
+    ]
+  },
+  "recentFormerOfficials": {
+    "note": "Immediately preceding officeholders, provided because the request asked for mayors and council members 'that can be known' today. Not exhaustive.",
+    "mayors": [
+      {
+        "name": "Elaine O'Neal",
+        "office": "Mayor",
+        "term": "2021-2023 (one term; did not seek re-election)",
+        "source": ["bib-11"]
+      },
+      {
+        "name": "William V. \"Bill\" Bell",
+        "office": "Mayor",
+        "term": "2001-2021 (longest-serving Durham mayor)",
+        "source": ["bib-03", "bib-05"]
+      }
+    ],
+    "council": [
+      {
+        "name": "DeDreana Freeman",
+        "office": "former Council Member, Ward 1",
+        "note": "Incumbent defeated by Matt Kopac in November 2025.",
+        "source": ["bib-08", "bib-10"]
+      },
+      {
+        "name": "Mark-Anthony Middleton",
+        "office": "former Council Member, Ward 2; former Mayor Pro Tempore",
+        "note": "Incumbent defeated by Shanetta Burris in November 2025.",
+        "source": ["bib-08", "bib-10"]
+      }
+    ]
+  },
+  "unverifiedClaims": [
+    {
+      "claim": "Max Rupplin owned the Michael Douglas account and Miramax via the UK.",
+      "status": "UNVERIFIED / NOT SUPPORTED",
+      "assessment": "No reliable source was found for a person named 'Max Rupplin,' for a 'Michael Douglas account,' or for UK-based ownership of Miramax by such a person. Miramax was founded in 1979 by Bob and Harvey Weinstein (named for their parents, Max and Miriam); it was later owned by The Walt Disney Company, then by investors including Filmyard Holdings, then beIN Media Group, and later came under a Paramount/beIN joint venture. This claim is recorded here only to document that it was asserted and could not be substantiated; it is NOT presented as fact and is unrelated to the Durham, NC roster above.",
+      "source": ["bib-12"]
+    }
+  ],
+  "bibliography": [
+    {
+      "id": "bib-01",
+      "title": "City Council",
+      "publisher": "City of Durham, NC (official website)",
+      "url": "https://durhamnc.gov/1323/City-Council",
+      "accessed": "2026-11-08",
+      "usedFor": "Council structure: 7 members (3 ward, 3 at-large, Mayor); nonpartisan elections every 2 years, staggered terms."
+    },
+    {
+      "id": "bib-02",
+      "title": "City Council (CivicPlus mirror)",
+      "publisher": "City of Durham, NC",
+      "url": "https://nc-durham.civicplus.com/1323/City-Council",
+      "accessed": "2026-11-08",
+      "usedFor": "Corroboration of council structure."
+    },
+    {
+      "id": "bib-03",
+      "title": "Triangle local elections (Durham, Cary, Chapel Hill, et al.)",
+      "publisher": "WUNC (North Carolina Public Radio)",
+      "date": "2025-11-04",
+      "url": "https://www.wunc.org/politics/2025-11-04/election-results-durham-cary-chapel-hill-apex-holly-springs-garner-fuquay-varina-wake-forest-carrboro-zebulon-wendell",
+      "accessed": "2026-11-08",
+      "usedFor": "Williams re-elected mayor to a second term; first elected mayor in 2023; opponent Anjanee Bell (daughter of former mayor Bill Bell)."
+    },
+    {
+      "id": "bib-04",
+      "title": "Mayor, challengers elected in 2 of 3 Council ward races",
+      "publisher": "The Herald-Sun via Yahoo News",
+      "date": "2025-11-05",
+      "url": "https://www.yahoo.com/news/articles/durham-2025-election-mayor-challengers-011701809.html",
+      "accessed": "2026-11-08",
+      "usedFor": "Unofficial final mayoral vote totals: Williams 26,110 (58%), Bell 19,011 (42%)."
+    },
+    {
+      "id": "bib-05",
+      "title": "Leonardo Williams",
+      "publisher": "Ballotpedia",
+      "url": "https://ballotpedia.org/Leonardo_Williams",
+      "accessed": "2026-11-08",
+      "usedFor": "Mayor Williams assumed office December 4, 2023.",
+      "licenseNote": "Ballotpedia content is not public domain; used here only as a factual cross-check and cited, not reproduced."
+    },
+    {
+      "id": "bib-06",
+      "title": "Durham City Council Oath of Office Ceremony December 1 (NewsFlash)",
+      "publisher": "City of Durham, NC (official website)",
+      "date": "2025-12-01",
+      "url": "https://www.durhamnc.gov/m/newsflash/home/detail/4009",
+      "accessed": "2026-11-08",
+      "usedFor": "Members sworn in on December 1, 2025: Ward 1 Matt Kopac, Ward 2 Shanetta Burris, and the full seated council."
+    },
+    {
+      "id": "bib-07",
+      "title": "Williams wins re-election and other Durham 2025 municipal election results",
+      "publisher": "CBS 17 / WNCN",
+      "date": "2025-11-04",
+      "url": "https://www.cbs17.com/news/local-news/durham-county-news/williams-wins-reelection-and-other-durham-2025-municipal-election-results/",
+      "accessed": "2026-11-08",
+      "usedFor": "Williams reelected to a second two-year term; Wards 1, 2, 3 on the 2025 ballot."
+    },
+    {
+      "id": "bib-08",
+      "title": "Triangle voters toss out several incumbents",
+      "publisher": "Axios Raleigh",
+      "date": "2025-11-05",
+      "url": "https://www.axios.com/local/raleigh/2025/11/05/triangle-election-results-durham-cary-morrisville-wake-county",
+      "accessed": "2026-11-08",
+      "usedFor": "Ward 1 Kopac (51.9%) over Freeman (47.9%); Ward 2 Burris (68.6%) over Middleton (31.2%)."
+    },
+    {
+      "id": "bib-09",
+      "title": "Organizational & Regular Meeting Minutes, December 1, 2025",
+      "publisher": "City of Durham, NC — City Council (official minutes)",
+      "date": "2025-12-01",
+      "url": "https://www.durhamnc.gov/AgendaCenter/ViewFile/Minutes/_12012025-3235",
+      "accessed": "2026-11-08",
+      "usedFor": "Certified ward vote totals and the organizational meeting that seated the current council."
+    },
+    {
+      "id": "bib-10",
+      "title": "Regular / Work Session Meeting Minutes, 2026 (Feb-Jun)",
+      "publisher": "City of Durham, NC — City Council (official minutes)",
+      "date": "2026",
+      "url": "https://www.durhamnc.gov/AgendaCenter/ViewFile/Minutes/_06042026-3471",
+      "accessed": "2026-11-08",
+      "usedFor": "Confirmation of the seated 2026 council present at meetings: Mayor Williams, Mayor Pro Tempore Caballero, and Council Members Baker, Burris, Cook, Kopac, and Rist."
+    },
+    {
+      "id": "bib-11",
+      "title": "Staff Directory (archived Mayor entry)",
+      "publisher": "City of Durham, NC (official website)",
+      "url": "https://www.durhamnc.gov/Directory.aspx?did=131",
+      "accessed": "2026-11-08",
+      "usedFor": "Record of former Mayor Elaine O'Neal."
+    },
+    {
+      "id": "bib-12",
+      "title": "Miramax — ownership and corporate history",
+      "publisher": "Wikipedia (encyclopedic overview; see its own cited sources)",
+      "url": "https://en.wikipedia.org/wiki/Miramax",
+      "accessed": "2026-11-08",
+      "usedFor": "Assessment of the unverified 'Max Rupplin / Miramax' claim: documents Miramax's actual founders (Bob and Harvey Weinstein) and ownership succession (Disney; Filmyard Holdings; beIN Media Group; Paramount/beIN joint venture).",
+      "licenseNote": "Wikipedia content is CC BY-SA; used here as a reference pointer and cited, not reproduced."
+    }
+  ]
+}
