@@ -1,0 +1,127 @@
+<< lib/advantage/medium-results/trade-exchange.sleela
+   SLeeLa Standard Library Definition.
+   Definition: MEDIUM-RESULT (Trade). Connect, control, and execute a
+   cross-venue commodity trade over open exchange in the USA using the connect
+   medium and the network subject. Theme: Trade -- routing a lumber lot from the
+   cheapest mill to the dearest buyer. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+<< Anchors (hand-computed): lumber best ask 350, best bid 420, spread 70,
+   alpha 0.5 -> P* 385; 40 units buy 350 sell 385, fee 1% -> in 14000,
+   gross 15400, fees 294, out 15106, profit 1106. Clock stratum 1, net rtt 9.
+   Native-adapter calls return code 9. >>
+class TradeExchange {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  String metaVersion = "1.0.0";
+  int metaId = 10661;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "Advantage";
+  String metaCorporation = "SLeeLa project";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "National (United States)";
+  String metaBirthDate = "2026-11-08";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  boolean near(double a, double b, double tol) {
+    double d = a - b;
+    if (d < 0.0) { d = 0.0 - d; }
+    return d < tol;
+  }
+
+  void main() {
+    print("== medium-result: TRADE (US open exchange) ==");
+
+    SLClockConnector clock = new SLClockConnector();
+    clock.init();
+    clock.configure("tick.usno.navy.mil");
+    clock.openLink();
+    int cSync = clock.sync();
+    clock.acceptSync(1.0, 1);
+
+    SLNetConnector venue = new SLNetConnector();
+    venue.init();
+    venue.configure("commodities.us", 443);
+    int vOpen = venue.openLink();
+    int vProbe = venue.probe();
+    venue.acceptProbe(9.0);
+    venue.write(256);
+
+    SLMarketScout scout = new SLMarketScout();
+    scout.forGood("lumber");
+    scout.addQuote("MillYard", 340.0, 350.0);
+    scout.addQuote("BigBoxA", 345.0, 360.0);
+    scout.addQuote("Regional", 420.0, 430.0);
+    double ask = scout.bestAsk();
+    double bid = scout.bestBid();
+
+    SLNegotiationRound neg = new SLNegotiationRound();
+    neg.configure(ask, bid, 0.5);
+    double price = neg.clearingPrice();
+
+    SLCashflow cf = new SLCashflow();
+    cf.configure(40.0, ask, price, 10.0);
+    cf.setFrictions(0.01, 0.0);
+
+    SLSqlConnector db = new SLSqlConnector();
+    db.init();
+    db.configure("db.us-trade", 3306, "trader", true, "fills");
+    db.openLink();
+    int dQuery = db.query("SELECT last_fill FROM lumber");
+
+    print("  clock : " + clock.describe());
+    print("  venue : " + venue.describe());
+    print("  deal  : " + neg.describe());
+    print("  money : " + cf.receipt("lumber"));
+    print("  db    : " + db.describe());
+
+    print("");
+    print("== validation ==");
+    boolean okConnect = (vOpen == 0) && venue.isReachable()
+                     && clock.trusted(1) && (venue.getBytesSent() == 256);
+    boolean okControl = near(ask, 350.0, 0.00001) && near(bid, 420.0, 0.00001)
+                     && near(price, 385.0, 0.00001)
+                     && near(scout.spread(), 70.0, 0.00001);
+    boolean okExecute = near(cf.moneyIn(), 14000.0, 0.00001)
+                     && near(cf.gross(), 15400.0, 0.00001)
+                     && near(cf.fees(), 294.0, 0.01)
+                     && near(cf.cashOut(), 15106.0, 0.01)
+                     && near(cf.profit(), 1106.0, 0.01);
+    boolean okNative = (cSync == 9) && (vProbe == 9) && (dQuery == 9);
+    print("  connect (clock+venue) ? " + okConnect);
+    print("  control (route+deal)  ? " + okControl);
+    print("  execute (fee receipt) ? " + okExecute);
+    print("  native boundary (9)   ? " + okNative);
+    if (okConnect) { if (okControl) { if (okExecute) { if (okNative) {
+      print("ALL CHECKS PASSED");
+    } } } }
+  }
+}

@@ -1126,6 +1126,22 @@
       "sha256": "a1f753682d37f3f1e7a06335caf1d6fd1185c293115a5fbd276d197832e0bb55"
     },
     {
+      "path": "lib/advantage/medium-results/business-exchange.sleela",
+      "sha256": "d058305c175346b874a17e3c7cc544084f1e687ded836e4605d973316fc2b835"
+    },
+    {
+      "path": "lib/advantage/medium-results/economics-exchange.sleela",
+      "sha256": "f36b0776836c4307e06734ee41a3a7df64a092f72abba241e20fb7fd8a191017"
+    },
+    {
+      "path": "lib/advantage/medium-results/trade-exchange.sleela",
+      "sha256": "93fccb161d6cb46d1298268666cd557ed085b1f889564f9cd1a2fd5a44c00b9d"
+    },
+    {
+      "path": "lib/advantage/medium-results/youthfulness-exchange.sleela",
+      "sha256": "3d2c798ea3aa14612c6c29f76bfcff655e728183070983db122f1b4c447ffb30"
+    },
+    {
       "path": "lib/advantage/network/SLCashflow.sleela",
       "sha256": "218ab9274b552520c2fa144fa4c28593dca6fc5719380e4dc074bb22687c49a3"
     },

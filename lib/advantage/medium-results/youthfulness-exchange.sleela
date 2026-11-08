@@ -1,0 +1,142 @@
+<< lib/advantage/medium-results/youthfulness-exchange.sleela
+   SLeeLa Standard Library Definition.
+   Definition: MEDIUM-RESULT (Youthfulness). A guided, guardrailed first trade
+   for a young/new participant over open US exchange: connect with a disciplined
+   clock, scout a small venue network, negotiate a BUYER-favored price (the
+   newcomer keeps more surplus), and settle a tiny amount with a hard spend cap
+   so a decline is handled safely. Theme: Youthfulness -- learning the exchange
+   with training wheels. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+<< Anchors (hand-computed): used-bike best ask 80, best bid 120, spread 40,
+   alpha 0.25 (buyer-favored) -> P* = 80 + 0.25*40 = 90; 1 unit buy 80 sell 90
+   -> in 80 out 90 profit 10. Spend cap 10000 cents; an over-cap authorize is a
+   first-class non-retryable DECLINE (code 8). This is an educational guardrail
+   pattern, not financial advice. Native-adapter calls return code 9. >>
+class YouthfulnessExchange {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  String metaVersion = "1.0.0";
+  int metaId = 10663;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "Advantage";
+  String metaCorporation = "SLeeLa project";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "National (United States)";
+  String metaBirthDate = "2026-11-08";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  boolean near(double a, double b, double tol) {
+    double d = a - b;
+    if (d < 0.0) { d = 0.0 - d; }
+    return d < tol;
+  }
+
+  void main() {
+    print("== medium-result: YOUTHFULNESS (US open exchange, guardrailed) ==");
+
+    SLClockConnector clock = new SLClockConnector();
+    clock.init();
+    clock.configure("time.nist.gov");
+    clock.openLink();
+    int cSync = clock.sync();
+    clock.acceptSync(3.0, 2);
+
+    SLNetConnector venue = new SLNetConnector();
+    venue.init();
+    venue.configure("marketplace.us", 443);
+    int vOpen = venue.openLink();
+    venue.probe();
+    venue.acceptProbe(20.0);
+
+    < CONTROL: small venue network, buyer-favored negotiation >
+    SLMarketScout scout = new SLMarketScout();
+    scout.forGood("used-bike");
+    scout.addQuote("NeighborA", 70.0, 80.0);
+    scout.addQuote("NeighborB", 100.0, 110.0);
+    scout.addQuote("ShopC", 120.0, 130.0);
+    double ask = scout.bestAsk();
+    double bid = scout.bestBid();
+
+    SLNegotiationRound neg = new SLNegotiationRound();
+    neg.configure(ask, bid, 0.25);
+    double price = neg.clearingPrice();
+
+    SLCashflow cf = new SLCashflow();
+    cf.configure(1.0, ask, price, 1.0);
+    cf.setFrictions(0.0, 0.0);
+
+    < EXECUTE with a GUARDRAIL: a hard spend cap of 100.00 USD (10000 cents) >
+    int spendCapCents = 10000;
+    SLMoneyConnector money = new SLMoneyConnector();
+    money.init();
+    money.configure("wallet", "alias:youth-prepaid", "USD");
+    money.openLink();
+
+    < the real purchase (90.00 USD = 9000 cents) is within the cap >
+    int buyCents = 9000;
+    int mAuth = money.authorize(buyCents);
+    money.acceptAuthorization(buyCents);
+    int mCap = money.capture(buyCents);
+
+    < an over-cap attempt (150.00 USD) is refused as a hard, non-retryable decline >
+    int overCapCents = 15000;
+    int declineCode = 0;
+    boolean declineSafe = true;
+    if (overCapCents > spendCapCents) {
+      declineCode = money.declineAuthorization("over youth spend cap");
+      declineSafe = !money.lastFault().isRetryable();
+    }
+
+    print("  clock : " + clock.describe());
+    print("  venue : " + venue.describe());
+    print("  deal  : " + neg.describe());
+    print("  money : " + cf.receipt("used-bike") + " | " + money.receipt());
+
+    print("");
+    print("== validation ==");
+    boolean okConnect = (vOpen == 0) && venue.isReachable() && clock.isSynced();
+    boolean okControl = near(ask, 80.0, 0.00001) && near(bid, 120.0, 0.00001)
+                     && near(price, 90.0, 0.00001)
+                     && (neg.buyerSurplus() > neg.sellerSurplus());
+    boolean okExecute = near(cf.moneyIn(), 80.0, 0.00001)
+                     && near(cf.cashOut(), 90.0, 0.00001)
+                     && (mCap == 0) && (money.settledCents() == 9000);
+    boolean okGuardrail = (declineCode == 8) && declineSafe;
+    print("  connect (clock+venue) ? " + okConnect);
+    print("  control (buyer-fair)  ? " + okControl);
+    print("  execute (within cap)  ? " + okExecute);
+    print("  guardrail decline (8) ? " + okGuardrail);
+    if (okConnect) { if (okControl) { if (okExecute) { if (okGuardrail) {
+      print("ALL CHECKS PASSED");
+    } } } }
+  }
+}

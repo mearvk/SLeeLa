@@ -1,0 +1,114 @@
+<< lib/advantage/medium-results/economics-exchange.sleela
+   SLeeLa Standard Library Definition.
+   Definition: MEDIUM-RESULT (Economics). Connect, control, and execute a
+   coordinated buyer+seller trade over open exchange in the USA, using the math
+   subject (joint profit max + Nash bargaining) for the clearing price and the
+   connect medium for the connection, settlement, and record. Theme: Economics
+   -- maximize the surplus, then split it fairly. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+<< Anchors (hand-computed): buyer revenue R_B(Q)=100Q-Q^2, seller cost
+   C_S(Q)=20Q+Q^2 -> Q*=20, total surplus 800, Nash price (alpha 0.5) 60
+   splitting 400/400. Settlement: 20 units captured at 60 -> 1200 USD per the
+   receipt; integer cents 120000. Native-adapter calls return code 9. >>
+class EconomicsExchange {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  String metaVersion = "1.0.0";
+  int metaId = 10662;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "Advantage";
+  String metaCorporation = "SLeeLa project";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "National (United States)";
+  String metaBirthDate = "2026-11-08";
+  int metaScienceRating = 8;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  boolean near(double a, double b, double tol) {
+    double d = a - b;
+    if (d < 0.0) { d = 0.0 - d; }
+    return d < tol;
+  }
+
+  void main() {
+    print("== medium-result: ECONOMICS (US open exchange) ==");
+
+    SLNetConnector venue = new SLNetConnector();
+    venue.init();
+    venue.configure("markets.us", 443);
+    int vOpen = venue.openLink();
+    int vProbe = venue.probe();
+    venue.acceptProbe(15.0);
+
+    < CONTROL: coordinate the system, then split the surplus by Nash >
+    SLJointProfitMax curves = new SLJointProfitMax();
+    curves.configureCurves(100.0, 1.0, 20.0, 1.0);
+    double qstar = curves.optimalQuantity();
+    double pool = curves.maxJointProfit();
+
+    SLNashBargaining nash = new SLNashBargaining();
+    nash.configure(curves);
+    double price = nash.nashPrice(0.0, 0.0, 0.5);
+    double seller = nash.sellerProfit(price, qstar);
+    double buyer = nash.buyerProfit(price, qstar);
+
+    < EXECUTE: settle the cleared value through a money source (cents) >
+    SLMoneyConnector money = new SLMoneyConnector();
+    money.init();
+    money.configure("card", "alias:clearing-house", "USD");
+    money.openLink();
+    int priceCents = 120000;
+    int mAuth = money.authorize(priceCents);
+    money.acceptAuthorization(priceCents);
+    int mCap = money.capture(priceCents);
+
+    print("  venue : " + venue.describe());
+    print("  surplus: Q*=" + qstar + " pool=" + pool
+        + " Nash P*=" + price + " split " + seller + "/" + buyer);
+    print("  money : " + money.receipt());
+
+    print("");
+    print("== validation ==");
+    boolean okConnect = (vOpen == 0) && venue.isReachable();
+    boolean okControl = near(qstar, 20.0, 0.00001) && near(pool, 800.0, 0.00001)
+                     && near(price, 60.0, 0.00001)
+                     && near(seller, 400.0, 0.00001) && near(buyer, 400.0, 0.00001);
+    boolean okExecute = (mCap == 0) && (money.settledCents() == 120000);
+    boolean okNative = (vProbe == 9) && (mAuth == 9);
+    print("  connect (venue)       ? " + okConnect);
+    print("  control (Q* + Nash)   ? " + okControl);
+    print("  execute (settle cents) ? " + okExecute);
+    print("  native boundary (9)   ? " + okNative);
+    if (okConnect) { if (okControl) { if (okExecute) { if (okNative) {
+      print("ALL CHECKS PASSED");
+    } } } }
+  }
+}
