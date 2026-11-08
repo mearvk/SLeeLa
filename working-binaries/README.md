@@ -4,8 +4,13 @@ Prebuilt native SLeeLa toolchain binaries, kept here for quick access.
 
 | Binary | What it is | Size |
 |--------|------------|------|
-| `sleela` | `SLeeLa™ Language/Runtime 0.3.30-dev` — the authoritative SLeeLa compiler/runner. **Supported source syntax 1.0 – 3.0**, native C/C++ Core VM. Subcommands include `check`, `run`, `compile -o <out>`, `validate-artifact`, `nordshrift [--emit\|--roundtrip] [--target=…]`, `version`. **There is no separate `sleelac`** — compilation is `sleela compile`. | ~2.6 MB |
+| `sleela` | `SLeeLa™ Language/Runtime 0.3.30-dev (prebuilt snapshot)` — the authoritative SLeeLa compiler/runner. **Supported source syntax 1.0 – 3.0**, native C/C++ Core VM. Subcommands include `check`, `run`, `compile -o <out>`, `validate-artifact`, `nordshrift [--emit\|--roundtrip] [--target=…]`, `version`. **There is no separate `sleelac`** — compilation is `sleela compile`. | ~2.6 MB |
 | `nordshrift` | `Nordshrift 2.7.1-dev` — the SLeeLa `.sst` transpiler driver (NS-SST-0001 spec 2.2); drives SLeeLa source syntax up to 3.0. Subcommands: `check`, `build`, `objects`, `relevance --target=java\|sleela\|c`, `version`. (The SLeeLa → Nordshrift → back round-trip is `sleela nordshrift`, inside the `sleela` binary.) | ~2.3 MB |
+
+> **Release-source note:** the current source release identifier is
+> `1.3.2-pro`. The committed Linux prebuilt binaries have not been rebuilt
+> for that source change and still report `0.3.30-dev`; rebuild from source
+> before treating a prebuilt executable as the `1.3.2-pro` release.
 
 ## Important caveats
 
@@ -45,7 +50,7 @@ Built in the Kiro sandbox from this repository's `impl/` tree
 (`g++ -std=c++17 -O2`, pthread; `make build/sleela` and `make build/nordshrift`).
 Reported versions:
 
-- `sleela` — `SLeeLa™ Language/Runtime 0.3.30-dev` (supported source syntax 1.0 – 3.0)
+- `sleela` — `SLeeLa™ Language/Runtime 0.3.30-dev (prebuilt snapshot)` (supported source syntax 1.0 – 3.0)
 - `nordshrift` — `Nordshrift 2.7.1-dev` (NS-SST-0001 spec 2.2; drives SLeeLa up to 3.0)
 
 SHA-256 of the committed copies:
