@@ -903,7 +903,7 @@
     },
     {
       "path": "lib/advantage/SLAdvantageDeveloperModel.sleela",
-      "sha256": "9b043fafd13d138cb9dd1da13c34b6908219b7ef760f13bdcae499d8bd077d7c"
+      "sha256": "b0d5d1d57ae7b7101c5a420574c54c2eb870574fca855a3886e0dd6cca824a8c"
     },
     {
       "path": "lib/advantage/SLAdvantageDividend.sleela",
@@ -931,7 +931,7 @@
     },
     {
       "path": "lib/advantage/grading/SLGradeBook.sleela",
-      "sha256": "8445f3013319f33db9431597a4ae902e463f3747131145e53357818feaafa2f9"
+      "sha256": "314065dc3ed6cb4cedfe5b37a2380dad01616ba3da3221d932c9adf9df108ffa"
     },
     {
       "path": "lib/advantage/grading/SLGradeSet.sleela",
@@ -971,7 +971,7 @@
     },
     {
       "path": "lib/advantage/integration/SLVerticalIntegration.sleela",
-      "sha256": "7dd7c45e7de6e85542b740beeba80b9fc7287deabe6a16c32fd1b5a02ec77702"
+      "sha256": "e158bd125a2d5cb84631fe6f5a214eec1dfc8a436ee5d33749b770d602e26d2e"
     },
     {
       "path": "lib/advantage/integration/integration-demo.sleela",
@@ -996,6 +996,18 @@
     {
       "path": "lib/advantage/math/trade-math-demo.sleela",
       "sha256": "2faadb29c9c140eb9906971e7b5596a60594461c5da3c028148739efbdfb60e7"
+    },
+    {
+      "path": "lib/advantage/output/SLAdvantageEmitter.sleela",
+      "sha256": "e1ada220f4ed5d6b1b527d96e4240edeade708028c44cef9584d62dd6e9d9be6"
+    },
+    {
+      "path": "lib/advantage/output/SLAdvantageSink.sleela",
+      "sha256": "18e53fbfe8f8bd6cd01b400b33eaad7d1ba9876624b5ee0a5d8ac2e5d36e5cfd"
+    },
+    {
+      "path": "lib/advantage/output/output-demo.sleela",
+      "sha256": "fb4bad156211219f58baec02d3ffb8761a012aa1cca9ffef86b74cd7741d3f6c"
     },
     {
       "path": "lib/advantage/physics/SLAnnouncementContact.sleela",

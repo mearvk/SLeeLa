@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11947
+library-source-files: 11950
 library-packages: 117
 module-facade-symbols: 84
-total-symbol-records: 12031
+total-symbol-records: 12034
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -31,6 +31,9 @@ advantage	SLJointProfitMax.sleela	lib/advantage/math/SLJointProfitMax.sleela	sou
 advantage	SLNashBargaining.sleela	lib/advantage/math/SLNashBargaining.sleela	source
 advantage	SLTradeMath.sleela	lib/advantage/math/SLTradeMath.sleela	source
 advantage	trade-math-demo.sleela	lib/advantage/math/trade-math-demo.sleela	source
+advantage	SLAdvantageEmitter.sleela	lib/advantage/output/SLAdvantageEmitter.sleela	source
+advantage	SLAdvantageSink.sleela	lib/advantage/output/SLAdvantageSink.sleela	source
+advantage	output-demo.sleela	lib/advantage/output/output-demo.sleela	source
 advantage	SLAnnouncementContact.sleela	lib/advantage/physics/SLAnnouncementContact.sleela	source
 advantage	SLPhysicsMath.sleela	lib/advantage/physics/SLPhysicsMath.sleela	source
 advantage	SLTransactionalGeodesic.sleela	lib/advantage/physics/SLTransactionalGeodesic.sleela	source

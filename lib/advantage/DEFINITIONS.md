@@ -20,6 +20,7 @@
 7. [Class index](#7-class-index)
 8. [Vertical-integration subject (`integration/`)](#8-vertical-integration-subject-integration)
 9. [Sophistication grading subject (`grading/`)](#9-sophistication-grading-subject-grading)
+10. [Output seam (`output/`)](#10-output-seam-output)
 
 ---
 
@@ -244,11 +245,13 @@ from `math/SLTradeMath` to avoid cross-directory class-name ambiguity.
 | `SLGradeSet` | grading | `grading/SLGradeSet.sleela` |
 | `SLSophisticationCircuit` | grading | `grading/SLSophisticationCircuit.sleela` |
 | `SLGradeBook` | grading | `grading/SLGradeBook.sleela` |
+| `SLAdvantageSink` | output | `output/SLAdvantageSink.sleela` |
+| `SLAdvantageEmitter` | output | `output/SLAdvantageEmitter.sleela` |
 
 Runnable demos (sibling-linked, each validates its subject):
 `advantage-demo.sleela`, `math/trade-math-demo.sleela`,
 `physics/physics-demo.sleela`, `integration/integration-demo.sleela`,
-`grading/grading-demo.sleela`.
+`grading/grading-demo.sleela`, `output/output-demo.sleela`.
 
 ---
 
@@ -391,3 +394,57 @@ grader:   1 (judge)                                                 -> B8
 absolute: 1 (standard; flawed-abs excluded — below the 80 bar)      -> B8
 champion: integration (S10)
 ```
+
+---
+
+## 10. Output seam (`output/`)
+
+So the subject modules need not stay silent (previously only the demos
+`print`ed): a selectable output sink and a module-facing emitter, built on the
+toolchain's CommonRails printing surface.
+
+### 10.1 Terms
+
+| Term | Definition | Where |
+|------|------------|-------|
+| **Sink** | Decides *where* rendered output goes and captures a copy. | `SLAdvantageSink` |
+| **Target** | The sink's destination: `0` terminal (stdout), `1` commonrails (stdout, column-formatted via `PrintRail`), `2` socket/connector (framed + buffered), `3` silent (capture only). | `SLAdvantageSink.target` |
+| **Endpoint** | For the socket target, the connector identity (e.g. `host:port`) prefixed onto each framed line. | `SLAdvantageSink.endpoint` / `bindEndpoint` |
+| **Frame** | One emitted line as stored in the capture; the socket target prefixes it with the endpoint. | `SLAdvantageSink.emit` / `appendFrame` |
+| **Capture / drain** | The buffered frames; `lastFrame()` reads them, `drain()` returns and clears them (a native host forwards the drained text with `slnet_write`). | `SLAdvantageSink.drain` / `lastFrame` |
+| **Emitter** | The module-facing API: `line`, `state`, `status`, `report`, `grade`. Chooses *formatting* (CommonRails vs plain); the sink chooses destination. | `SLAdvantageEmitter` |
+| **CommonRails formatting** | For the commonrails target, `state(...)` is rendered by the toolchain's `PrintRail.stateLineText` (naming `PrintRail` auto-resolves `lib/common-rails`). Explicit character counts are passed because Core has no string-length primitive. | `SLAdvantageEmitter.state` |
+| **emitThrough** | A self-report method on the top-level models (`SLAdvantageDeveloperModel`, `SLVerticalIntegration`, `SLGradeBook`): hands the model's `describe()` to an emitter. | `*.emitThrough(emitter)` |
+
+### 10.2 The four targets
+
+| Target | Behaviour |
+|--------|-----------|
+| `terminal` (0) | `print()` to stdout and record a copy |
+| `commonrails` (1) | format via `PrintRail`, `print()` to stdout, record a copy |
+| `socket` (2) | frame the line with the endpoint prefix and buffer it (no live dial under `run`); `drain()` yields it for a native `slnet_write` |
+| `silent` (3) | record only, no stdout |
+
+### 10.3 Worked example (validated in `output-demo`)
+
+```
+terminal:    [CIRCUIT] grading modules            (printed, 2 frames)
+             [GRADE] integration -> S10
+commonrails: PrintRail-formatted "[WORKING] trade Q* found" padded to 80 cols
+socket:      bindEndpoint("ledger.example:9077"); emit two lines; drain() ->
+               [ledger.example:9077] [CIRCUIT] winning=5 losing=1
+               [ledger.example:9077] [GRADE] physics -> C7
+             frame count resets to 0 after drain
+silent:      report("sophistication","27") -> captured "sophistication: 27"
+module:      SLVerticalIntegration.emitThrough(emitter) -> 1 frame to its sink
+```
+
+### 10.4 Honest limits
+
+- A live network socket is **not** available to a sandboxed `run` program, so
+  the socket target **buffers** framed lines rather than dialing a connection;
+  a native host (or the C/C++ net layer under `impl/core/sleela_net.*`) drains
+  the capture and performs the real `slnet_write`.
+- CommonRails requires explicit character counts (Core has no string-length
+  primitive), so `state(...)` takes `labelChars`/`messageChars`; the plain
+  `status(...)` convenience needs none.

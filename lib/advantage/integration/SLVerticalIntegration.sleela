@@ -214,4 +214,10 @@ class SLVerticalIntegration {
          + " relevance=" + totalRelevance()
          + " sophistication=" + sophistication();
   }
+
+  < Report this model through an output emitter (terminal / commonrails / >
+  < socket / silent); the emitter and its sink decide the destination. >
+  void emitThrough(SLAdvantageEmitter em) {
+    em.report("vertical-integration", describe());
+  }
 }

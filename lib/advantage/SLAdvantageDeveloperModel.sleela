@@ -171,4 +171,10 @@ class SLAdvantageDeveloperModel {
          + " | depth=" + onion.depth() + "/" + onion.size()
          + " passes=" + passes;
   }
+
+  < Report this model through an output emitter (terminal / commonrails / >
+  < socket / silent). The emitter and its sink decide the destination. >
+  void emitThrough(SLAdvantageEmitter em) {
+    em.report("onion-model", describe());
+  }
 }

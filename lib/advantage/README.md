@@ -101,6 +101,24 @@ winning, losing, grader, and absolute sets — with letter + tier ratings.
 
 Defined term-by-term in [`DEFINITIONS.md`](./DEFINITIONS.md#9-sophistication-grading-subject-grading).
 
+### `output/` subfolder — output seam (terminal / CommonRails / socket)
+
+So modules need not stay silent: a selectable output sink that routes rendered
+lines to the **terminal**, a **CommonRails**-formatted surface (via the
+toolchain's `PrintRail`), a **socket/connector** (framed + buffered for a
+native `slnet_write`), or a silent capture.
+
+| File | Class | Purpose |
+|------|-------|---------|
+| `output/SLAdvantageSink.sleela` | `SLAdvantageSink` | The sink: target (terminal/commonrails/socket/silent), endpoint, capture buffer, `drain()`/`lastFrame()` |
+| `output/SLAdvantageEmitter.sleela` | `SLAdvantageEmitter` | The module-facing API (`line`, `state`, `status`, `report`, `grade`); formats via `PrintRail` for the CommonRails target |
+| `output/output-demo.sleela` | `OutputDemo` | Runnable demo + validation across all four targets (`main`) |
+
+The three top-level models (`SLAdvantageDeveloperModel`, `SLVerticalIntegration`,
+`SLGradeBook`) carry an `emitThrough(emitter)` method so they can report
+themselves to any target. Defined in
+[`DEFINITIONS.md`](./DEFINITIONS.md#10-output-seam-output).
+
 ## The two models
 
 - **User's model** hides the onion. State a dividend and the model it respects,
@@ -167,6 +185,7 @@ Full definitions, explanations, ASCII sketches, and worked examples are in
 ./working-binaries/sleela run lib/advantage/physics/physics-demo.sleela  # trust-field subject
 ./working-binaries/sleela run lib/advantage/integration/integration-demo.sleela  # vertical integration
 ./working-binaries/sleela run lib/advantage/grading/grading-demo.sleela  # sophistication grader
+./working-binaries/sleela run lib/advantage/output/output-demo.sleela  # output seam (terminal/rails/socket)
 ```
 
 `run` auto-links the sibling classes in each directory (no imports needed).

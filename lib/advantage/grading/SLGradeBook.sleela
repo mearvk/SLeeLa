@@ -110,4 +110,10 @@ class SLGradeBook {
          + " grader=" + g.size() + " (" + rateSet(g) + ")"
          + " absolute=" + ab.size() + " (" + rateSet(ab) + ")";
   }
+
+  < Report the whole gradebook through an output emitter (terminal / >
+  < commonrails / socket / silent); the sink decides the destination. >
+  void emitThrough(SLAdvantageEmitter em) {
+    em.report("gradebook", describe());
+  }
 }

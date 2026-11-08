@@ -1,0 +1,105 @@
+<< lib/advantage/output/SLAdvantageEmitter.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The emitter -- the output API advantage modules call to report
+   themselves, routed through a sink and optionally formatted via CommonRails. >>
+#sleela 2.5
+material;
+< Modules used to be silent (only the demos printed). The emitter gives any >
+< module a small output API that works the same regardless of destination: >
+<   line(text)            -- emit a raw line >
+<   state(label, msg)     -- emit a labelled status line >
+<   report(subject, body) -- emit "subject: body" >
+< When the sink's target is COMMONRAILS, state(...) is formatted through the >
+< toolchain's PrintRail (naming PrintRail auto-resolves lib/common-rails), so >
+< advantage output shares the one professional-printing surface. For other >
+< targets the plain text is routed as-is. The sink decides terminal vs socket >
+< vs silent; the emitter decides formatting. >
+class SLAdvantageEmitter {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10561;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  SLAdvantageSink sink;
+  < reused CommonRails renderer for the commonrails target >
+  PrintRail rail;
+
+  void configure(SLAdvantageSink s) {
+    sink = s;
+    rail = new PrintRail();
+  }
+
+  SLAdvantageSink getSink() { return sink; }
+
+  < Emit a raw line to the sink's target. >
+  void line(String text) {
+    sink.emit(text);
+  }
+
+  << Emit a labelled status line. For the COMMONRAILS target this is rendered
+     by PrintRail.stateLineText, which -- like all of CommonRails -- needs
+     explicit character counts because Core has no string-length primitive;
+     the caller passes labelChars and messageChars. For every other target the
+     counts are ignored and the plain "[LABEL] message" is routed. >>
+  void state(String label, int labelChars, String message, int messageChars) {
+    if (sink.getTarget() == 1) {
+      String rendered = rail.stateLineText(label, labelChars, message, messageChars);
+      sink.emit(rendered);
+    } else {
+      sink.emit("[" + label + "] " + message);
+    }
+  }
+
+  < Convenience state() when CommonRails formatting is not needed: no counts. >
+  void status(String label, String message) {
+    sink.emit("[" + label + "] " + message);
+  }
+
+  < Emit "subject: body". >
+  void report(String subject, String body) {
+    sink.emit(subject + ": " + body);
+  }
+
+  < Emit a module rating line, e.g. "GRADE integration -> S10". Char counts >
+  < are supplied so the commonrails target aligns correctly. >
+  void grade(String moduleName, int moduleChars, String rating, int ratingChars) {
+    state("GRADE", 5, moduleName + " -> " + rating, moduleChars + 4 + ratingChars);
+  }
+}
