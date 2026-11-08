@@ -26,8 +26,11 @@ the integrity-gated source build.
 The toolchain is **two** native executables. The committed copies in
 [`/working-binaries/`](../../working-binaries/) report:
 
-- **`sleela`** — `SLeeLa™ Language/Runtime 0.3.30-dev`, the authoritative
-  compiler/runner, **supported source syntax 1.0 – 3.0**, native C/C++ Core VM.
+- **`sleela`** — the committed Linux prebuilt still reports
+  `SLeeLa™ Language/Runtime 0.3.30-dev`; it is an older snapshot, not the
+  current source release. The current source release is **1.3.2-pro** and
+  supports **source syntax 1.0 – 3.0** on the native C/C++ Core VM. Build from
+  source for the current release; do not describe the prebuilt as current.
   Subcommands: `check <f>`, `run <f>`, `compile <f...> -o <out>`,
   `validate-artifact <f>`, `nordshrift [--emit|--roundtrip] [--target=…] <f>`,
   `version`. (Older builds branded this binary "Sleelvac™" and capped syntax at
