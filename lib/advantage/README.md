@@ -28,9 +28,21 @@ order. The layers form an **onion**, outer skin to inner core:
 | `SLAdvantageSequitur.sleela` | `SLAdvantageSequitur` | The ordered, navigable onion; cursor moves inward/outward; runs passes |
 | `SLAdvantageUserModel.sleela` | `SLAdvantageUserModel` | **User's model** — simple, outcome-facing encapsulation |
 | `SLAdvantageDeveloperModel.sleela` | `SLAdvantageDeveloperModel` | **Developer's model** — full-control encapsulation of the process |
-| `SLAdvantageTrade.sleela` | `SLAdvantageTrade` | **Bilateral trade economics** — joint profit max, Nash bargaining, newsvendor critical ratio |
 | `advantage-demo.sleela` | `AdvantageDemo` | Runnable demo + validation of the onion model (`main`) |
-| `advantage-trade-demo.sleela` | `AdvantageTradeDemo` | Runnable demo + validation of the trade math (`main`) |
+| `math/` (subfolder) | — | **Bilateral trade economics** subject — see below and [`MATH.md`](./MATH.md) |
+
+### `math/` subfolder — trade economics subject
+
+| File | Class | Purpose |
+|------|-------|---------|
+| `math/SLJointProfitMax.sleela` | `SLJointProfitMax` | Joint profit maximization — integrated surplus `Π_total(Q)` and `Q*` where `MR = MC` |
+| `math/SLNashBargaining.sleela` | `SLNashBargaining` | Bilateral-monopoly Nash bargaining split by power index `α` over reservation profits |
+| `math/SLBilateralNewsvendor.sleela` | `SLBilateralNewsvendor` | Overage/underage costs on both ends + the centralized critical ratio |
+| `math/SLTradeMath.sleela` | `SLTradeMath` | Self-contained `expD` / `lnD` / `powAB` / `sqrtD` helpers (no cross-package imports) |
+| `math/trade-math-demo.sleela` | `TradeMathDemo` | Runnable demo + validation of all three models (`main`) |
+
+Full definitions, explanations, ASCII sketches, and worked examples live in
+[`MATH.md`](./MATH.md).
 
 ## The two models
 
@@ -77,49 +89,29 @@ The demo's final sections exercise all of this: a baseline advantage of 10,
 promo model, and a `restitute` that returns the model and advantage to their
 committed baseline.
 
-## Bilateral trade economics (`SLAdvantageTrade`)
+## Bilateral trade economics (`math/` subject)
 
 Math for advantaging a dividend across a **buyer** and a **seller** as one
-coordinated system, then dividing the surplus. Curves are quadratic so every
-result is closed-form and exactly checkable:
+coordinated system, then dividing the surplus, now organized as the
+[`math/`](./math) subject: `SLJointProfitMax` (joint surplus + `Q*`),
+`SLNashBargaining` (the `α`-weighted split with a closed-form Nash price), and
+`SLBilateralNewsvendor` (overage/underage costs + the centralized critical
+ratio that avoids double marginalization). `SLTradeMath` supplies self-contained
+`expD`/`lnD`/`powAB` helpers so the subject needs no cross-package imports.
 
-```
-R_B(Q) = rbA*Q - rbB*Q^2     (buyer revenue / utility)
-C_S(Q) = csA*Q + csB*Q^2     (seller cost)
-```
-
-1. **Joint Profit Maximization — the integrated surplus.**
-   `jointProfit(Q) = buyerRevenue(Q) − sellerCost(Q)`; the optimal quantity
-   `optimalQuantity()` solves `marginalRevenue(Q) = marginalCost(Q)`, i.e.
-   `Q* = (rbA − csA) / (2·(rbB + csB))`. `maxJointProfit()` evaluates the pool
-   at `Q*`.
-2. **Bilateral monopoly & Nash bargaining.** `sellerProfit(P,Q)=P·Q−C_S(Q)`,
-   `buyerProfit(P,Q)=R_B(Q)−P·Q`. `nashObjective(...)` is the geometric product
-   `[Π_S−Π_S⁰]^α · [Π_B−Π_B⁰]^(1−α)`; `nashPrice(s0,b0,α)` returns the
-   closed-form wholesale price that awards the seller a fraction `α` of the
-   bargainable surplus (α=0.5 splits it down the middle).
-3. **Bilateral newsvendor (stochastic demand).** Overage/underage costs on both
-   ends (`overageSeller`, `underageSeller`, `overageBuyer`, `underageBuyer`) and
-   the centralized critical ratio
-   `criticalRatio(r,cs,vb) = (r−cs)/((r−cs)+(cs−vb))` that avoids double
-   marginalization. `coordinationGap(...)` measures how far the buyer's
-   standalone ratio falls short of the system ratio (how much a buyback /
-   revenue-share contract must lift it).
-
-Self-contained `expD`/`lnD`/`powAB` helpers (Taylor + atanh series, range-
-reduced) supply the fractional-exponent and root math with no cross-package
-imports.
+Full definitions, explanations, ASCII sketches, and worked examples are in
+**[`MATH.md`](./MATH.md)**.
 
 ## Run it
 
 ```sh
 ./working-binaries/sleela run lib/advantage/advantage-demo.sleela        # onion model
-./working-binaries/sleela run lib/advantage/advantage-trade-demo.sleela  # trade math
+./working-binaries/sleela run lib/advantage/math/trade-math-demo.sleela  # trade math subject
 ```
 
-`run` auto-links the sibling classes in this directory (no imports needed).
+`run` auto-links the sibling classes in each directory (no imports needed).
 The onion demo validates the layered arithmetic (developer pass = 25, user
-advantage = 30). The trade demo validates every model against hand-computed
+advantage = 30). The trade-math demo validates every model against hand-computed
 anchors: Q* = 20, Π_total = 800, Nash price = 60 (400/400 split), critical
 ratio = 80/95 ≈ 0.8421.
 

@@ -1,0 +1,118 @@
+<< lib/advantage/math/SLNashBargaining.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Bilateral monopoly & Nash bargaining -- split a known joint
+   surplus by a bargaining-power index over reservation profits. >>
+#sleela 2.5
+material;
+< Model 2 of the advantage trade subject. Once the joint surplus is fixed at >
+< Q*, the SPLIT depends on the wholesale price P. Individual profit curves: >
+<   Seller: Pi_S(P,Q) = P*Q - C_S(Q) >
+<   Buyer:  Pi_B(P,Q) = R_B(Q) - P*Q >
+< The Nash Bargaining Solution (Nash 1950) picks the price that maximizes the >
+< geometric product of each party's surplus over its disagreement point: >
+<   max_P [Pi_S - Pi_S0]^alpha * [Pi_B - Pi_B0]^(1-alpha). >
+< alpha in [0,1] is the bargaining-power index; alpha=0.5 splits the surplus >
+< evenly. Depends on a SLJointProfitMax for the curves and SLTradeMath for the >
+< fractional-exponent power (both sibling-linked within advantage/math). >
+class SLNashBargaining {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10523;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  << metaNationalSchedule: the Nash Bargaining Solution is J. F. Nash,
+     "The Bargaining Problem", Econometrica 18(2):155-162 (1950); an academic
+     result, not a statute. >>
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- Dependencies (sibling-linked within advantage/math) ---- >
+  SLJointProfitMax curves;
+  SLTradeMath mathlib;
+
+  void configure(SLJointProfitMax c) {
+    curves = c;
+    mathlib = new SLTradeMath();
+  }
+
+  < Seller profit at wholesale price P and quantity Q: (P*Q) - C_S(Q). >
+  double sellerProfit(double price, double q) {
+    return price * q - curves.sellerCost(q);
+  }
+
+  < Buyer profit at wholesale price P and quantity Q: R_B(Q) - (P*Q). >
+  double buyerProfit(double price, double q) {
+    return curves.buyerRevenue(q) - price * q;
+  }
+
+  < The Nash objective at a candidate price. Both surpluses must be positive >
+  < to be inside the bargaining range; outside it the objective is 0. >
+  double nashObjective(double price, double q, double s0, double b0, double alpha) {
+    double ss = sellerProfit(price, q) - s0;
+    double bs = buyerProfit(price, q) - b0;
+    if (ss <= 0.0) { return 0.0; }
+    if (bs <= 0.0) { return 0.0; }
+    return mathlib.powAB(ss, alpha) * mathlib.powAB(bs, 1.0 - alpha);
+  }
+
+  << Closed-form Nash price at the optimal quantity. Total profit is fixed at
+     Q*, so moving P only transfers value (d Pi_S/dP = +Q*). The generalized
+     Nash solution awards the seller a fraction alpha of the bargainable
+     surplus S = Pi_total(Q*) - Pi_S0 - Pi_B0:
+        Pi_S(P*) - Pi_S0 = alpha * S,  Pi_S(P*) = P*Q* - C_S(Q*)
+     =>  P* = ( Pi_S0 + alpha*S + C_S(Q*) ) / Q*. >>
+  double nashPrice(double s0, double b0, double alpha) {
+    double q = curves.optimalQuantity();
+    if (q <= 0.0) { return 0.0; }
+    double total = curves.jointProfit(q);
+    double surplus = total - s0 - b0;
+    double sellerShare = s0 + alpha * surplus;
+    return (sellerShare + curves.sellerCost(q)) / q;
+  }
+
+  < The joint surplus available for bargaining beyond both reservation points. >
+  double bargainableSurplus(double s0, double b0) {
+    return curves.maxJointProfit() - s0 - b0;
+  }
+
+  String describe(double s0, double b0, double alpha) {
+    double q = curves.optimalQuantity();
+    double p = nashPrice(s0, b0, alpha);
+    return "NashBargaining: alpha=" + alpha + " P*=" + p
+         + " sellerProfit=" + sellerProfit(p, q)
+         + " buyerProfit=" + buyerProfit(p, q);
+  }
+}

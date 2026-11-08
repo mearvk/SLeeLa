@@ -1,0 +1,128 @@
+<< lib/advantage/math/SLTradeMath.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Shared real-valued math helpers for the advantage trade
+   subject -- exponential, natural log, and general power. >>
+#sleela 2.5
+material;
+< Self-contained double-precision helpers so the advantage/math subject needs >
+< no cross-package imports. These back the fractional exponents of the Nash >
+< bargaining objective and any root/ratio arithmetic. Accuracy is ample for >
+< bargaining weights and critical ratios (series are range-reduced). >
+class SLTradeMath {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10521;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < int -> double coercion that works regardless of implicit promotion. >
+  double intToD(int n) {
+    double d = 0.0;
+    int i = 0;
+    if (n >= 0) {
+      while (i < n) { d = d + 1.0; i = i + 1; }
+      return d;
+    }
+    int m = 0 - n;
+    while (i < m) { d = d + 1.0; i = i + 1; }
+    return 0.0 - d;
+  }
+
+  < Natural exponential via a truncated Taylor series with range reduction by >
+  < halving: e^x = (e^(x/2^k))^(2^k). >
+  double expD(double x) {
+    boolean neg = false;
+    double ax = x;
+    if (ax < 0.0) { neg = true; ax = 0.0 - ax; }
+    int k = 0;
+    while (ax > 0.5) { ax = ax / 2.0; k = k + 1; }
+    double term = 1.0;
+    double sum = 1.0;
+    int n = 1;
+    while (n <= 18) {
+      term = term * ax / intToD(n);
+      sum = sum + term;
+      n = n + 1;
+    }
+    int i = 0;
+    while (i < k) { sum = sum * sum; i = i + 1; }
+    if (neg) { return 1.0 / sum; }
+    return sum;
+  }
+
+  < Natural logarithm via atanh series: ln(y) = 2*atanh((y-1)/(y+1)), with >
+  < range reduction pulling y into (0.5, 2) by factoring out e. >
+  double lnD(double y) {
+    if (y <= 0.0) { return 0.0; }
+    double e = 2.718281828459045;
+    double adjust = 0.0;
+    double v = y;
+    while (v > 1.5) { v = v / e; adjust = adjust + 1.0; }
+    while (v < 0.5) { v = v * e; adjust = adjust - 1.0; }
+    double t = (v - 1.0) / (v + 1.0);
+    double t2 = t * t;
+    double termn = t;
+    double sum = 0.0;
+    int n = 1;
+    while (n <= 39) {
+      sum = sum + termn / intToD(n);
+      termn = termn * t2;
+      n = n + 2;
+    }
+    return 2.0 * sum + adjust;
+  }
+
+  < General power a^b for a > 0 via exp(b * ln a). a <= 0 returns 0. >
+  double powAB(double a, double b) {
+    if (a <= 0.0) { return 0.0; }
+    return expD(b * lnD(a));
+  }
+
+  < Convenience square root (powAB with exponent 0.5). >
+  double sqrtD(double a) {
+    if (a <= 0.0) { return 0.0; }
+    return powAB(a, 0.5);
+  }
+
+  < Absolute value for doubles. >
+  double absD(double a) {
+    if (a < 0.0) { return 0.0 - a; }
+    return a;
+  }
+}

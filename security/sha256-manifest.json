@@ -918,10 +918,6 @@
       "sha256": "b0a5a0044d7971a21a259685ad86ed0b13e4acabb0e809bc8087147cfe15e94d"
     },
     {
-      "path": "lib/advantage/SLAdvantageTrade.sleela",
-      "sha256": "816c23327a39ea76451765fb8c4157f20ce8694760fde4364558daec8c4658d3"
-    },
-    {
       "path": "lib/advantage/SLAdvantageUserModel.sleela",
       "sha256": "dd2679bdeccbd104f37b09e11729ee6e0e9a2e566f59e7c1856448b141bd97ce"
     },
@@ -934,8 +930,24 @@
       "sha256": "efc019ffe04d00e514f1fab16ece120c22aef0f883ba03a9f7ccadea308b1225"
     },
     {
-      "path": "lib/advantage/advantage-trade-demo.sleela",
-      "sha256": "52ea9b86b9c475a6c197bc0d14f1ec443b71f31f65e7cd5a3a78e2dc98fe3ab7"
+      "path": "lib/advantage/math/SLBilateralNewsvendor.sleela",
+      "sha256": "68fbd791b32dd71091fd304fc3ac504ff418abad04934be18c06e71dd50c934a"
+    },
+    {
+      "path": "lib/advantage/math/SLJointProfitMax.sleela",
+      "sha256": "859f14f0eea15d8e2527dc5b65d9e3e1fa0dd93407c526d7af16b7844a9706c3"
+    },
+    {
+      "path": "lib/advantage/math/SLNashBargaining.sleela",
+      "sha256": "88d4fd6441914e4fc0b398ad0c33667408aeb5444a0f1e2e55ed9d0132ecae13"
+    },
+    {
+      "path": "lib/advantage/math/SLTradeMath.sleela",
+      "sha256": "f74e1f2cf3f1157a111bc2f20cdf70d5a95bcef0c66abc841de760654ecc721c"
+    },
+    {
+      "path": "lib/advantage/math/trade-math-demo.sleela",
+      "sha256": "2faadb29c9c140eb9906971e7b5596a60594461c5da3c028148739efbdfb60e7"
     },
     {
       "path": "lib/alphabet/Alphabet.sleela",
