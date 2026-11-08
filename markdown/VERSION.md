@@ -6,9 +6,18 @@ This increment extends the arbitrary-width unsigned integer foundation for sourc
 
 # SLeeLa Version
 
-## Current Development Version
+## Current Release Version
+## 1.3.2-pro Pro Release Increment
 
-**SLeeLa:** 0.3.30-dev
+Advanced the shared SLeeLa Language/Runtime release identifier for both
+`sleela` and `sleelvac` from `0.3.30-dev` to `1.3.2-pro`. The product
+release identifier is independent of the SLeeLa language syntax edition
+(`3.0`) and does not imply that every separately versioned project component
+has left development status. The historical `0.3.30` increment below is
+preserved as a record of that earlier release.
+
+
+**SLeeLa:** 1.3.2-pro
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
@@ -16,7 +25,7 @@ This increment extends the arbitrary-width unsigned integer foundation for sourc
 **Compiler Compatibility Gate:** 3.0  
 **Java Authorship Transition Gate:** 1.19-dev
 **Edition:** SLeeLa Complete / Native Foundation  
-**Status:** Active Development  
+**Status:** Pro Release  
 **Repository:** mearkv/SLeeLa
 
 ## 0.3.30 Development Increment
