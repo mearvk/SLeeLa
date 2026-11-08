@@ -1,4 +1,4 @@
-<< lib/advantage/examples/professionals/trader-example.sleela
+<< lib/advantage/examples/medium/trade-economics/trader-example.sleela
    SLeeLa Standard Library Definition.
    Definition: A professional example -- the TRADER -- finds the joint-profit
    optimum and strikes a Nash-fair wholesale price. >>

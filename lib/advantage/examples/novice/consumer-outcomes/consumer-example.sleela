@@ -1,24 +1,23 @@
-<< lib/advantage/examples/professionals/healer-example.sleela
+<< lib/advantage/examples/novice/consumer-outcomes/consumer-example.sleela
    SLeeLa Standard Library Definition.
-   Definition: A professional example -- the HEALER -- restores trust over time
-   and measures the cost of a breach, via the trust-decay SDE. >>
+   Definition: A professional example -- the CONSUMER -- uses the simple user's
+   model of the Sequitur onion to advantage a household budget. >>
 #sleela 3.0
 material;
 artifact;
 pure;
 gasoline;
-<< A healer tends TRUST. Trust is modelled (advantage/physics, an analogy) as a
-   Cox-Ingersoll-Ross mean-reverting process with a jump for a broken promise:
-     d(tau) = kappa*(tauBar - tau) dt + sigma*sqrt(tau) dW - delta*dJ
-   With kappa=0.5, tauBar=0.8 (healthy baseline), delta=0.4 (breach size):
-   the expected (no-noise) path reverts a low 0.3 up toward 0.8, one expected
-   step from 0.3 is 0.325, and a single breach of 0.8 drops trust to 0.4.
-   Names SLTrustDecaySDE / SLPhysicsMath, resolved from lib/advantage/physics/. >>
-class HealerExample {
+<< A consumer wants the outcome, not the controls. The user's model of the
+   onion (advantage/SLAdvantageUserModel) gives three plain dials over the
+   layered process: grow (additions), shrink (a cost, negative), and rethink
+   (quantitative + regrouping). On a base of 50 with grow 30, shrink -12, and
+   rethink(10, 2), the net advantage is 30 - 12 + 10 + 2 = 30, so the running
+   value becomes 80. Names SLAdvantageUserModel, resolved from lib/advantage/. >>
+class ConsumerExample {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Baseline identity record for a worker-class example. >>
   String metaVersion = "1.0.0";
-  int metaId = 10572;
+  int metaId = 10574;
   String metaAuthor = "Kiro Agent";
   String metaDate = "2026-11-08";
   String metaCopyright = "SLeeLa project";
@@ -55,36 +54,28 @@ class HealerExample {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  boolean near(double a, double b, double tol) {
-    double d = a - b;
-    if (d < 0.0) { d = 0.0 - d; }
-    return d < tol;
-  }
-
   void main() {
-    print("== professional: the Healer ==");
-    SLTrustDecaySDE sde = new SLTrustDecaySDE();
-    sde.configure(0.5, 0.8, 0.1, 0.4);
-    double start = 0.3;
-    double oneStep = sde.expectedStep(start, 0.1);
-    double healed = sde.expectedPath(start, 0.1, 50);
-    double afterBreach = sde.breach(0.8);
-    print("  baseline trust tauBar   = 0.8");
-    print("  starting (wounded) trust = " + start);
-    print("  one expected step        = " + oneStep);
-    print("  healed over 50 steps     = " + healed);
-    print("  trust after a breach     = " + afterBreach);
+    print("== professional: the Consumer ==");
+    SLAdvantageUserModel user = new SLAdvantageUserModel();
+    user.start("savings", "household-budget", 50);
+    user.ownedBy("the household");
+    user.grow(30);
+    user.shrink(0 - 12);
+    user.rethink(10, 2);
+    int adv = user.advantage();
+    int value = user.currentValue();
+    print("  base value          = 50");
+    print("  net advantage       = " + adv);
+    print("  value after process = " + value);
 
     print("");
     print("== validation ==");
-    boolean okStep = near(oneStep, 0.325, 0.00001);
-    boolean okHeal = (healed > start) && (healed < 0.8001);
-    boolean okBreach = near(afterBreach, 0.4, 0.00001);
-    print("  one step == 0.325      ? " + okStep);
-    print("  heals toward baseline  ? " + okHeal);
-    print("  breach drops to 0.4    ? " + okBreach);
-    if (okStep) { if (okHeal) { if (okBreach) {
+    boolean okAdv = (adv == 30);
+    boolean okValue = (value == 80);
+    print("  net advantage == 30 ? " + okAdv);
+    print("  value == 80         ? " + okValue);
+    if (okAdv) { if (okValue) {
       print("ALL CHECKS PASSED");
-    } } }
+    } }
   }
 }

@@ -36,9 +36,12 @@ a self-contained, validated module with its own literature.
 - [`PREONEM.md`](./PREONEM.md) — the preonem standard under which every
   document here is an enacted `artifact; pure; gasoline;` of the Advantage™
   legislature, graded unto time and space.
-- `examples/` — runnable [`primers/`](./examples/primers) (one per subject) and
-  careful [`professionals/`](./examples/professionals) examples (trader, healer,
-  helper, consumer).
+- [`examples/`](./examples) — runnable examples organized by level of
+  sophistication — [`novice/`](./examples/novice), [`medium/`](./examples/medium),
+  [`advanced/`](./examples/advanced), [`professional/`](./examples/professional) —
+  and within each level grouped by topic (onion model, trade economics, output
+  routing, supply chains, trust fields, vertical integration, sophistication
+  grading).
 
 ## The Sequitur onion
 
