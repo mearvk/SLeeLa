@@ -286,10 +286,12 @@
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
 <tr><td><code>configure</code></td><td><span class="sig">void configure(SLAdvantageSink s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>getSink</code></td><td><span class="sig">SLAdvantageSink getSink()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>line</code></td><td><span class="sig">void line(String text)</span></td><td class="desc">Emit a raw line to the sink&#x27;s target.</td></tr>
+<tr><td><code>line</code></td><td><span class="sig">void line(String text, int textChars)</span></td><td class="desc">Emit a raw line to the sink&#x27;s target, with its byte length for the socket wire account.</td></tr>
 <tr><td><code>state</code></td><td><span class="sig">void state(String label, int labelChars, String message, int messageChars)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>status</code></td><td><span class="sig">void status(String label, String message)</span></td><td class="desc">Convenience state() when CommonRails formatting is not needed: no counts.</td></tr>
 <tr><td><code>report</code></td><td><span class="sig">void report(String subject, String body)</span></td><td class="desc">Emit &quot;subject: body&quot;.</td></tr>
+<tr><td><code>pair</code></td><td><span class="sig">void pair(String field, int fieldChars, String value, int valueChars,</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>component</code></td><td><span class="sig">void component(String name, int nameChars, int oid, int dateSeq,</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>grade</code></td><td><span class="sig">void grade(String moduleName, int moduleChars, String rating, int ratingChars)</span></td><td class="desc">Emit a module rating line, e.g. &quot;GRADE integration -&gt; S10&quot;. Char counts are supplied so the commonrails target aligns correctly.</td></tr>
 </table>
 </div>
@@ -366,6 +368,8 @@
 <tr><td><code>endpoint</code></td><td><span class="sig">String endpoint</span></td><td class="desc">connector identity for the socket target, e.g. &quot;host:port&quot;</td></tr>
 <tr><td><code>capture</code></td><td><span class="sig">String capture</span></td><td class="desc">capture of everything emitted (framed), joined with newlines</td></tr>
 <tr><td><code>lines</code></td><td><span class="sig">int lines</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>connectorOpen</code></td><td><span class="sig">boolean connectorOpen</span></td><td class="desc">SOCKET connector lifecycle: is the connector open, and how many content bytes have been handed to it (the wire-faithful byte account CommonRails also insists on, since Core has no string-length primitive).</td></tr>
+<tr><td><code>bytesWritten</code></td><td><span class="sig">int bytesWritten</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -375,13 +379,19 @@
 <tr><td><code>SILENT</code></td><td><span class="sig">int SILENT()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>configure</code></td><td><span class="sig">void configure(int tgt)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>bindEndpoint</code></td><td><span class="sig">void bindEndpoint(String ep)</span></td><td class="desc">For the SOCKET target: name the connector endpoint (modelled, not dialed). (Named bindEndpoint, not connect: connect is a reserved Munction builtin.)</td></tr>
+<tr><td><code>openConnector</code></td><td><span class="sig">boolean openConnector()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>closeConnector</code></td><td><span class="sig">void closeConnector()</span></td><td class="desc">Close the connector (native: slnet_close). Idempotent.</td></tr>
+<tr><td><code>isOpen</code></td><td><span class="sig">boolean isOpen()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>getTarget</code></td><td><span class="sig">int getTarget()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>getEndpoint</code></td><td><span class="sig">String getEndpoint()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>frameCount</code></td><td><span class="sig">int frameCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getBytesWritten</code></td><td><span class="sig">int getBytesWritten()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>appendFrame</code></td><td><span class="sig">void appendFrame(String framed)</span></td><td class="desc">Append to the capture with a separating newline between frames.</td></tr>
-<tr><td><code>emit</code></td><td><span class="sig">void emit(String line)</span></td><td class="desc">Emit one already-rendered line to the configured target.</td></tr>
+<tr><td><code>wireWrite</code></td><td><span class="sig">int wireWrite(String framed, int byteCount)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>emit</code></td><td><span class="sig">void emit(String line, int byteCount)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>emitLine</code></td><td><span class="sig">void emitLine(String line)</span></td><td class="desc">Backward-compatible emit without a byte count (socket account uses 0 for the body; the endpoint prefix is still counted).</td></tr>
 <tr><td><code>lastFrame</code></td><td><span class="sig">String lastFrame()</span></td><td class="desc">The most recent framed line (empty if nothing emitted).</td></tr>
-<tr><td><code>drain</code></td><td><span class="sig">String drain()</span></td><td class="desc">Drain and clear the capture, returning everything buffered. A native socket producer calls this and writes the result to the connector.</td></tr>
+<tr><td><code>drain</code></td><td><span class="sig">String drain()</span></td><td class="desc">Drain and clear the capture, returning everything buffered. A native socket producer calls this and writes the result to the connector. The byte account and open state are preserved across a drain (the connector stays open until closeConnector).</td></tr>
 <tr><td><code>targetName</code></td><td><span class="sig">String targetName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
@@ -910,7 +920,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-08 08:49 UTC.
+<code>/lib</code> tree on 2026-11-08 08:53 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
