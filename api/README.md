@@ -13,6 +13,12 @@ Native C and C++ API references are catalogued under [`native/`](native/).
 The historical SLeeLa 2.1, 2.6, 2.8, and 2.9 material remains available and
 is not rewritten as part of the 3.0 edition.
 
+The standard-library **`advantage`** package (advantaging a dividend, with its
+`math/`, `physics/`, `integration/`, `grading/`, and `output/` subjects) is
+included in all three generated surfaces — see its package page in the
+generated sites and the package-level docs under
+[`../lib/advantage/`](../lib/advantage/README.md).
+
 ## Build
 
 From the repository root:

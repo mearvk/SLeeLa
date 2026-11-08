@@ -36,6 +36,38 @@ that standing is kept (recorded faithfully, e.g. in each class's Metadata
 
 Recent additions to the language, drivers, and standard library:
 
+- **The `advantage` standard-library package — advantaging a dividend, with
+  math, physics, integration, grading, and routable output.**
+  [`lib/advantage/`](lib/advantage/README.md) encapsulates *advantaging a
+  unique dividend with respect to a model* as a layered **Sequitur onion**
+  (dividend → review → concerns → maths → additions → subtraction → regrouping
+  → iteration), navigable inward/outward with full dynamic update and
+  restitute, exposed through a simple **user's model** and a full-control
+  **developer's model**. It carries five subject areas: **`math/`** bilateral
+  trade economics (joint profit maximization, Nash bargaining, the bilateral
+  newsvendor critical ratio), **`physics/`** a structural-economics "physics of
+  trust fields" (trust as a metric tensor, the transactional geodesic, an
+  announcement contact structure, a CIR+jump trust-decay SDE — a modelling
+  analogy, flagged as such), **`integration/`** a recursively-composable
+  vertical-integration model for capitalism/retail (compartments, engineering
+  bays, trial compartments, newton median trays, and a system-sophistication
+  score), **`grading/`** a sophistication circuit grader that rates each module
+  and any set of winning/losing/grader/absolute modules A–D, and **`output/`**
+  a routable emit seam that sends module output to the terminal, a
+  **CommonRails**-formatted surface, or a socket/connector (framed for a native
+  `slnet_write`). Every class carries the Metadata-Class record; five runnable
+  demos validate the subjects, and the companion
+  [`DEFINITIONS.md`](lib/advantage/DEFINITIONS.md),
+  [`MATH.md`](lib/advantage/MATH.md), and
+  [`PHYSICS.md`](lib/advantage/PHYSICS.md) document them. A native C/C++
+  consumer under [`advantage/`](advantage/README.md) (the C core
+  `advantage_value`/`advantage_mean`, an XML knowledge store, a secure
+  HTTPS/SFTP/SSH acquisition + keystore + DH/ECDH transport library) links the
+  model into worked
+  [trade examples](advantage/examples/README.md) — positive trades from
+  presumed internet sources, an audience-relevance sequence (Traders,
+  Consumers, Helpers, Healers), and eight models ranked A–D (D = most Cement,
+  A = most Brand).
 - **Loop-timing annotations — `@loopDelay` / `@loopBudget` (+ a `sleep(ms)`
   built-in).** The first **statement-level, behavioral** annotations in SLeeLa:
   written on their own line before a `for` / `while` / `do` loop, they insert a
@@ -476,6 +508,16 @@ status should be checked in each package's own documentation and tests.
 
 ### A–C
 
+- **Advantage** — `lib/advantage/` and `advantage/`: advantaging a unique
+  dividend with respect to a model as a layered Sequitur onion, with five
+  subject subfolders — `math/` (joint profit maximization, Nash bargaining,
+  bilateral newsvendor), `physics/` (trust-field metric/geodesic/contact/SDE,
+  a flagged modelling analogy), `integration/` (vertical-integration
+  compartments and a sophistication score), `grading/` (an A–D sophistication
+  circuit grader for modules and sets), and `output/` (terminal / CommonRails /
+  socket emit). A native C/C++ consumer (`advantage/`) links the model into
+  worked trade examples. See [`lib/advantage/README.md`](lib/advantage/README.md)
+  and [`DEFINITIONS.md`](lib/advantage/DEFINITIONS.md).
 - **Alphabet and UTF-4088** — `alphabet/sleela/`, `lib/alphabet/native/`, and
   `utf-4088/`: alphabet catalogues, native character-set support, input-map
   ordering, and UTF-4088 integration documentation.
