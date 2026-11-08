@@ -1,3 +1,7 @@
+artifact;
+preonem: [PREONEM.md](./PREONEM.md)
+standard: legislature-grade; evaluated unto time and space
+
 # Advantage Trade Mathematics — a Math subject
 
 > Bilateral trade economics for the `advantage` package. Treat a **buyer** and
