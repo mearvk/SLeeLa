@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Package compression — SleelaDoc API</title>
+<link rel="stylesheet" href="../style.css">
+
+</head>
+<body>
+<header class="top">
+  <div class="brand"><a href="../index.html">SleelaDoc API</a></div>
+  <div class="tag">HTML documentation for the SLeeLa standard library (/lib)</div>
+</header>
+<div class="wrap">
+<nav class="side">
+  <a href="../index.html"><strong>Home</strong></a>
+  <a href="../packages.html"><strong>All packages</strong></a>
+  <a href="../glossary.html"><strong>Glossary</strong></a>
+  <a href="../authorship.html"><strong>Authorship</strong></a>
+  <h2>Packages</h2><ul>
+<li><a href="../package/alphabet.html">alphabet</a></li>
+<li><a href="../package/antivirus.html">antivirus</a></li>
+<li><a href="../package/api.html">api</a></li>
+<li><a href="../package/audio.html">audio</a></li>
+<li><a href="../package/autocad.html">autocad</a></li>
+<li><a href="../package/ballum.html">ballum</a></li>
+<li><a href="../package/bash.html">bash</a></li>
+<li><a href="../package/boolean.html">boolean</a></li>
+<li><a href="../package/cdma.html">cdma</a></li>
+<li><a href="../package/character.html">character</a></li>
+<li><a href="../package/churn.html">churn</a></li>
+<li><a href="../package/citizen.html">citizen</a></li>
+<li><a href="../package/codecs.html">codecs</a></li>
+<li><a href="../package/collections.html">collections</a></li>
+<li><a href="../package/common-rails.html">common-rails</a></li>
+<li><a href="../package/compiler.html">compiler</a></li>
+<li><a href="../package/compression.html">compression</a></li>
+<li><a href="../package/config.html">config</a></li>
+<li><a href="../package/connector.html">connector</a></li>
+<li><a href="../package/coorenagraph.html">coorenagraph</a></li>
+<li><a href="../package/core.html">core</a></li>
+<li><a href="../package/cpu.html">cpu</a></li>
+<li><a href="../package/crypto.html">crypto</a></li>
+<li><a href="../package/data.html">data</a></li>
+<li><a href="../package/data-structures.html">data-structures</a></li>
+<li><a href="../package/database.html">database</a></li>
+<li><a href="../package/debugger.html">debugger</a></li>
+<li><a href="../package/decompiler.html">decompiler</a></li>
+<li><a href="../package/deliberation.html">deliberation</a></li>
+<li><a href="../package/drivers.html">drivers</a></li>
+<li><a href="../package/filesystem.html">filesystem</a></li>
+<li><a href="../package/gameplay.html">gameplay</a></li>
+<li><a href="../package/gui.html">gui</a></li>
+<li><a href="../package/html.html">html</a></li>
+<li><a href="../package/http.html">http</a></li>
+<li><a href="../package/http-1.0.html">http-1.0</a></li>
+<li><a href="../package/http-2.0.html">http-2.0</a></li>
+<li><a href="../package/http-3.0.html">http-3.0</a></li>
+<li><a href="../package/http-4.0.html">http-4.0</a></li>
+<li><a href="../package/http-5.0.html">http-5.0</a></li>
+<li><a href="../package/http-6.0.html">http-6.0</a></li>
+<li><a href="../package/http-7.0.html">http-7.0</a></li>
+<li><a href="../package/http-8.0.html">http-8.0</a></li>
+<li><a href="../package/http-9.0.html">http-9.0</a></li>
+<li><a href="../package/http-servers.html">http-servers</a></li>
+<li><a href="../package/ide.html">ide</a></li>
+<li><a href="../package/ide-workbench.html">ide-workbench</a></li>
+<li><a href="../package/idea.html">idea</a></li>
+<li><a href="../package/inference-model.html">inference-model</a></li>
+<li><a href="../package/inputs.html">inputs</a></li>
+<li><a href="../package/international-criminal-court.html">international-criminal-court</a></li>
+<li><a href="../package/io.html">io</a></li>
+<li><a href="../package/java.html">java</a></li>
+<li><a href="../package/java28.html">java28</a></li>
+<li><a href="../package/journey.html">journey</a></li>
+<li><a href="../package/languages.html">languages</a></li>
+<li><a href="../package/ledger.html">ledger</a></li>
+<li><a href="../package/linux-editors.html">linux-editors</a></li>
+<li><a href="../package/manifesto.html">manifesto</a></li>
+<li><a href="../package/math.html">math</a></li>
+<li><a href="../package/memory.html">memory</a></li>
+<li><a href="../package/modules.html">modules</a></li>
+<li><a href="../package/moral-capacitor.html">moral-capacitor</a></li>
+<li><a href="../package/munction.html">munction</a></li>
+<li><a href="../package/native.html">native</a></li>
+<li><a href="../package/net.html">net</a></li>
+<li><a href="../package/nordshrift.html">nordshrift</a></li>
+<li><a href="../package/opcodes.html">opcodes</a></li>
+<li><a href="../package/operating-system.html">operating-system</a></li>
+<li><a href="../package/philosophers.html">philosophers</a></li>
+<li><a href="../package/philosophy.html">philosophy</a></li>
+<li><a href="../package/politico.html">politico</a></li>
+<li><a href="../package/process.html">process</a></li>
+<li><a href="../package/psychiatry.html">psychiatry</a></li>
+<li><a href="../package/public.html">public</a></li>
+<li><a href="../package/reflection.html">reflection</a></li>
+<li><a href="../package/regex.html">regex</a></li>
+<li><a href="../package/registry.html">registry</a></li>
+<li><a href="../package/rmi.html">rmi</a></li>
+<li><a href="../package/runtime.html">runtime</a></li>
+<li><a href="../package/security.html">security</a></li>
+<li><a href="../package/server-edition.html">server-edition</a></li>
+<li><a href="../package/signal-processing.html">signal-processing</a></li>
+<li><a href="../package/sldocument.html">sldocument</a></li>
+<li><a href="../package/sleela.html">sleela</a></li>
+<li><a href="../package/sleela-sql.html">sleela-sql</a></li>
+<li><a href="../package/sleela-terminal.html">sleela-terminal</a></li>
+<li><a href="../package/sleeladoc.html">sleeladoc</a></li>
+<li><a href="../package/social-model.html">social-model</a></li>
+<li><a href="../package/sommeliers.html">sommeliers</a></li>
+<li><a href="../package/sst.html">sst</a></li>
+<li><a href="../package/synchro.html">synchro</a></li>
+<li><a href="../package/systems.html">systems</a></li>
+<li><a href="../package/telephony-skya.html">telephony-skya</a></li>
+<li><a href="../package/terminal.html">terminal</a></li>
+<li><a href="../package/terminal_pixel.html">terminal_pixel</a></li>
+<li><a href="../package/text.html">text</a></li>
+<li><a href="../package/ui.html">ui</a></li>
+<li><a href="../package/us-infrastructure.html">us-infrastructure</a></li>
+<li><a href="../package/user-interface.html">user-interface</a></li>
+<li><a href="../package/video.html">video</a></li>
+<li><a href="../package/vm.html">vm</a></li>
+<li><a href="../package/web-server-technology.html">web-server-technology</a></li>
+<li><a href="../package/website.html">website</a></li>
+<li><a href="../package/wifi.html">wifi</a></li>
+<li><a href="../package/xlt.html">xlt</a></li>
+<li><a href="../package/xml.html">xml</a></li>
+</ul>
+</nav>
+<main>
+<div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; compression</div>
+<h1>Package <code>compression</code></h1>
+<div class="lead">This package contains <strong>22</strong> source unit(s) defining <strong>24</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
+<h2 class="section" data-u="compression">compression <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/compression/compression.sleela)</span></h2>
+<div data-u="compression compression">
+<h3 id="Compression">Compression <span class="pill">class</span></h3>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>loaded</code></td><td><span class="sig">int[] loaded</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>init</code></td><td><span class="sig">void init()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isLoaded</code></td><td><span class="sig">boolean isLoaded(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>load</code></td><td><span class="sig">void load(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>unload</code></td><td><span class="sig">void unload(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>unloadAll</code></td><td><span class="sig">void unloadAll()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isNative</code></td><td><span class="sig">boolean isNative(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nameOf</code></td><td><span class="sig">String nameOf(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>stateWord</code></td><td><span class="sig">String stateWord(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>report</code></td><td><span class="sig">void report(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="compression-pipeline">compression-pipeline <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/compression/compression-pipeline.sleela)</span></h2>
+<div data-u="compression-pipeline verifier">
+<h3 id="Verifier">Verifier <span class="pill">class</span></h3>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>resolveExtension</code></td><td><span class="sig">int resolveExtension(String ext)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>probeMagic</code></td><td><span class="sig">int probeMagic(String tag)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>resultText</code></td><td><span class="sig">String resultText(int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<div data-u="compression-pipeline processor">
+<h3 id="Processor">Processor <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>compress</code></td><td><span class="sig">int compress(boolean loaded, boolean nativeAlg, boolean backendReady)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>decompress</code></td><td><span class="sig">int decompress(boolean loaded, boolean nativeAlg, boolean backendReady)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<div data-u="compression-pipeline controller">
+<h3 id="Controller">Controller <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>loaded</code></td><td><span class="sig">int[] loaded</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>backend</code></td><td><span class="sig">int[] backend</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>verifier</code></td><td><span class="sig">Verifier verifier</span></td><td class="desc">wired by create(), called via the field (1.11)</td></tr>
+<tr><td><code>processor</code></td><td><span class="sig">Processor processor</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>create</code></td><td><span class="sig">void create()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isNative</code></td><td><span class="sig">boolean isNative(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nameOf</code></td><td><span class="sig">String nameOf(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>load</code></td><td><span class="sig">int load(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isLoaded</code></td><td><span class="sig">boolean isLoaded(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>unloadAll</code></td><td><span class="sig">void unloadAll()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>registerBackend</code></td><td><span class="sig">int registerBackend(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hasBackend</code></td><td><span class="sig">boolean hasBackend(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>loadedCount</code></td><td><span class="sig">int loadedCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>resolveExtension</code></td><td><span class="sig">int resolveExtension(String ext)</span></td><td class="desc">Clean facade methods: delegate to the wired collaborators.</td></tr>
+<tr><td><code>probeMagic</code></td><td><span class="sig">int probeMagic(String tag)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>resultText</code></td><td><span class="sig">String resultText(int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compress</code></td><td><span class="sig">int compress(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>decompress</code></td><td><span class="sig">int decompress(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slcompressionbrotli">SLCompressionBrotli <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/compression/SLCompressionBrotli.sleela)</span></h2>
+<div data-u="slcompressionbrotli slcompressionbrotli">
+<h3 id="SLCompressionBrotli">SLCompressionBrotli <span class="pill">class</span></h3>
+<p class="desc">Brotli algorithm class — the SLeeLa-facing handle to algorithm id 12.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>id</code></td><td><span class="sig">int id()</span></td><td class="desc">Registry identity (mirrors sleela_compressor_handler).</td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mime</code></td><td><span class="sig">String mime()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>extensions</code></td><td><span class="sig">String extensions()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>state</code></td><td><span class="sig">int state()</span></td><td class="desc">Capability state: 1 == backend.</td></tr>
+<tr><td><code>stateName</code></td><td><span class="sig">String stateName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canCompress</code></td><td><span class="sig">boolean canCompress()</span></td><td class="desc">Direction support advertised by the plugin vtable.</td></tr>
+<tr><td><code>canDecompress</code></td><td><span class="sig">boolean canDecompress()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isNative</code></td><td><span class="sig">boolean isNative()</span></td><td class="desc">Native algorithms implement compress/decompress in-package (no external backend).</td></tr>
+<tr><td><code>needsBackend</code></td><td><span class="sig">boolean needsBackend()</span></td><td class="desc">A backend adapter must be registered before a backend algorithm can run.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slcompressionbzip2">SLCompressionBzip2 <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/compression/SLCompressionBzip2.sleela)</span></h2>
+<div data-u="slcompressionbzip2 slcompressionbzip2">
+<h3 id="SLCompressionBzip2">SLCompressionBzip2 <span class="pill">class</span></h3>
+<p class="desc">bzip2 algorithm class — the SLeeLa-facing handle to algorithm id 7.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>id</code></td><td><span class="sig">int id()</span></td><td class="desc">Registry identity (mirrors sleela_compressor_handler).</td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mime</code></td><td><span class="sig">String mime()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>extensions</code></td><td><span class="sig">String extensions()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>state</code></td><td><span class="sig">int state()</span></td><td class="desc">Capability state: 1 == backend.</td></tr>
+<tr><td><code>stateName</code></td><td><span class="sig">String stateName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canCompress</code></td><td><span class="sig">boolean canCompress()</span></td><td class="desc">Direction support advertised by the plugin vtable.</td></tr>
+<tr><td><code>canDecompress</code></td><td><span class="sig">boolean canDecompress()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isNative</code></td><td><span class="sig">boolean isNative()</span></td><td class="desc">Native algorithms implement compress/decompress in-package (no external backend).</td></tr>
+<tr><td><code>needsBackend</code></td><td><span class="sig">boolean needsBackend()</span></td><td class="desc">A backend adapter must be registered before a backend algorithm can run.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slcompressioncontroller">SLCompressionController <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/compression/SLCompressionController.sleela)</span></h2>
+<div data-u="slcompressioncontroller slcompressioncontroller">
+<h3 id="SLCompressionController">SLCompressionController <span class="pill">class</span> <span class="muted">extends <code>SLPluginService</code></span></h3>
+<p class="desc">Defines the SLeeLa standard-library type SLCompressionController used within the compression library family.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>verifier</code></td><td><span class="sig">SLCompressionVerifier verifier</span></td><td class="desc">The verification collaborator, wired by create() and called via the field. (Lifecycle tables + ready flag are inherited from SLPluginService.)</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>create</code></td><td><span class="sig">void create()</span></td><td class="desc">Build the controller with every algorithm registered but none loaded. Mirrors sleela_compression_manager_create. configure() (inherited) allocates the 15-entry lifecycle tables and records the native-id mask; then wire the Verifier. Native algorithms compress/decompress in-package: Store (0), RLE (1), Huffman (2), LZW (3) -&gt; mask bits 0..3.</td></tr>
+<tr><td><code>resolveExtension</code></td><td><span class="sig">int resolveExtension(String extension)</span></td><td class="desc">Resolve an algorithm id from a file extension via the Controller&#x27;s Verifier.</td></tr>
+<tr><td><code>compress</code></td><td><span class="sig">int compress(int id)</span></td><td class="desc">compress(id) / decompress(id): gated by the shared dispatchCode(): -2 invalid, -5 not loaded, -1 backend absent, 0 ok.</td></tr>
+<tr><td><code>decompress</code></td><td><span class="sig">int decompress(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>serviceName</code></td><td><span class="sig">String serviceName()</span></td><td class="desc">---- identity + result text -----------------------------------------</td></tr>
+<tr><td><code>resultText</code></td><td><span class="sig">String resultText(int code)</span></td><td class="desc">Human-readable text for a result code (via the wired Verifier, which uses the shared SLServiceResult vocabulary).</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slcompressiondeflate">SLCompressionDeflate <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/compression/SLCompressionDeflate.sleela)</span></h2>
+<div data-u="slcompressiondeflate slcompressiondeflate">
+<h3 id="SLCompressionDeflate">SLCompressionDeflate <span class="pill">class</span></h3>
+<p class="desc">DEFLATE (RFC 1951) algorithm class — the SLeeLa-facing handle to algorithm id 4.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>id</code></td><td><span class="sig">int id()</span></td><td class="desc">Registry identity (mirrors sleela_compressor_handler).</td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mime</code></td><td><span class="sig">String mime()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>extensions</code></td><td><span class="sig">String extensions()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>state</code></td><td><span class="sig">int state()</span></td><td class="desc">Capability state: 1 == backend.</td></tr>
+<tr><td><code>stateName</code></td><td><span class="sig">String stateName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canCompress</code></td><td><span class="sig">boolean canCompress()</span></td><td class="desc">Direction support advertised by the plugin vtable.</td></tr>
+<tr><td><code>canDecompress</code></td><td><span class="sig">boolean canDecompress()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isNative</code></td><td><span class="sig">boolean isNative()</span></td><td class="desc">Native algorithms implement compress/decompress in-package (no external backend).</td></tr>
+<tr><td><code>needsBackend</code></td><td><span class="sig">boolean needsBackend()</span></td><td class="desc">A backend adapter must be registered before a backend algorithm can run.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slcompressiongzip">SLCompressionGzip <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/compression/SLCompressionGzip.sleela)</span></h2>
+<div data-u="slcompressiongzip slcompressiongzip">
+<h3 id="SLCompressionGzip">SLCompressionGzip <span class="pill">class</span></h3>
+<p class="desc">gzip (RFC 1952) algorithm class — the SLeeLa-facing handle to algorithm id 6.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>id</code></td><td><span class="sig">int id()</span></td><td class="desc">Registry identity (mirrors sleela_compressor_handler).</td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mime</code></td><td><span class="sig">String mime()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>extensions</code></td><td><span class="sig">String extensions()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>state</code></td><td><span class="sig">int state()</span></td><td class="desc">Capability state: 1 == backend.</td></tr>
+<tr><td><code>stateName</code></td><td><span class="sig">String stateName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canCompress</code></td><td><span class="sig">boolean canCompress()</span></td><td class="desc">Direction support advertised by the plugin vtable.</td></tr>
+<tr><td><code>canDecompress</code></td><td><span class="sig">boolean canDecompress()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isNative</code></td><td><span class="sig">boolean isNative()</span></td><td class="desc">Native algorithms implement compress/decompress in-package (no external backend).</td></tr>
+<tr><td><code>needsBackend</code></td><td><span class="sig">boolean needsBackend()</span></td><td class="desc">A backend adapter must be registered before a backend algorithm can run.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slcompressionhuffman">SLCompressionHuffman <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/compression/SLCompressionHuffman.sleela)</span></h2>
+<div data-u="slcompressionhuffman slcompressionhuffman">
+<h3 id="SLCompressionHuffman">SLCompressionHuffman <span class="pill">class</span></h3>
+<p class="desc">Canonical Huffman algorithm class — the SLeeLa-facing handle to algorithm id 2.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>id</code></td><td><span class="sig">int id()</span></td><td class="desc">Registry identity (mirrors sleela_compressor_handler).</td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mime</code></td><td><span class="sig">String mime()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>extensions</code></td><td><span class="sig">String extensions()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>state</code></td><td><span class="sig">int state()</span></td><td class="desc">Capability state: 0 == native.</td></tr>
+<tr><td><code>stateName</code></td><td><span class="sig">String stateName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canCompress</code></td><td><span class="sig">boolean canCompress()</span></td><td class="desc">Direction support advertised by the plugin vtable.</td></tr>
+<tr><td><code>canDecompress</code></td><td><span class="sig">boolean canDecompress()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isNative</code></td><td><span class="sig">boolean isNative()</span></td><td class="desc">Native algorithms implement compress/decompress in-package (no external backend).</td></tr>
+<tr><td><code>needsBackend</code></td><td><span class="sig">boolean needsBackend()</span></td><td class="desc">A backend adapter must be registered before a backend algorithm can run.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slcompressionloader">SLCompressionLoader <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/compression/SLCompressionLoader.sleela)</span></h2>
+<div data-u="slcompressionloader slcompressionloader">
+<h3 id="SLCompressionLoader">SLCompressionLoader <span class="pill">class</span></h3>
+<p class="desc">Defines the SLeeLa standard-library type SLCompressionLoader used within the compression library family.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>loaded</code></td><td><span class="sig">int[] loaded</span></td><td class="desc">Per-algorithm loaded flag (1 loaded, 0 not), indexed by id. Backed by the first-class array type; call init() before use.</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>algorithmCount</code></td><td><span class="sig">int algorithmCount()</span></td><td class="desc">The number of algorithms the native manager knows (SLEELA_COMPRESSION_COUNT).</td></tr>
+<tr><td><code>init</code></td><td><span class="sig">void init()</span></td><td class="desc">Allocate the loaded-flag table with every algorithm unloaded.</td></tr>
+<tr><td><code>load</code></td><td><span class="sig">void load(int id)</span></td><td class="desc">load(id): mark an algorithm loaded. Mirrors sleela_compression_manager_load.</td></tr>
+<tr><td><code>unload</code></td><td><span class="sig">void unload(int id)</span></td><td class="desc">unload(id): mark an algorithm unloaded. Mirrors sleela_compression_manager_unload.</td></tr>
+<tr><td><code>isLoaded</code></td><td><span class="sig">boolean isLoaded(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>unloadAll</code></td><td><span class="sig">void unloadAll()</span></td><td class="desc">unloadAll(): release every loaded algorithm. Mirrors sleela_compression_manager_unload_all.</td></tr>
+<tr><td><code>nameOf</code></td><td><span class="sig">String nameOf(int id)</span></td><td class="desc">Human-readable algorithm name by id, matching the native registry.</td></tr>
+<tr><td><code>isNative</code></td><td><span class="sig">boolean isNative(int id)</span></td><td class="desc">Native algorithms implement compress/decompress in-package (no external backend): Store (0), RLE (1), Huffman (2), LZW (3). The rest are backend or container handlers until an approved library adapter is registered.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slcompressionlz4">SLCompressionLz4 <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/compression/SLCompressionLz4.sleela)</span></h2>
+<div data-u="slcompressionlz4 slcompressionlz4">
+<h3 id="SLCompressionLz4">SLCompressionLz4 <span class="pill">class</span></h3>
+<p class="desc">LZ4 algorithm class — the SLeeLa-facing handle to algorithm id 11.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>id</code></td><td><span class="sig">int id()</span></td><td class="desc">Registry identity (mirrors sleela_compressor_handler).</td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mime</code></td><td><span class="sig">String mime()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>extensions</code></td><td><span class="sig">String extensions()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>state</code></td><td><span class="sig">int state()</span></td><td class="desc">Capability state: 1 == backend.</td></tr>
+<tr><td><code>stateName</code></td><td><span class="sig">String stateName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canCompress</code></td><td><span class="sig">boolean canCompress()</span></td><td class="desc">Direction support advertised by the plugin vtable.</td></tr>
+<tr><td><code>canDecompress</code></td><td><span class="sig">boolean canDecompress()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isNative</code></td><td><span class="sig">boolean isNative()</span></td><td class="desc">Native algorithms implement compress/decompress in-package (no external backend).</td></tr>
+<tr><td><code>needsBackend</code></td><td><span class="sig">boolean needsBackend()</span></td><td class="desc">A backend adapter must be registered before a backend algorithm can run.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slcompressionlzma">SLCompressionLzma <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/compression/SLCompressionLzma.sleela)</span></h2>
+<div data-u="slcompressionlzma slcompressionlzma">
+<h3 id="SLCompressionLzma">SLCompressionLzma <span class="pill">class</span></h3>
+<p class="desc">LZMA algorithm class — the SLeeLa-facing handle to algorithm id 8.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>id</code></td><td><span class="sig">int id()</span></td><td class="desc">Registry identity (mirrors sleela_compressor_handler).</td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mime</code></td><td><span class="sig">String mime()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>extensions</code></td><td><span class="sig">String extensions()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>state</code></td><td><span class="sig">int state()</span></td><td class="desc">Capability state: 1 == backend.</td></tr>
+<tr><td><code>stateName</code></td><td><span class="sig">String stateName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canCompress</code></td><td><span class="sig">boolean canCompress()</span></td><td class="desc">Direction support advertised by the plugin vtable.</td></tr>
+<tr><td><code>canDecompress</code></td><td><span class="sig">boolean canDecompress()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isNative</code></td><td><span class="sig">boolean isNative()</span></td><td class="desc">Native algorithms implement compress/decompress in-package (no external backend).</td></tr>
+<tr><td><code>needsBackend</code></td><td><span class="sig">boolean needsBackend()</span></td><td class="desc">A backend adapter must be registered before a backend algorithm can run.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slcompressionlzw">SLCompressionLzw <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/compression/SLCompressionLzw.sleela)</span></h2>
+<div data-u="slcompressionlzw slcompressionlzw">
+<h3 id="SLCompressionLzw">SLCompressionLzw <span class="pill">class</span></h3>
+<p class="desc">Lempel-Ziv-Welch algorithm class — the SLeeLa-facing handle to algorithm id 3.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>id</code></td><td><span class="sig">int id()</span></td><td class="desc">Registry identity (mirrors sleela_compressor_handler).</td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mime</code></td><td><span class="sig">String mime()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>extensions</code></td><td><span class="sig">String extensions()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>state</code></td><td><span class="sig">int state()</span></td><td class="desc">Capability state: 0 == native.</td></tr>
+<tr><td><code>stateName</code></td><td><span class="sig">String stateName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canCompress</code></td><td><span class="sig">boolean canCompress()</span></td><td class="desc">Direction support advertised by the plugin vtable.</td></tr>
+<tr><td><code>canDecompress</code></td><td><span class="sig">boolean canDecompress()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isNative</code></td><td><span class="sig">boolean isNative()</span></td><td class="desc">Native algorithms implement compress/decompress in-package (no external backend).</td></tr>
+<tr><td><code>needsBackend</code></td><td><span class="sig">boolean needsBackend()</span></td><td class="desc">A backend adapter must be registered before a backend algorithm can run.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slcompressionprocessor">SLCompressionProcessor <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/compression/SLCompressionProcessor.sleela)</span></h2>
+<div data-u="slcompressionprocessor slcompressionprocessor">
+<h3 id="SLCompressionProcessor">SLCompressionProcessor <span class="pill">class</span></h3>
+<p class="desc">Defines the SLeeLa standard-library type SLCompressionProcessor used within the compression library family.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>canProcess</code></td><td><span class="sig">boolean canProcess(boolean loaded, boolean nativeAlg, boolean backendReady)</span></td><td class="desc">canProcess: can this algorithm compress/decompress right now, given the facts? True for a loaded native algorithm, or a loaded backend algorithm with a backend registered — what a GUI checks before enabling an action.</td></tr>
+<tr><td><code>compress</code></td><td><span class="sig">int compress(boolean loaded, boolean nativeAlg, boolean backendReady)</span></td><td class="desc">compress: dispatch a compress against the given facts. Returns a result code: -5 not loaded, 0 ok (native or backend ready), -1 backend absent.</td></tr>
+<tr><td><code>decompress</code></td><td><span class="sig">int decompress(boolean loaded, boolean nativeAlg, boolean backendReady)</span></td><td class="desc">decompress: same result-code contract as compress.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slcompressionrle">SLCompressionRle <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/compression/SLCompressionRle.sleela)</span></h2>
+<div data-u="slcompressionrle slcompressionrle">
+<h3 id="SLCompressionRle">SLCompressionRle <span class="pill">class</span></h3>
+<p class="desc">Run-Length Encoding algorithm class — the SLeeLa-facing handle to algorithm id 1.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>id</code></td><td><span class="sig">int id()</span></td><td class="desc">Registry identity (mirrors sleela_compressor_handler).</td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mime</code></td><td><span class="sig">String mime()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>extensions</code></td><td><span class="sig">String extensions()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>state</code></td><td><span class="sig">int state()</span></td><td class="desc">Capability state: 0 == native.</td></tr>
+<tr><td><code>stateName</code></td><td><span class="sig">String stateName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canCompress</code></td><td><span class="sig">boolean canCompress()</span></td><td class="desc">Direction support advertised by the plugin vtable.</td></tr>
+<tr><td><code>canDecompress</code></td><td><span class="sig">boolean canDecompress()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isNative</code></td><td><span class="sig">boolean isNative()</span></td><td class="desc">Native algorithms implement compress/decompress in-package (no external backend).</td></tr>
+<tr><td><code>needsBackend</code></td><td><span class="sig">boolean needsBackend()</span></td><td class="desc">A backend adapter must be registered before a backend algorithm can run.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slcompressionsnappy">SLCompressionSnappy <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/compression/SLCompressionSnappy.sleela)</span></h2>
+<div data-u="slcompressionsnappy slcompressionsnappy">
+<h3 id="SLCompressionSnappy">SLCompressionSnappy <span class="pill">class</span></h3>
+<p class="desc">Snappy algorithm class — the SLeeLa-facing handle to algorithm id 13.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>id</code></td><td><span class="sig">int id()</span></td><td class="desc">Registry identity (mirrors sleela_compressor_handler).</td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mime</code></td><td><span class="sig">String mime()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>extensions</code></td><td><span class="sig">String extensions()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>state</code></td><td><span class="sig">int state()</span></td><td class="desc">Capability state: 1 == backend.</td></tr>
+<tr><td><code>stateName</code></td><td><span class="sig">String stateName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canCompress</code></td><td><span class="sig">boolean canCompress()</span></td><td class="desc">Direction support advertised by the plugin vtable.</td></tr>
+<tr><td><code>canDecompress</code></td><td><span class="sig">boolean canDecompress()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isNative</code></td><td><span class="sig">boolean isNative()</span></td><td class="desc">Native algorithms implement compress/decompress in-package (no external backend).</td></tr>
+<tr><td><code>needsBackend</code></td><td><span class="sig">boolean needsBackend()</span></td><td class="desc">A backend adapter must be registered before a backend algorithm can run.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slcompressionstore">SLCompressionStore <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/compression/SLCompressionStore.sleela)</span></h2>
+<div data-u="slcompressionstore slcompressionstore">
+<h3 id="SLCompressionStore">SLCompressionStore <span class="pill">class</span></h3>
+<p class="desc">Store (raw) algorithm class — the SLeeLa-facing handle to algorithm id 0.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>id</code></td><td><span class="sig">int id()</span></td><td class="desc">Registry identity (mirrors sleela_compressor_handler).</td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mime</code></td><td><span class="sig">String mime()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>extensions</code></td><td><span class="sig">String extensions()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>state</code></td><td><span class="sig">int state()</span></td><td class="desc">Capability state: 0 == native.</td></tr>
+<tr><td><code>stateName</code></td><td><span class="sig">String stateName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canCompress</code></td><td><span class="sig">boolean canCompress()</span></td><td class="desc">Direction support advertised by the plugin vtable.</td></tr>
+<tr><td><code>canDecompress</code></td><td><span class="sig">boolean canDecompress()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isNative</code></td><td><span class="sig">boolean isNative()</span></td><td class="desc">Native algorithms implement compress/decompress in-package (no external backend).</td></tr>
+<tr><td><code>needsBackend</code></td><td><span class="sig">boolean needsBackend()</span></td><td class="desc">A backend adapter must be registered before a backend algorithm can run.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slcompressionverifier">SLCompressionVerifier <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/compression/SLCompressionVerifier.sleela)</span></h2>
+<div data-u="slcompressionverifier slcompressionverifier">
+<h3 id="SLCompressionVerifier">SLCompressionVerifier <span class="pill">class</span></h3>
+<p class="desc">Defines the SLeeLa standard-library type SLCompressionVerifier used within the compression library family.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>resolveExtension</code></td><td><span class="sig">int resolveExtension(String ext)</span></td><td class="desc">---- extension resolution (mirrors sleela_compression_by_extension) ----- Returns the algorithm id for a known extension, or -1 if unrecognized.</td></tr>
+<tr><td><code>probeMagic</code></td><td><span class="sig">int probeMagic(String tag)</span></td><td class="desc">---- content-signature probe (mirrors each plugin&#x27;s probe()) ------------ Given a short leading-byte signature tag (as text), return the algorithm id that claims it, or -1. The actual byte comparison lives in the native plugin; here the Verifier encodes which magic belongs to which algorithm so a GUI can pre-classify.</td></tr>
+<tr><td><code>headerless</code></td><td><span class="sig">boolean headerless(int id)</span></td><td class="desc">headerless(id): true for algorithms with no reliable magic (Store, RLE, raw DEFLATE, Brotli), where probing by content cannot confirm the format — the caller must select it out-of-band by id or extension.</td></tr>
+<tr><td><code>verifyLoadable</code></td><td><span class="sig">int verifyLoadable(int id)</span></td><td class="desc">---- loadability / lifecycle verification ------------------------------- verifyLoadable(id): 0 if the id is a real algorithm that can be loaded, else -2 (invalid). Mirrors the manager&#x27;s id_ok guard.</td></tr>
+<tr><td><code>resultText</code></td><td><span class="sig">String resultText(int code)</span></td><td class="desc">---- result-code text (mirrors sleela_compression_result_text) ----------</td></tr>
+<tr><td><code>ok</code></td><td><span class="sig">boolean ok(int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slcompressionxz">SLCompressionXz <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/compression/SLCompressionXz.sleela)</span></h2>
+<div data-u="slcompressionxz slcompressionxz">
+<h3 id="SLCompressionXz">SLCompressionXz <span class="pill">class</span></h3>
+<p class="desc">xz (LZMA2) algorithm class — the SLeeLa-facing handle to algorithm id 9.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>id</code></td><td><span class="sig">int id()</span></td><td class="desc">Registry identity (mirrors sleela_compressor_handler).</td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mime</code></td><td><span class="sig">String mime()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>extensions</code></td><td><span class="sig">String extensions()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>state</code></td><td><span class="sig">int state()</span></td><td class="desc">Capability state: 1 == backend.</td></tr>
+<tr><td><code>stateName</code></td><td><span class="sig">String stateName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canCompress</code></td><td><span class="sig">boolean canCompress()</span></td><td class="desc">Direction support advertised by the plugin vtable.</td></tr>
+<tr><td><code>canDecompress</code></td><td><span class="sig">boolean canDecompress()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isNative</code></td><td><span class="sig">boolean isNative()</span></td><td class="desc">Native algorithms implement compress/decompress in-package (no external backend).</td></tr>
+<tr><td><code>needsBackend</code></td><td><span class="sig">boolean needsBackend()</span></td><td class="desc">A backend adapter must be registered before a backend algorithm can run.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slcompressionzip">SLCompressionZip <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/compression/SLCompressionZip.sleela)</span></h2>
+<div data-u="slcompressionzip slcompressionzip">
+<h3 id="SLCompressionZip">SLCompressionZip <span class="pill">class</span></h3>
+<p class="desc">ZIP archive algorithm class — the SLeeLa-facing handle to algorithm id 14.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>id</code></td><td><span class="sig">int id()</span></td><td class="desc">Registry identity (mirrors sleela_compressor_handler).</td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mime</code></td><td><span class="sig">String mime()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>extensions</code></td><td><span class="sig">String extensions()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>state</code></td><td><span class="sig">int state()</span></td><td class="desc">Capability state: 3 == container.</td></tr>
+<tr><td><code>stateName</code></td><td><span class="sig">String stateName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canCompress</code></td><td><span class="sig">boolean canCompress()</span></td><td class="desc">Direction support advertised by the plugin vtable.</td></tr>
+<tr><td><code>canDecompress</code></td><td><span class="sig">boolean canDecompress()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isNative</code></td><td><span class="sig">boolean isNative()</span></td><td class="desc">Native algorithms implement compress/decompress in-package (no external backend).</td></tr>
+<tr><td><code>needsBackend</code></td><td><span class="sig">boolean needsBackend()</span></td><td class="desc">A backend adapter must be registered before a backend algorithm can run.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slcompressionzlib">SLCompressionZlib <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/compression/SLCompressionZlib.sleela)</span></h2>
+<div data-u="slcompressionzlib slcompressionzlib">
+<h3 id="SLCompressionZlib">SLCompressionZlib <span class="pill">class</span></h3>
+<p class="desc">zlib (RFC 1950) algorithm class — the SLeeLa-facing handle to algorithm id 5.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>id</code></td><td><span class="sig">int id()</span></td><td class="desc">Registry identity (mirrors sleela_compressor_handler).</td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mime</code></td><td><span class="sig">String mime()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>extensions</code></td><td><span class="sig">String extensions()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>state</code></td><td><span class="sig">int state()</span></td><td class="desc">Capability state: 1 == backend.</td></tr>
+<tr><td><code>stateName</code></td><td><span class="sig">String stateName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canCompress</code></td><td><span class="sig">boolean canCompress()</span></td><td class="desc">Direction support advertised by the plugin vtable.</td></tr>
+<tr><td><code>canDecompress</code></td><td><span class="sig">boolean canDecompress()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isNative</code></td><td><span class="sig">boolean isNative()</span></td><td class="desc">Native algorithms implement compress/decompress in-package (no external backend).</td></tr>
+<tr><td><code>needsBackend</code></td><td><span class="sig">boolean needsBackend()</span></td><td class="desc">A backend adapter must be registered before a backend algorithm can run.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slcompressionzstd">SLCompressionZstd <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/compression/SLCompressionZstd.sleela)</span></h2>
+<div data-u="slcompressionzstd slcompressionzstd">
+<h3 id="SLCompressionZstd">SLCompressionZstd <span class="pill">class</span></h3>
+<p class="desc">Zstandard algorithm class — the SLeeLa-facing handle to algorithm id 10.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>id</code></td><td><span class="sig">int id()</span></td><td class="desc">Registry identity (mirrors sleela_compressor_handler).</td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mime</code></td><td><span class="sig">String mime()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>extensions</code></td><td><span class="sig">String extensions()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>state</code></td><td><span class="sig">int state()</span></td><td class="desc">Capability state: 1 == backend.</td></tr>
+<tr><td><code>stateName</code></td><td><span class="sig">String stateName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canCompress</code></td><td><span class="sig">boolean canCompress()</span></td><td class="desc">Direction support advertised by the plugin vtable.</td></tr>
+<tr><td><code>canDecompress</code></td><td><span class="sig">boolean canDecompress()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isNative</code></td><td><span class="sig">boolean isNative()</span></td><td class="desc">Native algorithms implement compress/decompress in-package (no external backend).</td></tr>
+<tr><td><code>needsBackend</code></td><td><span class="sig">boolean needsBackend()</span></td><td class="desc">A backend adapter must be registered before a backend algorithm can run.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slpackage">SLPackage <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/compression/SLPackage.sleela)</span></h2>
+<div data-u="slpackage slpackage">
+<h3 id="SLPackage">SLPackage <span class="pill">class</span></h3>
+<p class="desc">Defines the SLeeLa standard-library package for compression.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>packageName</code></td><td><span class="sig">String packageName</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>available</code></td><td><span class="sig">boolean available()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
+<footer>
+Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
+<code>/lib</code> tree on 2026-10-31 00:02 UTC.
+SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
+</footer>
+</main>
+</div>
+</body>
+</html>

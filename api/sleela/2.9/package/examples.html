@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Package examples — SleelaDoc API</title>
+<link rel="stylesheet" href="../style.css">
+
+</head>
+<body>
+<header class="top">
+  <div class="brand"><a href="../index.html">SleelaDoc API</a></div>
+  <div class="tag">HTML documentation for the SLeeLa standard library (/lib)</div>
+</header>
+<div class="wrap">
+<nav class="side">
+  <a href="../index.html"><strong>Home</strong></a>
+  <a href="../packages.html"><strong>All packages</strong></a>
+  <a href="../glossary.html"><strong>Glossary</strong></a>
+  <a href="../authorship.html"><strong>Authorship</strong></a>
+  <h2>Packages</h2><ul>
+<li><a href="../package/alphabet.html">alphabet</a></li>
+<li><a href="../package/antivirus.html">antivirus</a></li>
+<li><a href="../package/api.html">api</a></li>
+<li><a href="../package/audio.html">audio</a></li>
+<li><a href="../package/autocad.html">autocad</a></li>
+<li><a href="../package/ballum.html">ballum</a></li>
+<li><a href="../package/bash.html">bash</a></li>
+<li><a href="../package/boolean.html">boolean</a></li>
+<li><a href="../package/cdma.html">cdma</a></li>
+<li><a href="../package/character.html">character</a></li>
+<li><a href="../package/churn.html">churn</a></li>
+<li><a href="../package/citizen.html">citizen</a></li>
+<li><a href="../package/codecs.html">codecs</a></li>
+<li><a href="../package/collections.html">collections</a></li>
+<li><a href="../package/common-rails.html">common-rails</a></li>
+<li><a href="../package/compiler.html">compiler</a></li>
+<li><a href="../package/compression.html">compression</a></li>
+<li><a href="../package/config.html">config</a></li>
+<li><a href="../package/connector.html">connector</a></li>
+<li><a href="../package/coorenagraph.html">coorenagraph</a></li>
+<li><a href="../package/core.html">core</a></li>
+<li><a href="../package/cpu.html">cpu</a></li>
+<li><a href="../package/crypto.html">crypto</a></li>
+<li><a href="../package/data.html">data</a></li>
+<li><a href="../package/data-structures.html">data-structures</a></li>
+<li><a href="../package/database.html">database</a></li>
+<li><a href="../package/debugger.html">debugger</a></li>
+<li><a href="../package/decompiler.html">decompiler</a></li>
+<li><a href="../package/deliberation.html">deliberation</a></li>
+<li><a href="../package/drivers.html">drivers</a></li>
+<li><a href="../package/examples.html">examples</a></li>
+<li><a href="../package/filesystem.html">filesystem</a></li>
+<li><a href="../package/gameplay.html">gameplay</a></li>
+<li><a href="../package/gui.html">gui</a></li>
+<li><a href="../package/html.html">html</a></li>
+<li><a href="../package/http.html">http</a></li>
+<li><a href="../package/http-1.0.html">http-1.0</a></li>
+<li><a href="../package/http-2.0.html">http-2.0</a></li>
+<li><a href="../package/http-3.0.html">http-3.0</a></li>
+<li><a href="../package/http-4.0.html">http-4.0</a></li>
+<li><a href="../package/http-5.0.html">http-5.0</a></li>
+<li><a href="../package/http-6.0.html">http-6.0</a></li>
+<li><a href="../package/http-7.0.html">http-7.0</a></li>
+<li><a href="../package/http-8.0.html">http-8.0</a></li>
+<li><a href="../package/http-9.0.html">http-9.0</a></li>
+<li><a href="../package/http-servers.html">http-servers</a></li>
+<li><a href="../package/ide.html">ide</a></li>
+<li><a href="../package/ide-workbench.html">ide-workbench</a></li>
+<li><a href="../package/idea.html">idea</a></li>
+<li><a href="../package/inference-model.html">inference-model</a></li>
+<li><a href="../package/inputs.html">inputs</a></li>
+<li><a href="../package/international-criminal-court.html">international-criminal-court</a></li>
+<li><a href="../package/io.html">io</a></li>
+<li><a href="../package/java.html">java</a></li>
+<li><a href="../package/java28.html">java28</a></li>
+<li><a href="../package/journey.html">journey</a></li>
+<li><a href="../package/languages.html">languages</a></li>
+<li><a href="../package/ledger.html">ledger</a></li>
+<li><a href="../package/linux-editors.html">linux-editors</a></li>
+<li><a href="../package/manifesto.html">manifesto</a></li>
+<li><a href="../package/math.html">math</a></li>
+<li><a href="../package/memory.html">memory</a></li>
+<li><a href="../package/modules.html">modules</a></li>
+<li><a href="../package/moral-capacitor.html">moral-capacitor</a></li>
+<li><a href="../package/munction.html">munction</a></li>
+<li><a href="../package/native.html">native</a></li>
+<li><a href="../package/net.html">net</a></li>
+<li><a href="../package/nordshrift.html">nordshrift</a></li>
+<li><a href="../package/opcodes.html">opcodes</a></li>
+<li><a href="../package/operating-system.html">operating-system</a></li>
+<li><a href="../package/philosophers.html">philosophers</a></li>
+<li><a href="../package/philosophy.html">philosophy</a></li>
+<li><a href="../package/politico.html">politico</a></li>
+<li><a href="../package/process.html">process</a></li>
+<li><a href="../package/psychiatry.html">psychiatry</a></li>
+<li><a href="../package/public.html">public</a></li>
+<li><a href="../package/reflection.html">reflection</a></li>
+<li><a href="../package/regex.html">regex</a></li>
+<li><a href="../package/registry.html">registry</a></li>
+<li><a href="../package/rmi.html">rmi</a></li>
+<li><a href="../package/runtime.html">runtime</a></li>
+<li><a href="../package/security.html">security</a></li>
+<li><a href="../package/server-edition.html">server-edition</a></li>
+<li><a href="../package/signal-processing.html">signal-processing</a></li>
+<li><a href="../package/sldocument.html">sldocument</a></li>
+<li><a href="../package/sleela.html">sleela</a></li>
+<li><a href="../package/sleela-sql.html">sleela-sql</a></li>
+<li><a href="../package/sleela-terminal.html">sleela-terminal</a></li>
+<li><a href="../package/sleeladoc.html">sleeladoc</a></li>
+<li><a href="../package/social-model.html">social-model</a></li>
+<li><a href="../package/sommeliers.html">sommeliers</a></li>
+<li><a href="../package/sst.html">sst</a></li>
+<li><a href="../package/synchro.html">synchro</a></li>
+<li><a href="../package/systems.html">systems</a></li>
+<li><a href="../package/telephony-skya.html">telephony-skya</a></li>
+<li><a href="../package/terminal.html">terminal</a></li>
+<li><a href="../package/terminal_pixel.html">terminal_pixel</a></li>
+<li><a href="../package/text.html">text</a></li>
+<li><a href="../package/ui.html">ui</a></li>
+<li><a href="../package/us-infrastructure.html">us-infrastructure</a></li>
+<li><a href="../package/user-interface.html">user-interface</a></li>
+<li><a href="../package/video.html">video</a></li>
+<li><a href="../package/vm.html">vm</a></li>
+<li><a href="../package/web-server-technology.html">web-server-technology</a></li>
+<li><a href="../package/website.html">website</a></li>
+<li><a href="../package/wifi.html">wifi</a></li>
+<li><a href="../package/xlt.html">xlt</a></li>
+<li><a href="../package/xml.html">xml</a></li>
+</ul>
+</nav>
+<main>
+<div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; examples</div>
+<h1>Package <code>examples</code></h1>
+<div class="lead">This package contains <strong>79</strong> source unit(s) defining <strong>89</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
+<h2 class="section" data-u="advanced-anchored-classes">ADVANCED-anchored-classes <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/regex/ADVANCED-anchored-classes.sleela)</span></h2>
+<div data-u="advanced-anchored-classes advanchoredclasses">
+<h3 id="ADVAnchoredClasses">ADVAnchoredClasses <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>isDigit</code></td><td><span class="sig">boolean isDigit(int c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isLower</code></td><td><span class="sig">boolean isLower(int c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isUpper</code></td><td><span class="sig">boolean isUpper(int c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isAlpha</code></td><td><span class="sig">boolean isAlpha(int c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isUnder</code></td><td><span class="sig">boolean isUnder(int c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isDigits</code></td><td><span class="sig">boolean isDigits(int[] t)</span></td><td class="desc">^[0-9]+$</td></tr>
+<tr><td><code>isIdentifier</code></td><td><span class="sig">boolean isIdentifier(int[] t)</span></td><td class="desc">^[A-Za-z_][A-Za-z0-9_]*$</td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="advanced-app">ADVANCED-app <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/xlt/ADVANCED-app.sleela)</span></h2>
+<div data-u="advanced-app advancedapp">
+<h3 id="AdvancedApp">AdvancedApp <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>logActivity</code></td><td><span class="sig">void logActivity()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>settleLedger</code></td><td><span class="sig">int settleLedger()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="advanced-dirty-rects">ADVANCED-dirty-rects <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/ballum/ADVANCED-dirty-rects.sleela)</span></h2>
+<div data-u="advanced-dirty-rects rect">
+<h3 id="Rect">Rect <span class="pill">class</span></h3>
+<p class="muted">No public fields or methods detected (the unit may be a facade or a pure contract).</p>
+</div>
+<div data-u="advanced-dirty-rects advanceddirtyrects">
+<h3 id="AdvancedDirtyRects">AdvancedDirtyRects <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>dirty</code></td><td><span class="sig">static Rect[] dirty</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>make</code></td><td><span class="sig">Rect make(int x, int y, int w, int h)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="advanced-disassemble-stream">ADVANCED-disassemble-stream <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/decompiler/ADVANCED-disassemble-stream.sleela)</span></h2>
+<div data-u="advanced-disassemble-stream advanceddisassemblestream">
+<h3 id="AdvancedDisassembleStream">AdvancedDisassembleStream <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>mnemonic</code></td><td><span class="sig">String mnemonic(int op)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hasOperand</code></td><td><span class="sig">boolean hasOperand(int op)</span></td><td class="desc">Does this opcode consume a following operand byte?</td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="advanced-grid-layout">ADVANCED-grid-layout <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/gui/ADVANCED-grid-layout.sleela)</span></h2>
+<div data-u="advanced-grid-layout advgridlayout">
+<h3 id="ADVGridLayout">ADVGridLayout <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="advanced-invariant-harness">ADVANCED-invariant-harness <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/debugger/ADVANCED-invariant-harness.sleela)</span></h2>
+<div data-u="advanced-invariant-harness advancedinvariantharness">
+<h3 id="AdvancedInvariantHarness">AdvancedInvariantHarness <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">static int passed</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">static int failed</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>firstFailure</code></td><td><span class="sig">static String firstFailure</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, boolean condition)</span></td><td class="desc">Record one named check.</td></tr>
+<tr><td><code>triangular</code></td><td><span class="sig">int triangular(int n)</span></td><td class="desc">The function under test (contains a deliberate off-by-one style bug for the demo: it returns n*(n+1)/2 but we also assert a wrong expectation to show how a failing invariant is surfaced).</td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="advanced-layer-takeoff">ADVANCED-layer-takeoff <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/autocad/ADVANCED-layer-takeoff.sleela)</span></h2>
+<div data-u="advanced-layer-takeoff entity">
+<h3 id="Entity">Entity <span class="pill">class</span></h3>
+<p class="muted">No public fields or methods detected (the unit may be a facade or a pure contract).</p>
+</div>
+<div data-u="advanced-layer-takeoff advancedlayertakeoff">
+<h3 id="AdvancedLayerTakeoff">AdvancedLayerTakeoff <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>drawing</code></td><td><span class="sig">static Entity[] drawing</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>make</code></td><td><span class="sig">Entity make(int layer, double area)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="advanced-main-class-resolution">ADVANCED-main-class-resolution <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/java/ADVANCED-main-class-resolution.sleela)</span></h2>
+<div data-u="advanced-main-class-resolution advancedmainclassresolution">
+<h3 id="AdvancedMainClassResolution">AdvancedMainClassResolution <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>resolve</code></td><td><span class="sig">String resolve(String cliMain, String manifestMain)</span></td><td class="desc">Decide the launch target. Empty string (&quot;&quot;) means &quot;not provided&quot;.</td></tr>
+<tr><td><code>report</code></td><td><span class="sig">void report(String label, String cliMain, String manifestMain)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="advanced-manifest-verify-sim">ADVANCED-manifest-verify-sim <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/crypto/ADVANCED-manifest-verify-sim.sleela)</span></h2>
+<div data-u="advanced-manifest-verify-sim entry">
+<h3 id="Entry">Entry <span class="pill">class</span></h3>
+<p class="muted">No public fields or methods detected (the unit may be a facade or a pure contract).</p>
+</div>
+<div data-u="advanced-manifest-verify-sim advancedmanifestverifysim">
+<h3 id="AdvancedManifestVerifySim">AdvancedManifestVerifySim <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>manifest</code></td><td><span class="sig">static Entry[] manifest</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>row</code></td><td><span class="sig">Entry row(String name, String trusted, String measured)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="advanced-nonoverlap-plan">ADVANCED-nonoverlap-plan <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/wifi/ADVANCED-nonoverlap-plan.sleela)</span></h2>
+<div data-u="advanced-nonoverlap-plan ap">
+<h3 id="AP">AP <span class="pill">class</span></h3>
+<p class="muted">No public fields or methods detected (the unit may be a facade or a pure contract).</p>
+</div>
+<div data-u="advanced-nonoverlap-plan advnonoverlapplan">
+<h3 id="ADVNonoverlapPlan">ADVNonoverlapPlan <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>plan</code></td><td><span class="sig">static AP[] plan</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>ap</code></td><td><span class="sig">AP ap(String name, int channel)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>gap</code></td><td><span class="sig">int gap(int a, int b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="advanced-processing-gain-capacity">ADVANCED-processing-gain-capacity <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/cdma/ADVANCED-processing-gain-capacity.sleela)</span></h2>
+<div data-u="advanced-processing-gain-capacity advancedprocessinggaincapacity">
+<h3 id="AdvancedProcessingGainCapacity">AdvancedProcessingGainCapacity <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>gainDb</code></td><td><span class="sig">double gainDb(int ratio)</span></td><td class="desc">log10 for exact powers/ratios we use here, via a small lookup. Returns dB = 10*log10(ratio) for the handful of ratios in this demo.</td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="advanced-producer-consumer">ADVANCED-producer-consumer <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/runtime/ADVANCED-producer-consumer.sleela)</span></h2>
+<div data-u="advanced-producer-consumer advancedproducerconsumer">
+<h3 id="AdvancedProducerConsumer">AdvancedProducerConsumer <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>ITEMS</code></td><td><span class="sig">static int ITEMS = 12</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>CONSUMERS</code></td><td><span class="sig">static int CONSUMERS = 4</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>producer</code></td><td><span class="sig">static void producer()</span></td><td class="desc">Produce ITEMS values (1..ITEMS) into mailbox slot 1.</td></tr>
+<tr><td><code>consumer</code></td><td><span class="sig">static void consumer()</span></td><td class="desc">Each consumer pulls exactly ITEMS/CONSUMERS items (even split) and folds their squares into the shared total.</td></tr>
+<tr><td><code>main</code></td><td><span class="sig">static void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="advanced-progress-bar">ADVANCED-progress-bar <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/terminal/ADVANCED-progress-bar.sleela)</span></h2>
+<div data-u="advanced-progress-bar advancedprogressbar">
+<h3 id="AdvancedProgressBar">AdvancedProgressBar <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>bar</code></td><td><span class="sig">String bar(int filled)</span></td><td class="desc">Build a bar string with `filled` &#x27;#&#x27; cells and the rest as &#x27;-&#x27;.</td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="advanced-request-response-protocol">ADVANCED-request-response-protocol <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/network/ADVANCED-request-response-protocol.sleela)</span></h2>
+<div data-u="advanced-request-response-protocol advancedrequestresponse">
+<h3 id="AdvancedRequestResponse">AdvancedRequestResponse <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>PORT</code></td><td><span class="sig">static int PORT = 45231</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>listener</code></td><td><span class="sig">static int listener</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>reply</code></td><td><span class="sig">static String reply(String request)</span></td><td class="desc">Decide a reply for one request line. (String has ==/!= only at 1.7, so we match the two fixed verbs and treat anything with an ECHO prefix by comparing against the known full commands this demo sends.)</td></tr>
+<tr><td><code>server</code></td><td><span class="sig">static void server()</span></td><td class="desc">Server: accept three connections, answer each, then return.</td></tr>
+<tr><td><code>call</code></td><td><span class="sig">static String call(String request)</span></td><td class="desc">Client: one request/response round trip.</td></tr>
+<tr><td><code>main</code></td><td><span class="sig">static void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="advanced-retry-backoff">ADVANCED-retry-backoff <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/connector/ADVANCED-retry-backoff.sleela)</span></h2>
+<div data-u="advanced-retry-backoff advancedretrybackoff">
+<h3 id="AdvancedRetryBackoff">AdvancedRetryBackoff <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="advanced-service">ADVANCED-Service <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/nordshrift/ADVANCED-Service.sleela)</span></h2>
+<div data-u="advanced-service service">
+<h3 id="Service">Service <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="advanced-servicedraft">ADVANCED-ServiceDraft <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/nordshrift/ADVANCED-ServiceDraft.sleela)</span></h2>
+<div data-u="advanced-servicedraft servicedraft">
+<h3 id="ServiceDraft">ServiceDraft <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>scratch</code></td><td><span class="sig">int scratch()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="basic-artifact-inspection">BASIC-artifact-inspection <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/decompiler/BASIC-artifact-inspection.sleela)</span></h2>
+<div data-u="basic-artifact-inspection basicartifactinspection">
+<h3 id="BasicArtifactInspection">BasicArtifactInspection <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="basic-channel-frequency">BASIC-channel-frequency <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/wifi/BASIC-channel-frequency.sleela)</span></h2>
+<div data-u="basic-channel-frequency basicchannelfrequency">
+<h3 id="BasicChannelFrequency">BasicChannelFrequency <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>centerMhz</code></td><td><span class="sig">int centerMhz(int channel)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="basic-clamp-to-parent">BASIC-clamp-to-parent <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/gui/BASIC-clamp-to-parent.sleela)</span></h2>
+<div data-u="basic-clamp-to-parent basicclamptoparent">
+<h3 id="BasicClampToParent">BasicClampToParent <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="basic-connector-lifecycle">BASIC-connector-lifecycle <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/connector/BASIC-connector-lifecycle.sleela)</span></h2>
+<div data-u="basic-connector-lifecycle basicconnectorlifecycle">
+<h3 id="BasicConnectorLifecycle">BasicConnectorLifecycle <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="basic-debugging-checklist">BASIC-debugging-checklist <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/debugger/BASIC-debugging-checklist.sleela)</span></h2>
+<div data-u="basic-debugging-checklist basicdebuggingchecklist">
+<h3 id="BasicDebuggingChecklist">BasicDebuggingChecklist <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="basic-endpoint-validation">BASIC-endpoint-validation <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/network/BASIC-endpoint-validation.sleela)</span></h2>
+<div data-u="basic-endpoint-validation basicendpointvalidation">
+<h3 id="BasicEndpointValidation">BasicEndpointValidation <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>validate</code></td><td><span class="sig">int validate(String host, int port)</span></td><td class="desc">0 = ok, otherwise a reason code.</td></tr>
+<tr><td><code>report</code></td><td><span class="sig">void report(String host, int port)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="basic-frame-metrics">BASIC-frame-metrics <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/ballum/BASIC-frame-metrics.sleela)</span></h2>
+<div data-u="basic-frame-metrics basicframemetrics">
+<h3 id="BasicFrameMetrics">BasicFrameMetrics <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="basic-geometry-area">BASIC-geometry-area <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/autocad/BASIC-geometry-area.sleela)</span></h2>
+<div data-u="basic-geometry-area basicgeometryarea">
+<h3 id="BasicGeometryArea">BasicGeometryArea <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="basic-greeter">BASIC-Greeter <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/nordshrift/BASIC-Greeter.sleela)</span></h2>
+<div data-u="basic-greeter greeter">
+<h3 id="Greeter">Greeter <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="basic-integrity-workflow">BASIC-integrity-workflow <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/crypto/BASIC-integrity-workflow.sleela)</span></h2>
+<div data-u="basic-integrity-workflow basicintegrityworkflow">
+<h3 id="BasicIntegrityWorkflow">BasicIntegrityWorkflow <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="basic-launch-preflight">BASIC-launch-preflight <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/java/BASIC-launch-preflight.sleela)</span></h2>
+<div data-u="basic-launch-preflight basiclaunchpreflight">
+<h3 id="BasicLaunchPreflight">BasicLaunchPreflight <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="basic-link-budget">BASIC-link-budget <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/cdma/BASIC-link-budget.sleela)</span></h2>
+<div data-u="basic-link-budget basiclinkbudget">
+<h3 id="BasicLinkBudget">BasicLinkBudget <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="basic-literal-match">BASIC-literal-match <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/regex/BASIC-literal-match.sleela)</span></h2>
+<div data-u="basic-literal-match basicliteralmatch">
+<h3 id="BasicLiteralMatch">BasicLiteralMatch <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>equals</code></td><td><span class="sig">boolean equals(int[] a, int[] b)</span></td><td class="desc">True when the two code arrays are equal element by element.</td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="basic-menu">BASIC-menu <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/terminal/BASIC-menu.sleela)</span></h2>
+<div data-u="basic-menu basicmenu">
+<h3 id="BasicMenu">BasicMenu <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="basic-sequential-accumulate">BASIC-sequential-accumulate <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/runtime/BASIC-sequential-accumulate.sleela)</span></h2>
+<div data-u="basic-sequential-accumulate basicsequentialaccumulate">
+<h3 id="BasicSequentialAccumulate">BasicSequentialAccumulate <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="classic-artifact-inspection">CLASSIC-artifact-inspection <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/decompiler/CLASSIC-artifact-inspection.sleela)</span></h2>
+<div data-u="classic-artifact-inspection classicartifactinspection">
+<h3 id="ClassicArtifactInspection">ClassicArtifactInspection <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="classic-connector-lifecycle">CLASSIC-connector-lifecycle <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/connector/CLASSIC-connector-lifecycle.sleela)</span></h2>
+<div data-u="classic-connector-lifecycle classicconnectorlifecycle">
+<h3 id="ClassicConnectorLifecycle">ClassicConnectorLifecycle <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="classic-debugging-checklist">CLASSIC-debugging-checklist <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/debugger/CLASSIC-debugging-checklist.sleela)</span></h2>
+<div data-u="classic-debugging-checklist classicdebuggingchecklist">
+<h3 id="ClassicDebuggingChecklist">ClassicDebuggingChecklist <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="classic-display-frame">CLASSIC-display-frame <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/ballum/CLASSIC-display-frame.sleela)</span></h2>
+<div data-u="classic-display-frame classicdisplayframe">
+<h3 id="ClassicDisplayFrame">ClassicDisplayFrame <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="classic-geometry-primitives">CLASSIC-geometry-primitives <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/autocad/CLASSIC-geometry-primitives.sleela)</span></h2>
+<div data-u="classic-geometry-primitives classicgeometryprimitives">
+<h3 id="ClassicGeometryPrimitives">ClassicGeometryPrimitives <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="classic-hash-integrity-workflow">CLASSIC-hash-integrity-workflow <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/crypto/CLASSIC-hash-integrity-workflow.sleela)</span></h2>
+<div data-u="classic-hash-integrity-workflow classichashintegrityworkflow">
+<h3 id="ClassicHashIntegrityWorkflow">ClassicHashIntegrityWorkflow <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="classic-hello-world">CLASSIC-hello-world <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/sleela/CLASSIC-hello-world.sleela)</span></h2>
+<div data-u="classic-hello-world classichelloworld">
+<h3 id="ClassicHelloWorld">ClassicHelloWorld <span class="pill">class</span></h3>
+<p class="muted">No public fields or methods detected (the unit may be a facade or a pure contract).</p>
+</div>
+<h2 class="section" data-u="classic-java-launch-preflight">CLASSIC-java-launch-preflight <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/java/CLASSIC-java-launch-preflight.sleela)</span></h2>
+<div data-u="classic-java-launch-preflight classicjavalaunchpreflight">
+<h3 id="ClassicJavaLaunchPreflight">ClassicJavaLaunchPreflight <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="classic-layout-bounds">CLASSIC-layout-bounds <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/gui/CLASSIC-layout-bounds.sleela)</span></h2>
+<div data-u="classic-layout-bounds classiclayoutbounds">
+<h3 id="ClassicLayoutBounds">ClassicLayoutBounds <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="classic-ledgerize">CLASSIC-Ledgerize <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/nordshrift/CLASSIC-Ledgerize.sleela)</span></h2>
+<div data-u="classic-ledgerize ledgerize">
+<h3 id="Ledgerize">Ledgerize <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>sumWindow</code></td><td><span class="sig">int sumWindow(int completed, int window)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="classic-link-budget">CLASSIC-link-budget <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/cdma/CLASSIC-link-budget.sleela)</span></h2>
+<div data-u="classic-link-budget classiccdmalinkbudget">
+<h3 id="ClassicCdmaLinkBudget">ClassicCdmaLinkBudget <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="classic-terminal-menu">CLASSIC-terminal-menu <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/terminal/CLASSIC-terminal-menu.sleela)</span></h2>
+<div data-u="classic-terminal-menu classicterminalmenu">
+<h3 id="ClassicTerminalMenu">ClassicTerminalMenu <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="draft-literal-find">DRAFT-literal-find <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/regex/DRAFT-literal-find.sleela)</span></h2>
+<div data-u="draft-literal-find draftliteralfind">
+<h3 id="DraftLiteralFind">DraftLiteralFind <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="moderate-aligned-table">MODERATE-aligned-table <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/terminal/MODERATE-aligned-table.sleela)</span></h2>
+<div data-u="moderate-aligned-table moderatealignedtable">
+<h3 id="ModerateAlignedTable">ModerateAlignedTable <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>padTo</code></td><td><span class="sig">String padTo(String text, int textLen, int width)</span></td><td class="desc">Right-pad `text` with spaces to at least `width` characters. (We approximate &quot;length&quot; by rebuilding: pad until we have added enough.)</td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="moderate-app">MODERATE-App <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/nordshrift/MODERATE-App.sleela)</span></h2>
+<div data-u="moderate-app moderateapp">
+<h3 id="ModerateApp">ModerateApp <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>daily</code></td><td><span class="sig">int daily(int perHour)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="moderate-bisect-regression">MODERATE-bisect-regression <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/debugger/MODERATE-bisect-regression.sleela)</span></h2>
+<div data-u="moderate-bisect-regression moderatebisectregression">
+<h3 id="ModerateBisectRegression">ModerateBisectRegression <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>isBad</code></td><td><span class="sig">boolean isBad(int rev)</span></td><td class="desc">The oracle a real bisect would run: is this revision broken?</td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="moderate-checksum-not-crypto">MODERATE-checksum-not-crypto <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/crypto/MODERATE-checksum-not-crypto.sleela)</span></h2>
+<div data-u="moderate-checksum-not-crypto moderatechecksumnotcrypto">
+<h3 id="ModerateChecksumNotCrypto">ModerateChecksumNotCrypto <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>checksum8</code></td><td><span class="sig">int checksum8(int[] bytes)</span></td><td class="desc">Sum the bytes modulo 256 -&gt; a single-byte &quot;checkword&quot;. Order-insensitive, collision-prone: exactly why it is not a security primitive.</td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="moderate-classpath-resolution">MODERATE-classpath-resolution <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/java/MODERATE-classpath-resolution.sleela)</span></h2>
+<div data-u="moderate-classpath-resolution entry">
+<h3 id="Entry">Entry <span class="pill">class</span></h3>
+<p class="muted">No public fields or methods detected (the unit may be a facade or a pure contract).</p>
+</div>
+<div data-u="moderate-classpath-resolution moderateclasspathresolution">
+<h3 id="ModerateClasspathResolution">ModerateClasspathResolution <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>classpath</code></td><td><span class="sig">static Entry[] classpath</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>entry</code></td><td><span class="sig">Entry entry(String root, String provides)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>resolve</code></td><td><span class="sig">String resolve(String className)</span></td><td class="desc">Return the root that first provides the class, or &quot;NOT FOUND&quot;.</td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="moderate-fit-and-letterbox">MODERATE-fit-and-letterbox <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/ballum/MODERATE-fit-and-letterbox.sleela)</span></h2>
+<div data-u="moderate-fit-and-letterbox moderatefitandletterbox">
+<h3 id="ModerateFitAndLetterbox">ModerateFitAndLetterbox <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="moderate-link-margin">MODERATE-link-margin <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/cdma/MODERATE-link-margin.sleela)</span></h2>
+<div data-u="moderate-link-margin moderatelinkmargin">
+<h3 id="ModerateLinkMargin">ModerateLinkMargin <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="moderate-polyline-bounds">MODERATE-polyline-bounds <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/autocad/MODERATE-polyline-bounds.sleela)</span></h2>
+<div data-u="moderate-polyline-bounds vertex">
+<h3 id="Vertex">Vertex <span class="pill">class</span></h3>
+<p class="muted">No public fields or methods detected (the unit may be a facade or a pure contract).</p>
+</div>
+<div data-u="moderate-polyline-bounds moderatepolylinebounds">
+<h3 id="ModeratePolylineBounds">ModeratePolylineBounds <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>path</code></td><td><span class="sig">static Vertex[] path</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>abs</code></td><td><span class="sig">double abs(double v)</span></td><td class="desc">Absolute value helper: SLeeLa 1.7 has no math intrinsics, so we spell it out.</td></tr>
+<tr><td><code>at</code></td><td><span class="sig">Vertex at(double x, double y)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="moderate-report">MODERATE-Report <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/nordshrift/MODERATE-Report.sleela)</span></h2>
+<div data-u="moderate-report moderatereport">
+<h3 id="ModerateReport">ModerateReport <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="moderate-section-table">MODERATE-section-table <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/decompiler/MODERATE-section-table.sleela)</span></h2>
+<div data-u="moderate-section-table section">
+<h3 id="Section">Section <span class="pill">class</span></h3>
+<p class="muted">No public fields or methods detected (the unit may be a facade or a pure contract).</p>
+</div>
+<div data-u="moderate-section-table moderatesectiontable">
+<h3 id="ModerateSectionTable">ModerateSectionTable <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>sections</code></td><td><span class="sig">static Section[] sections</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>sec</code></td><td><span class="sig">Section sec(String name, int offset, int size)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="moderate-security-policy">MODERATE-security-policy <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/wifi/MODERATE-security-policy.sleela)</span></h2>
+<div data-u="moderate-security-policy moderatesecuritypolicy">
+<h3 id="ModerateSecurityPolicy">ModerateSecurityPolicy <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>OPEN</code></td><td><span class="sig">static int OPEN = 0</span></td><td class="desc">Security ranks (higher = stronger).</td></tr>
+<tr><td><code>WEP</code></td><td><span class="sig">static int WEP  = 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>WPA</code></td><td><span class="sig">static int WPA  = 2</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>WPA2</code></td><td><span class="sig">static int WPA2 = 3</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>WPA3</code></td><td><span class="sig">static int WPA3 = 4</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>evaluate</code></td><td><span class="sig">int evaluate(int rank)</span></td><td class="desc">0 = allowed, otherwise a reason code.</td></tr>
+<tr><td><code>report</code></td><td><span class="sig">void report(String ssid, int rank)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="moderate-stack-layout">MODERATE-stack-layout <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/gui/MODERATE-stack-layout.sleela)</span></h2>
+<div data-u="moderate-stack-layout moderatestacklayout">
+<h3 id="ModerateStackLayout">ModerateStackLayout <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="moderate-state-machine">MODERATE-state-machine <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/connector/MODERATE-state-machine.sleela)</span></h2>
+<div data-u="moderate-state-machine moderatestatemachine">
+<h3 id="ModerateStateMachine">ModerateStateMachine <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>NEW</code></td><td><span class="sig">static int NEW        = 0</span></td><td class="desc">States</td></tr>
+<tr><td><code>CONFIGURED</code></td><td><span class="sig">static int CONFIGURED = 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>OPEN</code></td><td><span class="sig">static int OPEN       = 2</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>CLOSED</code></td><td><span class="sig">static int CLOSED     = 3</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>FAILED</code></td><td><span class="sig">static int FAILED     = 4</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>state</code></td><td><span class="sig">static int state</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name(int s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>configure</code></td><td><span class="sig">int configure()</span></td><td class="desc">Each transition guards its precondition and returns the new state.</td></tr>
+<tr><td><code>open</code></td><td><span class="sig">int open()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>requestClose</code></td><td><span class="sig">int requestClose()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="moderate-wildcard-match">MODERATE-wildcard-match <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/regex/MODERATE-wildcard-match.sleela)</span></h2>
+<div data-u="moderate-wildcard-match moderatewildcardmatch">
+<h3 id="ModerateWildcardMatch">ModerateWildcardMatch <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>match</code></td><td><span class="sig">boolean match(int[] text, int[] pat)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="new-bestof-route">NEW-bestof-route <span class="pill syntax">#sleela 2.1</span> <span class="muted" style="font-size:13px">(lib/examples/sleela/NEW-bestof-route.sleela)</span></h2>
+<div data-u="new-bestof-route bestofroute">
+<h3 id="BestOfRoute">BestOfRoute <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="new-dynamic-arrays">NEW-dynamic-arrays <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/sleela/NEW-dynamic-arrays.sleela)</span></h2>
+<div data-u="new-dynamic-arrays newdynamicarrays">
+<h3 id="NewDynamicArrays">NewDynamicArrays <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="new-file-pipes">NEW-file-pipes <span class="pill syntax">#sleela 2.1</span> <span class="muted" style="font-size:13px">(lib/examples/sleela/NEW-file-pipes.sleela)</span></h2>
+<div data-u="new-file-pipes filepipes">
+<h3 id="FilePipes">FilePipes <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>readEnd</code></td><td><span class="sig">static int readEnd</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>writeEnd</code></td><td><span class="sig">static int writeEnd</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>writer</code></td><td><span class="sig">static void writer()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">static void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="new-munction-file-reach">NEW-munction-file-reach <span class="pill syntax">#sleela 2.1</span> <span class="muted" style="font-size:13px">(lib/examples/sleela/NEW-munction-file-reach.sleela)</span></h2>
+<div data-u="new-munction-file-reach munctionfilereach">
+<h3 id="MunctionFileReach">MunctionFileReach <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="new-native-financial-import">NEW-native-financial-import <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/sleela/NEW-native-financial-import.sleela)</span></h2>
+<div data-u="new-native-financial-import newfinancialimport">
+<h3 id="NewFinancialImport">NewFinancialImport <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="new-nested-classes">NEW-nested-classes <span class="pill syntax">#sleela 1.11</span> <span class="muted" style="font-size:13px">(lib/examples/sleela/NEW-nested-classes.sleela)</span></h2>
+<div data-u="new-nested-classes newnestedclasses">
+<h3 id="NewNestedClasses">NewNestedClasses <span class="pill">class</span></h3>
+<p class="muted">No public fields or methods detected (the unit may be a facade or a pure contract).</p>
+</div>
+<div data-u="new-nested-classes label">
+<h3 id="Label">Label <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>value</code></td><td><span class="sig">String value</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>display</code></td><td><span class="sig">String display()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="new-signed-wide-integers-2.7">NEW-signed-wide-integers-2.7 <span class="pill syntax">#sleela 2.7</span> <span class="muted" style="font-size:13px">(lib/examples/sleela/NEW-signed-wide-integers-2.7.sleela)</span></h2>
+<div data-u="new-signed-wide-integers-2.7 newsignedwideintegers">
+<h3 id="NewSignedWideIntegers">NewSignedWideIntegers <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="new-static-protected-access">NEW-static-protected-access <span class="pill syntax">#sleela 2.1</span> <span class="muted" style="font-size:13px">(lib/examples/sleela/NEW-static-protected-access.sleela)</span></h2>
+<div data-u="new-static-protected-access protectedsystem">
+<h3 id="ProtectedSystem">ProtectedSystem <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="new-struct-network-transport">NEW-struct-network-transport <span class="pill syntax">#sleela 2.1</span> <span class="muted" style="font-size:13px">(lib/examples/sleela/NEW-struct-network-transport.sleela)</span></h2>
+<div data-u="new-struct-network-transport order">
+<h3 id="Order">Order <span class="pill struct">struct</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>symbol</code></td><td><span class="sig">String symbol</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>shares</code></td><td><span class="sig">int shares</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>limit</code></td><td><span class="sig">double limit</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<div data-u="new-struct-network-transport structnetworktransport">
+<h3 id="StructNetworkTransport">StructNetworkTransport <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>listener</code></td><td><span class="sig">static int listener</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>server</code></td><td><span class="sig">static void server()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>client</code></td><td><span class="sig">static String client()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">static void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="new-struct-record">NEW-struct-record <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/sleela/NEW-struct-record.sleela)</span></h2>
+<div data-u="new-struct-record point">
+<h3 id="Point">Point <span class="pill struct">struct</span></h3>
+<p class="muted">No public fields or methods detected (the unit may be a facade or a pure contract).</p>
+</div>
+<div data-u="new-struct-record newstructrecord">
+<h3 id="NewStructRecord">NewStructRecord <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="new-synchro-measure">NEW-synchro-measure <span class="pill syntax">#sleela 2.1</span> <span class="muted" style="font-size:13px">(lib/examples/sleela/NEW-synchro-measure.sleela)</span></h2>
+<div data-u="new-synchro-measure synchromeasure">
+<h3 id="SynchroMeasure">SynchroMeasure <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="new-time-api">NEW-time-api <span class="pill syntax">#sleela 2.1</span> <span class="muted" style="font-size:13px">(lib/examples/sleela/NEW-time-api.sleela)</span></h2>
+<div data-u="new-time-api timeapi">
+<h3 id="TimeApi">TimeApi <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="new-unsigned-wide-integers-2.8">NEW-unsigned-wide-integers-2.8 <span class="pill syntax">#sleela 2.8</span> <span class="muted" style="font-size:13px">(lib/examples/sleela/NEW-unsigned-wide-integers-2.8.sleela)</span></h2>
+<div data-u="new-unsigned-wide-integers-2.8 newunsignedwideintegers">
+<h3 id="NewUnsignedWideIntegers">NewUnsignedWideIntegers <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="original-fizz-buzz">ORIGINAL-fizz-buzz <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/sleela/ORIGINAL-fizz-buzz.sleela)</span></h2>
+<div data-u="original-fizz-buzz originalfizzbuzz">
+<h3 id="OriginalFizzBuzz">OriginalFizzBuzz <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="used-loopback-tcp-echo">USED-loopback-tcp-echo <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/network/USED-loopback-tcp-echo.sleela)</span></h2>
+<div data-u="used-loopback-tcp-echo networkecho">
+<h3 id="NetworkEcho">NetworkEcho <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>listener</code></td><td><span class="sig">static int listener</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>server</code></td><td><span class="sig">static void server()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>client</code></td><td><span class="sig">static String client()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">static void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="used-methods-and-return-values">USED-methods-and-return-values <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/sleela/USED-methods-and-return-values.sleela)</span></h2>
+<div data-u="used-methods-and-return-values usedmethods">
+<h3 id="UsedMethods">UsedMethods <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>square</code></td><td><span class="sig">int square(int value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="used-short-circuit-guards">USED-short-circuit-guards <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/sleela/USED-short-circuit-guards.sleela)</span></h2>
+<div data-u="used-short-circuit-guards usedshortcircuitguards">
+<h3 id="UsedShortCircuitGuards">UsedShortCircuitGuards <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>isReady</code></td><td><span class="sig">boolean isReady(int value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="used-switch-selection">USED-switch-selection <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/sleela/USED-switch-selection.sleela)</span></h2>
+<div data-u="used-switch-selection usedswitchselection">
+<h3 id="UsedSwitchSelection">UsedSwitchSelection <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="used-thread-workers">USED-thread-workers <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/runtime/USED-thread-workers.sleela)</span></h2>
+<div data-u="used-thread-workers threadworkers">
+<h3 id="ThreadWorkers">ThreadWorkers <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>total</code></td><td><span class="sig">static int total = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>worker</code></td><td><span class="sig">static void worker()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">static void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="used-wifi-policy-smoke">USED-wifi-policy-smoke <span class="pill syntax">#sleela 1.7</span> <span class="muted" style="font-size:13px">(lib/examples/wifi/USED-wifi-policy-smoke.sleela)</span></h2>
+<div data-u="used-wifi-policy-smoke wifipolicysmoke">
+<h3 id="WifiPolicySmoke">WifiPolicySmoke <span class="pill">class</span></h3>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>run</code></td><td><span class="sig">int run()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
+<footer>
+Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
+<code>/lib</code> tree on 2026-10-31 00:00 UTC.
+SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
+</footer>
+</main>
+</div>
+</body>
+</html>
