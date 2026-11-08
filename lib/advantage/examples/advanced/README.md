@@ -11,6 +11,7 @@ one of the models is an explicit mathematical analogy rather than a literal law.
 |-------|--------|----------|-------|
 | Trust fields | [`trust-fields/`](trust-fields/) | `physics-primer.sleela`, `healer-example.sleela` | the trust metric, transactional geodesic, announcement contact structure, and trust-decay SDE; a healer restoring trust over time and measuring a breach via the CIR process (reverts 0.3→0.76 toward 0.8; breach drops 0.8→0.4) |
 | Vertical integration | [`vertical-integration/`](vertical-integration/) | `integration-primer.sleela` | recursive compartments, engineering bays, trials, newton median trays, and a sophistication score |
+| Network trades | [`network-trades/`](network-trades/) | `solar-panel-trade.sleela`, `lithium-cell-trade.sleela`, `semiconductor-trade.sleela` | manufactured goods with seller-leaning power (alpha > 0.5), larger positions, and concentration risk; scout → negotiate → receipt |
 
 > The trust-field "physics" is a mathematical modelling analogy, not a physical
 > law.

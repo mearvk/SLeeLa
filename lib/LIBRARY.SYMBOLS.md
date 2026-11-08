@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11961
+library-source-files: 11977
 library-packages: 117
 module-facade-symbols: 84
-total-symbol-records: 12045
+total-symbol-records: 12061
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -14,15 +14,27 @@ advantage	SLAdvantageSequitur.sleela	lib/advantage/SLAdvantageSequitur.sleela	so
 advantage	SLAdvantageUserModel.sleela	lib/advantage/SLAdvantageUserModel.sleela	source
 advantage	SLPackage.sleela	lib/advantage/SLPackage.sleela	facade
 advantage	advantage-demo.sleela	lib/advantage/advantage-demo.sleela	source
+advantage	lithium-cell-trade.sleela	lib/advantage/examples/advanced/network-trades/lithium-cell-trade.sleela	source
+advantage	semiconductor-trade.sleela	lib/advantage/examples/advanced/network-trades/semiconductor-trade.sleela	source
+advantage	solar-panel-trade.sleela	lib/advantage/examples/advanced/network-trades/solar-panel-trade.sleela	source
 advantage	healer-example.sleela	lib/advantage/examples/advanced/trust-fields/healer-example.sleela	source
 advantage	physics-primer.sleela	lib/advantage/examples/advanced/trust-fields/physics-primer.sleela	source
 advantage	integration-primer.sleela	lib/advantage/examples/advanced/vertical-integration/integration-primer.sleela	source
+advantage	coffee-green-trade.sleela	lib/advantage/examples/medium/network-trades/coffee-green-trade.sleela	source
+advantage	copper-wire-trade.sleela	lib/advantage/examples/medium/network-trades/copper-wire-trade.sleela	source
+advantage	cotton-bales-trade.sleela	lib/advantage/examples/medium/network-trades/cotton-bales-trade.sleela	source
+advantage	steel-coil-trade.sleela	lib/advantage/examples/medium/network-trades/steel-coil-trade.sleela	source
 advantage	output-primer.sleela	lib/advantage/examples/medium/output-routing/output-primer.sleela	source
 advantage	helper-example.sleela	lib/advantage/examples/medium/supply-chains/helper-example.sleela	source
 advantage	math-primer.sleela	lib/advantage/examples/medium/trade-economics/math-primer.sleela	source
 advantage	trader-example.sleela	lib/advantage/examples/medium/trade-economics/trader-example.sleela	source
 advantage	consumer-example.sleela	lib/advantage/examples/novice/consumer-outcomes/consumer-example.sleela	source
+advantage	cement-trade.sleela	lib/advantage/examples/novice/network-trades/cement-trade.sleela	source
+advantage	lumber-trade.sleela	lib/advantage/examples/novice/network-trades/lumber-trade.sleela	source
 advantage	onion-primer.sleela	lib/advantage/examples/novice/onion-model/onion-primer.sleela	source
+advantage	server-rack-trade.sleela	lib/advantage/examples/professional/network-trades/server-rack-trade.sleela	source
+advantage	smartphone-trade.sleela	lib/advantage/examples/professional/network-trades/smartphone-trade.sleela	source
+advantage	television-trade.sleela	lib/advantage/examples/professional/network-trades/television-trade.sleela	source
 advantage	grading-primer.sleela	lib/advantage/examples/professional/sophistication-grading/grading-primer.sleela	source
 advantage	professionals-demo.sleela	lib/advantage/examples/professional/sophistication-grading/professionals-demo.sleela	source
 advantage	SLGradeBook.sleela	lib/advantage/grading/SLGradeBook.sleela	source
@@ -42,6 +54,10 @@ advantage	SLJointProfitMax.sleela	lib/advantage/math/SLJointProfitMax.sleela	sou
 advantage	SLNashBargaining.sleela	lib/advantage/math/SLNashBargaining.sleela	source
 advantage	SLTradeMath.sleela	lib/advantage/math/SLTradeMath.sleela	source
 advantage	trade-math-demo.sleela	lib/advantage/math/trade-math-demo.sleela	source
+advantage	SLCashflow.sleela	lib/advantage/network/SLCashflow.sleela	source
+advantage	SLMarketScout.sleela	lib/advantage/network/SLMarketScout.sleela	source
+advantage	SLNegotiationRound.sleela	lib/advantage/network/SLNegotiationRound.sleela	source
+advantage	network-demo.sleela	lib/advantage/network/network-demo.sleela	source
 advantage	SLAdvantageEmitter.sleela	lib/advantage/output/SLAdvantageEmitter.sleela	source
 advantage	SLAdvantageSink.sleela	lib/advantage/output/SLAdvantageSink.sleela	source
 advantage	output-demo.sleela	lib/advantage/output/output-demo.sleela	source

@@ -930,6 +930,18 @@
       "sha256": "b5667c4467f79a2a49540c70cf6a28415d1b594b6ef16ee00d5dd6ebc5fa7e5b"
     },
     {
+      "path": "lib/advantage/examples/advanced/network-trades/lithium-cell-trade.sleela",
+      "sha256": "ae6cc3076ec9e8eb1f038c4273201fc4527b7635e30902b95462610a4bdd8402"
+    },
+    {
+      "path": "lib/advantage/examples/advanced/network-trades/semiconductor-trade.sleela",
+      "sha256": "b7171491704753ba8d4b7cc238586c3a849a384771400fd06973af9158adf36b"
+    },
+    {
+      "path": "lib/advantage/examples/advanced/network-trades/solar-panel-trade.sleela",
+      "sha256": "5569a24855d2dbce6703278d2dd6232de8b1e7abbc64fef261e54aa0d097d117"
+    },
+    {
       "path": "lib/advantage/examples/advanced/trust-fields/healer-example.sleela",
       "sha256": "cd5a2ee326a10782c9cd347c5dca04381e932b0fd822596be7419b5527921306"
     },
@@ -940,6 +952,22 @@
     {
       "path": "lib/advantage/examples/advanced/vertical-integration/integration-primer.sleela",
       "sha256": "a2e2351ec0ec595fea4fd645d86b1e0f884fbcf255d5d8c9659c21e82c997c23"
+    },
+    {
+      "path": "lib/advantage/examples/medium/network-trades/coffee-green-trade.sleela",
+      "sha256": "f7619ebae4c057155278214e6f283eba9dfb78b44a3bdbb5ab3fffdcc2533e71"
+    },
+    {
+      "path": "lib/advantage/examples/medium/network-trades/copper-wire-trade.sleela",
+      "sha256": "939a35111cf94cbb87830fe4df418c126f1bf040eae7b95b8df1376acbe9f0f0"
+    },
+    {
+      "path": "lib/advantage/examples/medium/network-trades/cotton-bales-trade.sleela",
+      "sha256": "8f59caaa7f40e85c361f8fa00d13134bbc762d82ce975f723b4f0a9851a5f134"
+    },
+    {
+      "path": "lib/advantage/examples/medium/network-trades/steel-coil-trade.sleela",
+      "sha256": "9ba7ffdfa6ad974a46f6eec13b2226273c239fe743e7dd1356c985846b285105"
     },
     {
       "path": "lib/advantage/examples/medium/output-routing/output-primer.sleela",
@@ -962,8 +990,28 @@
       "sha256": "219743689f37f85db91e01f7ce143b9ae3db3f94e35ee5540b8d2db3164badcc"
     },
     {
+      "path": "lib/advantage/examples/novice/network-trades/cement-trade.sleela",
+      "sha256": "a72b0d16ce0be44ff1c0e43f342545dab1f101a5c9ccec4b575beee289c4caf8"
+    },
+    {
+      "path": "lib/advantage/examples/novice/network-trades/lumber-trade.sleela",
+      "sha256": "23dfd98fe3c0fbaab233dbb11a169419ee0b738ccf822b5596786b5afebb246f"
+    },
+    {
       "path": "lib/advantage/examples/novice/onion-model/onion-primer.sleela",
       "sha256": "de6660554d73488c138afb874e6a60e3d34aa8b960867a5c125c845492b8cfde"
+    },
+    {
+      "path": "lib/advantage/examples/professional/network-trades/server-rack-trade.sleela",
+      "sha256": "44f5aa7d4dd5aac051e8e47488325994f867767068aa429e67386d0e5b7b5059"
+    },
+    {
+      "path": "lib/advantage/examples/professional/network-trades/smartphone-trade.sleela",
+      "sha256": "f73a36693def3c341d3d26c629dbf2468f69c78b7b5c919eb092012d6343716b"
+    },
+    {
+      "path": "lib/advantage/examples/professional/network-trades/television-trade.sleela",
+      "sha256": "a93c26b8855af7e59f53e31dd94d49204f081b53d71bf5a3286611fc402f4d01"
     },
     {
       "path": "lib/advantage/examples/professional/sophistication-grading/grading-primer.sleela",
@@ -1040,6 +1088,22 @@
     {
       "path": "lib/advantage/math/trade-math-demo.sleela",
       "sha256": "a1f753682d37f3f1e7a06335caf1d6fd1185c293115a5fbd276d197832e0bb55"
+    },
+    {
+      "path": "lib/advantage/network/SLCashflow.sleela",
+      "sha256": "218ab9274b552520c2fa144fa4c28593dca6fc5719380e4dc074bb22687c49a3"
+    },
+    {
+      "path": "lib/advantage/network/SLMarketScout.sleela",
+      "sha256": "e015401e35614242ad95eeba408d63376a6567b493b0c75e785d92d9f7008314"
+    },
+    {
+      "path": "lib/advantage/network/SLNegotiationRound.sleela",
+      "sha256": "df0770142c2582f095d6333bca305ec4f548ebd069b9408ee5b8a46c889303d4"
+    },
+    {
+      "path": "lib/advantage/network/network-demo.sleela",
+      "sha256": "0421877959952135aadd710afac46d5386312fcfbcb4ea7a6eb1c785d4b9bf54"
     },
     {
       "path": "lib/advantage/output/SLAdvantageEmitter.sleela",

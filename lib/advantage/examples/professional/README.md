@@ -11,6 +11,7 @@ roles against the grader.
 | Topic | Folder | Examples | Shows |
 |-------|--------|----------|-------|
 | Sophistication grading | [`sophistication-grading/`](sophistication-grading/) | `grading-primer.sleela`, `professionals-demo.sleela` | the scoring modules and the ranking of winning / losing / grader / absolute sets A–D; a cohort of six professional roles scored and ranked |
+| Network trades | [`network-trades/`](network-trades/) | `server-rack-trade.sleela`, `smartphone-trade.sleela`, `television-trade.sleela` | the top rungs: large tickets, distribution-scale volume, both frictions at once; scout → negotiate → receipt with an audit trail |
 
 Run from the repository root, e.g.:
 

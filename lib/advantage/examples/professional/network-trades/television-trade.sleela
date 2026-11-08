@@ -1,0 +1,106 @@
+<< lib/advantage/examples/professional/network-trades/television-trade.sleela
+   SLeeLa Standard Library Definition.
+   Definition: NETWORK-TRADE 12 of 12 -- TELEVISION. Scout a network of
+   venue quotes, pick the cheapest buy and dearest sell, negotiate a fair
+   clearing price, and emit a cash receipt. Rung: the top rung: a finished consumer television, fee AND carry. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+<< THE RATIO (television). Bargaining-power alpha = 0.6 (seller share).
+   Best buy ask = 280; best sell bid = 430; spread = 150.
+   Clearing P* = ask + alpha*(bid-ask) = 370.
+   Cashflow: units=1200 buy=280 sell=370 days=42
+   feeRate=0.02 carry=0.05 -> in=336000 out=425880
+   profit=89880. SLMarketScout / SLNegotiationRound / SLCashflow
+   resolve from lib/advantage/network by the /lib scan. See television-trade.md. >>
+class TelevisionTrade {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  String metaVersion = "1.0.0";
+  int metaId = 10631;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  int metaScienceRating = 9;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  boolean near(double a, double b, double tol) {
+    double d = a - b;
+    if (d < 0.0) { d = 0.0 - d; }
+    return d < tol;
+  }
+
+  void main() {
+    print("== network-trade 12: TELEVISION ==");
+
+    SLMarketScout scout = new SLMarketScout();
+    scout.forGood("television");
+    scout.addQuote("PanelFab", 260.0, 280.0);
+    scout.addQuote("DistB", 300.0, 320.0);
+    scout.addQuote("RetailBuy", 430.0, 460.0);
+    print("  scout : " + scout.describe());
+
+    double ask = scout.bestAsk();
+    double bid = scout.bestBid();
+
+    SLNegotiationRound neg = new SLNegotiationRound();
+    neg.configure(ask, bid, 0.6);
+    double price = neg.clearingPrice();
+    print("  deal  : " + neg.describe());
+
+    SLCashflow cf = new SLCashflow();
+    cf.configure(1200.0, ask, price, 42.0);
+    cf.setFrictions(0.02, 0.05);
+    print("  money : " + cf.receipt("television"));
+
+    print("");
+    print("== validation ==");
+    boolean okAsk = near(ask, 280.0, 0.01);
+    boolean okBid = near(bid, 430.0, 0.01);
+    boolean okSpread = near(scout.spread(), 150.0, 0.01);
+    boolean okPrice = near(price, 370.0, 0.01);
+    boolean okIn = near(cf.moneyIn(), 336000.0, 0.01);
+    boolean okOut = near(cf.cashOut(), 425880.0, 0.01);
+    boolean okProfit = near(cf.profit(), 89880.0, 0.01);
+    print("  best ask   ? " + okAsk);
+    print("  best bid   ? " + okBid);
+    print("  spread     ? " + okSpread);
+    print("  clearing   ? " + okPrice);
+    print("  money in   ? " + okIn);
+    print("  cash out   ? " + okOut);
+    print("  profit     ? " + okProfit);
+    if (okAsk) { if (okBid) { if (okSpread) { if (okPrice) {
+      if (okIn) { if (okOut) { if (okProfit) {
+        print("ALL CHECKS PASSED");
+      } } } } } } }
+  }
+}

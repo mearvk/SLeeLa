@@ -1,0 +1,127 @@
+<< lib/advantage/network/SLCashflow.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The engineering grease of a single trade -- MONEY IN, a TRADE,
+   TIME, and CASH FLOW OUT as a receipt. It records cash deployed, units moved,
+   the clearing price, holding time, and per-step frictions (fees, carry), then
+   computes net proceeds, profit, return-on-capital and a simple time-annualized
+   rate so one trade can be compared against another. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+<< CONVENTION. All money is in the same currency unit; all time is in DAYS.
+   moneyIn  = unitsBought * buyPrice            (capital deployed)
+   gross    = unitsBought * sellPrice           (cash returned, gross)
+   fees     = feeRate * (moneyIn + gross)       (venue + settlement friction)
+   carry    = carryPerUnitDay * units * days    (storage / financing over time)
+   cashOut  = gross - fees - carry              (cash flow out, net receipt)
+   profit   = cashOut - moneyIn
+   roc      = profit / moneyIn                  (return on capital, fractional)
+   The time-annualized rate uses simple (not compound) scaling: roc*365/days.
+   These are faithful bookkeeping identities, not investment advice. >>
+class SLCashflow {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  String metaVersion = "1.0.0";
+  int metaId = 10602;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "Advantage";
+  String metaCorporation = "SLeeLa project";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- Trade ledger ---- >
+  double units = 0.0;
+  double buyPrice = 0.0;
+  double sellPrice = 0.0;
+  double days = 0.0;
+  double feeRate = 0.0;
+  double carryPerUnitDay = 0.0;
+
+  void configure(double u, double buy, double sell, double d) {
+    units = u;
+    buyPrice = buy;
+    sellPrice = sell;
+    days = d;
+  }
+
+  void setFrictions(double fee, double carry) {
+    feeRate = fee;
+    carryPerUnitDay = carry;
+  }
+
+  < MONEY IN: capital deployed to acquire the units. >
+  double moneyIn() { return units * buyPrice; }
+
+  < Gross cash returned on the sale, before frictions. >
+  double gross() { return units * sellPrice; }
+
+  < Total venue + settlement fees across both legs. >
+  double fees() { return feeRate * (moneyIn() + gross()); }
+
+  < TIME cost: carry (storage / financing) over the holding period. >
+  double carry() { return carryPerUnitDay * units * days; }
+
+  < CASH FLOW OUT: the net receipt after fees and carry. >
+  double cashOut() { return gross() - fees() - carry(); }
+
+  < Net profit on the round trip. >
+  double profit() { return cashOut() - moneyIn(); }
+
+  < Return on capital, as a fraction of money in. >
+  double returnOnCapital() {
+    double m = moneyIn();
+    if (m <= 0.0) { return 0.0; }
+    return profit() / m;
+  }
+
+  < Simple time-annualized rate: roc scaled linearly to 365 days. >
+  double annualizedRate() {
+    if (days <= 0.0) { return 0.0; }
+    return returnOnCapital() * 365.0 / days;
+  }
+
+  << A printable receipt: money in, the trade, the time, and cash out. The
+     verb at the end is the ledger's one-line verdict for a human reader. >>
+  String receipt(String good) {
+    return "RECEIPT[" + good + "]"
+         + " in=" + moneyIn()
+         + " units=" + units
+         + " @buy=" + buyPrice
+         + " @sell=" + sellPrice
+         + " days=" + days
+         + " fees=" + fees()
+         + " carry=" + carry()
+         + " out=" + cashOut()
+         + " profit=" + profit()
+         + " roc=" + returnOnCapital();
+  }
+}

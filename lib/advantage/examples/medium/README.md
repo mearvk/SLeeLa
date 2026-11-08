@@ -12,6 +12,7 @@ machinery — still focused, but with real computation behind the result.
 | Trade economics | [`trade-economics/`](trade-economics/) | `math-primer.sleela`, `trader-example.sleela` | joint profit maximization, Nash bargaining split, bilateral newsvendor critical ratio; a trader finding `Q*` and a Nash-fair wholesale price (Q*=20, surplus=800, P*=60 splitting 400/400) |
 | Output routing | [`output-routing/`](output-routing/) | `output-primer.sleela` | routing output to terminal, CommonRails, a socket/connector, or silent capture |
 | Supply chains | [`supply-chains/`](supply-chains/) | `helper-example.sleela` | standing up a supply→depot→storefront chain and flowing 8 units one hop downstream |
+| Network trades | [`network-trades/`](network-trades/) | `copper-wire-trade.sleela`, `steel-coil-trade.sleela`, `coffee-green-trade.sleela`, `cotton-bales-trade.sleela` | scout → negotiate → receipt with real frictions (a settlement fee, carry over time, or both) so the receipt shows what actually arrives |
 
 Run from the repository root, e.g.:
 

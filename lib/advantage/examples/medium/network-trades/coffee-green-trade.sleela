@@ -1,0 +1,106 @@
+<< lib/advantage/examples/medium/network-trades/coffee-green-trade.sleela
+   SLeeLa Standard Library Definition.
+   Definition: NETWORK-TRADE 05 of 12 -- COFFEE-GREEN. Scout a network of
+   venue quotes, pick the cheapest buy and dearest sell, negotiate a fair
+   clearing price, and emit a cash receipt. Rung: a soft commodity with seasonality baked into the spread. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+<< THE RATIO (coffee-green). Bargaining-power alpha = 0.5 (seller share).
+   Best buy ask = 4; best sell bid = 5.4; spread = 1.4.
+   Clearing P* = ask + alpha*(bid-ask) = 4.7.
+   Cashflow: units=2000 buy=4 sell=4.7 days=30
+   feeRate=0.005 carry=0 -> in=8000 out=9313
+   profit=1313. SLMarketScout / SLNegotiationRound / SLCashflow
+   resolve from lib/advantage/network by the /lib scan. See coffee-green-trade.md. >>
+class CoffeeGreenTrade {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  String metaVersion = "1.0.0";
+  int metaId = 10624;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  boolean near(double a, double b, double tol) {
+    double d = a - b;
+    if (d < 0.0) { d = 0.0 - d; }
+    return d < tol;
+  }
+
+  void main() {
+    print("== network-trade 05: COFFEE-GREEN ==");
+
+    SLMarketScout scout = new SLMarketScout();
+    scout.forGood("coffee-green");
+    scout.addQuote("FarmGate", 3.8, 4.0);
+    scout.addQuote("CoopDesk", 4.1, 4.3);
+    scout.addQuote("RoasterBuy", 5.4, 5.6);
+    print("  scout : " + scout.describe());
+
+    double ask = scout.bestAsk();
+    double bid = scout.bestBid();
+
+    SLNegotiationRound neg = new SLNegotiationRound();
+    neg.configure(ask, bid, 0.5);
+    double price = neg.clearingPrice();
+    print("  deal  : " + neg.describe());
+
+    SLCashflow cf = new SLCashflow();
+    cf.configure(2000.0, ask, price, 30.0);
+    cf.setFrictions(0.005, 0.0);
+    print("  money : " + cf.receipt("coffee-green"));
+
+    print("");
+    print("== validation ==");
+    boolean okAsk = near(ask, 4.0, 0.01);
+    boolean okBid = near(bid, 5.4, 0.01);
+    boolean okSpread = near(scout.spread(), 1.4, 0.01);
+    boolean okPrice = near(price, 4.7, 0.01);
+    boolean okIn = near(cf.moneyIn(), 8000.0, 0.01);
+    boolean okOut = near(cf.cashOut(), 9313.0, 0.01);
+    boolean okProfit = near(cf.profit(), 1313.0, 0.01);
+    print("  best ask   ? " + okAsk);
+    print("  best bid   ? " + okBid);
+    print("  spread     ? " + okSpread);
+    print("  clearing   ? " + okPrice);
+    print("  money in   ? " + okIn);
+    print("  cash out   ? " + okOut);
+    print("  profit     ? " + okProfit);
+    if (okAsk) { if (okBid) { if (okSpread) { if (okPrice) {
+      if (okIn) { if (okOut) { if (okProfit) {
+        print("ALL CHECKS PASSED");
+      } } } } } } }
+  }
+}

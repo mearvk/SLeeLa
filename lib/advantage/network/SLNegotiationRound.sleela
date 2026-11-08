@@ -1,0 +1,95 @@
+<< lib/advantage/network/SLNegotiationRound.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The performant core of network negotiation. Given a buyer's
+   maximum acceptable price (reservation) and a seller's minimum acceptable
+   price, it finds the zone of possible agreement (ZOPA) and clears a single
+   fair price inside it by a bargaining-power split -- a closed-form step with
+   no search loop, so a whole fan of counterparties clears in O(parties). >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+<< THE RATIO. "Social-economic ratio" here is the bargaining-power index
+   alpha in [0,1]: the fraction of the surplus the SELLER captures (buyer gets
+   1-alpha). alpha=0.5 is an even split; alpha>0.5 favors the seller. The
+   clearing price is
+       P* = sellerMin + alpha * (buyerMax - sellerMin)
+   which lies inside the ZOPA exactly when buyerMax >= sellerMin. This mirrors
+   the Nash split in advantage/math but on a per-counterparty reservation pair,
+   which is what a live venue quote gives you. No apostrophes in comments. >>
+class SLNegotiationRound {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  String metaVersion = "1.0.0";
+  int metaId = 10603;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "Advantage";
+  String metaCorporation = "SLeeLa project";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  double buyerMax = 0.0;
+  double sellerMin = 0.0;
+  double alpha = 0.5;
+
+  void configure(double sellerMin0, double buyerMax0, double alpha0) {
+    sellerMin = sellerMin0;
+    buyerMax = buyerMax0;
+    alpha = alpha0;
+  }
+
+  < Is there a zone of possible agreement at all? >
+  boolean hasDeal() { return buyerMax >= sellerMin; }
+
+  < Width of the ZOPA (0 if none). >
+  double zopa() {
+    double w = buyerMax - sellerMin;
+    if (w < 0.0) { return 0.0; }
+    return w;
+  }
+
+  < The cleared fair price inside the ZOPA. 0 if no deal. >
+  double clearingPrice() {
+    if (!hasDeal()) { return 0.0; }
+    return sellerMin + alpha * zopa();
+  }
+
+  < Surplus each side keeps at the cleared price. >
+  double sellerSurplus() { return clearingPrice() - sellerMin; }
+  double buyerSurplus() { return buyerMax - clearingPrice(); }
+
+  String describe() {
+    return "Negotiation: sellerMin=" + sellerMin + " buyerMax=" + buyerMax
+         + " alpha=" + alpha + " -> P*=" + clearingPrice()
+         + " (sellerKeeps=" + sellerSurplus()
+         + " buyerKeeps=" + buyerSurplus() + ")";
+  }
+}

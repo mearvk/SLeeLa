@@ -1,5 +1,7 @@
 # SLeeLa /lib Library Index
 
+> Revision 0.78 adds a `network/` subject subfolder to the **`advantage`** package (`lib/advantage/network/`) and a `network-trades/` example family spanning all four example levels. The subject ships `SLMarketScout` (the offline, deterministic stand-in for a live internet quote search -- same public shape as a live transport fetch -- reporting best buy ask, best sell bid, and the cross-venue spread), `SLNegotiationRound` (the performant closed-form clearing step `P* = sellerMin + alpha*(buyerMax - sellerMin)`, so a fan of counterparties clears in O(parties) with no search loop), and `SLCashflow` (the engineering grease: money in, a trade, time, and cash flow out as a receipt, with fees, carry, profit, return-on-capital, and a simple annualized rate), plus a runnable `network-demo`. The 12 `network-trades` examples walk the socio-economic ladder from lumber -> cement -> copper -> steel -> coffee -> cotton -> solar -> lithium -> semiconductors -> server racks -> smartphones -> televisions, each self-validating against hand-computed anchors, each paired with an equally-named `.md` covering per-tier class consensus for safe arrival / ethical use and the money-in -> trade -> time -> cash-out receipt. Sixteen new source units (4 subject + 12 examples).
+
 > Revision 0.77 populates `lib/advantage/examples/`: a `primers/` subfolder with one runnable primer per subject (onion, math, physics, integration, grading, output) and four more careful `professionals/` examples (trader -> math, healer -> physics, helper -> integration, consumer -> onion), each self-validating. Ten new source examples.
 
 > Revision 0.76 adds the `lib/advantage/examples/` source folder with a `professionals/` subfolder: a runnable `professionals-demo` that grades professional roles (engineer, doctor, teacher, auditor, clerk, apprentice) A–D via the grading subject (champion doctor A9, 4 winners). One new source example.
@@ -23,11 +25,11 @@
 > Revision 0.67 adds two AI-facing SLeeLa standard-library packages. **`neural-nets`** (`lib/neural-nets/`) mirrors the native C ABI v1 with `SLNeuralNetworkConfig`, `SLNeuralNetwork`, and a package facade; it exposes the validated network configuration and lifecycle contract while inference/training remain explicit native-adapter operations. **`character-recognition`** (`lib/character-recognition/`) mirrors the native C11 glyph-recognition API with `SLCharacterRecognition`, `SLCharacterResult`, and a package facade; normalization and recognition remain native-adapter operations. Both packages document their exact native boundaries and limitations. The authoritative C/C++ implementations remain under `artificial-intelligence/`; these SLeeLa packages do not duplicate kernels or claim native execution without an adapter.
 
 
-**Revision:** 0.77  
+**Revision:** 0.78  
 **Packages:** 117  
-**SLeeLa source units:** 11961  
+**SLeeLa source units:** 11977  
 **Module-facade symbols:** 84  
-**Total symbol records:** 12045  
+**Total symbol records:** 12061  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.66 brings three big-number improvements that make a 10,000,000-digit
