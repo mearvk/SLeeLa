@@ -141,7 +141,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; advantage</div>
 <h1>Package <code>advantage</code></h1>
-<div class="lead">This package contains <strong>9</strong> source unit(s) defining <strong>9</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>12</strong> source unit(s) defining <strong>12</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="advantage-demo">advantage-demo <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/advantage-demo.sleela)</span></h2>
 <div data-u="advantage-demo advantagedemo">
@@ -150,17 +150,6 @@
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
-<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-</table>
-</div>
-<h2 class="section" data-u="advantage-trade-demo">advantage-trade-demo <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/advantage-trade-demo.sleela)</span></h2>
-<div data-u="advantage-trade-demo advantagetradedemo">
-<h3 id="AdvantageTradeDemo">AdvantageTradeDemo <span class="pill">class</span></h3>
-<p class="desc">Runnable demonstration + validation of the bilateral trade math (SLAdvantageTrade): joint profit maximization, Nash bargaining, and the bilateral newsvendor critical ratio.</p>
-<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
-<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
-<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
-<tr><td><code>near</code></td><td><span class="sig">boolean near(double a, double b, double tol)</span></td><td class="desc">True if |a-b| &lt; tol.</td></tr>
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
@@ -303,45 +292,6 @@
 <tr><td><code>visitedCount</code></td><td><span class="sig">int visitedCount()</span></td><td class="desc">How many layers were touched on the last pass.</td></tr>
 </table>
 </div>
-<h2 class="section" data-u="sladvantagetrade">SLAdvantageTrade <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/SLAdvantageTrade.sleela)</span></h2>
-<div data-u="sladvantagetrade sladvantagetrade">
-<h3 id="SLAdvantageTrade">SLAdvantageTrade <span class="pill">class</span></h3>
-<p class="desc">Bilateral trade economics for the advantage model -- joint profit maximization, Nash bargaining split, and the bilateral newsvendor critical ratio.</p>
-<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
-<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
-<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
-<tr><td><code>rbA</code></td><td><span class="sig">double rbA</span></td><td class="desc">---- Curve coefficients (buyer revenue, seller cost) ---- linear term of buyer revenue R_B(Q)</td></tr>
-<tr><td><code>rbB</code></td><td><span class="sig">double rbB</span></td><td class="desc">quadratic (diminishing) term of buyer revenue</td></tr>
-<tr><td><code>csA</code></td><td><span class="sig">double csA</span></td><td class="desc">linear term of seller cost C_S(Q)</td></tr>
-<tr><td><code>csB</code></td><td><span class="sig">double csB</span></td><td class="desc">quadratic (convex) term of seller cost</td></tr>
-</table>
-<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
-<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
-<tr><td><code>configureCurves</code></td><td><span class="sig">void configureCurves(double rbA0, double rbB0, double csA0, double csB0)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>buyerRevenue</code></td><td><span class="sig">double buyerRevenue(double q)</span></td><td class="desc">Buyer revenue / utility from Q units: R_B(Q) = rbA*Q - rbB*Q^2.</td></tr>
-<tr><td><code>sellerCost</code></td><td><span class="sig">double sellerCost(double q)</span></td><td class="desc">Seller total cost for Q units: C_S(Q) = csA*Q + csB*Q^2.</td></tr>
-<tr><td><code>jointProfit</code></td><td><span class="sig">double jointProfit(double q)</span></td><td class="desc">Total available pool of profit: Pi_total(Q) = R_B(Q) - C_S(Q).</td></tr>
-<tr><td><code>marginalRevenue</code></td><td><span class="sig">double marginalRevenue(double q)</span></td><td class="desc">Marginal revenue dR_B/dQ = rbA - 2*rbB*Q.</td></tr>
-<tr><td><code>marginalCost</code></td><td><span class="sig">double marginalCost(double q)</span></td><td class="desc">Marginal supply cost dC_S/dQ = csA + 2*csB*Q.</td></tr>
-<tr><td><code>optimalQuantity</code></td><td><span class="sig">double optimalQuantity()</span></td><td class="desc">Decision rule: the optimal quantity Q* where MR = MC. For the quadratic curves this is Q* = (rbA - csA) / (2*(rbB + csB)). Returns 0 if the denominator is non-positive (no interior optimum).</td></tr>
-<tr><td><code>maxJointProfit</code></td><td><span class="sig">double maxJointProfit()</span></td><td class="desc">The maximum joint surplus, evaluated at Q*.</td></tr>
-<tr><td><code>sellerProfit</code></td><td><span class="sig">double sellerProfit(double price, double q)</span></td><td class="desc">Seller profit at wholesale price P and quantity Q: (P*Q) - C_S(Q).</td></tr>
-<tr><td><code>buyerProfit</code></td><td><span class="sig">double buyerProfit(double price, double q)</span></td><td class="desc">Buyer profit at wholesale price P and quantity Q: R_B(Q) - (P*Q).</td></tr>
-<tr><td><code>nashObjective</code></td><td><span class="sig">double nashObjective(double price, double q, double s0, double b0, double alpha)</span></td><td class="desc">The Nash objective at a candidate price: [Pi_S - Pi_S0]^alpha * [Pi_B - Pi_B0]^(1-alpha). Both surpluses must be positive to be in the bargaining range; outside it the objective is 0 (no agreement value).</td></tr>
-<tr><td><code>nashPrice</code></td><td><span class="sig">double nashPrice(double s0, double b0, double alpha)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>bargainableSurplus</code></td><td><span class="sig">double bargainableSurplus(double s0, double b0)</span></td><td class="desc">The joint surplus available for bargaining beyond both reservation points.</td></tr>
-<tr><td><code>overageSeller</code></td><td><span class="sig">double overageSeller(double cs, double vs)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>underageSeller</code></td><td><span class="sig">double underageSeller(double price, double cs)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>overageBuyer</code></td><td><span class="sig">double overageBuyer(double price, double vb)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>underageBuyer</code></td><td><span class="sig">double underageBuyer(double r, double price)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>criticalRatio</code></td><td><span class="sig">double criticalRatio(double r, double cs, double vb)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>coordinationGap</code></td><td><span class="sig">double coordinationGap(double r, double cs, double price, double vb)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>expD</code></td><td><span class="sig">double expD(double x)</span></td><td class="desc">Natural exponential via a truncated Taylor series with range reduction by halving, accurate enough for the bargaining exponents used here.</td></tr>
-<tr><td><code>lnD</code></td><td><span class="sig">double lnD(double y)</span></td><td class="desc">Natural logarithm via atanh series: ln(y) = 2*atanh((y-1)/(y+1)), with range reduction pulling y into (0.5, 2) by factoring out e.</td></tr>
-<tr><td><code>powAB</code></td><td><span class="sig">double powAB(double a, double b)</span></td><td class="desc">General power a^b for a &gt; 0 via exp(b * ln a). Used for the Nash exponents (alpha and 1-alpha are fractional). a &lt;= 0 returns 0.</td></tr>
-<tr><td><code>intToD</code></td><td><span class="sig">double intToD(int n)</span></td><td class="desc">int -&gt; double coercion that works regardless of implicit promotion.</td></tr>
-</table>
-</div>
 <h2 class="section" data-u="sladvantageusermodel">SLAdvantageUserModel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/SLAdvantageUserModel.sleela)</span></h2>
 <div data-u="sladvantageusermodel sladvantageusermodel">
 <h3 id="SLAdvantageUserModel">SLAdvantageUserModel <span class="pill">class</span></h3>
@@ -368,6 +318,72 @@
 <tr><td><code>advanced</code></td><td><span class="sig">SLAdvantageDeveloperModel advanced()</span></td><td class="desc">A user who becomes curious can still reach the full developer controls.</td></tr>
 </table>
 </div>
+<h2 class="section" data-u="slbilateralnewsvendor">SLBilateralNewsvendor <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/math/SLBilateralNewsvendor.sleela)</span></h2>
+<div data-u="slbilateralnewsvendor slbilateralnewsvendor">
+<h3 id="SLBilateralNewsvendor">SLBilateralNewsvendor <span class="pill">class</span></h3>
+<p class="desc">Bilateral newsvendor -- overage/underage costs on both ends and the centralized critical ratio that avoids double marginalization.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>overageSeller</code></td><td><span class="sig">double overageSeller(double cs, double vs)</span></td><td class="desc">---- Per-side overage and underage costs ----</td></tr>
+<tr><td><code>underageSeller</code></td><td><span class="sig">double underageSeller(double price, double cs)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>overageBuyer</code></td><td><span class="sig">double overageBuyer(double price, double vb)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>underageBuyer</code></td><td><span class="sig">double underageBuyer(double r, double price)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>criticalRatio</code></td><td><span class="sig">double criticalRatio(double r, double cs, double vb)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>coordinationGap</code></td><td><span class="sig">double coordinationGap(double r, double cs, double price, double vb)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>describe</code></td><td><span class="sig">String describe(double r, double cs, double vb)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sljointprofitmax">SLJointProfitMax <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/math/SLJointProfitMax.sleela)</span></h2>
+<div data-u="sljointprofitmax sljointprofitmax">
+<h3 id="SLJointProfitMax">SLJointProfitMax <span class="pill">class</span></h3>
+<p class="desc">Joint Profit Maximization -- the integrated surplus formula for a coordinated buyer+seller system.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>rbA</code></td><td><span class="sig">double rbA</span></td><td class="desc">---- Curve coefficients ---- linear term of buyer revenue R_B(Q)</td></tr>
+<tr><td><code>rbB</code></td><td><span class="sig">double rbB</span></td><td class="desc">quadratic (diminishing) term of buyer revenue</td></tr>
+<tr><td><code>csA</code></td><td><span class="sig">double csA</span></td><td class="desc">linear term of seller cost C_S(Q)</td></tr>
+<tr><td><code>csB</code></td><td><span class="sig">double csB</span></td><td class="desc">quadratic (convex) term of seller cost</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configureCurves</code></td><td><span class="sig">void configureCurves(double rbA0, double rbB0, double csA0, double csB0)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getRbA</code></td><td><span class="sig">double getRbA()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getRbB</code></td><td><span class="sig">double getRbB()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getCsA</code></td><td><span class="sig">double getCsA()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getCsB</code></td><td><span class="sig">double getCsB()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>buyerRevenue</code></td><td><span class="sig">double buyerRevenue(double q)</span></td><td class="desc">Buyer revenue / utility from Q units.</td></tr>
+<tr><td><code>sellerCost</code></td><td><span class="sig">double sellerCost(double q)</span></td><td class="desc">Seller total cost for Q units.</td></tr>
+<tr><td><code>jointProfit</code></td><td><span class="sig">double jointProfit(double q)</span></td><td class="desc">Total available pool of profit: Pi_total(Q) = R_B(Q) - C_S(Q).</td></tr>
+<tr><td><code>marginalRevenue</code></td><td><span class="sig">double marginalRevenue(double q)</span></td><td class="desc">Marginal revenue dR_B/dQ.</td></tr>
+<tr><td><code>marginalCost</code></td><td><span class="sig">double marginalCost(double q)</span></td><td class="desc">Marginal supply cost dC_S/dQ.</td></tr>
+<tr><td><code>optimalQuantity</code></td><td><span class="sig">double optimalQuantity()</span></td><td class="desc">Optimal quantity Q* where MR = MC. 0 if no interior optimum exists.</td></tr>
+<tr><td><code>maxJointProfit</code></td><td><span class="sig">double maxJointProfit()</span></td><td class="desc">The maximum joint surplus, evaluated at Q*.</td></tr>
+<tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slnashbargaining">SLNashBargaining <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/math/SLNashBargaining.sleela)</span></h2>
+<div data-u="slnashbargaining slnashbargaining">
+<h3 id="SLNashBargaining">SLNashBargaining <span class="pill">class</span></h3>
+<p class="desc">Bilateral monopoly &amp; Nash bargaining -- split a known joint surplus by a bargaining-power index over reservation profits.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>curves</code></td><td><span class="sig">SLJointProfitMax curves</span></td><td class="desc">---- Dependencies (sibling-linked within advantage/math) ----</td></tr>
+<tr><td><code>mathlib</code></td><td><span class="sig">SLTradeMath mathlib</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(SLJointProfitMax c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sellerProfit</code></td><td><span class="sig">double sellerProfit(double price, double q)</span></td><td class="desc">Seller profit at wholesale price P and quantity Q: (P*Q) - C_S(Q).</td></tr>
+<tr><td><code>buyerProfit</code></td><td><span class="sig">double buyerProfit(double price, double q)</span></td><td class="desc">Buyer profit at wholesale price P and quantity Q: R_B(Q) - (P*Q).</td></tr>
+<tr><td><code>nashObjective</code></td><td><span class="sig">double nashObjective(double price, double q, double s0, double b0, double alpha)</span></td><td class="desc">The Nash objective at a candidate price. Both surpluses must be positive to be inside the bargaining range; outside it the objective is 0.</td></tr>
+<tr><td><code>nashPrice</code></td><td><span class="sig">double nashPrice(double s0, double b0, double alpha)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bargainableSurplus</code></td><td><span class="sig">double bargainableSurplus(double s0, double b0)</span></td><td class="desc">The joint surplus available for bargaining beyond both reservation points.</td></tr>
+<tr><td><code>describe</code></td><td><span class="sig">String describe(double s0, double b0, double alpha)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="slpackage">SLPackage <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/SLPackage.sleela)</span></h2>
 <div data-u="slpackage slpackage">
 <h3 id="SLPackage">SLPackage <span class="pill">class</span></h3>
@@ -384,10 +400,36 @@
 <tr><td><code>available</code></td><td><span class="sig">boolean available()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="sltrademath">SLTradeMath <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/math/SLTradeMath.sleela)</span></h2>
+<div data-u="sltrademath sltrademath">
+<h3 id="SLTradeMath">SLTradeMath <span class="pill">class</span></h3>
+<p class="desc">Shared real-valued math helpers for the advantage trade subject -- exponential, natural log, and general power.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>intToD</code></td><td><span class="sig">double intToD(int n)</span></td><td class="desc">int -&gt; double coercion that works regardless of implicit promotion.</td></tr>
+<tr><td><code>expD</code></td><td><span class="sig">double expD(double x)</span></td><td class="desc">Natural exponential via a truncated Taylor series with range reduction by halving: e^x = (e^(x/2^k))^(2^k).</td></tr>
+<tr><td><code>lnD</code></td><td><span class="sig">double lnD(double y)</span></td><td class="desc">Natural logarithm via atanh series: ln(y) = 2*atanh((y-1)/(y+1)), with range reduction pulling y into (0.5, 2) by factoring out e.</td></tr>
+<tr><td><code>powAB</code></td><td><span class="sig">double powAB(double a, double b)</span></td><td class="desc">General power a^b for a &gt; 0 via exp(b * ln a). a &lt;= 0 returns 0.</td></tr>
+<tr><td><code>sqrtD</code></td><td><span class="sig">double sqrtD(double a)</span></td><td class="desc">Convenience square root (powAB with exponent 0.5).</td></tr>
+<tr><td><code>absD</code></td><td><span class="sig">double absD(double a)</span></td><td class="desc">Absolute value for doubles.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="trade-math-demo">trade-math-demo <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/math/trade-math-demo.sleela)</span></h2>
+<div data-u="trade-math-demo trademathdemo">
+<h3 id="TradeMathDemo">TradeMathDemo <span class="pill">class</span></h3>
+<p class="desc">Runnable demonstration + validation of the advantage/math trade subject (joint profit max, Nash bargaining, bilateral newsvendor).</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>near</code></td><td><span class="sig">boolean near(double a, double b, double tol)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-08 07:43 UTC.
+<code>/lib</code> tree on 2026-11-08 07:51 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
