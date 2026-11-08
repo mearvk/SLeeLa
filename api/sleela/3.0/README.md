@@ -7,7 +7,8 @@
 The 3.0 API edition documents the current `/lib` source tree. Its generated
 snapshot is stored in an immutable numbered directory:
 
-- [Version 014 — latest generated HTML API snapshot](version-014/index.html)
+- [Version 050 — latest generated HTML API snapshot](version-050/index.html)
+- [Version 014 — earlier generated HTML API snapshot](version-014/index.html)
 - [Version 003 — earlier generated HTML API snapshot](version-003/index.html)
 - [Version 002 — earlier generated HTML API snapshot](version-002/index.html)
 - [Version 001 — initial generated HTML API snapshot](version-001/index.html)
@@ -27,7 +28,7 @@ make api-docs
 To create a later snapshot without overwriting an existing one:
 
 ```sh
-API_SNAPSHOT=version-004 make api-docs
+API_SNAPSHOT=version-051 make api-docs
 ```
 
 The API generator reports each source file's actual `#sleela` declaration.
