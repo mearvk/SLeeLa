@@ -77,6 +77,16 @@ struct SyntaxVersion { int major=0, minor=0; std::string str() const { return st
 // with the other markers. Contextual, not reserved keywords, so `pure` and
 // `gasoline` stay ordinary identifiers anywhere else (and in any document
 // below 3.0) (section 29 of SLEELA.syntax).
+//
+// Syntax 3.0 also adds the `artifact` document marker: a further bare,
+// contextual, declarative-only Preonem (sibling to author/authorial, material,
+// memory, determine, object, field, pure, gasoline) that claims the document
+// is an enacted ARTIFACT -- legislature-grade text, graded unto time and space,
+// binding for the moment and place it is read until superseded by a later
+// enactment of the same body. Declarative only: NO effect on parsing, typing,
+// or codegen. Contextual, not a reserved keyword, so `artifact` stays an
+// ordinary identifier anywhere else (and in any document below 3.0)
+// (section 35 of SLEELA.syntax).
 inline SyntaxVersion minSupportedSyntax(){return SyntaxVersion{1,0};}
 inline SyntaxVersion maxSupportedSyntax(){return SyntaxVersion{3,0};} inline SyntaxVersion defaultSyntaxVersion(){return maxSupportedSyntax();}
 enum class VersionStatus{OkDeclared,OkAssumed,TooNew,TooOld,Malformed};

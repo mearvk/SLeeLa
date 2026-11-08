@@ -323,6 +323,15 @@ struct Program {
     // markers mean nearly the same thing and compose with the others.
     // Contextual, not a reserved keyword, gated to #sleela 3.0.
     bool gasolineMarked=false;
+    // Artifact marker (syntax 3.0): set true when the document declares the bare
+    // top-level word `artifact`. DECLARATIVE ONLY -- like the other Natural
+    // Process / Preonem markers it has no effect on parsing, typing, or codegen.
+    // It is a claim that the document is an enacted ARTIFACT: legislature-grade
+    // text, graded unto time and space -- binding for the moment and place it is
+    // read until superseded by a later enactment of the same body (SLEELA.syntax
+    // section 35). Contextual, not a reserved keyword, so `artifact` stays an
+    // ordinary identifier anywhere else (and in any document below 3.0).
+    bool artifactMarked=false;
 };
 
 } // namespace sleela

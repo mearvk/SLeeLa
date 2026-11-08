@@ -1902,7 +1902,8 @@ document*, recognised and version-gated by the front end and otherwise inert.
 ### 26.1 The Natural Process family — the Preonems
 
 These bare document-marker words are collectively titled the **Preonems**:
-`author` / `authorial`, `material`, `memory`, `determine`, `object`, `field`
+`author` / `authorial`, `material`, `memory`, `determine`, `object`, `field`,
+`pure` / `gasoline` (section 30), and `artifact` (section 35)
 (and the forward-looking `prestige`, section 27). "Preonem" is the title for a
 single such marker; "Preonems" names the set. A Preonem is a bare, contextual,
 declarative word placed at the top of a document (after the `#sleela` pragma,
@@ -2571,3 +2572,52 @@ indices above are append-only; the pre-OSLS ISA remains the frozen 155-opcode
 baseline (0..154), OSLS is opcode 155, and `bigmul`/`sleep`/`bigadd`/`bigdivmod`
 occupy 156/157/158/159 in that fixed order. See `lib/vm/InstructionSet.sleela`
 for the ISA mirror.
+
+
+## 35. Syntax 3.0 — the `artifact` document marker (legislature-grade standing)
+
+Syntax 3.0 adds the **`artifact` document marker**: a further bare, contextual,
+declarative-only Preonem word — a sibling to `author`/`authorial` (section 18),
+`material` (section 19), `memory` (section 20), `determine` (section 23),
+`object` and `field` (section 26), and `pure`/`gasoline` (section 30). It is a
+member in good standing of the Natural Process family and is titled a Preonem
+(section 26.1).
+
+`artifact` claims that the document is an **enacted artifact**: legislature-grade
+text, **graded unto time and space**. "Legislature-grade" means the document is
+held not as loose prose but as ordered, enacted text of a body — later
+enactments of the same body amend earlier ones in sequence. "Graded unto time"
+means its authority is dated and versioned and yields to a later-dated enactment
+of the same body. "Graded unto space" means its authority is scoped to a stated
+jurisdiction (for a `/lib` package, the package and its subjects; the wider
+reach is recorded by each class's `metaOrigin` in the Metadata-Class record).
+
+Like the other declarative Preonems, `artifact` is **declarative only**: it has
+**no effect on parsing, typing, or codegen**. It marks the document's standing
+and composes with the other markers (a document may be, for example, both
+`material` and `artifact`). It is a **contextual word, not a reserved keyword**:
+recognised only at top-level document scope (after the `#sleela` pragma, outside
+any class, before content begins), so a field, parameter, variable, or method
+named `artifact` anywhere else is unaffected, as it is in any document below 3.0.
+
+A document marks itself an artifact by placing the bare word, optionally
+followed by `;`, at document scope:
+
+```sleela
+#sleela 3.0
+artifact;
+
+class EnactedThing {
+    // ... the enacted artifact's body ...
+}
+```
+
+Below `#sleela 3.0` the marker is rejected with
+"the artifact document marker requires #sleela 3.0". A repeat marker is
+harmless (the flag is already set). The `artifact` marker takes no arguments
+and reserves no identifier.
+
+The documentary application of this marker for the `advantage` standard-library
+package — where every `.md` document opens with the `artifact;` preonem to
+declare the package's documents a legislature graded unto time and space — is
+recorded in `lib/advantage/PREONEM.md`.

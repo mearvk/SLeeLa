@@ -51,8 +51,8 @@ Reported versions:
 SHA-256 of the committed copies:
 
 ```
-947db740aa5fcfd57c21e1eb6c5f7497eae8b52d721767b5e6c2fd980552e8c1  sleela
-ef339ee8ade452b494f55070d27f14612213b0c2f42846053e80f06cd1cd9c2d  nordshrift
+0653c9f90dec0f9e3e22ac929c36ce09acf40bb464c61e49176e565dff07fc48  sleela
+587ad3f4be7936fe4a07ba1bd6567fa0d0569611f88509f123a17a7ce873cbf8  nordshrift
 ```
 
 ---

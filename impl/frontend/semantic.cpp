@@ -170,6 +170,10 @@ class Analyzer{
   // Gasoline marker (syntax 3.0): declarative only; near-synonym of pure.
   if(p.gasolineMarked&&syntax<SyntaxVersion{3,0})
    err("the gasoline document marker requires #sleela 3.0");
+  // Artifact marker (syntax 3.0): declarative only; declares the document an
+  // enacted, legislature-grade artifact graded unto time and space.
+  if(p.artifactMarked&&syntax<SyntaxVersion{3,0})
+   err("the artifact document marker requires #sleela 3.0");
   // @mix consequent fields (syntax 2.9): a field annotated `@mix` may repeat
   // its name; the group is understood as consequent (array/list). Top-down
   // order gives indexes 1,2,3,... unless `@mix(1,2,3,...)` assigns them, in

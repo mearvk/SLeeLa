@@ -437,6 +437,22 @@ Program Parser::parseProgram(){
             accept(Tok::Semicolon);
             p.gasolineMarked=true;
         }
+        else if(check(Tok::Ident)&&cur().text=="artifact"){
+            // Artifact marker (syntax 3.0). A single, modifier-less, type-less
+            // word at document scope that DECLARES the document an artifact --
+            // enacted, legislature-grade text, graded unto time and space (see
+            // SLEELA.syntax section 35). It states the document's standing: not
+            // loose prose but an enacted artifact of a body, binding for the
+            // moment and place it is read until superseded by a later enactment.
+            // Declarative only: it changes nothing about parsing/typing/codegen.
+            // A trailing ';' is optional; a repeat marker is harmless. Like the
+            // other Preonem markers it is contextual, not a reserved keyword, so
+            // `artifact` stays an ordinary identifier anywhere else (and in any
+            // document below 3.0).
+            ++i_;
+            accept(Tok::Semicolon);
+            p.artifactMarked=true;
+        }
         else {
             unsigned mods=parseJavaModifiers();
             if(check(Tok::KwClass)||check(Tok::KwInterface)||check(Tok::KwEnum)||check(Tok::KwRecord)){
