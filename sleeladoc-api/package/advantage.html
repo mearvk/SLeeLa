@@ -141,7 +141,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; advantage</div>
 <h1>Package <code>advantage</code></h1>
-<div class="lead">This package contains <strong>12</strong> source unit(s) defining <strong>12</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>18</strong> source unit(s) defining <strong>18</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="advantage-demo">advantage-demo <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/advantage-demo.sleela)</span></h2>
 <div data-u="advantage-demo advantagedemo">
@@ -150,6 +150,17 @@
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="physics-demo">physics-demo <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/physics/physics-demo.sleela)</span></h2>
+<div data-u="physics-demo physicsdemo">
+<h3 id="PhysicsDemo">PhysicsDemo <span class="pill">class</span></h3>
+<p class="desc">Runnable demonstration + validation of the advantage/physics trust-field subject (metric, geodesic, contact, SDE).</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>near</code></td><td><span class="sig">boolean near(double a, double b, double tol)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
@@ -318,6 +329,32 @@
 <tr><td><code>advanced</code></td><td><span class="sig">SLAdvantageDeveloperModel advanced()</span></td><td class="desc">A user who becomes curious can still reach the full developer controls.</td></tr>
 </table>
 </div>
+<h2 class="section" data-u="slannouncementcontact">SLAnnouncementContact <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/physics/SLAnnouncementContact.sleela)</span></h2>
+<div data-u="slannouncementcontact slannouncementcontact">
+<h3 id="SLAnnouncementContact">SLAnnouncementContact <span class="pill">class</span></h3>
+<p class="desc">Announcements as boundary constraints on a contact manifold -- information topology of a declared economic space.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>ax</code></td><td><span class="sig">double ax</span></td><td class="desc">---- 1-form alpha components (a_x, a_y, a_z) ----</td></tr>
+<tr><td><code>ay</code></td><td><span class="sig">double ay</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>az</code></td><td><span class="sig">double az</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bxy</code></td><td><span class="sig">double bxy</span></td><td class="desc">---- d(alpha) as a constant 2-form (b_xy, b_yz, b_zx) ----</td></tr>
+<tr><td><code>byz</code></td><td><span class="sig">double byz</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bzx</code></td><td><span class="sig">double bzx</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>standardForm</code></td><td><span class="sig">void standardForm(double y)</span></td><td class="desc">Standard announcement contact form alpha = dz - y dx, with the point&#x27;s y supplied so a_x = -y. d(alpha) = dx ^ dy =&gt; (b_xy=1, b_yz=0, b_zx=0).</td></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(double axv, double ayv, double azv,</span></td><td class="desc">Fully general linear form, for experimentation.</td></tr>
+<tr><td><code>contactVolume</code></td><td><span class="sig">double contactVolume()</span></td><td class="desc">The coefficient of alpha ^ d(alpha) as a top 3-form (dx^dy^dz).</td></tr>
+<tr><td><code>isContact</code></td><td><span class="sig">boolean isContact(double tol)</span></td><td class="desc">The contact condition alpha ^ d(alpha) != 0 holds (a genuine, non- integrable announced space where timing/sequence matter).</td></tr>
+<tr><td><code>moveAllowed</code></td><td><span class="sig">boolean moveAllowed(double vx, double vy, double vz, double tol)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>homotopyResidual</code></td><td><span class="sig">double homotopyResidual(double credibility, double t)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isNull</code></td><td><span class="sig">boolean isNull(double credibility, double tol)</span></td><td class="desc">An announcement is topologically null (fully deformable to hidden reality) when the residual can reach 0 within the deformation -- i.e. credibility is effectively 0. Returns true if the announcement carries no binding force.</td></tr>
+<tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="slbilateralnewsvendor">SLBilateralNewsvendor <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/math/SLBilateralNewsvendor.sleela)</span></h2>
 <div data-u="slbilateralnewsvendor slbilateralnewsvendor">
 <h3 id="SLBilateralNewsvendor">SLBilateralNewsvendor <span class="pill">class</span></h3>
@@ -400,6 +437,21 @@
 <tr><td><code>available</code></td><td><span class="sig">boolean available()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="slphysicsmath">SLPhysicsMath <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/physics/SLPhysicsMath.sleela)</span></h2>
+<div data-u="slphysicsmath slphysicsmath">
+<h3 id="SLPhysicsMath">SLPhysicsMath <span class="pill">class</span></h3>
+<p class="desc">Self-contained real-valued helpers for the advantage/physics subject (sqrt, exp, ln), named distinctly from the math/ helper to avoid cross-directory class-name ambiguity.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>intToD</code></td><td><span class="sig">double intToD(int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expD</code></td><td><span class="sig">double expD(double x)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lnD</code></td><td><span class="sig">double lnD(double y)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>powAB</code></td><td><span class="sig">double powAB(double a, double b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sqrtD</code></td><td><span class="sig">double sqrtD(double a)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>absD</code></td><td><span class="sig">double absD(double a)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="sltrademath">SLTradeMath <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/math/SLTradeMath.sleela)</span></h2>
 <div data-u="sltrademath sltrademath">
 <h3 id="SLTradeMath">SLTradeMath <span class="pill">class</span></h3>
@@ -413,6 +465,68 @@
 <tr><td><code>powAB</code></td><td><span class="sig">double powAB(double a, double b)</span></td><td class="desc">General power a^b for a &gt; 0 via exp(b * ln a). a &lt;= 0 returns 0.</td></tr>
 <tr><td><code>sqrtD</code></td><td><span class="sig">double sqrtD(double a)</span></td><td class="desc">Convenience square root (powAB with exponent 0.5).</td></tr>
 <tr><td><code>absD</code></td><td><span class="sig">double absD(double a)</span></td><td class="desc">Absolute value for doubles.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sltransactionalgeodesic">SLTransactionalGeodesic <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/physics/SLTransactionalGeodesic.sleela)</span></h2>
+<div data-u="sltransactionalgeodesic sltransactionalgeodesic">
+<h3 id="SLTransactionalGeodesic">SLTransactionalGeodesic <span class="pill">class</span></h3>
+<p class="desc">The transactional geodesic -- the shortest transaction path through a trust-warped manifold, via the geodesic equation.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>tau0</code></td><td><span class="sig">double tau0</span></td><td class="desc">---- Trust field tau(x,y) = tau0 + gx*x + gy*y (clamped) ----</td></tr>
+<tr><td><code>gx</code></td><td><span class="sig">double gx</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>gy</code></td><td><span class="sig">double gy</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configureField</code></td><td><span class="sig">void configureField(double tau0v, double gxv, double gyv)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tauAt</code></td><td><span class="sig">double tauAt(double x, double y)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>phiX</code></td><td><span class="sig">double phiX(double x, double y)</span></td><td class="desc">phi gradients: phi_x = -0.5 * gx / tau, phi_y = -0.5 * gy / tau.</td></tr>
+<tr><td><code>phiY</code></td><td><span class="sig">double phiY(double x, double y)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>acceleration</code></td><td><span class="sig">double[] acceleration(double x, double y, double vx, double vy)</span></td><td class="desc">Acceleration from the geodesic equation, d2x/dl2 = -Gamma(v,v), returned as a flat double[2] = (ax, ay) given position (x,y) and velocity (vx,vy).</td></tr>
+<tr><td><code>geodesicLength</code></td><td><span class="sig">double geodesicLength(double x0, double y0, double x1, double y1,</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>euclidean</code></td><td><span class="sig">double euclidean(double x0, double y0, double x1, double y1, SLPhysicsMath m)</span></td><td class="desc">Convenience: the straight-line Euclidean distance (flat-field reference).</td></tr>
+<tr><td><code>isStraightLine</code></td><td><span class="sig">boolean isStraightLine(double tol)</span></td><td class="desc">Are Christoffel symbols effectively zero here (uniform trust =&gt; flat)?</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sltrustdecaysde">SLTrustDecaySDE <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/physics/SLTrustDecaySDE.sleela)</span></h2>
+<div data-u="sltrustdecaysde sltrustdecaysde">
+<h3 id="SLTrustDecaySDE">SLTrustDecaySDE <span class="pill">class</span></h3>
+<p class="desc">Stochastic trust decay -- a CIR mean-reverting diffusion with a Poisson jump for announcement breaches.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>kappa</code></td><td><span class="sig">double kappa</span></td><td class="desc">---- Parameters ---- mean-reversion speed</td></tr>
+<tr><td><code>tauBar</code></td><td><span class="sig">double tauBar</span></td><td class="desc">long-run baseline trust</td></tr>
+<tr><td><code>sigma</code></td><td><span class="sig">double sigma</span></td><td class="desc">diffusion (noise) scale</td></tr>
+<tr><td><code>delta</code></td><td><span class="sig">double delta</span></td><td class="desc">jump size of a breach (trust lost per jump)</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(double k, double tb, double s, double d)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clamp</code></td><td><span class="sig">double clamp(double t)</span></td><td class="desc">Keep trust in [0,1] (a trust probability/parameter).</td></tr>
+<tr><td><code>step</code></td><td><span class="sig">double step(double tau, double dt, double dW, double dJ, SLPhysicsMath m)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectedStep</code></td><td><span class="sig">double expectedStep(double tau, double dt)</span></td><td class="desc">The deterministic (expected) step: dW=0, no jump. tau_{t+dt} = tau + kappa(tauBar - tau) dt.</td></tr>
+<tr><td><code>expectedPath</code></td><td><span class="sig">double expectedPath(double tau0, double dt, int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>breach</code></td><td><span class="sig">double breach(double tau)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sltrustmetric">SLTrustMetric <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/physics/SLTrustMetric.sleela)</span></h2>
+<div data-u="sltrustmetric sltrustmetric">
+<h3 id="SLTrustMetric">SLTrustMetric <span class="pill">class</span></h3>
+<p class="desc">The trust field as a metric tensor g_mu_nu over a 2D economic manifold (operational distance x volume).</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>conformalFactor</code></td><td><span class="sig">double conformalFactor(double tau)</span></td><td class="desc">Conformal factor f(tau) = 1/tau. Clamps tiny tau to avoid overflow.</td></tr>
+<tr><td><code>metricAt</code></td><td><span class="sig">double[] metricAt(double tau)</span></td><td class="desc">Build the 2x2 metric at a given trust level into a flat double[4].</td></tr>
+<tr><td><code>lineElementSq</code></td><td><span class="sig">double lineElementSq(double tau, double dx, double dy)</span></td><td class="desc">Squared line element of displacement (dx,dy) under trust tau: ds^2 = g_xx dx^2 + 2 g_xy dx dy + g_yy dy^2.</td></tr>
+<tr><td><code>effectiveDistance</code></td><td><span class="sig">double effectiveDistance(double tau, double dx, double dy, SLPhysicsMath m)</span></td><td class="desc">Effective operational distance (cost to cross) for a straight displacement (dx,dy) under trust tau: sqrt(ds^2) = sqrt(f) * sqrt(dx^2+dy^2). As tau-&gt;0 this inflates without bound; as tau-&gt;1 it approaches the Euclidean length.</td></tr>
+<tr><td><code>warping</code></td><td><span class="sig">double warping(double tau)</span></td><td class="desc">Scalar curvature proxy for this conformal family in 2D: with g = e^{2 phi} I and phi = -0.5 ln(tau), the Gaussian curvature is K = -e^{-2 phi} lap(phi). Here phi depends only on the (constant-in-space) tau, so spatial curvature is 0 for a uniform field; the ECONOMIC curvature we report is the field&#x27;s departure from flatness, f(tau) - 1 &gt;= 0 (0 at full trust, growing as trust falls). This is the &quot;warping&quot; the analogy cares about.</td></tr>
+<tr><td><code>isFlat</code></td><td><span class="sig">boolean isFlat(double tau, double tol)</span></td><td class="desc">Is the field effectively flat (Euclidean) at this trust level?</td></tr>
+<tr><td><code>describe</code></td><td><span class="sig">String describe(double tau)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="trade-math-demo">trade-math-demo <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/math/trade-math-demo.sleela)</span></h2>
@@ -429,7 +543,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-08 07:51 UTC.
+<code>/lib</code> tree on 2026-11-08 08:15 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
