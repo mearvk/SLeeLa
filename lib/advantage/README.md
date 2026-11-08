@@ -1,3 +1,7 @@
+artifact;
+preonem: [PREONEM.md](./PREONEM.md)
+standard: legislature-grade; evaluated unto time and space
+
 # lib/advantage — the Sequitur onion model
 
 The `advantage` package encapsulates the process of **advantaging a unique
