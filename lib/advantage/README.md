@@ -44,6 +44,24 @@ order. The layers form an **onion**, outer skin to inner core:
 Full definitions, explanations, ASCII sketches, and worked examples live in
 [`MATH.md`](./MATH.md).
 
+### `physics/` subfolder — trust-field economics subject
+
+A structural-economics subject that models trust and announcements **as**
+differential-geometry / contact-topology / stochastic objects (an analogy,
+flagged as such; the mathematics is implemented faithfully).
+
+| File | Class | Purpose |
+|------|-------|---------|
+| `physics/SLTrustMetric.sleela` | `SLTrustMetric` | Trust as a metric tensor `g_μν`; conformal warping of operational distance |
+| `physics/SLTransactionalGeodesic.sleela` | `SLTransactionalGeodesic` | Christoffel symbols + geodesic integration of the transaction path |
+| `physics/SLAnnouncementContact.sleela` | `SLAnnouncementContact` | Contact 1-form `α`, the `α∧dα≠0` test, hyperplane restriction, homotopy-null check |
+| `physics/SLTrustDecaySDE.sleela` | `SLTrustDecaySDE` | CIR mean-reverting diffusion + Poisson jump (announcement breach) |
+| `physics/SLPhysicsMath.sleela` | `SLPhysicsMath` | Self-contained `expD`/`lnD`/`powAB`/`sqrtD` (distinct name avoids collision) |
+| `physics/physics-demo.sleela` | `PhysicsDemo` | Runnable demo + validation of all four models (`main`) |
+
+Full definitions, explanations, ASCII sketches, and worked examples are in
+[`PHYSICS.md`](./PHYSICS.md).
+
 ## The two models
 
 - **User's model** hides the onion. State a dividend and the model it respects,
@@ -107,6 +125,7 @@ Full definitions, explanations, ASCII sketches, and worked examples are in
 ```sh
 ./working-binaries/sleela run lib/advantage/advantage-demo.sleela        # onion model
 ./working-binaries/sleela run lib/advantage/math/trade-math-demo.sleela  # trade math subject
+./working-binaries/sleela run lib/advantage/physics/physics-demo.sleela  # trust-field subject
 ```
 
 `run` auto-links the sibling classes in each directory (no imports needed).

@@ -950,6 +950,30 @@
       "sha256": "2faadb29c9c140eb9906971e7b5596a60594461c5da3c028148739efbdfb60e7"
     },
     {
+      "path": "lib/advantage/physics/SLAnnouncementContact.sleela",
+      "sha256": "68f171238a0c188be4f05e960c43f65bb3ca67900622e306537ea9c1ef6b83c6"
+    },
+    {
+      "path": "lib/advantage/physics/SLPhysicsMath.sleela",
+      "sha256": "cfa971e8674f451742cc89260dcc6d910425a9e6664f185a853d684d87dabbcb"
+    },
+    {
+      "path": "lib/advantage/physics/SLTransactionalGeodesic.sleela",
+      "sha256": "f4df529b8baa130a5f6f47c1a3d149bb13cc79994303b0a73b2a2efc68e85d8f"
+    },
+    {
+      "path": "lib/advantage/physics/SLTrustDecaySDE.sleela",
+      "sha256": "8132d9ba3bad3e1d80b19ff84c9164f19434a7796f7173ba893d67b01852adf5"
+    },
+    {
+      "path": "lib/advantage/physics/SLTrustMetric.sleela",
+      "sha256": "1d5db5a6ad3f5548c035ae955e4d47527e73db9dc682f199dac8e564a05ebb53"
+    },
+    {
+      "path": "lib/advantage/physics/physics-demo.sleela",
+      "sha256": "c2b25354959a29e7df667e2d67d20f159b276acc5aae23ad582357c328357dc1"
+    },
+    {
       "path": "lib/alphabet/Alphabet.sleela",
       "sha256": "c065f793cc47b78b993576038515aa934676c1be29a079f70c63a4ba3b5b6f59"
     },

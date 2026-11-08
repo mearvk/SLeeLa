@@ -1,0 +1,155 @@
+<< lib/advantage/physics/SLTransactionalGeodesic.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The transactional geodesic -- the shortest transaction path
+   through a trust-warped manifold, via the geodesic equation. >>
+#sleela 2.5
+material;
+< A transaction's path follows a GEODESIC of the trust metric: >
+<   d2x^mu/dl2 + Gamma^mu_ab (dx^a/dl)(dx^b/dl) = 0. >
+< Gamma are the Christoffel symbols -- the "pull" of market friction / systemic >
+< risk. For the conformal metric g = e^{2 phi} I (phi = -0.5 ln tau) with tau >
+< varying across the plane, the 2D Christoffel symbols are: >
+<   G^x_xx =  phi_x   G^x_xy =  phi_y   G^x_yy = -phi_x >
+<   G^y_xx = -phi_y   G^y_xy =  phi_x   G^y_yy =  phi_y >
+< where phi_x, phi_y are the spatial gradients of phi. When trust is uniform >
+< the gradients vanish, Gamma = 0, and geodesics are straight lines (Euclidean); >
+< where trust varies the symbols balloon and the path bends -- transactions >
+< must spend more to cross the same operational distance. >
+<  >
+< Trust field used here: tau(x,y) = tau0 + gx*x + gy*y, clamped to (0,1], so >
+< phi = -0.5 ln tau and phi_x = -0.5 * (d tau/dx)/tau = -0.5*gx/tau, similarly >
+< phi_y. This gives honest, non-zero curvature wherever gx or gy != 0. >
+class SLTransactionalGeodesic {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10531;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 7;
+  << metaNationalSchedule: the geodesic equation and Christoffel symbols are
+     Riemannian geometry / general relativity (Einstein 1915); academic, not a
+     statute; applied here by economic ANALOGY. >>
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- Trust field tau(x,y) = tau0 + gx*x + gy*y (clamped) ---- >
+  double tau0;
+  double gx;
+  double gy;
+
+  void configureField(double tau0v, double gxv, double gyv) {
+    tau0 = tau0v;
+    gx = gxv;
+    gy = gyv;
+  }
+
+  double tauAt(double x, double y) {
+    double t = tau0 + gx * x + gy * y;
+    if (t < 0.000001) { t = 0.000001; }
+    if (t > 1.0) { t = 1.0; }
+    return t;
+  }
+
+  < phi gradients: phi_x = -0.5 * gx / tau, phi_y = -0.5 * gy / tau. >
+  double phiX(double x, double y) { return (0.0 - 0.5) * gx / tauAt(x, y); }
+  double phiY(double x, double y) { return (0.0 - 0.5) * gy / tauAt(x, y); }
+
+  < Acceleration from the geodesic equation, d2x/dl2 = -Gamma(v,v), returned as >
+  < a flat double[2] = (ax, ay) given position (x,y) and velocity (vx,vy). >
+  double[] acceleration(double x, double y, double vx, double vy) {
+    double px = phiX(x, y);
+    double py = phiY(x, y);
+    < Gamma^x: xx=px, xy=yx=py, yy=-px. >
+    double gammaX = px * vx * vx + 2.0 * py * vx * vy - px * vy * vy;
+    < Gamma^y: xx=-py, xy=yx=px, yy=py. >
+    double gammaY = (0.0 - py) * vx * vx + 2.0 * px * vx * vy + py * vy * vy;
+    double[] a = new double[2];
+    a[0] = 0.0 - gammaX;
+    a[1] = 0.0 - gammaY;
+    return a;
+  }
+
+  << Integrate the geodesic from a start point toward a target using explicit
+     Euler steps, with the initial velocity aimed straight at the target. We
+     accumulate the TRUST-METRIC arc length (sqrt of f(tau)*(dx^2+dy^2)) along
+     the path, which is the effective operational cost to traverse it. Returns
+     that accumulated length. A flat field (gx=gy=0) reproduces the Euclidean
+     straight-line length; a warped field returns more. >>
+  double geodesicLength(double x0, double y0, double x1, double y1,
+                        int steps, SLPhysicsMath m) {
+    if (steps < 1) { steps = 1; }
+    double x = x0;
+    double y = y0;
+    double dirx = x1 - x0;
+    double diry = y1 - y0;
+    double vx = dirx;
+    double vy = diry;
+    double dl = 1.0 / m.intToD(steps);
+    double length = 0.0;
+    int i = 0;
+    while (i < steps) {
+      double[] a = acceleration(x, y, vx, vy);
+      < half-step velocity update then position (semi-implicit, more stable). >
+      vx = vx + a[0] * dl;
+      vy = vy + a[1] * dl;
+      double ddx = vx * dl;
+      double ddy = vy * dl;
+      double tau = tauAt(x, y);
+      double f = 1.0 / tau;
+      double seg = m.sqrtD(f * (ddx * ddx + ddy * ddy));
+      length = length + seg;
+      x = x + ddx;
+      y = y + ddy;
+      i = i + 1;
+    }
+    return length;
+  }
+
+  < Convenience: the straight-line Euclidean distance (flat-field reference). >
+  double euclidean(double x0, double y0, double x1, double y1, SLPhysicsMath m) {
+    double dx = x1 - x0;
+    double dy = y1 - y0;
+    return m.sqrtD(dx * dx + dy * dy);
+  }
+
+  < Are Christoffel symbols effectively zero here (uniform trust => flat)? >
+  boolean isStraightLine(double tol) {
+    double ax = gx;
+    double ay = gy;
+    if (ax < 0.0) { ax = 0.0 - ax; }
+    if (ay < 0.0) { ay = 0.0 - ay; }
+    return (ax + ay) < tol;
+  }
+}

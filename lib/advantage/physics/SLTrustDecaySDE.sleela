@@ -1,0 +1,126 @@
+<< lib/advantage/physics/SLTrustDecaySDE.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Stochastic trust decay -- a CIR mean-reverting diffusion with a
+   Poisson jump for announcement breaches. >>
+#sleela 2.5
+material;
+< Trust is not static; it fluctuates as verified actions match (or break) prior >
+< announcements. Modelled with the asset-pricing (Cox-Ingersoll-Ross) SDE plus >
+< a downward jump: >
+<   d tau_t = kappa (tauBar - tau_t) dt + sigma sqrt(tau_t) dW_t - delta dJ_t. >
+< * kappa (tauBar - tau_t) dt : mean-reversion to baseline institutional trust. >
+< * sigma sqrt(tau_t) dW_t    : Brownian market noise (variance grows with tau). >
+< * delta dJ_t                : a Poisson jump -- a sudden catastrophic drop when >
+<                               an announced contract is broken (a breach). >
+<  >
+< SLeeLa `run` is deterministic, so we expose the pieces explicitly: one Euler- >
+< Maruyama step takes the noise increment dW and jump indicator dJ as inputs; >
+< the EXPECTED path (dW=0, no jumps) is closed-form-checkable and converges to >
+< tauBar. sqrt is provided by the sibling SLPhysicsMath. >
+class SLTrustDecaySDE {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10533;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  String metaBirthDate = "2026-11-08";
+  int metaScienceRating = 7;
+  << metaNationalSchedule: the square-root diffusion is Cox-Ingersoll-Ross
+     (Econometrica 1985); the jump term is a compound-Poisson process. Academic
+     results, not a statute; applied here by economic ANALOGY. >>
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- Parameters ---- >
+  < mean-reversion speed >
+  double kappa;
+  < long-run baseline trust >
+  double tauBar;
+  < diffusion (noise) scale >
+  double sigma;
+  < jump size of a breach (trust lost per jump) >
+  double delta;
+
+  void configure(double k, double tb, double s, double d) {
+    kappa = k;
+    tauBar = tb;
+    sigma = s;
+    delta = d;
+  }
+
+  < Keep trust in [0,1] (a trust probability/parameter). >
+  double clamp(double t) {
+    if (t < 0.0) { return 0.0; }
+    if (t > 1.0) { return 1.0; }
+    return t;
+  }
+
+  << One Euler-Maruyama step. Inputs: current tau, timestep dt, Brownian
+     increment dW (caller-supplied; expected value 0, variance dt), and jump
+     indicator dJ (0 = no breach this step, 1 = a breach). Returns the next
+     tau, clamped. >>
+  double step(double tau, double dt, double dW, double dJ, SLPhysicsMath m) {
+    double drift = kappa * (tauBar - tau) * dt;
+    double diffusion = sigma * m.sqrtD(tau) * dW;
+    double jump = delta * dJ;
+    return clamp(tau + drift + diffusion - jump);
+  }
+
+  < The deterministic (expected) step: dW=0, no jump. tau_{t+dt} = tau + >
+  < kappa(tauBar - tau) dt. >
+  double expectedStep(double tau, double dt) {
+    return clamp(tau + kappa * (tauBar - tau) * dt);
+  }
+
+  << Expected path over n steps with no noise and no breach: converges toward
+     tauBar at rate kappa. Returns the final tau. >>
+  double expectedPath(double tau0, double dt, int n) {
+    double tau = tau0;
+    int i = 0;
+    while (i < n) {
+      tau = expectedStep(tau, dt);
+      i = i + 1;
+    }
+    return tau;
+  }
+
+  << Apply a single announcement breach to a trust level: an instantaneous
+     drop of `delta`, clamped at 0. This is the -delta dJ term fired once. >>
+  double breach(double tau) { return clamp(tau - delta); }
+
+  String describe() {
+    return "TrustDecaySDE: kappa=" + kappa + " tauBar=" + tauBar
+         + " sigma=" + sigma + " delta=" + delta;
+  }
+}

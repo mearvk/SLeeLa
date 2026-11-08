@@ -1,6 +1,8 @@
 # SLeeLa /lib Library Index
 
-> Revision 0.71 reorganizes the **`advantage`** bilateral trade economics into a `math/` subject subfolder (`lib/advantage/math/`): `SLJointProfitMax` (integrated surplus + Q* where MR=MC), `SLNashBargaining` (the alpha-weighted split with a closed-form Nash price), `SLBilateralNewsvendor` (overage/underage costs + the centralized critical ratio), and shared `SLTradeMath` exp/ln/pow helpers, with a runnable `trade-math-demo`. A new `lib/advantage/MATH.md` documents the subject with definitions, explanations, ASCII sketches, and worked examples. The former flat `SLAdvantageTrade` is superseded by these focused subject classes.
+> Revision 0.72 adds a `physics/` subject subfolder to the **`advantage`** package (`lib/advantage/physics/`): a structural-economics "physics of trust fields" modelling trust and announcements AS geometric/topological/stochastic objects (flagged as an analogy). Classes: `SLTrustMetric` (trust as a conformal metric tensor g_mu_nu), `SLTransactionalGeodesic` (Christoffel symbols + geodesic integration of the transaction path), `SLAnnouncementContact` (contact 1-form, the alpha^dalpha!=0 test, hyperplane restriction, homotopy-null check), `SLTrustDecaySDE` (CIR mean-reverting diffusion + Poisson-jump breach), and `SLPhysicsMath` helpers, with a runnable `physics-demo`. A new `lib/advantage/PHYSICS.md` documents the subject with definitions, explanations, ASCII sketches, worked examples, and cited sources (Einstein 1915, contact topology, Cox-Ingersoll-Ross 1985).
+
+> Revision 0.71 reorganized the **`advantage`** bilateral trade economics into a `math/` subject subfolder (`lib/advantage/math/`): `SLJointProfitMax` (integrated surplus + Q* where MR=MC), `SLNashBargaining` (the alpha-weighted split with a closed-form Nash price), `SLBilateralNewsvendor` (overage/underage costs + the centralized critical ratio), and shared `SLTradeMath` exp/ln/pow helpers, with a runnable `trade-math-demo`. A new `lib/advantage/MATH.md` documents the subject with definitions, explanations, ASCII sketches, and worked examples. The former flat `SLAdvantageTrade` is superseded by these focused subject classes.
 
 > Revision 0.70 extended the **`advantage`** package with bilateral trade economics (`SLAdvantageTrade`): joint profit maximization (the integrated surplus Pi_total(Q) with the optimal quantity Q* where marginal revenue equals marginal supply cost), the bilateral-monopoly Nash bargaining split (seller/buyer profit curves split by a bargaining-power index alpha over reservation profits, with a closed-form Nash price), and the bilateral newsvendor critical ratio (overage/underage costs on both ends and the centralized service level that avoids double marginalization). Self-contained exp/ln/pow helpers keep the package dependency-free; a runnable `advantage-trade-demo` validates every result against hand-computed anchors (Q*=20, Pi_total=800, Nash price 60 splitting 400/400, critical ratio 80/95).
 
@@ -11,11 +13,11 @@
 > Revision 0.67 adds two AI-facing SLeeLa standard-library packages. **`neural-nets`** (`lib/neural-nets/`) mirrors the native C ABI v1 with `SLNeuralNetworkConfig`, `SLNeuralNetwork`, and a package facade; it exposes the validated network configuration and lifecycle contract while inference/training remain explicit native-adapter operations. **`character-recognition`** (`lib/character-recognition/`) mirrors the native C11 glyph-recognition API with `SLCharacterRecognition`, `SLCharacterResult`, and a package facade; normalization and recognition remain native-adapter operations. Both packages document their exact native boundaries and limitations. The authoritative C/C++ implementations remain under `artificial-intelligence/`; these SLeeLa packages do not duplicate kernels or claim native execution without an adapter.
 
 
-**Revision:** 0.71  
+**Revision:** 0.72  
 **Packages:** 117  
-**SLeeLa source units:** 11929  
+**SLeeLa source units:** 11935  
 **Module-facade symbols:** 84  
-**Total symbol records:** 12013  
+**Total symbol records:** 12019  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.66 brings three big-number improvements that make a 10,000,000-digit
