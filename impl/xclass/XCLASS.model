@@ -7,7 +7,11 @@ Status:             Normative for the v1 .xclass loader
 Direction:          SecureJDK 28 (.xclass)  ->  Sleela (Program)
 Companions:         SLEELA.syntax (Sleela surface), STP.model (transition bridge),
                     userland/openjdk/jvm-config.xml (SecureJDK 28 config),
-                    tools/xmc/*.xclass (the reference .xclass files)
+                    tools/xmc/*.xclass (the reference .xclass files),
+                    impl/xclass/samples/*.xclass (in-repo reference images:
+                    Greeter/Person/Role from xmc 1.0.0, and the new-lineup
+                    SLTechInstallerII/SLMoneyConnector from xmc 1.1.0 mirroring
+                    the Advantage connect medium, lib/advantage/connect/)
 
 ================================================================================
 0. Purpose
@@ -38,8 +42,16 @@ reconstruction is faithful at the level the format actually carries: the type
 structure and the security/provenance metadata.
 
 ================================================================================
-1. The .xclass schema (as emitted by xmc 1.0.0)
+1. The .xclass schema (as emitted by xmc 1.0.0 and 1.1.0)
 ================================================================================
+
+xmc 1.1.0 is a point release of the compiler: it emits the SAME v1 .xclass
+schema (root version="1") as 1.0.0, so every file loads under this one v1 loader
+regardless of compiler-version. 1.1.0 adds no new elements; it is used to image
+the current SLeeLa lineup -- the Advantage connect medium (SLTechInstallerII,
+SLMoneyConnector, and the other SL*Connector classes) -- and records
+"mearvk - Tech Installer II" in <signer-techid>. The loader keys off version,
+not compiler-version, so forward point releases remain compatible.
 
 Root: <xclass version="1" compiler="xmc" compiler-version="..."
               edition="..." conduct-frame="US">

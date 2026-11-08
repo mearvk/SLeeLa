@@ -62,5 +62,29 @@ runs as ordinary Sleela.
 
 ## Samples
 
-`samples/Greeter.xclass`, `samples/Person.xclass`, `samples/Role.xclass` are the
-reference files emitted by `xmc` (from the Ubuntu.Determinant `tools/xmc/` tree).
+Original reference files emitted by `xmc 1.0.0`:
+`samples/Greeter.xclass`, `samples/Person.xclass`, `samples/Role.xclass` (from
+the Ubuntu.Determinant `tools/xmc/` tree).
+
+New-lineup reference files emitted by `xmc 1.1.0`, mirroring the current SLeeLa
+**Advantage™ connect medium** (`lib/advantage/connect/`):
+
+- `samples/SLTechInstallerII.xclass` — the structural image of the **Tech
+  Installer II** authority (Max Rupplin / MEARVK LLC, North Carolina, 2026+;
+  conduct basis adds N.C.G.S. Chapter 57D). Signed by `mearvk - Tech Installer
+  II`.
+- `samples/SLMoneyConnector.xclass` — a money-source connector (banks, cards,
+  wallets). Structure only; no PAN/CVV/secret is carried, amounts are integer
+  cents, conduct basis notes PCI DSS by exclusion.
+
+```sh
+# Load the new-lineup images:
+./build/sleela xclass --info impl/xclass/samples/SLTechInstallerII.xclass
+./build/sleela run impl/xclass/samples/SLTechInstallerII.xclass impl/xclass/samples/SLMoneyConnector.xclass
+```
+
+> `xmc` itself (the SecureJDK 28 compiler that emits `.xclass`) lives in the
+> Ubuntu.Determinant `tools/xmc/` tree; these in-repo samples are its reference
+> output, kept in step with the SLeeLa classes they image. The loader is
+> format-versioned (`version="1"`), so `xmc 1.1.0` output loads under the same
+> v1 loader as `xmc 1.0.0`.

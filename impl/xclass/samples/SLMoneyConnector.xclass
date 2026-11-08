@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SLMoneyConnector.xclass — SecureJDK 28 XML Class File
+  Compiled by: xmc 1.1.0 (Galactic Cherry Marvell 98)
+  Source: lib/advantage/connect/SLMoneyConnector.sleela
+  Date: 2026-11-08
+  Frame: US Standard
+  Copyright (C) 2026 MEARVK LLC
+
+  New-lineup reference: a money-source connector from the Advantage(TM) connect
+  medium (banks, cards, wallets). Structure only -- no PAN/CVV/secret is carried
+  by the SLeeLa class or by this image; amounts are integer cents.
+-->
+<xclass version="1" compiler="xmc" compiler-version="1.1.0"
+        edition="Galactic Cherry Marvell 98"
+        conduct-frame="US">
+
+  <identity>
+    <name>SLMoneyConnector</name>
+    <superclass>(none)</superclass>
+    <abstract>false</abstract>
+    <interface>false</interface>
+    <final>false</final>
+    <public>true</public>
+    <method-count>7</method-count>
+    <field-count>4</field-count>
+    <weight>300</weight>
+    <lateral-count>0</lateral-count>
+  </identity>
+
+  <design>
+    <int-tier>2</int-tier>
+    <int-tier-name>Connectivity Medium</int-tier-name>
+    <int-complexity>38</int-complexity>
+    <intellect-color>Green</intellect-color>
+    <wet-structure>
+      <module>65</module>
+      <demange>100</demange>
+      <demart>30</demart>
+      <artistry>35</artistry>
+    </wet-structure>
+  </design>
+
+  <quality-democracy>
+    <voice>100</voice>
+    <representation>90</representation>
+    <participation>100</participation>
+    <transparency>100</transparency>
+    <accountability>100</accountability>
+  </quality-democracy>
+
+  <quality-woman>
+    <care>100</care>
+    <integrity>100</integrity>
+    <nurture>75</nurture>
+    <resolve>85</resolve>
+    <grace>80</grace>
+  </quality-woman>
+
+  <security>
+    <trust-grade>5</trust-grade>
+    <classload-grade>5</classload-grade>
+  </security>
+
+  <methods>
+    <method name="configure" return="int" params="3"
+            public="true" static="false" abstract="false"
+            lines="20" complexity="6"/>
+    <method name="openLink" return="int" params="0"
+            public="true" static="false" abstract="false"
+            lines="8" complexity="2"/>
+    <method name="authorize" return="int" params="1"
+            public="true" static="false" abstract="false"
+            lines="12" complexity="3"/>
+    <method name="capture" return="int" params="1"
+            public="true" static="false" abstract="false"
+            lines="14" complexity="4"/>
+    <method name="refund" return="int" params="1"
+            public="true" static="false" abstract="false"
+            lines="12" complexity="3"/>
+    <method name="settledCents" return="int" params="0"
+            public="true" static="false" abstract="false"
+            lines="1" complexity="1"/>
+    <method name="receipt" return="String" params="0"
+            public="true" static="false" abstract="false"
+            lines="8" complexity="1"/>
+  </methods>
+
+  <fields>
+    <field name="sourceKind" type="String" public="false" static="false"/>
+    <field name="keystoreAlias" type="String" public="false" static="false"/>
+    <field name="currency" type="String" public="false" static="false"/>
+    <field name="capturedCents" type="int" public="false" static="false"/>
+  </fields>
+
+  <conduct-frame>
+    <code>US</code>
+    <name>US Standard</name>
+    <basis>US Constitution, Bill of Rights, Liberty; PCI DSS (by exclusion)</basis>
+  </conduct-frame>
+
+  <provenance>
+    <compiler>xmc</compiler>
+    <compiler-version>1.1.0</compiler-version>
+    <edition>Galactic Cherry Marvell 98</edition>
+    <source-file>lib/advantage/connect/SLMoneyConnector.sleela</source-file>
+    <compiled-at>2026-11-08T00:00:00-0500</compiled-at>
+    <signer>Maximilian Eric Alexander Rupplin von Keffikon</signer>
+    <signer-techid>mearvk - Tech Installer II</signer-techid>
+    <signature algorithm="sha256">1108202611082026110820261108202611082026110820261108202611082026</signature>
+    <signed>true</signed>
+  </provenance>
+
+</xclass>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SLTechInstallerII.xclass — SecureJDK 28 XML Class File
+  Compiled by: xmc 1.1.0 (Galactic Cherry Marvell 98)
+  Source: lib/advantage/connect/SLTechInstallerII.sleela
+  Date: 2026-11-08
+  Frame: US Standard
+  Copyright (C) 2026 MEARVK LLC
+
+  New-lineup reference: the Advantage(TM) connect medium. This .xclass is the
+  structural image of the Tech Installer II authority (Max Rupplin / MEARVK LLC,
+  North Carolina, 2026+), signed by the same installer-tech lineage as Greeter.
+-->
+<xclass version="1" compiler="xmc" compiler-version="1.1.0"
+        edition="Galactic Cherry Marvell 98"
+        conduct-frame="US">
+
+  <!-- Identity: structural position in the loading hierarchy -->
+  <identity>
+    <name>SLTechInstallerII</name>
+    <superclass>(none)</superclass>
+    <abstract>false</abstract>
+    <interface>false</interface>
+    <final>false</final>
+    <public>true</public>
+    <method-count>8</method-count>
+    <field-count>6</field-count>
+    <weight>320</weight>
+    <lateral-count>0</lateral-count>
+  </identity>
+
+  <!-- Design: intellectual tier and wet structure -->
+  <design>
+    <int-tier>2</int-tier>
+    <int-tier-name>Connectivity Medium</int-tier-name>
+    <int-complexity>40</int-complexity>
+    <intellect-color>Green</intellect-color>
+    <wet-structure>
+      <module>70</module>
+      <demange>100</demange>
+      <demart>35</demart>
+      <artistry>40</artistry>
+    </wet-structure>
+  </design>
+
+  <!-- Quality Democracy: democratic structural principles -->
+  <quality-democracy>
+    <voice>100</voice>
+    <representation>95</representation>
+    <participation>100</participation>
+    <transparency>100</transparency>
+    <accountability>90</accountability>
+  </quality-democracy>
+
+  <!-- Quality Woman: feminine excellence in architecture -->
+  <quality-woman>
+    <care>95</care>
+    <integrity>100</integrity>
+    <nurture>80</nurture>
+    <resolve>90</resolve>
+    <grace>85</grace>
+  </quality-woman>
+
+  <!-- Security: trust and classload grades -->
+  <security>
+    <trust-grade>5</trust-grade>
+    <classload-grade>5</classload-grade>
+  </security>
+
+  <!-- Methods: structural members (mirrors the SLeeLa class contract) -->
+  <methods>
+    <method name="authorize" return="int" params="3"
+            public="true" static="false" abstract="false"
+            lines="18" complexity="4"/>
+    <method name="licenceCoversYear" return="boolean" params="1"
+            public="true" static="false" abstract="false"
+            lines="4" complexity="3"/>
+    <method name="installSet" return="int" params="2"
+            public="true" static="false" abstract="false"
+            lines="16" complexity="4"/>
+    <method name="applySetting" return="int" params="2"
+            public="true" static="false" abstract="false"
+            lines="16" complexity="4"/>
+    <method name="appliedCount" return="int" params="0"
+            public="true" static="false" abstract="false"
+            lines="1" complexity="1"/>
+    <method name="isAuthorized" return="boolean" params="0"
+            public="true" static="false" abstract="false"
+            lines="1" complexity="1"/>
+    <method name="credential" return="String" params="0"
+            public="true" static="false" abstract="false"
+            lines="2" complexity="1"/>
+    <method name="describe" return="String" params="0"
+            public="true" static="false" abstract="false"
+            lines="6" complexity="1"/>
+  </methods>
+
+  <!-- Fields: structural state -->
+  <fields>
+    <field name="holder" type="String" public="false" static="false"/>
+    <field name="corporation" type="String" public="false" static="false"/>
+    <field name="jurisdiction" type="String" public="false" static="false"/>
+    <field name="tier" type="String" public="false" static="false"/>
+    <field name="licenceFromYear" type="int" public="false" static="false"/>
+    <field name="authorized" type="boolean" public="false" static="false"/>
+  </fields>
+
+  <!-- Conduct Frame: international law and conduct basis -->
+  <conduct-frame>
+    <code>US</code>
+    <name>US Standard</name>
+    <basis>US Constitution, Bill of Rights, Liberty; N.C.G.S. Chapter 57D</basis>
+  </conduct-frame>
+
+  <!-- Provenance: compiler identity and installer authority -->
+  <provenance>
+    <compiler>xmc</compiler>
+    <compiler-version>1.1.0</compiler-version>
+    <edition>Galactic Cherry Marvell 98</edition>
+    <source-file>lib/advantage/connect/SLTechInstallerII.sleela</source-file>
+    <compiled-at>2026-11-08T00:00:00-0500</compiled-at>
+    <signer>Maximilian Eric Alexander Rupplin von Keffikon</signer>
+    <signer-techid>mearvk - Tech Installer II</signer-techid>
+    <signature algorithm="sha256">2026110820261108202611082026110820261108202611082026110820261108</signature>
+    <signed>true</signed>
+  </provenance>
+
+</xclass>
