@@ -133,7 +133,7 @@ jobs:
         run: make -C impl test-network
 
       - name: Commit manifest after successful platform verification
-        if: success() && github.event_name == 'push'
+        if: success() && github.event_name == 'push' && runner.os == 'Linux'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -161,6 +161,7 @@ jobs:
             mingw-w64-ucrt-x86_64-gcc
             mingw-w64-ucrt-x86_64-cmake
             mingw-w64-ucrt-x86_64-python
+            diffutils
 
       - name: Check out source
         uses: actions/checkout@v4
@@ -259,7 +260,7 @@ jobs:
         run: make -C impl test-network
 
       - name: Commit manifest after successful platform verification
-        if: success() && github.event_name == 'push'
+        if: success() && github.event_name == 'push' && runner.os == 'Linux'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
