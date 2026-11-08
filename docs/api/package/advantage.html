@@ -141,7 +141,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; advantage</div>
 <h1>Package <code>advantage</code></h1>
-<div class="lead">This package contains <strong>60</strong> source unit(s) defining <strong>60</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>69</strong> source unit(s) defining <strong>69</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="advantage-demo">advantage-demo <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/advantage-demo.sleela)</span></h2>
 <div data-u="advantage-demo advantagedemo">
@@ -168,6 +168,17 @@
 <div data-u="coffee-green-trade coffeegreentrade">
 <h3 id="CoffeeGreenTrade">CoffeeGreenTrade <span class="pill">class</span></h3>
 <p class="desc">NETWORK-TRADE 05 of 12 -- COFFEE-GREEN. Scout a network of venue quotes, pick the cheapest buy and dearest sell, negotiate a fair clearing price, and emit a cash receipt. Rung: a soft commodity with seasonality baked into the spread.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>near</code></td><td><span class="sig">boolean near(double a, double b, double tol)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="connect-demo">connect-demo <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/connect/connect-demo.sleela)</span></h2>
+<div data-u="connect-demo connectdemo">
+<h3 id="ConnectDemo">ConnectDemo <span class="pill">class</span></h3>
+<p class="desc">Runnable demonstration + validation of the advantage/connect medium end to end: the shared status vocabulary and fault record, then each of the four connectors (SQL, national clock, network, money) driven through its lifecycle, its native-adapter boundary, and a fault path.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -242,6 +253,16 @@
 <div data-u="helper-example helperexample">
 <h3 id="HelperExample">HelperExample <span class="pill">class</span></h3>
 <p class="desc">A professional example -- the HELPER -- stands up a small supply-&gt;retail chain and moves goods through it (vertical integration).</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="installer-demo">installer-demo <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/connect/installer-demo.sleela)</span></h2>
+<div data-u="installer-demo installerdemo">
+<h3 id="InstallerDemo">InstallerDemo <span class="pill">class</span></h3>
+<p class="desc">Runnable demonstration + validation of SLTechInstallerII -- the Tech Installer II authority (Max Rupplin / MEARVK LLC, North Carolina, 2026+) installing the actual Use of the Advantage System onto install sets and settings, ceteris paribus, with authority gating and fault handling.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -696,6 +717,42 @@
 <tr><td><code>receipt</code></td><td><span class="sig">String receipt(String good)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="slclockconnector">SLClockConnector <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/connect/SLClockConnector.sleela)</span></h2>
+<div data-u="slclockconnector slclockconnector">
+<h3 id="SLClockConnector">SLClockConnector <span class="pill">class</span></h3>
+<p class="desc">The national-clock / NTP connector of the CONNECT medium. It models a disciplined time source: a named authority (e.g. a national metrology institute time service), an NTP stratum, a clock offset estimate, and a validity window. The live sync defers to a host adapter (slntp_*).</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>vocab</code></td><td><span class="sig">SLConnectStatus vocab</span></td><td class="desc">---- Shared medium plumbing ----</td></tr>
+<tr><td><code>fault</code></td><td><span class="sig">SLConnectFault fault</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>authority</code></td><td><span class="sig">String authority = &quot;&quot;</span></td><td class="desc">---- Clock state ----</td></tr>
+<tr><td><code>configured</code></td><td><span class="sig">boolean configured = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>open</code></td><td><span class="sig">boolean open = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>synced</code></td><td><span class="sig">boolean synced = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>offsetMillis</code></td><td><span class="sig">double offsetMillis = 0.0</span></td><td class="desc">last estimated offset (local - true) in milliseconds</td></tr>
+<tr><td><code>stratum</code></td><td><span class="sig">int stratum = 16</span></td><td class="desc">NTP stratum of the authority (1 best; 16 unsynchronized)</td></tr>
+<tr><td><code>syncCount</code></td><td><span class="sig">int syncCount = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>init</code></td><td><span class="sig">void init()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>configure</code></td><td><span class="sig">int configure(String authorityHost)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>openLink</code></td><td><span class="sig">int openLink()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sync</code></td><td><span class="sig">int sync()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>acceptSync</code></td><td><span class="sig">int acceptSync(double offset, int str)</span></td><td class="desc">Host-adapter callback: record a measured discipline result.</td></tr>
+<tr><td><code>discipline</code></td><td><span class="sig">double discipline(double localEpochMillis)</span></td><td class="desc">Correct a local epoch-millis reading by the last measured offset.</td></tr>
+<tr><td><code>trusted</code></td><td><span class="sig">boolean trusted(int stratumCeiling)</span></td><td class="desc">True when the authority is trustworthy enough to rely on (synced and a stratum at or below the accepted ceiling).</td></tr>
+<tr><td><code>closeLink</code></td><td><span class="sig">int closeLink()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>active</code></td><td><span class="sig">boolean active()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isSynced</code></td><td><span class="sig">boolean isSynced()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getStratum</code></td><td><span class="sig">int getStratum()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getOffsetMillis</code></td><td><span class="sig">double getOffsetMillis()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isNativeReady</code></td><td><span class="sig">boolean isNativeReady()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastFault</code></td><td><span class="sig">SLConnectFault lastFault()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="slcompartment">SLCompartment <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/integration/SLCompartment.sleela)</span></h2>
 <div data-u="slcompartment slcompartment">
 <h3 id="SLCompartment">SLCompartment <span class="pill">class</span></h3>
@@ -737,6 +794,72 @@
 <tr><td><code>totalUsed</code></td><td><span class="sig">int totalUsed()</span></td><td class="desc">Aggregate used units of this subtree.</td></tr>
 <tr><td><code>totalRelevance</code></td><td><span class="sig">int totalRelevance()</span></td><td class="desc">Sum of relevance across this subtree -- a crude &quot;value density&quot;.</td></tr>
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slconnectfault">SLConnectFault <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/connect/SLConnectFault.sleela)</span></h2>
+<div data-u="slconnectfault slconnectfault">
+<h3 id="SLConnectFault">SLConnectFault <span class="pill">class</span></h3>
+<p class="desc">A structured fault record for the CONNECT medium -- the library-idiomatic stand-in for an exception. Every connector records its last fault here (code, subsystem, operation, human message, retryable flag, attempt count) so a caller can inspect, log, and decide to retry without the language-level try/catch machinery.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>code</code></td><td><span class="sig">int code = 0</span></td><td class="desc">---- Fault fields ----</td></tr>
+<tr><td><code>subsystem</code></td><td><span class="sig">String subsystem = &quot;none&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>operation</code></td><td><span class="sig">String operation = &quot;none&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>message</code></td><td><span class="sig">String message = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>retryable</code></td><td><span class="sig">boolean retryable = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>attempts</code></td><td><span class="sig">int attempts = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>clear</code></td><td><span class="sig">void clear()</span></td><td class="desc">Reset to a clean, no-fault state.</td></tr>
+<tr><td><code>raise</code></td><td><span class="sig">void raise(SLConnectStatus vocab, int c, String sub, String op, String msg)</span></td><td class="desc">Record a fault. The SLConnectStatus is supplied so name/transience render consistently without a cross-class static reference.</td></tr>
+<tr><td><code>setRetryable</code></td><td><span class="sig">void setRetryable(boolean r)</span></td><td class="desc">Let a connector override retryability for domain reasons (e.g. a money DECLINED must never be retried automatically).</td></tr>
+<tr><td><code>isFaulted</code></td><td><span class="sig">boolean isFaulted()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getCode</code></td><td><span class="sig">int getCode()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getSubsystem</code></td><td><span class="sig">String getSubsystem()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getOperation</code></td><td><span class="sig">String getOperation()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getMessage</code></td><td><span class="sig">String getMessage()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isRetryable</code></td><td><span class="sig">boolean isRetryable()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAttempts</code></td><td><span class="sig">int getAttempts()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>describe</code></td><td><span class="sig">String describe(SLConnectStatus vocab)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slconnectstatus">SLConnectStatus <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/connect/SLConnectStatus.sleela)</span></h2>
+<div data-u="slconnectstatus slconnectstatus">
+<h3 id="SLConnectStatus">SLConnectStatus <span class="pill">class</span></h3>
+<p class="desc">The universal status vocabulary for the advantage CONNECT medium -- the single set of integer outcome codes shared by every connector (SQL, clock, network, money). Status codes, not exceptions, are the library-wide error convention; this class names them and renders them.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>STATUS_OK</code></td><td><span class="sig">static final int STATUS_OK = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>STATUS_INVALID_ARGUMENT</code></td><td><span class="sig">static final int STATUS_INVALID_ARGUMENT = 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>STATUS_INVALID_STATE</code></td><td><span class="sig">static final int STATUS_INVALID_STATE = 2</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>STATUS_NOT_CONFIGURED</code></td><td><span class="sig">static final int STATUS_NOT_CONFIGURED = 3</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>STATUS_UNAUTHORIZED</code></td><td><span class="sig">static final int STATUS_UNAUTHORIZED = 4</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>STATUS_TIMEOUT</code></td><td><span class="sig">static final int STATUS_TIMEOUT = 5</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>STATUS_UNREACHABLE</code></td><td><span class="sig">static final int STATUS_UNREACHABLE = 6</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>STATUS_PROTOCOL</code></td><td><span class="sig">static final int STATUS_PROTOCOL = 7</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>STATUS_DECLINED</code></td><td><span class="sig">static final int STATUS_DECLINED = 8</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>STATUS_NATIVE_ADAPTER_REQUIRED</code></td><td><span class="sig">static final int STATUS_NATIVE_ADAPTER_REQUIRED = 9</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>STATUS_INTERNAL</code></td><td><span class="sig">static final int STATUS_INTERNAL = 10</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>ok</code></td><td><span class="sig">int ok()</span></td><td class="desc">Accessor methods so other connectors read codes without cross-class static references (which the semantic checker rejects).</td></tr>
+<tr><td><code>invalidArgument</code></td><td><span class="sig">int invalidArgument()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>invalidState</code></td><td><span class="sig">int invalidState()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>notConfigured</code></td><td><span class="sig">int notConfigured()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>unauthorized</code></td><td><span class="sig">int unauthorized()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>timeout</code></td><td><span class="sig">int timeout()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>unreachable</code></td><td><span class="sig">int unreachable()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>protocol</code></td><td><span class="sig">int protocol()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>declined</code></td><td><span class="sig">int declined()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nativeAdapterRequired</code></td><td><span class="sig">int nativeAdapterRequired()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>internal</code></td><td><span class="sig">int internal()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isOk</code></td><td><span class="sig">boolean isOk(int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isTransient</code></td><td><span class="sig">boolean isTransient(int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name(int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="slengineeringbay">SLEngineeringBay <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/integration/SLEngineeringBay.sleela)</span></h2>
@@ -923,6 +1046,48 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="slmoneyconnector">SLMoneyConnector <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/connect/SLMoneyConnector.sleela)</span></h2>
+<div data-u="slmoneyconnector slmoneyconnector">
+<h3 id="SLMoneyConnector">SLMoneyConnector <span class="pill">class</span></h3>
+<p class="desc">The money-source connector of the CONNECT medium -- banks and card networks. It models a payment lifecycle (authorize -&gt; capture -&gt; refund / void) against a funding source, validating amounts and state in the VM and deferring the live settlement to a host adapter (slbank_*). Declines are a first-class, non-retryable outcome.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>vocab</code></td><td><span class="sig">SLConnectStatus vocab</span></td><td class="desc">---- Shared medium plumbing ----</td></tr>
+<tr><td><code>fault</code></td><td><span class="sig">SLConnectFault fault</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sourceKind</code></td><td><span class="sig">String sourceKind = &quot;&quot;</span></td><td class="desc">---- Funding-source + payment state ---- sourceKind: &quot;bank&quot; | &quot;card&quot; | &quot;wallet&quot;</td></tr>
+<tr><td><code>keystoreAlias</code></td><td><span class="sig">String keystoreAlias = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>currency</code></td><td><span class="sig">String currency = &quot;USD&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>configured</code></td><td><span class="sig">boolean configured = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>open</code></td><td><span class="sig">boolean open = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>authorizedCents</code></td><td><span class="sig">int authorizedCents = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>capturedCents</code></td><td><span class="sig">int capturedCents = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>refundedCents</code></td><td><span class="sig">int refundedCents = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastDeclined</code></td><td><span class="sig">boolean lastDeclined = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>init</code></td><td><span class="sig">void init()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>configure</code></td><td><span class="sig">int configure(String kind, String alias, String cur)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>openLink</code></td><td><span class="sig">int openLink()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>authorize</code></td><td><span class="sig">int authorize(int amountCents)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>acceptAuthorization</code></td><td><span class="sig">int acceptAuthorization(int amountCents)</span></td><td class="desc">Host-adapter callback: approval. Records the authorized hold.</td></tr>
+<tr><td><code>declineAuthorization</code></td><td><span class="sig">int declineAuthorization(String why)</span></td><td class="desc">Host-adapter callback: refusal. A decline is NOT retryable.</td></tr>
+<tr><td><code>capture</code></td><td><span class="sig">int capture(int amountCents)</span></td><td class="desc">Capture against a prior authorization (native: slbank_capture). Cannot capture more than was authorized.</td></tr>
+<tr><td><code>refund</code></td><td><span class="sig">int refund(int amountCents)</span></td><td class="desc">Refund part or all of what was captured (native: slbank_refund).</td></tr>
+<tr><td><code>settledCents</code></td><td><span class="sig">int settledCents()</span></td><td class="desc">Net settled amount after refunds, in cents.</td></tr>
+<tr><td><code>closeLink</code></td><td><span class="sig">int closeLink()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>active</code></td><td><span class="sig">boolean active()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wasDeclined</code></td><td><span class="sig">boolean wasDeclined()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAuthorizedCents</code></td><td><span class="sig">int getAuthorizedCents()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getCapturedCents</code></td><td><span class="sig">int getCapturedCents()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getRefundedCents</code></td><td><span class="sig">int getRefundedCents()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isNativeReady</code></td><td><span class="sig">boolean isNativeReady()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastFault</code></td><td><span class="sig">SLConnectFault lastFault()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>receipt</code></td><td><span class="sig">String receipt()</span></td><td class="desc">A log-safe settlement receipt -- alias only, never a card number.</td></tr>
+<tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="slnashbargaining">SLNashBargaining <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/math/SLNashBargaining.sleela)</span></h2>
 <div data-u="slnashbargaining slnashbargaining">
 <h3 id="SLNashBargaining">SLNashBargaining <span class="pill">class</span></h3>
@@ -963,6 +1128,42 @@
 <tr><td><code>clearingPrice</code></td><td><span class="sig">double clearingPrice()</span></td><td class="desc">The cleared fair price inside the ZOPA. 0 if no deal.</td></tr>
 <tr><td><code>sellerSurplus</code></td><td><span class="sig">double sellerSurplus()</span></td><td class="desc">Surplus each side keeps at the cleared price.</td></tr>
 <tr><td><code>buyerSurplus</code></td><td><span class="sig">double buyerSurplus()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slnetconnector">SLNetConnector <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/connect/SLNetConnector.sleela)</span></h2>
+<div data-u="slnetconnector slnetconnector">
+<h3 id="SLNetConnector">SLNetConnector <span class="pill">class</span></h3>
+<p class="desc">The network-connectivity connector of the CONNECT medium. It models reachability to an endpoint: open a link, probe reachability and latency, account bytes sent, and close. The live socket work defers to a host adapter (slnet_*), consistent with lib/advantage/output/SLAdvantageSink.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>vocab</code></td><td><span class="sig">SLConnectStatus vocab</span></td><td class="desc">---- Shared medium plumbing ----</td></tr>
+<tr><td><code>fault</code></td><td><span class="sig">SLConnectFault fault</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>host</code></td><td><span class="sig">String host = &quot;&quot;</span></td><td class="desc">---- Endpoint state ----</td></tr>
+<tr><td><code>port</code></td><td><span class="sig">int port = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>configured</code></td><td><span class="sig">boolean configured = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>open</code></td><td><span class="sig">boolean open = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>reachable</code></td><td><span class="sig">boolean reachable = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastRttMillis</code></td><td><span class="sig">double lastRttMillis = 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bytesSent</code></td><td><span class="sig">int bytesSent = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>init</code></td><td><span class="sig">void init()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>configure</code></td><td><span class="sig">int configure(String h, int p)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>openLink</code></td><td><span class="sig">int openLink()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>probe</code></td><td><span class="sig">int probe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>acceptProbe</code></td><td><span class="sig">int acceptProbe(double rttMillis)</span></td><td class="desc">Host-adapter callback: record a measured round-trip time.</td></tr>
+<tr><td><code>write</code></td><td><span class="sig">int write(int count)</span></td><td class="desc">Account bytes to write (native: slnet_write). Returns bytes accepted (0 if not open). The real send is a host-adapter responsibility.</td></tr>
+<tr><td><code>closeLink</code></td><td><span class="sig">int closeLink()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>active</code></td><td><span class="sig">boolean active()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isReachable</code></td><td><span class="sig">boolean isReachable()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getRttMillis</code></td><td><span class="sig">double getRttMillis()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getBytesSent</code></td><td><span class="sig">int getBytesSent()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isNativeReady</code></td><td><span class="sig">boolean isNativeReady()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastFault</code></td><td><span class="sig">SLConnectFault lastFault()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>endpoint</code></td><td><span class="sig">String endpoint()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
@@ -1053,6 +1254,84 @@
 <tr><td><code>graderModules</code></td><td><span class="sig">SLGradeSet graderModules()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>absoluteModules</code></td><td><span class="sig">SLGradeSet absoluteModules()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>champion</code></td><td><span class="sig">SLModuleGrade champion()</span></td><td class="desc">The single best module in the field (highest score); null if empty.</td></tr>
+<tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slsqlconnector">SLSqlConnector <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/connect/SLSqlConnector.sleela)</span></h2>
+<div data-u="slsqlconnector slsqlconnector">
+<h3 id="SLSqlConnector">SLSqlConnector <span class="pill">class</span></h3>
+<p class="desc">The MySQL connector of the CONNECT medium. It holds connection coordinates and lifecycle state in the VM, validates every call, and maps to the native MySQL ABI (slsql_* -- mirrors lib/connector/mysql). Query and execute defer to a host adapter (STATUS_NATIVE_ADAPTER_REQUIRED) so no live database is dialed from inside the VM.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>vocab</code></td><td><span class="sig">SLConnectStatus vocab</span></td><td class="desc">---- Shared medium plumbing ----</td></tr>
+<tr><td><code>fault</code></td><td><span class="sig">SLConnectFault fault</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>host</code></td><td><span class="sig">String host = &quot;&quot;</span></td><td class="desc">---- Connection coordinates + lifecycle ----</td></tr>
+<tr><td><code>port</code></td><td><span class="sig">int port = 3306</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>user</code></td><td><span class="sig">String user = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hasSecret</code></td><td><span class="sig">boolean hasSecret = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>database</code></td><td><span class="sig">String database = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>configured</code></td><td><span class="sig">boolean configured = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>open</code></td><td><span class="sig">boolean open = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>execCount</code></td><td><span class="sig">int execCount = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>init</code></td><td><span class="sig">void init()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>configure</code></td><td><span class="sig">int configure(String h, int p, String u, boolean secretPresent, String db)</span></td><td class="desc">Set the coordinates. secretPresent is a flag, never the secret itself; the real secret is pinned in the keystore and read by the native adapter.</td></tr>
+<tr><td><code>openLink</code></td><td><span class="sig">int openLink()</span></td><td class="desc">Open the link (native: slsql_open). In the VM this validates state and marks the link open; a real connection is a host-adapter responsibility.</td></tr>
+<tr><td><code>ping</code></td><td><span class="sig">int ping()</span></td><td class="desc">Liveness check (native: slsql_ping).</td></tr>
+<tr><td><code>execute</code></td><td><span class="sig">int execute(String sql)</span></td><td class="desc">Execute a non-query statement (native: slsql_execute). Needs a host adapter.</td></tr>
+<tr><td><code>query</code></td><td><span class="sig">int query(String sql)</span></td><td class="desc">Run a row-returning query (native: slsql_query). Needs a host adapter.</td></tr>
+<tr><td><code>closeLink</code></td><td><span class="sig">int closeLink()</span></td><td class="desc">Close the link (native: slsql_close). Idempotent.</td></tr>
+<tr><td><code>active</code></td><td><span class="sig">boolean active()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isNativeReady</code></td><td><span class="sig">boolean isNativeReady()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>executeCount</code></td><td><span class="sig">int executeCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastFault</code></td><td><span class="sig">SLConnectFault lastFault()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>coordinate</code></td><td><span class="sig">String coordinate()</span></td><td class="desc">A redacted, log-safe coordinate string -- never the user or secret.</td></tr>
+<tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sltechinstallerii">SLTechInstallerII <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/connect/SLTechInstallerII.sleela)</span></h2>
+<div data-u="sltechinstallerii sltechinstallerii">
+<h3 id="SLTechInstallerII">SLTechInstallerII <span class="pill">class</span></h3>
+<p class="desc">Tech Installer II -- a credentialed installer authority that applies the actual Use of the Advantage(TM) System onto an Install Set or a Setting, under ceteris-paribus semantics (hold all else equal: change only what the install declares, leave every unrelated setting untouched). The authority is held by Max Rupplin of MEARVK LLC, North Carolina, 2026 and forward. Installs run through the connect medium and report via status codes and a fault record, never by throwing.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>holder</code></td><td><span class="sig">String holder = &quot;Max Rupplin&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>corporation</code></td><td><span class="sig">String corporation = &quot;MEARVK LLC&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>jurisdiction</code></td><td><span class="sig">String jurisdiction = &quot;North Carolina, United States&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tier</code></td><td><span class="sig">String tier = &quot;Tech Installer II&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>licenceFromYear</code></td><td><span class="sig">int licenceFromYear = 2026</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>licenceToYear</code></td><td><span class="sig">int licenceToYear = 0</span></td><td class="desc">0 means open-ended (2026 and forward)</td></tr>
+<tr><td><code>vocab</code></td><td><span class="sig">SLConnectStatus vocab</span></td><td class="desc">---- Shared medium plumbing + install tally ----</td></tr>
+<tr><td><code>fault</code></td><td><span class="sig">SLConnectFault fault</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>authorized</code></td><td><span class="sig">boolean authorized = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>installSetCount</code></td><td><span class="sig">int installSetCount = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>settingCount</code></td><td><span class="sig">int settingCount = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>noopCount</code></td><td><span class="sig">int noopCount = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastTargetKind</code></td><td><span class="sig">String lastTargetKind = &quot;none&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastTargetName</code></td><td><span class="sig">String lastTargetName = &quot;none&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>init</code></td><td><span class="sig">void init()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>licenceCoversYear</code></td><td><span class="sig">boolean licenceCoversYear(int year)</span></td><td class="desc">The licence covers a given calendar year (2026+, open-ended).</td></tr>
+<tr><td><code>authorize</code></td><td><span class="sig">int authorize(String who, String corp, int year)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>installSet</code></td><td><span class="sig">int installSet(String setName, boolean alreadyPresent)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>applySetting</code></td><td><span class="sig">int applySetting(String settingName, boolean alreadyEqual)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>appliedCount</code></td><td><span class="sig">int appliedCount()</span></td><td class="desc">Total distinct installs actually applied (sets + settings, excluding no-ops).</td></tr>
+<tr><td><code>isAuthorized</code></td><td><span class="sig">boolean isAuthorized()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getHolder</code></td><td><span class="sig">String getHolder()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getCorporation2</code></td><td><span class="sig">String getCorporation2()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getJurisdiction</code></td><td><span class="sig">String getJurisdiction()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getTier</code></td><td><span class="sig">String getTier()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getInstallSetCount</code></td><td><span class="sig">int getInstallSetCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getSettingCount</code></td><td><span class="sig">int getSettingCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getNoopCount</code></td><td><span class="sig">int getNoopCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastFault</code></td><td><span class="sig">SLConnectFault lastFault()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>credential</code></td><td><span class="sig">String credential()</span></td><td class="desc">A log-safe credential card.</td></tr>
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
@@ -1261,7 +1540,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-08 17:35 UTC.
+<code>/lib</code> tree on 2026-11-08 17:54 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
