@@ -904,7 +904,7 @@ not this document's revision.
 14.1 Version axes. Three identifiers must not be conflated:
 
   - Source syntax edition: the per-file #sleela M.N pragma.
-  - Compiler/tool release: for example Sleelvac 0.3.30-dev.
+  - Compiler/tool release: for example SLeeLa 1.3.2-pro.
   - Formal-document revision: SL-FORMAL-0001 Revision 0.2.0.
 
 A source file declaring edition n may use only features whose version gate is
@@ -1112,7 +1112,7 @@ D-5. The 2.9 syntax surface includes @mix consequent fields. The separate
      prestige marker described in SLEELA.syntax section 27 remains unimplemented
      and is not part of the accepted 2.9 language surface.
 D-6. Compiler/tool version and syntax version are distinct. At the repository
-     snapshot reviewed for this revision, the man page identifies Sleelvac
-     0.3.30-dev while the language syntax gate is 2.9.
+     snapshot reviewed for this revision, the man page identifies SLeeLa
+     1.3.2-pro while the language syntax gate is 3.0.
 
 End of Document — SL-FORMAL-0001 Revision 0.2.0 — Sleela Language Design Council — October 2026
