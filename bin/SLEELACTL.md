@@ -31,6 +31,7 @@ correct verb set — `sleelactl` never fakes an action a module cannot perform.
 | **datasource** | open/close/active data surface + pooling (`SLDataSource`) | `open close status available` | reports availability of the `lib/<pkg>` surface |
 | **protocol** | spec / stack / reference model | `negotiate grade simulate validate info` | the module's `make` targets / sim CLI |
 | **tool** | on-demand, one-shot toolchain component | `run build inspect info` | the module's built CLI / `make` |
+| **subject** | native C/C++ subject library compiled into the runtime (`import <name>;`) | `run info` | its reference demo via `sleela run` |
 | **library** | pure library | `info` | informational only |
 
 The verb vocabulary is drawn directly from the code:
@@ -58,7 +59,20 @@ sleelactl validate http-9.0         # validate the HTTP/9.0 protocol spec
 sleelactl simulate cdma --std wcdma # run the CDMA simulator
 sleelactl build decompiler          # build the Slecompiler CLI
 sleelactl run decompiler <binary>   # invoke the built decompiler
+
+sleelactl run math                  # exercise the native math subject (__NativeMath)
+sleelactl info math                 # how the math subject is reached (import math;)
 ```
+
+The **subject** nature is for the native C/C++ subject libraries compiled into
+the `sleela` runtime (`impl/subjects/<name>/`). They are not daemons, handler
+registries, data connections, or specs — a program reaches them with
+`import <name>;` and qualified calls (e.g. `math.sqrt(144.0)`), which the
+frontend lowers onto the native `__Native<Subject>` methods. `sleelactl run
+<subject>` executes that native backend by running the subject's reference demo
+through `sleela run`. There is deliberately no `check` verb: `sleela check` does
+not load the SHEET-registered native subjects, so `run` is the one faithful
+execution verb. The first registered subject is `math`.
 
 `sleelactl <verb> all` applies the verb to every module whose nature accepts it
 (e.g. `sleelactl enable all` enables the daemons; `sleelactl build all` builds

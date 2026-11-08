@@ -27,6 +27,7 @@
 #     datasource  open close status available
 #     protocol    negotiate grade simulate validate info
 #     tool        run build inspect info
+#     subject     run info
 #     library     info
 #
 # A verb that a module's nature does not support is REFUSED with the correct
@@ -39,6 +40,8 @@
 #     datasource  -> the lib/<pkg> SLDataSource surface via `sleela run`
 #     protocol    -> `make -C <dir>` targets / the module's own sim/validate CLI
 #     tool        -> the module's built CLI, or `make -C <dir>`
+#     subject     -> the native C/C++ subject (impl/subjects/<name>) exercised by
+#                    running its reference demo through `sleela run`/`check`
 # When a mechanism is absent (no systemctl, binary not built), sleelactl says so
 # plainly and exits non-zero rather than faking success.
 # =============================================================================
@@ -131,6 +134,7 @@ verbs_for_nature() {
     datasource) echo "open close status available" ;;
     protocol)   echo "negotiate grade simulate validate info" ;;
     tool)       echo "run build inspect info" ;;
+    subject)    echo "run info" ;;
     library)    echo "info" ;;
     *)          echo "" ;;
   esac
@@ -287,6 +291,52 @@ tool_cmd() { # module verb [args]
   esac
 }
 
+# =============================================================================
+# subject (math/physics/chemistry/...): a compiled native C/C++ subject library
+# built INTO the sleela runtime (impl/subjects/<name>/*.cpp). It has no daemon,
+# handler registry, data connection, or spec — it is reached from a .sleela
+# program via `import <name>;` and qualified calls (e.g. math.sqrt(x)), which
+# the frontend lowers onto the native __Native<Subject> methods. There is no
+# standalone CLI to "run"; the honest, already-wired way to exercise the native
+# backend is to run its reference demo through the SLeeLa runtime — the same
+# `sleela run <demo>` mechanism the registry nature uses. So the handle is that
+# demo's path (relative to the repo/install root), and:
+#   run    -> sleela run <demo>     (executes the native subject end-to-end)
+#   info   -> summary + location + how it is reached (import <name>;)
+# There is deliberately NO `check` verb: `sleela check` does not load the
+# SHEET-registered native subjects, so checking an `import math;` demo reports
+# "use of undeclared variable 'math'". Only `run` performs the native lowering,
+# so `run` is the sole, faithful execution verb — sleelactl never offers a verb
+# it cannot honor.
+# Honest degradation: no built runtime -> say so and point at the build command;
+# no demo present -> report that and stop (never fake a result).
+# =============================================================================
+subject_cmd() { # module verb [args]
+  demo_rel=$(handle_of "$1"); demo="$ROOT/$demo_rel"
+  case "$2" in
+    info)
+      okay "$1 — $(summary_of "$1")"
+      info "nature: subject — native C/C++ library compiled into the sleela runtime"
+      info "reached from SLeeLa as:  import $1;   then qualified calls, e.g.  $1.<fn>(...)"
+      [ -f "$demo" ] && info "reference demo: $demo_rel" || warn "reference demo $demo_rel not present in this install" ;;
+    run)
+      [ -f "$demo" ] || { warn "$1: reference demo $demo_rel not present; cannot run"; return 1; }
+      if registry_runtime_ok; then
+        info "$SLEELA_BIN run $demo_rel"
+        if "$SLEELA_BIN" run "$demo" 2>/dev/null; then
+          okay "$1: ran the native subject demo (its __Native* methods executed)"
+        else
+          warn "$1: run of $demo_rel did not complete"; return 1
+        fi
+      else
+        warn "SLeeLa runtime not built ($SLEELA_BIN); cannot run the native '$1' subject."
+        info "build it:  (cd impl && make build/sleela)   then re-run"
+        return 3
+      fi ;;
+    *) die "subject verb '$2' not understood" ;;
+  esac
+}
+
 # --- dispatch one verb at one module, gating by nature -----------------------
 dispatch() { # verb module [args...]
   verb="$1"; mod="$2"; shift 2
@@ -303,6 +353,7 @@ dispatch() { # verb module [args...]
     datasource) datasource_cmd "$mod" "$verb" "$@" ;;
     protocol)   protocol_cmd "$mod" "$verb" "$@" ;;
     tool)       tool_cmd "$mod" "$verb" "$@" ;;
+    subject)    subject_cmd "$mod" "$verb" "$@" ;;
     library)    [ "$verb" = info ] && { okay "$mod — $(summary_of "$mod")"; } ;;
     *)          die "module '$mod' has an unknown nature '$nat'" ;;
   esac
@@ -368,6 +419,8 @@ cmd_natures() {
   info  "      verbs: $(verbs_for_nature protocol)"
   printf '  %s%-11s%s  %s\n' "$G" tool       "$R" "on-demand, one-shot toolchain component"
   info  "      verbs: $(verbs_for_nature tool)"
+  printf '  %s%-11s%s  %s\n' "$G" subject    "$R" "native C/C++ subject library compiled into the runtime (import <name>;)"
+  info  "      verbs: $(verbs_for_nature subject)"
   printf '  %s%-11s%s  %s\n' "$G" library    "$R" "pure library; informational only"
   info  "      verbs: $(verbs_for_nature library)"
 }
