@@ -167,6 +167,8 @@
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
 <tr><td><code>init</code></td><td><span class="sig">void init(String label, String model, int baseValue)</span></td><td class="desc">Stand up a fresh engine around a unique dividend wrt a model.</td></tr>
+<tr><td><code>setOwner</code></td><td><span class="sig">void setOwner(String ownerName)</span></td><td class="desc">Name the party to whose advantage the model is tuned, and re-snapshot so the owner is part of the restitution point.</td></tr>
+<tr><td><code>getOwner</code></td><td><span class="sig">String getOwner()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>getOnion</code></td><td><span class="sig">SLAdvantageSequitur getOnion()</span></td><td class="desc">Direct access to the layered machine.</td></tr>
 <tr><td><code>getDividend</code></td><td><span class="sig">SLAdvantageDividend getDividend()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>getPasses</code></td><td><span class="sig">int getPasses()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -185,6 +187,10 @@
 <tr><td><code>step</code></td><td><span class="sig">void step()</span></td><td class="desc">Apply only the layer under the cursor (manual single-step advantaging).</td></tr>
 <tr><td><code>runPass</code></td><td><span class="sig">int runPass()</span></td><td class="desc">Run one complete inward pass over all layers; returns the net advantage.</td></tr>
 <tr><td><code>iterate</code></td><td><span class="sig">int iterate(int maxPasses)</span></td><td class="desc">Iterate: run further passes while they keep improving the advantage, up to a cap. Because the standard layers are idempotent per base, a pass rebases first so each pass is a clean re-evaluation; returns the final advantage.</td></tr>
+<tr><td><code>updateModel</code></td><td><span class="sig">void updateModel(String newModel, String newLabel, int newBase)</span></td><td class="desc">---- Dynamically alter or update the model ---- Re-point the dividend to a new model / label / base at runtime. The onion shape is preserved; only the frame of reference and starting value change. Pass null for model or label to leave that field unchanged. The original identity captured at init() is preserved so restitute() can fully undo it.</td></tr>
+<tr><td><code>favorOwner</code></td><td><span class="sig">int favorOwner(int strength)</span></td><td class="desc">Dynamically bias the whole model toward the owner&#x27;s advantage by a non-negative strength. Returns the net contribution gained for the owner. This is an ALTERATION, not a reset -- it stacks on the current shape until restitute() is called.</td></tr>
+<tr><td><code>restitute</code></td><td><span class="sig">void restitute()</span></td><td class="desc">---- Full restitute ---- Restore BOTH the dividend&#x27;s identity and the onion&#x27;s shape to the state captured at init()/setOwner()/snapshotShape(), and clear the pass counter. A complete undo of every dynamic alteration, to the owner&#x27;s benefit of a clean, known-good baseline.</td></tr>
+<tr><td><code>commitBaseline</code></td><td><span class="sig">void commitBaseline()</span></td><td class="desc">Commit the current altered state as the NEW restitution baseline, so a later restitute() returns here rather than to the init() state.</td></tr>
 <tr><td><code>advantage</code></td><td><span class="sig">int advantage()</span></td><td class="desc">Current net advantage of the dividend.</td></tr>
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
@@ -198,17 +204,27 @@
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>label</code></td><td><span class="sig">String label</span></td><td class="desc">---- Dividend state ---- the unique identity of this dividend</td></tr>
 <tr><td><code>model</code></td><td><span class="sig">String model</span></td><td class="desc">the model (frame of reference) it is held with respect to</td></tr>
+<tr><td><code>owner</code></td><td><span class="sig">String owner</span></td><td class="desc">the party to whose advantage the model is tuned</td></tr>
 <tr><td><code>base</code></td><td><span class="sig">int base</span></td><td class="desc">the starting value before any layer is applied</td></tr>
 <tr><td><code>current</code></td><td><span class="sig">int current</span></td><td class="desc">the running value as layers are applied</td></tr>
+<tr><td><code>originalLabel</code></td><td><span class="sig">String originalLabel</span></td><td class="desc">---- Original snapshot, captured at configure() for full restitute ----</td></tr>
+<tr><td><code>originalModel</code></td><td><span class="sig">String originalModel</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>originalOwner</code></td><td><span class="sig">String originalOwner</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>originalBase</code></td><td><span class="sig">int originalBase</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
 <tr><td><code>configure</code></td><td><span class="sig">void configure(String lbl, String mdl, int baseValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>snapshot</code></td><td><span class="sig">void snapshot()</span></td><td class="desc">Record the current identity as the restitution point.</td></tr>
 <tr><td><code>getLabel</code></td><td><span class="sig">String getLabel()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>getModel</code></td><td><span class="sig">String getModel()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getOwner</code></td><td><span class="sig">String getOwner()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setOwner</code></td><td><span class="sig">void setOwner(String o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>getBase</code></td><td><span class="sig">int getBase()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>getCurrent</code></td><td><span class="sig">int getCurrent()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>setCurrent</code></td><td><span class="sig">void setCurrent(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>updateModel</code></td><td><span class="sig">void updateModel(String newModel, String newLabel, int newBase)</span></td><td class="desc">---- Dynamic update: re-point the model without losing the snapshot. ---- Pass null for any field to leave it unchanged. The original snapshot is preserved so a later restitute() can undo every change at once.</td></tr>
+<tr><td><code>restitute</code></td><td><span class="sig">void restitute()</span></td><td class="desc">---- Full restitute: restore the dividend to its original identity. ----</td></tr>
 <tr><td><code>advantage</code></td><td><span class="sig">int advantage()</span></td><td class="desc">The net advantage: how far the dividend has moved from its base.</td></tr>
 <tr><td><code>rebase</code></td><td><span class="sig">void rebase()</span></td><td class="desc">Reset the running value back to the base for a fresh pass.</td></tr>
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -252,10 +268,12 @@
 <tr><td><code>layers</code></td><td><span class="sig">SLAdvantageLayer[] layers</span></td><td class="desc">---- Onion state ---- the ordered list, index == depth</td></tr>
 <tr><td><code>count</code></td><td><span class="sig">int count</span></td><td class="desc">number of layers in use</td></tr>
 <tr><td><code>cursor</code></td><td><span class="sig">int cursor</span></td><td class="desc">current depth (0..count-1)</td></tr>
+<tr><td><code>original</code></td><td><span class="sig">int[] original</span></td><td class="desc">original per-layer contributions, captured for full restitute</td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
 <tr><td><code>buildStandard</code></td><td><span class="sig">void buildStandard()</span></td><td class="desc">Build the standard eight-layer Sequitur. Contributions are the DEFAULT shape of the onion; callers may retune any layer via layerAt()/setContribution.</td></tr>
+<tr><td><code>snapshotShape</code></td><td><span class="sig">void snapshotShape()</span></td><td class="desc">Capture the current onion shape (each layer&#x27;s contribution) as the restitution point. Called after buildStandard and callable again after a caller deliberately commits a new baseline shape.</td></tr>
 <tr><td><code>size</code></td><td><span class="sig">int size()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>depth</code></td><td><span class="sig">int depth()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>layerAt</code></td><td><span class="sig">SLAdvantageLayer layerAt(int d)</span></td><td class="desc">Return the layer at a given depth. Bind to a typed local before calling methods on it (array-element type is lost on inline calls).</td></tr>
@@ -265,6 +283,9 @@
 <tr><td><code>goOutward</code></td><td><span class="sig">int goOutward()</span></td><td class="desc">Move one layer outward (shallower). Returns the new depth.</td></tr>
 <tr><td><code>seek</code></td><td><span class="sig">void seek(int d)</span></td><td class="desc">Jump the cursor directly to a depth, clamped into range.</td></tr>
 <tr><td><code>tune</code></td><td><span class="sig">void tune(int d, int contribution)</span></td><td class="desc">---- Tuning: set a layer&#x27;s contribution by depth ----</td></tr>
+<tr><td><code>restitute</code></td><td><span class="sig">void restitute()</span></td><td class="desc">---- Full restitute: restore every layer to its snapshot shape ---- Undoes all dynamic retuning since the last snapshotShape(), returning the onion to its captured baseline. The cursor returns to the outer skin.</td></tr>
+<tr><td><code>favorOwner</code></td><td><span class="sig">int favorOwner(int strength)</span></td><td class="desc">---- Favor the owner: bias the onion toward the owner&#x27;s advantage ---- A dynamic alteration that nudges the growth-side layers up and softens the loss-side layers, by a non-negative `strength`. Concretely: additions and the quantitative core gain +strength; a subtraction (a cost, held as a negative) is softened toward zero by up to strength; regrouping recovers +strength via reorganization. Validate/risk/loop layers are left untouched because favoring must not fabricate a clean review or silence a concern. Returns the net change in total contribution applied to the owner&#x27;s favor.</td></tr>
+<tr><td><code>totalContribution</code></td><td><span class="sig">int totalContribution()</span></td><td class="desc">Sum of every layer&#x27;s current contribution.</td></tr>
 <tr><td><code>applyCurrent</code></td><td><span class="sig">void applyCurrent(SLAdvantageDividend div)</span></td><td class="desc">Apply the layer at the cursor to the dividend&#x27;s running value.</td></tr>
 <tr><td><code>runInwardPass</code></td><td><span class="sig">int runInwardPass(SLAdvantageDividend div)</span></td><td class="desc">One full inward pass: apply every layer from skin to core in order, folding each contribution into the dividend. Returns the net advantage.</td></tr>
 <tr><td><code>resetVisits</code></td><td><span class="sig">void resetVisits()</span></td><td class="desc">Reset the visited flags on every layer for a fresh pass.</td></tr>
@@ -283,11 +304,15 @@
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
 <tr><td><code>start</code></td><td><span class="sig">void start(String dividendLabel, String model, int baseValue)</span></td><td class="desc">Start: name the unique dividend and the model it respects, with a base.</td></tr>
+<tr><td><code>ownedBy</code></td><td><span class="sig">void ownedBy(String ownerName)</span></td><td class="desc">Declare who owns this advantage (the party it is tuned to favor).</td></tr>
 <tr><td><code>grow</code></td><td><span class="sig">void grow(int amount)</span></td><td class="desc">Three plain dials in the user&#x27;s language. Each maps to onion layers. grow -&gt; additions layer; bigger upside.</td></tr>
 <tr><td><code>shrink</code></td><td><span class="sig">void shrink(int amount)</span></td><td class="desc">shrink -&gt; subtraction layer; a cost or haircut (pass a negative amount).</td></tr>
 <tr><td><code>rethink</code></td><td><span class="sig">void rethink(int maths, int regroup)</span></td><td class="desc">rethink -&gt; maths + regrouping; a quantitative adjustment and a reorg.</td></tr>
 <tr><td><code>advantage</code></td><td><span class="sig">int advantage()</span></td><td class="desc">Press the button: run the whole layered process once and return the net advantage of the dividend with respect to its model.</td></tr>
 <tr><td><code>advantageHarder</code></td><td><span class="sig">int advantageHarder(int tries)</span></td><td class="desc">Try harder: let the process iterate further through the onion, keeping the best net advantage found, up to a small cap the user chooses.</td></tr>
+<tr><td><code>updateModel</code></td><td><span class="sig">void updateModel(String newModel, int newBase)</span></td><td class="desc">---- Dynamically update the model, to the owner&#x27;s advantage ---- Re-point the dividend to a new model / base at runtime without losing the original. Pass null for newModel to keep the current model name.</td></tr>
+<tr><td><code>favorMe</code></td><td><span class="sig">void favorMe(int strength)</span></td><td class="desc">Tip the whole model further in the owner&#x27;s favor by a simple strength.</td></tr>
+<tr><td><code>restitute</code></td><td><span class="sig">void restitute()</span></td><td class="desc">---- Full restitute: undo every change, back to the original model ----</td></tr>
 <tr><td><code>currentValue</code></td><td><span class="sig">int currentValue()</span></td><td class="desc">Read the outcome in plain terms.</td></tr>
 <tr><td><code>summary</code></td><td><span class="sig">String summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>advanced</code></td><td><span class="sig">SLAdvantageDeveloperModel advanced()</span></td><td class="desc">A user who becomes curious can still reach the full developer controls.</td></tr>
@@ -312,7 +337,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-08 07:34 UTC.
+<code>/lib</code> tree on 2026-11-08 07:38 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
