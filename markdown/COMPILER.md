@@ -139,7 +139,7 @@ the current values are:
 
 | Component | Version | Meaning | Source of truth |
 |-----------|---------|---------|-----------------|
-| **Sleela toolchain / implementation** (`sleela` CLI) | **1.3.2-pro** | The C/C++ front end + core in `impl/`. Pre-1.0. | `impl/frontend/driver.cpp` |
+| **SLeeLa toolchain / implementation** (`sleela` CLI) | **1.3.2-pro** | The current Pro release of the C/C++ front end + core in `impl/`. | `impl/frontend/driver.cpp` |
 | **Sleela language syntax** | **3.0** (range `1.0 .. 3.0`) | The grammar version a `.sleela` file declares via `#sleela`. | `impl/frontend/version.h` |
 | **Nordshrift** (`.sst` transpiler driver) | **2.7.1-dev** | Reuses this front end; enforces the same syntax rules. | `impl/nordshrift/nordshrift.cpp` |
 | **NS-SST-0001** (`.sst` format spec) | **1.0.0** (Normative) | The `.sst` control-sheet format. | `SST.model` |
