@@ -66,6 +66,26 @@ flagged as such; the mathematics is implemented faithfully).
 Full definitions, explanations, ASCII sketches, and worked examples are in
 [`PHYSICS.md`](./PHYSICS.md).
 
+### `integration/` subfolder — vertical-integration subject
+
+A sophisticated modelling option for **vertical integration through
+capitalism / retail**: a stack of value-chain tiers, each a recursively
+composable **compartment** with its own capacitive space, meaning, and
+relevance (OOD). Mainly a vertical arrangement (upstream → downstream); a tier
+may embed its own sub-model.
+
+| File | Class | Purpose |
+|------|-------|---------|
+| `integration/SLIntegrationKind.sleela` | `SLIntegrationKind` | Compartment-kind vocabulary: nested-model, onion, engineering-bay, trial, newton-tray, and plain holders (resources, mediums, hobbies, games, entertainment, processes, consumption, trading, gaining, selling, forcing, challenging) |
+| `integration/SLCompartment.sleela` | `SLCompartment` | The recursive, self-similar node (kind, capacitive space, meaning, relevance, child compartments) |
+| `integration/SLEngineeringBay.sleela` | `SLEngineeringBay` | Medium-capacity build/process compartment (load → build at a yield) |
+| `integration/SLTrialCompartment.sleela` | `SLTrialCompartment` | Study/experiment compartment (log trials, success rate) |
+| `integration/SLNewtonMedianTray.sleela` | `SLNewtonMedianTray` | Median-based enlightenment/insight tray |
+| `integration/SLVerticalIntegration.sleela` | `SLVerticalIntegration` | The ordered tier stack: vertical flow, recursion, aggregate capacity/relevance, system-sophistication score |
+| `integration/integration-demo.sleela` | `IntegrationDemo` | Runnable demo + validation (`main`) |
+
+Defined term-by-term in [`DEFINITIONS.md`](./DEFINITIONS.md#8-vertical-integration-subject-integration).
+
 ## The two models
 
 - **User's model** hides the onion. State a dividend and the model it respects,
@@ -130,6 +150,7 @@ Full definitions, explanations, ASCII sketches, and worked examples are in
 ./working-binaries/sleela run lib/advantage/advantage-demo.sleela        # onion model
 ./working-binaries/sleela run lib/advantage/math/trade-math-demo.sleela  # trade math subject
 ./working-binaries/sleela run lib/advantage/physics/physics-demo.sleela  # trust-field subject
+./working-binaries/sleela run lib/advantage/integration/integration-demo.sleela  # vertical integration
 ```
 
 `run` auto-links the sibling classes in each directory (no imports needed).

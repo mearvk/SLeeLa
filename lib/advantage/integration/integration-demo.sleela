@@ -1,0 +1,151 @@
+<< lib/advantage/integration/integration-demo.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Runnable demonstration + validation of the vertical-integration
+   subject (compartments, bays, trials, newton trays, recursion). >>
+#sleela 2.5
+material;
+< `run` auto-links the sibling classes in advantage/integration >
+< (SLIntegrationKind, SLCompartment, SLEngineeringBay, SLTrialCompartment, >
+< SLNewtonMedianTray, SLVerticalIntegration), so no imports are needed. >
+<  >
+< Builds a retail vertical-integration stack, upstream -> downstream: >
+<   tier 0 resource (supply)   tier 1 engineering-bay   tier 2 trial >
+<   tier 3 newton-tray         tier 4 nested-model (own sub-stack)  tier 5 selling >
+class IntegrationDemo {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class demo
+     carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10549;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  void main() {
+    print("== vertical integration: build the stack ==");
+    SLVerticalIntegration vi = new SLVerticalIntegration();
+    vi.configure("retail-chain");
+    SLIntegrationKind cat = vi.catalog();
+
+    < tier 0: resource (supply), small capacity 10 >
+    SLCompartment supply = vi.addKind("supply", 5);
+    < tier 1: engineering bay, medium capacity 100 >
+    SLCompartment bay = vi.addKind("assembly-bay", 2);
+    < tier 2: trial compartment, small >
+    SLCompartment trial = vi.addKind("qa-trial", 3);
+    < tier 3: newton median tray, small >
+    SLCompartment tray = vi.addKind("insight-tray", 4);
+    < tier 4: nested-model (recursive) with its own two resource sub-compartments >
+    SLCompartment sub = vi.addKind("regional-submodel", 0);
+    SLCompartment subA = new SLCompartment();
+    subA.configure("warehouse-A", 5, cat);
+    SLCompartment subB = new SLCompartment();
+    subB.configure("warehouse-B", 5, cat);
+    sub.addChild(subA);
+    sub.addChild(subB);
+    < tier 5: selling (retail), small >
+    SLCompartment sell = vi.addKind("storefront", 14);
+
+    print("  " + vi.describe());
+
+    print("");
+    print("== specialized compartments ==");
+    < Engineering bay: load 60 raw units, build a batch of 50 at 80% yield -> 40. >
+    SLEngineeringBay eb = new SLEngineeringBay();
+    eb.configure("press-bay", cat, 80);
+    eb.load(60);
+    int produced = eb.build(50);
+    print("  " + eb.describe());
+
+    < Trial compartment: record 4 outcomes, pass threshold 70. >
+    SLTrialCompartment tc = new SLTrialCompartment();
+    tc.configure("field-trial", cat, 16);
+    tc.logTrial(90); tc.logTrial(60); tc.logTrial(80); tc.logTrial(50);
+    int rate = tc.successRate(70);
+    print("  " + tc.describe() + " successRate@70=" + rate);
+
+    < Newton median tray: samples 3,1,9,5,7 -> sorted 1,3,5,7,9 -> median 5. >
+    SLNewtonMedianTray nt = new SLNewtonMedianTray();
+    nt.configure("yield-tray", cat, 16);
+    nt.add(3); nt.add(1); nt.add(9); nt.add(5); nt.add(7);
+    int med = nt.median();
+    print("  " + nt.describe());
+
+    print("");
+    print("== vertical flow (upstream -> downstream) ==");
+    supply.store(8);
+    int moved01 = vi.flowDownstream(0, 8);
+    print("  supply -> bay moved = " + moved01
+        + " (supply used=" + supply.getUsed() + " bay used=" + bay.getUsed() + ")");
+
+    print("");
+    print("== aggregates / system sophistication ==");
+    int comp = vi.totalCompartments();
+    int depth = vi.maxDepth();
+    int capv = vi.totalCapacity();
+    int relv = vi.totalRelevance();
+    int soph = vi.sophistication();
+    print("  compartments=" + comp + " maxDepth=" + depth
+        + " capacity=" + capv + " relevance=" + relv + " sophistication=" + soph);
+
+    print("");
+    print("== validation ==");
+    boolean okProduced = (produced == 40);
+    boolean okRate = (rate == 50);
+    boolean okMedian = (med == 5);
+    boolean okMoved = (moved01 == 8);
+    boolean okComp = (comp == 8);
+    boolean okDepth = (depth == 2);
+    boolean okCap = (capv == 100160);
+    boolean okRel = (relv == 52);
+    boolean okSoph = (soph == 27);
+    boolean okSubtree = (sub.subtreeSize() == 3);
+    print("  bay produced == 40     ? " + okProduced);
+    print("  trial rate@70 == 50    ? " + okRate);
+    print("  newton median == 5     ? " + okMedian);
+    print("  flow moved == 8        ? " + okMoved);
+    print("  compartments == 8      ? " + okComp);
+    print("  maxDepth == 2          ? " + okDepth);
+    print("  capacity == 100160     ? " + okCap);
+    print("  relevance == 52        ? " + okRel);
+    print("  sophistication == 27   ? " + okSoph);
+    print("  nested subtree == 3    ? " + okSubtree);
+    if (okProduced) { if (okRate) { if (okMedian) { if (okMoved) {
+    if (okComp) { if (okDepth) { if (okCap) { if (okRel) {
+    if (okSoph) { if (okSubtree) {
+      print("ALL CHECKS PASSED");
+    } } } } } } } } } }
+  }
+}

@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11935
+library-source-files: 11942
 library-packages: 117
 module-facade-symbols: 84
-total-symbol-records: 12019
+total-symbol-records: 12026
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -14,6 +14,13 @@ advantage	SLAdvantageSequitur.sleela	lib/advantage/SLAdvantageSequitur.sleela	so
 advantage	SLAdvantageUserModel.sleela	lib/advantage/SLAdvantageUserModel.sleela	source
 advantage	SLPackage.sleela	lib/advantage/SLPackage.sleela	facade
 advantage	advantage-demo.sleela	lib/advantage/advantage-demo.sleela	source
+advantage	SLCompartment.sleela	lib/advantage/integration/SLCompartment.sleela	source
+advantage	SLEngineeringBay.sleela	lib/advantage/integration/SLEngineeringBay.sleela	source
+advantage	SLIntegrationKind.sleela	lib/advantage/integration/SLIntegrationKind.sleela	source
+advantage	SLNewtonMedianTray.sleela	lib/advantage/integration/SLNewtonMedianTray.sleela	source
+advantage	SLTrialCompartment.sleela	lib/advantage/integration/SLTrialCompartment.sleela	source
+advantage	SLVerticalIntegration.sleela	lib/advantage/integration/SLVerticalIntegration.sleela	source
+advantage	integration-demo.sleela	lib/advantage/integration/integration-demo.sleela	source
 advantage	SLBilateralNewsvendor.sleela	lib/advantage/math/SLBilateralNewsvendor.sleela	source
 advantage	SLJointProfitMax.sleela	lib/advantage/math/SLJointProfitMax.sleela	source
 advantage	SLNashBargaining.sleela	lib/advantage/math/SLNashBargaining.sleela	source

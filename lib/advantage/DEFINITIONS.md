@@ -18,6 +18,7 @@
 5. [Trust-field physics subject (`physics/`)](#5-trust-field-physics-subject-physics)
 6. [Cross-cutting conventions](#6-cross-cutting-conventions)
 7. [Class index](#7-class-index)
+8. [Vertical-integration subject (`integration/`)](#8-vertical-integration-subject-integration)
 
 ---
 
@@ -232,7 +233,92 @@ from `math/SLTradeMath` to avoid cross-directory class-name ambiguity.
 | `SLAnnouncementContact` | physics | `physics/SLAnnouncementContact.sleela` |
 | `SLTrustDecaySDE` | physics | `physics/SLTrustDecaySDE.sleela` |
 | `SLPhysicsMath` | physics | `physics/SLPhysicsMath.sleela` |
+| `SLIntegrationKind` | integration | `integration/SLIntegrationKind.sleela` |
+| `SLCompartment` | integration | `integration/SLCompartment.sleela` |
+| `SLEngineeringBay` | integration | `integration/SLEngineeringBay.sleela` |
+| `SLTrialCompartment` | integration | `integration/SLTrialCompartment.sleela` |
+| `SLNewtonMedianTray` | integration | `integration/SLNewtonMedianTray.sleela` |
+| `SLVerticalIntegration` | integration | `integration/SLVerticalIntegration.sleela` |
 
 Runnable demos (sibling-linked, each validates its subject):
 `advantage-demo.sleela`, `math/trade-math-demo.sleela`,
-`physics/physics-demo.sleela`.
+`physics/physics-demo.sleela`, `integration/integration-demo.sleela`.
+
+---
+
+## 8. Vertical-integration subject (`integration/`)
+
+A sophisticated modelling option for **vertical integration through
+capitalism / retail**: an ordered stack of value-chain tiers, each a
+recursively composable **compartment** with its own capacitive space, meaning,
+and relevance. Mainly a vertical arrangement (upstream → downstream). Full
+treatment is in the subject's classes; terms below.
+
+### 8.1 Structural terms
+
+| Term | Definition | Where |
+|------|------------|-------|
+| **Vertical integration** | Owning multiple consecutive tiers of a value chain (supply → … → retail) as one coordinated system. The top-level model. | `SLVerticalIntegration` |
+| **Tier** | One stage of the chain, stored in order from upstream (index 0) to downstream (last). Each tier is a compartment. | `SLVerticalIntegration.tiers` |
+| **Compartment** | The self-similar building block: a kind, a capacitive space, meaning, relevance, and child compartments (its own model). | `SLCompartment` |
+| **Capacitive space** | A compartment's capacity and used units — how much it can hold and how full it is. | `SLCompartment.capacity` / `used` |
+| **Meaning** | What a compartment is for (one line), derived from its kind. | `SLCompartment.meaning` |
+| **Relevance** | A compartment's weight (1–10) in the chain; summed across the tree as a value-density proxy. | `SLCompartment.relevance` |
+| **Recursion** | A compartment can hold child compartments, so it recursively contains its own model(s); a `nested-model` kind is exactly this. | `SLCompartment.children`, `subtreeSize`, `depth` |
+| **Vertical flow** | Moving used units from an upstream tier to the next downstream tier, limited by what the source holds and the destination can accept. | `SLVerticalIntegration.flowDownstream` / `runChain` |
+| **System sophistication** | A rolled-up score rewarding breadth (compartments), depth (recursive nesting), and relevance density: `compartments + 3·maxDepth + relevance/4`. | `SLVerticalIntegration.sophistication` |
+| **Utilization** | Used units as a percentage of total capacity across the whole tree. | `SLVerticalIntegration.utilization` |
+
+### 8.2 Compartment kinds (`SLIntegrationKind`)
+
+The OOD vocabulary. Each kind sets a default capacity class, a meaning, and a
+relevance weight.
+
+| id | kind | meaning | capacity class |
+|---:|------|---------|----------------|
+| 0 | `nested-model` | recursively embeds its own integration model | recursive |
+| 1 | `onion` | a straight Sequitur onion-model component | small |
+| 2 | `engineering-bay` | medium-capacity build and process | **medium** |
+| 3 | `trial` | trial compartment for study | small |
+| 4 | `newton-tray` | newton median tray for enlightenment | small |
+| 5 | `resource` | securing resources | small |
+| 6 | `medium` | securing mediums | small |
+| 7 | `hobby` | hobbies | small |
+| 8 | `game` | games | small |
+| 9 | `entertainment` | entertainment | small |
+| 10 | `process` | processes | small |
+| 11 | `consumption` | consumption | small |
+| 12 | `trading` | trading | small |
+| 13 | `gaining` | gaining | small |
+| 14 | `selling` | selling | small |
+| 15 | `forcing` | forcing | small |
+| 16 | `challenging` | challenging | small |
+
+Capacity classes map to units: none 0, small 10, medium 100, large 1000,
+recursive 100000 (a practical cap).
+
+### 8.3 Specialized compartments
+
+| Term | Definition | Where |
+|------|------------|-------|
+| **Engineering bay** | A medium-capacity productive compartment: load raw units, `build` a batch converting input to output at a yield percentage. | `SLEngineeringBay` |
+| **Yield** | Output as a percentage of consumed input in a bay build. | `SLEngineeringBay.yieldPct` |
+| **Trial compartment** | A study compartment: log outcome scores, report how many pass a threshold and the success rate / mean. De-risks the chain. | `SLTrialCompartment` |
+| **Success rate** | Passing trials as a percentage of recorded trials at a threshold. | `SLTrialCompartment.successRate` |
+| **Newton median tray** | An enlightenment compartment: gather samples and distil insight via the **median** (robust centre), with spread and a robustness score. | `SLNewtonMedianTray` |
+| **Median** | The central sample after sorting — the tray's enlightenment value; resists outliers a mean would chase. | `SLNewtonMedianTray.median` |
+| **Robustness** | A 1–10 heuristic for how trustworthy the median insight is (more samples + tighter spread → higher). | `SLNewtonMedianTray.robustness` |
+
+### 8.4 Worked example (validated in `integration-demo`)
+
+A retail chain `supply → engineering-bay → trial → newton-tray →
+nested-model(2 warehouses) → selling`:
+
+```
+engineering bay: load 60, build 50 at 80% yield   → produced 40
+trial: outcomes 90,60,80,50 at threshold 70        → success rate 50%
+newton tray: samples 3,1,9,5,7 → sorted 1,3,5,7,9  → median 5, spread 8
+vertical flow: store 8 at supply, push downstream  → 8 units into the bay
+aggregates: 8 compartments, maxDepth 2, capacity 100160, relevance 52
+system sophistication = 8 + 3·2 + 52/4 = 27
+```

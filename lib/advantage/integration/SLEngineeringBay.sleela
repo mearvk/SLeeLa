@@ -1,0 +1,94 @@
+<< lib/advantage/integration/SLEngineeringBay.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Engineering bay -- a medium-capacity build/process compartment
+   for the vertical-integration subject. >>
+#sleela 2.5
+material;
+< An engineering bay is where work gets DONE: a medium-capacity compartment >
+< (100 units by default) that takes input units and converts them to output >
+< units at a yield. It wraps a SLCompartment for its capacitive space. Bays are >
+< the productive tier of a vertical-integration stack. >
+class SLEngineeringBay {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10542;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  SLCompartment space;
+  < yield as a percentage 0..100: output = input * yield / 100 >
+  int yieldPct;
+  int producedTotal;
+
+  void configure(String lbl, SLIntegrationKind cat, int yieldPercent) {
+    space = new SLCompartment();
+    space.configure(lbl, 2, cat);
+    yieldPct = yieldPercent;
+    if (yieldPct < 0) { yieldPct = 0; }
+    if (yieldPct > 100) { yieldPct = 100; }
+    producedTotal = 0;
+  }
+
+  SLCompartment getSpace() { return space; }
+  int getYield() { return yieldPct; }
+  int getProducedTotal() { return producedTotal; }
+
+  < Load raw input into the bay's capacitive space; returns units accepted. >
+  int load(int units) { return space.store(units); }
+
+  < Run a build: consume up to `batch` loaded units, emit output at the yield. >
+  < Returns the output units produced; the consumed input leaves the bay. >
+  int build(int batch) {
+    int avail = space.getUsed();
+    int take = batch;
+    if (take > avail) { take = avail; }
+    if (take < 0) { take = 0; }
+    space.release(take);
+    int out = take * yieldPct / 100;
+    producedTotal = producedTotal + out;
+    return out;
+  }
+
+  int freeSpace() { return space.free(); }
+
+  String describe() {
+    return "engineering-bay '" + space.getLabel() + "' yield=" + yieldPct
+         + "% produced=" + producedTotal + " " + space.describe();
+  }
+}

@@ -930,6 +930,34 @@
       "sha256": "efc019ffe04d00e514f1fab16ece120c22aef0f883ba03a9f7ccadea308b1225"
     },
     {
+      "path": "lib/advantage/integration/SLCompartment.sleela",
+      "sha256": "9a464661667227466fcaf733eab22aa537b7f53012c57e56b29c06f7f52eef82"
+    },
+    {
+      "path": "lib/advantage/integration/SLEngineeringBay.sleela",
+      "sha256": "1b9915d74a8b367763ae9c3c7101c889d8a97be1d7282a763bc66705ad71a631"
+    },
+    {
+      "path": "lib/advantage/integration/SLIntegrationKind.sleela",
+      "sha256": "84c6257b6fe14d7277c4c8e523061b3fbccc4644efa60bd82317187029d642da"
+    },
+    {
+      "path": "lib/advantage/integration/SLNewtonMedianTray.sleela",
+      "sha256": "5d72da884bc48c5be2b8f0871d49be17699c17b32d6463be31394a66b18c31d1"
+    },
+    {
+      "path": "lib/advantage/integration/SLTrialCompartment.sleela",
+      "sha256": "c1ebe8e1af99ffa42729b676f798d81ab4e1767bf542838151050bb49abbaa78"
+    },
+    {
+      "path": "lib/advantage/integration/SLVerticalIntegration.sleela",
+      "sha256": "7dd7c45e7de6e85542b740beeba80b9fc7287deabe6a16c32fd1b5a02ec77702"
+    },
+    {
+      "path": "lib/advantage/integration/integration-demo.sleela",
+      "sha256": "09dffeee6dd314dfef784add186fdd3ced28b644273961c59a5ce52eb3b02eb5"
+    },
+    {
       "path": "lib/advantage/math/SLBilateralNewsvendor.sleela",
       "sha256": "68fbd791b32dd71091fd304fc3ac504ff418abad04934be18c06e71dd50c934a"
     },

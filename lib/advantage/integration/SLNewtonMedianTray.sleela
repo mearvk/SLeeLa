@@ -1,0 +1,143 @@
+<< lib/advantage/integration/SLNewtonMedianTray.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Newton median tray -- a median-based enlightenment/insight
+   compartment for the vertical-integration subject. >>
+#sleela 2.5
+material;
+< A newton median tray gathers measurements and distils ENLIGHTENMENT from >
+< them using the MEDIAN -- the robust centre that resists the outliers a mean >
+< would chase. ("Newton" nods to measured insight.) The tray sorts its samples >
+< and reports the median, the spread (max-min), and a simple robustness score. >
+< Wraps a SLCompartment for its capacitive space; each sample is one unit. >
+class SLNewtonMedianTray {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10544;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  SLCompartment space;
+  int[] samples;
+  int count;
+  int cap;
+
+  void configure(String lbl, SLIntegrationKind cat, int maxSamples) {
+    space = new SLCompartment();
+    space.configure(lbl, 4, cat);
+    cap = maxSamples;
+    if (cap < 1) { cap = 1; }
+    samples = new int[cap];
+    count = 0;
+  }
+
+  SLCompartment getSpace() { return space; }
+  int getCount() { return count; }
+
+  < Add a measurement. Returns true if stored. >
+  boolean add(int value) {
+    if (count >= cap) { return false; }
+    space.store(1);
+    samples[count] = value;
+    count = count + 1;
+    return true;
+  }
+
+  < Insertion sort of the first `count` samples (small trays). >
+  void sortSamples() {
+    int i = 1;
+    while (i < count) {
+      int key = samples[i];
+      int j = i - 1;
+      boolean placing = true;
+      while (placing) {
+        if (j < 0) {
+          placing = false;
+        } else {
+          if (samples[j] > key) {
+            samples[j + 1] = samples[j];
+            j = j - 1;
+          } else {
+            placing = false;
+          }
+        }
+      }
+      samples[j + 1] = key;
+      i = i + 1;
+    }
+  }
+
+  < The median sample -- the enlightenment value. For an even count this >
+  < returns the lower-middle of the two central values (integer convention). >
+  < 0 if the tray is empty. >
+  int median() {
+    if (count == 0) { return 0; }
+    sortSamples();
+    int mid = count / 2;
+    if (count % 2 == 1) { return samples[mid]; }
+    return samples[mid - 1];
+  }
+
+  < Spread = max - min (0 if empty); a wide spread tempers confidence. >
+  int spread() {
+    if (count == 0) { return 0; }
+    sortSamples();
+    return samples[count - 1] - samples[0];
+  }
+
+  < Robustness score 1..10: more samples and a tighter spread -> higher. A >
+  < crude heuristic for how trustworthy the median insight is. >
+  int robustness() {
+    if (count == 0) { return 1; }
+    int s = 5;
+    if (count >= 5) { s = s + 2; }
+    if (count >= 11) { s = s + 1; }
+    int sp = spread();
+    if (sp <= 2) { s = s + 2; }
+    else { if (sp <= 10) { s = s + 1; } }
+    if (s > 10) { s = 10; }
+    if (s < 1) { s = 1; }
+    return s;
+  }
+
+  String describe() {
+    return "newton-median-tray '" + space.getLabel() + "' samples=" + count
+         + " median=" + median() + " spread=" + spread()
+         + " robustness=" + robustness();
+  }
+}

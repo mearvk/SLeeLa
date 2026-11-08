@@ -1,0 +1,155 @@
+<< lib/advantage/integration/SLIntegrationKind.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The compartment-kind vocabulary for the vertical-integration
+   subject -- the OOD catalog of compartment types, capacities, and meanings. >>
+#sleela 2.5
+material;
+< Every compartment in a vertical-integration model has a KIND. The kind sets >
+< its default capacitive class, its meaning (what it is for), and its relevance >
+< (how it participates in the value chain). This class is the shared vocabulary >
+< so the model, bays, trays, and trial/plain compartments all agree on terms. >
+<  >
+< Kind ids (stable): >
+<    0 nested-model     -- recursively embeds its own vertical-integration model >
+<    1 onion            -- a straight Sequitur onion-model component >
+<    2 engineering-bay  -- medium-capacity build / process >
+<    3 trial            -- study / experiment compartment >
+<    4 newton-tray      -- median-based enlightenment / insight >
+<    5 resource         -- plain: securing resources >
+<    6 medium           -- plain: mediums (channels, substrates) >
+<    7 hobby            -- plain: hobbies >
+<    8 game             -- plain: games >
+<    9 entertainment    -- plain: entertainment >
+<   10 process          -- plain: processes >
+<   11 consumption      -- plain: consumption >
+<   12 trading          -- plain: trading >
+<   13 gaining          -- plain: gaining >
+<   14 selling          -- plain: selling >
+<   15 forcing          -- plain: forcing >
+<   16 challenging      -- plain: challenging >
+< Capacity class: 0 none, 1 small, 2 medium, 3 large, 4 recursive(unbounded). >
+class SLIntegrationKind {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10540;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Human name of a kind id. >
+  String nameOf(int kind) {
+    if (kind == 0)  { return "nested-model"; }
+    if (kind == 1)  { return "onion"; }
+    if (kind == 2)  { return "engineering-bay"; }
+    if (kind == 3)  { return "trial"; }
+    if (kind == 4)  { return "newton-tray"; }
+    if (kind == 5)  { return "resource"; }
+    if (kind == 6)  { return "medium"; }
+    if (kind == 7)  { return "hobby"; }
+    if (kind == 8)  { return "game"; }
+    if (kind == 9)  { return "entertainment"; }
+    if (kind == 10) { return "process"; }
+    if (kind == 11) { return "consumption"; }
+    if (kind == 12) { return "trading"; }
+    if (kind == 13) { return "gaining"; }
+    if (kind == 14) { return "selling"; }
+    if (kind == 15) { return "forcing"; }
+    if (kind == 16) { return "challenging"; }
+    return "unknown";
+  }
+
+  < Default capacity class for a kind. Engineering bays are MEDIUM by design; >
+  < nested models are recursive; onions and trays are small; plain holders >
+  < are small by default (callers can resize). >
+  int defaultCapacityClass(int kind) {
+    if (kind == 0) { return 4; }
+    if (kind == 2) { return 2; }
+    if (kind == 1) { return 1; }
+    if (kind == 3) { return 1; }
+    if (kind == 4) { return 1; }
+    return 1;
+  }
+
+  < Numeric capacity units implied by a capacity class. >
+  int capacityUnits(int capClass) {
+    if (capClass == 0) { return 0; }
+    if (capClass == 1) { return 10; }
+    if (capClass == 2) { return 100; }
+    if (capClass == 3) { return 1000; }
+    return 100000;
+  }
+
+  < Meaning: what this kind is FOR (one line). >
+  String meaningOf(int kind) {
+    if (kind == 0)  { return "recursively embeds its own integration model"; }
+    if (kind == 1)  { return "a straight Sequitur onion-model component"; }
+    if (kind == 2)  { return "medium-capacity build and process"; }
+    if (kind == 3)  { return "trial compartment for study"; }
+    if (kind == 4)  { return "newton median tray for enlightenment"; }
+    if (kind == 5)  { return "securing resources"; }
+    if (kind == 6)  { return "securing mediums"; }
+    if (kind == 7)  { return "hobbies"; }
+    if (kind == 8)  { return "games"; }
+    if (kind == 9)  { return "entertainment"; }
+    if (kind == 10) { return "processes"; }
+    if (kind == 11) { return "consumption"; }
+    if (kind == 12) { return "trading"; }
+    if (kind == 13) { return "gaining"; }
+    if (kind == 14) { return "selling"; }
+    if (kind == 15) { return "forcing"; }
+    if (kind == 16) { return "challenging"; }
+    return "unspecified";
+  }
+
+  < Relevance: how this kind participates in the vertical value chain. A rough >
+  < 1..10 weight used by the model to gauge system sophistication contribution. >
+  int relevanceOf(int kind) {
+    if (kind == 0)  { return 10; }
+    if (kind == 2)  { return 8; }
+    if (kind == 4)  { return 7; }
+    if (kind == 3)  { return 6; }
+    if (kind == 12) { return 6; }
+    if (kind == 14) { return 6; }
+    if (kind == 1)  { return 5; }
+    if (kind == 5)  { return 5; }
+    return 3;
+  }
+
+  boolean isPlain(int kind) { return kind >= 5; }
+  boolean isRecursive(int kind) { return kind == 0; }
+}
