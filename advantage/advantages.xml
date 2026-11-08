@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  advantages.xml
+
+  A store of assumptions and strings of knowledge for the advantage module.
+
+  An "advantage" here is a source of leverage: something you can draw on to
+  know, decide, or act with more effect than you otherwise could. Each
+  source advantage below carries:
+    - assumptions : what we take to be true in order to rely on this source
+    - knowledge   : short strings of knowledge the source provides
+-->
+<advantages version="1.0">
+
+  <!-- A source or a spring: an origin that keeps giving, a wellspring. -->
+  <sourceAdvantage id="source-spring" kind="source">
+    <name>Source / Spring</name>
+    <description>An origin or wellspring that renews itself and keeps supplying.</description>
+    <assumptions>
+      <assumption>The source does not run dry under normal use.</assumption>
+      <assumption>What flows from it is reasonably pure at the point of origin.</assumption>
+      <assumption>Access to the origin is clearer than access downstream.</assumption>
+    </assumptions>
+    <knowledge>
+      <string>Go upstream to the origin to find the cleanest signal.</string>
+      <string>A renewing source outlasts any single stored quantity.</string>
+    </knowledge>
+  </sourceAdvantage>
+
+  <!-- A mechanical advantage: leverage that multiplies applied effort. -->
+  <sourceAdvantage id="mechanical-advantage" kind="mechanical">
+    <name>Mechanical Advantage</name>
+    <description>Leverage from a tool or machine that multiplies applied force.</description>
+    <assumptions>
+      <assumption>Input effort is traded for distance or speed, not created.</assumption>
+      <assumption>The mechanism holds within its rated limits.</assumption>
+      <assumption>A small, well-placed force can move a large load.</assumption>
+    </assumptions>
+    <knowledge>
+      <string>Find the fulcrum; place effort where it multiplies.</string>
+      <string>Ratio of output to input force defines the advantage.</string>
+    </knowledge>
+  </sourceAdvantage>
+
+  <!-- A genius: insight that sees the answer others cannot. -->
+  <sourceAdvantage id="genius" kind="intellect">
+    <name>Genius</name>
+    <description>Exceptional insight that reaches answers by a shorter path.</description>
+    <assumptions>
+      <assumption>The insight is genuine and can be checked against reality.</assumption>
+      <assumption>Brilliance does not guarantee being right every time.</assumption>
+      <assumption>Rare understanding is worth seeking out and heeding.</assumption>
+    </assumptions>
+    <knowledge>
+      <string>One clear mind can shorten a long search.</string>
+      <string>Verify the leap of insight before you bet on it.</string>
+    </knowledge>
+  </sourceAdvantage>
+
+  <!-- A kid: a plain, uncorrupted way of knowing what is right. -->
+  <sourceAdvantage id="kid" kind="conscience">
+    <name>Kid</name>
+    <description>A plain, uncorrupted sense of what is right and fair.</description>
+    <assumptions>
+      <assumption>Simple honesty often sees fairness more clearly than cleverness.</assumption>
+      <assumption>The obvious right answer is sometimes the correct one.</assumption>
+      <assumption>An unschooled conscience can still be trusted on fairness.</assumption>
+    </assumptions>
+    <knowledge>
+      <string>If it feels plainly unfair, it probably is.</string>
+      <string>Ask the simple question a child would ask.</string>
+    </knowledge>
+  </sourceAdvantage>
+
+  <!-- Simple money: liquid means that can be exchanged for most things. -->
+  <sourceAdvantage id="money" kind="economic">
+    <name>Simple Money</name>
+    <description>Liquid means of exchange that can be traded for most resources.</description>
+    <assumptions>
+      <assumption>Money is widely accepted in exchange for goods and effort.</assumption>
+      <assumption>It is a means, not an end in itself.</assumption>
+      <assumption>Some advantages cannot be bought with it.</assumption>
+    </assumptions>
+    <knowledge>
+      <string>Liquidity buys options and time.</string>
+      <string>Money converts to many advantages, but not all of them.</string>
+    </knowledge>
+  </sourceAdvantage>
+
+</advantages>
