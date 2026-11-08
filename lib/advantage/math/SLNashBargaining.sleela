@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: Bilateral monopoly & Nash bargaining -- split a known joint
    surplus by a bargaining-power index over reservation profits. >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < Model 2 of the advantage trade subject. Once the joint surplus is fixed at >
 < Q*, the SPLIT depends on the wholesale price P. Individual profit curves: >
 <   Seller: Pi_S(P,Q) = P*Q - C_S(Q) >

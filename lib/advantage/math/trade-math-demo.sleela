@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: Runnable demonstration + validation of the advantage/math trade
    subject (joint profit max, Nash bargaining, bilateral newsvendor). >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < `run` auto-links the sibling subject classes in advantage/math (SLTradeMath, >
 < SLJointProfitMax, SLNashBargaining, SLBilateralNewsvendor), so no imports are >
 < needed. Curves: R_B(Q)=100Q-Q^2, C_S(Q)=20Q+Q^2. Hand-computed anchors: >

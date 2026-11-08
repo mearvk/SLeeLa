@@ -3,8 +3,11 @@
    Definition: Self-contained real-valued helpers for the advantage/physics
    subject (sqrt, exp, ln), named distinctly from the math/ helper to avoid
    cross-directory class-name ambiguity. >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < The physics subject needs sqrt (geodesic arc length, CIR diffusion) and a >
 < general power. A dedicated helper keeps advantage/physics runnable on its own >
 < siblings with no cross-package or cross-subfolder imports, and its unique >

@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: Engineering bay -- a medium-capacity build/process compartment
    for the vertical-integration subject. >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < An engineering bay is where work gets DONE: a medium-capacity compartment >
 < (100 units by default) that takes input units and converts them to output >
 < units at a yield. It wraps a SLCompartment for its capacitive space. Bays are >

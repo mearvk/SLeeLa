@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: Joint Profit Maximization -- the integrated surplus formula for
    a coordinated buyer+seller system. >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < Model 1 of the advantage trade subject. Treat buyer and seller as one >
 < coordinated system and maximize the total economic surplus BEFORE dividing >
 < it: Pi_total(Q) = R_B(Q) - C_S(Q). >

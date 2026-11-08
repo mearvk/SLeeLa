@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: The grade book -- the top-level face of the sophistication
    circuit grader, producing ratings for each module and every set. >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < The grade book wraps a SLSophisticationCircuit and exposes the whole result >
 < as ratings: per-module (via the circuit's modules) and per-set (all, winning, >
 < losing, grader, absolute). It also computes an OVERALL rating for the field >

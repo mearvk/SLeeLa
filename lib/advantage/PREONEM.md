@@ -1,4 +1,6 @@
 artifact;
+pure;
+gasoline;
 
 # PREONEM — `lib/advantage`
 

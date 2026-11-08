@@ -1,4 +1,6 @@
 artifact;
+pure;
+gasoline;
 preonem: [PREONEM.md](./PREONEM.md)
 standard: legislature-grade; evaluated unto time and space
 

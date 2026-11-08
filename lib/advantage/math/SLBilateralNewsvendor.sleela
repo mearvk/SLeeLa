@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: Bilateral newsvendor -- overage/underage costs on both ends and
    the centralized critical ratio that avoids double marginalization. >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < Model 3 of the advantage trade subject. When the inventory faces uncertain >
 < end-market demand but both parties' holding and shortage costs are >
 < transparent, the profit curves are governed by overage and underage costs on >

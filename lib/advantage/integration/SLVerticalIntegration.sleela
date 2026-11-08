@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: Vertical integration through capitalism/retail -- an ordered
    vertical stack of compartment tiers, recursively composable. >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < The top-level model. VERTICAL INTEGRATION stacks tiers of a value chain from >
 < upstream (tier 0, raw/supply) to downstream (last tier, retail/sale). Each >
 < tier is a SLCompartment, so a tier can itself be a nested-model holding its >

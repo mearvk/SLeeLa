@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: A named set of graded modules (e.g. winning / losing / grader /
    absolute) with its own aggregate rating. >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < A grade set groups any collection of SLModuleGrade into a named bucket -- a >
 < set of modules, winning modules, losing modules, grader modules, or absolute >
 < modules -- and rates the SET as a whole: size, mean/best/worst score, and a >

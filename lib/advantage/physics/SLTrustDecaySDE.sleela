@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: Stochastic trust decay -- a CIR mean-reverting diffusion with a
    Poisson jump for announcement breaches. >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < Trust is not static; it fluctuates as verified actions match (or break) prior >
 < announcements. Modelled with the asset-pricing (Cox-Ingersoll-Ross) SDE plus >
 < a downward jump: >

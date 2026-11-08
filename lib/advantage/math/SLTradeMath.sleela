@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: Shared real-valued math helpers for the advantage trade
    subject -- exponential, natural log, and general power. >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < Self-contained double-precision helpers so the advantage/math subject needs >
 < no cross-package imports. These back the fractional exponents of the Nash >
 < bargaining objective and any root/ratio arithmetic. Accuracy is ample for >

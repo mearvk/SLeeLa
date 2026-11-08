@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: Runnable demonstration + validation of the advantage/physics
    trust-field subject (metric, geodesic, contact, SDE). >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < `run` auto-links the sibling subject classes in advantage/physics >
 < (SLPhysicsMath, SLTrustMetric, SLTransactionalGeodesic, >
 < SLAnnouncementContact, SLTrustDecaySDE), so no imports are needed. >

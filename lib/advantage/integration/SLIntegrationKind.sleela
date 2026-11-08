@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: The compartment-kind vocabulary for the vertical-integration
    subject -- the OOD catalog of compartment types, capacities, and meanings. >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < Every compartment in a vertical-integration model has a KIND. The kind sets >
 < its default capacitive class, its meaning (what it is for), and its relevance >
 < (how it participates in the value chain). This class is the shared vocabulary >

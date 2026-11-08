@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: Runnable demonstration + validation of the advantage onion
    model (user's model and developer's model). >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < Exercises the Sequitur onion end to end. `run` auto-links the sibling >
 < classes (SLAdvantageLayer, SLAdvantageDividend, SLAdvantageSequitur, >
 < SLAdvantageUserModel, SLAdvantageDeveloperModel) in this directory, so no >

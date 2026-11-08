@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: The transactional geodesic -- the shortest transaction path
    through a trust-warped manifold, via the geodesic equation. >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < A transaction's path follows a GEODESIC of the trust metric: >
 <   d2x^mu/dl2 + Gamma^mu_ab (dx^a/dl)(dx^b/dl) = 0. >
 < Gamma are the Christoffel symbols -- the "pull" of market friction / systemic >

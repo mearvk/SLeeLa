@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: The emitter -- the output API advantage modules call to report
    themselves, routed through a sink and optionally formatted via CommonRails. >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < Modules used to be silent (only the demos printed). The emitter gives any >
 < module a small output API that works the same regardless of destination: >
 <   line(text)            -- emit a raw line >

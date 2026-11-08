@@ -1,4 +1,6 @@
 artifact;
+pure;
+gasoline;
 
 <!-- preonem: this document is an enacted artifact of the advantage
      legislature, graded unto time and space. See PREONEM.md. -->

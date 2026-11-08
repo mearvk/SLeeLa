@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: Runnable demonstration + validation of the vertical-integration
    subject (compartments, bays, trials, newton trays, recursion). >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < `run` auto-links the sibling classes in advantage/integration >
 < (SLIntegrationKind, SLCompartment, SLEngineeringBay, SLTrialCompartment, >
 < SLNewtonMedianTray, SLVerticalIntegration), so no imports are needed. >

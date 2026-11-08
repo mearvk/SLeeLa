@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: Runnable demonstration + validation of the advantage output
    seam (terminal / CommonRails / socket-connector / silent). >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < `run` auto-links the sibling classes in advantage/output (SLAdvantageSink, >
 < SLAdvantageEmitter), and naming PrintRail pulls in lib/common-rails. >
 < Shows every advantage module emitting through one API to four destinations. >

@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: The Sequitur list -- the ordered, navigable onion of advantage
    layers. >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < The Sequitur is an ordered list of layers forming an onion. "Sequitur" means >
 < "it follows": each layer follows the previous in logical order. The engine >
 < holds a cursor (the current depth) that can move INWARD (deeper, toward the >

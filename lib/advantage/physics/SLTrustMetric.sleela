@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: The trust field as a metric tensor g_mu_nu over a 2D economic
    manifold (operational distance x volume). >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < STRUCTURAL-ECONOMICS ANALOGY (not literal physics): trust is modelled AS a >
 < metric tensor g_mu_nu that sets distance and curvature on an economic >
 < manifold. High trust -> near-Euclidean (flat, cheap to cross); zero trust -> >

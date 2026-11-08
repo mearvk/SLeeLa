@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: The unique dividend that the onion model advantages, held with
    respect to a named model. >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < The dividend is the value being advantaged. It is "unique" in that it carries >
 < its own identity (a label) and is held "with respect to a model" (a named >
 < frame of reference). The onion layers mutate the running value; the dividend >

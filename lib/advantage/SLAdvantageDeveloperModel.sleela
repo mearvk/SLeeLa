@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: The developer's model -- full-control encapsulation of the
    advantage onion process. >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < The DEVELOPER'S model exposes the whole machine. A developer builds the >
 < Sequitur, tunes each onion layer's contribution, walks the cursor inward and >
 < outward, runs passes, inspects per-layer state, and decides when to iterate >

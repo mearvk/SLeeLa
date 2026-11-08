@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: One graded module -- a name, a raw sophistication score, a
    derived rating, and a role in the grading circuit. >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < The atom of the sophistication circuit grader. ANY module in the advantage >
 < package (an onion component, a compartment, a vertical-integration model, or >
 < even another grader) is represented here by its NAME and a raw SOPHISTICATION >

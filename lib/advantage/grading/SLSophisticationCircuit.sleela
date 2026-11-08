@@ -3,8 +3,11 @@
    Definition: The sophistication circuit grader -- registers modules, runs the
    grading circuit, and partitions them into winning/losing/grader/absolute
    sets with ratings. >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < The circuit grader. Register any number of modules (each a SLModuleGrade), >
 < set the circuit thresholds (win bar, lose bar, absolute bar), then `grade()` >
 < to partition them into named sets: >

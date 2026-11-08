@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: Runnable demonstration + validation of the sophistication
    circuit grader (modules, sets, ratings). >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < `run` auto-links the sibling classes in advantage/grading (SLModuleGrade, >
 < SLGradeSet, SLSophisticationCircuit, SLGradeBook), so no imports are needed. >
 <  >

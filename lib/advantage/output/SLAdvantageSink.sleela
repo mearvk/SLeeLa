@@ -3,8 +3,11 @@
    Definition: An output sink for the advantage package -- routes rendered
    lines to the terminal, a CommonRails surface, a socket/connector, or a
    silent capture buffer. >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < Every advantage module can EMIT output; this sink decides WHERE it goes. >
 < Targets: >
 <   0 TERMINAL    -- print() to stdout / the controlling terminal >

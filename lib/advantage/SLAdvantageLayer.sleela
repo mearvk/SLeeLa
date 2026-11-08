@@ -1,8 +1,11 @@
 << lib/advantage/SLAdvantageLayer.sleela
    SLeeLa Standard Library Definition.
    Definition: One concentric layer of the advantage Sequitur onion model. >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < A single layer in the onion. The onion is navigated by DEPTH: depth 0 is the >
 < outermost skin, higher depth is further inward toward the core. Each layer >
 < has a name, a kind, and a numeric contribution it makes to the running >

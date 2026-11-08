@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: The user's model -- a simple, outcome-facing encapsulation of
    the advantage onion process. >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < The USER'S model hides the onion. A user states a unique dividend and the >
 < model it is held with respect to, optionally nudges a few plain dials >
 < (grow / shrink / rethink), presses "advantage", and reads the result. The >

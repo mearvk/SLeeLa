@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: Announcements as boundary constraints on a contact manifold --
    information topology of a declared economic space. >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < An announced market is modelled as a 3D CONTACT MANIFOLD (M, alpha) in phase >
 < space with coordinates (Volume, Price, Trust) = (x, y, z). alpha is a 1-form; >
 < the contact condition alpha ^ d(alpha) != 0 means the space is NOT fully >

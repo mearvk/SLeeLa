@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: The recursive compartment -- the self-similar building block of
    a vertical-integration model. >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < A COMPARTMENT is one unit of the model. It has: a kind (see >
 < SLIntegrationKind), a CAPACITIVE SPACE (capacity + used units), MEANING (what >
 < it holds / is for) and RELEVANCE (its weight in the chain), and -- crucially >

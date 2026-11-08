@@ -2,8 +2,11 @@
    SLeeLa Standard Library Definition.
    Definition: Trial compartment -- a study/experiment compartment for the
    vertical-integration subject. >>
-#sleela 2.5
+#sleela 3.0
 material;
+artifact;
+pure;
+gasoline;
 < A trial compartment is where you STUDY before committing: it records trial >
 < outcomes (integer scores), reports how many passed a threshold, and gives a >
 < simple success rate. It de-risks the chain -- a cheap place to learn. Wraps a >
