@@ -1,0 +1,191 @@
+<< lib/advantage/SLAdvantageSequitur.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The Sequitur list -- the ordered, navigable onion of advantage
+   layers. >>
+#sleela 2.5
+material;
+< The Sequitur is an ordered list of layers forming an onion. "Sequitur" means >
+< "it follows": each layer follows the previous in logical order. The engine >
+< holds a cursor (the current depth) that can move INWARD (deeper, toward the >
+< core) or OUTWARD (shallower, toward the skin), which is how the model >
+< iterates further down or up. Applying a layer folds its contribution into >
+< the dividend's running value. >
+<  >
+< The standard eight layers, outer (0) to inner (7): >
+<   dividend, review, concerns, maths, additions, subtraction, regrouping, >
+<   iteration. >
+class SLAdvantageSequitur {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10513;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- Onion state ---- >
+  < the ordered list, index == depth >
+  SLAdvantageLayer[] layers;
+  < number of layers in use >
+  int count;
+  < current depth (0..count-1) >
+  int cursor;
+
+  < Build the standard eight-layer Sequitur. Contributions are the DEFAULT >
+  < shape of the onion; callers may retune any layer via layerAt()/setContribution. >
+  void buildStandard() {
+    layers = new SLAdvantageLayer[8];
+    count = 8;
+    cursor = 0;
+
+    SLAdvantageLayer l0 = new SLAdvantageLayer();
+    l0.configure(0, "dividend", "value", 0);
+    layers[0] = l0;
+
+    SLAdvantageLayer l1 = new SLAdvantageLayer();
+    l1.configure(1, "review", "validate", 0);
+    layers[1] = l1;
+
+    SLAdvantageLayer l2 = new SLAdvantageLayer();
+    l2.configure(2, "concerns", "risk", 0);
+    layers[2] = l2;
+
+    SLAdvantageLayer l3 = new SLAdvantageLayer();
+    l3.configure(3, "maths", "quant", 0);
+    layers[3] = l3;
+
+    SLAdvantageLayer l4 = new SLAdvantageLayer();
+    l4.configure(4, "additions", "grow", 0);
+    layers[4] = l4;
+
+    SLAdvantageLayer l5 = new SLAdvantageLayer();
+    l5.configure(5, "subtraction", "shrink", 0);
+    layers[5] = l5;
+
+    SLAdvantageLayer l6 = new SLAdvantageLayer();
+    l6.configure(6, "regrouping", "reorg", 0);
+    layers[6] = l6;
+
+    SLAdvantageLayer l7 = new SLAdvantageLayer();
+    l7.configure(7, "iteration", "loop", 0);
+    layers[7] = l7;
+  }
+
+  int size() { return count; }
+  int depth() { return cursor; }
+
+  < Return the layer at a given depth. Bind to a typed local before calling >
+  < methods on it (array-element type is lost on inline calls). >
+  SLAdvantageLayer layerAt(int d) {
+    if (d < 0) { return null; }
+    if (d >= count) { return null; }
+    return layers[d];
+  }
+
+  < ---- Navigation: iterate further down or up the onion ---- >
+  boolean canGoInward() { return cursor < count - 1; }
+  boolean canGoOutward() { return cursor > 0; }
+
+  < Move one layer inward (deeper). Returns the new depth. >
+  int goInward() {
+    if (cursor < count - 1) { cursor = cursor + 1; }
+    return cursor;
+  }
+
+  < Move one layer outward (shallower). Returns the new depth. >
+  int goOutward() {
+    if (cursor > 0) { cursor = cursor - 1; }
+    return cursor;
+  }
+
+  < Jump the cursor directly to a depth, clamped into range. >
+  void seek(int d) {
+    if (d < 0) { cursor = 0; }
+    else if (d >= count) { cursor = count - 1; }
+    else { cursor = d; }
+  }
+
+  < ---- Tuning: set a layer's contribution by depth ---- >
+  void tune(int d, int contribution) {
+    SLAdvantageLayer l = layerAt(d);
+    if (l != null) { l.setContribution(contribution); }
+  }
+
+  < Apply the layer at the cursor to the dividend's running value. >
+  void applyCurrent(SLAdvantageDividend div) {
+    SLAdvantageLayer l = layers[cursor];
+    int updated = l.applyTo(div.getCurrent());
+    div.setCurrent(updated);
+  }
+
+  < One full inward pass: apply every layer from skin to core in order, >
+  < folding each contribution into the dividend. Returns the net advantage. >
+  int runInwardPass(SLAdvantageDividend div) {
+    cursor = 0;
+    int i = 0;
+    while (i < count) {
+      SLAdvantageLayer l = layers[i];
+      int updated = l.applyTo(div.getCurrent());
+      div.setCurrent(updated);
+      cursor = i;
+      i = i + 1;
+    }
+    return div.advantage();
+  }
+
+  < Reset the visited flags on every layer for a fresh pass. >
+  void resetVisits() {
+    int i = 0;
+    while (i < count) {
+      SLAdvantageLayer l = layers[i];
+      l.resetVisit();
+      i = i + 1;
+    }
+  }
+
+  < How many layers were touched on the last pass. >
+  int visitedCount() {
+    int n = 0;
+    int i = 0;
+    while (i < count) {
+      SLAdvantageLayer l = layers[i];
+      if (l.wasVisited()) { n = n + 1; }
+      i = i + 1;
+    }
+    return n;
+  }
+}

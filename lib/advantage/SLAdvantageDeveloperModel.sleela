@@ -1,0 +1,130 @@
+<< lib/advantage/SLAdvantageDeveloperModel.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The developer's model -- full-control encapsulation of the
+   advantage onion process. >>
+#sleela 2.5
+material;
+< The DEVELOPER'S model exposes the whole machine. A developer builds the >
+< Sequitur, tunes each onion layer's contribution, walks the cursor inward and >
+< outward, runs passes, inspects per-layer state, and decides when to iterate >
+< further down or up. This is the encapsulation for someone shaping the >
+< process itself, not merely consuming its outcome. >
+<  >
+< The named layers map to depths: >
+<   0 dividend 1 review 2 concerns 3 maths 4 additions 5 subtraction >
+<   6 regrouping 7 iteration. >
+class SLAdvantageDeveloperModel {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10514;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- Developer-facing engine state ---- >
+  SLAdvantageSequitur onion;
+  SLAdvantageDividend dividend;
+  < how many inward passes have been run >
+  int passes;
+
+  < Stand up a fresh engine around a unique dividend wrt a model. >
+  void init(String label, String model, int baseValue) {
+    onion = new SLAdvantageSequitur();
+    onion.buildStandard();
+    dividend = new SLAdvantageDividend();
+    dividend.configure(label, model, baseValue);
+    passes = 0;
+  }
+
+  < Direct access to the layered machine. >
+  SLAdvantageSequitur getOnion() { return onion; }
+  SLAdvantageDividend getDividend() { return dividend; }
+  int getPasses() { return passes; }
+
+  < ---- Shape the onion: set each stage's signed contribution ---- >
+  void setLayer(int depth, int contribution) { onion.tune(depth, contribution); }
+
+  < Named convenience tuners for the standard stages. >
+  void setReview(int c)      { onion.tune(1, c); }
+  void setConcerns(int c)    { onion.tune(2, c); }
+  void setMaths(int c)       { onion.tune(3, c); }
+  void setAdditions(int c)   { onion.tune(4, c); }
+  void setSubtraction(int c) { onion.tune(5, c); }
+  void setRegrouping(int c)  { onion.tune(6, c); }
+  void setIteration(int c)   { onion.tune(7, c); }
+
+  < ---- Navigate the onion by hand ---- >
+  int deeper()    { return onion.goInward(); }
+  int shallower() { return onion.goOutward(); }
+  void seek(int d) { onion.seek(d); }
+  int depth()     { return onion.depth(); }
+
+  < Apply only the layer under the cursor (manual single-step advantaging). >
+  void step() { onion.applyCurrent(dividend); }
+
+  < Run one complete inward pass over all layers; returns the net advantage. >
+  int runPass() {
+    onion.resetVisits();
+    passes = passes + 1;
+    return onion.runInwardPass(dividend);
+  }
+
+  < Iterate: run further passes while they keep improving the advantage, up to >
+  < a cap. Because the standard layers are idempotent per base, a pass rebases >
+  < first so each pass is a clean re-evaluation; returns the final advantage. >
+  int iterate(int maxPasses) {
+    int best = dividend.advantage();
+    int n = 0;
+    while (n < maxPasses) {
+      dividend.rebase();
+      int got = runPass();
+      if (got > best) { best = got; }
+      n = n + 1;
+    }
+    return best;
+  }
+
+  < Current net advantage of the dividend. >
+  int advantage() { return dividend.advantage(); }
+
+  String describe() {
+    return "developer-model: " + dividend.describe()
+         + " | depth=" + onion.depth() + "/" + onion.size()
+         + " passes=" + passes;
+  }
+}

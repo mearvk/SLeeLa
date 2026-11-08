@@ -1,0 +1,96 @@
+<< lib/advantage/SLAdvantageUserModel.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The user's model -- a simple, outcome-facing encapsulation of
+   the advantage onion process. >>
+#sleela 2.5
+material;
+< The USER'S model hides the onion. A user states a unique dividend and the >
+< model it is held with respect to, optionally nudges a few plain dials >
+< (grow / shrink / rethink), presses "advantage", and reads the result. The >
+< many-layered machine (review, concerns, maths, additions, subtraction, >
+< regrouping, iteration) runs underneath via the developer model, but the user >
+< never has to see it. This is the encapsulation for someone who wants the >
+< outcome, not the controls. >
+class SLAdvantageUserModel {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10515;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- Simple user state (delegates to a hidden developer model) ---- >
+  SLAdvantageDeveloperModel engine;
+
+  < Start: name the unique dividend and the model it respects, with a base. >
+  void start(String dividendLabel, String model, int baseValue) {
+    engine = new SLAdvantageDeveloperModel();
+    engine.init(dividendLabel, model, baseValue);
+  }
+
+  < Three plain dials in the user's language. Each maps to onion layers. >
+  < grow   -> additions layer; bigger upside. >
+  void grow(int amount)   { engine.setAdditions(amount); }
+  < shrink -> subtraction layer; a cost or haircut (pass a negative amount). >
+  void shrink(int amount) { engine.setSubtraction(amount); }
+  < rethink -> maths + regrouping; a quantitative adjustment and a reorg. >
+  void rethink(int maths, int regroup) {
+    engine.setMaths(maths);
+    engine.setRegrouping(regroup);
+  }
+
+  < Press the button: run the whole layered process once and return the net >
+  < advantage of the dividend with respect to its model. >
+  int advantage() {
+    engine.getDividend().rebase();
+    return engine.runPass();
+  }
+
+  < Try harder: let the process iterate further through the onion, keeping the >
+  < best net advantage found, up to a small cap the user chooses. >
+  int advantageHarder(int tries) {
+    return engine.iterate(tries);
+  }
+
+  < Read the outcome in plain terms. >
+  int currentValue() { return engine.getDividend().getCurrent(); }
+  String summary()   { return engine.getDividend().describe(); }
+
+  < A user who becomes curious can still reach the full developer controls. >
+  SLAdvantageDeveloperModel advanced() { return engine; }
+}

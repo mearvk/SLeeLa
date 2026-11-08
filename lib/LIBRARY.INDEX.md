@@ -1,15 +1,17 @@
 # SLeeLa /lib Library Index
 
+> Revision 0.69 adds the **`advantage`** SLeeLa standard-library package (`lib/advantage/`): the Sequitur onion model for advantaging a unique dividend with respect to a model. It ships `SLAdvantageLayer` (one concentric onion layer), `SLAdvantageDividend` (the unique dividend held wrt a named model), `SLAdvantageSequitur` (the ordered, navigable onion of layers — dividend, review, concerns, maths, additions, subtraction, regrouping, iteration — with inward/outward cursor navigation), and two encapsulations over the same engine: `SLAdvantageUserModel` (simple, outcome-facing) and `SLAdvantageDeveloperModel` (full-control). A `SLPackage` facade and a runnable `advantage-demo` (validated via `sleela run`) complete the package.
+
 > Revision 0.68 tightens the AI-facing facade contracts: neural-network configuration now owns defensive copies of layer sizes, adapter-only operations cannot claim native readiness, and character-recognition validates input-buffer dimensions and finite similarity thresholds. The native C APIs remain the execution authority until the embedding runtime supplies adapters.
 
 > Revision 0.67 adds two AI-facing SLeeLa standard-library packages. **`neural-nets`** (`lib/neural-nets/`) mirrors the native C ABI v1 with `SLNeuralNetworkConfig`, `SLNeuralNetwork`, and a package facade; it exposes the validated network configuration and lifecycle contract while inference/training remain explicit native-adapter operations. **`character-recognition`** (`lib/character-recognition/`) mirrors the native C11 glyph-recognition API with `SLCharacterRecognition`, `SLCharacterResult`, and a package facade; normalization and recognition remain native-adapter operations. Both packages document their exact native boundaries and limitations. The authoritative C/C++ implementations remain under `artificial-intelligence/`; these SLeeLa packages do not duplicate kernels or claim native execution without an adapter.
 
 
-**Revision:** 0.68  
-**Packages:** 116  
-**SLeeLa source units:** 11918  
-**Module-facade symbols:** 83  
-**Total symbol records:** 12001  
+**Revision:** 0.69  
+**Packages:** 117  
+**SLeeLa source units:** 11924  
+**Module-facade symbols:** 84  
+**Total symbol records:** 12008  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.66 brings three big-number improvements that make a 10,000,000-digit
