@@ -141,12 +141,22 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; advantage</div>
 <h1>Package <code>advantage</code></h1>
-<div class="lead">This package contains <strong>25</strong> source unit(s) defining <strong>25</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>30</strong> source unit(s) defining <strong>30</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="advantage-demo">advantage-demo <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/advantage-demo.sleela)</span></h2>
 <div data-u="advantage-demo advantagedemo">
 <h3 id="AdvantageDemo">AdvantageDemo <span class="pill">class</span></h3>
 <p class="desc">Runnable demonstration + validation of the advantage onion model (user&#x27;s model and developer&#x27;s model).</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="grading-demo">grading-demo <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/grading/grading-demo.sleela)</span></h2>
+<div data-u="grading-demo gradingdemo">
+<h3 id="GradingDemo">GradingDemo <span class="pill">class</span></h3>
+<p class="desc">Runnable demonstration + validation of the sophistication circuit grader (modules, sets, ratings).</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -447,6 +457,60 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="slgradebook">SLGradeBook <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/grading/SLGradeBook.sleela)</span></h2>
+<div data-u="slgradebook slgradebook">
+<h3 id="SLGradeBook">SLGradeBook <span class="pill">class</span></h3>
+<p class="desc">The grade book -- the top-level face of the sophistication circuit grader, producing ratings for each module and every set.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>circuit</code></td><td><span class="sig">SLSophisticationCircuit circuit</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(SLSophisticationCircuit c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getCircuit</code></td><td><span class="sig">SLSophisticationCircuit getCircuit()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>all</code></td><td><span class="sig">SLGradeSet all()</span></td><td class="desc">---- Set accessors (each an SLGradeSet with its own rating) ----</td></tr>
+<tr><td><code>winning</code></td><td><span class="sig">SLGradeSet winning()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>losing</code></td><td><span class="sig">SLGradeSet losing()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>graders</code></td><td><span class="sig">SLGradeSet graders()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>absolutes</code></td><td><span class="sig">SLGradeSet absolutes()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>overallTier</code></td><td><span class="sig">int overallTier()</span></td><td class="desc">Overall field tier 1..10 (the rating of the whole collection).</td></tr>
+<tr><td><code>overallLetter</code></td><td><span class="sig">String overallLetter()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>winRate</code></td><td><span class="sig">int winRate()</span></td><td class="desc">Win rate as a percentage: winning modules over all modules.</td></tr>
+<tr><td><code>rateSet</code></td><td><span class="sig">String rateSet(SLGradeSet s)</span></td><td class="desc">Rating of an arbitrary externally-supplied set, so callers can grade &quot;any set of modules&quot; they assemble themselves, not just the circuit&#x27;s.</td></tr>
+<tr><td><code>championRating</code></td><td><span class="sig">String championRating()</span></td><td class="desc">The champion module&#x27;s rating, or &quot;none&quot; if the field is empty.</td></tr>
+<tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slgradeset">SLGradeSet <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/grading/SLGradeSet.sleela)</span></h2>
+<div data-u="slgradeset slgradeset">
+<h3 id="SLGradeSet">SLGradeSet <span class="pill">class</span></h3>
+<p class="desc">A named set of graded modules (e.g. winning / losing / grader / absolute) with its own aggregate rating.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>grades</code></td><td><span class="sig">SLModuleGrade[] grades</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cap</code></td><td><span class="sig">int cap</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(String nm, int capacity)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getName</code></td><td><span class="sig">String getName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>size</code></td><td><span class="sig">int size()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>add</code></td><td><span class="sig">void add(SLModuleGrade g)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>at</code></td><td><span class="sig">SLModuleGrade at(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>totalScore</code></td><td><span class="sig">int totalScore()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>meanScore</code></td><td><span class="sig">int meanScore()</span></td><td class="desc">Mean score (integer; 0 if empty).</td></tr>
+<tr><td><code>bestScore</code></td><td><span class="sig">int bestScore()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>worstScore</code></td><td><span class="sig">int worstScore()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tier</code></td><td><span class="sig">int tier()</span></td><td class="desc">Set-level tier 1..10 from the mean score (same scale as a module).</td></tr>
+<tr><td><code>letter</code></td><td><span class="sig">String letter()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="slintegrationkind">SLIntegrationKind <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/integration/SLIntegrationKind.sleela)</span></h2>
 <div data-u="slintegrationkind slintegrationkind">
 <h3 id="SLIntegrationKind">SLIntegrationKind <span class="pill">class</span></h3>
@@ -489,6 +553,35 @@
 <tr><td><code>marginalCost</code></td><td><span class="sig">double marginalCost(double q)</span></td><td class="desc">Marginal supply cost dC_S/dQ.</td></tr>
 <tr><td><code>optimalQuantity</code></td><td><span class="sig">double optimalQuantity()</span></td><td class="desc">Optimal quantity Q* where MR = MC. 0 if no interior optimum exists.</td></tr>
 <tr><td><code>maxJointProfit</code></td><td><span class="sig">double maxJointProfit()</span></td><td class="desc">The maximum joint surplus, evaluated at Q*.</td></tr>
+<tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slmodulegrade">SLModuleGrade <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/grading/SLModuleGrade.sleela)</span></h2>
+<div data-u="slmodulegrade slmodulegrade">
+<h3 id="SLModuleGrade">SLModuleGrade <span class="pill">class</span></h3>
+<p class="desc">One graded module -- a name, a raw sophistication score, a derived rating, and a role in the grading circuit.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>label</code></td><td><span class="sig">String label</span></td><td class="desc">---- Module grade state ----</td></tr>
+<tr><td><code>score</code></td><td><span class="sig">int score</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>role</code></td><td><span class="sig">int role</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>ROLE_NORMAL</code></td><td><span class="sig">int ROLE_NORMAL()</span></td><td class="desc">role constants (methods cost no layout slot)</td></tr>
+<tr><td><code>ROLE_GRADER</code></td><td><span class="sig">int ROLE_GRADER()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ROLE_ABSOLUTE</code></td><td><span class="sig">int ROLE_ABSOLUTE()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(String lbl, int rawScore, int moduleRole)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getLabel</code></td><td><span class="sig">String getLabel()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getScore</code></td><td><span class="sig">int getScore()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setScore</code></td><td><span class="sig">void setScore(int s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getRole</code></td><td><span class="sig">int getRole()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setRole</code></td><td><span class="sig">void setRole(int r)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isGrader</code></td><td><span class="sig">boolean isGrader()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isAbsolute</code></td><td><span class="sig">boolean isAbsolute()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tier</code></td><td><span class="sig">int tier()</span></td><td class="desc">Rating tier 1..10 from the raw score. Scores are clamped: a score of 100+ is a perfect 10, and every 10 points is one tier (floor at 1).</td></tr>
+<tr><td><code>letter</code></td><td><span class="sig">String letter()</span></td><td class="desc">Letter rating from the tier. S is reserved for a perfect/elite tier.</td></tr>
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
@@ -567,6 +660,40 @@
 <tr><td><code>powAB</code></td><td><span class="sig">double powAB(double a, double b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>sqrtD</code></td><td><span class="sig">double sqrtD(double a)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>absD</code></td><td><span class="sig">double absD(double a)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slsophisticationcircuit">SLSophisticationCircuit <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/grading/SLSophisticationCircuit.sleela)</span></h2>
+<div data-u="slsophisticationcircuit slsophisticationcircuit">
+<h3 id="SLSophisticationCircuit">SLSophisticationCircuit <span class="pill">class</span></h3>
+<p class="desc">The sophistication circuit grader -- registers modules, runs the grading circuit, and partitions them into winning/losing/grader/absolute sets with ratings.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>modules</code></td><td><span class="sig">SLModuleGrade[] modules</span></td><td class="desc">---- Registered modules ----</td></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cap</code></td><td><span class="sig">int cap</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>winBar</code></td><td><span class="sig">int winBar</span></td><td class="desc">---- Circuit thresholds ----</td></tr>
+<tr><td><code>loseBar</code></td><td><span class="sig">int loseBar</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>absoluteBar</code></td><td><span class="sig">int absoluteBar</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(int capacity, int win, int lose, int absolute)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getWinBar</code></td><td><span class="sig">int getWinBar()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getLoseBar</code></td><td><span class="sig">int getLoseBar()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAbsoluteBar</code></td><td><span class="sig">int getAbsoluteBar()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>register</code></td><td><span class="sig">void register(SLModuleGrade g)</span></td><td class="desc">Register a pre-built module grade.</td></tr>
+<tr><td><code>add</code></td><td><span class="sig">SLModuleGrade add(String label, int score, int role)</span></td><td class="desc">Convenience: build and register a module from name/score/role.</td></tr>
+<tr><td><code>size</code></td><td><span class="sig">int size()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>moduleAt</code></td><td><span class="sig">SLModuleGrade moduleAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>buildSet</code></td><td><span class="sig">SLGradeSet buildSet(String name, int kind)</span></td><td class="desc">---- Partition the field into a named set by the circuit rules ---- kind: 0 all, 1 winning, 2 losing, 3 grader, 4 absolute.</td></tr>
+<tr><td><code>allModules</code></td><td><span class="sig">SLGradeSet allModules()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>winningModules</code></td><td><span class="sig">SLGradeSet winningModules()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>losingModules</code></td><td><span class="sig">SLGradeSet losingModules()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>graderModules</code></td><td><span class="sig">SLGradeSet graderModules()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>absoluteModules</code></td><td><span class="sig">SLGradeSet absoluteModules()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>champion</code></td><td><span class="sig">SLModuleGrade champion()</span></td><td class="desc">The single best module in the field (highest score); null if empty.</td></tr>
+<tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="sltrademath">SLTradeMath <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/advantage/math/SLTradeMath.sleela)</span></h2>
@@ -718,7 +845,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-08 08:31 UTC.
+<code>/lib</code> tree on 2026-11-08 08:38 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
