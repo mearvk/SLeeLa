@@ -61,7 +61,7 @@ order. The layers form an **onion**, outer skin to inner core:
 
 ## The Advantage™ subjects at a glance
 
-Advantage™ is organized as a spine (the onion) plus five subject families. Each
+Advantage™ is organized as a spine (the onion) plus seven subject families. Each
 subject is a directory of SLeeLa classes with a runnable demo and, for the two
 quantitative ones, a full prose treatment.
 
@@ -73,6 +73,8 @@ quantitative ones, a full prose treatment.
 | **Vertical integration** | [`integration/`](./integration) | a value chain, as recursively composable compartments | [`DEFINITIONS.md` §8](./DEFINITIONS.md#8-vertical-integration-subject-integration) |
 | **Sophistication grading** | [`grading/`](./grading) | the ranking of modules and whole sets, A–D | [`DEFINITIONS.md` §9](./DEFINITIONS.md#9-sophistication-grading-subject-grading) |
 | **Output seam** | [`output/`](./output) | where a module's own voice goes | [`DEFINITIONS.md` §10](./DEFINITIONS.md#10-output-seam-output) |
+| **Network trades** | [`network/`](./network) | buy/sell opportunities found and negotiated across a venue network | [`examples/README.md`](./examples/README.md) |
+| **Connectivity medium** | [`connect/`](./connect) | a uniform, fault-handled bridge to MySQL, national clocks, networks, and money sources | [`connect/README.md`](./connect/README.md) |
 
 Read [`DEFINITIONS.md`](./DEFINITIONS.md) first for the vocabulary; then the
 subject documents for depth; then run the demos and primers to see each one

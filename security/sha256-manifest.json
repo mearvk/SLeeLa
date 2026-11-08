@@ -930,6 +930,42 @@
       "sha256": "b5667c4467f79a2a49540c70cf6a28415d1b594b6ef16ee00d5dd6ebc5fa7e5b"
     },
     {
+      "path": "lib/advantage/connect/SLClockConnector.sleela",
+      "sha256": "965d2c0ce72052de525b10247b70789b8ebcbfcd99cba50d05a8529c2600fccb"
+    },
+    {
+      "path": "lib/advantage/connect/SLConnectFault.sleela",
+      "sha256": "61f0351c74026f23ed94c23d8abf06b61c2d3e2e9d851e2f8849ffb4cb467c5f"
+    },
+    {
+      "path": "lib/advantage/connect/SLConnectStatus.sleela",
+      "sha256": "d607e4147ab8e78a84af23beecc7fce7c943fc5ececc9dcc56d39220d4c2f5d5"
+    },
+    {
+      "path": "lib/advantage/connect/SLMoneyConnector.sleela",
+      "sha256": "e1d78f7c733508eb788c4c5c679fb07300f846ff699043e53b78cf17bb25f5a0"
+    },
+    {
+      "path": "lib/advantage/connect/SLNetConnector.sleela",
+      "sha256": "fbb18fa70843cb361a26f04d766b3bda9fc589bc68a1788329c49b4e4add923c"
+    },
+    {
+      "path": "lib/advantage/connect/SLSqlConnector.sleela",
+      "sha256": "2baccaebbbb97454384fcdf27993b83c493193c5067c3b007cc5d95319a0b61b"
+    },
+    {
+      "path": "lib/advantage/connect/SLTechInstallerII.sleela",
+      "sha256": "d8c4524c296fabc8e54bcdde1d83ac93c5257325805fb2e4f38f2c57ff65df63"
+    },
+    {
+      "path": "lib/advantage/connect/connect-demo.sleela",
+      "sha256": "a79465394b7018c871ec485dde049635523f408fe62beca0ddc3186d56b01661"
+    },
+    {
+      "path": "lib/advantage/connect/installer-demo.sleela",
+      "sha256": "f4193411f26f73f01389a98d196c8091cc43bae2d49a37b3b9920d0c561eb9e2"
+    },
+    {
       "path": "lib/advantage/examples/advanced/network-trades/lithium-cell-trade.sleela",
       "sha256": "ae6cc3076ec9e8eb1f038c4273201fc4527b7635e30902b95462610a4bdd8402"
     },

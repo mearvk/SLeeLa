@@ -1,0 +1,138 @@
+<< lib/advantage/connect/connect-demo.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Runnable demonstration + validation of the advantage/connect
+   medium end to end: the shared status vocabulary and fault record, then each
+   of the four connectors (SQL, national clock, network, money) driven through
+   its lifecycle, its native-adapter boundary, and a fault path. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+<< `run` auto-links the sibling classes in advantage/connect (SLConnectStatus,
+   SLConnectFault, SLSqlConnector, SLClockConnector, SLNetConnector,
+   SLMoneyConnector). Anchors are hand-computed; every connect operation that
+   needs a host adapter returns code 9 (NATIVE_ADAPTER_REQUIRED) rather than
+   faking a live result. >>
+class ConnectDemo {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  String metaVersion = "1.0.0";
+  int metaId = 10648;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  boolean near(double a, double b, double tol) {
+    double d = a - b;
+    if (d < 0.0) { d = 0.0 - d; }
+    return d < tol;
+  }
+
+  void main() {
+    print("== advantage/connect medium ==");
+
+    SLConnectStatus vocab = new SLConnectStatus();
+    print("0. status: name(9)=" + vocab.name(9)
+        + " transient(5)=" + vocab.isTransient(5)
+        + " transient(8)=" + vocab.isTransient(8));
+
+    < ---- SQL (MySQL) ---- >
+    SLSqlConnector sql = new SLSqlConnector();
+    sql.init();
+    int sCfg = sql.configure("db.internal", 3306, "app", false, "advantage");
+    int sNoSecret = sql.openLink();
+    sql.configure("db.internal", 3306, "app", true, "advantage");
+    int sOpen = sql.openLink();
+    int sExec = sql.execute("SELECT 1");
+    boolean sFaultPermanent = !sql.lastFault().isRetryable();
+    print("1. sql  : " + sql.describe() + " | fault=" + sql.lastFault().describe(vocab));
+
+    < ---- National clock (NTP) ---- >
+    SLClockConnector clock = new SLClockConnector();
+    clock.init();
+    clock.configure("time.nist.gov");
+    clock.openLink();
+    int cSync = clock.sync();
+    int cAccept = clock.acceptSync(12.5, 2);
+    boolean cTrusted = clock.trusted(3);
+    double disciplined = clock.discipline(1000.0);
+    print("2. clock: " + clock.describe() + " | disciplined(1000)=" + disciplined);
+
+    < ---- Network connectivity ---- >
+    SLNetConnector netc = new SLNetConnector();
+    netc.init();
+    netc.configure("venue.example", 443);
+    netc.openLink();
+    int nProbe = netc.probe();
+    int nAccept = netc.acceptProbe(8.0);
+    int w1 = netc.write(100);
+    int w2 = netc.write(50);
+    print("3. netc  : " + netc.describe());
+
+    < ---- Money source (card) ---- >
+    SLMoneyConnector money = new SLMoneyConnector();
+    money.init();
+    money.configure("card", "alias:merchant-visa", "USD");
+    money.openLink();
+    int mAuth = money.authorize(5000);
+    int mAccept = money.acceptAuthorization(5000);
+    int mCap = money.capture(5000);
+    int mRef = money.refund(2000);
+    int settled = money.settledCents();
+    < a hard decline is first-class and never retryable >
+    int mDecline = money.declineAuthorization("insufficient funds");
+    boolean declineNotRetryable = !money.lastFault().isRetryable();
+    print("4. money: " + money.receipt() + " | decline code=" + mDecline);
+
+    print("");
+    print("== validation ==");
+    boolean okVocab = (vocab.name(9) == "NATIVE_ADAPTER_REQUIRED")
+                   && vocab.isTransient(5) && !vocab.isTransient(8);
+    boolean okSql = (sCfg == 0) && (sNoSecret == 4) && (sOpen == 0)
+                 && (sExec == 9) && sFaultPermanent;
+    boolean okClock = (cSync == 9) && (cAccept == 0) && cTrusted
+                   && near(disciplined, 987.5, 0.00001);
+    boolean okNet = (nProbe == 9) && (nAccept == 0) && (w1 == 100) && (w2 == 50)
+                 && (netc.getBytesSent() == 150) && netc.isReachable();
+    boolean okMoney = (mAuth == 9) && (mAccept == 0) && (mCap == 0) && (mRef == 0)
+                   && (settled == 3000) && (mDecline == 8) && declineNotRetryable;
+    print("  status vocabulary   ? " + okVocab);
+    print("  sql lifecycle+fault ? " + okSql);
+    print("  clock sync+discipline ? " + okClock);
+    print("  netc probe+bytes     ? " + okNet);
+    print("  money auth/cap/refund ? " + okMoney);
+    if (okVocab) { if (okSql) { if (okClock) { if (okNet) { if (okMoney) {
+      print("ALL CHECKS PASSED");
+    } } } } }
+  }
+}

@@ -1,0 +1,166 @@
+<< lib/advantage/connect/SLNetConnector.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The network-connectivity connector of the CONNECT medium. It
+   models reachability to an endpoint: open a link, probe reachability and
+   latency, account bytes sent, and close. The live socket work defers to a host
+   adapter (slnet_*), consistent with lib/advantage/output/SLAdvantageSink. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+<< NATIVE BRIDGE (documented, not dialed).
+   open  -> slnet_connect(host, port) : handle
+   probe -> slnet_probe(handle) : roundTripMillis (or a TIMEOUT / UNREACHABLE)
+   write -> slnet_write(handle, bytes, count) : bytesAccepted
+   close -> slnet_close(handle)
+   The method is openLink/closeLink (not connect/close -- both are reserved
+   Munction builtins). Under run there is no live socket, so probe/write defer
+   to the adapter; the connector still accounts bytes and models state so a
+   program can be written and validated offline. No apostrophes in comments. >>
+class SLNetConnector {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  String metaVersion = "1.0.0";
+  int metaId = 10644;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "Advantage";
+  String metaCorporation = "SLeeLa project";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  int metaScienceRating = 7;
+  < metaNationalSchedule: TCP is IETF RFC 9293; transport is standard IP >
+  String metaNationalSchedule = "IETF RFC 9293 (TCP)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- Shared medium plumbing ---- >
+  SLConnectStatus vocab;
+  SLConnectFault fault;
+
+  < ---- Endpoint state ---- >
+  String host = "";
+  int port = 0;
+  boolean configured = false;
+  boolean open = false;
+  boolean reachable = false;
+  double lastRttMillis = 0.0;
+  int bytesSent = 0;
+
+  void init() {
+    vocab = new SLConnectStatus();
+    fault = new SLConnectFault();
+  }
+
+  int configure(String h, int p) {
+    if (vocab == null) { init(); }
+    fault.clear();
+    if (h == null || h == "" || p <= 0 || p > 65535) {
+      fault.raise(vocab, vocab.invalidArgument(), "net", "configure", "bad endpoint");
+      return vocab.invalidArgument();
+    }
+    host = h; port = p; configured = true;
+    return vocab.ok();
+  }
+
+  int openLink() {
+    if (vocab == null) { init(); }
+    fault.clear();
+    if (!configured) {
+      fault.raise(vocab, vocab.notConfigured(), "net", "openLink", "configure first");
+      return vocab.notConfigured();
+    }
+    open = true;
+    return vocab.ok();
+  }
+
+  << Probe reachability + latency (native: slnet_probe). Under run this defers
+     to the adapter. A host adapter measures the round trip and calls
+     acceptProbe(rttMillis) on success, or records a TIMEOUT/UNREACHABLE fault. >>
+  int probe() {
+    if (vocab == null) { init(); }
+    fault.clear();
+    if (!open) {
+      fault.raise(vocab, vocab.invalidState(), "net", "probe", "link not open");
+      return vocab.invalidState();
+    }
+    fault.raise(vocab, vocab.nativeAdapterRequired(), "net", "probe", "adapter runs slnet_probe");
+    return vocab.nativeAdapterRequired();
+  }
+
+  < Host-adapter callback: record a measured round-trip time. >
+  int acceptProbe(double rttMillis) {
+    if (vocab == null) { init(); }
+    fault.clear();
+    if (rttMillis < 0.0) {
+      fault.raise(vocab, vocab.protocol(), "net", "acceptProbe", "negative rtt");
+      return vocab.protocol();
+    }
+    lastRttMillis = rttMillis;
+    reachable = true;
+    return vocab.ok();
+  }
+
+  < Account bytes to write (native: slnet_write). Returns bytes accepted (0 if >
+  < not open). The real send is a host-adapter responsibility. >
+  int write(int count) {
+    if (vocab == null) { init(); }
+    fault.clear();
+    if (!open) {
+      fault.raise(vocab, vocab.invalidState(), "net", "write", "link not open");
+      return 0;
+    }
+    if (count < 0) {
+      fault.raise(vocab, vocab.invalidArgument(), "net", "write", "negative count");
+      return 0;
+    }
+    bytesSent = bytesSent + count;
+    return count;
+  }
+
+  int closeLink() {
+    if (vocab == null) { init(); }
+    fault.clear();
+    open = false;
+    reachable = false;
+    return vocab.ok();
+  }
+
+  boolean active() { return open; }
+  boolean isReachable() { return reachable; }
+  double getRttMillis() { return lastRttMillis; }
+  int getBytesSent() { return bytesSent; }
+  boolean isNativeReady() { return false; }
+  SLConnectFault lastFault() { if (vocab == null) { init(); } return fault; }
+
+  String endpoint() { return host + ":" + port; }
+
+  String describe() {
+    return "NetConnector[" + endpoint() + "] open=" + open
+         + " reachable=" + reachable + " rttMs=" + lastRttMillis
+         + " bytesSent=" + bytesSent;
+  }
+}

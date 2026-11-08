@@ -1,0 +1,116 @@
+<< lib/advantage/connect/installer-demo.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Runnable demonstration + validation of SLTechInstallerII -- the
+   Tech Installer II authority (Max Rupplin / MEARVK LLC, North Carolina, 2026+)
+   installing the actual Use of the Advantage System onto install sets and
+   settings, ceteris paribus, with authority gating and fault handling. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+<< `run` auto-links SLTechInstallerII, SLConnectStatus, SLConnectFault from
+   advantage/connect. Anchors (hand-computed): wrong holder -> code 4; correct
+   holder for 2026 -> code 0; year 2025 (before window) -> code 4; installSet
+   new -> sets=1; installSet already-present -> noop, noops=1; applySetting new
+   -> settings=1; applied=2; a fresh unauthorized installer -> code 4. >>
+class InstallerDemo {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  String metaVersion = "1.0.0";
+  int metaId = 10647;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  void main() {
+    print("== Tech Installer II : Advantage(TM) System install ==");
+
+    SLTechInstallerII inst = new SLTechInstallerII();
+    inst.init();
+    print("  card  : " + inst.credential());
+
+    < wrong holder is refused >
+    int wrong = inst.authorize("Someone Else", "Other Co", 2026);
+
+    < the licensed authority, in-window >
+    int granted = inst.authorize("Max Rupplin", "MEARVK LLC", 2026);
+    boolean auth = inst.isAuthorized();
+
+    < before the 2026 window >
+    int tooEarly = inst.authorize("Max Rupplin", "MEARVK LLC", 2025);
+    < re-grant for the valid year so later installs proceed >
+    inst.authorize("Max Rupplin", "MEARVK LLC", 2026);
+
+    < install a set, then re-install the same set (idempotent no-op) >
+    int set1 = inst.installSet("advantage-core", false);
+    int set1again = inst.installSet("advantage-core", true);
+
+    < apply a single setting, ceteris paribus >
+    int setting1 = inst.applySetting("advantage.telemetry", false);
+
+    boolean windowFuture = inst.licenceCoversYear(2030);
+    boolean windowPast = inst.licenceCoversYear(2025);
+
+    < a fresh, unauthorized installer must refuse to install >
+    SLTechInstallerII fresh = new SLTechInstallerII();
+    fresh.init();
+    int blocked = fresh.installSet("advantage-core", false);
+
+    print("  state : " + inst.describe());
+    print("  fault : " + inst.lastFault().describe(new SLConnectStatus()));
+
+    print("");
+    print("== validation ==");
+    boolean okWrong = (wrong == 4);
+    boolean okGrant = (granted == 0) && auth;
+    boolean okEarly = (tooEarly == 4);
+    boolean okSet = (set1 == 0) && (set1again == 0)
+                 && (inst.getInstallSetCount() == 1) && (inst.getNoopCount() == 1);
+    boolean okSetting = (setting1 == 0) && (inst.getSettingCount() == 1);
+    boolean okApplied = (inst.appliedCount() == 2);
+    boolean okWindow = windowFuture && !windowPast;
+    boolean okBlocked = (blocked == 4) && !fresh.isAuthorized();
+    print("  wrong holder refused ? " + okWrong);
+    print("  granted 2026         ? " + okGrant);
+    print("  year 2025 refused    ? " + okEarly);
+    print("  set + idempotent noop ? " + okSet);
+    print("  setting applied      ? " + okSetting);
+    print("  applied count == 2   ? " + okApplied);
+    print("  licence window 2026+ ? " + okWindow);
+    print("  unauthorized blocked ? " + okBlocked);
+    if (okWrong) { if (okGrant) { if (okEarly) { if (okSet) {
+      if (okSetting) { if (okApplied) { if (okWindow) { if (okBlocked) {
+        print("ALL CHECKS PASSED");
+      } } } } } } } }
+  }
+}

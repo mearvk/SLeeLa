@@ -1,0 +1,106 @@
+<< lib/advantage/connect/SLConnectFault.sleela
+   SLeeLa Standard Library Definition.
+   Definition: A structured fault record for the CONNECT medium -- the
+   library-idiomatic stand-in for an exception. Every connector records its last
+   fault here (code, subsystem, operation, human message, retryable flag,
+   attempt count) so a caller can inspect, log, and decide to retry without the
+   language-level try/catch machinery. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+<< ONE FAULT, MANY SUBSYSTEMS. A single fault shape describes a failure from any
+   class of perform -- SQL, clock, network, money. subsystem names the family,
+   operation names the call that failed, code is an SLConnectStatus value, and
+   message is a short human string. retryable mirrors SLConnectStatus.isTransient
+   but is stored so a connector can override it (e.g. a bank DECLINED is never
+   retryable even though some declines are soft). >>
+class SLConnectFault {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  String metaVersion = "1.0.0";
+  int metaId = 10641;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "Advantage";
+  String metaCorporation = "SLeeLa project";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- Fault fields ---- >
+  int code = 0;
+  String subsystem = "none";
+  String operation = "none";
+  String message = "";
+  boolean retryable = false;
+  int attempts = 0;
+
+  < Reset to a clean, no-fault state. >
+  void clear() {
+    code = 0;
+    subsystem = "none";
+    operation = "none";
+    message = "";
+    retryable = false;
+    attempts = 0;
+  }
+
+  < Record a fault. The SLConnectStatus is supplied so name/transience render >
+  < consistently without a cross-class static reference. >
+  void raise(SLConnectStatus vocab, int c, String sub, String op, String msg) {
+    code = c;
+    subsystem = sub;
+    operation = op;
+    message = msg;
+    retryable = vocab.isTransient(c);
+    attempts = attempts + 1;
+  }
+
+  < Let a connector override retryability for domain reasons (e.g. a money >
+  < DECLINED must never be retried automatically). >
+  void setRetryable(boolean r) { retryable = r; }
+
+  boolean isFaulted() { return code != 0; }
+  int getCode() { return code; }
+  String getSubsystem() { return subsystem; }
+  String getOperation() { return operation; }
+  String getMessage() { return message; }
+  boolean isRetryable() { return retryable; }
+  int getAttempts() { return attempts; }
+
+  String describe(SLConnectStatus vocab) {
+    if (code == 0) { return "Fault[none]"; }
+    return "Fault[" + subsystem + "." + operation + "]"
+         + " code=" + code + " (" + vocab.name(code) + ")"
+         + " retryable=" + retryable
+         + " attempts=" + attempts
+         + " msg=" + message;
+  }
+}

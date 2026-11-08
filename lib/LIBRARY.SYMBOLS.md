@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 11977
+library-source-files: 11986
 library-packages: 117
 module-facade-symbols: 84
-total-symbol-records: 12061
+total-symbol-records: 12070
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -14,6 +14,15 @@ advantage	SLAdvantageSequitur.sleela	lib/advantage/SLAdvantageSequitur.sleela	so
 advantage	SLAdvantageUserModel.sleela	lib/advantage/SLAdvantageUserModel.sleela	source
 advantage	SLPackage.sleela	lib/advantage/SLPackage.sleela	facade
 advantage	advantage-demo.sleela	lib/advantage/advantage-demo.sleela	source
+advantage	SLClockConnector.sleela	lib/advantage/connect/SLClockConnector.sleela	source
+advantage	SLConnectFault.sleela	lib/advantage/connect/SLConnectFault.sleela	source
+advantage	SLConnectStatus.sleela	lib/advantage/connect/SLConnectStatus.sleela	source
+advantage	SLMoneyConnector.sleela	lib/advantage/connect/SLMoneyConnector.sleela	source
+advantage	SLNetConnector.sleela	lib/advantage/connect/SLNetConnector.sleela	source
+advantage	SLSqlConnector.sleela	lib/advantage/connect/SLSqlConnector.sleela	source
+advantage	SLTechInstallerII.sleela	lib/advantage/connect/SLTechInstallerII.sleela	source
+advantage	connect-demo.sleela	lib/advantage/connect/connect-demo.sleela	source
+advantage	installer-demo.sleela	lib/advantage/connect/installer-demo.sleela	source
 advantage	lithium-cell-trade.sleela	lib/advantage/examples/advanced/network-trades/lithium-cell-trade.sleela	source
 advantage	semiconductor-trade.sleela	lib/advantage/examples/advanced/network-trades/semiconductor-trade.sleela	source
 advantage	solar-panel-trade.sleela	lib/advantage/examples/advanced/network-trades/solar-panel-trade.sleela	source

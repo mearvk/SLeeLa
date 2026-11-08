@@ -1,0 +1,178 @@
+<< lib/advantage/connect/SLSqlConnector.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The MySQL connector of the CONNECT medium. It holds connection
+   coordinates and lifecycle state in the VM, validates every call, and maps to
+   the native MySQL ABI (slsql_* -- mirrors lib/connector/mysql). Query and
+   execute defer to a host adapter (STATUS_NATIVE_ADAPTER_REQUIRED) so no live
+   database is dialed from inside the VM. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+<< NATIVE BRIDGE (documented, not dialed).
+   open    -> slsql_open(host, port, user, secret, database) : handle
+   ping    -> slsql_ping(handle)
+   execute -> slsql_execute(handle, sql) : affectedRows
+   query   -> slsql_query(handle, sql, rowSink)
+   close   -> slsql_close(handle)
+   The method named open/close here avoids the reserved Munction builtins by
+   using openLink/closeLink. Credentials are never logged; only a redacted
+   coordinate string is exposed. See connect/README.md. >>
+class SLSqlConnector {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  String metaVersion = "1.0.0";
+  int metaId = 10642;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "Advantage";
+  String metaCorporation = "SLeeLa project";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  int metaScienceRating = 7;
+  < metaNationalSchedule: wire protocol is vendor MySQL; no public statute >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- Shared medium plumbing ---- >
+  SLConnectStatus vocab;
+  SLConnectFault fault;
+
+  < ---- Connection coordinates + lifecycle ---- >
+  String host = "";
+  int port = 3306;
+  String user = "";
+  boolean hasSecret = false;
+  String database = "";
+  boolean configured = false;
+  boolean open = false;
+  int execCount = 0;
+
+  void init() {
+    vocab = new SLConnectStatus();
+    fault = new SLConnectFault();
+  }
+
+  < Set the coordinates. secretPresent is a flag, never the secret itself; the >
+  < real secret is pinned in the keystore and read by the native adapter. >
+  int configure(String h, int p, String u, boolean secretPresent, String db) {
+    if (vocab == null) { init(); }
+    fault.clear();
+    if (h == null || u == null || db == null || p <= 0 || h == "" || db == "") {
+      fault.raise(vocab, vocab.invalidArgument(), "sql", "configure", "bad coordinates");
+      return vocab.invalidArgument();
+    }
+    host = h; port = p; user = u; hasSecret = secretPresent; database = db;
+    configured = true;
+    return vocab.ok();
+  }
+
+  < Open the link (native: slsql_open). In the VM this validates state and marks >
+  < the link open; a real connection is a host-adapter responsibility. >
+  int openLink() {
+    if (vocab == null) { init(); }
+    fault.clear();
+    if (!configured) {
+      fault.raise(vocab, vocab.notConfigured(), "sql", "openLink", "configure first");
+      return vocab.notConfigured();
+    }
+    if (!hasSecret) {
+      fault.raise(vocab, vocab.unauthorized(), "sql", "openLink", "no credential pinned");
+      return vocab.unauthorized();
+    }
+    open = true;
+    return vocab.ok();
+  }
+
+  < Liveness check (native: slsql_ping). >
+  int ping() {
+    if (vocab == null) { init(); }
+    fault.clear();
+    if (!open) {
+      fault.raise(vocab, vocab.invalidState(), "sql", "ping", "link not open");
+      return vocab.invalidState();
+    }
+    return vocab.ok();
+  }
+
+  < Execute a non-query statement (native: slsql_execute). Needs a host adapter. >
+  int execute(String sql) {
+    if (vocab == null) { init(); }
+    fault.clear();
+    if (!open) {
+      fault.raise(vocab, vocab.invalidState(), "sql", "execute", "link not open");
+      return vocab.invalidState();
+    }
+    if (sql == null || sql == "") {
+      fault.raise(vocab, vocab.invalidArgument(), "sql", "execute", "empty sql");
+      return vocab.invalidArgument();
+    }
+    execCount = execCount + 1;
+    fault.raise(vocab, vocab.nativeAdapterRequired(), "sql", "execute", "adapter runs slsql_execute");
+    return vocab.nativeAdapterRequired();
+  }
+
+  < Run a row-returning query (native: slsql_query). Needs a host adapter. >
+  int query(String sql) {
+    if (vocab == null) { init(); }
+    fault.clear();
+    if (!open) {
+      fault.raise(vocab, vocab.invalidState(), "sql", "query", "link not open");
+      return vocab.invalidState();
+    }
+    if (sql == null || sql == "") {
+      fault.raise(vocab, vocab.invalidArgument(), "sql", "query", "empty sql");
+      return vocab.invalidArgument();
+    }
+    execCount = execCount + 1;
+    fault.raise(vocab, vocab.nativeAdapterRequired(), "sql", "query", "adapter runs slsql_query");
+    return vocab.nativeAdapterRequired();
+  }
+
+  < Close the link (native: slsql_close). Idempotent. >
+  int closeLink() {
+    if (vocab == null) { init(); }
+    fault.clear();
+    open = false;
+    return vocab.ok();
+  }
+
+  boolean active() { return open; }
+  boolean isNativeReady() { return false; }
+  int executeCount() { return execCount; }
+  SLConnectFault lastFault() { if (vocab == null) { init(); } return fault; }
+
+  < A redacted, log-safe coordinate string -- never the user or secret. >
+  String coordinate() {
+    return "mysql://" + host + ":" + port + "/" + database;
+  }
+
+  String describe() {
+    return "SqlConnector[" + coordinate() + "] open=" + open
+         + " execs=" + execCount + " nativeReady=" + isNativeReady();
+  }
+}

@@ -1,0 +1,121 @@
+<< lib/advantage/connect/SLConnectStatus.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The universal status vocabulary for the advantage CONNECT medium
+   -- the single set of integer outcome codes shared by every connector
+   (SQL, clock, network, money). Status codes, not exceptions, are the
+   library-wide error convention; this class names them and renders them. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+<< WHY STATUS CODES. SLeeLa the language has try/catch/throw, but the standard
+   library signals failure with integer status codes returned from methods and a
+   structured SLConnectFault record for detail. That keeps every connector
+   uniform and makes the native boundary explicit: an operation that needs a
+   host adapter returns STATUS_NATIVE_ADAPTER_REQUIRED rather than faking a
+   result. No apostrophes in comments. >>
+class SLConnectStatus {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  String metaVersion = "1.0.0";
+  int metaId = 10640;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "Advantage";
+  String metaCorporation = "SLeeLa project";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << ---- The status vocabulary ----
+     0   OK                        the operation succeeded
+     1   INVALID_ARGUMENT          a caller argument was null / out of range
+     2   INVALID_STATE             wrong lifecycle state (e.g. not open)
+     3   NOT_CONFIGURED            configure() was never called
+     4   UNAUTHORIZED              credentials/keystore rejected or missing
+     5   TIMEOUT                   the operation exceeded its deadline
+     6   UNREACHABLE               the endpoint could not be reached
+     7   PROTOCOL                  a protocol / parse / format error
+     8   DECLINED                  a well-formed request was refused (e.g. card)
+     9   NATIVE_ADAPTER_REQUIRED   needs a host adapter; not run inside the VM
+     10  INTERNAL                  an unexpected internal fault >>
+  static final int STATUS_OK = 0;
+  static final int STATUS_INVALID_ARGUMENT = 1;
+  static final int STATUS_INVALID_STATE = 2;
+  static final int STATUS_NOT_CONFIGURED = 3;
+  static final int STATUS_UNAUTHORIZED = 4;
+  static final int STATUS_TIMEOUT = 5;
+  static final int STATUS_UNREACHABLE = 6;
+  static final int STATUS_PROTOCOL = 7;
+  static final int STATUS_DECLINED = 8;
+  static final int STATUS_NATIVE_ADAPTER_REQUIRED = 9;
+  static final int STATUS_INTERNAL = 10;
+
+  < Accessor methods so other connectors read codes without cross-class static >
+  < references (which the semantic checker rejects). >
+  int ok() { return STATUS_OK; }
+  int invalidArgument() { return STATUS_INVALID_ARGUMENT; }
+  int invalidState() { return STATUS_INVALID_STATE; }
+  int notConfigured() { return STATUS_NOT_CONFIGURED; }
+  int unauthorized() { return STATUS_UNAUTHORIZED; }
+  int timeout() { return STATUS_TIMEOUT; }
+  int unreachable() { return STATUS_UNREACHABLE; }
+  int protocol() { return STATUS_PROTOCOL; }
+  int declined() { return STATUS_DECLINED; }
+  int nativeAdapterRequired() { return STATUS_NATIVE_ADAPTER_REQUIRED; }
+  int internal() { return STATUS_INTERNAL; }
+
+  boolean isOk(int code) { return code == STATUS_OK; }
+
+  << A fault is "transient" when a retry with the same input might succeed
+     (timeout, unreachable, internal). Permanent faults (invalid argument,
+     unauthorized, declined, protocol, native-adapter) should not be retried
+     blindly. >>
+  boolean isTransient(int code) {
+    if (code == STATUS_TIMEOUT) { return true; }
+    if (code == STATUS_UNREACHABLE) { return true; }
+    if (code == STATUS_INTERNAL) { return true; }
+    return false;
+  }
+
+  String name(int code) {
+    if (code == STATUS_OK) { return "OK"; }
+    if (code == STATUS_INVALID_ARGUMENT) { return "INVALID_ARGUMENT"; }
+    if (code == STATUS_INVALID_STATE) { return "INVALID_STATE"; }
+    if (code == STATUS_NOT_CONFIGURED) { return "NOT_CONFIGURED"; }
+    if (code == STATUS_UNAUTHORIZED) { return "UNAUTHORIZED"; }
+    if (code == STATUS_TIMEOUT) { return "TIMEOUT"; }
+    if (code == STATUS_UNREACHABLE) { return "UNREACHABLE"; }
+    if (code == STATUS_PROTOCOL) { return "PROTOCOL"; }
+    if (code == STATUS_DECLINED) { return "DECLINED"; }
+    if (code == STATUS_NATIVE_ADAPTER_REQUIRED) { return "NATIVE_ADAPTER_REQUIRED"; }
+    if (code == STATUS_INTERNAL) { return "INTERNAL"; }
+    return "UNKNOWN";
+  }
+}

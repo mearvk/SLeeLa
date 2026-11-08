@@ -1,0 +1,202 @@
+<< lib/advantage/connect/SLTechInstallerII.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Tech Installer II -- a credentialed installer authority that
+   applies the actual Use of the Advantage(TM) System onto an Install Set or a
+   Setting, under ceteris-paribus semantics (hold all else equal: change only
+   what the install declares, leave every unrelated setting untouched). The
+   authority is held by Max Rupplin of MEARVK LLC, North Carolina, 2026 and
+   forward. Installs run through the connect medium and report via status codes
+   and a fault record, never by throwing. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+<< CETERIS PARIBUS INSTALL. An install targets exactly one of two kinds:
+     - an INSTALL SET  : a named bundle of components applied as a unit;
+     - a SETTING       : a single named configuration applied in place.
+   Either way the installer changes ONLY the declared target and treats all
+   other state as fixed. Each install is idempotent (re-applying the same target
+   is a no-op OK) and gated by three things: a valid 2026+ licence window, the
+   MEARVK LLC authority, and an explicit per-target authorization. Nothing is
+   dialed from the VM; a real install hands off to the connect medium and a host
+   adapter. No apostrophes in comments. >>
+class SLTechInstallerII {
+  << ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
+     Executive-class artifact: full record -- identity + legality
+     (metaNationalSchedule) + fiduciary (copyright/trademark/corporation) +
+     probation-of-intent (metaOrigin). Values are faithful to the stated origin;
+     unknown facts would be "none"/"unknown", never fabricated. >>
+  String metaVersion = "2.0.0";
+  int metaId = 10646;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "Copyright 2026 MEARVK LLC";
+  String metaTrademark = "Advantage";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "National (United States; North Carolina)";
+  String metaBirthDate = "2026-11-08";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  << metaNationalSchedule: a North Carolina limited liability company is formed
+     and governed under the NC Limited Liability Company Act, N.C.G.S. Chapter
+     57D. This names the real governing statute for the authority holder; it is
+     not a claim of any specific licence beyond it. >>
+  String metaNationalSchedule = "N.C.G.S. Chapter 57D (NC Limited Liability Company Act)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << ---- Authority record ----
+     The holder, the corporation, the jurisdiction, the tier, and the licence
+     window. Fixed by construction; exposed read-only through accessors. >>
+  String holder = "Max Rupplin";
+  String corporation = "MEARVK LLC";
+  String jurisdiction = "North Carolina, United States";
+  String tier = "Tech Installer II";
+  int licenceFromYear = 2026;
+  < 0 means open-ended (2026 and forward) >
+  int licenceToYear = 0;
+
+  < ---- Shared medium plumbing + install tally ---- >
+  SLConnectStatus vocab;
+  SLConnectFault fault;
+  boolean authorized = false;
+  int installSetCount = 0;
+  int settingCount = 0;
+  int noopCount = 0;
+  String lastTargetKind = "none";
+  String lastTargetName = "none";
+
+  void init() {
+    vocab = new SLConnectStatus();
+    fault = new SLConnectFault();
+  }
+
+  < The licence covers a given calendar year (2026+, open-ended). >
+  boolean licenceCoversYear(int year) {
+    if (year < licenceFromYear) { return false; }
+    if (licenceToYear == 0) { return true; }
+    return year <= licenceToYear;
+  }
+
+  << Grant the authority for a year. Requires the real holder + corporation and a
+     covered year; otherwise UNAUTHORIZED. This is the single gate every install
+     checks. >>
+  int authorize(String who, String corp, int year) {
+    if (vocab == null) { init(); }
+    fault.clear();
+    if (who == null || corp == null) {
+      fault.raise(vocab, vocab.invalidArgument(), "installer", "authorize", "missing identity");
+      return vocab.invalidArgument();
+    }
+    boolean whoOk = (who == holder) && (corp == corporation);
+    if (!whoOk) {
+      fault.raise(vocab, vocab.unauthorized(), "installer", "authorize", "not the licensed authority");
+      return vocab.unauthorized();
+    }
+    if (!licenceCoversYear(year)) {
+      fault.raise(vocab, vocab.unauthorized(), "installer", "authorize", "year outside licence window");
+      return vocab.unauthorized();
+    }
+    authorized = true;
+    return vocab.ok();
+  }
+
+  << Install the actual Use of the Advantage System onto an INSTALL SET.
+     Ceteris paribus: only this set changes. Idempotent -- re-applying the same
+     set name is a no-op OK (counted separately). A real install hands off to the
+     connect medium; here it records the applied target. >>
+  int installSet(String setName, boolean alreadyPresent) {
+    if (vocab == null) { init(); }
+    fault.clear();
+    if (!authorized) {
+      fault.raise(vocab, vocab.unauthorized(), "installer", "installSet", "authorize first");
+      return vocab.unauthorized();
+    }
+    if (setName == null || setName == "") {
+      fault.raise(vocab, vocab.invalidArgument(), "installer", "installSet", "no set name");
+      return vocab.invalidArgument();
+    }
+    lastTargetKind = "install-set";
+    lastTargetName = setName;
+    if (alreadyPresent) {
+      noopCount = noopCount + 1;
+      return vocab.ok();
+    }
+    installSetCount = installSetCount + 1;
+    return vocab.ok();
+  }
+
+  << Apply the Advantage System to a single SETTING in place. Ceteris paribus:
+     only this setting changes, every other setting is held equal. Idempotent. >>
+  int applySetting(String settingName, boolean alreadyEqual) {
+    if (vocab == null) { init(); }
+    fault.clear();
+    if (!authorized) {
+      fault.raise(vocab, vocab.unauthorized(), "installer", "applySetting", "authorize first");
+      return vocab.unauthorized();
+    }
+    if (settingName == null || settingName == "") {
+      fault.raise(vocab, vocab.invalidArgument(), "installer", "applySetting", "no setting name");
+      return vocab.invalidArgument();
+    }
+    lastTargetKind = "setting";
+    lastTargetName = settingName;
+    if (alreadyEqual) {
+      noopCount = noopCount + 1;
+      return vocab.ok();
+    }
+    settingCount = settingCount + 1;
+    return vocab.ok();
+  }
+
+  < Total distinct installs actually applied (sets + settings, excluding no-ops). >
+  int appliedCount() { return installSetCount + settingCount; }
+
+  boolean isAuthorized() { return authorized; }
+  String getHolder() { return holder; }
+  String getCorporation2() { return corporation; }
+  String getJurisdiction() { return jurisdiction; }
+  String getTier() { return tier; }
+  int getInstallSetCount() { return installSetCount; }
+  int getSettingCount() { return settingCount; }
+  int getNoopCount() { return noopCount; }
+  SLConnectFault lastFault() { if (vocab == null) { init(); } return fault; }
+
+  < A log-safe credential card. >
+  String credential() {
+    return tier + " :: " + holder + " / " + corporation
+         + " :: " + jurisdiction + " :: licence " + licenceFromYear + "+";
+  }
+
+  String describe() {
+    return "TechInstallerII[" + holder + " @ " + corporation + "]"
+         + " authorized=" + authorized
+         + " sets=" + installSetCount
+         + " settings=" + settingCount
+         + " noops=" + noopCount
+         + " last=" + lastTargetKind + ":" + lastTargetName;
+  }
+}
