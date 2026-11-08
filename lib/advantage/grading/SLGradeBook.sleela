@@ -1,0 +1,113 @@
+<< lib/advantage/grading/SLGradeBook.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The grade book -- the top-level face of the sophistication
+   circuit grader, producing ratings for each module and every set. >>
+#sleela 2.5
+material;
+< The grade book wraps a SLSophisticationCircuit and exposes the whole result >
+< as ratings: per-module (via the circuit's modules) and per-set (all, winning, >
+< losing, grader, absolute). It also computes an OVERALL rating for the field >
+< and a win rate, so one call summarizes "how sophisticated is this collection, >
+< and who won/lost". Because a grader module is itself gradable, the grader set >
+< is meta-graded by the same scale. >
+class SLGradeBook {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10553;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  SLSophisticationCircuit circuit;
+
+  void configure(SLSophisticationCircuit c) { circuit = c; }
+
+  SLSophisticationCircuit getCircuit() { return circuit; }
+
+  < ---- Set accessors (each an SLGradeSet with its own rating) ---- >
+  SLGradeSet all()      { return circuit.allModules(); }
+  SLGradeSet winning()  { return circuit.winningModules(); }
+  SLGradeSet losing()   { return circuit.losingModules(); }
+  SLGradeSet graders()  { return circuit.graderModules(); }
+  SLGradeSet absolutes(){ return circuit.absoluteModules(); }
+
+  < Overall field tier 1..10 (the rating of the whole collection). >
+  int overallTier() {
+    SLGradeSet a = all();
+    return a.tier();
+  }
+
+  String overallLetter() {
+    SLGradeSet a = all();
+    return a.letter();
+  }
+
+  < Win rate as a percentage: winning modules over all modules. >
+  int winRate() {
+    SLGradeSet a = all();
+    if (a.size() == 0) { return 0; }
+    SLGradeSet w = winning();
+    return w.size() * 100 / a.size();
+  }
+
+  < Rating of an arbitrary externally-supplied set, so callers can grade >
+  < "any set of modules" they assemble themselves, not just the circuit's. >
+  String rateSet(SLGradeSet s) { return s.letter() + s.tier(); }
+
+  < The champion module's rating, or "none" if the field is empty. >
+  String championRating() {
+    SLModuleGrade c = circuit.champion();
+    if (c == null) { return "none"; }
+    return c.letter() + c.tier();
+  }
+
+  String describe() {
+    SLGradeSet a = all();
+    SLGradeSet w = winning();
+    SLGradeSet l = losing();
+    SLGradeSet g = graders();
+    SLGradeSet ab = absolutes();
+    return "gradebook: overall=" + overallLetter() + overallTier()
+         + " winRate=" + winRate() + "%"
+         + " | all=" + a.size() + " (" + rateSet(a) + ")"
+         + " winning=" + w.size() + " (" + rateSet(w) + ")"
+         + " losing=" + l.size() + " (" + rateSet(l) + ")"
+         + " grader=" + g.size() + " (" + rateSet(g) + ")"
+         + " absolute=" + ab.size() + " (" + rateSet(ab) + ")";
+  }
+}

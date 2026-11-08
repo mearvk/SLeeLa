@@ -19,6 +19,7 @@
 6. [Cross-cutting conventions](#6-cross-cutting-conventions)
 7. [Class index](#7-class-index)
 8. [Vertical-integration subject (`integration/`)](#8-vertical-integration-subject-integration)
+9. [Sophistication grading subject (`grading/`)](#9-sophistication-grading-subject-grading)
 
 ---
 
@@ -239,10 +240,15 @@ from `math/SLTradeMath` to avoid cross-directory class-name ambiguity.
 | `SLTrialCompartment` | integration | `integration/SLTrialCompartment.sleela` |
 | `SLNewtonMedianTray` | integration | `integration/SLNewtonMedianTray.sleela` |
 | `SLVerticalIntegration` | integration | `integration/SLVerticalIntegration.sleela` |
+| `SLModuleGrade` | grading | `grading/SLModuleGrade.sleela` |
+| `SLGradeSet` | grading | `grading/SLGradeSet.sleela` |
+| `SLSophisticationCircuit` | grading | `grading/SLSophisticationCircuit.sleela` |
+| `SLGradeBook` | grading | `grading/SLGradeBook.sleela` |
 
 Runnable demos (sibling-linked, each validates its subject):
 `advantage-demo.sleela`, `math/trade-math-demo.sleela`,
-`physics/physics-demo.sleela`, `integration/integration-demo.sleela`.
+`physics/physics-demo.sleela`, `integration/integration-demo.sleela`,
+`grading/grading-demo.sleela`.
 
 ---
 
@@ -321,4 +327,67 @@ newton tray: samples 3,1,9,5,7 → sorted 1,3,5,7,9  → median 5, spread 8
 vertical flow: store 8 at supply, push downstream  → 8 units into the bay
 aggregates: 8 compartments, maxDepth 2, capacity 100160, relevance 52
 system sophistication = 8 + 3·2 + 52/4 = 27
+```
+
+---
+
+## 9. Sophistication grading subject (`grading/`)
+
+A **sophistication circuit grader**: it scores each module and rates any set of
+modules — winning, losing, grader, and absolute — producing letter + tier
+ratings throughout.
+
+### 9.1 Terms
+
+| Term | Definition | Where |
+|------|------------|-------|
+| **Module (gradable)** | Any gradable unit, represented by a name and a raw **sophistication score**. Anything in the package (onion, compartment, vertical model, or another grader) plugs in by its score. | `SLModuleGrade` |
+| **Score** | The raw sophistication number fed into the grader. | `SLModuleGrade.score` |
+| **Rating** | The derived grade on two scales: a **tier** (1–10, roughly score/10) and a **letter** (S/A/B/C/D/F from the tier). | `SLModuleGrade.tier` / `letter` |
+| **Role** | How a module participates: `0` normal, `1` grader (it grades others — and is itself gradable), `2` absolute (judged against a fixed bar, not the field). | `SLModuleGrade.role` |
+| **Circuit grader** | The engine: registers modules, holds the win/lose/absolute thresholds, and partitions the field into named sets. | `SLSophisticationCircuit` |
+| **Win bar / lose bar** | Score thresholds: a module wins if `score ≥ winBar`, loses if `score < loseBar`. | `SLSophisticationCircuit.winBar` / `loseBar` |
+| **Absolute bar** | A fixed standard: an absolute-role module passes only if `score ≥ absoluteBar`, independent of the field. | `SLSophisticationCircuit.absoluteBar` |
+| **Champion** | The single highest-scoring module in the field. | `SLSophisticationCircuit.champion` |
+| **Grade set** | A named collection of graded modules with its own aggregate rating (size, mean/best/worst, set letter+tier). | `SLGradeSet` |
+| **Grade book** | The top-level face: per-module and per-set ratings, an overall field rating, win rate, and the rating of any externally-supplied set. | `SLGradeBook` |
+
+### 9.2 The five sets
+
+| Set | Membership rule | Accessor |
+|-----|-----------------|----------|
+| **all** | every registered module (any set of modules) | `SLGradeBook.all` |
+| **winning** | `score ≥ winBar` | `SLGradeBook.winning` |
+| **losing** | `score < loseBar` | `SLGradeBook.losing` |
+| **grader** | `role == grader` (meta-graded by the same scale) | `SLGradeBook.graders` |
+| **absolute** | `role == absolute` **and** `score ≥ absoluteBar` | `SLGradeBook.absolutes` |
+
+Each set is an `SLGradeSet`, so it carries its own rating; `SLGradeBook.rateSet`
+rates any set a caller assembles independently.
+
+### 9.3 Rating scale
+
+| Tier | Letter | Score band |
+|-----:|:------:|-----------|
+| 10 | S | 100+ |
+| 9 | A | 90–99 |
+| 8 | B | 80–89 |
+| 6–7 | C | 60–79 |
+| 4–5 | D | 40–59 |
+| 1–3 | F | below 40 |
+
+### 9.4 Worked example (validated in `grading-demo`)
+
+Eight modules graded at `win = 70`, `lose = 40`, `absolute = 80`:
+
+```
+onion 65(C6)  trade 92(A9)  physics 78(C7)  integration 100(S10)
+weak 30(F3)   judge 85(B8, grader)  standard 88(B8, absolute)  flawed-abs 55(D5, absolute)
+
+all:      8 modules, mean 74  -> C7      win rate 62%
+winning:  5 (trade, physics, integration, judge, standard), mean 88 -> B8
+losing:   1 (weak)                                                  -> F3
+grader:   1 (judge)                                                 -> B8
+absolute: 1 (standard; flawed-abs excluded — below the 80 bar)      -> B8
+champion: integration (S10)
 ```

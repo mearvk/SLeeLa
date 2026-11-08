@@ -930,6 +930,26 @@
       "sha256": "efc019ffe04d00e514f1fab16ece120c22aef0f883ba03a9f7ccadea308b1225"
     },
     {
+      "path": "lib/advantage/grading/SLGradeBook.sleela",
+      "sha256": "8445f3013319f33db9431597a4ae902e463f3747131145e53357818feaafa2f9"
+    },
+    {
+      "path": "lib/advantage/grading/SLGradeSet.sleela",
+      "sha256": "72724c4f53d68cea82979a0a51f1bf61e40f904234baf71a22dc9e6bfec2b34d"
+    },
+    {
+      "path": "lib/advantage/grading/SLModuleGrade.sleela",
+      "sha256": "f8c9faf471e08971f71661c9f0ca037172b3f4b3f604257e073988dfa9634104"
+    },
+    {
+      "path": "lib/advantage/grading/SLSophisticationCircuit.sleela",
+      "sha256": "37ae56b13c952e6ddcd081838c92cbfb76e30f474d529a0d0bcb502c8f40ad78"
+    },
+    {
+      "path": "lib/advantage/grading/grading-demo.sleela",
+      "sha256": "e5745991638118c8335559ebe679d36004452749560fdd4d9586ae672e866080"
+    },
+    {
       "path": "lib/advantage/integration/SLCompartment.sleela",
       "sha256": "9a464661667227466fcaf733eab22aa537b7f53012c57e56b29c06f7f52eef82"
     },

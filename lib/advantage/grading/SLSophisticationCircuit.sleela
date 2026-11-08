@@ -1,0 +1,158 @@
+<< lib/advantage/grading/SLSophisticationCircuit.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The sophistication circuit grader -- registers modules, runs the
+   grading circuit, and partitions them into winning/losing/grader/absolute
+   sets with ratings. >>
+#sleela 2.5
+material;
+< The circuit grader. Register any number of modules (each a SLModuleGrade), >
+< set the circuit thresholds (win bar, lose bar, absolute bar), then `grade()` >
+< to partition them into named sets: >
+<   winning   -- score >= winBar >
+<   losing    -- score <  loseBar >
+<   grader    -- role == grader (modules that grade others; meta-graded too) >
+<   absolute  -- role == absolute AND score >= absoluteBar (pass the fixed bar) >
+<   all       -- every registered module >
+< The absolute set is judged against a FIXED bar, independent of the field; the >
+< winning/losing sets are the relative outcome of the same run. Each set is an >
+< SLGradeSet, so every set carries its own aggregate rating. >
+class SLSophisticationCircuit {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 10552;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-08";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-08";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- Registered modules ---- >
+  SLModuleGrade[] modules;
+  int count;
+  int cap;
+
+  < ---- Circuit thresholds ---- >
+  int winBar;
+  int loseBar;
+  int absoluteBar;
+
+  void configure(int capacity, int win, int lose, int absolute) {
+    cap = capacity;
+    if (cap < 1) { cap = 1; }
+    modules = new SLModuleGrade[cap];
+    count = 0;
+    winBar = win;
+    loseBar = lose;
+    absoluteBar = absolute;
+  }
+
+  int getWinBar() { return winBar; }
+  int getLoseBar() { return loseBar; }
+  int getAbsoluteBar() { return absoluteBar; }
+
+  < Register a pre-built module grade. >
+  void register(SLModuleGrade g) {
+    if (count >= cap) { return; }
+    modules[count] = g;
+    count = count + 1;
+  }
+
+  < Convenience: build and register a module from name/score/role. >
+  SLModuleGrade add(String label, int score, int role) {
+    SLModuleGrade g = new SLModuleGrade();
+    g.configure(label, score, role);
+    register(g);
+    return g;
+  }
+
+  int size() { return count; }
+
+  SLModuleGrade moduleAt(int i) {
+    if (i < 0) { return null; }
+    if (i >= count) { return null; }
+    return modules[i];
+  }
+
+  < ---- Partition the field into a named set by the circuit rules ---- >
+  < kind: 0 all, 1 winning, 2 losing, 3 grader, 4 absolute. >
+  SLGradeSet buildSet(String name, int kind) {
+    SLGradeSet set = new SLGradeSet();
+    set.configure(name, count);
+    int i = 0;
+    while (i < count) {
+      SLModuleGrade g = modules[i];
+      boolean take = false;
+      if (kind == 0) { take = true; }
+      else if (kind == 1) { if (g.getScore() >= winBar) { take = true; } }
+      else if (kind == 2) { if (g.getScore() < loseBar) { take = true; } }
+      else if (kind == 3) { if (g.isGrader()) { take = true; } }
+      else if (kind == 4) {
+        if (g.isAbsolute()) { if (g.getScore() >= absoluteBar) { take = true; } }
+      }
+      if (take) { set.add(g); }
+      i = i + 1;
+    }
+    return set;
+  }
+
+  SLGradeSet allModules()      { return buildSet("all", 0); }
+  SLGradeSet winningModules()  { return buildSet("winning", 1); }
+  SLGradeSet losingModules()   { return buildSet("losing", 2); }
+  SLGradeSet graderModules()   { return buildSet("grader", 3); }
+  SLGradeSet absoluteModules() { return buildSet("absolute", 4); }
+
+  < The single best module in the field (highest score); null if empty. >
+  SLModuleGrade champion() {
+    if (count == 0) { return null; }
+    SLModuleGrade best = modules[0];
+    int i = 1;
+    while (i < count) {
+      SLModuleGrade g = modules[i];
+      if (g.getScore() > best.getScore()) { best = g; }
+      i = i + 1;
+    }
+    return best;
+  }
+
+  String describe() {
+    SLGradeSet w = winningModules();
+    SLGradeSet l = losingModules();
+    return "circuit: modules=" + count
+         + " winBar=" + winBar + " loseBar=" + loseBar
+         + " absoluteBar=" + absoluteBar
+         + " | winning=" + w.size() + " losing=" + l.size();
+  }
+}

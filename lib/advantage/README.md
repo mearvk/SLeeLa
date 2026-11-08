@@ -86,6 +86,21 @@ may embed its own sub-model.
 
 Defined term-by-term in [`DEFINITIONS.md`](./DEFINITIONS.md#8-vertical-integration-subject-integration).
 
+### `grading/` subfolder — sophistication circuit grader
+
+A grader that scores **each module** and rates **any set of modules** —
+winning, losing, grader, and absolute sets — with letter + tier ratings.
+
+| File | Class | Purpose |
+|------|-------|---------|
+| `grading/SLModuleGrade.sleela` | `SLModuleGrade` | One graded module: score → 1–10 tier + S/A/B/C/D/F letter; role (normal/grader/absolute) |
+| `grading/SLGradeSet.sleela` | `SLGradeSet` | A named set of modules with its own aggregate rating (mean/best/worst, set letter+tier) |
+| `grading/SLSophisticationCircuit.sleela` | `SLSophisticationCircuit` | The circuit grader: register modules, apply win/lose/absolute thresholds, partition into sets, find the champion |
+| `grading/SLGradeBook.sleela` | `SLGradeBook` | Top-level: per-module & per-set ratings, overall field rating, win rate, rating of any supplied set |
+| `grading/grading-demo.sleela` | `GradingDemo` | Runnable demo + validation (`main`) |
+
+Defined term-by-term in [`DEFINITIONS.md`](./DEFINITIONS.md#9-sophistication-grading-subject-grading).
+
 ## The two models
 
 - **User's model** hides the onion. State a dividend and the model it respects,
@@ -151,6 +166,7 @@ Full definitions, explanations, ASCII sketches, and worked examples are in
 ./working-binaries/sleela run lib/advantage/math/trade-math-demo.sleela  # trade math subject
 ./working-binaries/sleela run lib/advantage/physics/physics-demo.sleela  # trust-field subject
 ./working-binaries/sleela run lib/advantage/integration/integration-demo.sleela  # vertical integration
+./working-binaries/sleela run lib/advantage/grading/grading-demo.sleela  # sophistication grader
 ```
 
 `run` auto-links the sibling classes in each directory (no imports needed).
