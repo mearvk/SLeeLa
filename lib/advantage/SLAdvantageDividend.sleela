@@ -56,23 +56,62 @@ class SLAdvantageDividend {
   String label;
   < the model (frame of reference) it is held with respect to >
   String model;
+  < the party to whose advantage the model is tuned >
+  String owner;
   < the starting value before any layer is applied >
   int base;
   < the running value as layers are applied >
   int current;
 
+  < ---- Original snapshot, captured at configure() for full restitute ---- >
+  String originalLabel;
+  String originalModel;
+  String originalOwner;
+  int originalBase;
+
   void configure(String lbl, String mdl, int baseValue) {
     label = lbl;
     model = mdl;
+    owner = "unknown";
     base = baseValue;
     current = baseValue;
+    snapshot();
+  }
+
+  < Record the current identity as the restitution point. >
+  void snapshot() {
+    originalLabel = label;
+    originalModel = model;
+    originalOwner = owner;
+    originalBase = base;
   }
 
   String getLabel() { return label; }
   String getModel() { return model; }
+  String getOwner() { return owner; }
+  void setOwner(String o) { owner = o; }
   int getBase() { return base; }
   int getCurrent() { return current; }
   void setCurrent(int v) { current = v; }
+
+  < ---- Dynamic update: re-point the model without losing the snapshot. ---- >
+  < Pass null for any field to leave it unchanged. The original snapshot is >
+  < preserved so a later restitute() can undo every change at once. >
+  void updateModel(String newModel, String newLabel, int newBase) {
+    if (newModel != null) { model = newModel; }
+    if (newLabel != null) { label = newLabel; }
+    base = newBase;
+    current = newBase;
+  }
+
+  < ---- Full restitute: restore the dividend to its original identity. ---- >
+  void restitute() {
+    label = originalLabel;
+    model = originalModel;
+    owner = originalOwner;
+    base = originalBase;
+    current = originalBase;
+  }
 
   < The net advantage: how far the dividend has moved from its base. >
   int advantage() { return current - base; }
@@ -81,7 +120,8 @@ class SLAdvantageDividend {
   void rebase() { current = base; }
 
   String describe() {
-    return "dividend '" + label + "' wrt model '" + model + "': base=" + base
-         + " current=" + current + " advantage=" + advantage();
+    return "dividend '" + label + "' wrt model '" + model + "' (owner '"
+         + owner + "'): base=" + base + " current=" + current
+         + " advantage=" + advantage();
   }
 }

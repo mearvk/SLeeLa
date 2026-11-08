@@ -63,6 +63,9 @@ class SLAdvantageUserModel {
     engine.init(dividendLabel, model, baseValue);
   }
 
+  < Declare who owns this advantage (the party it is tuned to favor). >
+  void ownedBy(String ownerName) { engine.setOwner(ownerName); }
+
   < Three plain dials in the user's language. Each maps to onion layers. >
   < grow   -> additions layer; bigger upside. >
   void grow(int amount)   { engine.setAdditions(amount); }
@@ -86,6 +89,19 @@ class SLAdvantageUserModel {
   int advantageHarder(int tries) {
     return engine.iterate(tries);
   }
+
+  < ---- Dynamically update the model, to the owner's advantage ---- >
+  < Re-point the dividend to a new model / base at runtime without losing the >
+  < original. Pass null for newModel to keep the current model name. >
+  void updateModel(String newModel, int newBase) {
+    engine.updateModel(newModel, null, newBase);
+  }
+
+  < Tip the whole model further in the owner's favor by a simple strength. >
+  void favorMe(int strength) { engine.favorOwner(strength); }
+
+  < ---- Full restitute: undo every change, back to the original model ---- >
+  void restitute() { engine.restitute(); }
 
   < Read the outcome in plain terms. >
   int currentValue() { return engine.getDividend().getCurrent(); }

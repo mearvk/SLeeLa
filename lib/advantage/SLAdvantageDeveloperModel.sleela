@@ -71,6 +71,15 @@ class SLAdvantageDeveloperModel {
     passes = 0;
   }
 
+  < Name the party to whose advantage the model is tuned, and re-snapshot so >
+  < the owner is part of the restitution point. >
+  void setOwner(String ownerName) {
+    dividend.setOwner(ownerName);
+    dividend.snapshot();
+  }
+
+  String getOwner() { return dividend.getOwner(); }
+
   < Direct access to the layered machine. >
   SLAdvantageSequitur getOnion() { return onion; }
   SLAdvantageDividend getDividend() { return dividend; }
@@ -117,6 +126,41 @@ class SLAdvantageDeveloperModel {
       n = n + 1;
     }
     return best;
+  }
+
+  < ---- Dynamically alter or update the model ---- >
+  < Re-point the dividend to a new model / label / base at runtime. The onion >
+  < shape is preserved; only the frame of reference and starting value change. >
+  < Pass null for model or label to leave that field unchanged. The original >
+  < identity captured at init() is preserved so restitute() can fully undo it. >
+  void updateModel(String newModel, String newLabel, int newBase) {
+    dividend.updateModel(newModel, newLabel, newBase);
+  }
+
+  < Dynamically bias the whole model toward the owner's advantage by a >
+  < non-negative strength. Returns the net contribution gained for the owner. >
+  < This is an ALTERATION, not a reset -- it stacks on the current shape until >
+  < restitute() is called. >
+  int favorOwner(int strength) {
+    return onion.favorOwner(strength);
+  }
+
+  < ---- Full restitute ---- >
+  < Restore BOTH the dividend's identity and the onion's shape to the state >
+  < captured at init()/setOwner()/snapshotShape(), and clear the pass counter. >
+  < A complete undo of every dynamic alteration, to the owner's benefit of a >
+  < clean, known-good baseline. >
+  void restitute() {
+    onion.restitute();
+    dividend.restitute();
+    passes = 0;
+  }
+
+  < Commit the current altered state as the NEW restitution baseline, so a >
+  < later restitute() returns here rather than to the init() state. >
+  void commitBaseline() {
+    onion.snapshotShape();
+    dividend.snapshot();
   }
 
   < Current net advantage of the dividend. >

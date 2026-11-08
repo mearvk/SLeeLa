@@ -46,6 +46,35 @@ order. The layers form an **onion**, outer skin to inner core:
 Both operate on the same `SLAdvantageSequitur` + `SLAdvantageDividend` engine —
 the user's model is a thin, friendly skin over the developer's model.
 
+## Dynamically altering the model (to the owner's advantage)
+
+The model can be re-shaped, re-pointed, and fully restored at runtime:
+
+- `setOwner(name)` / `ownedBy(name)` — name the party the model is tuned to
+  favor. This also re-snapshots, folding the owner into the restitution point.
+- `updateModel(model, label, base)` (developer) / `updateModel(model, base)`
+  (user) — re-point the dividend onto a new frame of reference and starting
+  value at runtime. The onion shape is preserved and the original identity is
+  retained for restitution. Pass `null` to leave a field unchanged.
+- `favorOwner(strength)` (developer) / `favorMe(strength)` (user) — a dynamic
+  alteration that tips the model toward the owner: the growth-side layers
+  (`maths`, `additions`, `regrouping`) each gain `+strength` and a cost held in
+  `subtraction` is softened toward zero by up to `strength`. It never flips a
+  cost into a gain, and it leaves `review`, `concerns`, and `iteration`
+  untouched — favoring must not fabricate a clean review or silence a concern.
+  Returns the net contribution gained.
+- `commitBaseline()` — adopt the current (altered) state as the new restitution
+  point, so a later `restitute()` returns here instead of to the `init()` state.
+- `restitute()` — **full restitute**: restore *both* the dividend's identity
+  (label, model, owner, base) *and* the entire onion shape to the captured
+  baseline, and clear the pass counter. A complete, known-good undo of every
+  dynamic alteration.
+
+The demo's final sections exercise all of this: a baseline advantage of 10,
+`favorOwner(4)` raising it to 26 (shape gain +16), an `updateModel` onto a
+promo model, and a `restitute` that returns the model and advantage to their
+committed baseline.
+
 ## Run it
 
 ```sh

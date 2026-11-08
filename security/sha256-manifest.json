@@ -903,11 +903,11 @@
     },
     {
       "path": "lib/advantage/SLAdvantageDeveloperModel.sleela",
-      "sha256": "6a360c0f2965aece70f26db664d8d20ff3de8380fd067b85fdec346e4b860c90"
+      "sha256": "9b043fafd13d138cb9dd1da13c34b6908219b7ef760f13bdcae499d8bd077d7c"
     },
     {
       "path": "lib/advantage/SLAdvantageDividend.sleela",
-      "sha256": "caadd1766a0383cf79fd9d3d14f75cc54bef20a883db490dd934e90364fe5433"
+      "sha256": "ff0d5ea450308342a7ff465fd49beec443ed4707b52a153d0b054b7cf7c97393"
     },
     {
       "path": "lib/advantage/SLAdvantageLayer.sleela",
@@ -915,11 +915,11 @@
     },
     {
       "path": "lib/advantage/SLAdvantageSequitur.sleela",
-      "sha256": "f27b6b5ace14818eb9a326a494297af75f073d9b47893e674312268cb635533e"
+      "sha256": "b0a5a0044d7971a21a259685ad86ed0b13e4acabb0e809bc8087147cfe15e94d"
     },
     {
       "path": "lib/advantage/SLAdvantageUserModel.sleela",
-      "sha256": "9365327905e3019ed91966e6a9ab908b42832b90140824eef52fe059cd8335d7"
+      "sha256": "dd2679bdeccbd104f37b09e11729ee6e0e9a2e566f59e7c1856448b141bd97ce"
     },
     {
       "path": "lib/advantage/SLPackage.sleela",
@@ -927,7 +927,7 @@
     },
     {
       "path": "lib/advantage/advantage-demo.sleela",
-      "sha256": "57b1d8650273f9373c8012bd7646a916bf4c3be9ca81c32475e1556bac475d72"
+      "sha256": "efc019ffe04d00e514f1fab16ece120c22aef0f883ba03a9f7ccadea308b1225"
     },
     {
       "path": "lib/alphabet/Alphabet.sleela",

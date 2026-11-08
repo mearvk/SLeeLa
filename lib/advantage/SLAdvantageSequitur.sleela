@@ -64,6 +64,8 @@ class SLAdvantageSequitur {
   int count;
   < current depth (0..count-1) >
   int cursor;
+  < original per-layer contributions, captured for full restitute >
+  int[] original;
 
   < Build the standard eight-layer Sequitur. Contributions are the DEFAULT >
   < shape of the onion; callers may retune any layer via layerAt()/setContribution. >
@@ -103,6 +105,21 @@ class SLAdvantageSequitur {
     SLAdvantageLayer l7 = new SLAdvantageLayer();
     l7.configure(7, "iteration", "loop", 0);
     layers[7] = l7;
+
+    snapshotShape();
+  }
+
+  < Capture the current onion shape (each layer's contribution) as the >
+  < restitution point. Called after buildStandard and callable again after a >
+  < caller deliberately commits a new baseline shape. >
+  void snapshotShape() {
+    original = new int[count];
+    int i = 0;
+    while (i < count) {
+      SLAdvantageLayer l = layers[i];
+      original[i] = l.getContribution();
+      i = i + 1;
+    }
   }
 
   int size() { return count; }
@@ -143,6 +160,66 @@ class SLAdvantageSequitur {
   void tune(int d, int contribution) {
     SLAdvantageLayer l = layerAt(d);
     if (l != null) { l.setContribution(contribution); }
+  }
+
+  < ---- Full restitute: restore every layer to its snapshot shape ---- >
+  < Undoes all dynamic retuning since the last snapshotShape(), returning the >
+  < onion to its captured baseline. The cursor returns to the outer skin. >
+  void restitute() {
+    if (original == null) { return; }
+    int i = 0;
+    while (i < count) {
+      SLAdvantageLayer l = layers[i];
+      l.setContribution(original[i]);
+      l.resetVisit();
+      i = i + 1;
+    }
+    cursor = 0;
+  }
+
+  < ---- Favor the owner: bias the onion toward the owner's advantage ---- >
+  < A dynamic alteration that nudges the growth-side layers up and softens the >
+  < loss-side layers, by a non-negative `strength`. Concretely: additions and >
+  < the quantitative core gain +strength; a subtraction (a cost, held as a >
+  < negative) is softened toward zero by up to strength; regrouping recovers >
+  < +strength via reorganization. Validate/risk/loop layers are left untouched >
+  < because favoring must not fabricate a clean review or silence a concern. >
+  < Returns the net change in total contribution applied to the owner's favor. >
+  int favorOwner(int strength) {
+    if (strength < 0) { strength = 0 - strength; }
+    int before = totalContribution();
+
+    SLAdvantageLayer maths = layers[3];
+    maths.setContribution(maths.getContribution() + strength);
+
+    SLAdvantageLayer adds = layers[4];
+    adds.setContribution(adds.getContribution() + strength);
+
+    < Soften a cost (negative) toward zero, but never flip its sign. >
+    SLAdvantageLayer subs = layers[5];
+    int s = subs.getContribution();
+    if (s < 0) {
+      int softened = s + strength;
+      if (softened > 0) { softened = 0; }
+      subs.setContribution(softened);
+    }
+
+    SLAdvantageLayer regroup = layers[6];
+    regroup.setContribution(regroup.getContribution() + strength);
+
+    return totalContribution() - before;
+  }
+
+  < Sum of every layer's current contribution. >
+  int totalContribution() {
+    int sum = 0;
+    int i = 0;
+    while (i < count) {
+      SLAdvantageLayer l = layers[i];
+      sum = sum + l.getContribution();
+      i = i + 1;
+    }
+    return sum;
   }
 
   < Apply the layer at the cursor to the dividend's running value. >

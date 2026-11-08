@@ -114,6 +114,44 @@ class AdvantageDemo {
     print("  best advantage after iterating = " + harder);
 
     print("");
+    print("== dynamic alter: favor the owner ==");
+    SLAdvantageDeveloperModel biz = new SLAdvantageDeveloperModel();
+    biz.init("margin", "pricing-model", 200);
+    biz.setOwner("the proprietor");
+    biz.setMaths(10);
+    biz.setAdditions(5);
+    biz.setSubtraction(-6);
+    biz.setRegrouping(1);
+    < Commit this tuned shape as the known-good restitution baseline, so a >
+    < later restitute() returns here rather than to the empty init() shape. >
+    biz.commitBaseline();
+    int baseAdv = biz.runPass();
+    print("  baseline advantage = " + baseAdv);
+    < Favor the owner by strength 4: maths +4, additions +4, regrouping +4, >
+    < and subtraction softened from -6 toward 0 by +4 (-6 -> -2) = +4. >
+    < Total shape gain = 4 + 4 + 4 + 4 = +16. >
+    int gained = biz.favorOwner(4);
+    biz.getDividend().rebase();
+    int favAdv = biz.runPass();
+    print("  owner-favored advantage = " + favAdv + " (shape gain " + gained + ")");
+
+    print("");
+    print("== dynamic update + full restitute ==");
+    < Re-point the same engine onto a different model and base at runtime. >
+    biz.updateModel("promo-model", "promo-margin", 120);
+    biz.getDividend().rebase();
+    int promoAdv = biz.runPass();
+    print("  after updateModel: " + biz.describe());
+    print("  promo advantage = " + promoAdv);
+    < Full restitute: everything returns to the init() baseline (model name, >
+    < label, base 200, and the ORIGINAL onion shape before favorOwner). >
+    biz.restitute();
+    biz.getDividend().rebase();
+    int restoredAdv = biz.runPass();
+    print("  after restitute: " + biz.describe());
+    print("  restored advantage = " + restoredAdv);
+
+    print("");
     print("== validation ==");
     < Expected developer advantage: 0 + 0 - 5 + 20 + 15 - 8 + 3 + 0 = 25. >
     boolean okDev = (devAdv == 25);
@@ -121,13 +159,36 @@ class AdvantageDemo {
     < regrouping 2 => 30 - 12 + 10 + 2 = 30. >
     boolean okUser = (userAdv == 30);
     boolean okIter = (harder == 30);
+    < baseline: 10 + 5 - 6 + 1 = 10. >
+    boolean okBase = (baseAdv == 10);
+    < favored: 14 + 9 - 2 + 5 = 26; shape gain 16. >
+    boolean okFavor = (favAdv == 26);
+    boolean okGain = (gained == 16);
+    < restitute returns to the original shape => advantage back to 10. >
+    boolean okRestore = (restoredAdv == 10);
+    boolean okModel = (biz.getDividend().getModel() == "pricing-model");
     print("  developer pass == 25 ? " + okDev);
     print("  user advantage == 30 ? " + okUser);
     print("  iterate best  == 30 ? " + okIter);
+    print("  baseline      == 10 ? " + okBase);
+    print("  favored       == 26 ? " + okFavor);
+    print("  shape gain    == 16 ? " + okGain);
+    print("  restored      == 10 ? " + okRestore);
+    print("  model restituted   ? " + okModel);
     if (okDev) {
       if (okUser) {
         if (okIter) {
-          print("ALL CHECKS PASSED");
+          if (okBase) {
+            if (okFavor) {
+              if (okGain) {
+                if (okRestore) {
+                  if (okModel) {
+                    print("ALL CHECKS PASSED");
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
