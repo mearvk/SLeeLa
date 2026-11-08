@@ -1,3 +1,7 @@
+artifact;
+preonem: [PREONEM.md](./PREONEM.md)
+standard: legislature-grade; evaluated unto time and space
+
 # Advantage™ Library — Validation Record
 
 **Status:** VALIDATED  
