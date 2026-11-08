@@ -23,6 +23,6 @@ class SLVmPremiumVersion003 extends SLVmPremiumVersion {
     base(3, "slvm-3", "Specialist", "isolation and verification", "sleela-virtual-machine/003", "isolation policy");
     composeThrough(3);
     // default profile tuning for this generation (user-editable in setup/conference)
-    profile.setVerbosity(SLVmConfig.VERBOSITY_NORMAL);
+    profile.setVerbosity(1);
   }
 }

@@ -23,6 +23,6 @@ class SLVmPremiumVersion005 extends SLVmPremiumVersion {
     base(5, "slvm-5", "Manager", "reproducibility, policy, recovery, assurance", "sleela-virtual-machine/005", "policy snapshot");
     composeThrough(5);
     // default profile tuning for this generation (user-editable in setup/conference)
-    profile.setVerbosity(SLVmConfig.VERBOSITY_NORMAL);
+    profile.setVerbosity(1);
   }
 }

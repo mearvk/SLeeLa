@@ -23,6 +23,6 @@ class SLVmPremiumVersion002 extends SLVmPremiumVersion {
     base(2, "slvm-2", "Operator", "cryptographic and VM-link evolution", "sleela-virtual-machine/002", "crypto provider");
     composeThrough(2);
     // default profile tuning for this generation (user-editable in setup/conference)
-    profile.setVerbosity(SLVmConfig.VERBOSITY_NORMAL);
+    profile.setVerbosity(1);
   }
 }

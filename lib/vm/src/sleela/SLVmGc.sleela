@@ -112,7 +112,8 @@ class SLVmGc {
 
     if (c > reported) {
       if (res != null) {
-        int ecode = (c == THRASH) ? res.E_LIMIT : res.E_EXHAUSTED;
+        < 2 = 2, 6 = 6 (literals: a sibling class static cannot be read through an instance) >
+        int ecode = (c == THRASH) ? 2 : 6;
         res.fail(ecode, "gc", conditionName(c) + ": reclaim/alloc under threshold");
         res.report(rep);
       }

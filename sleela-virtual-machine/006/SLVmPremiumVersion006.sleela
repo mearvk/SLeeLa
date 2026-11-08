@@ -23,6 +23,6 @@ class SLVmPremiumVersion006 extends SLVmPremiumVersion {
     base(6, "slvm-6", "Director", "continuous verification, lineage, attestation, leases, migration", "sleela-virtual-machine/006", "execution lease");
     composeThrough(6);
     // default profile tuning for this generation (user-editable in setup/conference)
-    profile.setVerbosity(SLVmConfig.VERBOSITY_NORMAL);
+    profile.setVerbosity(1);
   }
 }

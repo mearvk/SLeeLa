@@ -23,6 +23,6 @@ class SLVmPremiumVersion011 extends SLVmPremiumVersion {
     base(11, "slvm-11", "Sovereign", "filesystem-module hosting, schema-driven extension", "sleela-virtual-machine/011", "TAC3 filesystem module");
     composeThrough(11);
     // default profile tuning for this generation (user-editable in setup/conference)
-    profile.setVerbosity(SLVmConfig.VERBOSITY_NORMAL);
+    profile.setVerbosity(1);
   }
 }

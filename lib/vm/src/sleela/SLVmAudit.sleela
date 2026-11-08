@@ -75,10 +75,10 @@ class SLVmAudit {
   void init() { total = 0; chainLow = 0; lastSeq = 0; lastKind = INFO; lastSubsystem = ""; lastMessage = ""; }
 
   int severityFor(int kind) {
-    if (kind == DENIAL || kind == ERROR)   { return SLVmReport.SEV_ERROR; }
-    if (kind == PRESSURE || kind == SATURATE || kind == PLATFORM) { return SLVmReport.SEV_WARN; }
-    if (kind == CONFIG)  { return SLVmReport.SEV_NOTICE; }
-    return SLVmReport.SEV_DEBUG;
+    if (kind == DENIAL || kind == ERROR)   { return 3; }
+    if (kind == PRESSURE || kind == SATURATE || kind == PLATFORM) { return 2; }
+    if (kind == CONFIG)  { return 1; }
+    return 0;
   }
 
   < simple positive-int FNV-1a fold step (surface has no unsigned/xor; use >
@@ -104,11 +104,11 @@ class SLVmAudit {
   int logResult(SLVmResult r, SLVmReport rep) {
     if (r == null) { return total; }
     int k;
-    if (r.code == r.E_DENIED)         { k = DENIAL; }
-    else if (r.code == r.E_EXHAUSTED) { k = SATURATE; }
-    else if (r.code == r.E_LIMIT)     { k = PRESSURE; }
-    else if (r.code == r.E_UNAVAILABLE) { k = PLATFORM; }
-    else if (r.code == r.E_OK)        { k = INFO; }
+    if (r.code == 7)         { k = DENIAL; }
+    else if (r.code == 6) { k = SATURATE; }
+    else if (r.code == 2)     { k = PRESSURE; }
+    else if (r.code == 4) { k = PLATFORM; }
+    else if (r.code == 0)        { k = INFO; }
     else { k = ERROR; }
     return log(k, r.subsystem, r.message, rep);
   }

@@ -23,6 +23,6 @@ class SLVmPremiumVersion007 extends SLVmPremiumVersion {
     base(7, "slvm-7", "Administrator", "hardened management, failure handling, recovery", "sleela-virtual-machine/007", "manager health");
     composeThrough(7);
     // default profile tuning for this generation (user-editable in setup/conference)
-    profile.setVerbosity(SLVmConfig.VERBOSITY_NORMAL);
+    profile.setVerbosity(1);
   }
 }

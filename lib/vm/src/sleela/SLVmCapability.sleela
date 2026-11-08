@@ -75,7 +75,8 @@ class SLVmCapability {
     denials = denials + 1;
     if (tel != null) { tel.addErrors(1); }
     if (out != null) {
-      out.fail(out.E_DENIED, subsystem,
+      < 7 = 7 (literal: a sibling class static cannot be read through an instance) >
+      out.fail(7, subsystem,
                "capability '" + capName(cap) + "' denied for operation '" + operation + "'");
       out.report(rep);
     }
@@ -83,16 +84,16 @@ class SLVmCapability {
   }
 
   String capName(int cap) {
-    if (cap == SLVmConfig.CAP_MEMORY)   { return "memory"; }
-    if (cap == SLVmConfig.CAP_FILE_IO)  { return "file-io"; }
-    if (cap == SLVmConfig.CAP_NETWORK)  { return "network"; }
-    if (cap == SLVmConfig.CAP_THREADS)  { return "threads"; }
-    if (cap == SLVmConfig.CAP_DYNLIB)   { return "dynlib"; }
-    if (cap == SLVmConfig.CAP_TERMINAL) { return "terminal"; }
-    if (cap == SLVmConfig.CAP_PATHS)    { return "paths"; }
-    if (cap == SLVmConfig.CAP_PROCESS)  { return "process"; }
-    if (cap == SLVmConfig.CAP_IPC)      { return "ipc"; }
-    if (cap == SLVmConfig.CAP_TIME)     { return "time"; }
+    if (cap == 1)   { return "memory"; }
+    if (cap == 2)  { return "file-io"; }
+    if (cap == 4)  { return "network"; }
+    if (cap == 8)  { return "threads"; }
+    if (cap == 16)   { return "dynlib"; }
+    if (cap == 32) { return "terminal"; }
+    if (cap == 64)    { return "paths"; }
+    if (cap == 128)  { return "process"; }
+    if (cap == 256)      { return "ipc"; }
+    if (cap == 512)     { return "time"; }
     return "capability";
   }
 }

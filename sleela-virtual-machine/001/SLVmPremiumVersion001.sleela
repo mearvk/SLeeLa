@@ -23,6 +23,6 @@ class SLVmPremiumVersion001 extends SLVmPremiumVersion {
     base(1, "slvm-1", "Foundation", "dedicated VM: broker, capabilities, security, OS boundary", "sleela-virtual-machine/001", "security supervisor");
     composeThrough(1);
     // default profile tuning for this generation (user-editable in setup/conference)
-    profile.setVerbosity(SLVmConfig.VERBOSITY_NORMAL);
+    profile.setVerbosity(1);
   }
 }

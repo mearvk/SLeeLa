@@ -115,7 +115,8 @@ class SLVmTelemetry {
     int pct = (live * 100) / cap;
     if (pct >= watermarkPct && warned == 0) {
       if (res != null) {
-        res.fail(res.E_EXHAUSTED, "telemetry", name + " table near capacity: " + live + "/" + cap);
+        < 6 = 6 (literal: a sibling class static cannot be read through an instance) >
+        res.fail(6, "telemetry", name + " table near capacity: " + live + "/" + cap);
         res.report(rep);
       }
       errors = errors + 1;

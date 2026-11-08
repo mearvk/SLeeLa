@@ -23,6 +23,6 @@ class SLVmPremiumVersion008 extends SLVmPremiumVersion {
     base(8, "slvm-8", "Executive", "supervised execution, admission, leases, transactions, audit", "sleela-virtual-machine/008", "admission gate");
     composeThrough(8);
     // default profile tuning for this generation (user-editable in setup/conference)
-    profile.setVerbosity(SLVmConfig.VERBOSITY_NORMAL);
+    profile.setVerbosity(1);
   }
 }

@@ -89,10 +89,10 @@ class SLVmRuntime {
     gc = new SLVmGc();              gc.init();
     profile = new SLVmProfile();    profile.init();
     capability = new SLVmCapability(); capability.bind(cfg);
-    platform = new SLVmPlatform();  platform.init(SLVmPlatform.UNKNOWN, "", "");
+    platform = new SLVmPlatform();  platform.init(0, "", "");
     audit = new SLVmAudit();        audit.init();
 
-    audit.log(SLVmAudit.CONFIG, "runtime",
+    audit.log(1, "runtime",
       "init: " + cfg.memoryLimitMiB + " MiB, " + cfg.threadCap
       + " threads, verbosity=" + cfg.verbosityName(), report);
     up = 1;
@@ -107,13 +107,13 @@ class SLVmRuntime {
   void poll(int gcAllocated, int gcReclaimed, int gcCollections, boolean haveGc) {
     if (up == 0) { return; }
     int m = memory.poll(report);
-    if (m == SLVmMemory.CRITICAL || m == SLVmMemory.LIMIT) {
-      audit.log(SLVmAudit.PRESSURE, "memory", "condition=" + memory.conditionName(m), report);
+    if (m == 2 || m == 3) {
+      audit.log(1, "memory", "condition=" + memory.conditionName(m), report);
     }
     if (haveGc) {
       int g = gc.observe(gcAllocated, gcReclaimed, gcCollections, result, report);
-      if (g == SLVmGc.PRESSURE || g == SLVmGc.THRASH) {
-        audit.log(SLVmAudit.PRESSURE, "gc", gc.conditionName(g), report);
+      if (g == 1 || g == 3) {
+        audit.log(1, "gc", gc.conditionName(g), report);
       }
     }
   }
@@ -135,7 +135,7 @@ class SLVmRuntime {
 
   void shutdown() {
     if (up == 0) { return; }
-    audit.log(SLVmAudit.INFO, "runtime",
+    audit.log(0, "runtime",
       "shutdown: " + telemetry.steps + " steps, " + telemetry.errors + " errors", report);
     up = 0;
   }

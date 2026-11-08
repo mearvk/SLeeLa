@@ -76,29 +76,29 @@ class SLVmPlatform {
   < Caller may mark a capability unsupported on this OS (e.g. ipc/dynlib variance). >
   void setSupport(int cap, boolean supported) {
     int v = supported ? 1 : 0;
-    if (cap == SLVmConfig.CAP_MEMORY)   { supMemory = v; }
-    else if (cap == SLVmConfig.CAP_FILE_IO)  { supFileIo = v; }
-    else if (cap == SLVmConfig.CAP_NETWORK)  { supNetwork = v; }
-    else if (cap == SLVmConfig.CAP_THREADS)  { supThreads = v; }
-    else if (cap == SLVmConfig.CAP_DYNLIB)   { supDynlib = v; }
-    else if (cap == SLVmConfig.CAP_TERMINAL) { supTerminal = v; }
-    else if (cap == SLVmConfig.CAP_PATHS)    { supPaths = v; }
-    else if (cap == SLVmConfig.CAP_PROCESS)  { supProcess = v; }
-    else if (cap == SLVmConfig.CAP_IPC)      { supIpc = v; }
-    else if (cap == SLVmConfig.CAP_TIME)     { supTime = v; }
+    if (cap == 1)   { supMemory = v; }
+    else if (cap == 2)  { supFileIo = v; }
+    else if (cap == 4)  { supNetwork = v; }
+    else if (cap == 8)  { supThreads = v; }
+    else if (cap == 16)   { supDynlib = v; }
+    else if (cap == 32) { supTerminal = v; }
+    else if (cap == 64)    { supPaths = v; }
+    else if (cap == 128)  { supProcess = v; }
+    else if (cap == 256)      { supIpc = v; }
+    else if (cap == 512)     { supTime = v; }
   }
 
   boolean supports(int cap) {
-    if (cap == SLVmConfig.CAP_MEMORY)   { return supMemory == 1; }
-    if (cap == SLVmConfig.CAP_FILE_IO)  { return supFileIo == 1; }
-    if (cap == SLVmConfig.CAP_NETWORK)  { return supNetwork == 1; }
-    if (cap == SLVmConfig.CAP_THREADS)  { return supThreads == 1; }
-    if (cap == SLVmConfig.CAP_DYNLIB)   { return supDynlib == 1; }
-    if (cap == SLVmConfig.CAP_TERMINAL) { return supTerminal == 1; }
-    if (cap == SLVmConfig.CAP_PATHS)    { return supPaths == 1; }
-    if (cap == SLVmConfig.CAP_PROCESS)  { return supProcess == 1; }
-    if (cap == SLVmConfig.CAP_IPC)      { return supIpc == 1; }
-    if (cap == SLVmConfig.CAP_TIME)     { return supTime == 1; }
+    if (cap == 1)   { return supMemory == 1; }
+    if (cap == 2)  { return supFileIo == 1; }
+    if (cap == 4)  { return supNetwork == 1; }
+    if (cap == 8)  { return supThreads == 1; }
+    if (cap == 16)   { return supDynlib == 1; }
+    if (cap == 32) { return supTerminal == 1; }
+    if (cap == 64)    { return supPaths == 1; }
+    if (cap == 128)  { return supProcess == 1; }
+    if (cap == 256)      { return supIpc == 1; }
+    if (cap == 512)     { return supTime == 1; }
     return false;
   }
 
@@ -108,7 +108,8 @@ class SLVmPlatform {
     boolean permitted = (caps == null) ? true : caps.allowed(cap);
     if (permitted && !os) {
       if (res != null) {
-        res.fail(res.E_UNAVAILABLE, "platform",
+        < 4 = 4 (literal: a sibling class static cannot be read through an instance) >
+        res.fail(4, "platform",
                  "capability '" + (caps==null?"?":caps.capName(cap)) + "' permitted but not supported on " + platformName());
         res.report(rep);
       }

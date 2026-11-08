@@ -123,7 +123,10 @@ class SLVmConfig {
     if (v > VERBOSITY_DEBUG) { v = VERBOSITY_DEBUG; }
     verbosity = v;
   }
-  void enable(int cap)  { capabilities = capabilities | cap; }
+  void enable(int cap)  {
+    < set the bit without bitwise-or (surface has no '|'): add if not already set. >
+    if ((capabilities / cap) % 2 == 0) { capabilities = capabilities + cap; }
+  }
   void disable(int cap) {
     < clear the bit without a bitwise-not (surface has no ~): subtract if set. >
     if ((capabilities / cap) % 2 == 1) { capabilities = capabilities - cap; }

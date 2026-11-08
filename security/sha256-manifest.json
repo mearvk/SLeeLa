@@ -48999,19 +48999,19 @@
     },
     {
       "path": "lib/vm/src/sleela/SLVmAudit.sleela",
-      "sha256": "761573b583b6e5db12628c410df0130e4e5fe59d9a8134b20e7e46c28394b049"
+      "sha256": "b5ec644da9f9f9ee85422d6865e1469015d1e8a46f488f4a39832ab7c86e3049"
     },
     {
       "path": "lib/vm/src/sleela/SLVmCapability.sleela",
-      "sha256": "55d4ce42f27dcfa05de4570cde2ef401767abecbb6aaf97c550881556f2309e4"
+      "sha256": "0837f80b081b08eb2b3558ddf13006f970fdb382cf59f22f3994ffed93f401ad"
     },
     {
       "path": "lib/vm/src/sleela/SLVmConfig.sleela",
-      "sha256": "05e352419f04c96f52cffc2fd832bf9354d46875caa1b51b835937e1e652df45"
+      "sha256": "a7b59b7130dd5b91da82470e808e0ad4fc5baf9e24a53c9118de52e6bb628a82"
     },
     {
       "path": "lib/vm/src/sleela/SLVmGc.sleela",
-      "sha256": "b781eed0c206979bd570deac15a5ce55662d8c33323fb486c3985db5f854651c"
+      "sha256": "913cf357b7b6cd20b194c3ae59e1cbedaa526ef8e91baf221ee237e311e5187f"
     },
     {
       "path": "lib/vm/src/sleela/SLVmMemory.sleela",
@@ -49019,11 +49019,11 @@
     },
     {
       "path": "lib/vm/src/sleela/SLVmModium.sleela",
-      "sha256": "baaaed3aced5b38d9b7e18baf668a6e16b9469d5f7bd256aac1706be5b0451ee"
+      "sha256": "63602fed65fbd0f36f7ee20035215f4414793852666edd9a781b02e461da0f12"
     },
     {
       "path": "lib/vm/src/sleela/SLVmPlatform.sleela",
-      "sha256": "1e9d61b38ef0972e4f39ff4ca40e8837e6904a14d9e0b7d709bf6927e69e8af5"
+      "sha256": "4b968209cbb6256a0879c1e1a2d6fc6205265c2246beffccd727a08fc31209ce"
     },
     {
       "path": "lib/vm/src/sleela/SLVmPremiumVersion.sleela",
@@ -49043,7 +49043,7 @@
     },
     {
       "path": "lib/vm/src/sleela/SLVmRuntime.sleela",
-      "sha256": "cd5a273c65a77d483b03946c77adedd5632a1c7be07864c90c1f1494dac0e4ac"
+      "sha256": "148d1c4023ab8f36ba4173056b74efd6d3fe5a4fa7fc72fd8c59e34e4d8aa564"
     },
     {
       "path": "lib/vm/src/sleela/SLVmSource.sleela",
@@ -49051,11 +49051,11 @@
     },
     {
       "path": "lib/vm/src/sleela/SLVmStatus.sleela",
-      "sha256": "3984aeb9d12a21db6a752897f9c6dc6b2fe6177dd2c9f4f796ac7660cf52270c"
+      "sha256": "13b042f64579ee147ede389faece1937b9844c709239738765cc6b8f9b646922"
     },
     {
       "path": "lib/vm/src/sleela/SLVmTelemetry.sleela",
-      "sha256": "077aab8bba90b5947fdab39277b531ebf2bb5b01f89e613a6c65e231b51da576"
+      "sha256": "5f7c79df6894ada981ac3a3a9809871fff847a0b2ec63d4fc92253a6ec794d7c"
     },
     {
       "path": "lib/vm/src/sleela/SLVmVersion.sleela",

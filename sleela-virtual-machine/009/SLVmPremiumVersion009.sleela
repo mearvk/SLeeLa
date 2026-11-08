@@ -23,6 +23,6 @@ class SLVmPremiumVersion009 extends SLVmPremiumVersion {
     base(9, "slvm-9", "Authority", "filesystem and OS adaptation", "sleela-virtual-machine/009", "filesystem substrate");
     composeThrough(9);
     // default profile tuning for this generation (user-editable in setup/conference)
-    profile.setVerbosity(SLVmConfig.VERBOSITY_NORMAL);
+    profile.setVerbosity(1);
   }
 }

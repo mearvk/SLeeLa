@@ -23,6 +23,6 @@ class SLVmPremiumVersion010 extends SLVmPremiumVersion {
     base(10, "slvm-10", "Principal", "verified storage execution", "sleela-virtual-machine/010", "verified storage");
     composeThrough(10);
     // default profile tuning for this generation (user-editable in setup/conference)
-    profile.setVerbosity(SLVmConfig.VERBOSITY_NORMAL);
+    profile.setVerbosity(1);
   }
 }

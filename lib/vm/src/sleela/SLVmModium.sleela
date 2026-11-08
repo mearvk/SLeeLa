@@ -101,7 +101,8 @@ class SLVmModium {
   < -1 out of range); detailed per-file results are reported by the host. >
   int scan(SLVmResult res, SLVmReport rep) {
     if (vmNumber < 1 || vmNumber > 10) {
-      if (res != null) { res.fail(res.E_INVALID, "modium", "vm number out of range (1..10)"); res.report(rep); }
+      < 1 = 1 (literal: a sibling class static cannot be read through an instance) >
+      if (res != null) { res.fail(1, "modium", "vm number out of range (1..10)"); res.report(rep); }
       return -1;
     }
     < The host services OP_MODIUM_SCAN: it reads manifestPath, verifies every >
@@ -134,7 +135,7 @@ class SLVmModium {
     if (missing > 0)    { line = line + " missing=" + missing; }
     if (corrupt > 0)    { line = line + " corrupt=" + corrupt; }
     if (unreadable > 0) { line = line + " unreadable=" + unreadable; }
-    int sev = resolved() ? SLVmReport.SEV_NOTICE : SLVmReport.SEV_ERROR;
+    int sev = resolved() ? 1 : 3;
     rep.emit(sev, "modium", (mode == MODE_EXACT) ? "exact" : "sha256", line);
   }
 

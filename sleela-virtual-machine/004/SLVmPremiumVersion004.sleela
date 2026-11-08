@@ -23,6 +23,6 @@ class SLVmPremiumVersion004 extends SLVmPremiumVersion {
     base(4, "slvm-4", "Supervisor", "authenticated/distributed execution", "sleela-virtual-machine/004", "authenticated distributed nodes");
     composeThrough(4);
     // default profile tuning for this generation (user-editable in setup/conference)
-    profile.setVerbosity(SLVmConfig.VERBOSITY_NORMAL);
+    profile.setVerbosity(1);
   }
 }
