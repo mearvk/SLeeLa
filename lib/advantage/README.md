@@ -4,6 +4,10 @@ The `advantage` package encapsulates the process of **advantaging a unique
 dividend with respect to a model**: an ordered, layered procedure you can
 navigate inward (deeper) and outward (shallower), and iterate up or down.
 
+**Documentation:** [`DEFINITIONS.md`](./DEFINITIONS.md) — consolidated glossary
+of every term across the whole package · [`MATH.md`](./MATH.md) — trade
+economics · [`PHYSICS.md`](./PHYSICS.md) — trust-field physics.
+
 "Sequitur" means *it follows* — each layer follows the previous in logical
 order. The layers form an **onion**, outer skin to inner core:
 
