@@ -1,3 +1,7 @@
+artifact;
+preonem: [PREONEM.md](./PREONEM.md)
+standard: legislature-grade; evaluated unto time and space
+
 # Definitions — the `advantage` package
 
 > A single consolidated glossary for everything in `lib/advantage`: the
