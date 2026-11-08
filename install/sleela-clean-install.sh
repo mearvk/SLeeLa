@@ -449,6 +449,28 @@ install_main() {
     install -m 755 "$built" "$STAGE_DIR/bin/$product"
     item "$product"
   done
+  # sleelactl -- the SLeeLa control plane -- and its module registry. Unlike the
+  # three compiled products above it is a POSIX-sh script in bin/ (not an
+  # impl/build/ artifact), so it is staged from the source tree directly. It
+  # lands at $INSTALL_ROOT/bin/sleelactl with its registry at
+  # $INSTALL_ROOT/bin/sleelactl.d/registry.conf -- the same layout the Makefile
+  # installer uses and that sleelactl resolves beside itself (bin/sleelactl's
+  # own SELF/sleelactl.d lookup). This matches `make -C install install`
+  # (install/Makefile do-install). Like the compiled binaries, sleelactl is a
+  # bin/ program and is intentionally NOT in the SHA-256 execution gate (the
+  # gate covers lib/** sources, not bin/ scripts), so no manifest entry is
+  # expected or required for it.
+  if [ -f "$REPO_ROOT/bin/sleelactl" ]; then
+    install -m 755 "$REPO_ROOT/bin/sleelactl" "$STAGE_DIR/bin/sleelactl"
+    item "sleelactl (control plane)"
+    if [ -f "$REPO_ROOT/bin/sleelactl.d/registry.conf" ]; then
+      mkdir -p "$STAGE_DIR/bin/sleelactl.d"
+      install -m 644 "$REPO_ROOT/bin/sleelactl.d/registry.conf" "$STAGE_DIR/bin/sleelactl.d/registry.conf"
+      item "sleelactl.d/registry.conf (module registry)"
+    fi
+  else
+    warn "bin/sleelactl not found in source; the control plane will not be installed"
+  fi
 
   step "staging the standard library (resident core + the modules you selected)"
   local entry name
@@ -552,6 +574,12 @@ EOF
     for product in sleela sleelvac nordshrift; do
       sudo ln -sfn "$install_root/bin/$product" "$bin_dest/$product"
     done
+    # sleelactl rides onto PATH too (iff it was staged). It finds its registry
+    # beside its real location ($install_root/bin/sleelactl.d), so a symlink in
+    # $bin_dest is enough -- no second copy of registry.conf is needed.
+    if [ -f "$install_root/bin/sleelactl" ]; then
+      sudo ln -sfn "$install_root/bin/sleelactl" "$bin_dest/sleelactl"
+    fi
     ok "installed to ${WHITE}$install_root${RESET} (links in $bin_dest)"
   fi
 }
