@@ -1,8 +1,13 @@
 #include "../../../os-level-support/loader/native_loader.h"
 #include <string.h>
 
-static SLNativeHostAPI host_api;
-static int host_api_bound;
+#if defined(_MSC_VER)
+#  define FIXTURE_THREAD_LOCAL __declspec(thread)
+#else
+#  define FIXTURE_THREAD_LOCAL _Thread_local
+#endif
+static FIXTURE_THREAD_LOCAL SLNativeHostAPI host_api;
+static FIXTURE_THREAD_LOCAL int host_api_bound;
 
 SL_NATIVE_EXPORT int sl_native_bind_host(const SLNativeHostAPI *api) {
     if (!api || api->abi_version != SL_NATIVE_HOST_CALLBACK_ABI_VERSION ||
