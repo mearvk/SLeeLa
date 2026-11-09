@@ -65,7 +65,7 @@ class LinearAlgebraVmSmoke {
         let fftIn = arrayNew(8);
         let fftOut = arrayNew(8);
         arraySet(fftIn, 0, 1.0);
-        mathFFT(fftIn, fftOut, 4, 0);
+        mathFFT(fftIn, fftOut, 8, 0);
         print("MATH_FFT"); print(arrayGet(fftOut, 0));
 
         let ca = arrayNew(2);
