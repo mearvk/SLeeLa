@@ -349,6 +349,11 @@ slmath_status slmath_symmetric_eigen(const double *a, size_t n,
     if (!valid_range(a, count) || !valid_range(eigenvectors, count) ||
         !valid_range(eigenvalues, n) || !std::isfinite(tolerance) || tolerance < 0.0)
         return SLMATH_INVALID_ARGUMENT;
+    for (size_t row=0; row<n; ++row) for (size_t col=row; col<n; ++col) {
+        if (!std::isfinite(a[row*n+col]) || !std::isfinite(a[col*n+row]) ||
+            std::fabs(a[row*n+col]-a[col*n+row]) > tolerance)
+            return SLMATH_INVALID_ARGUMENT;
+    }
     std::vector<double> m, v;
     try { m.assign(a, a+count); v.assign(count, 0.0); }
     catch (...) { return SLMATH_ALLOCATION_FAILURE; }
@@ -491,6 +496,7 @@ slmath_status slmath_vm_dispatch(slmath_operation operation,
     case SLMATH_OP_QR:
         if (!aux || !aux->data || a->rows < a->cols ||
             a->length < a_shape ||
+            out->rows != a->rows || out->cols != a->cols ||
             out->length < a_shape ||
             aux->rows != a->cols || aux->cols != a->cols ||
             aux->length < aux_shape)
@@ -499,7 +505,8 @@ slmath_status slmath_vm_dispatch(slmath_operation operation,
                                 aux->data,scalar);
     case SLMATH_OP_SYMMETRIC_EIGEN:
         if (!aux || !aux->data || a->rows != a->cols ||
-            a->length < a_shape || out->length < a->rows ||
+            a->length < a_shape || out->rows != 1 || out->cols != a->rows ||
+            out->length < a->rows || aux->rows != a->rows || aux->cols != a->rows ||
             aux->length < a_shape)
             return SLMATH_DIMENSION_MISMATCH;
         return slmath_symmetric_eigen(a->data,a->rows,out->data,aux->data,
