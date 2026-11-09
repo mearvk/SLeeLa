@@ -3,41 +3,47 @@
 **Date:** 2026-11-09  
 **Branch:** `native-ipc-pi-bridge-2026-11-09`
 
-## Current implementation
+## Implemented in this branch
 
-The SLeeLa VM already has syntax-3.0 `nativeOpen`, `nativeCall`, and
-`nativeClose` bytecode operations for authorized **in-process** shared
-libraries. The scalar ABI supports null, bool, int64, binary64, and UTF-8.
-It deliberately does not expose VM arrays, structs, pointers, or raw handles.
+- **Wire framing:** 24-byte v1 header, explicit little-endian fields, request IDs,
+  bounded 16 MiB payloads, and message-kind validation.
+- **Scalar ABI codec:** null, bool, int64, binary64, and borrowed UTF-8 spans;
+  malformed tags, invalid booleans, and truncated values are rejected.
+- **Request codec:** bounded method names, argument count, scalar argument
+  encoding, and strict trailing-byte rejection.
+- **Pi limb codec:** signed base-1e9 limbs, least-significant limb first,
+  bounded count, range checks, and canonical high-limb/zero rules.
+- **Conformance source:** smoke coverage for headers, scalar values, request
+  payloads, and canonical limb payloads.
+- **Integrity:** refreshed only the 13 SHA-256 entries that failed the previous
+  three-OS CI, preserving the other 12,473 entries and the fail-closed verifier.
+- **CI:** Native Drive now runs on Linux, macOS, and Windows for relevant source
+  changes and for changes to the trusted-source manifest.
 
-This work adds the first isolated-process wire-format slice:
+## Workstreams 1–5: current boundary
 
-- `impl/native-drive/native_ipc_protocol.h`: 24-byte version-1 frame header,
-  explicit little-endian encoding, bounded payloads, scalar values, and
-  request method/argument encoding.
-- `impl/tests/native_drive/native_ipc_protocol_smoke.c`: header, int64,
-  binary64, UTF-8, invalid-boolean, and truncated-value checks.
-- `.github/workflows/native-drive.yml`: runs the codec smoke test on
-  Linux, macOS, and Windows in the manually dispatched Native Drive workflow.
-- `impl/native-drive/IPC-PROTOCOL.md`: wire, limb, worker, security, and
-  six-workstream implementation contract.
+| Workstream | Current state |
+|---|---|
+| 1. Annotation/lowering metadata | Existing `@native` remains AOT metadata only. A distinct process-worker annotation and compiler/lowering representation are **not yet implemented**. |
+| 2. Typed ABI | Scalar ABI v1 remains unchanged; bounded request and canonical base-1e9 limb wire encodings are implemented. |
+| 3. VM dispatch | Existing in-process native opcodes are unchanged. A separate VM-to-worker dispatch opcode/API is **not yet implemented**. |
+| 4. IPC transport | Frame, scalar, request, and limb codecs are implemented. Persistent child process, pipe framing, partial I/O, backpressure, timeout, and cancellation are **not yet implemented**. |
+| 5. Lifecycle/security | Authorization, integrity, environment/workdir policy, bounded output, child reaping, and VM-shutdown cleanup are specified. A worker supervisor enforcing them is **not yet implemented**. |
 
-## Not yet implemented
+## Verification and Pi benchmark boundary
 
-The codec is not a worker transport. Still required are the request/response
-payload codec, persistent worker process, stdin/stdout pipe supervisor,
-canonical signed base-1e9 limb payloads, timeout/cancellation/backpressure,
-child cleanup/reaping, and the SLeeLa VM process-call opcode/API. The existing
-`sleelactl run math` reference subject is not yet a persistent external worker.
+The latest three-OS Native Drive workflow is run
+[42698637600](https://github.com/mearvk/SLeeLa/actions/runs/42698637600).
+Its status must be read from GitHub Actions; no result is assumed here.
 
 The 20,000-digit Pi workload has **not** been routed through this IPC path.
-Existing benchmark results remain separate and must not be represented as an
-IPC benchmark.
+Existing VM/native arithmetic measurements are not IPC measurements. Do not
+claim IPC accuracy or speed until the worker is integrated and the result is
+checked against an independent 20,000-digit reference.
 
-## Verification status
+## Next implementation gate
 
-The workflow is `workflow_dispatch`-only. The new cross-platform codec test
-is configured but has not yet been executed in this work session. No PASS
-claim is made until its run completes. Next gate: run the Native Drive workflow,
-fix any compiler/platform issues, then add process-level framing tests before
-connecting big-integer limb operations.
+Implement the compiler metadata and VM worker-call boundary, then a supervised
+persistent process transport with fragmented-I/O tests and fail-closed
+authorization. Only after those gates should the Pi limb operations be routed
+through the worker and benchmarked on all three operating systems.
