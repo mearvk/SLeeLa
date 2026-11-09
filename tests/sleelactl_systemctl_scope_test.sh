@@ -18,7 +18,7 @@ printf '%s\n' "$*" >>"$SCTL_LOG"
 EOF
 cat >"$TMP/bin/sudo" <<'EOF'
 #!/bin/sh
-printf 'called\\n' >>"$SUDO_LOG"
+printf 'called\n' >>"$SUDO_LOG"
 exec "$@"
 EOF
 chmod +x "$TMP/bin/"*
