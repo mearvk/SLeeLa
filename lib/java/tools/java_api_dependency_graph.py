@@ -124,6 +124,17 @@ def main() -> int:
             candidate = declared_package + "." + simple
             if candidate in index and candidate != qname:
                 local_edges.setdefault((candidate, "same-package-type-use"), 1)
+            # A wildcard import makes an unqualified name a dependency only
+            # when that package contains exactly one matching counterpart.
+            wildcard_packages = [x["package"] for x in imports if x["kind"] == "package-wildcard"]
+            wildcard_candidates = sorted({pkg + "." + simple for pkg in wildcard_packages
+                                           if pkg + "." + simple in index})
+            if len(wildcard_candidates) == 1 and wildcard_candidates[0] != qname:
+                local_edges.setdefault((wildcard_candidates[0], "wildcard-import-type-use"), 1)
+            elif len(wildcard_candidates) > 1:
+                unresolved.append({"from": qname, "reference": simple,
+                                   "kind": "ambiguous-wildcard-type", "line": 1,
+                                   "source": rel, "candidates": wildcard_candidates})
 
         for (target, kind), line in sorted(local_edges.items()):
             edges.append({"from": qname, "to": target, "kind": kind, "line": line, "source": rel})
@@ -136,6 +147,25 @@ def main() -> int:
             "imports": imports,
             "dependency_count": len(local_edges),
         })
+
+    # Compute transitive closure from the direct type graph. This is a graph
+    # reachability view, not a claim that every dependency is behaviorally
+    # implemented.
+    adjacency: dict[str, set[str]] = defaultdict(set)
+    for edge in edges:
+        adjacency[edge["from"]].add(edge["to"])
+    transitive = []
+    for source in sorted(index):
+        seen: set[str] = set()
+        pending = list(sorted(adjacency[source]))
+        while pending:
+            target = pending.pop()
+            if target == source or target in seen:
+                continue
+            seen.add(target)
+            pending.extend(sorted(adjacency[target] - seen))
+        transitive.append({"name": source, "dependencies": sorted(seen),
+                           "dependency_count": len(seen)})
 
     # Duplicate counterpart paths are surfaced separately: multiple release
     # trees may be intentional, but ambiguity must never be hidden.
@@ -150,6 +180,7 @@ def main() -> int:
             "source_files": len(files),
             "indexed_types": len(index),
             "dependency_edges": len(edges),
+            "transitive_dependency_pairs": sum(x["dependency_count"] for x in transitive),
             "wildcard_package_edges": len(wildcard_edges),
             "unresolved_references": len(missing),
             "duplicate_type_paths": len(duplicates),
@@ -157,6 +188,7 @@ def main() -> int:
         },
         "nodes": nodes,
         "edges": sorted(edges, key=lambda x: (x["from"], x["to"], x["kind"], x["line"])),
+        "transitive_dependencies": transitive,
         "wildcard_dependencies": sorted(wildcard_edges, key=lambda x: (x["from"], x["package"], x["kind"], x["line"])),
         "unresolved": missing,
         "duplicates": duplicates,
