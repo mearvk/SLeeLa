@@ -192,3 +192,18 @@ May magkakahiwalay na tools at documentation area ang proyekto para sa π genera
 - [SLeeLa GitHub repository](https://github.com/mearvk/SLeeLa)
 
 **Katayuan ng salin:** Pinalawak ang Filipino edition bilang teknikal na gabay na sumasaklaw sa pagpapakilala, build, installation, wika at runtime, mga feature, library, native integration, seguridad, development workflow, at mga pangunahing bahagi ng proyekto. Hindi pa ito kumpletong salin, bawat linya at seksiyon, ng canonical English README. Inirerekomenda pa rin ang teknikal na pagsusuri at pagrebisa ng wikang Filipino ng isang reviewer na may kaalamang teknikal.
+
+
+## XVI. Mga target, profile, at hangganan ng pagpapatupad
+
+Ibinubukod ng SLeeLa ang source code sa mga target ng build at execution. Kabilang sa dokumentadong target family ang `SLVM`, `SLJVM`, at `SLIR`; ang `NATIVE` ay limitado at may mga kundisyon, kaya huwag ipagpalagay na available ito sa lahat ng platform. Magkaiba ang saklaw ng `BASIC_COMPLETE` at `ADVANCED_TOTAL`. Tiyakin ang aktuwal na target, profile, at platform support sa bawat build.
+
+Tinutukoy ng reference ang file, module, o resource; hindi ito kusang nagbibigay ng pahintulot na patakbuhin iyon. Kapag gumagamit ng files, external libraries, native bindings, o system resources ang programa, dapat malinaw ang authorization boundary at responsibilidad sa execution. Hindi sapat ang pahayag sa dokumentasyon lamang upang patunayan ang runtime security guarantee; suriin ang implementation at kaugnay na tests.
+
+## XVII. Resource lifecycle at debugging
+
+Idokumento ang ownership, lifetime, at synchronization responsibilities ng resources na pinaghahatian ng functions o threads. Ihiwalay ang local variables, shared object state, VM handles, at serializable data. Hindi matatag na file format o network message ang VM-local handle. Gamitin ang serialization interface ng module at subukan ang invalid, missing, at boundary values.
+
+Sa debugging, itala ang commit, OS, architecture, at toolchain. Unahin ang pinakamaliit na kaugnay na target, panatilihin ang buong error output, ihiwalay ang compiler errors sa runtime errors, at gumawa ng minimal reproducible example. Hindi pinatutunayan ng matagumpay na build lamang na tama ang runtime behavior.
+
+Dapat ilista ng validation report ang exact commit, OS/architecture, compiler versions, kumpletong build/test commands, bilang ng pass/fail/skip, at mga kilalang limitasyon. Hindi dapat bilangin na passed ang tests na nilaktawan o hindi pinatakbo.
