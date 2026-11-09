@@ -66,7 +66,7 @@ static bool assignable(const Type&to,const Type&from){
 }
 static bool builtin(const std::string&n){
  static const std::set<std::string> s={
- "javaStringFromCodeUnits","spawn","join","lock","unlock","send","recv","structPack","structUnpack","listen","accept","connect","sockread","sockwrite","sockclose",
+ "javaStringFromCodeUnits","javaStringLength","javaStringCharAt","javaStringCodePointAt","javaStringCodePointCount","javaStringOffsetByCodePoints","javaStringSubstring","javaStringConcat","javaStringHashCode","javaStringCompareTo","spawn","join","lock","unlock","send","recv","structPack","structUnpack","listen","accept","connect","sockread","sockwrite","sockclose",
  "pipe","pipePeer","fifoCreate","npfsCreate","openFile","read","write","close","unlinkFile",
  "timeUtcMillis","timeUtcNanos","timeMonotonicNanos","timePrecisionMillis","timeLocation","timeHttpDate","timeJson","timeNtp","timeSetLocation","sleep",
  "Munction.start","synchroOpen","synchroDispatch","synchroReport","synchroClose","synchroSent","synchroReceived","synchroMean","synchroMin","synchroMax","synchroP95","synchroLoss",
