@@ -34,7 +34,7 @@ class NativeDriveTests(unittest.TestCase):
         if not compiler: self.skipTest("no C++ compiler installed")
         with tempfile.TemporaryDirectory() as tmp:
             src, out = pathlib.Path(tmp) / "hello.cpp", pathlib.Path(tmp) / "hello"
-            src.write_text('#include <iostream>\nint main() { std::cout << "native-cpp-ok\\n"; }\n')
+            src.write_text('#include <iostream>\nint main() { std::cout << "native-cpp-ok\n"; }\n')
             built = subprocess.run([sys.executable, str(SCRIPT), "build", str(src), "-o", str(out),
                                     "--compiler", compiler], text=True, capture_output=True)
             self.assertEqual(built.returncode, 0, built.stderr)
@@ -51,17 +51,51 @@ class NativeDriveTests(unittest.TestCase):
             src = pathlib.Path(tmp) / "plugin.c"
             suffix = ".dylib" if sys.platform == "darwin" else ".so"
             out = pathlib.Path(tmp) / ("plugin" + suffix)
-            src.write_text('#include <stdint.h>\\n'
-                '#if defined(_WIN32)\\n#define EXPORT __declspec(dllexport)\\n'
-                '#else\\n#define EXPORT __attribute__((visibility("default")))\\n#endif\\n'
-                'EXPORT uint32_t sl_native_abi_version(void) { return 1u; }\\n'
-                'EXPORT int sl_native_run(int argc, const char *const argv[]) { (void)argv; return argc; }\\n')
+            src.write_text('#include <stdint.h>\n'
+                '#if defined(_WIN32)\n#define EXPORT __declspec(dllexport)\n'
+                '#else\n#define EXPORT __attribute__((visibility("default")))\n#endif\n'
+                'EXPORT uint32_t sl_native_abi_version(void) { return 1u; }\n'
+                'EXPORT int sl_native_run(int argc, const char *const argv[]) { (void)argv; return argc; }\n')
             built = subprocess.run([sys.executable, str(SCRIPT), "build", str(src), "-o", str(out),
                 "--kind", "shared", "--compiler", compiler], text=True, capture_output=True)
             self.assertEqual(built.returncode, 0, built.stderr)
             module = ctypes.CDLL(str(out))
             module.sl_native_abi_version.restype = ctypes.c_uint32
             self.assertEqual(module.sl_native_abi_version(), 1)
+
+    def test_multi_unit_c_build(self):
+        compiler = shutil.which("cc") or shutil.which("gcc") or shutil.which("clang")
+        if not compiler: self.skipTest("no C compiler installed")
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            (root / "main.c").write_text('#include <stdio.h>\\nint answer(void);\\nint main(void) { printf("%d\\n", answer()); return 0; }\\n')
+            (root / "answer.c").write_text('int answer(void) { return 42; }\\n')
+            out = root / "multi"
+            built = subprocess.run([sys.executable, str(SCRIPT), "build", str(root / "main.c"),
+                str(root / "answer.c"), "-o", str(out), "--compiler", compiler],
+                text=True, capture_output=True)
+            self.assertEqual(built.returncode, 0, built.stderr)
+            ran = subprocess.run([str(out)], text=True, capture_output=True)
+            self.assertEqual(ran.returncode, 0)
+            self.assertEqual(ran.stdout.strip(), "42")
+
+    def test_shared_library_requires_compatible_loader_abi_when_requested(self):
+        compiler = shutil.which("cc") or shutil.which("gcc") or shutil.which("clang")
+        if not compiler: self.skipTest("no C compiler installed")
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            src = root / "wrong_abi.c"
+            suffix = ".dylib" if sys.platform == "darwin" else ".so"
+            out = root / ("wrong_abi" + suffix)
+            src.write_text('#include <stdint.h>\\n'
+                '__attribute__((visibility("default"))) uint32_t sl_native_abi_version(void) { return 999u; }\\n'
+                '__attribute__((visibility("default"))) int sl_native_run(int n, const char *const a[]) { (void)a; return n; }\\n')
+            result = subprocess.run([sys.executable, str(SCRIPT), "build", str(src), "-o", str(out),
+                "--kind", "shared", "--require-sleela-abi", "--compiler", compiler],
+                text=True, capture_output=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("ABI mismatch", result.stderr)
+            self.assertFalse(out.exists())
 
     def test_process_pipeline(self):
         result = subprocess.run([sys.executable, str(SCRIPT), "pipe", "--timeout", "5", "--",
