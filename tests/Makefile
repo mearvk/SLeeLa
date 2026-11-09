@@ -84,6 +84,9 @@ java-api-dependencies:
 java-api-dependency-graph:
 	python3 java_api_dependency_graph_suite.py
 
+java-api-member-dependencies:
+	python3 java_api_member_dependencies_suite.py
+
 java-constraints:
 	python3 java_constraints_suite.py
 
