@@ -45,3 +45,19 @@ Java API dependency suite and directly by
 This remains static dependency evidence. Effective inherited-member contract
 comparison, generic substitution, override compatibility, and behavioral
 equivalence remain outstanding.
+
+
+## 0.3.24-dev — Visibility and constructor inheritance
+
+The visibility auditor classifies declared members and computes the
+source-level inherited member set using public, protected, package-private,
+and private rules. The constructor report explicitly distinguishes
+non-inheritance from accessible superclass constructor invocation options;
+implicit default constructors are modeled when no constructor is declared.
+
+Regression suite: `tests/java_api_visibility_constructor_suite.py`.
+Direct target: `make -C tests java-api-visibility-constructor`.
+The suite is also invoked by `tests/java_api_dependency_suite.py`.
+
+This is conservative source-level evidence, not complete JLS access-control
+or behavioral equivalence proof.
