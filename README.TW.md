@@ -237,3 +237,16 @@ Debug 時記錄 commit、OS、architecture 和 toolchain。先 build 最小相�
 驗證報告應列出 exact commit、OS/architecture、compiler versions、完整 build/test commands、pass/fail/skip 數量及已知限制。Skipped 或未執行的 tests 不可列為 passed。
 
 **擴充翻譯狀態：** 台灣繁體中文版現亦涵蓋 target/profile、execution authorization、resource lifecycle、debugging 及 verification reporting。
+
+
+## 二十、模組 API、相容性與測試策略
+
+新增 API 時，應記錄輸入、輸出、錯誤條件、資料 ownership，以及操作是否產生 side effects。文件範例應同時涵蓋正常流程，以及 invalid 或 missing input 的處理。未經 implementation 與 tests 證實的行為，不應描述為保證。
+
+測試應依 compiler pipeline 分層：lexing/parsing、semantic analysis、IR lowering、code generation、VM execution 與 native integration。每個 regression case 都應保留最小可重現輸入、預期結果與實際結果。API 變更必須說明 backward compatibility、migration steps，以及對既有 examples 的影響。
+
+## 二十一、語言在地化、編碼與可讀性
+
+技術 identifiers、commands、paths、syntax 和 code blocks 應在不同語言版本保持一致。翻譯說明文字，不翻譯 source code 使用的 token 或名稱。應明確標示語言與地區語境；台灣繁體中文與其他繁體中文地區的術語可能不同，應避免未經確認便混用。
+
+每次更新後檢查 Markdown links、標題層級、code fences 和範例。英文 canonical documents 更新時，應比對相關章節並同步翻譯，不應只更新簡介。尚未完成語言或技術審校的內容須清楚標示。
