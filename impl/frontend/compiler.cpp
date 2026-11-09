@@ -441,10 +441,11 @@ private:
     // Loop context for break/continue: each enclosing loop records the jump
     // sites that must be patched to the loop exit (break) and to the loop's
     // continue target (continue). We patch them when the loop finishes.
-    struct LoopCtx{std::vector<int> breaks;std::vector<int> continues;};
+    struct LoopCtx{std::vector<int> breaks;std::vector<int> continues;int tryDepth=0;};
     std::vector<LoopCtx> loops_;
-    void emitBreak(){if(loops_.empty())throw std::runtime_error("Semantic error: 'break' used outside a loop or switch");loops_.back().breaks.push_back(emit(OP_JMP,0));}
-    void emitContinue(){if(loops_.empty())throw std::runtime_error("Semantic error: 'continue' used outside a loop");loops_.back().continues.push_back(emit(OP_JMP,0));}
+    int tryDepth_=0;
+    void emitBreak(){if(loops_.empty())throw std::runtime_error("Semantic error: 'break' used outside a loop or switch");if(tryDepth_>loops_.back().tryDepth)throw std::runtime_error("Semantic error: break may not leave a protected try region until abrupt-completion cleanup is implemented");loops_.back().breaks.push_back(emit(OP_JMP,0));}
+    void emitContinue(){if(loops_.empty())throw std::runtime_error("Semantic error: 'continue' used outside a loop");if(tryDepth_>loops_.back().tryDepth)throw std::runtime_error("Semantic error: continue may not leave a protected try region until abrupt-completion cleanup is implemented");loops_.back().continues.push_back(emit(OP_JMP,0));}
     // Per-iteration delay requested by a loop-timing annotation (@loopDelay /
     // @loopBudget). Emits `push <ms>; OP_SLEEP`, which the VM executes each
     // iteration. Emitted at the top of the loop body so the delay happens once
@@ -458,9 +459,9 @@ private:
     // sleep. The judges/witnesses subjects are retained as AST metadata only and
     // have no runtime effect. ms<=0 emits nothing.
     void emitSpillStart(const LoopSpill& spill){if(spill.hasSpill && spill.spillPauseMs>0){emit(OP_CONST,slvm_add_const_int(vm_,(int64_t)spill.spillPauseMs));emit(OP_SLEEP);}}
-    void emitWhile(const WhileStmt& s){emitSpillStart(s.spill);loops_.push_back({});int top=here();emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emitLoopDelay(s.loopSleepMs);emitStmt(s.body.get());for(int c:loops_.back().continues)patch(c,top);emit(OP_JMP,top);patch(jf,here());for(int b:loops_.back().breaks)patch(b,here());loops_.pop_back();}
-    void emitDo(const DoStmt& s){emitSpillStart(s.spill);loops_.push_back({});int top=here();emitLoopDelay(s.loopSleepMs);emitStmt(s.body.get());int contTarget=here();for(int c:loops_.back().continues)patch(c,contTarget);emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emit(OP_JMP,top);patch(jf,here());for(int b:loops_.back().breaks)patch(b,here());loops_.pop_back();}
-    void emitFor(const ForStmt& s){emitSpillStart(s.spill);loops_.push_back({});if(s.init)emitStmt(s.init.get());int top=here();std::vector<int> exits;if(s.cond){emitExpr(s.cond.get());exits.push_back(emit(OP_JMPF,0));}if(s.threadStable){emitExpr(s.threadStable.get());exits.push_back(emit(OP_JMPF,0));}if(s.heapHealthy){emitExpr(s.heapHealthy.get());exits.push_back(emit(OP_JMPF,0));}emitLoopDelay(s.loopSleepMs);emitStmt(s.body.get());int contTarget=here();for(int c:loops_.back().continues)patch(c,contTarget);if(s.update)emitStmt(s.update.get());emit(OP_JMP,top);int end=here();for(int j:exits)patch(j,end);for(int b:loops_.back().breaks)patch(b,end);loops_.pop_back();}
+    void emitWhile(const WhileStmt& s){emitSpillStart(s.spill);loops_.push_back({{}, {}, tryDepth_});int top=here();emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emitLoopDelay(s.loopSleepMs);emitStmt(s.body.get());for(int c:loops_.back().continues)patch(c,top);emit(OP_JMP,top);patch(jf,here());for(int b:loops_.back().breaks)patch(b,here());loops_.pop_back();}
+    void emitDo(const DoStmt& s){emitSpillStart(s.spill);loops_.push_back({{}, {}, tryDepth_});int top=here();emitLoopDelay(s.loopSleepMs);emitStmt(s.body.get());int contTarget=here();for(int c:loops_.back().continues)patch(c,contTarget);emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emit(OP_JMP,top);patch(jf,here());for(int b:loops_.back().breaks)patch(b,here());loops_.pop_back();}
+    void emitFor(const ForStmt& s){emitSpillStart(s.spill);loops_.push_back({{}, {}, tryDepth_});if(s.init)emitStmt(s.init.get());int top=here();std::vector<int> exits;if(s.cond){emitExpr(s.cond.get());exits.push_back(emit(OP_JMPF,0));}if(s.threadStable){emitExpr(s.threadStable.get());exits.push_back(emit(OP_JMPF,0));}if(s.heapHealthy){emitExpr(s.heapHealthy.get());exits.push_back(emit(OP_JMPF,0));}emitLoopDelay(s.loopSleepMs);emitStmt(s.body.get());int contTarget=here();for(int c:loops_.back().continues)patch(c,contTarget);if(s.update)emitStmt(s.update.get());emit(OP_JMP,top);int end=here();for(int j:exits)patch(j,end);for(int b:loops_.back().breaks)patch(b,end);loops_.pop_back();}
     void emitSynchronized(const SynchronizedStmt& s){emitExpr(s.monitor.get());emit(OP_POP);emitBlock(*s.body);}
     void emitTry(const TryStmt& s){
         // First source-level exception milestone: one catch-all clause whose
@@ -483,7 +484,9 @@ private:
         varType_[clause.variable]="Any";
 
         const int push=emit(OP_TRY_PUSH,0);
+        ++tryDepth_;
         emitBlock(*s.body);
+        --tryDepth_;
         emit(OP_TRY_POP);
         const int skipHandler=emit(OP_JMP,0);
         patch(push,here());
@@ -502,7 +505,7 @@ private:
         // Lower a switch to a dispatch chain: evaluate the selector once into a
         // temp local, test each label with ==, and jump to the matching case
         // body. Fall-through follows source order; `break` jumps to the end.
-        loops_.push_back({});
+        loops_.push_back({{}, {}, tryDepth_});
         int sel=ctx_->nextSlot++; emitExpr(s.selector.get()); emit(OP_STOREL,sel);
         // Dispatch section: for each label, (selector==label) ? enter body.
         // Record one enter-jump per label, tagged with its owning case index.
