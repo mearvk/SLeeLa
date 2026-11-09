@@ -42,6 +42,12 @@ SLNativeStatus sl_native_table_run(SLNativeModuleTable *table,
                                    int argc,
                                    const char *const argv[],
                                    int *out_result);
+SLNativeStatus sl_native_table_call(SLNativeModuleTable *table,
+                                    SLNativeHandle handle,
+                                    const char *method,
+                                    uint32_t argc,
+                                    const SLNativeValue *argv,
+                                    SLNativeValue *out_result);
 SLNativeStatus sl_native_table_close(SLNativeModuleTable *table,
                                      SLNativeHandle handle);
 SLNativeStatus sl_native_table_close_all(SLNativeModuleTable *table);
