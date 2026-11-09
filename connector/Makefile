@@ -64,7 +64,7 @@ test: conformance protocol-test protocol-codec-test check
 protocol-test: java-check
 	@mkdir -p "$(PROTOCOL_CLASSES_DIR)"
 	"$(JAVAC)" --release "$(JAVA_RELEASE)" -Xlint:all -d "$(PROTOCOL_CLASSES_DIR)" $(PROTOCOL_SOURCES)
-	"$(PYTHON)" ../test-suites/test-java-protocol.py "$(PROTOCOL_CLASSES_DIR)"
+	JAVA="$(JAVA)" JAVAC="$(JAVAC)" "$(PYTHON)" ../test-suites/test-java-protocol.py "$(PROTOCOL_CLASSES_DIR)"
 
 protocol-codec-test:
 	@command -v "$(CC)" >/dev/null 2>&1 || { echo "ERROR: C compiler not found." >&2; exit 1; }
