@@ -85,8 +85,9 @@ The `native-drive` tool builds multi-unit C/C++ executables and shared
 libraries, compiles the supported SLeeLa AOT subset, executes processes without
 an implicit shell, and routes XClass operations through the production loader.
 Use `sleelactl inspect native-drive service ...` to render or explicitly install
-a hardened systemd unit. VM in-process dispatch and parser-enforced process
-annotations remain future compiler/runtime work. See
+a hardened systemd unit. The VM owns an authorized, bounded native-module
+lifecycle API; bytecode dispatch, typed SLeeLa values, interpreter fallback,
+and parser-enforced process annotations remain future compiler/runtime work. See
 [Native Drive](../impl/native-drive/README.md).
 
 `sleelactl <verb> all` applies the verb to every module whose nature accepts it
@@ -137,7 +138,7 @@ sleelactl inspect native-drive service --name worker --status
 sleelactl inspect native-drive service --name worker --rollback
 ```
 
-The generator defaults to a user unit. Add `--system --user ACCOUNT` for an explicitly scoped system unit (run installation as root). Installation does not enable or start a unit unless the corresponding flags are supplied. Replacement is opt-in and preserves one rollback copy. Lifecycle operations are Linux/systemd-only; they do not claim to provide Windows Service Control Manager or macOS launchd integration.
+The generator defaults to a user unit. Add `--system --user ACCOUNT` for an explicitly scoped system unit (run installation as root). Installation does not enable or start a unit unless the corresponding flags are supplied. Replacement is opt-in and preserves one rollback copy; failed installs attempt to restore the prior unit and undo enable/start side effects. Lifecycle operations are Linux/systemd-only; they do not claim to provide Windows Service Control Manager or macOS launchd integration.
 
 
 ## Regression test
