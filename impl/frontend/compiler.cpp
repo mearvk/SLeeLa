@@ -945,7 +945,8 @@ private:
         if(n=="nativeCall"){
             if(syntax_<SyntaxVersion{3,0})throw std::runtime_error("Semantic error: Native Drive requires #sleela 3.0");
             if(c.args.size()<2 || c.args.size()>4096)throw std::runtime_error("Semantic error: nativeCall(handle, method, ...args) requires a handle, method String, and at most 4094 arguments");
-            emitArgs(c); emit(OP_NATIVE_CALL, (int)c.args.size()-2); return true;
+            for(const auto& argument : c.args) emitExpr(argument.get());
+            emit(OP_NATIVE_CALL, (int)c.args.size()-2); return true;
         }
 
         if(n=="spawn"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: spawn(method) takes exactly one argument");auto var=dynamic_cast<const VarExpr*>(c.args[0].get());if(!var)throw std::runtime_error("Semantic error: spawn(method) argument must be a method name");auto it=funcIndex_.find(var->name);if(it==funcIndex_.end())it=funcIndex_.find(currentClass_+"::"+var->name);if(it==funcIndex_.end())throw std::runtime_error("Semantic error: spawn of unknown method '"+var->name+"'");if(!methods_[it->second].method->isStatic)throw std::runtime_error("Semantic error: spawn target '"+var->name+"' must be static because a thread has no instance receiver");if(!methods_[it->second].method->params.empty())throw std::runtime_error("Semantic error: spawn target '"+var->name+"' must take no parameters");emit(OP_SPAWN,it->second);return true;}
