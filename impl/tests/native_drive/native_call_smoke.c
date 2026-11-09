@@ -7,6 +7,11 @@ static int authorize_exact_path(const char *path, void *context) {
     return path && approved && strcmp(path, approved) == 0;
 }
 
+static int authorize_callback_name(const char *function, void *context) {
+    const char *approved = (const char *)context;
+    return function && approved && strcmp(function, approved) == 0;
+}
+
 int main(int argc, char **argv) {
     SLVM *vm;
     SLValue result;
@@ -24,6 +29,12 @@ int main(int argc, char **argv) {
     }
     if (slvm_set_native_authorizer(vm, authorize_exact_path, argv[2]) != 0) {
         fprintf(stderr, "could not install native authorization callback\\n");
+        slvm_free(vm);
+        return 2;
+    }
+    if (slvm_set_native_callback_authorizer(
+            vm, authorize_callback_name, (void *)"Callback::receive") != 0) {
+        fprintf(stderr, "could not install native callback-name authorization\\n");
         slvm_free(vm);
         return 2;
     }
