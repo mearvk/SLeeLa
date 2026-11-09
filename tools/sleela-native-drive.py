@@ -32,20 +32,31 @@ def _run_checked(argv: Sequence[str], timeout: float | None = None) -> subproces
         raise RuntimeError(f"could not start {argv[0]!r}: {exc}") from exc
 
 def _validate_native_abi(library: pathlib.Path) -> None:
-    """Load a just-built trusted artifact and verify the stable loader ABI."""
-    module = ctypes.CDLL(str(library))
-    try:
-        version = module.sl_native_abi_version
-        version.argtypes = []
-        version.restype = ctypes.c_uint32
-        entry = module.sl_native_run
-        entry.argtypes = [ctypes.c_int, ctypes.POINTER(ctypes.c_char_p)]
-        entry.restype = ctypes.c_int
-    except AttributeError as exc:
-        raise RuntimeError(f"shared library is missing required SLeeLa ABI symbol: {exc}") from exc
-    actual = int(version())
-    if actual != 1:
-        raise RuntimeError(f"native ABI mismatch: module reports {actual}, runtime requires 1")
+    """Check exported ABI symbol names without loading/executing the module."""
+    nm = shutil.which("nm")
+    if not nm:
+        raise RuntimeError("--require-sleela-abi needs an nm symbol-inspection tool; refusing to load the library just to inspect it")
+    if sys.platform == "darwin":
+        command = [nm, "-gU", str(library)]
+    elif os.name == "nt":
+        command = [nm, "-g", str(library)]
+    else:
+        command = [nm, "-D", "--defined-only", str(library)]
+    result = _run_checked(command, timeout=15.0)
+    if result.returncode != 0:
+        raise RuntimeError("could not inspect shared-library exports with nm: " + result.stderr.strip())
+    symbols = set()
+    for line in result.stdout.splitlines():
+        fields = line.split()
+        if fields:
+            symbols.add(fields[-1].lstrip("_"))
+    required = {"sl_native_abi_version", "sl_native_run"}
+    missing = sorted(required - symbols)
+    if missing:
+        raise RuntimeError("shared library is missing required SLeeLa ABI exports: " + ", ".join(missing))
+    # The ABI version function is deliberately NOT invoked during build: loading
+    # a shared object can execute constructors/DllMain. The trusted native loader
+    # checks the returned version when an explicitly authorized load occurs.
 
 
 def build(args: argparse.Namespace) -> int:
