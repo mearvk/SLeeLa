@@ -73,6 +73,7 @@ slmath_complex slmath_complex_multiply(slmath_complex a, slmath_complex b);
 slmath_status slmath_complex_divide(slmath_complex a, slmath_complex b,
                                     slmath_complex *out);
 double slmath_complex_abs(slmath_complex z);
+double slmath_complex_phase(slmath_complex z);
 slmath_complex slmath_complex_conjugate(slmath_complex z);
 
 /* Typed numerical-array primitives. All storage is caller-owned. */
