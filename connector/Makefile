@@ -24,8 +24,10 @@ JAR_FILE ?= $(DIST_DIR)/sleela-connector.jar
 
 JAVA_SOURCES := $(shell find java -type f -name '*.java' -print 2>/dev/null)
 CLASS_STAMP := $(CLASSES_DIR)/.compiled
+PROTOCOL_CLASSES_DIR ?= $(BUILD_DIR)/protocol-classes
+PROTOCOL_SOURCES := java/com/mearvk/sleela/connector/SleelaClassLoader.java java/com/mearvk/sleela/connector/SleelaJdkBridge.java java/com/mearvk/sleela/connector/SleelaJdkProtocolServer.java
 
-.PHONY: all build deps check java-check compile test conformance jar package install clean help
+.PHONY: all build deps check java-check compile test conformance protocol-test protocol-codec-test jar package install clean help
 
 all: compile
 build: compile
@@ -56,8 +58,19 @@ $(CLASS_STAMP): $(JAVA_SOURCES) $(SERVLET_API_JAR)
 conformance: compile
 	"$(JAVA)" -ea -cp "$(CLASSES_DIR)$(CLASSPATH_SEP)$(SERVLET_API_JAR)" com.mearvk.sleela.connector.SleelaJdkConformance
 
-test: conformance check
+test: conformance protocol-test protocol-codec-test check
 	@echo "SLeeLa connector tests: PASS"
+
+protocol-test: java-check
+	@mkdir -p "$(PROTOCOL_CLASSES_DIR)"
+	"$(JAVAC)" --release "$(JAVA_RELEASE)" -Xlint:all -d "$(PROTOCOL_CLASSES_DIR)" $(PROTOCOL_SOURCES)
+	"$(PYTHON)" ../test-suites/test-java-protocol.py "$(PROTOCOL_CLASSES_DIR)"
+
+protocol-codec-test:
+	@command -v "${CC:-cc}" >/dev/null 2>&1 || { echo "ERROR: C compiler not found." >&2; exit 1; }
+	@tmp="$(BUILD_DIR)/java-protocol-codec-test"; mkdir -p "$(BUILD_DIR)"; \
+	  "${CC:-cc}" -std=c11 -Wall -Wextra -Werror -pedantic -I../runtime \
+	  ../runtime/java_interop_protocol.c ../test-suites/test-java-protocol-codec.c -o "$tmp" && "$tmp"
 
 check:
 	@test -s deploy/web.xml || { echo "ERROR: deploy/web.xml missing or empty." >&2; exit 1; }
@@ -86,6 +99,8 @@ help:
 	@echo "  deps         Download the Jakarta Servlet API dependency"
 	@echo "  test         Run JDK bridge conformance + deployment checks"
 	@echo "  conformance  Run the JDK bridge conformance test"
+	@echo "  protocol-test Compile and black-box test the SLJIP Java endpoint"
+	@echo "  protocol-codec-test Compile and test the native SLJIP frame codec"
 	@echo "  jar/package  Build $(JAR_FILE)"
 	@echo "  install      Install the JAR (requires DESTDIR=...)"
 	@echo "  check        Validate required deployment files and web.xml"
