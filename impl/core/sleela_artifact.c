@@ -125,6 +125,9 @@ static int validate_loaded_vm(const SLVM* vm, char* error, size_t error_size) {
             case OP_CALL: case OP_SPAWN:
                 if (in->a < 0 || in->a >= vm->nfunc) { abi_error(error,error_size,"call target outside function table"); return 0; }
                 break;
+            case OP_NATIVE_CALL:
+                if (in->a < 0 || in->a > STACK_MAX - 2) { abi_error(error,error_size,"native-call argument count outside operand-stack range"); return 0; }
+                break;
             case OP_JMP: case OP_JMPF:
                 if (in->a < 0 || in->a >= vm->codelen) { abi_error(error,error_size,"jump target outside code"); return 0; }
                 break;
