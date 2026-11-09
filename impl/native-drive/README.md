@@ -151,8 +151,8 @@ it does not automatically restart the workload.
 | 1. C/C++ frontends | Production system compiler integration, multi-unit builds | Native SLeeLa frontend adapters and SLIR conformance, not a replacement C++ compiler |
 | 2. SLeeLa/XClass translation | Existing @native AOT + XClass loader delegated | Per-method native emission, typed entry ABI, XClass method-body fidelity where encoded |
 | 3. Native build/link/load | Executable/shared builds and optional ABI validation | Runtime-owned plugin registry, signature/integrity policy, VM-visible typed symbols |
-| 4. Process piping | argv execution, stdin file, capture, two-process pipe, timeout | Annotation parser/runtime policy and full multi-stage bounded pipeline API |
-| 5. systemd | Hardened unit rendering and explicit install/enable/start | Service state/rollback integration in sleelactl, generated service manifests |
+| 4. Process piping | argv execution, stdin file, bounded capture, multi-stage pipe, timeout, exit propagation | Annotation parser/runtime policy and richer stream-routing semantics |
+| 5. systemd | Hardened unit rendering, explicit install/enable/start, status/restart/stop/disable, one-level replacement rollback | Generated service manifests and integration tests against a real systemd host |
 | 6. VM dispatch | Stable native-loader ABI is available | VM-owned module handles, typed argument/result marshalling, fallback and parity tests |
 | 7. Conformance | Native Drive smoke/integration CI | Full compiler/VM/loader/process/systemd matrix, sanitizer and cross-ABI coverage |
 
