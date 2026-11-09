@@ -86,6 +86,15 @@ int sl_native_table_is_valid(SLNativeModuleTable *table, SLNativeHandle handle) 
     return resolve(table, handle) != NULL;
 }
 
+SLNativeStatus sl_native_table_bind_host(SLNativeModuleTable *table,
+                                         SLNativeHandle handle,
+                                         const SLNativeHostAPI *host_api) {
+    SLNativeModuleSlot *slot = resolve(table, handle);
+    if (!slot) return SL_NATIVE_STALE_HANDLE;
+    return sl_native_bind_host_api(&slot->module, host_api);
+}
+
+
 SLNativeStatus sl_native_table_close(SLNativeModuleTable *table,
                                      SLNativeHandle handle) {
     SLNativeModuleSlot *slot = resolve(table, handle);
