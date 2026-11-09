@@ -968,8 +968,8 @@ private:
         static const std::set<std::string> mathBuiltins={
             "mathVectorAdd","mathVectorDot","mathVectorNorm","mathVectorScale",
             "mathVectorSubtract","mathVectorNormalize","mathVectorCross3",
-            "mathComplexAdd","mathComplexSubtract","mathComplexMultiply","mathComplexDivide",
-            "mathMatrixMultiply","mathMatrixTranspose","mathMatrixInverse","mathMatrixQR",
+            "mathComplexAdd","mathComplexSubtract","mathComplexMultiply","mathComplexDivide","mathComplexAbs","mathComplexPhase","mathComplexConjugate",
+            "mathMatrixMultiply","mathMatrixTranspose","mathMatrixInverse","mathMatrixDeterminant","mathMatrixQR",
             "mathSymmetricEigen","mathFFT"
         };
         if(!mathBuiltins.count(n)) return false;
@@ -1020,10 +1020,22 @@ private:
             else if(n=="mathComplexMultiply") op=SLMATH_OP_COMPLEX_MULTIPLY;
             else op=SLMATH_OP_COMPLEX_DIVIDE;
             a=0;b=1;out=2;ar=2;ac=1;br=2;bc=1;orows=2;ocols=1;
+        } else if(n=="mathComplexAbs" || n=="mathComplexPhase"){
+            if(c.args.size()!=2) throw std::runtime_error("Semantic error: "+n+"(value, output) takes two arguments");
+            op=n=="mathComplexAbs"?SLMATH_OP_COMPLEX_ABS:SLMATH_OP_COMPLEX_PHASE;
+            a=0;out=1;ar=2;ac=1;orows=1;ocols=1;
+        } else if(n=="mathComplexConjugate"){
+            if(c.args.size()!=2) throw std::runtime_error("Semantic error: mathComplexConjugate(value, output) takes two arguments");
+            op=SLMATH_OP_COMPLEX_CONJUGATE;a=0;out=1;ar=2;ac=1;orows=2;ocols=1;
         } else if(n=="mathMatrixInverse"){
             if(c.args.size()!=3) throw std::runtime_error("Semantic error: mathMatrixInverse(a, out, order) takes three arguments");
             op=SLMATH_OP_MATRIX_INVERSE;a=0;out=1;
             ar=literalDimension(2,"matrix order");ac=ar;orows=ar;ocols=ar;
+            scalarDefault=1e-12;
+        } else if(n=="mathMatrixDeterminant"){
+            if(c.args.size()!=3) throw std::runtime_error("Semantic error: mathMatrixDeterminant(a, output, order) takes three arguments");
+            op=SLMATH_OP_MATRIX_DETERMINANT;a=0;out=1;
+            ar=literalDimension(2,"matrix order");ac=ar;orows=1;ocols=1;
             scalarDefault=1e-12;
         } else if(n=="mathMatrixQR"){
             if(c.args.size()!=5) throw std::runtime_error("Semantic error: mathMatrixQR(a, q, r, rows, cols) takes five arguments");
