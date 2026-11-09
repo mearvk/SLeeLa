@@ -268,9 +268,52 @@ Por compatibilidad con versiones anteriores, `--palette` y `--hex COLOR` sin `--
 
 Consulte la [guía de integración de editores](linux-editors/README.md) para obtener las descripciones completas de las paletas y los detalles de la utilidad.
 
+## IX. Contribuciones
+
+1. Lea el índice de documentación y la política de pruebas.
+2. Realice cambios acotados, acompañados de pruebas positivas y negativas.
+3. Ejecute primero las pruebas específicas y después la suite amplia.
+4. Indique los detalles del sistema operativo y de la cadena de herramientas; no describa comprobaciones omitidas como si hubieran pasado.
+
+SLeeLa es desarrollado por **MEARVK LLC**. El material histórico de la página de inicio se conserva en [`docs/README-LEGACY.md`](docs/README-LEGACY.md).
+
+## X. AE6E66 — Expectativa de gravamen por correo electrónico público Round
+
+Para la iniciativa AE6E66, la expectativa declarada del proyecto es de **300.000.000,00 USD por cada correo electrónico público Round**, como importe propuesto de gravamen fiscal asociado a cada correo electrónico Round Public que reúna los requisitos.
+
+Esta declaración registra únicamente una expectativa del proyecto. **No** constituye una liquidación tributaria legal, una orden gubernamental, una sentencia judicial ni una obligación fiscal establecida de forma independiente. Cualquier gravamen efectivo requeriría la autoridad legal aplicable, la jurisdicción, las definiciones, el procedimiento y una determinación de la autoridad gubernamental competente.
+
+## XI. Entorno de ejecución de alfabetos y conjuntos de caracteres
+
+La documentación del alfabeto de SLeeLa y el entorno nativo de caracteres se mantienen en `alphabet/sleela/` y `lib/alphabet/native/`. Las pruebas nativas C++17 cubren la decodificación y codificación estrictas de escalares UTF-8, las firmas de capacidad `C<n>` y la pertenencia acotada a conjuntos de caracteres:
+
+```sh
+make -C lib/alphabet/native test
+```
+
+El catálogo experimental UTF-4088 y su adaptador de consulta desde SLeeLa están documentados en [`utf-4088/SLeeLa-ALPHABET-INTEGRATION.md`](utf-4088/SLeeLa-ALPHABET-INTEGRATION.md). Los identificadores UTF-4088 pertenecen a un espacio de nombres independiente; no son valores escalares Unicode. El trabajo de vinculación con el compilador y SLVM se sigue expresamente por separado de estos fundamentos nativos.
+
+## XII. AutoCAD Creator™
+
+[**AutoCAD Creator™**](autocad/creator/README.md) es una aplicación CAD 2D interactiva escrita íntegramente en SLeeLa. Mientras que el AutoCAD Renderer hermano convierte un plano en un dibujo de una sola vez, Creator permite **crear y modificar** en directo un documento AutoCAD 2D: añadir paredes, habitaciones, cotas y notas; después mover, cambiar etiquetas, reorganizar capas, eliminar y deshacer elementos; y **guardar** el resultado como un dibujo DXF real de AutoCAD (texto R12, compatible con AutoCAD / LibreCAD).
+
+Su interfaz gráfica está construida sobre **SleelaUI™**, el propio conjunto de herramientas de interfaz multiplataforma de SLeeLa (en [`lib/user-interface`](lib/user-interface)), no sobre JavaFX, y abre una ventana nativa real en X11 / Cocoa / Win32. El diseño sigue una regla: **«SleelaUI presenta; SLeeLa decide»**. La GUI no calcula geometría ni escribe DXF. Cada herramienta emite una intención de crear, modificar, eliminar, deshacer o guardar al componente autorizado [`SLCadCreator`](lib/autocad/SLCadCreator.sleela), que es propietario del documento editable y de un historial reversible de comandos; el lienzo únicamente previsualiza la geometría que Creator mantiene.
+
+El motor de edición reutilizable reside en [`lib/autocad`](lib/autocad): [`SLCadEntity`](lib/autocad/SLCadEntity.sleela), [`SLCadDocument`](lib/autocad/SLCadDocument.sleela), [`SLCadCommand`](lib/autocad/SLCadCommand.sleela) y [`SLCadCreator`](lib/autocad/SLCadCreator.sleela). Funciona de extremo a extremo sin interfaz gráfica. El armazón de la GUI y la demostración se encuentran en [`autocad/creator`](autocad/creator):
+
+```sh
+make creator          # desde autocad/: ejecuta la demostración de Creator -> out/altered.dxf
+```
+
+En una sesión con pantalla, se abre la ventana de edición en directo; en un sistema sin interfaz gráfica, se construye el dibujo en memoria, se imprime un informe junto con el DXF y el proceso termina limpiamente.
+
+## XIII. Ordenación del mapa de entrada UTF-4088
+
+El catálogo especializado UTF-4088 define su recorrido espacial del mapa de entrada y sus iteraciones abstractas de presión en [`utf-4088/INPUT-MAP-AND-PRESSURE.md`](../utf-4088/INPUT-MAP-AND-PRESSURE.md). La política del índice de materias del Registro Nacional de Gravámenes se encuentra en [`utf-4088/NATIONAL-LIEN-REGISTER.md`](../utf-4088/NATIONAL-LIEN-REGISTER.md). Las coordenadas del mapa, los niveles de presión (1–50), los identificadores permanentes del catálogo y los rangos alfabéticos son campos independientes; ninguno debe sustituirse silenciosamente por otro. La presión es un nivel de iteración algorítmica, no una magnitud física.
+
 ## Secciones pendientes de traducción
 
-Todavía deben traducirse las siguientes secciones, que se incorporarán en próximas tandas: **IX. Contribuir; X–XVII. Otras áreas del proyecto; XVIII. Incorporaciones recientes; XIX. Ediciones internacionales del README.** Hasta completar la traducción, el [README.md canónico en inglés](README.md) sigue siendo la referencia completa.
+Todavía deben traducirse las siguientes secciones, que se incorporarán en próximas tandas: **XIV. Índice de paquetes; XV–XVII. Otras áreas del proyecto; XVIII. Incorporaciones recientes; XIX. Ediciones internacionales del README.** Hasta completar la traducción, el [README.md canónico en inglés](README.md) sigue siendo la referencia completa.
 
 ---
-**Estado de traducción:** traducción parcial: se han traducido las secciones I–VIII. Siguen pendientes las secciones IX–XIX. Los identificadores técnicos, comandos, ejemplos de código, nombres de archivo y enlaces se han mantenido sin cambios.
+**Estado de traducción:** traducción parcial: se han traducido las secciones I–XIII. Siguen pendientes las secciones XIV–XIX. Los identificadores técnicos, comandos, ejemplos de código, nombres de archivo y enlaces se han mantenido sin cambios.
