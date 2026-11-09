@@ -80,3 +80,28 @@ The audit is deliberately not treated as behavioral equivalence evidence.
 Substantive-looking methods still require semantic review and Java-contract
 conformance tests. The source implementation program begins with foundational
 `java.lang` and `java.util` behavior and expands by dependency order.
+
+
+## SLeeLa-native java.lang implementation slice (0.3.26-dev)
+
+Added implementation sources:
+
+- `lib/java/implementations/java/lang/JavaObjectIdentity.sleela`
+- `lib/java/implementations/java/lang/JavaStringValue.sleela`
+
+Added executable VM fixtures and runners:
+
+- `tests/java_object_identity_native.sleela`
+- `tests/java_object_identity_native_suite.py`
+- `tests/java_string_native.sleela`
+- `tests/java_string_native_suite.py`
+
+Direct target: `make -C tests java-lang-native`.
+
+These are intentionally partial implementation units. Object identity depends
+on stable VM heap/object handles and does not yet implement monitor operations,
+wait/notify, clone, or default toString. The String slice implements scalar
+value equality, concatenation, non-negative repetition, and array joining;
+UTF-16 indexing, code-point behavior, Java hashCode, regex, normalization,
+case mapping, and exception semantics remain unimplemented. Runtime suites
+were added but not executed in this change.
