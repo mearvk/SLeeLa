@@ -522,6 +522,17 @@ SLNativeStatus slvm_native_module_open(SLVM* vm, const char* path, SLNativeHandl
     return status;
 }
 
+/* Rebind immediately before each plugin entrypoint. A shared library may
+ * be loaded by multiple VM instances in one process; plugins must copy this
+ * table into thread-local storage so concurrent VM calls cannot overwrite one
+ * another's callback context. Caller holds native_mtx. */
+static SLNativeStatus slvm_native_bind_module_host_locked(
+    SLVM* vm, SLNativeHandle handle) {
+    SLNativeStatus status = sl_native_table_bind_host(
+        &vm->native_modules, handle, &vm->native_host_api);
+    return status == SL_NATIVE_HOST_CALLBACK_NOT_FOUND ? SL_NATIVE_OK : status;
+}
+
 SLNativeStatus slvm_native_module_run(SLVM* vm, SLNativeHandle handle,
                                       int argc, const char* const argv[], int* out_result) {
     SLNativeStatus status;
@@ -531,7 +542,8 @@ SLNativeStatus slvm_native_module_run(SLVM* vm, SLNativeHandle handle,
      * is executing. A plugin entry point must not re-enter this VM's native
      * module lifecycle API. */
     pthread_mutex_lock(&vm->native_mtx);
-    {
+    status = slvm_native_bind_module_host_locked(vm, handle);
+    if (status == SL_NATIVE_OK) {
         SLVM* previous_plugin_vm = native_plugin_call_vm;
         native_plugin_call_vm = vm;
         status = sl_native_table_run(&vm->native_modules, handle, argc, argv, out_result);
@@ -551,7 +563,8 @@ SLNativeStatus slvm_native_module_call(SLVM* vm, SLNativeHandle handle,
      * re-enter this VM's native-module API. Result UTF-8 spans are borrowed
      * from the plugin and must be copied before the next call or close. */
     pthread_mutex_lock(&vm->native_mtx);
-    {
+    status = slvm_native_bind_module_host_locked(vm, handle);
+    if (status == SL_NATIVE_OK) {
         SLVM* previous_plugin_vm = native_plugin_call_vm;
         native_plugin_call_vm = vm;
         status = sl_native_table_call(&vm->native_modules, handle, method, argc, argv, out_result);
@@ -2407,7 +2420,8 @@ static SLResult run_thread(SLThread* t) {
             memset(&native_result, 0, sizeof(native_result));
             native_result.tag = SL_NATIVE_VALUE_NULL;
             pthread_mutex_lock(&vm->native_mtx);
-            {
+            status = slvm_native_bind_module_host_locked(vm, handle);
+            if (status == SL_NATIVE_OK) {
                 SLVM* previous_plugin_vm = native_plugin_call_vm;
                 native_plugin_call_vm = vm;
                 vm->native_callback_caller = t;
