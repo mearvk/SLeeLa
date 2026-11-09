@@ -213,3 +213,18 @@ Den svenska utgåvan riktar sig till svenskspråkiga läsare i Sverige. Den gör
 - [SLeeLa på GitHub](https://github.com/mearvk/SLeeLa)
 
 **Översättningsstatus:** Den svenska utgåvan har utökats till en teknisk introduktion som täcker kom igång, byggande, installation, språk och körmiljö, inbyggd integration, bibliotek, säkerhet, utvecklingsflöde och centrala projektområden. Den är ännu inte en rad-för-rad-översättning av alla detaljer i den kanoniska engelska README-filen. Teknisk granskning och språkgranskning av en svenskspråkig fackperson rekommenderas innan utgåvan betecknas som slutgiltig.
+
+
+## XVI. Mål, profiler och gränser för körning
+
+SLeeLa skiljer källkod från bygg- och körmål. Den dokumenterade målfamiljen omfattar `SLVM`, `SLJVM` och `SLIR`; `NATIVE` är ett begränsat mål med villkor och ska inte antas vara tillgängligt på alla plattformar. Profilerna `BASIC_COMPLETE` och `ADVANCED_TOTAL` anger olika omfattning. Kontrollera faktiskt mål, profil och plattformsstöd för varje bygge.
+
+En referens identifierar en fil, modul eller resurs men ger inte i sig tillstånd att köra den. När ett program använder filer, externa bibliotek, native bindings eller systemresurser måste behörighetsgränser och ansvar för körningen definieras tydligt. En beskrivning i dokumentationen är inte ensam ett bevis för en säkerhetsgaranti i runtime; granska implementationen och relevanta tester.
+
+## XVII. Resurslivscykel och felsökning
+
+Dokumentera ägarskap, livslängd och synkroniseringsansvar för resurser som delas mellan funktioner eller trådar. Skilj mellan local variables, shared object state, VM handles och serializable data. Ett VM-local handle är inte ett stabilt filformat eller nätverksmeddelande. Använd modulens definierade serialiseringsgränssnitt och testa invalid, missing och boundary values.
+
+Vid felsökning ska commit, OS, architecture och toolchain registreras. Bygg först det minsta relevanta målet, spara hela felutskriften, skilj compiler errors från runtime errors och skapa ett minimalt reproducerbart exempel. Ett lyckat bygge bevisar inte ensamt att runtime-beteendet är korrekt.
+
+En verifieringsrapport bör ange exact commit, OS/architecture, compiler versions, fullständiga build/test commands, antal pass/fail/skip och kända begränsningar. Tester som hoppats över eller inte körts får inte räknas som godkända.
