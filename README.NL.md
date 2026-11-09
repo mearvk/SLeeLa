@@ -4,7 +4,7 @@
 
 <p align="center"><strong>Een native systeemprogrammeertaal met compiler, runtime en ecosysteem van virtuele machines.</strong></p>
 
-> **Internationale landeneditie.** Dit bestand bundelt de taalversies die voor Nederland zijn geselecteerd. De technische vertaling wordt stapsgewijs uitgevoerd. Vertaalde onderdelen zijn volledig opgenomen; onderdelen die nog moeten worden vertaald, zijn uitdrukkelijk gemarkeerd.
+> **Internationale landeneditie — vertaalconcept.** Dit Nederlandse bestand is een werkversie. De oorspronkelijke inhoudsstructuur en technische verwijzingen zijn behouden, maar verschillende onderdelen bevatten nog brontekst of moeten taalkundig worden herzien. Behandel deze editie nog niet als een volledige Nederlandse vertaling.
 
 **The Now. The Ingredient.** Een programmeertaal is meer dan alleen de syntaxis: ook de compiler, runtime, bibliotheken, hulpmiddelen en platformcontracten die software bruikbaar maken, horen erbij.
 
@@ -427,4 +427,4 @@ SLeeLa biedt landspecifieke README-startpunten voor de 50 markten van de interna
 
 ---
 
-**Vertaalstatus:** secties I–XIX zijn in het Nederlands vertaald. Technische identifiers, opdrachten, codevoorbeelden, bestandsnamen en links zijn behouden. Een laatste controle door een moedertaalspreker wordt aanbevolen voordat deze editie als redactioneel goedgekeurde vertaling wordt gepubliceerd.
+**Vertaalstatus:** werkversie — de sectiekoppen I–XIX zijn aanwezig, maar de lopende tekst is nog niet volledig naar het Nederlands vertaald. Technische identifiers, opdrachten, codevoorbeelden, bestandsnamen en links zijn behouden. Voltooi de vertaling en laat deze daarna door een moedertaalspreker nakijken voordat de editie als volledig wordt aangeduid.
