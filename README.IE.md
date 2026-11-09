@@ -12,6 +12,76 @@ Is teanga ríomhchláraithe córas dúchasach í SLeeLa, lena n-áirítear tioms
 
 ---
 
+
+## Treoir theicniúil i nGaeilge
+
+### A. Tógáil agus tástáil
+
+Is é `SLEELA.syntax` an príomhthagairt do chomhréir na teanga. Ba cheart d’fhorbróirí an leagan den tiomsaitheoir agus an leagan den chomhréir foinseach a idirdhealú: ní hionann iad, agus ní gá go mbeadh gach gné de chuid na sonraíochta ar fáil i ngach leagan den tiomsaitheoir.
+
+Ó fhréamh an stórtha, úsáid na horduithe seo de réir mar is cuí:
+
+```sh
+make
+make -C impl all
+bash ./test-suites/run-all.sh --all
+```
+
+Is féidir le spriocanna coitianta Make cabhrú le tógáil agus glanadh:
+
+```sh
+make all
+make registry
+make tests
+make ballum
+make help
+make clean
+```
+
+Ní chruthaíonn tógáil rathúil aon chomhpháirte amháin go bhfuil gach leabharlann nó gach ardán réidh le heisiúint. Ba cheart torthaí na dtástálacha a cheangal leis an tiomantas Git, leis an gcóras oibriúcháin agus leis an slabhra uirlisí a úsáideadh. Níor cheart tástálacha a scipeáladh ná tástálacha nár ritheadh a thuairisciú mar thástálacha rathúla.
+
+### B. Suiteáil
+
+Tacaíonn an tionscadal le suiteáil ar fud an chórais, le suiteáil faoi chuntas úsáideora agus le fréamh ullmhúcháin do phacáistí:
+
+```sh
+sudo make install
+make install PREFIX="$HOME/.local"
+make install DESTDIR="$PWD/package-root"
+make install-check
+```
+
+Is gnách go n-úsáideann suiteáil chórais `/usr/local/bin`, `/usr/local/lib/sleela` agus `/usr/local/share/sleela`. Le `PREFIX="$HOME/.local"`, suiteáiltear faoi eolaire an úsáideora agus ní bhíonn `sudo` riachtanach de ghnáth. Cruthaíonn `DESTDIR` crann comhad sealadach le haghaidh pacáistithe; ní hionann é agus suiteáil dhíreach ar an gcóras óstach.
+
+Lean an [treoir suiteála](install/README.md) agus na treoracha don ardán ar leith. Ná bain comhaid nach bhfuil cláraithe ag an suiteálaí mar chuid den tsuiteáil.
+
+### C. Teanga, tiomsaitheoir agus timpeallacht rite
+
+Cuimsíonn SLeeLa tiomsaitheoir, timpeallacht rite, meaisíní fíorúla, leabharlanna agus uirlisí doiciméadaithe. Tá cód dúchasach C agus C++ sa stór chomh maith le modúil SLeeLa. Nuair a thrasnaíonn glao teorainn idir cód dúchasach agus an timpeallacht rite, ní mór conradh ABI na comhpháirte a leanúint.
+
+Is iad na céimeanna tipiciúla sa phíblíne ná anailís foclóireachta, parsáil, anailís shéimeantach, ísliú go hionadaíocht idirmheánach, giniúint cód agus forghníomhú ar an meaisín fíorúil. Ba cheart tástálacha a dhearadh do gach céim agus do na teorainneacha eatarthu; ní leor tástáil a dhéanann seiceáil ar chomhréir amháin chun cruinneas an chláir iomláin a dhearbhú.
+
+### D. Conarthaí API agus modúil
+
+Ba cheart do gach API poiblí na hionchuir a nglacann sé leo, na haschuir a thugann sé ar ais, na hearráidí a d’fhéadfadh tarlú, rialacha úinéireachta cuimhne agus fo-iarmhairtí a shonrú. Ba cheart doiciméadú modúil na réamhriachtanais, na hiar-choinníollacha agus na srianta ardáin a lua go soiléir.
+
+Ní hionann ainm siombail ná tagairt do mhodúl agus údarú chun cód a fhorghníomhú. Caithfear údarú agus teorainneacha forghníomhaithe a sheiceáil ag an teorainn chuí. Ba cheart go dteipfeadh ar oibríocht go sábháilte má bhíonn ionchur neamhbhailí, acmhainn ar iarraidh nó comhpháirt neamhthacaithe aici.
+
+### E. Tástáil athchéimnithe agus in-atáirgtheacht
+
+Ba cheart don tsraith tástála cásanna dearfacha agus diúltacha a chlúdach: comhaid fhoinseacha bhailí, earráidí parsála, sárú rialacha cineáil, teipeanna ísliúcháin, aschur cód agus torthaí forghníomhaithe. I gcás comhtháthaithe dúchasaigh, ba cheart comhaontú ABI, láimhseáil earráidí agus glanadh acmhainní a thástáil freisin.
+
+Taifead an t-ardán, leagan an tiomsaitheora, leagan na n-uirlisí agus an tiomantas Git a úsáideadh. Ba cheart go mbeadh torthaí athdhéanta inchomparáide agus go mbeadh aon tástáil scipeáilte le feiceáil sa tuairisc. Féach ar [bheartas tástála](markdown/TESTING.md) agus ar [mhaitrís tacaíochta ardán](docs/PLATFORM-SUPPORT.md).
+
+### F. Logánú agus cothabháil na Gaeilge
+
+Coinnigh ainmneacha comhad, aitheantóirí, orduithe, cosáin, URLanna, samplaí cód agus ainmneacha API mar atá siad sa bhunleagan. Aistrigh an míniú timpeall orthu, ní na teaghráin a chaithfidh an tiomsaitheoir nó an bhlaosc a aithint. Úsáid téarmaíocht chomhsheasmhach do “compiler”, “runtime”, “virtual machine”, “module” agus “API”; nuair nach bhfuil téarma Gaeilge soiléir nó cobhsaí ann, tabhair an téarma teicniúil Béarla idir lúibíní ar an gcéad úsáid.
+
+Is cuid den obair leanúnach í an t-aistriúchán. Nuair a athraítear an README canónach, déan comparáid idir na hailt chomhfhreagracha agus nuashonraigh an leagan Gaeilge. Níor cheart an leagan seo a mheas mar athbhreithniú teanga deiridh: moltar athbhreithniú ó chainteoir líofa Gaeilge agus athbhreithniú teicniúil ar leith.
+
+
+---
+
 ## Full English technical reference
 
 # SLeeLa 3.0 — Ireland (IE)
