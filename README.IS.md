@@ -159,3 +159,24 @@ make install PREFIX="$HOME/.local"
 Bygging krefst yfirleitt GCC eða Clang og GNU Make; sum verkfæri nota Python 3. Sjá [installation guide](install/README.md), [platform matrix](docs/PLATFORM-SUPPORT.md) og [testing policy](markdown/TESTING.md). Prófunarskýrslur verða að greina á milli pass, fail og skip. PASS gildir aðeins um tilgreint umfang og tíma sannprófunar.
 
 **Uppfærð þýðingarstaða:** Íslenski leiðarvísirinn nær nú einnig yfir þýðandapípuna, gagnagerðir, hlutalíkan, söfn, lykkjutímasetningu, native-samþættingu, byggingu, uppsetningu og prófanir. Hann er ekki fullkomin línu-fyrir-línu þýðing á öllu kanóníska enska README-skjalinu.
+
+
+## 14. Markmið, snið og afmörkun native
+
+SLeeLa aðgreinir upprunakóðann frá keyrslumarkmiðum. Skjalfest markmiðafjölskylda inniheldur `SLVM`, `SLJVM` og `SLIR`; `NATIVE` er afmarkað og háð skilyrðum og ætti ekki að teljast almennt tiltækt á öllum kerfum. Sniðin `BASIC_COMPLETE` og `ADVANCED_TOTAL` tákna mismunandi umfang. Staðfestu markmið, snið og raunverulegan kerfisstuðning fyrir hverja byggingu.
+
+Tilvísun auðkennir skrá, einingu eða auðlind en veitir ekki sjálfkrafa heimild til keyrslu. Þetta skiptir máli þegar forrit vinna með skrár, ytri söfn, native bindingar eða kerfisauðlindir. Sannprófaðu inntak og skilgreindu skýrt hvaða hluti hefur heimild til að framkvæma aðgerð. Ekki túlka fullyrðingu í skjölum sem sönnun fyrir öryggiseiginleika runtime án viðeigandi útfærslu eða prófunar.
+
+## 15. Hönnun gagna, villumeðhöndlun og prófanir
+
+Skilgreindu eignarhald og líftíma auðlinda sem deilt er milli falla eða þráða. Greindu á milli staðbundinna breyta, sameiginlegs hlutastands, VM-handfanga og raðvæddra gagna. VM-local handle er ekki stöðugt skráarsnið eða netskilaboð. Notaðu skilgreint raðvæðingarviðmót einingarinnar og prófaðu ógild, vantandi og jaðargildi.
+
+Við villuleit skaltu skrá commit, stýrikerfi, arkitektúr og verkfærakeðju. Byrjaðu á minnstu viðeigandi byggingu og keyrðu síðan viðeigandi próf. Varðveittu öll villuskilaboð, greindu á milli þýðandavillu og runtime-villu og búðu til lítið endurtekningarhæft dæmi. Árangursrík bygging sannar ekki ein og sér rétta keyrslu.
+
+Góð sannprófunarskýrsla tilgreinir nákvæman commit, stýrikerfi og arkitektúr, útgáfur þýðanda, nákvæmar byggingar- og prófunarskipanir, fjölda pass/fail/skip og þekktar takmarkanir. Ekki telja sleppt eða ókeyrt próf sem staðist.
+
+## 16. Alþjóðleg skjöl og útgáfustýring
+
+Landbundin README-skjöl eru aðgangsleið að skjölum fyrir tiltekin tungumál og svæði. Þau koma ekki í stað staðlaðrar málskipanar eða API-skjala eininga. Þegar enska frumskjalið breytist skal bera þýðinguna saman við nýja útgáfu, varðveita auðkenni, skipanir, slóðir og kóða óbreytt og merkja efni sem bíður yfirferðar.
+
+**Viðbót við þýðingarstöðu:** Íslenski leiðarvísirinn nær nú einnig yfir keyrslumarkmið og snið, heimildamörk, auðlindaeign, villuleit, prófunarskýrslur og viðhald alþjóðlegra skjala.
