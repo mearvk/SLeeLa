@@ -62,8 +62,35 @@ class SLComplex {
     out.re = re * o.re - im * o.im;
     out.im = re * o.im + im * o.re;
   }
-  double modulus() { return sqrt(re * re + im * im); }
+  double absolute(double x) { if (x < 0.0) { return 0.0 - x; } return x; }
+  double modulus() {
+    double scale = absolute(re);
+    if (absolute(im) > scale) { scale = absolute(im); }
+    if (scale == 0.0) { return 0.0; }
+    double realPart = re / scale;
+    double imaginaryPart = im / scale;
+    return scale * sqrt(realPart * realPart + imaginaryPart * imaginaryPart);
+  }
   void conjugate(SLComplex out) { out.re = re; out.im = 0.0 - im; }
+
+  void subtract(SLComplex o, SLComplex out) {
+    out.re = re - o.re; out.im = im - o.im;
+  }
+  void divide(SLComplex o, SLComplex out) {
+    if (o.re == 0.0 && o.im == 0.0) { throw "Complex division by zero"; }
+    < Smith's scaled division avoids squaring large denominator components. >
+    if (absolute(o.re) >= absolute(o.im)) {
+      double ratio = o.im / o.re;
+      double denominator = o.re + o.im * ratio;
+      out.re = (re + im * ratio) / denominator;
+      out.im = (im - re * ratio) / denominator;
+    } else {
+      double ratio = o.re / o.im;
+      double denominator = o.im + o.re * ratio;
+      out.re = (re * ratio + im) / denominator;
+      out.im = (im * ratio - re) / denominator;
+    }
+  }
   double getRe() { return re; }
   double getIm() { return im; }
 }

@@ -155,6 +155,31 @@ static int validate_loaded_vm(const SLVM* vm, char* error, size_t error_size) {
             case OP_NATIVE_CALL:
                 if (in->a < 0 || in->a > STACK_MAX - 2) { abi_error(error,error_size,"native-call argument count outside operand-stack range"); return 0; }
                 break;
+            case OP_MATH_CALL:
+                if (in->a != SLMATH_OP_VECTOR_ADD &&
+                    in->a != SLMATH_OP_VECTOR_DOT &&
+                    in->a != SLMATH_OP_VECTOR_NORM &&
+                    in->a != SLMATH_OP_VECTOR_SCALE &&
+                    in->a != SLMATH_OP_VECTOR_SUBTRACT &&
+                    in->a != SLMATH_OP_VECTOR_NORMALIZE &&
+                    in->a != SLMATH_OP_VECTOR_CROSS3 &&
+                    in->a != SLMATH_OP_MATRIX_MULTIPLY &&
+                    in->a != SLMATH_OP_MATRIX_TRANSPOSE &&
+                    in->a != SLMATH_OP_MATRIX_INVERSE &&
+                    in->a != SLMATH_OP_MATRIX_DETERMINANT &&
+                    in->a != SLMATH_OP_COMPLEX_MULTIPLY &&
+                    in->a != SLMATH_OP_COMPLEX_ADD &&
+                    in->a != SLMATH_OP_COMPLEX_SUBTRACT &&
+                    in->a != SLMATH_OP_COMPLEX_DIVIDE &&
+                    in->a != SLMATH_OP_COMPLEX_ABS &&
+                    in->a != SLMATH_OP_COMPLEX_PHASE &&
+                    in->a != SLMATH_OP_COMPLEX_CONJUGATE &&
+                    in->a != SLMATH_OP_QR &&
+                    in->a != SLMATH_OP_SYMMETRIC_EIGEN &&
+                    in->a != SLMATH_OP_FFT) {
+                    abi_error(error,error_size,"unknown native math operation in artifact"); return 0;
+                }
+                break;
             case OP_JMP: case OP_JMPF: case OP_TRY_PUSH:
                 if (in->a < 0 || in->a >= vm->codelen) { abi_error(error,error_size,"control-flow target outside code"); return 0; }
                 break;

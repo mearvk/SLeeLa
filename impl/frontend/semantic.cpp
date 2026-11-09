@@ -84,7 +84,7 @@ static bool builtin(const std::string&n){
  "ideaCanvasIntensityAt","ideaCanvasHasRenderer","ideaCanvasOpenWindow","ideaCanvasShouldClose",
  "ideaCanvasPresent","ideaCanvasRun",
  "ideaCanvasSetBackendPolicy","ideaCanvasPolicy","ideaCanvasActiveBackend","ideaCanvasGpuAvailable","ideaCanvasMeasuredHz","ideaCanvasMigrate",
- "bigmul","bigadd","bigdivmod","bigsub","bigdiv","bigisqrt"};
+ "bigmul","bigadd","bigdivmod","bigsub","bigdiv","bigisqrt","mathVectorAdd","mathVectorDot","mathVectorNorm","mathVectorScale","mathVectorSubtract","mathVectorNormalize","mathVectorCross3","mathComplexAdd","mathComplexSubtract","mathComplexMultiply","mathComplexDivide","mathComplexAbs","mathComplexPhase","mathComplexConjugate","mathMatrixMultiply","mathMatrixTranspose","mathMatrixInverse","mathMatrixDeterminant","mathMatrixQR","mathSymmetricEigen","mathFFT"};
  if(s.count(n)!=0) return true;
  // SleelaUI (ui*) bridge built-ins: any ui<Capital>... name is a native UI
  // call lowered by the compiler to OP_UI_CALL (see sleela_ui_ids.h / the

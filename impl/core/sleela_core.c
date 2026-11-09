@@ -12,6 +12,7 @@
 #define _POSIX_C_SOURCE 200809L
 #endif
 #include "sleela_core.h"
+#include "../subjects/math/linear_algebra.h"
 #include "sleela_utf16.h"
 #include "sleela_net.h"
 #include "sleela_io.h"
@@ -31,6 +32,7 @@
 #define SL_IDEA_CANVAS_MAX 16   /* bounded VM-local realtime-canvas table */
 #endif
 
+#include <limits.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -1146,6 +1148,116 @@ static SLValue slval_array(int32_t h) { SLValue v; v.type = SL_ARRAY; v.as.h = h
 
 static int array_valid_handle(SLVM* vm, int h) {
     return vm->arrays && h >= 0 && h < SL_MAX_ARRAYS && vm->arrays[h].active;
+}
+
+/* Convert VM-owned scalar arrays to contiguous native double buffers. The
+ * array mutex is held by the caller for the entire conversion/dispatch/writeback
+ * sequence, so no VM array can be resized or mutated during the native call. */
+static int sl_math_array_to_double(SLVM *vm, int handle,
+                                   double **data, size_t *length) {
+    if (!array_valid_handle(vm, handle) || !data || !length) return SLMATH_INVALID_ARGUMENT;
+    SLArrayInstance *array = &vm->arrays[handle];
+    *length = (size_t)array->len;
+    *data = (double*)malloc((*length ? *length : 1) * sizeof(double));
+    if (!*data) return SLMATH_ALLOCATION_FAILURE;
+    for (size_t i = 0; i < *length; ++i) {
+        SLValue value = array->elems[i];
+        if (value.type == SL_INT) (*data)[i] = (double)value.as.i;
+        else if (value.type == SL_INT128) (*data)[i] = (double)value.as.i128;
+        else if (value.type == SL_DOUBLE) (*data)[i] = value.as.d;
+        else if (value.type == SL_BOOL) (*data)[i] = value.as.b ? 1.0 : 0.0;
+        else { free(*data); *data = NULL; return SLMATH_INVALID_ARGUMENT; }
+    }
+    return SLMATH_OK;
+}
+
+static int sl_math_array_output_buffer(SLVM *vm, int handle,
+                                          double **data, size_t *length) {
+    if (!array_valid_handle(vm, handle) || !data || !length)
+        return SLMATH_INVALID_ARGUMENT;
+    *length = (size_t)vm->arrays[handle].len;
+    *data = (double*)calloc((*length ? *length : 1), sizeof(double));
+    if (!*data) return SLMATH_ALLOCATION_FAILURE;
+    return SLMATH_OK;
+}
+
+static int sl_math_double_to_array(SLVM *vm, int handle,
+                                   const double *data, size_t length) {
+    if (!array_valid_handle(vm, handle) || !data) return SLMATH_INVALID_ARGUMENT;
+    SLArrayInstance *array = &vm->arrays[handle];
+    if ((size_t)array->len < length) return SLMATH_DIMENSION_MISMATCH;
+    for (size_t i = 0; i < length; ++i) array->elems[i] = slval_double(data[i]);
+    return SLMATH_OK;
+}
+
+int slvm_math_dispatch_arrays(SLVM* vm, int operation,
+                              int a_handle, int b_handle,
+                              int out_handle, int aux_handle,
+                              size_t a_rows, size_t a_cols,
+                              size_t b_rows, size_t b_cols,
+                              size_t out_rows, size_t out_cols,
+                              size_t aux_rows, size_t aux_cols,
+                              double scalar, size_t flags,
+                              double* scalar_result) {
+    if (!vm || (out_handle >= 0 && aux_handle >= 0 && out_handle == aux_handle)) return SLMATH_INVALID_ARGUMENT;
+    double *a_data=NULL,*b_data=NULL,*out_data=NULL,*aux_data=NULL;
+    size_t a_len=0,b_len=0,out_len=0,aux_len=0;
+    double scalar_out=0.0;
+    size_t out_write_len=0, aux_write_len=0;
+    int status=SLMATH_INVALID_ARGUMENT;
+    pthread_mutex_lock(&vm->array_mtx);
+    if (!array_valid_handle(vm,a_handle)) { status=SLMATH_INVALID_ARGUMENT; goto done; }
+    status=sl_math_array_to_double(vm,a_handle,&a_data,&a_len);
+    if(status!=SLMATH_OK) goto done;
+    if(b_handle>=0) {
+        status=sl_math_array_to_double(vm,b_handle,&b_data,&b_len);
+        if(status!=SLMATH_OK) goto done;
+    }
+    if(out_handle>=0) {
+        /* Output arrays are capacity-checked but not read: fresh arrayNew()
+         * elements are null until the native kernel writes numeric results. */
+        status=sl_math_array_output_buffer(vm,out_handle,&out_data,&out_len);
+        if(status!=SLMATH_OK) goto done;
+    } else {
+        out_data=&scalar_out; out_len=1;
+        if(!scalar_result) { status=SLMATH_INVALID_ARGUMENT; goto done; }
+    }
+    if(aux_handle>=0) {
+        status=sl_math_array_output_buffer(vm,aux_handle,&aux_data,&aux_len);
+        if(status!=SLMATH_OK) goto done;
+    }
+    {
+        slmath_buffer a={a_data,a_len,a_rows,a_cols};
+        slmath_buffer b={b_data,b_len,b_rows,b_cols};
+        slmath_buffer out={out_data,out_len,out_rows,out_cols};
+        slmath_buffer aux={aux_data,aux_len,aux_rows,aux_cols};
+        status=(int)slmath_vm_dispatch((slmath_operation)operation,&a,
+              b_handle>=0?&b:NULL,&out,aux_handle>=0?&aux:NULL,scalar,flags);
+    }
+    if(status==SLMATH_OK) {
+        if(out_handle>=0) {
+            if(out_rows && out_cols > SIZE_MAX/out_rows) status=SLMATH_SIZE_OVERFLOW;
+            else {
+                out_write_len=out_rows*out_cols;
+                if(out_write_len>out_len) status=SLMATH_DIMENSION_MISMATCH;
+                else status=sl_math_double_to_array(vm,out_handle,out_data,out_write_len);
+            }
+        } else *scalar_result=scalar_out;
+        if(status==SLMATH_OK && aux_handle>=0) {
+            if(aux_rows && aux_cols > SIZE_MAX/aux_rows) status=SLMATH_SIZE_OVERFLOW;
+            else {
+                aux_write_len=aux_rows*aux_cols;
+                if(aux_write_len>aux_len) status=SLMATH_DIMENSION_MISMATCH;
+                else status=sl_math_double_to_array(vm,aux_handle,aux_data,aux_write_len);
+            }
+        }
+    }
+done:
+    free(a_data); free(b_data);
+    if(out_handle>=0) free(out_data);
+    free(aux_data);
+    pthread_mutex_unlock(&vm->array_mtx);
+    return status;
 }
 
 /* Allocate an array of `n` null elements. Returns a VM-local handle, or -1 on
@@ -2474,6 +2586,54 @@ static SLResult run_thread(SLThread* t) {
             t->pending_exception = slval_null();
             t->has_pending_exception = 0;
             ip = handler.target_ip;
+        } break;
+        case OP_MATH_CALL: {
+            /* One instruction crosses the interpreter/native boundary. Pop
+             * metadata in reverse push order; validate every tag and signed
+             * dimension before converting to size_t. The adapter owns the
+             * array lock and stages data without retaining VM storage. */
+            SLValue flags_v=POP(), scalar_v=POP();
+            SLValue aux_cols_v=POP(), aux_rows_v=POP();
+            SLValue out_cols_v=POP(), out_rows_v=POP();
+            SLValue b_cols_v=POP(), b_rows_v=POP();
+            SLValue a_cols_v=POP(), a_rows_v=POP();
+            SLValue aux_v=POP(), out_v=POP(), b_v=POP(), a_v=POP();
+            if(t->underflow) TERR("math call: incomplete operand frame");
+            SLValue dims[8]={a_rows_v,a_cols_v,b_rows_v,b_cols_v,
+                             out_rows_v,out_cols_v,aux_rows_v,aux_cols_v};
+            size_t d[8];
+            for(int k=0;k<8;k++) {
+                if(dims[k].type!=SL_INT || dims[k].as.i<0 || (uint64_t)dims[k].as.i>(uint64_t)SIZE_MAX)
+                    TERR("math call: dimensions must be nonnegative integers within size_t");
+                d[k]=(size_t)dims[k].as.i;
+            }
+            if(flags_v.type!=SL_INT || flags_v.as.i<0 || (uint64_t)flags_v.as.i>(uint64_t)SIZE_MAX)
+                TERR("math call: flags must be a nonnegative size_t value");
+            if(scalar_v.type!=SL_INT && scalar_v.type!=SL_DOUBLE)
+                TERR("math call: scalar parameter must be numeric");
+            SLValue handles[4]={a_v,b_v,out_v,aux_v};
+            int h[4];
+            for(int k=0;k<4;k++) {
+                if(handles[k].type==SL_ARRAY) h[k]=(int)handles[k].as.h;
+                else if(handles[k].type==SL_INT && handles[k].as.i==-1) h[k]=-1;
+                else TERR("math call: operands must be array values (-1 means absent)");
+                if(h[k] < -1 || h[k] >= SL_MAX_ARRAYS)
+                    TERR("math call: array handle is outside the supported range");
+            }
+            double scalar=(scalar_v.type==SL_DOUBLE)?scalar_v.as.d:(double)scalar_v.as.i;
+            double scalar_result=0.0;
+            int status=slvm_math_dispatch_arrays(vm,in.a,h[0],h[1],h[2],h[3],
+                d[0],d[1],d[2],d[3],d[4],d[5],d[6],d[7],
+                scalar,(size_t)flags_v.as.i,&scalar_result);
+            if(status!=SLMATH_OK) {
+                char message[160];
+                snprintf(message,sizeof(message),"native math dispatch failed (status %d)",status);
+                TERR(message);
+            }
+            if(in.a==SLMATH_OP_VECTOR_DOT || in.a==SLMATH_OP_VECTOR_NORM)
+                PUSH(slval_double(scalar_result));
+            else
+                PUSH(slval_array(h[2]));
         } break;
         case OP_HALT: return SLR_HALT;
         case OP_GC_HINT: {

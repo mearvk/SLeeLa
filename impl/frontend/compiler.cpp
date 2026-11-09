@@ -18,6 +18,7 @@
 #include "library_index.h"
 #include "../core/sleela_ui_ids.h"
 #include "../core/sleela_ui_vm.h"
+#include "../subjects/math/linear_algebra.h"
 
 namespace sleela {
 
@@ -962,7 +963,148 @@ private:
         return true;
     }
 
+    bool tryEmitMathBuiltin(const Call& c){
+        const std::string& n=c.callee;
+        static const std::set<std::string> mathBuiltins={
+            "mathVectorAdd","mathVectorDot","mathVectorNorm","mathVectorScale",
+            "mathVectorSubtract","mathVectorNormalize","mathVectorCross3",
+            "mathComplexAdd","mathComplexSubtract","mathComplexMultiply","mathComplexDivide",
+            "mathComplexAbs","mathComplexPhase","mathComplexConjugate",
+            "mathMatrixMultiply","mathMatrixTranspose","mathMatrixInverse",
+            "mathMatrixDeterminant","mathMatrixQR","mathSymmetricEigen","mathFFT"
+        };
+        if(!mathBuiltins.count(n)) return false;
+        if(syntax_<SyntaxVersion{3,0}) throw std::runtime_error("Semantic error: native mathematical built-ins require #sleela 3.0");
+        int op=0, a=-1, b=-1, out=-1, aux=-1;
+        const Expr* dimensionExpr[8]={nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,nullptr};
+        int64_t dimensionValue[8]={0,0,0,0,0,0,0,0};
+        const Expr* scalarExpr=nullptr;
+        const Expr* flagsExpr=nullptr;
+        double scalarDefault=0.0;
+        int64_t flagsDefault=0;
+        auto setConst=[&](size_t slot,int64_t value){
+            dimensionExpr[slot]=nullptr;dimensionValue[slot]=value;
+        };
+        auto setDim=[&](size_t slot,size_t arg,const char* label)->int64_t {
+            if(arg>=c.args.size()) throw std::runtime_error(std::string("Semantic error: missing ")+label);
+            dimensionExpr[slot]=c.args[arg].get();
+            auto lit=dynamic_cast<const IntLit*>(dimensionExpr[slot]);
+            if(!lit){dimensionValue[slot]=0;return -1;}
+            if(lit->value<0) throw std::runtime_error(std::string("Semantic error: ")+label+" must be nonnegative");
+            dimensionValue[slot]=lit->value;
+            return lit->value;
+        };
+        auto requireArgs=[&](size_t count){
+            if(c.args.size()!=count) throw std::runtime_error("Semantic error: "+n+" expects "+std::to_string(count)+" arguments");
+        };
+        if(n=="mathVectorAdd" || n=="mathVectorDot"){
+            const size_t want=n=="mathVectorAdd"?4:3;requireArgs(want);
+            op=n=="mathVectorAdd"?SLMATH_OP_VECTOR_ADD:SLMATH_OP_VECTOR_DOT;
+            a=0;b=1;out=n=="mathVectorAdd"?2:-1;
+            setDim(0,want-1,"vector length");setConst(1,1);
+            setDim(2,want-1,"vector length");setConst(3,1);
+            if(out>=0){setDim(4,want-1,"vector length");setConst(5,1);}
+            else {setConst(4,1);setConst(5,1);}
+        } else if(n=="mathVectorNorm"){
+            requireArgs(2);op=SLMATH_OP_VECTOR_NORM;a=0;
+            setDim(0,1,"vector length");setConst(1,1);setConst(4,1);setConst(5,1);
+        } else if(n=="mathVectorScale"){
+            requireArgs(4);op=SLMATH_OP_VECTOR_SCALE;a=0;out=2;scalarExpr=c.args[1].get();
+            setDim(0,3,"vector length");setConst(1,1);setDim(4,3,"vector length");setConst(5,1);
+        } else if(n=="mathVectorSubtract"){
+            requireArgs(4);op=SLMATH_OP_VECTOR_SUBTRACT;a=0;b=1;out=2;
+            setDim(0,3,"vector length");setConst(1,1);setDim(2,3,"vector length");setConst(3,1);
+            setDim(4,3,"vector length");setConst(5,1);
+        } else if(n=="mathVectorNormalize"){
+            requireArgs(3);op=SLMATH_OP_VECTOR_NORMALIZE;a=0;out=1;
+            setDim(0,2,"vector length");setConst(1,1);setDim(4,2,"vector length");setConst(5,1);
+        } else if(n=="mathVectorCross3"){
+            requireArgs(3);op=SLMATH_OP_VECTOR_CROSS3;a=0;b=1;out=2;
+            setConst(0,3);setConst(1,1);setConst(2,3);setConst(3,1);setConst(4,3);setConst(5,1);
+        } else if(n=="mathComplexAdd" || n=="mathComplexSubtract" ||
+                  n=="mathComplexMultiply" || n=="mathComplexDivide"){
+            requireArgs(3);
+            if(n=="mathComplexAdd")op=SLMATH_OP_COMPLEX_ADD;
+            else if(n=="mathComplexSubtract")op=SLMATH_OP_COMPLEX_SUBTRACT;
+            else if(n=="mathComplexMultiply")op=SLMATH_OP_COMPLEX_MULTIPLY;
+            else op=SLMATH_OP_COMPLEX_DIVIDE;
+            a=0;b=1;out=2;
+            setConst(0,2);setConst(1,1);setConst(2,2);setConst(3,1);setConst(4,2);setConst(5,1);
+        } else if(n=="mathComplexAbs" || n=="mathComplexPhase"){
+            requireArgs(2);op=n=="mathComplexAbs"?SLMATH_OP_COMPLEX_ABS:SLMATH_OP_COMPLEX_PHASE;
+            a=0;out=1;setConst(0,2);setConst(1,1);setConst(4,1);setConst(5,1);
+        } else if(n=="mathComplexConjugate"){
+            requireArgs(2);op=SLMATH_OP_COMPLEX_CONJUGATE;a=0;out=1;
+            setConst(0,2);setConst(1,1);setConst(4,2);setConst(5,1);
+        } else if(n=="mathMatrixMultiply"){
+            requireArgs(7);op=SLMATH_OP_MATRIX_MULTIPLY;a=0;b=1;out=2;
+            int64_t ca=setDim(1,4,"colsA"), rb=setDim(2,5,"rowsB");
+            setDim(0,3,"rowsA");setDim(3,6,"colsB");
+            setDim(4,3,"rowsA");setDim(5,6,"colsB");
+            if(ca>=0 && rb>=0 && ca!=rb) throw std::runtime_error("Semantic error: matrix multiplication requires colsA == rowsB");
+        } else if(n=="mathMatrixTranspose"){
+            requireArgs(4);op=SLMATH_OP_MATRIX_TRANSPOSE;a=0;out=1;
+            setDim(0,2,"rows");setDim(1,3,"cols");
+            setDim(4,3,"cols");setDim(5,2,"rows");
+        } else if(n=="mathMatrixInverse"){
+            requireArgs(3);op=SLMATH_OP_MATRIX_INVERSE;a=0;out=1;
+            setDim(0,2,"matrix order");setDim(1,2,"matrix order");
+            setDim(4,2,"matrix order");setDim(5,2,"matrix order");
+            scalarDefault=1e-12;
+        } else if(n=="mathMatrixDeterminant"){
+            requireArgs(3);op=SLMATH_OP_MATRIX_DETERMINANT;a=0;out=1;
+            setDim(0,2,"matrix order");setDim(1,2,"matrix order");setConst(4,1);setConst(5,1);
+            scalarDefault=1e-12;
+        } else if(n=="mathMatrixQR"){
+            requireArgs(5);op=SLMATH_OP_QR;a=0;out=1;aux=2;
+            int64_t rows=setDim(0,3,"matrix rows"), cols=setDim(1,4,"matrix columns");
+            setDim(4,3,"matrix rows");setDim(5,4,"matrix columns");
+            setDim(6,4,"matrix columns");setDim(7,4,"matrix columns");
+            if(rows>=0 && cols>=0 && rows<cols) throw std::runtime_error("Semantic error: QR requires rows >= columns");
+            scalarDefault=1e-12;
+        } else if(n=="mathSymmetricEigen"){
+            requireArgs(5);op=SLMATH_OP_SYMMETRIC_EIGEN;a=0;out=1;aux=2;
+            setDim(0,3,"matrix order");setDim(1,3,"matrix order");
+            setConst(4,1);setDim(5,3,"matrix order");
+            setDim(6,3,"matrix order");setDim(7,3,"matrix order");
+            flagsExpr=c.args[4].get();
+            auto sweeps=dynamic_cast<const IntLit*>(flagsExpr);
+            if(sweeps && sweeps->value<0) throw std::runtime_error("Semantic error: maximum Jacobi sweeps must be nonnegative");
+            if(sweeps){flagsDefault=sweeps->value;flagsExpr=nullptr;}
+            scalarDefault=1e-12;
+        } else if(n=="mathFFT"){
+            requireArgs(4);op=SLMATH_OP_FFT;a=0;out=1;
+            int64_t length=setDim(0,2,"FFT interleaved length");
+            setConst(1,1);setDim(4,2,"FFT interleaved length");setConst(5,1);
+            if(length>=0 && (length==0 || (length&1)!=0 || (((uint64_t)length/2)&(((uint64_t)length/2)-1))!=0))
+                throw std::runtime_error("Semantic error: FFT interleaved length must be twice a nonzero power of two");
+            flagsExpr=c.args[3].get();
+            auto inverse=dynamic_cast<const IntLit*>(flagsExpr);
+            if(inverse){
+                if(inverse->value!=0 && inverse->value!=1) throw std::runtime_error("Semantic error: FFT inverse flag must be 0 or 1");
+                flagsDefault=inverse->value;flagsExpr=nullptr;
+            }
+        } else return false;
+
+        auto emitHandle=[&](int index){
+            if(index<0) emit(OP_CONST,slvm_add_const_int(vm_,-1));
+            else emitExpr(c.args[(size_t)index].get());
+        };
+        emitHandle(a);emitHandle(b);emitHandle(out);emitHandle(aux);
+        for(size_t i=0;i<8;++i){
+            if(dimensionExpr[i]) emitExpr(dimensionExpr[i]);
+            else emit(OP_CONST,slvm_add_const_int(vm_,dimensionValue[i]));
+        }
+        if(scalarExpr) emitExpr(scalarExpr);
+        else emit(OP_CONST,slvm_add_const_double(vm_,scalarDefault));
+        if(flagsExpr) emitExpr(flagsExpr);
+        else emit(OP_CONST,slvm_add_const_int(vm_,flagsDefault));
+        emit(OP_MATH_CALL,op);
+        return true;
+    }
+
     bool tryEmitBuiltin(const Call& c){
+        if(tryEmitMathBuiltin(c)) return true;
         const std::string& n=c.callee;
         if(n.size()>2 && n[0]=='u' && n[1]=='i' && n[2]>='A' && n[2]<='Z'){ if(tryEmitUiBuiltin(c)) return true; }
         auto litInt=[&](const Expr*e,const char*what)->int{auto il=dynamic_cast<const IntLit*>(e);if(!il)throw std::runtime_error("Semantic error: "+std::string(what)+" must be an integer literal");return(int)il->value;};

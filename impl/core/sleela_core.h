@@ -6,7 +6,7 @@
 
 /* Stable VM artifact/runtime ABI identifiers. */
 #define SLEELA_VM_ABI_MAJOR 1u
-#define SLEELA_VM_ABI_MINOR 6u
+#define SLEELA_VM_ABI_MINOR 7u
 #define SLEELA_ARTIFACT_FORMAT_VERSION 3u
 #include <stdint.h>
 #include "../../os-level-support/osls_vm_bridge.h"
@@ -277,6 +277,14 @@ typedef enum {
     OP_TRY_PUSH,
     OP_TRY_POP,
     OP_THROW,
+    /* Typed mathematical dispatch. Operand a is a slmath_operation. The
+     * operand stack carries 14 values, pushed left-to-right:
+     * aHandle,bHandle,outHandle,auxHandle,
+     * aRows,aCols,bRows,bCols,outRows,outCols,auxRows,auxCols,scalar,flags.
+     * Optional array handles are -1. Scalar operations (dot/norm) omit outHandle
+     * and return a double; array operations return the output array handle.
+     * Appended to preserve every existing artifact opcode number. */
+    OP_MATH_CALL,
     /* Sentinel: one past the last real opcode. Artifact validation uses this so
      * every defined opcode is accepted and adding a new opcode above never
      * requires updating the validator's upper bound again. KEEP LAST. */
@@ -305,7 +313,8 @@ static_assert(OP_JSTR_FROM_UTF8 == 175, "Java String UTF-8 conversion is append-
 static_assert(OP_TRY_PUSH == 176, "OP_TRY_PUSH is append-only opcode 176");
 static_assert(OP_TRY_POP == 177, "OP_TRY_POP is append-only opcode 177");
 static_assert(OP_THROW == 178, "OP_THROW is append-only opcode 178");
-static_assert(OP__COUNT == 179, "the extended ISA must contain 179 opcodes");
+static_assert(OP_MATH_CALL == 179, "OP_MATH_CALL is append-only opcode 179");
+static_assert(OP__COUNT == 180, "the extended ISA must contain 180 opcodes");
 #else
 _Static_assert(OP_OS_PLATFORM == 103, "legacy OS opcode range must begin at 103");
 _Static_assert(OP_OS_PCLOSE == 123, "legacy OS opcode range must end at 123");
@@ -328,7 +337,8 @@ _Static_assert(OP_JSTR_FROM_UTF8 == 175, "Java String UTF-8 conversion is append
 _Static_assert(OP_TRY_PUSH == 176, "OP_TRY_PUSH is append-only opcode 176");
 _Static_assert(OP_TRY_POP == 177, "OP_TRY_POP is append-only opcode 177");
 _Static_assert(OP_THROW == 178, "OP_THROW is append-only opcode 178");
-_Static_assert(OP__COUNT == 179, "the extended ISA must contain 179 opcodes");
+_Static_assert(OP_MATH_CALL == 179, "OP_MATH_CALL is append-only opcode 179");
+_Static_assert(OP__COUNT == 180, "the extended ISA must contain 180 opcodes");
 #endif
 /* GC-hint aggressiveness bands for OP_GC_HINT (operand a). */
 #define SL_GC_HINT_MAX  100   /* clamp ceiling for the 0..100 aggressiveness scale */
@@ -471,6 +481,19 @@ void slvm_patch(SLVM* vm, int at, int32_t a);
 int slvm_here(SLVM* vm);
 void slvm_set_entry(SLVM* vm, int func_index);
 SLResult slvm_run(SLVM* vm);
+/* Native numerical bridge for VM-owned arrays. Handles are VM-local SL_ARRAY
+ * handles; numeric values are marshalled to temporary contiguous doubles while
+ * array_mtx is held. A negative optional handle means absent. Returns the
+ * slmath_status value; scalar_result is required for scalar-result operations. */
+int slvm_math_dispatch_arrays(SLVM* vm, int operation,
+                              int a_handle, int b_handle,
+                              int out_handle, int aux_handle,
+                              size_t a_rows, size_t a_cols,
+                              size_t b_rows, size_t b_cols,
+                              size_t out_rows, size_t out_cols,
+                              size_t aux_rows, size_t aux_cols,
+                              double scalar, size_t flags,
+                              double* scalar_result);
 SLValue slvm_result(SLVM* vm);
 /* Returns 1 and copies the last uncaught language exception payload when one
  * exists; returns 0 when the most recent run had no uncaught exception. */
