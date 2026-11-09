@@ -478,6 +478,7 @@ int slvm_set_native_authorizer(SLVM* vm, SLNativeAuthorizePath authorize, void* 
 SLNativeStatus slvm_native_module_open(SLVM* vm, const char* path, SLNativeHandle* out_handle) {
     SLNativeStatus status;
     if (!vm || !out_handle) return SL_NATIVE_INVALID_ARGUMENT;
+    if (native_callback_vm == vm) return SL_NATIVE_REENTRANT_CALL;
     *out_handle = SL_NATIVE_HANDLE_INVALID;
     pthread_mutex_lock(&vm->native_mtx);
     status = sl_native_table_open(&vm->native_modules, path, out_handle);
@@ -851,7 +852,7 @@ static void gc_mark_value(SLVM *vm, GarbageCollector *gc, SLValue v) {
     SLGCObject *object = gc_object_for_value(vm, v);
     if (gc && object) gc_mark(gc, object);
 }
-typedef struct { SLVM *vm; SLThread *current; } SLGCRootContext;
+typedef struct { SLVM *vm; SLThread *current; SLThread *suspended; } SLGCRootContext;
 static void gc_mark_vm_roots(GarbageCollector *gc, void *context) {
     SLGCRootContext *roots = (SLGCRootContext *)context;
     SLVM *vm = roots ? roots->vm : NULL;
@@ -867,6 +868,10 @@ static void gc_mark_vm_roots(GarbageCollector *gc, void *context) {
     }
     if (roots && roots->current) {
         for (int j = 0; j < roots->current->sp; ++j) gc_mark_value(vm, gc, roots->current->stack[j]);
+    }
+    if (roots && roots->suspended && roots->suspended != roots->current) {
+        for (int j = 0; j < roots->suspended->sp; ++j)
+            gc_mark_value(vm, gc, roots->suspended->stack[j]);
     }
 }
 static void gc_struct_destroy(void *payload) {
@@ -889,7 +894,7 @@ static void slvm_gc_safepoint(SLVM *vm, SLThread *current, size_t budget) {
      * reclamation until structured-concurrency quiescence so all stacks are
      * observed consistently. */
     if (workers == 0) {
-        SLGCRootContext roots = { vm, current };
+        SLGCRootContext roots = { vm, current, vm->native_callback_caller };
         gc_safepoint_with_roots(&vm->gc, gc_mark_vm_roots, &roots, 1, budget);
     }
 }
@@ -2017,6 +2022,76 @@ static int native_value_from_abi(SLVM* vm, const SLNativeValue* source, SLValue*
     }
 }
 
+/* Native-to-SLeeLa callback bridge. Only exact, unique compiled function
+ * names and scalar/UTF-8 arguments are accepted. The nested interpreter has
+ * its own stack/frames; the suspended caller stack is added to GC roots. */
+static int slvm_native_host_invoke(void* context, const char* function,
+                                   uint32_t argc, const SLNativeValue* argv,
+                                   SLNativeValue* out_result) {
+    SLVM* vm = (SLVM*)context;
+    SLThread* nested;
+    int function_index = -1;
+    size_t name_length;
+    SLResult run_status;
+    SLVM* previous_callback_vm;
+    if (!vm || !function || !*function || !out_result ||
+        (argc && !argv) || argc > STACK_MAX - 1 ||
+        native_callback_vm == vm)
+        return 0;
+    name_length = strlen(function);
+    if (name_length > 255u) return 0;
+    for (int i = 0; i < vm->nfunc; ++i) {
+        if (vm->funcs[i].nargs != (int)argc ||
+            strcmp(vm->funcs[i].name, function) != 0) continue;
+        if (function_index >= 0) {
+            set_err(vm, "native callback rejected ambiguous SLeeLa function name");
+            return 0;
+        }
+        function_index = i;
+    }
+    if (function_index < 0) {
+        set_err(vm, "native callback could not resolve exact SLeeLa function and arity");
+        return 0;
+    }
+    nested = (SLThread*)calloc(1, sizeof(*nested));
+    if (!nested) {
+        set_err(vm, "native callback could not allocate interpreter frame");
+        return 0;
+    }
+    nested->vm = vm;
+    nested->entry_func = function_index;
+    nested->result = slval_null();
+    nested->frames[0].ret_ip = -1;
+    nested->frames[0].base = 0;
+    nested->frames[0].nargs = (int)argc;
+    nested->fp = 1;
+    for (uint32_t i = 0; i < argc; ++i) {
+        SLValue value;
+        if (!native_value_from_abi(vm, &argv[i], &value)) {
+            free(nested);
+            set_err(vm, "native callback argument is invalid or unsupported");
+            return 0;
+        }
+        nested->stack[nested->sp++] = value;
+    }
+    while (nested->sp < vm->funcs[function_index].nlocals)
+        nested->stack[nested->sp++] = slval_null();
+
+    previous_callback_vm = native_callback_vm;
+    native_callback_vm = vm;
+    run_status = run_thread(nested);
+    native_callback_vm = previous_callback_vm;
+    if (run_status != SLR_OK ||
+        !native_value_to_abi(vm, nested->result, out_result)) {
+        if (run_status == SLR_OK)
+            set_err(vm, "native callback result is not representable by the host ABI");
+        free(nested);
+        return 0;
+    }
+    free(nested);
+    return 1;
+}
+
 /* Fallback is deliberately name+arity based and remains inside the VM. It is
  * used only when the module has no typed entry, reports METHOD_NOT_HANDLED,
  * or an argument is not scalar ABI-representable; plugin execution errors
@@ -2106,7 +2181,7 @@ static SLResult run_thread(SLThread* t) {
                 int workers = vm->nthreads;
                 pthread_mutex_unlock(&vm->thr_mtx);
                 if (workers == 0) {
-                    SLGCRootContext roots = { vm, t };
+                    SLGCRootContext roots = { vm, t, vm->native_callback_caller };
                     int young_only = (level >= SL_GC_HINT_FULL) ? 0 : 1;
                     gc_collect_with_roots(&vm->gc, gc_mark_vm_roots, &roots,
                                           young_only);
@@ -2268,7 +2343,9 @@ static SLResult run_thread(SLThread* t) {
             memset(&native_result, 0, sizeof(native_result));
             native_result.tag = SL_NATIVE_VALUE_NULL;
             pthread_mutex_lock(&vm->native_mtx);
+            vm->native_callback_caller = t;
             status = sl_native_table_call(&vm->native_modules, handle, method, argc, argv, &native_result);
+            vm->native_callback_caller = NULL;
             if (status == SL_NATIVE_OK &&
                 !native_value_from_abi(vm, &native_result, &result_value))
                 status = SL_NATIVE_PLUGIN_ERROR;
