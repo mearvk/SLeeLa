@@ -393,7 +393,19 @@ subject_cmd() { # module verb [args]
       okay "$1 — $(summary_of "$1")"
       info "nature: subject — native C/C++ library compiled into the sleela runtime"
       info "reached from SLeeLa as:  import $1;   then qualified calls, e.g.  $1.<fn>(...)"
-      [ -f "$demo" ] && info "reference demo: $demo_rel" || warn "reference demo $demo_rel not present in this install" ;;
+      [ -f "$demo" ] && info "reference demo: $demo_rel" || warn "reference demo $demo_rel not present in this install"
+      if [ "$1" = "math" ]; then
+        capability_file="$ROOT/impl/subjects/math/capabilities.conf"
+        if [ -f "$capability_file" ]; then
+          info "native math capability descriptor:"
+          while IFS= read -r capability_line; do
+            case "$capability_line" in ""|\#*) continue ;; esac
+            info "$capability_line"
+          done < "$capability_file"
+        else
+          warn "native math capability descriptor not present ($capability_file)"
+        fi
+      fi ;;
     run)
       [ -f "$demo" ] || { warn "$1: reference demo $demo_rel not present; cannot run"; return 1; }
       if registry_runtime_ok; then
