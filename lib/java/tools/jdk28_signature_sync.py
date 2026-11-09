@@ -17,6 +17,7 @@ from pathlib import Path
 from urllib.parse import urljoin, urlparse
 
 INDEX_URL = "https://download.java.net/java/early_access/jdk28/docs/api/allclasses-index.html"
+API_ROOT_PATH = urlparse(INDEX_URL).path.rsplit("/", 1)[0] + "/"
 ROOT = Path(__file__).resolve().parents[1]
 BEGIN = "// BEGIN JDK28 API SIGNATURE CATALOG (generated; do not edit)"
 END = "// END JDK28 API SIGNATURE CATALOG"
@@ -71,19 +72,23 @@ class SignatureParser(HTMLParser):
 
 def fetch(url: str) -> str:
     request = urllib.request.Request(
-        url, headers={"User-Agent": "SLeeLa-JDK28-Signature-Catalog/3.1"}
+        url, headers={"User-Agent": "SLeeLa-JDK28-Signature-Catalog/3.2"}
     )
     with urllib.request.urlopen(request, timeout=60) as response:
         return response.read().decode("utf-8", errors="replace")
 
 
-def index_types(document: str) -> list[tuple[str, str]]:
-    found: set[tuple[str, str]] = set()
+def index_types(document: str) -> list[tuple[str, str, str]]:
+    """Return (qualified Java name, Javadoc href, SLeeLa-relative path)."""
+    found: set[tuple[str, str, str]] = set()
     pattern = r"""href=["']([^"']+\.html(?:#[^"']*)?)["']"""
     for raw_href in re.findall(pattern, document):
         href = html.unescape(raw_href.split("#", 1)[0])
         parsed = urlparse(urljoin(INDEX_URL, href))
-        parts = parsed.path.strip("/").split("/")
+        if not parsed.path.startswith(API_ROOT_PATH):
+            continue
+        relative_doc = parsed.path[len(API_ROOT_PATH):].strip("/")
+        parts = relative_doc.split("/")
         if len(parts) < 3 or not parts[-1].endswith(".html"):
             continue
         name = parts[-1][:-5]
@@ -92,8 +97,12 @@ def index_types(document: str) -> list[tuple[str, str]]:
         ):
             continue
         package_parts = parts[1:-1]  # Omit the Javadoc module directory.
-        if package_parts:
-            found.add((".".join(package_parts + [name]), href))
+        if not package_parts:
+            continue
+        qualified = ".".join(package_parts + [name])
+        # Nested type names remain in the final filename (Map.Entry.sleela).
+        relative = "/".join(package_parts + [name + ".sleela"])
+        found.add((qualified, href, relative))
     return sorted(found)
 
 
@@ -152,8 +161,8 @@ def main() -> int:
         return 1
 
     checked = missing = changed = failures = 0
-    for qualified, href in types:
-        target = ROOT / (qualified.replace(".", "/") + ".sleela")
+    for qualified, href, relative in types:
+        target = ROOT / relative
         if not target.is_file():
             continue
         checked += 1
