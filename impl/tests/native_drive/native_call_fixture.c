@@ -15,7 +15,19 @@ SL_NATIVE_EXPORT int sl_native_bind_host(const SLNativeHostAPI *api) {
 }
 SL_NATIVE_EXPORT uint32_t sl_native_abi_version(void) { return SL_NATIVE_ABI_VERSION; }
 SL_NATIVE_EXPORT uint32_t sl_native_typed_abi_version(void) { return SL_NATIVE_TYPED_ABI_VERSION; }
-SL_NATIVE_EXPORT int sl_native_run(int argc, const char *const argv[]) { (void)argv; return argc; }
+SL_NATIVE_EXPORT int sl_native_run(int argc, const char *const argv[]) {
+    SLNativeValue callback_arg, callback_result;
+    (void)argc; (void)argv;
+    if (!host_api_bound || !host_api.invoke) return -1;
+    memset(&callback_arg, 0, sizeof(callback_arg));
+    memset(&callback_result, 0, sizeof(callback_result));
+    callback_arg.tag = SL_NATIVE_VALUE_I64;
+    callback_arg.as.i64 = 41;
+    /* Host-side module_run has no suspended SLeeLa call frame. The callback
+     * must be refused by the VM guard, and the plugin must observe that refusal. */
+    return host_api.invoke(host_api.context, "Callback::receive", 1,
+                           &callback_arg, &callback_result) ? 0 : -1;
+}
 static int utf8_argument(uint32_t argc, const SLNativeValue *argv,
                          const char **data, size_t *length) {
     if (argc < 1 || !argv || argv[0].tag != SL_NATIVE_VALUE_UTF8 ||
