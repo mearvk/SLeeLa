@@ -278,6 +278,7 @@ VM_CONFIG_OBJ := $(BUILD)/vm_config.o
 VM_CONFIG_SMOKE := $(BUILD)/vm_config_smoke
 JAVA_RUNTIME_PROBE_OBJ := $(BUILD)/java_runtime_probe.o
 JAVA_RUNTIME_BRIDGE_OBJ := $(BUILD)/java_runtime_bridge.o
+JAVA_INTEROP_PROTOCOL_OBJ := $(BUILD)/java_interop_protocol.o
 CHEMISTRY_OBJ := $(BUILD)/chemistry.o
 FINANCIAL_OBJ := $(BUILD)/financial.o
 ASTRO_MATH_OBJ := $(BUILD)/astrophysics_math.o
@@ -376,7 +377,7 @@ ifeq ($(OS),Windows_NT)
 else
   PYTHON ?= python3
 endif
-ALL_OBJECTS := $(CORE_OBJ) $(OSLS_OBJS) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) $(AUDIO_MIXER_OBJ) $(AI_OBJ) $(DESIGN_ACTIVITY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(VM_CONFIG_OBJ) $(CONFIG_LOCATION_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(DRIVER_SLEELVAC_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(NS_OBJ) $(COMMON_RAILS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(SYNCHRO_SMOKE) $(MUNCTION_SMOKE) $(BESTOF_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE)
+ALL_OBJECTS := $(CORE_OBJ) $(OSLS_OBJS) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) $(AUDIO_MIXER_OBJ) $(AI_OBJ) $(DESIGN_ACTIVITY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(JAVA_INTEROP_PROTOCOL_OBJ) $(VM_CONFIG_OBJ) $(CONFIG_LOCATION_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(DRIVER_SLEELVAC_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(NS_OBJ) $(COMMON_RAILS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(SYNCHRO_SMOKE) $(MUNCTION_SMOKE) $(BESTOF_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE)
 
 .PHONY: all install install-all uninstall uninstall-all sleelvac libslcore test-platform test-osls-isa test-osls-vm stage package build-verified rebuild-verified clean test test-java-runtime test-sleela test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-common-rails test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security regen-manifest check-manifest build-runtime test-runtime test-memmgr test-memmgr-grades test-system-monitor test-media test-audio-mixer test-ai test-regex test-astrophysics test-sociology test-design-activity test-unsigned-integer
 
@@ -478,12 +479,12 @@ $(ALL_OBJECTS): | verify-security
 # shares the whole front end with `sleela` but links its own driver object
 # (compiled with -DSLEELA_PRODUCT_SLEELVAC), so its `version` identity is fixed
 # at compile time and `sleela version` can never surface the Sleelvac banner.
-$(SLEELAVC_BIN): $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(OSLS_OBJS) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(VM_CONFIG_OBJ) $(FE_OBJ) $(LEDGER_CORE_OBJ) $(DRIVER_SLEELVAC_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ) $(PREFERRED_ROUTER_OBJ) $(COMMON_RAILS_OBJ) $(NGHTTP2_LIB)
+$(SLEELAVC_BIN): $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(JAVA_INTEROP_PROTOCOL_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(OSLS_OBJS) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(VM_CONFIG_OBJ) $(FE_OBJ) $(LEDGER_CORE_OBJ) $(DRIVER_SLEELVAC_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ) $(PREFERRED_ROUTER_OBJ) $(COMMON_RAILS_OBJ) $(NGHTTP2_LIB)
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $(filter-out $(NGHTTP2_LIB),$^) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS) $(NGHTTP2_LIB)
 
 sleelvac: $(SLEELAVC_BIN)
 
-$(SLEELA_BIN): $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(OSLS_OBJS) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(VM_CONFIG_OBJ) $(FE_OBJ) $(LEDGER_CORE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ) $(PREFERRED_ROUTER_OBJ) $(COMMON_RAILS_OBJ) $(NGHTTP2_LIB)
+$(SLEELA_BIN): $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(JAVA_INTEROP_PROTOCOL_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(OSLS_OBJS) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(VM_CONFIG_OBJ) $(FE_OBJ) $(LEDGER_CORE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ) $(PREFERRED_ROUTER_OBJ) $(COMMON_RAILS_OBJ) $(NGHTTP2_LIB)
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $(filter-out $(NGHTTP2_LIB),$^) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS) $(NGHTTP2_LIB)
 $(AUDIO_NATIVE_OBJ): core/sleela_audio_bridge.cpp core/sleela_audio_bridge.h ../audio/cpp/include/sleela_audio.hpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) -Icore -I.. -c $< -o $@
@@ -822,6 +823,8 @@ $(JAVA_RUNTIME_PROBE_OBJ): ../runtime/java_runtime_probe.c ../runtime/java_runti
 	$(CC) $(CFLAGS) -c $< -o $@
 $(JAVA_RUNTIME_BRIDGE_OBJ): ../runtime/java_runtime_bridge.c ../runtime/java_runtime_bridge.h ../runtime/java_runtime_probe.h | $(BUILD)
 	$(CC) $(CFLAGS) -c $< -o $@
+$(JAVA_INTEROP_PROTOCOL_OBJ): ../runtime/java_interop_protocol.c ../runtime/java_interop_protocol.h | $(BUILD)
+	$(CC) $(CFLAGS) -c $< -o $@
 $(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h frontend/version.h subjects/native/native_api.h subjects/chemistry/chemistry_api.h subjects/finance/financial_api.h frontend/http_server_cli.h ../runtime/vm_config.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -I../runtime -c $< -o $@
 # Same source, compiled with the compiler product identity for the independent
@@ -847,6 +850,8 @@ test-threads: $(THREAD_SMOKE)
 test-java-runtime: $(SLEELA_BIN)
 	@cd $(CURDIR)/.. && bash test-suites/java-runtime-probe.sh
 	@cd $(CURDIR)/.. && bash test-suites/java-runtime-bridge.sh
+	@cd $(CURDIR)/.. && bash test-suites/java-interop-protocol-codec.sh
+	@cd $(CURDIR)/.. && bash test-suites/java-interop-protocol-endpoint.sh
 
 test-sleela: $(SLEELA_BIN)
 	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; export SLEELA_SHA256_MANIFEST=${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && found=0; for f in impl/examples/*.sleela; do [ -f "$f" ] || continue; found=1; echo "=== $f ==="; $(CURDIR)/$(SLEELA_BIN) run "$f" || exit 1; done; if [ "$found" -eq 0 ]; then echo "No legacy impl/examples/*.sleela files; skipping this optional loop."; fi
