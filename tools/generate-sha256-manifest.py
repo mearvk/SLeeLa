@@ -56,6 +56,10 @@ LIBRARY_SOURCE_DIRS = [
 LIBRARY_SUFFIXES = {".sleela", ".c", ".h", ".cpp", ".hpp", ".cc", ".hh"}
 # Individual files outside those directories that the build also consumes.
 DEFAULT_EXTRA_FILES = [
+    # Executable Native Drive tools: sleelactl invokes these from the installed
+    # runtime tree, so they are part of the trusted toolchain integrity set.
+    "tools/sleela-native-drive.py",
+    "tools/sleela-native-service.py",
     # Idea System(TM) realtime canvas: the native-CPU render+physics core the
     # VM links by default so `sleela <program>` can drive it.
     "idea/realtime/idea_canvas.h",
