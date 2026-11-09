@@ -8,10 +8,10 @@
 extern "C" {
 #endif
 
-#define SLEELA_JLIP_VERSION 1u
-#define SLEELA_JLIP_HEADER_BYTES 15u
-#define SLEELA_JLIP_MAX_FRAME_BYTES 1048576u
-#define SLEELA_JLIP_RESPONSE_MASK 0x80u
+#define SLEELA_SLJIP_VERSION 1u
+#define SLEELA_SLJIP_HEADER_BYTES 15u
+#define SLEELA_SLJIP_MAX_FRAME_BYTES 1048576u
+#define SLEELA_SLJIP_RESPONSE_MASK 0x80u
 
 typedef int (*SleelaJlipReadExact)(void *context, uint8_t *buffer, size_t length);
 typedef int (*SleelaJlipWriteExact)(void *context, const uint8_t *buffer, size_t length);
