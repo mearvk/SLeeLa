@@ -5,6 +5,22 @@ codec are implemented in `native_ipc_protocol.h`; the focused C smoke test is
 `native_ipc_protocol_smoke.c`. The request-payload codec and canonical big-integer limb codec are now implemented.
 The persistent worker, pipe supervisor, and Pi integration remain in progress. This is not yet an end-to-end IPC claim.
 
+## VM-owned handle table (step 3)
+
+The VM core now owns a bounded table of 64 opaque IPC worker references. Host
+code may register only an already-created, already-authorized worker together
+with its close callback; registration is not a launch or authorization path.
+VM handles encode a slot plus a nonzero generation, so closing a worker
+invalidates stale values before that slot can be reused.
+
+The table provides lease-based acquire/release. Close marks the slot unavailable
+to new acquisitions, waits for existing leases to drain, advances the generation,
+then invokes the close callback outside the table lock. VM shutdown closes all
+remaining registered workers. Invalid, stale, duplicate-close, and table-full
+operations fail closed. Bytecode OPEN/CALL/CLOSE remain unavailable until the
+host supervisor adapter and capability policy are connected.
+
+
 ## Why a second boundary is needed
 
 SLeeLa syntax 3.0 already has host-authorized `nativeOpen`,
