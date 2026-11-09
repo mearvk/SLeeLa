@@ -117,6 +117,8 @@ The current project documentation identifies:
     SLEELA_VM_ABI_MINOR
     SLEELA_ARTIFACT_FORMAT_VERSION
 
+The current implementation uses VM ABI version `1.7` and artifact format version `3`. The append-only `OP_MATH_CALL` opcode (179) dispatches scalar math operations through the typed C++ kernel; unsupported VM-owned values retain a synthesized Core-method fallback. This adds an opcode without changing the serialized instruction layout.
+
 The runtime validates, at minimum:
 
 - opcode values;
