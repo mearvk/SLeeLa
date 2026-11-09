@@ -311,9 +311,82 @@ Su un sistema con display si apre la finestra di modifica dal vivo; su un host h
 
 Il catalogo specializzato UTF-4088 definisce il percorso spaziale della mappa di input e le iterazioni astratte di pressione in [`utf-4088/INPUT-MAP-AND-PRESSURE.md`](../utf-4088/INPUT-MAP-AND-PRESSURE.md). La politica dell’indice per materia del National Lien Register è in [`utf-4088/NATIONAL-LIEN-REGISTER.md`](../utf-4088/NATIONAL-LIEN-REGISTER.md). Le coordinate della mappa, i livelli di pressione (1–50), gli ID permanenti del catalogo e i ranghi alfabetici sono campi indipendenti; nessuno deve essere sostituito silenziosamente con un altro. La pressione è un livello di iterazione algoritmica, non una grandezza fisica.
 
-## Sezioni ancora da tradurre
+## XIV. Indice dei pacchetti recenti e ampliati
 
-Le seguenti sezioni non sono ancora tradotte e saranno aggiunte nelle prossime fasi: **XIV–XVII. Altre aree del progetto; XVIII. Aggiunte recenti; XIX. Edizioni internazionali del README.** Fino al completamento della traduzione, il [README.md canonico in inglese](README.md) rimane il riferimento completo.
+Questo indice aggiunto mette in evidenza pacchetti ampliati di recente, librerie di dominio e raccolte di codice sorgente. Le voci sono raggruppate alfabeticamente per nome del pacchetto o argomento. Le descrizioni indicano la posizione nel repository; implementazione e stato di convalida devono essere verificati nella documentazione e nei test di ciascun pacchetto.
+
+### A–C
+
+- **Advantage** — `lib/advantage/` e `advantage/`: ottimizzazione di un dividendo unico rispetto a un modello tramite una Sequitur onion a strati, con cinque sottocartelle tematiche: `math/` (massimizzazione congiunta dei profitti, negoziazione di Nash, modello bilaterale newsvendor), `physics/` (metrica, geodetica, contatto e SDE del campo di fiducia; analogia di modellazione esplicitamente segnalata), `integration/` (compartimenti di integrazione verticale e punteggio di sofisticazione), `grading/` (valutatore di circuiti di sofisticazione A–D per moduli e insiemi) e `output/` (emissione verso terminale, CommonRails o socket). Un consumatore nativo C/C++ (`advantage/`) collega il modello a esempi commerciali elaborati. Vedere [`lib/advantage/README.md`](lib/advantage/README.md) e [`DEFINITIONS.md`](lib/advantage/DEFINITIONS.md).
+- **Alphabet e UTF-4088** — `alphabet/sleela/`, `lib/alphabet/native/` e `utf-4088/`: cataloghi di alfabeti, supporto nativo ai set di caratteri, ordinamento delle mappe di input e documentazione d’integrazione UTF-4088.
+- **AutoCAD Creator** — `autocad/creator/` e `lib/autocad/`: flussi di disegno 2D interattivi e componenti riutilizzabili per documenti e modifica CAD.
+- **Ballum** — controllo del display a livello di pixel: impostazione/lettura dei pixel, blit di regioni, luminosità/temperatura/gamma dell’intero display, input di puntatore/tastiera e **superficie framebuffer a schermo intero** per un controllo totale, proprietario e rapido di ogni pixel (finestra override-redirect e presentazione con una sola chiamata `XPutImage`/MIT-SHM su Linux/X11). Il nucleo nativo è in `ballum/`, la facciata SLeeLa in `lib/ballum/` e il bridge VM in `impl/`; vedere [`ballum/README.md`](ballum/README.md) e l’[esempio eseguibile](ballum/example/).
+- **CDMA** — `cdma/` e `lib/cdma/`: materiale tecnico relativo a CDMA e sviluppo della libreria sorgente SLeeLa.
+- **Character** — `lib/character/`: profili dei personaggi e statistiche riutilizzabili, inclusi esempi di profili biografici.
+- **Coorenagraph** — `lib/coorenagraph/`: ragionamento etico, vocabolario morale, deliberazione e concetti correlati; vedere il README del pacchetto e i file sorgente.
+
+### D–G
+
+- **Modelli sorgente di governance** — [`lib/governance`](lib/governance/README.md) definisce strutture dichiarative SLeeLa per proposte, schede manuali anonime e conteggi aggregati. L’annotazione proposta `@vote` e il processo manuale sono documentati in [`registry/DEMOCRATIC-VOTING-SYNTAX.md`](registry/DEMOCRATIC-VOTING-SYNTAX.md); i compilatori attuali la trattano come metadati di commento inerti.
+
+### H–I
+
+- **HTTP 1.0–8.0** — da `lib/http-1.0/` alle directory disponibili dei pacchetti HTTP versionati: specifiche di protocollo e implementazioni specifiche per versione. Consultare la documentazione di ciascuna versione per l’ambito preciso e lo stato di verifica.
+- **Corte penale internazionale** — `lib/international-criminal-court/` e `INTERNATIONAL.CRIMINAL.COURTS.md`: sorgenti e documentazione specifiche del dominio.
+
+### O–S
+
+- **OFDMA** — `ofdma/`: materiale tecnico sull’accesso multiplo a divisione di frequenza ortogonale e risorse di sviluppo C/C++.
+- **Filosofia e modulo Conversation Mask** — [`philosophy/`](philosophy/README.md) contiene le basi native C/C++; [`philosophy/module/`](philosophy/module/README.md) organizza il livello successivo del modulo in tre aree esplicite: [`data/`](philosophy/module/data/README.md), per osservazioni tipizzate e datate, conclusioni degli eventi, impostazioni dell’emivita, provenienza e consenso; [`helper/`](philosophy/module/helper/README.md), per convalida deterministica, decadimento della rilevanza, confronti compatibili e presentazione filtrata per consenso; e [`psychiatry-friend/`](philosophy/module/psychiatry-friend/README.md), per un’interfaccia conversazionale di supporto non clinica. Gli handle rivolti a SLeeLa e il Tree composto si trovano in [`lib/philosophy/`](lib/philosophy/README.md), accanto al più ampio pacchetto philosophy. Il modulo utilizza input espliciti e dà priorità al consenso: non monitora passivamente persone o media, non diagnostica, non deduce intenzioni private, non assegna punteggi al valore umano e non raccomanda modifiche ai farmaci. I collegamenti tra eventi preservano provenienza e navigazione, ma non costituiscono corroborazione indipendente.
+- **Synchro** — integrazione nativa di runtime e compilatore, oltre a funzionalità relative alla distribuzione dei pacchetti e alla misurazione; vedere le sorgenti pertinenti in `impl/` e l’implementazione del compilatore.
+- **SleelaUI / UI terminale** — `lib/user-interface/` e il progetto `sleela-terminal`: integrazione dell’interfaccia utente SLeeLa e componenti di interazione orientati al terminale.
+
+### U–W
+
+- **Nazioni Unite** — `united-nations/`: materiali del repository specifici del dominio.
+- **Wi-Fi 4, Wi-Fi 5 e Wi-Fi 6** — `wi-fi-4/`, `wi-fi-5/`, `wi-fi-6/` e le directory sorgente correlate `lib/wifi/`: materiale di rete wireless e risorse di configurazione specifiche per generazione.
+
+### Manutenzione dell’indice dei pacchetti
+
+Quando viene aggiunto un pacchetto o ampliato in modo sostanziale, aggiungere qui la relativa voce nel gruppo alfabetico appropriato, collegare la directory canonica e il relativo README e descrivere soltanto funzionalità supportate dai sorgenti presenti nel repository. Mantenere questo indice additivo: non rimuovere né riscrivere le sezioni README esistenti durante gli aggiornamenti dell’indice.
 
 ---
-**Stato della traduzione:** traduzione parziale — sezioni I–XIII tradotte. Identificatori tecnici, comandi, esempi di codice, nomi di file e collegamenti sono stati mantenuti invariati.
+
+## XV. Bitcoin Conjegeum
+
+![CremeOak](https://github.com/mearvk/Java.Web.Server.Telnet.Front.Java.21/raw/main/images/national-bitcoin-icc-logo-005.jpg)
+
+`bc1qs6v4q9zsw70t0umk3m0quhvf9dr6cdeskl28dh` :: `⠝⠇⠼⠁⠟⠎⠼⠋⠧⠼⠙⠟⠼⠊⠵⠎⠺⠼⠛⠼⠚⠞⠼⠚⠥⠍⠦⠼⠉⠍⠼⠚⠟⠥⠓⠧⠦⠼⠊⠙⠫⠼⠋⠉⠙⠑⠎⠅⠇⠼⠼⠃⠼⠗⠙⠓`
+
+`bc1qx33vma553gddsjkq372l3xlm8e8huv2vzad3cc` :: `⠃⠉⠼⠁⠟⠭⠼⠉⠼⠉⠪⠍⠁⠼⠑⠑⠛⠙⠙⠎⠚⠅⠟⠼⠉⠼⠛⠼⠝⠇⠼⠉⠼⠭⠇⠍⠼⠨e⠼⠨a⠓⠥⠪⠼⠪⠼⠪⠵⠁⠙⠼⠉⠉`
+
+Democrazia statunitense e politica degli Stati Uniti.
+
+---
+
+## XVI. Immagini del marchio della scienza nazionale
+
+<p align="center"><img src="https://raw.githubusercontent.com/mearvk/SLeeLa/master/brand/national-sleela-science-004.jpg" alt="Scienza nazionale SLeeLa" width="560"></p>
+
+<p align="center"><img src="https://raw.githubusercontent.com/mearvk/SLeeLa/master/brand/national-sleela-nsf-001.jpg" alt="NSF nazionale SLeeLa" width="560"></p>
+
+## XVII. Catalogo sperimentale UTF-4088 da un milione di voci
+
+Il [generatore del catalogo UTF-4088](utf-4088/tools/generate_catalogue.py) crea in modo deterministico un catalogo sperimentale di simboli da 1.048.576 voci. Il formato compatto documentato è descritto in [`utf-4088/FORMAT.md`](utf-4088/FORMAT.md); il contratto di generazione e convalida si trova in [`utf-4088/GENERATION-RESULTS.md`](utf-4088/GENERATION-RESULTS.md).
+
+Eseguire il generatore con Python 3:
+
+```sh
+python3 utf-4088/tools/generate_catalogue.py \
+  --output utf4088-million.bin \
+  --summary utf4088-million.summary.json
+```
+
+Il binario generato è di 16.777.244 byte ed è progettato per rimanere sotto i 20.000.000 byte. I test unitari e un workflow GitHub Actions verificano il numero di voci, l’unicità dei glifi, la dimensione e SHA-256; le esecuzioni riuscite pubblicano il binario e il riepilogo come artefatto del workflow `utf4088-million-catalogue`. Il binario generato viene deliberatamente escluso dalla cronologia Git. UTF-4088 rimane sperimentale e non è compatibile con Unicode.
+
+## Sezioni ancora da tradurre
+
+Le seguenti sezioni non sono ancora tradotte e saranno aggiunte nelle prossime fasi: **XVIII. Aggiunte recenti; XIX. Edizioni internazionali del README.** Fino al completamento della traduzione, il [README.md canonico in inglese](README.md) rimane il riferimento completo.
+
+---
+**Stato della traduzione:** traduzione parziale — sezioni I–XVII tradotte. Identificatori tecnici, comandi, esempi di codice, nomi di file e collegamenti sono stati mantenuti invariati.
