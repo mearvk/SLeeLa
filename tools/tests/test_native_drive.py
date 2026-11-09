@@ -42,6 +42,27 @@ class NativeDriveTests(unittest.TestCase):
             self.assertEqual(ran.returncode, 0)
             self.assertIn("native-cpp-ok", ran.stdout)
 
+    def test_build_native_shared_library(self):
+        if sys.platform == "win32": self.skipTest("shared-library fixture requires a POSIX compiler")
+        compiler = shutil.which("cc") or shutil.which("gcc") or shutil.which("clang")
+        if not compiler: self.skipTest("no C compiler installed")
+        import ctypes
+        with tempfile.TemporaryDirectory() as tmp:
+            src = pathlib.Path(tmp) / "plugin.c"
+            suffix = ".dylib" if sys.platform == "darwin" else ".so"
+            out = pathlib.Path(tmp) / ("plugin" + suffix)
+            src.write_text('#include <stdint.h>\\n'
+                '#if defined(_WIN32)\\n#define EXPORT __declspec(dllexport)\\n'
+                '#else\\n#define EXPORT __attribute__((visibility("default")))\\n#endif\\n'
+                'EXPORT uint32_t sl_native_abi_version(void) { return 1u; }\\n'
+                'EXPORT int sl_native_run(int argc, const char *const argv[]) { (void)argv; return argc; }\\n')
+            built = subprocess.run([sys.executable, str(SCRIPT), "build", str(src), "-o", str(out),
+                "--kind", "shared", "--compiler", compiler], text=True, capture_output=True)
+            self.assertEqual(built.returncode, 0, built.stderr)
+            module = ctypes.CDLL(str(out))
+            module.sl_native_abi_version.restype = ctypes.c_uint32
+            self.assertEqual(module.sl_native_abi_version(), 1)
+
     def test_process_pipeline(self):
         result = subprocess.run([sys.executable, str(SCRIPT), "pipe", "--timeout", "5", "--",
             sys.executable, "-c", "print('sleela-pipe')", "::",
