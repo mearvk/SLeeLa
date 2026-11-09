@@ -216,6 +216,8 @@ def main() -> int:
         args.json.parent.mkdir(parents=True,exist_ok=True); args.json.write_text(encoded,encoding="utf-8")
     print("Java API member dependency audit")
     for k,v in graph["summary"].items(): print(f"{k}: {v}")
+    for item in unresolved:
+        print(f"UNRESOLVED {item['source']}:{item['line']} {item['owner']}.{item['member']} {item['role']} -> {item['reference']}")
     print("member-dependencies: "+("FAIL" if args.check and unresolved else "REVIEW REQUIRED" if unresolved else "PASS"))
     return 1 if args.check and unresolved else 0
 
