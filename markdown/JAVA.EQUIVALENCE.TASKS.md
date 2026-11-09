@@ -101,7 +101,7 @@ Oracle's Java Language Specification defines checked-exception compile-time chec
 
 Added `lib/java/tools/java_api_dependency_closure.py` and `tests/java_api_dependency_suite.py`, with the `java-api-dependencies` Makefile target. The auditor scans SLeeLa source for Java-qualified API references and verifies that each referenced type maps to a corresponding `/lib/java` envelope without modifying generated or handwritten API sources.
 
-This closes the first dependency-driven layer of API qualification. The initial auditor is retained as a fast source-reference gate; the expanded graph auditor now indexes Java namespace counterparts, explicit/static imports, fully-qualified references, same-package and unambiguous wildcard type uses, nested-type ownership, package inventories, package-info annotations, module requires/exports/opens/uses/provides, and transitive type reachability. It reports unresolved references and duplicate counterpart paths rather than silently guessing. This remains type-level dependency closure: exact member-level dependency extraction and inherited-member contract comparison are separate signature/API qualification work.
+This closes the first dependency-driven layer of API qualification. The initial auditor is retained as a fast source-reference gate; the expanded graph auditor now indexes Java namespace counterparts, explicit/static imports, fully-qualified references, same-package and unambiguous wildcard type uses, nested-type ownership, package inventories, package-info annotations, module requires/exports/opens/uses/provides, and transitive type reachability. It reports unresolved references and duplicate counterpart paths rather than silently guessing. This remains type-level dependency closure: member-level dependency extraction is now added as a second static layer; inherited-member contract comparison remains separate signature/API qualification work.
 
 The Java statement model also remains an active companion area: the JLS defines enhanced `for`, `try`-with-resources, switch rules/guards, and detailed reachability/normal-completion constraints. citeturn0search0turn0search2
 
@@ -175,3 +175,32 @@ Added `tests/java_api_dependency_graph_suite.py` and connected it to the existin
 Run the graph with `python3 lib/java/tools/java_api_dependency_graph.py --json java-api-dependencies.json`; run its isolated regression suite with `python3 tests/java_api_dependency_graph_suite.py`.
 
 A graph edge establishes a source-level dependency relationship only. It does not establish API member completeness, behavioral equivalence, or runtime equivalence. Member-level dependency extraction and inherited API contract comparison remain follow-on work.
+
+
+### 0.3.23-dev — Member-level dependency extraction
+
+Added `lib/java/tools/java_api_member_dependencies.py` and its isolated
+regression suite. The member graph records dependencies by declaring type,
+member, member kind, and role, including:
+
+- field types;
+- method return and parameter types;
+- constructor parameter types;
+- generic type-variable bounds;
+- class/interface inheritance and permits clauses;
+- declared exception types;
+- annotations attached to declarations.
+
+Explicit Java-namespace imports that do not resolve to an indexed counterpart
+are emitted as actionable unresolved diagnostics. The graph is deterministic
+JSON and is intentionally separate from the type-level graph.
+
+Run `python3 lib/java/tools/java_api_member_dependencies.py --json java-api-member-dependencies.json`
+or `make -C tests java-api-member-dependencies`. The unified Java API dependency
+suite invokes this regression suite. The inventory baseline is now 8,990
+library source files.
+
+This layer does not yet prove inherited effective-member equivalence. The next
+qualification task is to compare each type's effective API against its
+superclasses and interfaces, including overrides, covariant returns, generic
+substitution, default interface methods, and visibility.
