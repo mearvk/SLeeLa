@@ -372,7 +372,12 @@ void slvm_set_audio_native_renderer(SLVM* vm, SLAudioNativeRenderFn fn, void* us
  * dispatch and may fall back to a same-name, same-arity SLeeLa method when a
  * plugin reports NOT_HANDLED or arguments are VM-owned composites. Raw SLValue
  * and VM object handles never cross the plugin boundary. Do not call these
- * APIs concurrently with slvm_free(). */
+ * Native plugins may optionally export sl_native_bind_host() to receive a
+ * versioned callback table. Its invoke() entry calls an exact, unique
+ * SLeeLa function by name using only scalar/UTF-8 ABI values. Callback code
+ * may not recursively enter the native-module API; such attempts fail closed.
+ * The suspended VM stack remains a GC root while callback bytecode runs.
+ * Do not call these APIs concurrently with slvm_free(). */
 int slvm_set_native_authorizer(SLVM* vm, SLNativeAuthorizePath authorize, void* context);
 SLNativeStatus slvm_native_module_open(SLVM* vm, const char* path, SLNativeHandle* out_handle);
 SLNativeStatus slvm_native_module_run(SLVM* vm, SLNativeHandle handle,
