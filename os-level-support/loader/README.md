@@ -119,12 +119,15 @@ the host process and is not sandboxed.
 
 A plugin may export `sl_native_bind_host(const SLNativeHostAPI*)`. The loader
 passes a size-checked `SL_NATIVE_HOST_CALLBACK_ABI_VERSION` table after the
-host has authorized and opened the module. The plugin must copy the table and
-may call `invoke(context, function, argc, argv, result)` synchronously from a typed method. The plugin must not retain or invoke the table asynchronously.
+host has authorized and opened the module, then rebinds it immediately before
+each plugin entrypoint. The plugin must copy the table into thread-local
+storage and may call `invoke(context, function, argc, argv, result)` synchronously from a typed method. The plugin must not retain or invoke the table asynchronously.
 The host resolves an exact, unique compiled SLeeLa function name and executes
 it on a separate nested interpreter stack. Only the typed scalar/UTF-8 values
 cross the callback boundary; VM pointers and raw `SLValue` objects never do.
-The embedding host must install `slvm_set_native_callback_authorizer` with an explicit function-name allowlist; callback invocation is denied by default. This policy is immutable after installation.
+Thread-local storage keeps callback context correct when multiple VM instances
+load the same shared library. The embedding host must install
+`slvm_set_native_callback_authorizer` with an explicit function-name allowlist; callback invocation is denied by default. This policy is immutable after installation.
 
 The suspended interpreter stack remains a GC root during callback execution.
 Callbacks require a quiescent VM with no active worker threads, and callback
