@@ -138,3 +138,14 @@ sleelactl inspect native-drive service --name worker --rollback
 ```
 
 The generator defaults to a user unit. Add `--system --user ACCOUNT` for an explicitly scoped system unit (run installation as root). Installation does not enable or start a unit unless the corresponding flags are supplied. Replacement is opt-in and preserves one rollback copy. Lifecycle operations are Linux/systemd-only; they do not claim to provide Windows Service Control Manager or macOS launchd integration.
+
+
+## Regression test
+
+Run the focused scope-selection test from the repository root:
+
+```sh
+sh tests/sleelactl_systemctl_scope_test.sh
+```
+
+It stubs `systemctl`, `sudo`, and the caller UID; it does not start or modify a real service.
