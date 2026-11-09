@@ -117,7 +117,9 @@ class Worker:
             except BaseException as e: result.put((False,e))
         threading.Thread(target=read,daemon=True).start()
         try: ok,value=result.get(timeout=self.timeout)
-        except queue.Empty: raise TimeoutError("IPC worker response timed out")
+        except queue.Empty:
+            self.close(force=True)
+            raise TimeoutError("IPC worker response timed out")
         if not ok: raise value
         if self._stderr_overflow: raise IPCError("worker stderr exceeded configured bound")
         return value

@@ -49915,7 +49915,7 @@
     },
     {
       "path": "tools/sleela-ipc-worker.py",
-      "sha256": "46da9967b98014f2ff26530e61e4c2385b567474c905b589c86571724cd4297c"
+      "sha256": "a59adb80bc23d4c13b333eeab7d9111d4effdf72230cb31867db1ac9c826fc05"
     },
     {
       "path": "tools/sleela-native-drive.py",
@@ -49927,7 +49927,7 @@
     },
     {
       "path": "tools/tests/test_sleela_ipc_worker.py",
-      "sha256": "404a0dec9a752fdd217691251db745307cd63eb41dbec8a111171d98f2ea5c02"
+      "sha256": "2667c406dc22d239bc6f1cbdaa9c53af5fafd95f93391fd0b49a98cda1b11252"
     },
     {
       "path": "wifi-common/include/sleela_wifi/wifi_manager_cpp.hpp",

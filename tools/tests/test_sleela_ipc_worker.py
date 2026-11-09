@@ -1,7 +1,9 @@
-import hashlib, sys, unittest
+import hashlib, importlib.util, sys, unittest
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-import sleela_ipc_worker as ipc
+_spec=importlib.util.spec_from_file_location("sleela_ipc_worker",Path(__file__).resolve().parents[1]/"sleela-ipc-worker.py")
+ipc=importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(ipc)
 
 class IPCWorkerTests(unittest.TestCase):
     @classmethod
