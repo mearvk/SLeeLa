@@ -57,10 +57,11 @@ typedef int (*SLNativeTypedCall)(const char *method,
                                  const SLNativeValue *argv,
                                  SLNativeValue *out_result);
 
+/* Keep the public module layout stable: the optional typed symbol is resolved
+ * from handle at call time rather than stored in this struct. */
 typedef struct SLNativeModule {
     void *handle;
     SLNativeEntry run;
-    SLNativeTypedCall typed_call; /* optional; legacy run-only plugins remain valid */
 } SLNativeModule;
 
 typedef enum SLNativeStatus {
