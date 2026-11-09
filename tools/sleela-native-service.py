@@ -68,6 +68,7 @@ def main() -> int:
     p.add_argument("--writable-path", action="append", default=[], help="explicit writable directory; repeatable")
     p.add_argument("--output", help="write rendered unit to this file; otherwise stdout")
     p.add_argument("--install", action="store_true", help="install a user or system unit")
+    p.add_argument("--replace", action="store_true", help="replace an existing unit file; otherwise installation fails if it exists")
     p.add_argument("--system", action="store_true", help="install into /etc/systemd/system (requires root and --user)")
     p.add_argument("--enable", action="store_true", help="daemon-reload and enable after installation")
     p.add_argument("--start", action="store_true", help="start after installation (requires --enable)")
@@ -98,6 +99,8 @@ def main() -> int:
             target_dir = pathlib.Path.home() / ".config/systemd/user"
         target_dir.mkdir(parents=True, exist_ok=True)
         target = target_dir / f"{args.name}.service"
+        if target.exists() and not args.replace:
+            raise RuntimeError(f"unit already exists: {target}; pass --replace to replace it explicitly")
         fd, temp_name = tempfile.mkstemp(prefix=f".{args.name}.", dir=target_dir)
         try:
             with os.fdopen(fd, "w", encoding="utf-8") as stream:
