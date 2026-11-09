@@ -262,3 +262,37 @@ Do not copy OpenJDK implementation source wholesale. Implement the documented
 API contracts independently in SLeeLa, using the Java specification and
 behavioral tests as references. Preserve license/provenance boundaries for
 any third-party or upstream material.
+
+
+## First SLeeLa-native java.lang implementations
+
+Executable implementations are being developed separately from the generated
+JDK API counterpart declarations. This prevents an API signature inventory
+from being mistaken for working behavior.
+
+Initial source units:
+
+- `implementations/java/lang/JavaObjectIdentity.sleela` — identity equality
+  and stable identity-derived hashing for a live object, provided the runtime
+  supplies a stable heap identity and object handle.
+- `implementations/java/lang/JavaStringValue.sleela` — immutable scalar-backed
+  string values, equality, concatenation, non-negative repetition, and joining
+  a supplied string array.
+
+These are deliberately scoped subsets, not complete replacements for
+`java.lang.Object` or `java.lang.String`. The Object adapter does not yet
+implement monitor/wait-notify, cloning, or Java's default textual form. The
+String implementation does not yet implement UTF-16 length/indexing,
+substring, code-point iteration, case conversion, locale rules, regex,
+normalization, or Java's specified hashCode. Null-argument exception behavior
+also awaits a qualified SLeeLa exception boundary.
+
+Run the executable smoke suites with:
+
+```text
+make -C tests java-lang-native
+```
+
+A successful run validates only the cases in those fixtures. The Java API
+counterpart files remain contracts until each operation has a native SLeeLa
+implementation and behavior-based qualification.
