@@ -29,6 +29,10 @@ export PATH="$TMP/bin:$PATH"
 : >"$SCTL_LOG"
 : >"$SUDO_LOG"
 
+# Helper resolution must return a clean path, not a literal backslash-n suffix.
+native_info=$("$ROOT/bin/sleelactl" info native-drive)
+printf '%s\n' "$native_info" | grep -Fx '  location: tools/sleela-native-drive.py' >/dev/null
+
 # User units must use the user manager and must not invoke sudo.
 SLEELACTL_SYSTEMCTL_SCOPE=user "$ROOT/bin/sleelactl" start example
 grep -Fx -- '--user start example.service' "$SCTL_LOG" >/dev/null
