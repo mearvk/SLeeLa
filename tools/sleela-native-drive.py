@@ -319,7 +319,7 @@ def parser() -> argparse.ArgumentParser:
     b.add_argument("sources", nargs="+"); b.add_argument("-o", "--output", required=True)
     b.add_argument("--language", choices=("auto", "c", "cpp", "sleela"), default="auto")
     b.add_argument("--kind", choices=("executable", "shared"), default="executable")
-    b.add_argument("--require-sleela-abi", action="store_true", help="verify sl_native_abi_version()==1 and sl_native_run before publishing a shared library")
+    b.add_argument("--require-sleela-abi", action="store_true", help="verify required SLeeLa ABI export symbols before publishing; the loader checks the ABI version value")
     b.add_argument("--compiler"); b.add_argument("--sleela")
     b.add_argument("--timeout", type=_positive_float, default=120.0)
     b.add_argument("--compiler-arg", action="append", default=[], help="extra compiler/linker argv item; repeat as needed")
