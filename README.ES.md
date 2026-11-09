@@ -150,4 +150,4 @@ Una versión solo se considera verificada cuando los trabajos de CI pertinentes 
 Todavía deben traducirse las siguientes secciones, que se incorporarán en próximas tandas: **II. Novedades; VIII. Temas del editor SLeeLa; IX. Contribuir; X–XVII. Otras áreas del proyecto; XVIII. Incorporaciones recientes; XIX. Ediciones internacionales del README.** Hasta completar la traducción, el [README.md canónico en inglés](README.md) sigue siendo la referencia completa.
 
 ---
-**Estado de traducción:** traducción parcial: se han traducido las secciones I y III–VII. Los identificadores técnicos, comandos, ejemplos de código, nombres de archivo y enlaces se han mantenido sin cambios.
+**Estado de traducción:** traducción parcial: se han traducido las secciones I–VII. Siguen pendientes las secciones VIII–XIX. Los identificadores técnicos, comandos, ejemplos de código, nombres de archivo y enlaces se han mantenido sin cambios.
