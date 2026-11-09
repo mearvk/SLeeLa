@@ -2419,6 +2419,15 @@ static SLResult run_thread(SLThread* t) {
             PUSH(slval_int(bytes));
         } break;
         case OP_CONST: PUSH(vm->consts[in.a]); break;
+        case OP_JSTR_LENGTH: { SLValue value=POP(); int32_t n=0; if(value.type!=SL_UTF16 || slvm_java_string_length(vm,value,&n)!=SL_JAVA_STRING_OK) TERR("String.length requires a valid Java UTF-16 String"); PUSH(slval_int(n)); } break;
+        case OP_JSTR_CHAR_AT: { SLValue index=POP(),value=POP(); uint16_t unit=0; if(value.type!=SL_UTF16 || slvm_java_string_char_at(vm,value,(int32_t)as_num(index),&unit)!=SL_JAVA_STRING_OK) TERR("String.charAt index out of range or invalid String"); PUSH(slval_int((int32_t)unit)); } break;
+        case OP_JSTR_CODE_POINT_AT: { SLValue index=POP(),value=POP(); int32_t cp=0; if(value.type!=SL_UTF16 || slvm_java_string_code_point_at(vm,value,(int32_t)as_num(index),&cp)!=SL_JAVA_STRING_OK) TERR("String.codePointAt index out of range or invalid String"); PUSH(slval_int(cp)); } break;
+        case OP_JSTR_CODE_POINT_COUNT: { SLValue end=POP(),begin=POP(),value=POP(); int32_t n=0; if(value.type!=SL_UTF16 || slvm_java_string_code_point_count(vm,value,(int32_t)as_num(begin),(int32_t)as_num(end),&n)!=SL_JAVA_STRING_OK) TERR("String.codePointCount range invalid"); PUSH(slval_int(n)); } break;
+        case OP_JSTR_OFFSET_BY_CODE_POINTS: { SLValue offset=POP(),index=POP(),value=POP(); int32_t result=0; if(value.type!=SL_UTF16 || slvm_java_string_offset_by_code_points(vm,value,(int32_t)as_num(index),(int32_t)as_num(offset),&result)!=SL_JAVA_STRING_OK) TERR("String.offsetByCodePoints range invalid"); PUSH(slval_int(result)); } break;
+        case OP_JSTR_SUBSTRING: { SLValue end=POP(),begin=POP(),value=POP(); if(value.type!=SL_UTF16) TERR("String.substring requires a Java UTF-16 String"); SLValue result=slvm_java_string_substring(vm,value,(int32_t)as_num(begin),(int32_t)as_num(end)); if(result.type!=SL_UTF16) TERR("String.substring range invalid"); PUSH(result); } break;
+        case OP_JSTR_CONCAT: { SLValue right=POP(),left=POP(); if(left.type!=SL_UTF16 || right.type!=SL_UTF16) TERR("String.concat requires two Java UTF-16 Strings"); SLValue result=slvm_java_string_concat(vm,left,right); if(result.type!=SL_UTF16) TERR("String.concat failed"); PUSH(result); } break;
+        case OP_JSTR_HASH_CODE: { SLValue value=POP(); int32_t hash=0; if(value.type!=SL_UTF16 || slvm_java_string_hash_code(vm,value,&hash)!=SL_JAVA_STRING_OK) TERR("String.hashCode requires a valid Java UTF-16 String"); PUSH(slval_int(hash)); } break;
+        case OP_JSTR_COMPARE_TO: { SLValue right=POP(),left=POP(); int32_t order=0; if(left.type!=SL_UTF16 || right.type!=SL_UTF16 || slvm_java_string_compare_to(vm,left,right,&order)!=SL_JAVA_STRING_OK) TERR("String.compareTo requires two Java UTF-16 Strings"); PUSH(slval_int(order)); } break;
         case OP_POP: (void)POP(); break;
         case OP_DUP: { if (t->sp < 1) TERR("stack underflow"); SLValue dupv = t->stack[t->sp-1]; PUSH(dupv); } break;
         case OP_DUP2: { if (t->sp < 2) TERR("stack underflow"); SLValue av = t->stack[t->sp-2], bv = t->stack[t->sp-1]; PUSH(av); PUSH(bv); } break;
