@@ -72,6 +72,26 @@ int main(int argc, char **argv) {
         return 1;
     }
     slvm_free(vm);
-    puts("compiled source -> artifact -> native dispatch -> SLeeLa callback -> bytecode fallback -> authorization denial: PASS");
+
+    /* A trusted module path is not enough to authorize callback execution.
+     * The host must separately allow the exact SLeeLa callback name. */
+    vm = slvm_load_file(argv[1]);
+    if (!vm) {
+        fprintf(stderr, "could not reload artifact for callback-policy denial check\\n");
+        return 2;
+    }
+    if (slvm_set_native_authorizer(vm, authorize_exact_path, argv[2]) != 0) {
+        fprintf(stderr, "could not install callback-policy test module authorization\\n");
+        slvm_free(vm);
+        return 2;
+    }
+    if (slvm_run(vm) != SLR_ERROR ||
+        !slvm_error(vm) || !strstr(slvm_error(vm), "failed")) {
+        fprintf(stderr, "native callback executed without a host callback-name allowlist\\n");
+        slvm_free(vm);
+        return 1;
+    }
+    slvm_free(vm);
+    puts("compiled source -> artifact -> native dispatch -> SLeeLa callback -> bytecode fallback -> module and callback authorization denial: PASS");
     return 0;
 }
