@@ -2083,7 +2083,8 @@ static int slvm_native_host_invoke(void* context, const char* function,
     SLVM* previous_callback_vm;
     if (!vm || !function || !*function || !out_result ||
         (argc && !argv) || argc > STACK_MAX - 1 ||
-        native_callback_vm == vm || native_plugin_call_vm != vm)
+        native_callback_vm == vm || native_plugin_call_vm != vm ||
+        !vm->native_callback_caller)
         return 0;
     pthread_mutex_lock(&vm->thr_mtx);
     active_workers = vm->nthreads;
