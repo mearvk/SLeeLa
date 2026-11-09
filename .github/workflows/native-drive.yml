@@ -5,6 +5,11 @@ on:
     branches: [main, master, feat/native-drive-integration, feat/native-drive-completion, feat/native-drive-final]
     paths:
       - "tools/sleela-native-drive.py"
+      - "tools/generate-sha256-manifest.py"
+      - "install/Makefile"
+      - "install/quick-safe-install.sh"
+      - "install/quick-safe-install.ps1"
+      - "security/sha256-manifest.json"
       - "tools/sleela-native-service.py"
       - "tools/tests/test_native_drive.py"
       - "impl/native-drive/**"
@@ -34,9 +39,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Check sleelactl shell syntax
+      - name: Verify trusted source manifest
+        run: python tools/verify-before-execution.py --manifest security/sha256-manifest.json --root .
+      - name: Check installer inputs
         if: runner.os != 'Windows'
-        run: sh -n bin/sleelactl
+        run: make -C install install-check
+      - name: Check POSIX installer syntax
+        if: runner.os != 'Windows'
+        run: |
+          sh -n bin/sleelactl
+          bash -n install/quick-safe-install.sh
       - name: Run Native Drive tests
         run: python -m unittest discover -s tools/tests -p "test_native_drive.py" -v
       - name: Configure native loader ABI tests
