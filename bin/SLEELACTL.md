@@ -11,7 +11,7 @@ sleelactl <verb> all                  fan a verb across every compatible module
 sleelactl list [nature]               list modules (optionally by nature)
 sleelactl status [module|all]         show running status
 sleelactl natures                     explain the natures and their verbs
-sleelactl help [verb|module]          help, or the verbs legal for a module
+sleelactl help [verb|module]           help, or the verbs legal for a module
 ```
 
 ## Why the verbs differ by module
@@ -101,6 +101,209 @@ The module → nature map lives in
 module per line (`name  nature  handle  summary`). Adding a module is a one-line
 append; the dispatcher is never edited. `sleelactl` finds the registry beside
 the script, in the installed runtime tree, or via `SLEELACTL_REGISTRY=<path>`.
+
+## Ordered subject-module catalogue
+
+This catalogue records the quantitative/science modules that a SLeeLa source
+program can import, together with their implementation shape and API surface.
+The order is dependency-aware: **Math is foundational**; the other quantitative
+subjects that call its kernels require `import math;` as well.
+
+Important distinction: a module being importable by a SLeeLa program does not
+automatically make it a separately addressable `sleelactl` registry entry.
+On this revision, `math` is the only subject listed in
+`bin/sleelactl.d/registry.conf`; therefore `sleelactl run math` and
+`sleelactl info math` are the subject commands currently registered. The other
+modules below are compiler/runtime subject APIs, not yet separate
+`sleelactl` registry handles. The `science` directory is an example grouping,
+not a module name.
+
+**Version and date policy.** The subject sources do not declare independent
+module semantic versions. The module version is therefore **not separately
+versioned**; use the SLeeLa repository revision when recording an exact build.
+The source dates below are the latest source-change dates visible in the
+repository history for the listed implementation files, not claims of original
+invention or release dates. Example programs in this family declare
+`#sleela 2.5`; that is a source-syntax level, not a module version. The compiler
+tracks a broader source-syntax range independently.
+
+### 1. `math` — foundational native mathematics
+
+- **Import / qualified name:** `import math;` / `math.<function>(...)`
+- **Implementation:** `impl/subjects/math/math_native.cpp`, dispatched by
+  `impl/subjects/native/native_api.cpp` into `__NativeMath`.
+- **Reference example:** `lib/ui/example/science/math.sleela`.
+- **Latest source change:** 2026-10-09.
+- **Module version:** not independently declared; repository revision applies.
+- **Supported API:** `pi()`, `e()`, `tau()`, `abs(x)`, `sign(x)`,
+  `min(a,b)`, `max(a,b)`, `clamp(x,lo,hi)`, `sqrt(x)`, `exp(x)`,
+  `log(x)`, `log10(x)`, `trunc(x)`, `floor(x)`, `ceil(x)`,
+  `pow(x,y)`, `sin(x)`, `cos(x)`, `tan(x)`, `hypot(a,b)`, and
+  `fmod(a,b)`.
+- **Definitions:** constants and pure numeric functions are synthesized as
+  static methods on `__NativeMath`. This is the base dependency for the
+  quantitative subject family.
+
+### 2. `physics` — mechanics and physical models
+
+- **Import / qualified name:** `import math;` then `import physics;` /
+  `physics.<function>(...)`.
+- **Implementation:** `impl/subjects/physics/physics_native.cpp`, dispatched
+  by the shared native subject API into `__NativePhysics`.
+- **Reference example:** `lib/ui/example/science/physics.sleela`.
+- **Latest source change:** 2026-10-18.
+- **Module version:** not independently declared; repository revision applies.
+- **Supported API:** constants `C`, `H`, `HBAR`, `E_CHARGE`, `K_B`,
+  `G`, `G0`, `N_A`, `R`; functions `velocity(dx,dt)`,
+  `acceleration(dv,dt)`, `kinematic_position(x0,v0,a,t)`,
+  `force(mass,accel)`, `kinetic_energy(mass,velocity)`,
+  `gravitational_force(m1,m2,r)`, `escape_velocity(mass,radius)`,
+  `lorentz_gamma(v)`, `relativistic_energy(mass,v)`, `momentum(mass,v)`,
+  `ohms_voltage(current,resistance)`, `electric_power(voltage,current)`,
+  `ideal_gas_pressure(n,R,T)`, `wave_frequency(velocity,wavelength)`,
+  `angular_frequency(frequency)`, `wavenumber(wavelength)`, and
+  `neutrino_oscillation_probability(theta,dm2,L,E)`.
+- **Definitions:** pure formula methods and physical constants; depends on
+  Math. Units and input conventions belong to the caller and must be supplied
+  consistently.
+
+### 3. `economics` — economic and time-value functions
+
+- **Import / qualified name:** `import math;` then `import economics;` /
+  `economics.<function>(...)`.
+- **Implementation:** `impl/subjects/economics/economics_native.cpp`,
+  dispatched by the shared native subject API into `__NativeEconomics`.
+- **Latest source change:** 2026-10-18.
+- **Module version:** not independently declared; repository revision applies.
+- **Supported API:** `future_value(principal,rate,periods)`,
+  `present_value(future,rate,periods)`,
+  `annuity_present(payment,rate,periods)`,
+  `annuity_future(payment,rate,periods)`,
+  `elasticity(pct_quantity,pct_price)`,
+  `real_rate(nominal,inflation)`,
+  `fisher_nominal(real,inflation)`, `doubling_time(rate)`,
+  `continuous_value(principal,rate,time)`, `profit(revenue,cost)`,
+  `margin(profit,revenue)`, and `gdp_identity(C,I,G)`.
+- **Definitions:** deterministic financial/economic formula helpers. Outputs
+  are model calculations under supplied assumptions, not empirical forecasts.
+  Depends on Math (`pow`, `log`, and `exp`).
+
+### 4. `inference` — descriptive statistics and trend analysis
+
+- **Import / qualified name:** `import math;` then `import inference;` /
+  `inference.<function>(...)`.
+- **Implementation:** `impl/subjects/inference/inference_native.cpp`,
+  dispatched into `__NativeInference`.
+- **Latest source change:** 2026-10-18.
+- **Module version:** not independently declared; repository revision applies.
+- **Supported API:** `mean`, `variance`, `stdev`, `slope`, `intercept`,
+  `correlation`, `r_squared`, `zscore`, and the associated forecast,
+  compound-growth, and classification helpers implemented in that source.
+- **Definitions:** array-free statistical kernels. A SLeeLa caller accumulates
+  count and running sums from its own data series, then passes those values to
+  the functions. Results are descriptive/model calculations, not causal
+  conclusions or official forecasts. Depends on Math.
+
+### 5. `astrophysics` — astronomical formula models
+
+- **Import / qualified name:** `import math;` then `import astrophysics;` /
+  `astrophysics.<function>(...)`.
+- **Implementation:** `impl/subjects/astrophysics/astrophysics_native.cpp`,
+  registered with the shared native subject lowering.
+- **Reference example:** `lib/ui/example/science/astrophysics.sleela`.
+- **Latest source change:** 2026-10-18.
+- **Module version:** not independently declared; repository revision applies.
+- **Supported API:** `flux_from_luminosity(L,r)`,
+  `redshift(observed,rest)`, `observed_wavelength(rest,z)`,
+  `wien_peak(temperature)`, `kepler_period(a,mass)`, and
+  `escape_velocity(mass,radius)`.
+- **Definitions:** pure astronomical formula helpers for radiation,
+  spectroscopy, orbital period, and escape velocity. Depends on Math.
+
+### 6. `sociology` — population and social-statistical measures
+
+- **Import / qualified name:** `import math;` then `import sociology;` /
+  `sociology.<function>(...)`.
+- **Implementation:** `impl/subjects/sociology/sociology_native.cpp`,
+  registered with the shared native subject lowering.
+- **Reference example:** `lib/ui/example/science/sociology.sleela`.
+- **Latest source change:** 2026-10-18.
+- **Module version:** not independently declared; repository revision applies.
+- **Supported API:** `proportion(part,total)`,
+  `rate(events,population,scale)`,
+  `growth_rate(oldValue,newValue)`, and
+  `transition_probability(transitions,origin)`.
+- **Definitions:** arithmetic measures over caller-supplied observations.
+  Observed source data must remain distinguishable from modeled relationships;
+  association is not a causal claim. Depends on Math.
+
+### 7. `chemistry` — evidence-weighted chemistry support
+
+- **Import / qualified name:** `import math;` then `import chemistry;` /
+  `chemistry.<function>(...)`.
+- **Implementation:** `impl/subjects/chemistry/chemistry_api.cpp` and
+  `impl/subjects/chemistry/chemistry.cpp`; uses its own frontend lowering,
+  separate from `native_api.cpp`.
+- **Latest source change:** 2026-10-09.
+- **Module version:** not independently declared; repository revision applies.
+- **Supported executable API:** `ratio(numerator,denominator)`,
+  `similarity(a,b)`, `stochastic(seed,weight)`,
+  `inference_level(observation,bond,valence,similarity,signal,symmetry)`,
+  `confidence(observation,bond,valence,similarity,signal,symmetry)`, and
+  `uncertainty(observation,bond,valence,similarity,signal,symmetry)`.
+- **Definitions:** evidence-oriented support calculations; the bounded 0–24
+  inference level is a model-support scale, not a truth claim or a substitute
+  for measured chemical properties. Requires Math for its numerical kernels.
+
+### 8. `financial` — financial valuation and algebra helpers
+
+- **Import / qualified name:** `import financial;` /
+  `financial.<function>(...)`.
+- **Implementation:** `impl/subjects/finance/financial_api.cpp` and
+  `impl/subjects/finance/financial.cpp`; uses its own frontend lowering,
+  separate from the shared arithmetic-subject dispatcher.
+- **Latest source change:** 2026-10-18.
+- **Module version:** not independently declared; repository revision applies.
+- **Supported executable API:** `future_value`, `present_value`,
+  `annuity_present`, `annuity_future`, `npv4`, `bond_price`, `capm`,
+  `wacc`, `determinant2`, `solve2x2_x`, `solve2x2_y`,
+  `quadratic_discriminant`, `quadratic_root_plus`,
+  `quadratic_root_minus`, and `ratio`. Parameter lists are defined by the
+  function declarations in `financial_api.cpp`.
+- **Definitions:** deterministic valuation and algebra kernels. Financial
+  values require explicit currency identity and rates require an explicit
+  period convention; outputs are calculations, not forecasts or advice.
+
+### Import namespaces reserved but not yet backed by subject implementations
+
+The shared native API currently recognizes the names `excel`, `json`,
+`crypto`, and `net` in its module-name availability set, but this revision
+does not synthesize corresponding `__NativeExcel`, `__NativeJson`,
+`__NativeCrypto`, or `__NativeNet` classes in `lowerProgram`. Treat these
+as reserved/recognized namespaces, **not as supported callable subject APIs**.
+They are not subject entries in `sleelactl`'s registry.
+
+### Subject verification and extension rules
+
+The repository Makefile provides subject checks including
+`test-math`, `test-physics`, `test-economics`, `test-inference`,
+`test-chemistry`, `test-financial`, `test-astrophysics`, and
+`test-sociology`. The October 18, 2026 subject-fix commit records the
+quantitative assertion suite passing for Math (27), Physics (15), Economics
+(12), Inference (15), Financial (15), and Chemistry (10), plus the
+Astrophysics and Sociology smoke checks. Re-run the current tests before
+treating that historical result as a fresh build verification:
+
+```sh
+make -C impl test-subjects
+make -C impl test-astrophysics test-sociology
+```
+
+To expose another subject through `sleelactl`, add a `subject` row to
+`bin/sleelactl.d/registry.conf` with its real reference-demo path, and ensure
+that demo builds and runs with the current `sleela` binary. Do not add a
+registry row merely because an import name is reserved or a native source file
+exists; the registry handle must identify a runnable reference demo.
 
 ## systemd scope and honest degradation
 
