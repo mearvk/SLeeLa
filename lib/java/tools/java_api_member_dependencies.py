@@ -15,24 +15,24 @@ from collections import defaultdict
 from pathlib import Path
 
 ROOTS = ("java", "javax", "jdk", "sun", "com.sun", "org.w3c", "org.xml", "org.ietf", "org.omg")
-IDENT = r"[A-Za-z_$][\\w$]*"
+IDENT = r"[A-Za-z_$][\w$]*"
 MODIFIERS = "public|protected|private|static|final|abstract|native|synchronized|volatile|transient|strictfp|sealed|non-sealed|default"
-MOD_RE = rf"(?:(?:{MODIFIERS})\\s+)*"
-DECL_RE = re.compile(rf"(?P<mods>{MOD_RE})(?P<kind>class|interface|enum|record)\\s+(?P<name>{IDENT})(?P<generics>\\s*<[^{{}};()]+>)?(?P<tail>[^{{;]*)(?=\\{{)")
-METHOD_RE = re.compile(rf"(?P<mods>{MOD_RE})(?P<generics><[^{{}}()]+>\\s*)?(?P<ret>[A-Za-z_$][\\w$]*(?:\\s*<[^;{{}}()]+>)?(?:\\[\\])*(?:\\.[A-Za-z_$][\\w$]*)*)\\s+(?P<name>{IDENT})\\s*\\((?P<args>[^(){{}}]*)\\)(?:\\s+throws\\s+(?P<throws>[^{{;]+))?")
-CTOR_RE = re.compile(rf"(?P<mods>(?:(?:public|protected|private)\\s+)*)(?P<generics><[^{{}}()]+>\\s*)?(?P<name>{IDENT})\\s*\\((?P<args>[^(){{}}]*)\\)(?:\\s+throws\\s+(?P<throws>[^{{;]+))?")
-FIELD_RE = re.compile(rf"(?P<mods>(?:(?:public|protected|private|static|final|volatile|transient)\\s+)*)(?P<type>[A-Za-z_$][\\w$]*(?:\\s*<[^;{{}}()]+>)?(?:\\[\\])*(?:\\.[A-Za-z_$][\\w$]*)*)\\s+(?P<name>{IDENT})\\s*(?:=[^;]*)?;")
-IMPORT_RE = re.compile(rf"(?m)^\\s*import\\s+(?P<static>static\\s+)?(?P<name>{IDENT}(?:\\.{IDENT})+)(?P<wild>\\.\\*)?\\s*;")
-PACKAGE_RE = re.compile(rf"(?m)^\\s*package\\s+({IDENT}(?:\\.{IDENT})+)\\s*;")
-ANNOT_RE = re.compile(r"@([A-Za-z_$][\\w$.]*)")
-TYPE_TOKEN_RE = re.compile(rf"[A-Za-z_$][\\w$]*(?:\\.[A-Za-z_$][\\w$]*)*")
-COMMENT_RE = re.compile(r'"(?:\\\\.|[^"\\\\])*"|\\'(?:\\\\.|[^\\'\\\\])*\\'|//[^\\n]*|/\\*.*?\\*/', re.S)
+MOD_RE = rf"(?:(?:{MODIFIERS})\s+)*"
+DECL_RE = re.compile(rf"(?P<mods>{MOD_RE})(?P<kind>class|interface|enum|record)\s+(?P<name>{IDENT})(?P<generics>\s*<[^{{}};()]+>)?(?P<tail>[^{{;]*)(?=\{{)")
+METHOD_RE = re.compile(rf"(?P<mods>{MOD_RE})(?P<generics><[^{{}}()]+>\s*)?(?P<ret>[A-Za-z_$][\w$]*(?:\s*<[^;{{}}()]+>)?(?:\[\])*(?:\.[A-Za-z_$][\w$]*)*)\s+(?P<name>{IDENT})\s*\((?P<args>[^(){{}}]*)\)(?:\s+throws\s+(?P<throws>[^{{;]+))?")
+CTOR_RE = re.compile(rf"(?P<mods>(?:(?:public|protected|private)\s+)*)(?P<generics><[^{{}}()]+>\s*)?(?P<name>{IDENT})\s*\((?P<args>[^(){{}}]*)\)(?:\s+throws\s+(?P<throws>[^{{;]+))?")
+FIELD_RE = re.compile(rf"(?P<mods>(?:(?:public|protected|private|static|final|volatile|transient)\s+)*)(?P<type>[A-Za-z_$][\w$]*(?:\s*<[^;{{}}()]+>)?(?:\[\])*(?:\.[A-Za-z_$][\w$]*)*)\s+(?P<name>{IDENT})\s*(?:=[^;]*)?;")
+IMPORT_RE = re.compile(rf"(?m)^\s*import\s+(?P<static>static\s+)?(?P<name>{IDENT}(?:\.{IDENT})+)(?P<wild>\.\*)?\s*;")
+PACKAGE_RE = re.compile(rf"(?m)^\s*package\s+({IDENT}(?:\.{IDENT})+)\s*;")
+ANNOT_RE = re.compile(r"@([A-Za-z_$][\w$.]*)")
+TYPE_TOKEN_RE = re.compile(rf"[A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*)*")
+COMMENT_RE = re.compile(r'"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\'|//[^\n]*|/\*.*?\*/', re.S)
 PRIMITIVES = {"void","boolean","byte","short","int","long","float","double","char","var","extends","super"}
 
 def strip_comments(source: str) -> str:
     def sub(m):
         token=m.group(0)
-        return token if token.startswith(('"','\\'')) else re.sub(r"[^\\n]"," ",token)
+        return token if token.startswith(('"','\'')) else re.sub(r"[^\n]"," ",token)
     return COMMENT_RE.sub(sub,source)
 
 def split_top(source: str) -> list[str]:
@@ -47,7 +47,7 @@ def split_top(source: str) -> list[str]:
     return out
 
 def type_names(expr: str) -> list[str]:
-    expr=re.sub(r"@[\\w$.]+(?:\\([^)]*\\))?"," ",expr)
+    expr=re.sub(r"@[\w$.]+(?:\([^)]*\))?"," ",expr)
     names=[]
     for token in TYPE_TOKEN_RE.findall(expr):
         if token not in PRIMITIVES and token not in {"final","volatile","transient"}:
@@ -63,15 +63,15 @@ def type_params(expr: str) -> list[str]:
     result=[]
     for part in split_top(inner):
         # Drop the declared type-variable name, retaining all bounds.
-        m=re.match(rf"{IDENT}\\s+extends\\s+(.+)",part)
+        m=re.match(rf"{IDENT}\s+extends\s+(.+)",part)
         if m: result.extend(type_names(m.group(1)))
     return result
 
 def parameter_types(expr: str) -> list[str]:
     out=[]
     for part in split_top(expr):
-        part=re.sub(r"@(?:[\\w$.]+)(?:\\([^)]*\\))?\\s*","",part)
-        part=re.sub(r"\\b(final|volatile|transient)\\b\\s+","",part).strip().replace("...","[]")
+        part=re.sub(r"@(?:[\w$.]+)(?:\([^)]*\))?\s*","",part)
+        part=re.sub(r"\b(final|volatile|transient)\b\s+","",part).strip().replace("...","[]")
         bits=part.split()
         if len(bits)>=2: out.extend(type_names(" ".join(bits[:-1])))
         else: out.extend(type_names(part))
@@ -80,7 +80,7 @@ def parameter_types(expr: str) -> list[str]:
 def inheritance_types(tail: str) -> list[tuple[str,str]]:
     found=[]
     for key in ("extends","implements","permits"):
-        m=re.search(rf"\\b{key}\\s+(.+?)(?=\\b(?:extends|implements|permits)\\b|$)",tail)
+        m=re.search(rf"\b{key}\s+(.+?)(?=\b(?:extends|implements|permits)\b|$)",tail)
         if m:
             for part in split_top(m.group(1)):
                 found.extend((x,key) for x in type_names(part))
@@ -198,14 +198,14 @@ def main() -> int:
                         if target!=q:
                             resolved.append((target,role,token))
                     if not targets and (token in index or "." in token and any(token.startswith(r+".") for r in ROOTS)):
-                        unresolved.append({"source":rel,"owner":owner,"member":name,"reference":token,"role":role,"line":src.count("\\n",0,offset)+1})
+                        unresolved.append({"source":rel,"owner":owner,"member":name,"reference":token,"role":role,"line":src.count("\n",0,offset)+1})
             for target,role,token in sorted(set(resolved)):
-                edges.append({"from":q,"to":target,"owner":owner,"member":name,"member_kind":kind,"role":role,"reference":token,"line":src.count("\\n",0,offset)+1})
+                edges.append({"from":q,"to":target,"owner":owner,"member":name,"member_kind":kind,"role":role,"reference":token,"line":src.count("\n",0,offset)+1})
             members.append({"id":mid,"owner":owner,"name":name,"kind":kind,"dependency_count":len(set(resolved))})
     edges.sort(key=lambda x:(x["from"],x["owner"],x["member"],x["to"],x["role"],x["line"]))
     unresolved.sort(key=lambda x:(x["source"],x["line"],x["reference"]))
     graph={"schema":"sleela-java-api-member-dependencies-v1","scope":"static member-level source type dependencies; not behavioral equivalence","summary":{"source_files":len(files),"indexed_types":len(index),"members":len(members),"dependency_edges":len(edges),"unresolved_references":len(unresolved)},"members":members,"edges":edges,"unresolved":unresolved}
-    encoded=json.dumps(graph,indent=2,sort_keys=True)+"\\n"
+    encoded=json.dumps(graph,indent=2,sort_keys=True)+"\n"
     if args.json:
         args.json.parent.mkdir(parents=True,exist_ok=True); args.json.write_text(encoded,encoding="utf-8")
     print("Java API member dependency audit")
