@@ -50,6 +50,9 @@ class SLNativeMathEngine {
   void matrixTranspose(double[] a, double[] out, int rows, int cols) {
     mathMatrixTranspose(a, out, rows, cols);
   }
+  void matrixDeterminant(double[] a, double[] output, int order) {
+    mathMatrixDeterminant(a, output, order);
+  }
   void matrixInverse(double[] a, double[] out, int order) {
     mathMatrixInverse(a, out, order);
   }
@@ -69,6 +72,15 @@ class SLNativeMathEngine {
   }
   void complexMultiply(double[] a, double[] b, double[] out) {
     mathComplexMultiply(a, b, out);
+  }
+  void complexAbs(double[] a, double[] output) {
+    mathComplexAbs(a, output);
+  }
+  void complexPhase(double[] a, double[] output) {
+    mathComplexPhase(a, output);
+  }
+  void complexConjugate(double[] a, double[] out) {
+    mathComplexConjugate(a, out);
   }
   void complexDivide(double[] a, double[] b, double[] out) {
     mathComplexDivide(a, b, out);
