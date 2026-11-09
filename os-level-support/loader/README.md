@@ -126,7 +126,9 @@ it on a separate nested interpreter stack. Only the typed scalar/UTF-8 values
 cross the callback boundary; VM pointers and raw `SLValue` objects never do.
 
 The suspended interpreter stack remains a GC root during callback execution.
-Recursive native-module API operations from callback bytecode fail with
+Callbacks require a quiescent VM with no active worker threads, and callback
+bytecode cannot spawn or join workers. Recursive native-module API operations
+from callback bytecode fail with
 `SL_NATIVE_REENTRANT_CALL` to prevent mutex deadlocks and module-unload races.
 Callback failure is a handled plugin error and never requests bytecode
 fallback. The binder is optional, so existing plugins remain compatible.
