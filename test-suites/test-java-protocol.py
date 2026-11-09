@@ -203,7 +203,7 @@ class EndpointTests(unittest.TestCase):
         self.assertEqual(self.success(RELEASE, u64(handle)), b"\x00")
         self.assertEqual(self.error(
             INVOKE_INSTANCE, u64(handle) + string("toString") + types() + values()
-        )[0], "java.io.IOException")
+        )[0], "java.lang.IllegalArgumentException")
 
     def test_public_instance_and_static_fields(self):
         owner = "com.mearvk.sleela.connector.SleelaJdkProtocolFixture"
