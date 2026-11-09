@@ -62,6 +62,13 @@ sleelactl run decompiler <binary>   # invoke the built decompiler
 
 sleelactl run math                  # exercise the native math subject (__NativeMath)
 sleelactl info math                 # how the math subject is reached (import math;)
+
+sleelactl info native-drive
+sleelactl build native-drive main.c helper.c -o build/app
+sleelactl build native-drive plugin.cpp --kind shared --require-sleela-abi -o build/plugin.so
+sleelactl run native-drive --capture -- build/app
+sleelactl inspect native-drive xclass --mode info Example.xclass
+sleelactl inspect native-drive service --name worker --executable /opt/worker --working-directory /var/lib/worker
 ```
 
 The **subject** nature is for the native C/C++ subject libraries compiled into
@@ -73,6 +80,14 @@ frontend lowers onto the native `__Native<Subject>` methods. `sleelactl run
 through `sleela run`. There is deliberately no `check` verb: `sleela check` does
 not load the SHEET-registered native subjects, so `run` is the one faithful
 execution verb. The first registered subject is `math`.
+
+The `native-drive` tool builds multi-unit C/C++ executables and shared
+libraries, compiles the supported SLeeLa AOT subset, executes processes without
+an implicit shell, and routes XClass operations through the production loader.
+Use `sleelactl inspect native-drive service ...` to render or explicitly install
+a hardened systemd unit. VM in-process dispatch and parser-enforced process
+annotations remain future compiler/runtime work. See
+[Native Drive](../impl/native-drive/README.md).
 
 `sleelactl <verb> all` applies the verb to every module whose nature accepts it
 (e.g. `sleelactl enable all` enables the daemons; `sleelactl build all` builds
