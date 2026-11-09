@@ -26,7 +26,7 @@ correct verb set — `sleelactl` never fakes an action a module cannot perform.
 
 | Nature | What it is | Legal verbs | Mechanism |
 | --- | --- | --- | --- |
-| **daemon** | long-lived process + systemd unit | `start stop restart reload status enable disable` | `systemctl` on the module's unit |
+| **daemon** | long-lived process + systemd unit | `start stop restart reload status enable disable` | `systemctl --system` by default, or `systemctl --user` when `SLEELACTL_SYSTEMCTL_SCOPE=user` |
 | **registry** | closed handler set, load/unload by id (`SLPluginService`) | `load unload enable disable list probe can status` | the `lib/<pkg>` Controller via `sleela run` |
 | **datasource** | open/close/active data surface + pooling (`SLDataSource`) | `open close status available` | reports availability of the `lib/<pkg>` surface |
 | **protocol** | spec / stack / reference model | `negotiate grade simulate validate info` | the module's `make` targets / sim CLI |
@@ -101,10 +101,13 @@ module per line (`name  nature  handle  summary`). Adding a module is a one-line
 append; the dispatcher is never edited. `sleelactl` finds the registry beside
 the script, in the installed runtime tree, or via `SLEELACTL_REGISTRY=<path>`.
 
-## Honest degradation
+## systemd scope and honest degradation
 
-- No `systemctl` on the host → daemon verbs report that plainly and exit
-  non-zero (no fake start).
+Daemon units use the **system** manager by default. Root invokes `systemctl --system` directly; an unprivileged caller uses `sudo systemctl --system` and therefore needs sudo authorization. For a unit installed in the caller's user manager, set `SLEELACTL_SYSTEMCTL_SCOPE=user`; this invokes `systemctl --user` and never sudo. The registry's daemon handles must match the selected manager's unit scope.
+
+- Invalid `SLEELACTL_SYSTEMCTL_SCOPE` values are rejected; only `system` and `user` are accepted.
+- No `systemctl` on the host → daemon verbs report that plainly and exit non-zero (no fake start).
+- Missing `sudo` for system-scope control by a non-root caller is reported before attempting a command.
 - SLeeLa runtime not built → registry verbs say so and point at
   `(cd impl && make build/sleela)` (no fake load/decode).
 - Data systems → `sleelactl` reports *availability*; the actual open/close acts
@@ -121,3 +124,17 @@ make -C install install          # installs sleela, sleelvac, nordshrift, AND sl
 
 The command lands in `<prefix>/bin/sleelactl`; its registry in
 `<prefix>/lib/sleela/bin/sleelactl.d/registry.conf`.
+
+
+## Native Drive service units
+
+Native Drive's unit generator is exposed through the tool nature:
+
+```sh
+sleelactl inspect native-drive service --name worker --executable /opt/sleela/bin/worker --working-directory /opt/sleela
+sleelactl inspect native-drive service --name worker --executable /opt/sleela/bin/worker --working-directory /opt/sleela --install --enable --start
+sleelactl inspect native-drive service --name worker --status
+sleelactl inspect native-drive service --name worker --rollback
+```
+
+The generator defaults to a user unit. Add `--system --user ACCOUNT` for an explicitly scoped system unit (run installation as root). Installation does not enable or start a unit unless the corresponding flags are supplied. Replacement is opt-in and preserves one rollback copy. Lifecycle operations are Linux/systemd-only; they do not claim to provide Windows Service Control Manager or macOS launchd integration.
