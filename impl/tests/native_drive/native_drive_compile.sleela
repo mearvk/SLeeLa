@@ -1,0 +1,14 @@
+#sleela 3.0
+
+class NativeDriveCompile {
+    int fallback(int value) {
+        return value * 3;
+    }
+
+    void main() {
+        int module = nativeOpen("native-drive-test-module");
+        nativeCall(module, "twice", 21);
+        nativeCall(module, "fallback", 7);
+        nativeClose(module);
+    }
+}
