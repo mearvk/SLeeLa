@@ -990,6 +990,26 @@ private:
             if(c.args.size()!=4) throw std::runtime_error("Semantic error: mathVectorScale(array, scalar, output, length) takes four arguments");
             op=SLMATH_OP_VECTOR_SCALE;a=0;out=2;scalarExpr=c.args[1].get();
             ar=literalDimension(3,"vector length");ac=1;orows=ar;ocols=1;
+        } else if(n=="mathVectorSubtract"){
+            if(c.args.size()!=4) throw std::runtime_error("Semantic error: mathVectorSubtract(a, b, out, length) takes four arguments");
+            op=SLMATH_OP_VECTOR_SUBTRACT;a=0;b=1;out=2;
+            ar=literalDimension(3,"vector length");ac=1;br=ar;bc=1;orows=ar;ocols=1;
+        } else if(n=="mathVectorNormalize"){
+            if(c.args.size()!=3) throw std::runtime_error("Semantic error: mathVectorNormalize(a, out, length) takes three arguments");
+            op=SLMATH_OP_VECTOR_NORMALIZE;a=0;out=1;
+            ar=literalDimension(2,"vector length");ac=1;orows=ar;ocols=1;
+        } else if(n=="mathVectorCross3"){
+            if(c.args.size()!=3) throw std::runtime_error("Semantic error: mathVectorCross3(a, b, out) takes three arguments");
+            op=SLMATH_OP_VECTOR_CROSS3;a=0;b=1;out=2;
+            ar=3;ac=1;br=3;bc=1;orows=3;ocols=1;
+        } else if(n=="mathComplexAdd" || n=="mathComplexSubtract" ||
+                  n=="mathComplexMultiply" || n=="mathComplexDivide"){
+            if(c.args.size()!=3) throw std::runtime_error("Semantic error: "+n+"(a, b, out) takes three arguments");
+            if(n=="mathComplexAdd") op=SLMATH_OP_COMPLEX_ADD;
+            else if(n=="mathComplexSubtract") op=SLMATH_OP_COMPLEX_SUBTRACT;
+            else if(n=="mathComplexMultiply") op=SLMATH_OP_COMPLEX_MULTIPLY;
+            else op=SLMATH_OP_COMPLEX_DIVIDE;
+            a=0;b=1;out=2;ar=2;ac=1;br=2;bc=1;orows=2;ocols=1;
         } else if(n=="mathMatrixMultiply"){
             if(c.args.size()!=7) throw std::runtime_error("Semantic error: mathMatrixMultiply(a, b, out, rowsA, colsA, rowsB, colsB) takes seven arguments");
             op=SLMATH_OP_MATRIX_MULTIPLY;a=0;b=1;out=2;
