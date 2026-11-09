@@ -2083,9 +2083,15 @@ static int slvm_native_host_invoke(void* context, const char* function,
     SLVM* previous_callback_vm;
     if (!vm || !function || !*function || !out_result ||
         (argc && !argv) || argc > STACK_MAX - 1 ||
-        native_callback_vm == vm || native_plugin_call_vm != vm ||
-        !vm->native_callback_caller)
+        native_callback_vm == vm || native_plugin_call_vm != vm)
         return 0;
+    /* A callback is valid only while OP_NATIVE_CALL has suspended a live
+     * interpreter stack. Public host-side module_run/module_call operations
+     * have no such stack to retain as a GC root, so reject those callbacks. */
+    if (!vm->native_callback_caller) {
+        set_err(vm, "native callback requires an active source-level nativeCall context");
+        return 0;
+    }
     pthread_mutex_lock(&vm->thr_mtx);
     active_workers = vm->nthreads;
     pthread_mutex_unlock(&vm->thr_mtx);
