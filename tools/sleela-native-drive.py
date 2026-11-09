@@ -154,7 +154,11 @@ def parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = parser().parse_args()
+    if args.action == "run" and args.command[:1] == ["--"]:
+        args.command = args.command[1:]
     if args.action == "pipe":
+        if args.pipeline[:1] == ["--"]:
+            args.pipeline = args.pipeline[1:]
         try:
             split = args.pipeline.index("::")
             args.producer, args.consumer = args.pipeline[:split], args.pipeline[split + 1:]
