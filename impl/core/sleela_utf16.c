@@ -1,5 +1,6 @@
 #include "sleela_utf16.h"
 #include <limits.h>
+#include <stdlib.h>
 
 static int decode_utf8(const unsigned char *s, size_t n, size_t *offset,
                        uint32_t *out_cp) {
@@ -39,6 +40,36 @@ int sleela_utf8_utf16_length(const char *utf8, size_t byte_length,
         count += width;
     }
     *out_code_units = count; return 0;
+}
+
+
+int sleela_utf8_to_utf16(const char *utf8, size_t byte_length,
+                         uint16_t **out_units, size_t *out_code_units) {
+    if ((!utf8 && byte_length != 0) || !out_units || !out_code_units) return -1;
+    *out_units = NULL;
+    *out_code_units = 0;
+    int64_t count = 0;
+    int status = sleela_utf8_utf16_length(utf8, byte_length, &count);
+    if (status != 0) return status;
+    if ((uint64_t)count > SIZE_MAX / sizeof(uint16_t)) return -1;
+    uint16_t *units = count ? (uint16_t *)malloc((size_t)count * sizeof(uint16_t)) : NULL;
+    if (count && !units) return -1;
+    const unsigned char *s = (const unsigned char *)utf8;
+    size_t offset = 0, used = 0;
+    while (offset < byte_length) {
+        uint32_t cp;
+        status = decode_utf8(s, byte_length, &offset, &cp);
+        if (status != 0) { free(units); return status; }
+        if (cp <= 0xffff) units[used++] = (uint16_t)cp;
+        else {
+            cp -= 0x10000;
+            units[used++] = (uint16_t)(0xd800u + (cp >> 10));
+            units[used++] = (uint16_t)(0xdc00u + (cp & 0x3ffu));
+        }
+    }
+    *out_units = units;
+    *out_code_units = used;
+    return 0;
 }
 
 int sleela_utf8_utf16_char_at(const char *utf8, size_t byte_length,
