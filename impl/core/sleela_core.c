@@ -2589,11 +2589,11 @@ static SLResult run_thread(SLThread* t) {
             SLValue handles[4]={a_v,b_v,out_v,aux_v};
             int h[4];
             for(int k=0;k<4;k++) {
-                if(handles[k].type!=SL_INT)
-                    TERR("math call: array handles must be integer handles (-1 means absent)");
-                if(handles[k].as.i < -1 || handles[k].as.i > INT_MAX)
+                if(handles[k].type==SL_ARRAY) h[k]=(int)handles[k].as.h;
+                else if(handles[k].type==SL_INT && handles[k].as.i==-1) h[k]=-1;
+                else TERR("math call: operands must be array values (-1 means absent)");
+                if(h[k] < -1 || h[k] >= SL_MAX_ARRAYS)
                     TERR("math call: array handle is outside the supported range");
-                h[k]=(int)handles[k].as.i;
             }
             double scalar=(scalar_v.type==SL_DOUBLE)?scalar_v.as.d:(double)scalar_v.as.i;
             double scalar_result=0.0;
@@ -2608,7 +2608,7 @@ static SLResult run_thread(SLThread* t) {
             if(in.a==SLMATH_OP_VECTOR_DOT || in.a==SLMATH_OP_VECTOR_NORM)
                 PUSH(slval_double(scalar_result));
             else
-                PUSH(slval_int((int64_t)h[2]));
+                PUSH(slval_array(h[2]));
         } break;
         case OP_HALT: return SLR_HALT;
         case OP_GC_HINT: {
