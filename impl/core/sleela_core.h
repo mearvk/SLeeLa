@@ -6,7 +6,7 @@
 
 /* Stable VM artifact/runtime ABI identifiers. */
 #define SLEELA_VM_ABI_MAJOR 1u
-#define SLEELA_VM_ABI_MINOR 5u
+#define SLEELA_VM_ABI_MINOR 6u
 #define SLEELA_ARTIFACT_FORMAT_VERSION 3u
 #include <stdint.h>
 #include "../../os-level-support/osls_vm_bridge.h"
@@ -270,6 +270,13 @@ typedef enum {
     OP_JSTR_HASH_CODE,
     OP_JSTR_COMPARE_TO,
     OP_JSTR_FROM_UTF8,
+    /* Language exception control. These are append-only and deliberately
+     * separate from fatal VM diagnostics: PUSH registers a catch-all target,
+     * POP removes the current frame's most recent handler, and THROW dispatches
+     * one tagged SLValue through the current thread's handler stack. */
+    OP_TRY_PUSH,
+    OP_TRY_POP,
+    OP_THROW,
     /* Sentinel: one past the last real opcode. Artifact validation uses this so
      * every defined opcode is accepted and adding a new opcode above never
      * requires updating the validator's upper bound again. KEEP LAST. */
@@ -295,7 +302,7 @@ static_assert(OP_NATIVE_CLOSE == 165, "OP_NATIVE_CLOSE is append-only opcode 165
 static_assert(OP_JSTR_LENGTH == 166, "Java String length opcode is append-only 166");
 static_assert(OP_JSTR_COMPARE_TO == 174, "Java String compareTo opcode is append-only 174");
 static_assert(OP_JSTR_FROM_UTF8 == 175, "Java String UTF-8 conversion is append-only 175");
-static_assert(OP__COUNT == 176, "the extended ISA must contain 176 opcodes");
+static_assert(OP_TRY_PUSH == 176, "OP_TRY_PUSH is append-only opcode 176");\nstatic_assert(OP_TRY_POP == 177, "OP_TRY_POP is append-only opcode 177");\nstatic_assert(OP_THROW == 178, "OP_THROW is append-only opcode 178");\nstatic_assert(OP__COUNT == 179, "the extended ISA must contain 179 opcodes");
 #else
 _Static_assert(OP_OS_PLATFORM == 103, "legacy OS opcode range must begin at 103");
 _Static_assert(OP_OS_PCLOSE == 123, "legacy OS opcode range must end at 123");
@@ -315,7 +322,7 @@ _Static_assert(OP_NATIVE_CLOSE == 165, "OP_NATIVE_CLOSE is append-only opcode 16
 _Static_assert(OP_JSTR_LENGTH == 166, "Java String length opcode is append-only 166");
 _Static_assert(OP_JSTR_COMPARE_TO == 174, "Java String compareTo opcode is append-only 174");
 _Static_assert(OP_JSTR_FROM_UTF8 == 175, "Java String UTF-8 conversion is append-only 175");
-_Static_assert(OP__COUNT == 176, "the extended ISA must contain 176 opcodes");
+_Static_assert(OP_TRY_PUSH == 176, "OP_TRY_PUSH is append-only opcode 176");\n_Static_assert(OP_TRY_POP == 177, "OP_TRY_POP is append-only opcode 177");\n_Static_assert(OP_THROW == 178, "OP_THROW is append-only opcode 178");\n_Static_assert(OP__COUNT == 179, "the extended ISA must contain 179 opcodes");
 #endif
 /* GC-hint aggressiveness bands for OP_GC_HINT (operand a). */
 #define SL_GC_HINT_MAX  100   /* clamp ceiling for the 0..100 aggressiveness scale */
