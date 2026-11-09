@@ -1,0 +1,36 @@
+#sleela 3.0
+class LinearAlgebraVmSmoke {
+    static void main() {
+        let a = arrayNew(3);
+        let b = arrayNew(3);
+        let sum = arrayNew(3);
+        arraySet(a, 0, 1.0); arraySet(a, 1, 2.0); arraySet(a, 2, 3.0);
+        arraySet(b, 0, 4.0); arraySet(b, 1, 5.0); arraySet(b, 2, 6.0);
+        mathVectorAdd(a, b, sum, 3);
+        print("MATH_VECTOR_ADD");
+        print(arrayGet(sum, 0)); print(arrayGet(sum, 1)); print(arrayGet(sum, 2));
+        print("MATH_VECTOR_DOT"); print(mathVectorDot(a, b, 3));
+        print("MATH_VECTOR_NORM"); print(mathVectorNorm(a, 3));
+        let scaled = arrayNew(3);
+        mathVectorScale(a, 2.0, scaled, 3);
+        print("MATH_VECTOR_SCALE"); print(arrayGet(scaled, 2));
+
+        let ma = arrayNew(4);
+        let mb = arrayNew(4);
+        let mc = arrayNew(4);
+        arraySet(ma, 0, 1.0); arraySet(ma, 1, 2.0);
+        arraySet(ma, 2, 3.0); arraySet(ma, 3, 4.0);
+        arraySet(mb, 0, 5.0); arraySet(mb, 1, 6.0);
+        arraySet(mb, 2, 7.0); arraySet(mb, 3, 8.0);
+        mathMatrixMultiply(ma, mb, mc, 2, 2, 2, 2);
+        print("MATH_MATRIX_MULTIPLY");
+        print(arrayGet(mc, 0)); print(arrayGet(mc, 1));
+        print(arrayGet(mc, 2)); print(arrayGet(mc, 3));
+        let mt = arrayNew(4);
+        mathMatrixTranspose(ma, mt, 2, 2);
+        print("MATH_MATRIX_TRANSPOSE");
+        print(arrayGet(mt, 0)); print(arrayGet(mt, 1));
+        print(arrayGet(mt, 2)); print(arrayGet(mt, 3));
+        print("NATIVE_MATH_VM_SOURCE=PASS");
+    }
+}
