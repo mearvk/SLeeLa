@@ -228,3 +228,16 @@ Zdokumentujte vlastníctvo, životnosť a zodpovednosť za synchronizáciu zdroj
 Pri ladení zaznamenajte commit, OS, architecture a toolchain. Najprv zostavte najmenší relevantný cieľ, uchovajte úplný chybový výstup, rozlišujte compiler errors od runtime errors a vytvorte minimálny reprodukovateľný príklad. Úspešné zostavenie samo osebe nedokazuje správne správanie runtime.
 
 Validačná správa má uvádzať exact commit, OS/architecture, compiler versions, úplné build/test commands, počty pass/fail/skip a známe obmedzenia. Preskočené alebo nespustené testy sa nesmú počítať ako úspešné.
+
+
+## XVIII. Zmluvy modulových API, kompatibilita a testovacia stratégia
+
+Pri zavádzaní nového API zdokumentujte vstupy, výstupy, chybové podmienky, vlastníctvo údajov a prípadné side effects. Príklady majú ukazovať bežné použitie aj spracovanie invalid alebo missing input. Správanie neoznačujte za zaručené, pokiaľ ho nepotvrdzuje implementation a príslušné tests.
+
+Testy rozdeľte podľa etáp compiler pipeline: lexing/parsing, semantic analysis, IR lowering, code generation, VM execution a native integration. Pre každý regression case uchovajte najmenší reprodukovateľný vstup, očakávaný výsledok a skutočný výsledok. Zmeny API musia opísať backward compatibility, migration steps a vplyv na existujúce examples.
+
+## XIX. Lokalizácia, kódovanie a čitateľnosť
+
+Technical identifiers, commands, paths, syntax a code blocks zachovávajte vo všetkých jazykových verziách. Prekladajte vysvetľujúci text, nie tokeny alebo názvy používané v source code. Jazykové a regionálne označenie uvádzajte presne; slovenskú terminológiu nezamieňajte s českou.
+
+Po každej aktualizácii skontrolujte Markdown links, hierarchiu nadpisov, code fences a príklady. Pri zmene canonical English documents porovnajte príslušné časti a aktualizujte celý preklad, nielen úvod. Obsah bez jazykovej alebo technickej kontroly musí byť označený.
