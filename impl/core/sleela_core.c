@@ -987,6 +987,7 @@ static void gc_mark_vm_roots(GarbageCollector *gc, void *context) {
     if (!vm) return;
     pthread_mutex_lock(&vm->global_mtx);
     for (int i = 0; i < vm->nglobal; ++i) gc_mark_value(vm, gc, vm->globals[i]);
+    for (int i = 0; i < vm->nconst; ++i) gc_mark_value(vm, gc, vm->consts[i]);
     pthread_mutex_unlock(&vm->global_mtx);
     gc_mark_value(vm, gc, vm->last_result);
     for (int i = 0; i < SL_MAX_LOCKS; ++i) {
