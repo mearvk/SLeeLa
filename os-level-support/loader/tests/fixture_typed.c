@@ -17,10 +17,13 @@ SL_NATIVE_EXPORT int sl_native_run(int argc, const char *const argv[]) {
 SL_NATIVE_EXPORT int sl_native_call(const char *method, uint32_t argc,
                                     const SLNativeValue *argv,
                                     SLNativeValue *out_result) {
-    if (!method || !out_result) return 1;
-    if (strcmp(method, "sum") != 0 || argc != 2 || !argv) return 2;
+    if (!method || !out_result) return SL_NATIVE_CALL_ERROR;
+    if (strcmp(method, "unhandled") == 0)
+        return SL_NATIVE_CALL_NOT_HANDLED;
+    if (strcmp(method, "sum") != 0 || argc != 2 || !argv)
+        return SL_NATIVE_CALL_ERROR;
     if (argv[0].tag != SL_NATIVE_VALUE_I64 ||
-        argv[1].tag != SL_NATIVE_VALUE_I64) return 3;
+        argv[1].tag != SL_NATIVE_VALUE_I64) return SL_NATIVE_CALL_ERROR;
     memset(out_result, 0, sizeof(*out_result));
     out_result->tag = SL_NATIVE_VALUE_I64;
     out_result->as.i64 = argv[0].as.i64 + argv[1].as.i64;
