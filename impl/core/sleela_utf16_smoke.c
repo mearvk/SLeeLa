@@ -1,6 +1,7 @@
 #include "sleela_utf16.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 static int expect_length(const char *label,const char *s,size_t n,int64_t expected) {
     int64_t actual=-1; int rc=sleela_utf8_utf16_length(s,n,&actual);
     if(rc!=0||actual!=expected){fprintf(stderr,"%s: rc=%d expected=%lld actual=%lld\n",label,rc,(long long)expected,(long long)actual);return 1;} return 0;
@@ -21,11 +22,20 @@ int main(void) {
     failures+=expect_unit("high surrogate",sample,sizeof(sample)-1,2,0xd83d);
     failures+=expect_unit("low surrogate",sample,sizeof(sample)-1,3,0xde00);
     failures+=expect_unit("trailing Z",sample,sizeof(sample)-1,4,0x005a);
+    uint16_t *converted=NULL; size_t converted_length=0;
+    if(sleela_utf8_to_utf16(sample,sizeof(sample)-1,&converted,&converted_length)!=0 ||
+       converted_length!=5 || !converted || converted[0]!=0x0041 ||
+       converted[1]!=0x00e9 || converted[2]!=0xd83d ||
+       converted[3]!=0xde00 || converted[4]!=0x005a) ++failures;
+    free(converted);
+    converted=(uint16_t *)1; converted_length=99;
+    if(sleela_utf8_to_utf16(malformed,sizeof(malformed)-1,&converted,&converted_length)!=-2 ||
+       converted!=NULL || converted_length!=0) ++failures;
     if(sleela_utf8_utf16_length(malformed,sizeof(malformed)-1,&length)!=-2)++failures;
     if(sleela_utf8_utf16_char_at(sample,sizeof(sample)-1,5,&unit)!=-3)++failures;
     if(sleela_utf8_utf16_char_at(sample,sizeof(sample)-1,-1,&unit)!=-1)++failures;
     if(sleela_utf8_utf16_length(NULL,1,&length)!=-1)++failures;
     if(failures)return 1;
     puts("UTF16-PRIMITIVES=PASS"); puts("SUPPLEMENTARY-SURROGATES=PASS");
-    puts("MALFORMED-UTF8=REJECTED"); return 0;
+    puts("MALFORMED-UTF8=REJECTED"); puts("UTF8-TO-UTF16-CONVERSION=PASS"); return 0;
 }
