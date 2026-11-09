@@ -66,6 +66,22 @@ class SLVector {
     int i = 0;
     while (i < n) { out[i] = a[i] + b[i]; i = i + 1; }
   }
+
+  void subtract(double[] a, double[] b, double[] out, int n) {
+    int i = 0;
+    while (i < n) { out[i] = a[i] - b[i]; i = i + 1; }
+  }
+  void normalize(double[] a, double[] out, int n) {
+    double length = norm(a, n);
+    if (length == 0.0) { throw "Cannot normalize a zero vector"; }
+    scale(a, 1.0 / length, out, n);
+  }
+  void cross3(double[] a, double[] b, double[] out) {
+    double x = a[1] * b[2] - a[2] * b[1];
+    double y = a[2] * b[0] - a[0] * b[2];
+    double z = a[0] * b[1] - a[1] * b[0];
+    out[0] = x; out[1] = y; out[2] = z;
+  }
   void scale(double[] a, double s, double[] out, int n) {
     int i = 0;
     while (i < n) { out[i] = a[i] * s; i = i + 1; }
