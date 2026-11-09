@@ -159,3 +159,46 @@ Begin met 'n skoon werkboom en teken die commit, bedryfstelsel, argitektuur, com
 Die internasionale README-lêers is landgerigte toegangspunte; hulle vervang nie die normatiewe taalspesifikasie of module-API-dokumentasie nie. Hou vertaalde beskrywings in lyn met die Engelse bron en behou identifiseerders, opdragte, lêerpaaie en kode onveranderd.
 
 **Uitgebreide vertalingstatus:** Die Afrikaanse afdeling dek nou ook teikenprofiele, VM-veiligheidsgrense, hulpbron-eienaarskap, foutopsporing en vrystellingsverifikasie. Dit bly 'n substansiële tegniese gids, nie 'n volledige vertaling van elke Engelse afdeling nie.
+
+
+## XII. IsiZulu: umhlahlandlela wobuchwepheshe
+
+### Izinhloso zokwakha nokusebenza
+
+I-SLeeLa ihlukanisa ikhodi yomthombo nezinhloso zokwakha nokusebenza. Izinhloso ezibhalwe kumadokhumenti zifaka i-`SLVM`, `SLJVM` ne-`SLIR`; i-`NATIVE` inemikhawulo nemibandela, ngakho akufanele kucatshangwe ukuthi iyatholakala kuwo wonke amapulatifomu. Amaphrofayela `BASIC_COMPLETE` kanye `ADVANCED_TOTAL` amelela ububanzi obuhlukile. Qinisekisa inhloso, iphrofayela nokusekelwa kweplatifomu ngaphambi kokwakha.
+
+I-reference ikhomba ifayela, imojuli noma insiza; ayinikezi ngokuzenzakalelayo imvume yokuyisebenzisa. Uma uhlelo lusebenzisa amafayela, imitapo yolwazi yangaphandle, ama-native bindings noma izinsiza zesistimu, chaza ngokucacile imingcele yemvume nokuthi iyiphi ingxenye enegunya lokwenza isenzo. Incazelo esencwadini ayibona ubufakazi obanele besiqinisekiso sokuphepha se-runtime; hlola ikhodi nokuhlolwa okuhambisanayo.
+
+### Izinhlobo zedatha nezinsiza
+
+Hlukanisa okuguquguqukayo kwendawo, isimo sezinto esabiwe, ama-VM handles nedatha engaguqulelwa ku-serialization. I-VM-local handle ayiyona ifomethi yefayela ezinzile noma umlayezo wenethiwekhi. Sebenzisa i-serialization interface echazwe yimojuli futhi uhlole amanani angalungile, angekho kanye nalawo asemingceleni.
+
+### Ukwakha, ukuhlola nokulungisa amaphutha
+
+Imiyalo ejwayelekile:
+
+```sh
+make
+make -C impl all
+bash ./test-suites/run-all.sh --all
+```
+
+Ukufaka ohlelweni kuvame ukusebenzisa `sudo make install`; ukufaka endaweni yomsebenzisi kungasebenzisa `make install PREFIX="$HOME/.local"`. Bhala phansi i-commit, i-OS, i-architecture, i-toolchain nemiyalo eqondile. Gcina wonke umlayezo wephutha, hlukanisa amaphutha e-compiler namaphutha e-runtime, bese udala isibonelo esincane esingaphindwa. Ukwakha okuphumelele akufakazeli ukuthi uhlelo lusebenza kahle.
+
+Umbiko wokuqinisekisa kufanele uhlukanise `pass`, `fail` kanye `skip`. Ukuhlolwa okungazange kwenziwe noma okweqiwe akufanele kubalwe njengokuphumelele.
+
+## XIII. isiXhosa: isikhokelo sobugcisa
+
+### Iithagethi kunye neeprofayili
+
+I-SLeeLa yahlula ikhowudi yomthombo kwiithagethi zokwakha nezokusebenza. Iithagethi ezichaziweyo ziquka `SLVM`, `SLJVM` kunye `SLIR`; i-`NATIVE` inemiqathango nemida, ngoko ayifanele ithathwe njengento efumaneka kuzo zonke iiplatform. Iiprofayili `BASIC_COMPLETE` ne `ADVANCED_TOTAL` zibonisa imida eyahlukileyo. Qinisekisa ithagethi, iprofayili nenkxaso yeplatform ngaphambi kokwakha.
+
+I-reference ichonga ifayile, imodyuli okanye isixhobo; ayiniki mvume yokuyiqhuba. Xa inkqubo isebenzisa iifayile, amathala eencwadi angaphandle, ii-native bindings okanye izixhobo zesistim, chaza ngokucacileyo imida yemvume noxanduva lokuqhuba. Inkcazelo ekuxwebhu ayibobungqina bodwa besiqinisekiso sokhuseleko se-runtime; jonga ukuphunyezwa novavanyo olufanelekileyo.
+
+### Uvavanyo nokulungisa iimpazamo
+
+Rekhoda i-commit, i-OS, i-architecture ne-toolchain. Qala ngethagethi encinane efanelekileyo, gcina yonke imveliso yeempazamo, wahlule iimpazamo ze-compiler kweze-runtime, uze wenze umzekelo omncinane onokuphindwa. Ukwakhiwa okuphumeleleyo akungqini ukuba ukusebenza kwe-runtime kuchanekile.
+
+Ingxelo yokuqinisekisa mayibonise i-commit echanekileyo, i-OS/architecture, iinguqulelo ze-compiler, imiyalelo epheleleyo yokwakha nokuvavanya, kunye namanani e-`pass`, `fail` ne-`skip`. Uvavanyo olutsityiweyo okanye olungazange luqhutywe alunakubalwa njengoluphumeleleyo.
+
+**Inqaku lokugubungela iilwimi:** La macandelo e-isiZulu nesiXhosa aqala ukunika umxholo wobugcisa ongaphezulu kweentshayelelo ezimfutshane. Afuna uphononongo lwabantu abathetha ezi lwimi njengolwimi lweenkobe nabanolwazi lobugcisa; akufanele kubhengezwe njengoguqulelo olupheleleyo lwezikhokelo zonke.
