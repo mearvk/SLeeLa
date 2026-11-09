@@ -38,7 +38,12 @@ SLEELACTL_SYSTEMCTL_SCOPE=user "$ROOT/bin/sleelactl" start example
 grep -Fx -- '--user start example.service' "$SCTL_LOG" >/dev/null
 [ ! -s "$SUDO_LOG" ]
 
-# Non-root system-unit control must explicitly pass through sudo/system scope.
+# Read-only system-unit status must not require sudo.
+SLEELACTL_SYSTEMCTL_SCOPE=system "$ROOT/bin/sleelactl" status example
+grep -Fx -- '--system --no-pager status example.service' "$SCTL_LOG" >/dev/null
+[ ! -s "$SUDO_LOG" ]
+
+# Non-root system-unit mutations must explicitly pass through sudo/system scope.
 SLEELACTL_SYSTEMCTL_SCOPE=system "$ROOT/bin/sleelactl" enable example
 grep -Fx -- '--system enable example.service' "$SCTL_LOG" >/dev/null
 grep -Fx 'called' "$SUDO_LOG" >/dev/null
