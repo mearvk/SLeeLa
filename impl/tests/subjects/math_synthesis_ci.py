@@ -65,7 +65,7 @@ def main():
         lines.append(f"| {i} | {duration * 1000:.3f} | {count} |")
     lines += [
         "", f"- Mean end-to-end runtime: **{mean * 1000:.3f} ms**",
-        f"- Median end-to-end runtime: **{median * 1000:.3f} ms****",
+        f"- Median end-to-end runtime: **{median * 1000:.3f} ms**",
         f"- Minimum / maximum: **{min(durations) * 1000:.3f} / {max(durations) * 1000:.3f} ms**",
         f"- Aggregate assertion throughput: **{rate:.2f} assertions/s**", "",
         "Timing includes SLeeLa process startup, source loading, execution, and output capture. "
