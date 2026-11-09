@@ -1030,6 +1030,12 @@ endef
 
 test-math: $(SLEELA_BIN) $(BUILD)/math_native.o
 	$(call RUN_SUBJECT_VALUES,math)
+# Standalone typed C++ math-kernel contract tests (no VM or CI dependency).
+MATH_KERNEL_TEST := $(BUILD)/math_kernel.test
+$(MATH_KERNEL_TEST): tests/math_kernel_test.cpp subjects/math/math_kernel.hpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) -Isubjects/math tests/math_kernel_test.cpp -o $@
+test-math-kernel: $(MATH_KERNEL_TEST)
+	@echo "=== typed native math-kernel contract ==="; $(MATH_KERNEL_TEST)
 test-physics: $(SLEELA_BIN) $(BUILD)/physics_native.o
 	$(call RUN_SUBJECT_VALUES,physics)
 test-economics: $(SLEELA_BIN) $(BUILD)/economics_native.o
