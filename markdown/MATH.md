@@ -109,9 +109,9 @@ The native kernel now also exposes:
 - **Spectral:** symmetric real eigendecomposition using Jacobi rotations; eigenvectors are returned as columns and eigenvalues are unsorted.
 - **Fourier:** in-place radix-2 complex FFT with inverse normalization. Length must be a nonzero power of two.
 
-The public header also defines slmath_buffer, operation identifiers, and slmath_vm_dispatch. This is the typed, ownership-neutral VM bridge contract: the VM must validate and pin array storage before dispatch and keep it pinned until the call returns. Buffer descriptors do not own or retain storage.
+The public header also defines slmath_buffer, operation identifiers, and slmath_vm_dispatch. This is the typed, ownership-neutral VM bridge contract: the VM must validate and pin array storage before dispatch and keep it pinned until the call returns. Buffer descriptors do not own or retain storage. The Core now exposes slvm_math_dispatch_arrays to marshal VM-local SL_ARRAY handles to temporary contiguous doubles under the array mutex, call the kernel, and write numeric results back.
 
-**Integration boundary:** the native object is linked into the sleela and sleelvac executables and libslcore.a. The current branch does not yet add an opcode to the VM interpreter or automatically marshal SLeeLa heap arrays into slmath_buffer; the dispatch ABI is ready for that interpreter hook, but that final heap/GC integration must be implemented against the VM's actual array representation. Do not describe the bridge as VM-executed until that hook and a source-to-runtime regression pass.
+**Integration boundary:** the native object is linked into the sleela and sleelvac executables and libslcore.a. The current branch now includes the heap-array marshalling helper, but it does not yet add an opcode or compiler lowering that invokes it from ordinary SLeeLa source. A source-to-runtime instruction path and its GC/lifetime regression remain the final VM integration step. Do not describe the bridge as VM-executed until that hook and a source-to-runtime regression pass.
 
 Build and run the opt-in C ABI suite with:
 
