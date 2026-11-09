@@ -13,7 +13,7 @@ The `/lib/java` library family defines the SLeeLa boundary for Java interoperabi
 
 ## Native Library Inventory
 
-The current repository inventory contains **8,988 files under `/lib/java`**. This count is validated from the Git index by the repository CI rather than being treated as an unverified documentation number.
+The current repository inventory contains **8,989 files under `/lib/java`**. This count is validated from the Git index by the repository CI rather than being treated as an unverified documentation number.
 
 The collection is a native SLeeLa source surface for Java-facing language and framework concepts. It is intended to give the SLeeLa Compiler, Loader, SST, and Nordshrift a stable source-level vocabulary for Java packages, classes, procedures, interfaces, runtime concepts, and interoperability boundaries.
 
@@ -32,7 +32,7 @@ python3 lib/java/validate.py
 The validator checks:
 
 - the `/lib/java` directory exists;
-- the Git-indexed file count matches the recorded **8,988-file** baseline;
+- the Git-indexed file count matches the recorded **8,989-file** baseline;
 - manifest schema and root metadata are present;
 - the expected Java interoperability boundary is documented;
 - required source-role metadata is present; and
@@ -55,7 +55,30 @@ A Java-facing source unit should identify, where applicable:
 5. **Loader visibility** — how the Compiler and Loader discover the symbol.
 6. **Compatibility surface** — the Java/JDK version or API family represented.
 
-This makes the Java relationship traceable instead of leaving the 8,988-file collection as an opaque directory.
+This makes the Java relationship traceable instead of leaving the 8,989-file collection as an opaque directory.
+
+## Java API Dependency Graph
+
+Run the static counterpart graph audit from the repository root:
+
+```text
+python3 lib/java/tools/java_api_dependency_graph.py --json java-api-dependencies.json
+python3 tests/java_api_dependency_graph_suite.py
+```
+
+The graph indexes Java namespace counterpart types and records direct imports,
+static imports, fully-qualified references, same-package and unambiguous
+wildcard-import type uses, nested-type ownership, package inventories,
+package-info annotations, module requirements/exports, and transitive
+type reachability. It reports unresolved references and duplicate counterpart
+paths with source locations.
+
+The graph is deliberately separate from behavioral qualification. A resolved
+edge proves only that a source-level counterpart is present; it does not prove
+that its methods, constructors, annotations, inherited members, or runtime
+behavior are equivalent. Wildcard package imports are recorded separately
+from individual type edges, and ambiguous simple-name matches are surfaced
+rather than silently guessed.
 
 ## JDK 28 Framework Bindings
 
