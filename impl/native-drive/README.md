@@ -114,13 +114,15 @@ validated before entering the VM String store.
 A plugin may optionally export `sl_native_bind_host(const SLNativeHostAPI*)`.
 The loader supplies a version-1, size-checked host table when the authorized
 module is opened. A plugin copies this table and may call `host_api.invoke`
-from its typed method to execute an exact, unique compiled SLeeLa function
-name such as `Callback::receive`. Callback arguments and results use only the
+synchronously from its typed method to execute an exact, unique compiled SLeeLa
+function name such as `Callback::receive`. Plugins must not retain or invoke the
+table asynchronously. Callback arguments and results use only the
 same null/bool/int64/double/UTF-8 ABI; raw VM pointers and `SLValue` objects
 are never exposed.
 
 The VM runs callback bytecode on a separate nested interpreter stack while
-preserving the suspended caller stack as a GC root. Recursive native-module
+preserving the suspended caller stack as a GC root. Callback bytecode cannot
+spawn or join VM workers while the plugin call is active. Recursive native-module
 operations from callback bytecode are rejected with
 `SL_NATIVE_REENTRANT_CALL` rather than re-entering the module mutex. Modules
 without the optional binder remain compatible but cannot call back into
