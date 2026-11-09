@@ -1,6 +1,9 @@
 #include "linear_algebra.h"
 
+#include <algorithm>
 #include <cmath>
+#include <cstring>
+#include <utility>
 #include <cstdint>
 #include <limits>
 #include <new>
@@ -383,7 +386,7 @@ slmath_status slmath_symmetric_eigen(const double *a, size_t n,
             }
         }
     }
-    return SLMATH_SINGULAR; /* Did not converge within caller's sweep budget. */
+    return SLMATH_NO_CONVERGENCE; /* Did not converge within caller's sweep budget. */
 }
 
 slmath_status slmath_fft(slmath_complex *values, size_t n, int inverse) {
@@ -418,6 +421,87 @@ slmath_status slmath_fft(slmath_complex *values, size_t n, int inverse) {
         values[i].im/=static_cast<double>(n);
     }
     return SLMATH_OK;
+}
+
+
+slmath_status slmath_vm_dispatch(slmath_operation operation,
+                                 const slmath_buffer *a,
+                                 const slmath_buffer *b,
+                                 slmath_buffer *out,
+                                 slmath_buffer *aux,
+                                 double scalar, size_t flags) {
+    if (!a || !out || !a->data || !out->data)
+        return SLMATH_INVALID_ARGUMENT;
+    switch (operation) {
+    case SLMATH_OP_VECTOR_ADD:
+        if (!b || !b->data || a->length != b->length ||
+            out->length < a->length) return SLMATH_DIMENSION_MISMATCH;
+        return slmath_vector_add(a->data,b->data,out->data,a->length);
+    case SLMATH_OP_VECTOR_DOT:
+        if (!b || !b->data || a->length != b->length || out->length < 1)
+            return SLMATH_DIMENSION_MISMATCH;
+        return slmath_vector_dot(a->data,b->data,a->length,out->data);
+    case SLMATH_OP_VECTOR_NORM:
+        if (out->length < 1) return SLMATH_DIMENSION_MISMATCH;
+        return slmath_vector_norm(a->data,a->length,out->data);
+    case SLMATH_OP_VECTOR_SCALE:
+        if (out->length < a->length) return SLMATH_DIMENSION_MISMATCH;
+        return slmath_vector_scale(a->data,scalar,out->data,a->length);
+    case SLMATH_OP_MATRIX_MULTIPLY:
+        if (!b || !b->data || a->cols != b->rows ||
+            a->length < a->rows*a->cols || b->length < b->rows*b->cols ||
+            out->rows != a->rows || out->cols != b->cols ||
+            out->length < out->rows*out->cols)
+            return SLMATH_DIMENSION_MISMATCH;
+        return slmath_matrix_multiply(a->data,a->rows,a->cols,b->data,
+                                      b->rows,b->cols,out->data);
+    case SLMATH_OP_MATRIX_TRANSPOSE:
+        if (a->length < a->rows*a->cols || out->rows != a->cols ||
+            out->cols != a->rows || out->length < a->rows*a->cols)
+            return SLMATH_DIMENSION_MISMATCH;
+        return slmath_matrix_transpose(a->data,a->rows,a->cols,out->data);
+    case SLMATH_OP_MATRIX_INVERSE:
+        if (a->rows != a->cols || a->length < a->rows*a->cols ||
+            out->rows != a->rows || out->cols != a->cols ||
+            out->length < a->rows*a->cols)
+            return SLMATH_DIMENSION_MISMATCH;
+        return slmath_matrix_inverse(a->data,a->rows,out->data,scalar);
+    case SLMATH_OP_COMPLEX_MULTIPLY:
+        if (!b || !b->data || a->length < 2 || b->length < 2 ||
+            out->length < 2) return SLMATH_DIMENSION_MISMATCH;
+        {
+            const slmath_complex x={a->data[0],a->data[1]};
+            const slmath_complex y={b->data[0],b->data[1]};
+            const slmath_complex z=slmath_complex_multiply(x,y);
+            out->data[0]=z.re; out->data[1]=z.im;
+        }
+        return SLMATH_OK;
+    case SLMATH_OP_QR:
+        if (!aux || !aux->data || a->rows < a->cols ||
+            a->length < a->rows*a->cols ||
+            out->length < a->rows*a->cols ||
+            aux->rows != a->cols || aux->cols != a->cols ||
+            aux->length < a->cols*a->cols)
+            return SLMATH_DIMENSION_MISMATCH;
+        return slmath_matrix_qr(a->data,a->rows,a->cols,out->data,
+                                aux->data,scalar);
+    case SLMATH_OP_SYMMETRIC_EIGEN:
+        if (!aux || !aux->data || a->rows != a->cols ||
+            a->length < a->rows*a->cols || out->length < a->rows ||
+            aux->length < a->rows*a->cols)
+            return SLMATH_DIMENSION_MISMATCH;
+        return slmath_symmetric_eigen(a->data,a->rows,out->data,aux->data,
+                                      flags,scalar);
+    case SLMATH_OP_FFT:
+        if (out->length < a->length || (a->length % 2) != 0)
+            return SLMATH_DIMENSION_MISMATCH;
+        if (out->data != a->data)
+            std::memmove(out->data,a->data,a->length*sizeof(double));
+        return slmath_fft(reinterpret_cast<slmath_complex*>(out->data),
+                          a->length/2,flags ? 1 : 0);
+    default:
+        return SLMATH_INVALID_ARGUMENT;
+    }
 }
 
 } // extern "C"
