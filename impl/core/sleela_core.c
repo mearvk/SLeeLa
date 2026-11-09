@@ -471,7 +471,7 @@ static int slvm_native_authorize_bridge(const char* path, void* context) {
 }
 
 int slvm_set_native_authorizer(SLVM* vm, SLNativeAuthorizePath authorize, void* context) {
-    if (!vm || !authorize) return -1;
+    if (!vm || !authorize || native_callback_vm == vm) return -1;
     pthread_mutex_lock(&vm->native_mtx);
     if (vm->native_authorizer) {
         pthread_mutex_unlock(&vm->native_mtx);
@@ -486,7 +486,7 @@ int slvm_set_native_authorizer(SLVM* vm, SLNativeAuthorizePath authorize, void* 
 int slvm_set_native_callback_authorizer(SLVM* vm,
                                         SLNativeAuthorizeCallback authorize,
                                         void* context) {
-    if (!vm || !authorize) return -1;
+    if (!vm || !authorize || native_callback_vm == vm) return -1;
     pthread_mutex_lock(&vm->native_mtx);
     if (vm->native_callback_authorizer) {
         pthread_mutex_unlock(&vm->native_mtx);
