@@ -2,7 +2,7 @@
   "schema": "sleela-java-library-manifest-v1",
   "root": "/lib/java",
   "inventory": {
-    "count": 8989,
+    "count": 8990,
     "count_type": "library-source-baseline",
     "count_source": "git-index excluding declared control metadata",
     "control_files": [
@@ -67,6 +67,8 @@
     "validator": "lib/java/validate.py",
     "ci_workflow": ".github/workflows/lib-java.yml",
     "java_api_dependency_graph": "lib/java/tools/java_api_dependency_graph.py",
-    "java_api_dependency_graph_test": "tests/java_api_dependency_graph_suite.py"
+    "java_api_dependency_graph_test": "tests/java_api_dependency_graph_suite.py",
+    "java_api_member_dependencies": "lib/java/tools/java_api_member_dependencies.py",
+    "java_api_member_dependencies_test": "tests/java_api_member_dependencies_suite.py"
   }
 }
