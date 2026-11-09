@@ -377,8 +377,9 @@ void slvm_set_audio_native_renderer(SLVM* vm, SLAudioNativeRenderFn fn, void* us
  * versioned callback table. Its invoke() entry executes an exact, unique
  * SLeeLa function by name using only scalar/UTF-8 ABI values. Callback
  * execution is synchronous within a plugin entry point, uses a nested VM
- * stack, and preserves the suspended caller stack as a GC root. Callback
- * bytecode cannot re-enter native-module operations or spawn/join VM workers.
+ * stack, and preserves the suspended caller stack as a GC root. The VM must
+ * have no active workers; callback bytecode cannot re-enter native-module
+ * operations or spawn/join VM workers.
  * Do not call these APIs concurrently with slvm_free(). */
 int slvm_set_native_authorizer(SLVM* vm, SLNativeAuthorizePath authorize, void* context);
 SLNativeStatus slvm_native_module_open(SLVM* vm, const char* path, SLNativeHandle* out_handle);
