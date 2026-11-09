@@ -5,7 +5,7 @@
 material;
 < Native math facade. Arrays are caller-owned; matrices are flat row-major arrays.
   Output arrays must be allocated to the documented result size before calling.
-  Dimensions and transform flags are compile-time integer literals. The
+  Dimensions and transform flags are runtime integer expressions validated by the VM. The
   SLVector, SLMatrix, SLComplex, and SLMathEngine classes remain the pure
   SLeeLa/Core fallback and reference implementations. >
 class SLNativeMathEngine {
