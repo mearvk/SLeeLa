@@ -232,7 +232,15 @@ closes the module, and returns the combined result (105). The harness then reloa
 the same artifact with a deliberately mismatched module allowlist and asserts
 that source-level `nativeOpen` fails closed. A third run authorizes the module
 but omits callback-name authorization, proving the plugin cannot invoke
-`Callback::receive` unless the host explicitly allows it.
+`Callback::receive` unless the host explicitly allows it. The harness also
+creates fresh VMs and exercises both public host-side entrypoints:
+`slvm_native_module_run` and `slvm_native_module_call`. The fixture attempts
+the same callback through each entrypoint without an active source-level
+`nativeCall` frame; both attempts must be rejected with the exact VM error
+`native callback requires an active source-level nativeCall context`.
+The run-style entrypoint reports the plugin's observed refusal through its
+integer result, while the typed-call entrypoint must return
+`SL_NATIVE_PLUGIN_ERROR`. Both cases close the module and free the VM.
 
 The Native Drive GitHub Actions workflow is `workflow_dispatch`-only; no
 workflow is automatically started by pushes. This end-to-end target has been
