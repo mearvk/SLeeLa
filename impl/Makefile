@@ -1160,7 +1160,8 @@ test-linear-algebra-vm: $(SLEELA_BIN)
 	printf '%s\n' "$out" | grep -q 'MATH_COMPLEX_ABS'; \
 	printf '%s\n' "$out" | grep -q 'MATH_COMPLEX_CONJUGATE'; \
 	printf '%s\n' "$out" | grep -q 'MATH_MATRIX_DETERMINANT'; \
-	printf '%s\n' "$out" | grep -q 'MATH_VECTOR_CROSS3'
+	printf '%s\n' "$out" | grep -q 'MATH_VECTOR_CROSS3'; \
+	printf '%s\n' "$out" | grep -q 'MATH_OUTPUT_EXTRA_CAPACITY'
 LINEAR_ALGEBRA_BYTECODE_SMOKE := $(BUILD)/linear_algebra_bytecode_smoke
 $(LINEAR_ALGEBRA_BYTECODE_SMOKE): tests/subjects/linear_algebra_bytecode_smoke.c $(SLCORE_LIB) | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -Isubjects/math -c $< -o $(BUILD)/linear_algebra_bytecode_smoke.o
