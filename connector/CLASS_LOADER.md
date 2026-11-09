@@ -28,7 +28,9 @@ by the java28 memory server.
 
 Thread-safe; `AutoCloseable` (closing releases any `URLClassLoader` opened for
 roots and clears its resolution cache). A root must be a directory or a readable
-`.jar`; malformed archives are rejected when configured. Class lookup normalizes
+`.jar`; malformed archives are rejected when configured. Configure every root
+before the first class resolution: roots are frozen at first use so replacing a
+URLClassLoader cannot split class identity for already-issued object handles. Class lookup normalizes
 surrounding whitespace and uses the normalized name consistently for policy and
 cache checks.
 
