@@ -71,10 +71,13 @@ Implemented operations:
 - Primitive argument range checks and explicit numeric conversion rules.
 - Structured exceptions with exception class and bounded message; no Java
   exception unwinds through the native C ABI.
+- Class directories and JAR roots, configured before the first class resolution;
+  roots freeze at first use to preserve class identity for live handles.
 - A 1 MiB maximum frame and 256 KiB maximum string.
 - Out-of-band allow-list configuration through
   SLEELA_JAVA_ALLOW_CLASSES and SLEELA_JAVA_ALLOW_PACKAGES.
-- Optional class directories/JAR roots through SLEELA_JAVA_CLASS_PATHS.
+- Optional class directories/JAR roots through SLEELA_JAVA_CLASS_PATHS, separated
+  with the platform's path separator and frozen at first type resolution.
 
 The native codec in runtime/java_interop_protocol.c validates and encodes frames.
 Its callback-driven exchange function accepts exact-read/exact-write functions,
