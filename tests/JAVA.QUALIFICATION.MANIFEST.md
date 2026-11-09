@@ -27,3 +27,21 @@ unresolved references, and duplicate counterpart paths. Its isolated regression
 suite is `tests/java_api_dependency_graph_suite.py` and is also invoked by the
 existing API dependency suite. Graph resolution is not behavioral or member-level
 equivalence evidence.
+
+
+## 0.3.23-dev — Member-level API dependencies
+
+The member dependency auditor now extracts field, method return/parameter,
+constructor parameter, generic-bound, inheritance, declared-exception, and
+declaration-annotation type references. Every dependency edge records the
+declaring source type, member, kind, role, target, and line. Missing explicit
+Java namespace imports are reported.
+
+Regression coverage is provided by
+`tests/java_api_member_dependencies_suite.py`, invoked through the existing
+Java API dependency suite and directly by
+`make -C tests java-api-member-dependencies`.
+
+This remains static dependency evidence. Effective inherited-member contract
+comparison, generic substitution, override compatibility, and behavioral
+equivalence remain outstanding.
