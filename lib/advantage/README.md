@@ -33,6 +33,7 @@ a self-contained, validated module with its own literature.
 - [`PHYSICS.md`](./PHYSICS.md) — the trust-field "physics" subject (metric
   tensor, transactional geodesic, announcement contact structure, trust-decay
   SDE), a faithful mathematics presented as an explicit modelling analogy.
+- [`EXAMPLES.md`](./EXAMPLES.md) — runnable guide to all six subject demonstrations, expected outputs, and suggested learning sequence.
 - [`PREONEM.md`](./PREONEM.md) — the preonem standard under which every
   document here is an enacted `artifact; pure; gasoline;` of the Advantage™
   legislature, graded unto time and space.
