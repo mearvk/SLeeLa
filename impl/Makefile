@@ -1152,7 +1152,12 @@ test-linear-algebra-vm: $(SLEELA_BIN)
 	printf '%s\n' "$out"; \
 	printf '%s\n' "$out" | grep -q 'NATIVE_MATH_VM_SOURCE=PASS'; \
 	printf '%s\n' "$out" | grep -q 'MATH_VECTOR_DOT'; \
-	printf '%s\n' "$out" | grep -q 'MATH_MATRIX_MULTIPLY'
+	printf '%s\n' "$out" | grep -q 'MATH_MATRIX_MULTIPLY'; \
+	printf '%s\n' "$out" | grep -q 'MATH_MATRIX_INVERSE'; \
+	printf '%s\n' "$out" | grep -q 'MATH_SYMMETRIC_EIGEN'; \
+	printf '%s\n' "$out" | grep -q 'MATH_FFT'; \
+	printf '%s\n' "$out" | grep -q 'MATH_COMPLEX_DIVIDE'; \
+	printf '%s\n' "$out" | grep -q 'MATH_VECTOR_CROSS3'
 LINEAR_ALGEBRA_BYTECODE_SMOKE := $(BUILD)/linear_algebra_bytecode_smoke
 $(LINEAR_ALGEBRA_BYTECODE_SMOKE): tests/subjects/linear_algebra_bytecode_smoke.c $(SLCORE_LIB) | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -Isubjects/math -c $< -o $(BUILD)/linear_algebra_bytecode_smoke.o
