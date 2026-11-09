@@ -2578,12 +2578,12 @@ static SLResult run_thread(SLThread* t) {
                              out_rows_v,out_cols_v,aux_rows_v,aux_cols_v};
             size_t d[8];
             for(int k=0;k<8;k++) {
-                if(dims[k].type!=SL_INT || dims[k].as.i<0)
-                    TERR("math call: dimensions must be nonnegative integers");
+                if(dims[k].type!=SL_INT || dims[k].as.i<0 || (uint64_t)dims[k].as.i>(uint64_t)SIZE_MAX)
+                    TERR("math call: dimensions must be nonnegative integers within size_t");
                 d[k]=(size_t)dims[k].as.i;
             }
-            if(flags_v.type!=SL_INT || flags_v.as.i<0)
-                TERR("math call: flags must be a nonnegative integer");
+            if(flags_v.type!=SL_INT || flags_v.as.i<0 || (uint64_t)flags_v.as.i>(uint64_t)SIZE_MAX)
+                TERR("math call: flags must be a nonnegative size_t value");
             if(scalar_v.type!=SL_INT && scalar_v.type!=SL_DOUBLE)
                 TERR("math call: scalar parameter must be numeric");
             SLValue handles[4]={a_v,b_v,out_v,aux_v};
