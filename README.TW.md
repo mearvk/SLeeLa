@@ -220,3 +220,20 @@ CPU 與 hardware models、GUI、networking、text processing、UTF-4088、π too
 本版本以台灣常用的繁體中文術語為主，例如「建置」、「執行環境」、「函式庫」、「程式碼」及「驗證」。技術 identifiers、commands、filenames、API names 與 source code 必須維持原樣，避免翻譯後無法直接複製執行。後續術語調整應維持全文件一致，並建議由熟悉系統程式設計的繁體中文母語者審閱。
 
 **翻譯狀態：** 本繁體中文版已擴充編譯流程、型別與物件模型、迴圈計時、函式庫、native integration、建置與安裝、安全、測試及貢獻流程。它仍不是 canonical English README 與所有連結規格的逐行完整翻譯。
+
+
+## 十八、目標平台、設定檔與執行授權
+
+SLeeLa 將 source code 與 build/execution targets 分開。文件列出的 target family 包括 `SLVM`、`SLJVM` 及 `SLIR`；`NATIVE` 是受限制且有條件的 target，不應假設所有平台均可使用。`BASIC_COMPLETE` 與 `ADVANCED_TOTAL` 代表不同的 profile scope。每次建置都應確認實際 target、profile 及平台支援情況。
+
+Reference 用來識別檔案、module 或 resource，本身不會授予 execution authorization。程式使用檔案、外部 libraries、native bindings 或 system resources 時，必須明確界定執行權限及安全邊界。文件中的功能描述不能單獨作為 runtime security guarantee 的證據；應同時查閱 implementation 和相應測試。
+
+## 十九、資源生命週期與除錯
+
+對跨 function 或 thread 共用的資源，應記錄 ownership、lifetime 和 synchronization responsibilities。區分 local variables、shared object state、VM handles 及 serializable data。VM-local handle 不應當作穩定的 file format 或 network message。使用 module 定義的 serialization interface，並測試 invalid、missing 及 boundary values。
+
+Debug 時記錄 commit、OS、architecture 和 toolchain。先 build 最小相關 target，再執行對應測試；保留完整 error output，分辨 compiler errors 與 runtime errors，並建立可重現的最小案例。Build 成功不等於 runtime behavior 已正確。
+
+驗證報告應列出 exact commit、OS/architecture、compiler versions、完整 build/test commands、pass/fail/skip 數量及已知限制。Skipped 或未執行的 tests 不可列為 passed。
+
+**擴充翻譯狀態：** 台灣繁體中文版現亦涵蓋 target/profile、execution authorization、resource lifecycle、debugging 及 verification reporting。
