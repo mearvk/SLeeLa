@@ -51,6 +51,7 @@ argv elements using repeatable --compiler-arg.
     # Process invocation and a stdout-to-stdin pipeline
     python3 tools/sleela-native-drive.py run --capture --max-output-bytes 1048576 --timeout 10 -- build/app arg1
     python3 tools/sleela-native-drive.py pipe --max-output-bytes 1048576 --timeout 10 -- producer arg :: consumer arg
+    sleelactl run native-drive pipe --max-output-bytes 1048576 -- producer arg :: consumer arg
 
 ## What the frontends mean
 
