@@ -73,6 +73,7 @@ const char *sl_native_status_string(SLNativeStatus status) {
     case SL_NATIVE_STALE_HANDLE: return "native module handle is stale or invalid";
     case SL_NATIVE_TYPED_ENTRY_NOT_FOUND: return "native module does not export the typed-call entry";
     case SL_NATIVE_PLUGIN_ERROR: return "native plugin method returned an error or invalid value";
+    case SL_NATIVE_METHOD_NOT_HANDLED: return "native plugin does not implement the requested method";
     default: return "unknown native-loader status";
     }
 }
@@ -152,7 +153,7 @@ SLNativeStatus sl_native_call_module(SLNativeModule *module, const char *method,
     result.tag = SL_NATIVE_VALUE_NULL;
     plugin_status = typed_call(method, argc, argv, &result);
     if (plugin_status == SL_NATIVE_CALL_NOT_HANDLED)
-        return SL_NATIVE_TYPED_ENTRY_NOT_FOUND;
+        return SL_NATIVE_METHOD_NOT_HANDLED;
     if (plugin_status != SL_NATIVE_CALL_OK) return SL_NATIVE_PLUGIN_ERROR;
     if (!value_valid(&result)) return SL_NATIVE_PLUGIN_ERROR;
     *out_result = result;
