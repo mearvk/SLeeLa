@@ -54,6 +54,14 @@ typedef struct SLNativeValue {
  * plugin-defined failure. The result is initialized to NULL by the loader.
  * Any returned UTF-8 bytes must remain valid until the next call to this
  * module or module close; the host copies them before making another call. */
+typedef enum SLNativeCallStatus {
+    SL_NATIVE_CALL_OK = 0,
+    /* The module does not implement this method; the VM may use bytecode fallback. */
+    SL_NATIVE_CALL_NOT_HANDLED = 1,
+    /* A handled method failed; this must never trigger interpreter fallback. */
+    SL_NATIVE_CALL_ERROR = 2
+} SLNativeCallStatus;
+
 typedef int (*SLNativeTypedCall)(const char *method,
                                  uint32_t argc,
                                  const SLNativeValue *argv,
