@@ -1203,6 +1203,7 @@ int slvm_math_dispatch_arrays(SLVM* vm, int operation,
     double *a_data=NULL,*b_data=NULL,*out_data=NULL,*aux_data=NULL;
     size_t a_len=0,b_len=0,out_len=0,aux_len=0;
     double scalar_out=0.0;
+    size_t out_write_len=0, aux_write_len=0;
     int status=SLMATH_INVALID_ARGUMENT;
     pthread_mutex_lock(&vm->array_mtx);
     if (!array_valid_handle(vm,a_handle)) { status=SLMATH_INVALID_ARGUMENT; goto done; }
@@ -1234,10 +1235,22 @@ int slvm_math_dispatch_arrays(SLVM* vm, int operation,
               b_handle>=0?&b:NULL,&out,aux_handle>=0?&aux:NULL,scalar,flags);
     }
     if(status==SLMATH_OK) {
-        if(out_handle>=0) status=sl_math_double_to_array(vm,out_handle,out_data,out_len);
-        else *scalar_result=scalar_out;
-        if(status==SLMATH_OK && aux_handle>=0)
-            status=sl_math_double_to_array(vm,aux_handle,aux_data,aux_len);
+        if(out_handle>=0) {
+            if(out_rows && out_cols > SIZE_MAX/out_rows) status=SLMATH_SIZE_OVERFLOW;
+            else {
+                out_write_len=out_rows*out_cols;
+                if(out_write_len>out_len) status=SLMATH_DIMENSION_MISMATCH;
+                else status=sl_math_double_to_array(vm,out_handle,out_data,out_write_len);
+            }
+        } else *scalar_result=scalar_out;
+        if(status==SLMATH_OK && aux_handle>=0) {
+            if(aux_rows && aux_cols > SIZE_MAX/aux_rows) status=SLMATH_SIZE_OVERFLOW;
+            else {
+                aux_write_len=aux_rows*aux_cols;
+                if(aux_write_len>aux_len) status=SLMATH_DIMENSION_MISMATCH;
+                else status=sl_math_double_to_array(vm,aux_handle,aux_data,aux_write_len);
+            }
+        }
     }
 done:
     free(a_data); free(b_data);
