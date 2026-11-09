@@ -19,6 +19,18 @@ static int request_test(void){
     value.as.utf8.length!=2||memcmp(value.as.utf8.data,"pi",2)||view.arguments.offset!=n)return 0;
  payload[n]=0;return sl_ipc_decode_request(payload,n+1,&view)<0;
 }
+static int limb_test(void){
+ uint32_t source[3]={123456789u,987654321u,42u},decoded[3]={0,0,0};
+ SLIPCLimbs a={1,3,source},b;uint8_t wire[32];size_t n;
+ if(sl_ipc_encode_limbs(&a,wire,sizeof(wire),&n))return 0;
+ if(sl_ipc_decode_limbs(wire,n,&b,decoded,3))return 0;
+ if(b.sign!=1||b.count!=3||b.limbs[0]!=source[0]||
+    b.limbs[1]!=source[1]||b.limbs[2]!=source[2])return 0;
+ wire[5]=0;wire[6]=0;wire[7]=0;wire[8]=0; /* non-canonical high zero limb */
+ if(sl_ipc_decode_limbs(wire,n,&b,decoded,3)==0)return 0;
+ source[0]=1000000000u;
+ return sl_ipc_encode_limbs(&a,wire,sizeof(wire),&n)<0;
+}
 static int value_test(void){
  uint8_t w[64];size_t n;SLNativeValue a,b;SLIPCCursor c;
  memset(&a,0,sizeof(a));a.tag=SL_NATIVE_VALUE_I64;a.as.i64=INT64_C(-9223372036854770000);
@@ -40,4 +52,4 @@ static int value_test(void){
  w[0]=SL_NATIVE_VALUE_I64;c.data=w;c.length=1;c.offset=0;
  return sl_ipc_decode_value(&c,&b)<0;
 }
-int main(void){if(!header_test()||!value_test()||!request_test()){fputs("native IPC codec: FAIL\n",stderr);return 1;}puts("native IPC codec: PASS");return 0;}
+int main(void){if(!header_test()||!value_test()||!request_test()||!limb_test()){fputs("native IPC codec: FAIL\n",stderr);return 1;}puts("native IPC codec: PASS");return 0;}
