@@ -241,42 +241,54 @@ def run_process(args: argparse.Namespace) -> int:
         if stream: stream.close()
 
 def pipe_processes(args: argparse.Namespace) -> int:
-    if not args.producer or not args.consumer:
-        print("native-drive pipe: producer and consumer must be separated by ::", file=sys.stderr); return EXIT_USAGE
-    producer = consumer = None
-    threads = []
+    stages = args.stages
+    if len(stages) < 2 or any(not stage for stage in stages):
+        print("native-drive pipe: provide at least two commands separated by ::", file=sys.stderr)
+        return EXIT_USAGE
+    processes, threads = [], []
     try:
-        producer = subprocess.Popen(args.producer, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        assert producer.stdout is not None
-        consumer = subprocess.Popen(args.consumer, stdin=producer.stdout, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        producer.stdout.close()
-        state, buffers, threads = _capture_pipes(
-            [producer.stderr, consumer.stdout, consumer.stderr], args.max_output_bytes, [producer, consumer])
+        previous_stdout = None
+        for command in stages:
+            proc = subprocess.Popen(command, stdin=previous_stdout,
+                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            if previous_stdout is not None:
+                previous_stdout.close()
+            processes.append(proc)
+            previous_stdout = proc.stdout
+        # Every stage's stderr and the final stage's stdout are drained
+        # concurrently. Intermediate stdout is connected directly to the next
+        # stage and never accumulated in the parent process.
+        streams = [proc.stderr for proc in processes] + [processes[-1].stdout]
+        state, buffers, threads = _capture_pipes(streams, args.max_output_bytes, processes)
         deadline = time.monotonic() + args.timeout
         timed_out = False
         try:
-            consumer.wait(timeout=max(0.0, deadline - time.monotonic()))
-            producer.wait(timeout=max(0.0, deadline - time.monotonic()))
+            for proc in reversed(processes):
+                proc.wait(timeout=max(0.0, deadline - time.monotonic()))
         except subprocess.TimeoutExpired:
             timed_out = True
-            _terminate_processes([consumer, producer])
+            _terminate_processes(processes)
         _join_capture(threads)
-        if buffers[1]: sys.stdout.buffer.write(buffers[1])
-        if buffers[0]: sys.stderr.buffer.write(buffers[0])
-        if buffers[2]: sys.stderr.buffer.write(buffers[2])
+        if buffers[-1]: sys.stdout.buffer.write(buffers[-1])
+        for captured in buffers[:-1]:
+            if captured: sys.stderr.buffer.write(captured)
         if timed_out:
-            print(f"native-drive: pipeline exceeded timeout ({args.timeout:g}s)", file=sys.stderr); return EXIT_TIMEOUT
+            print(f"native-drive: pipeline exceeded timeout ({args.timeout:g}s)", file=sys.stderr)
+            return EXIT_TIMEOUT
         if state["overflow"]:
             print(f"native-drive: pipeline output exceeded --max-output-bytes ({args.max_output_bytes}); processes terminated", file=sys.stderr)
             return EXIT_OUTPUT_LIMIT
-        if producer.returncode:
-            print(f"native-drive: producer exited {producer.returncode}", file=sys.stderr); return producer.returncode
-        return consumer.returncode
+        for index, proc in enumerate(processes):
+            if proc.returncode:
+                print(f"native-drive: pipeline stage {index + 1} exited {proc.returncode}", file=sys.stderr)
+                return proc.returncode
+        return 0
     except OSError as exc:
-        _terminate_processes([p for p in (consumer, producer) if p])
-        print(f"native-drive: could not start pipeline: {exc}", file=sys.stderr); return EXIT_RUN
+        _terminate_processes(processes)
+        print(f"native-drive: could not start pipeline: {exc}", file=sys.stderr)
+        return EXIT_RUN
     finally:
-        _terminate_processes([p for p in (consumer, producer) if p and p.poll() is None])
+        _terminate_processes([p for p in processes if p.poll() is None])
         _join_capture(threads)
 
 def xclass_command(args: argparse.Namespace) -> int:
@@ -338,10 +350,13 @@ def main() -> int:
     if args.action == "pipe":
         if args.pipeline[:1] == ["--"]:
             args.pipeline = args.pipeline[1:]
-        try:
-            split = args.pipeline.index("::")
-            args.producer, args.consumer = args.pipeline[:split], args.pipeline[split + 1:]
-        except ValueError: args.producer, args.consumer = [], []
+        args.stages, current = [], []
+        for token in args.pipeline:
+            if token == "::":
+                args.stages.append(current); current = []
+            else:
+                current.append(token)
+        if current: args.stages.append(current)
         return pipe_processes(args)
     return args.handler(args)
 
