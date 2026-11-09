@@ -126,3 +126,12 @@ character, empty input, malformed UTF-8, negative indices, and bounds. They
 have been added but not executed in this change. The JavaStringValue adapter is
 not yet bound to these functions; it must continue to report UTF-16 indexing
 unsupported until a native-call path and Java exception mapping are qualified.
+
+
+## 0.3.23-dev — Java API member and implementation audits
+
+The Java API dependency qualification layer now includes direct/transitive type graph coverage, member-level type dependency extraction, visibility and constructor inheritance analysis, and source-implementation depth measurement.
+
+The graph, member, and visibility suites are invoked by `make -C tests java-api-dependencies`. Their individual targets are also available for focused investigation. `make -C tests java-source-implementation-audit` reports implementation depth and runs its regression fixture.
+
+These are static source audits. They do not establish runtime or behavioral equivalence. A counterpart is considered implemented only when executable SLeeLa behavior and relevant conformance evidence exist.
