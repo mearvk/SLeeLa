@@ -87,3 +87,44 @@ The [canonical README](README.md) contains the complete feature catalogue, langu
 - [GitHub repository](https://github.com/mearvk/SLeeLa)
 
 **Translation status:** Practical technical guidance is expanded in English. Full technical translations into the listed South African languages, including South African Sign Language resources, remain outstanding and should be reviewed by fluent technical contributors.
+
+
+## VIII. Afrikaanse tegniese gids
+
+### Samestelling en uitvoeringsmodel
+SLeeLa skei die brontaal, die samesteller se frontend, die intermediêre voorstelling, kodegenerering en runtime-uitvoering. Die samestellerweergawe, sintaksuitgawe en VM/ISA-weergawe is verskillende weergawe-asse. 'n Funksie wat in die spesifikasie genoem word, is nie noodwendig op elke teiken geïmplementeer en bekragtig nie.
+
+Die pyplyn begin met UTF-8-`.sleela`-bronlêers, voer leksikale en sintaktiese ontleding uit, kontroleer simbole en tipes, verlaag 'n gestruktureerde intermediêre voorstelling, genereer uitset vir ondersteunde VM- of intermediêre teikens en voer die resultaat in die runtime uit. Die normatiewe grammatika is [SLEELA.syntax](SLEELA.syntax); sien ook [source documentation](markdown/SOURCE.md) en [compiler documentation](markdown/COMPILER.md).
+
+### Tipes en objekmodel
+Die gedokumenteerde brontipes sluit `int`, `double`, `boolean`, `String`, `void`, verklaarde `struct`-tipes en ondersteunde reference-type signatures in. `int`, `long` en `int64` is getekende 64-bis heelgetalle. `int128` word as 'n heelgetaltipe aanvaar, maar die huidige gedokumenteerde implementering is steeds 64-bis-gegrond; moenie volle 128-bis-rekenkunde aanvaar nie.
+
+'n `struct` is 'n benoemde aggregate. VM-bestuurde struct-handvatsels is nie rou wysers nie; toekenning en parameteroordrag deel dieselfde instansie, en gelykheid berus op identiteit. Gebruik `structPack(instance)` en `structUnpack(TypeName, json)` vir die gedokumenteerde draagbare serialisering. 'n VM-plaaslike handvatsel is nie self 'n oordraagbare netwerkwaarde nie. Klasse bevat velde en metodes; huidige klasvelde is gedeelde toestand, terwyl metode-plaaslike veranderlikes thread-plaaslik is. Oorerwing, geneste klasse en generics is aan sintaksweergawepoorte onderhewig.
+
+### Lusse, tydsberekening en biblioteke
+Die stellingsvlak-aantekeninge `@loopDelay` en `@loopBudget` bepaal 'n lusvertraging of totale tydbegroting. Hulle word na VM-instruksie `OP_SLEEP` (ISA 157) verlaag; die ingeboude `sleep(ms)` gebruik dieselfde instruksie. Sien [SLEELA.syntax §32](SLEELA.syntax) en [Loop Timing API](api/sleela/3.0/LOOP_TIMING_API.md).
+
+Belangrike gedokumenteerde biblioteke sluit in `lib/advantage` (modelgebaseerde evaluering, wiskunde, integrasie, gradering en roeteerbare uitset), `lib/xml` (XML DOM, ontleding en serialisering), `lib/text` (teks- en stringbewerkings), `lib/sleeladoc` (brondokumentasie en CLI-verwysings), `lib/cpu` en `lib/xlt` (CPU-profiele en model-/tydsberekeningverwysings), en `recursion/stanchion` (C/C++-rekursieprototipes). 'n Module se teenwoordigheid bewys nie produksiegereedheid nie; hersien sy toetse en platformbeperkings.
+
+### C/C++, bouwerk en installering
+Die repository bevat C/C++-komponente en 'n beperkte native-kodegenereringspad. `@native` en `sleela aot` is ontwikkelingsmeganismes, nie algemene toestemming om arbitrêre native kode uit te voer nie. C/C++-grense moet ABI, oproepkonvensie, geheue-eienaarskap, datauitleg, foutafhandeling en platformafhanklikhede uitdruklik definieer. 'n Reference identifiseer 'n hulpbron, maar magtig nie uitvoering nie.
+
+'n Tipiese bou- en toetsreeks:
+
+```sh
+make
+make -C impl all
+bash ./test-suites/run-all.sh --all
+```
+
+Stelselinstallering gebruik gewoonlik `sudo make install`; gebruikersinstallering kan `make install PREFIX="$HOME/.local"` gebruik. Bouwerk vereis gewoonlik GCC of Clang en GNU Make; sommige gereedskap gebruik Python 3. Raadpleeg [installation guide](install/README.md) en [platform matrix](docs/PLATFORM-SUPPORT.md).
+
+### Integriteit, veiligheid en bydraes
+Hash-manifeste en verifikasiegereedskap vergelyk lêers met verwagte inhoud. 'n PASS-resultaat geld slegs vir die verklaarde omvang en tydstip. Toetsverslae moet pass, fail en skip onderskei; toetse wat oorgeslaan of nie uitgevoer is nie, mag nie as geslaag gerapporteer word nie.
+
+Lees [testing policy](markdown/TESTING.md), [documentation index](docs/README.md), [generated API reference](docs/api/README.md) en die relevante module-README voordat jy bydra. Voeg positiewe en negatiewe toetse by, teken OS/toolchain/opdragte/werklike resultate aan en werk dokumentasie by wanneer openbare gedrag verander.
+
+## IX. Ander Suid-Afrikaanse tale en toeganklikheid
+Hierdie Afrikaanse tegniese afdeling vul die bestaande kort inleidings in isiZulu, isiXhosa, Sepedi, Setswana, Sesotho, siSwati, Tshivenda, Xitsonga en isiNdebele aan. Dit is nie 'n volledige tegniese vertaling in al elf amptelike tale nie. Suid-Afrikaanse Gebaretaal vereis toeganklike video- of gebaretaalmateriaal en kan nie deur 'n geskrewe taalopsomming vervang word nie. Verdere vertalings behoort deur moedertaalsprekers met tegniese kennis nagegaan te word.
+
+**Translation status:** The South African edition now includes a substantial Afrikaans technical guide alongside the English practical guide and multilingual introductions. Full technical translations into all South African languages and dedicated South African Sign Language resources remain outstanding.
