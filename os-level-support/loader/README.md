@@ -115,6 +115,22 @@ Plugin execution errors, stale handles, and ABI mismatches do not trigger
 fallback. Module calls are serialized against close/unload. Native code runs in
 the host process and is not sandboxed.
 
+### Optional host callback table
+
+A plugin may export `sl_native_bind_host(const SLNativeHostAPI*)`. The loader
+passes a size-checked `SL_NATIVE_HOST_CALLBACK_ABI_VERSION` table after the
+host has authorized and opened the module. The plugin must copy the table and
+may call `invoke(context, function, argc, argv, result)` from a typed method.
+The host resolves an exact, unique compiled SLeeLa function name and executes
+it on a separate nested interpreter stack. Only the typed scalar/UTF-8 values
+cross the callback boundary; VM pointers and raw `SLValue` objects never do.
+
+The suspended interpreter stack remains a GC root during callback execution.
+Recursive native-module API operations from callback bytecode fail with
+`SL_NATIVE_REENTRANT_CALL` to prevent mutex deadlocks and module-unload races.
+Callback failure is a handled plugin error and never requests bytecode
+fallback. The binder is optional, so existing plugins remain compatible.
+
 ## Runtime-owned handle table
 
 `native_module_table.h` / `native_module_table.c` add a bounded C runtime
