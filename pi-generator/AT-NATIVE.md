@@ -1,13 +1,11 @@
-# `@native` and `sleela aot` — ahead-of-time native (C/C++) emission (Part 1)
+# `@native` and Native Drive — ahead-of-time native C/C++ path
 
-This is **Part 1** of the SLeeLa → native C/C++ path: the `@native` annotation
-and the `sleela aot` command that finds `@native` methods, verifies each is
-within the currently supported *offloadable subset*, and emits C/C++ for them.
-It **fails closed** — a method that uses anything the emitter cannot yet
-translate is refused with a precise reason, so a half-translated method is never
-produced. The compile+link step and the VM fast-path dispatch (calling the
-native code with an interpreter fallback) are **later stages**; nothing is
-compiled to a binary yet.
+This document describes the current `@native` AOT boundary and the Native Drive
+integration. `sleela aot` still finds annotated methods, verifies the supported
+offloadable subset, and emits C source. The new `tools/sleela-native-drive.py`
+can compile direct C/C++ inputs and can compile SLeeLa AOT output into a native
+executable. Unsupported SLeeLa constructs are still rejected; the existing
+C/C++ frontend classes under `lib/cpu` are not full production parsers.
 
 *MEARVK LLC — 2026.*
 
@@ -75,13 +73,39 @@ construction (`new`), instance/qualified calls (`receiver.method(...)`), array
 indexing, the `:::` structural-offload operator, and anything else. These are
 the gaps the later stages will close; refusing them now keeps Part 1 honest.
 
-## What is NOT here yet (later stages)
+## Native Drive integration
 
-- Compiling the emitted C/C++ to `libslnat_*.so` (`g++ -O2 -shared -fPIC`).
-- VM dispatch that calls the native symbol with a transparent interpreter
-  fallback, plus output-diff verification against the interpreted result.
-- Widening the subset (String, arrays, objects) and wiring `@native` through
-  `sleelactl`/systemctl for the daemon case.
+The new Native Drive accepts direct `.c`, `.cc`, `.cpp`, and `.cxx` source and
+compiles it through the configured host compiler. For `.sleela`, it invokes
+`sleela aot --emit` and compiles the emitted C translation unit. It also provides
+shell-free process execution, optional stdin-file input, stdout/stderr capture,
+and a two-process stdout-to-stdin pipeline with timeouts. The `sleelactl`
+registry exposes it as `native-drive`:
+
+```sh
+sleelactl info native-drive
+sleelactl build native-drive source.cpp -o build/source
+sleelactl run native-drive --capture -- build/source
+```
+
+See [`../impl/native-drive/README.md`](../impl/native-drive/README.md).
+
+## What is NOT here yet
+
+- A full production C/C++ parser integrated into the SLeeLa frontend (the
+  `lib/cpu/SLFrontendC` and `SLFrontendCpp` classes document limited lowering
+  models, not complete language implementations).
+- Shared-library/plugin emission and automatic registration with the existing
+  native loader.
+- VM in-process dispatch to native symbols with interpreter fallback and
+  differential conformance checks.
+- Expanded AOT coverage for strings, arrays, object layouts, exceptions, and
+  language-specific ABI details.
+- Declarative process annotations wired to a validated process capability
+  policy, plus generated systemd unit lifecycle integration.
+
+The process CLI is an explicit host-process tool, not a sandbox. Do not run
+untrusted native code under elevated privileges.
 
 ## Verify
 
