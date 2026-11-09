@@ -225,6 +225,7 @@ static int slvm_native_host_invoke(void* context, const char* function,
                                    SLNativeValue* out_result);
 
 static _Thread_local SLVM* native_callback_vm = NULL;
+static _Thread_local SLVM* native_plugin_call_vm = NULL;
 
 static void set_err(SLVM* vm, const char* msg) {
     if (!vm) return;
@@ -508,7 +509,12 @@ SLNativeStatus slvm_native_module_run(SLVM* vm, SLNativeHandle handle,
      * is executing. A plugin entry point must not re-enter this VM's native
      * module lifecycle API. */
     pthread_mutex_lock(&vm->native_mtx);
-    status = sl_native_table_run(&vm->native_modules, handle, argc, argv, out_result);
+    {
+        SLVM* previous_plugin_vm = native_plugin_call_vm;
+        native_plugin_call_vm = vm;
+        status = sl_native_table_run(&vm->native_modules, handle, argc, argv, out_result);
+        native_plugin_call_vm = previous_plugin_vm;
+    }
     pthread_mutex_unlock(&vm->native_mtx);
     return status;
 }
@@ -523,7 +529,12 @@ SLNativeStatus slvm_native_module_call(SLVM* vm, SLNativeHandle handle,
      * re-enter this VM's native-module API. Result UTF-8 spans are borrowed
      * from the plugin and must be copied before the next call or close. */
     pthread_mutex_lock(&vm->native_mtx);
-    status = sl_native_table_call(&vm->native_modules, handle, method, argc, argv, out_result);
+    {
+        SLVM* previous_plugin_vm = native_plugin_call_vm;
+        native_plugin_call_vm = vm;
+        status = sl_native_table_call(&vm->native_modules, handle, method, argc, argv, out_result);
+        native_plugin_call_vm = previous_plugin_vm;
+    }
     pthread_mutex_unlock(&vm->native_mtx);
     return status;
 }
@@ -2036,7 +2047,7 @@ static int slvm_native_host_invoke(void* context, const char* function,
     SLVM* previous_callback_vm;
     if (!vm || !function || !*function || !out_result ||
         (argc && !argv) || argc > STACK_MAX - 1 ||
-        native_callback_vm == vm)
+        native_callback_vm == vm || native_plugin_call_vm != vm)
         return 0;
     name_length = strlen(function);
     if (name_length > 255u) return 0;
@@ -2345,9 +2356,14 @@ static SLResult run_thread(SLThread* t) {
             memset(&native_result, 0, sizeof(native_result));
             native_result.tag = SL_NATIVE_VALUE_NULL;
             pthread_mutex_lock(&vm->native_mtx);
-            vm->native_callback_caller = t;
-            status = sl_native_table_call(&vm->native_modules, handle, method, argc, argv, &native_result);
-            vm->native_callback_caller = NULL;
+            {
+                SLVM* previous_plugin_vm = native_plugin_call_vm;
+                native_plugin_call_vm = vm;
+                vm->native_callback_caller = t;
+                status = sl_native_table_call(&vm->native_modules, handle, method, argc, argv, &native_result);
+                vm->native_callback_caller = NULL;
+                native_plugin_call_vm = previous_plugin_vm;
+            }
             if (status == SL_NATIVE_OK &&
                 !native_value_from_abi(vm, &native_result, &result_value))
                 status = SL_NATIVE_PLUGIN_ERROR;
@@ -2376,6 +2392,7 @@ static SLResult run_thread(SLThread* t) {
         } break;
         case OP_PRINT: { SLValue v=POP(); pthread_mutex_lock(&vm->print_mtx); print_value(vm,v); printf("\n"); pthread_mutex_unlock(&vm->print_mtx); } break;
         case OP_SPAWN: {
+            if (native_callback_vm == vm) TERR("native callback cannot spawn VM worker threads");
             int sfi=in.a; if(sfi<0||sfi>=vm->nfunc) TERR("spawn of unknown function"); int nargs=vm->funcs[sfi].nargs; if(t->sp<nargs) TERR("spawn: not enough arguments on stack");
             SLValue args[FRAMES_MAX]; for(int i=0;i<nargs;i++) args[i]=t->stack[t->sp-nargs+i]; t->sp-=nargs; PUSH(slval_int(spawn_thread(vm,sfi,args,nargs)));
             /* A worker now exists; refresh immediately so the array opcodes take
@@ -2383,7 +2400,9 @@ static SLResult run_thread(SLThread* t) {
              * batched safepoint (which could be up to a stride away). */
             { pthread_mutex_lock(&vm->thr_mtx); t->workers_cached = vm->nthreads; pthread_mutex_unlock(&vm->thr_mtx); }
         } break;
-        case OP_JOINALL: slvm_joinall(vm); break;
+        case OP_JOINALL:
+            if (native_callback_vm == vm) TERR("native callback cannot join VM worker threads");
+            slvm_joinall(vm); break;
         case OP_LOCK: if(in.a<0||in.a>=SL_MAX_LOCKS) TERR("lock id out of range"); pthread_mutex_lock(&vm->locks[in.a]); break;
         case OP_UNLOCK: if(in.a<0||in.a>=SL_MAX_LOCKS) TERR("lock id out of range"); pthread_mutex_unlock(&vm->locks[in.a]); break;
         case OP_SEND: {
