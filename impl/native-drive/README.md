@@ -18,8 +18,11 @@ tools/sleela-native-drive.py provides:
   followed by a host C compiler. The current emitter covers the whole program
   when its C backend can translate it; it is not yet a method-only ABI emitter.
 - Argument-vector process execution without an implicit shell.
-- Optional stdin-file input, stdout/stderr capture, bounded two-process piping,
-  timeouts, and exit-code propagation.
+- Optional stdin-file input, stdout/stderr capture, two-process piping, timeouts,
+  and exit-code propagation. Captured output is capped at 16 MiB by default
+  across stdout and stderr; `--max-output-bytes` configures the combined limit.
+  Exceeding the cap terminates the child process(es), drains the pipes, emits only
+  the retained prefix, and returns exit code 6.
 - XClass info/emit/run delegation to the production sleela xclass loader.
 
 Build output is staged beside the destination and atomically replaced only
@@ -46,8 +49,8 @@ argv elements using repeatable --compiler-arg.
     python3 tools/sleela-native-drive.py xclass --mode run Example.xclass
 
     # Process invocation and a stdout-to-stdin pipeline
-    python3 tools/sleela-native-drive.py run --capture --timeout 10 -- build/app arg1
-    python3 tools/sleela-native-drive.py pipe --timeout 10 -- producer arg :: consumer arg
+    python3 tools/sleela-native-drive.py run --capture --max-output-bytes 1048576 --timeout 10 -- build/app arg1
+    python3 tools/sleela-native-drive.py pipe --max-output-bytes 1048576 --timeout 10 -- producer arg :: consumer arg
 
 ## What the frontends mean
 
