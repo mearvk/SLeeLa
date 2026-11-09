@@ -8,7 +8,7 @@ EXIT_USAGE, EXIT_BUILD, EXIT_RUN, EXIT_TIMEOUT = 2, 3, 4, 5
 
 def _compiler(language: str, explicit: str | None) -> str:
     candidate = explicit or os.environ.get("CC" if language == "c" else "CXX")
-    candidate = candidate or ("cc" if language == "c" else "c++")
+    candidate = candidate or ("cl" if os.name == "nt" else ("cc" if language == "c" else "c++"))
     resolved = shutil.which(candidate)
     if not resolved:
         raise RuntimeError(f"compiler not found: {candidate!r}; set CC/CXX or use --compiler")
@@ -33,15 +33,18 @@ def _run_checked(argv: Sequence[str], timeout: float | None = None) -> subproces
 
 def _validate_native_abi(library: pathlib.Path) -> None:
     """Check exported ABI symbol names without loading/executing the module."""
-    nm = shutil.which("nm")
-    if not nm:
-        raise RuntimeError("--require-sleela-abi needs an nm symbol-inspection tool; refusing to load the library just to inspect it")
-    if sys.platform == "darwin":
-        command = [nm, "-gU", str(library)]
-    elif os.name == "nt":
-        command = [nm, "-g", str(library)]
+    if os.name == "nt" and shutil.which("dumpbin"):
+        command = [shutil.which("dumpbin"), "/nologo", "/exports", str(library)]
     else:
-        command = [nm, "-D", "--defined-only", str(library)]
+        nm = shutil.which("nm")
+        if not nm:
+            raise RuntimeError("--require-sleela-abi needs nm (or dumpbin on Windows); refusing to load the library just to inspect it")
+        if sys.platform == "darwin":
+            command = [nm, "-gU", str(library)]
+        elif os.name == "nt":
+            command = [nm, "-g", str(library)]
+        else:
+            command = [nm, "-D", "--defined-only", str(library)]
     result = _run_checked(command, timeout=15.0)
     if result.returncode != 0:
         raise RuntimeError("could not inspect shared-library exports with nm: " + result.stderr.strip())
@@ -103,15 +106,24 @@ def build(args: argparse.Namespace) -> int:
                 staged = temp_dir / ("native-output" + suffix)
             else:
                 staged = temp_dir / ("native-output.exe" if os.name == "nt" else "native-output")
-            standard = "-std=c11" if cc_language == "c" else "-std=c++17"
-            command = [compiler, standard, "-O2"]
-            if args.kind == "shared":
-                command.extend(["-shared"] if os.name == "nt" else
-                               (["-dynamiclib", "-fPIC"] if sys.platform == "darwin" else ["-shared", "-fPIC"]))
             compile_inputs = [str(compile_source)] if language == "sleela" else [str(p) for p in sources]
-            command.extend(compile_inputs + ["-o", str(staged)])
-            if os.name != "nt":
-                command.append("-lm")
+            is_msvc = os.name == "nt" and pathlib.Path(compiler).name.lower() in {"cl", "cl.exe"}
+            if is_msvc:
+                command = [compiler, "/nologo", "/O2"]
+                command.append("/std:c11" if cc_language == "c" else "/std:c++17")
+                if args.kind == "shared":
+                    command.extend(["/LD", *compile_inputs, "/link", f"/OUT:{staged}"])
+                else:
+                    command.extend(compile_inputs + [f"/Fe:{staged}"])
+            else:
+                standard = "-std=c11" if cc_language == "c" else "-std=c++17"
+                command = [compiler, standard, "-O2"]
+                if args.kind == "shared":
+                    command.extend(["-shared"] if os.name == "nt" else
+                                   (["-dynamiclib", "-fPIC"] if sys.platform == "darwin" else ["-shared", "-fPIC"]))
+                command.extend(compile_inputs + ["-o", str(staged)])
+                if os.name != "nt":
+                    command.append("-lm")
             command.extend(args.compiler_arg)
             result = _run_checked(command, args.timeout)
             if result.stdout: sys.stdout.write(result.stdout)
