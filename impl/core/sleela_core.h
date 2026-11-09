@@ -375,7 +375,9 @@ void slvm_set_audio_native_renderer(SLVM* vm, SLAudioNativeRenderFn fn, void* us
  * and VM object handles never cross the plugin boundary.
  *
  * Native plugins may optionally export sl_native_bind_host() to receive a
- * versioned callback table. Its invoke() entry executes an exact, unique
+ * versioned callback table, rebound before each plugin entrypoint. Plugins
+ * must retain the copied table in thread-local storage. Its invoke() entry
+ * executes an exact, unique
  * SLeeLa function by name using only scalar/UTF-8 ABI values. Callback
  * execution is synchronous within a plugin entry point, uses a nested VM
  * stack, and preserves the suspended caller stack as a GC root. The VM must
