@@ -64,7 +64,7 @@ sleelactl run math                  # exercise the native math subject (__Native
 sleelactl info math                 # how the math subject is reached (import math;)
 
 `sleelactl info math` also reads the declarative capability descriptor at
-`impl/subjects/math/capabilities.conf`. It reports the SLeeLa native facade,
+`bin/sleelactl.d/math-capabilities.conf`. It reports the SLeeLa native facade,
 Core fallback classes, C ABI, VM opcode/ABI, and available vector, matrix,
 complex, spectral, and Fourier kernels. The control plane only describes these
 capabilities; the numerical implementations remain in the math library,
