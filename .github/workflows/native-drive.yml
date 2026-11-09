@@ -2,7 +2,7 @@ name: Native Drive
 
 on:
   push:
-    branches: [main, master, feat/native-drive-integration]
+    branches: [main, master, feat/native-drive-integration, feat/native-drive-completion]
     paths:
       - "tools/sleela-native-drive.py"
       - "tools/sleela-native-service.py"
@@ -39,3 +39,9 @@ jobs:
         run: sh -n bin/sleelactl
       - name: Run Native Drive tests
         run: python -m unittest discover -s tools/tests -p "test_native_drive.py" -v
+      - name: Configure native loader ABI tests
+        run: cmake -S os-level-support -B build/native-loader -DBUILD_TESTING=ON
+      - name: Build native loader ABI tests
+        run: cmake --build build/native-loader --config Release
+      - name: Run native loader ABI tests
+        run: ctest --test-dir build/native-loader -C Release --output-on-failure
