@@ -2561,6 +2561,54 @@ static SLResult run_thread(SLThread* t) {
             t->has_pending_exception = 0;
             ip = handler.target_ip;
         } break;
+        case OP_MATH_CALL: {
+            /* One instruction crosses the interpreter/native boundary. Pop
+             * metadata in reverse push order; validate every tag and signed
+             * dimension before converting to size_t. The adapter owns the
+             * array lock and stages data without retaining VM storage. */
+            SLValue flags_v=POP(), scalar_v=POP();
+            SLValue aux_cols_v=POP(), aux_rows_v=POP();
+            SLValue out_cols_v=POP(), out_rows_v=POP();
+            SLValue b_cols_v=POP(), b_rows_v=POP();
+            SLValue a_cols_v=POP(), a_rows_v=POP();
+            SLValue aux_v=POP(), out_v=POP(), b_v=POP(), a_v=POP();
+            if(t->underflow) TERR("math call: incomplete operand frame");
+            SLValue dims[8]={a_rows_v,a_cols_v,b_rows_v,b_cols_v,
+                             out_rows_v,out_cols_v,aux_rows_v,aux_cols_v};
+            size_t d[8];
+            for(int k=0;k<8;k++) {
+                if(dims[k].type!=SL_INT || dims[k].as.i<0)
+                    TERR("math call: dimensions must be nonnegative integers");
+                d[k]=(size_t)dims[k].as.i;
+            }
+            if(flags_v.type!=SL_INT || flags_v.as.i<0)
+                TERR("math call: flags must be a nonnegative integer");
+            if(scalar_v.type!=SL_INT && scalar_v.type!=SL_DOUBLE)
+                TERR("math call: scalar parameter must be numeric");
+            SLValue handles[4]={a_v,b_v,out_v,aux_v};
+            int h[4];
+            for(int k=0;k<4;k++) {
+                if(handles[k].type!=SL_INT)
+                    TERR("math call: array handles must be integer handles (-1 means absent)");
+                if(handles[k].as.i < -1 || handles[k].as.i > INT_MAX)
+                    TERR("math call: array handle is outside the supported range");
+                h[k]=(int)handles[k].as.i;
+            }
+            double scalar=(scalar_v.type==SL_DOUBLE)?scalar_v.as.d:(double)scalar_v.as.i;
+            double scalar_result=0.0;
+            int status=slvm_math_dispatch_arrays(vm,in.a,h[0],h[1],h[2],h[3],
+                d[0],d[1],d[2],d[3],d[4],d[5],d[6],d[7],
+                scalar,(size_t)flags_v.as.i,&scalar_result);
+            if(status!=SLMATH_OK) {
+                char message[160];
+                snprintf(message,sizeof(message),"native math dispatch failed (status %d)",status);
+                TERR(message);
+            }
+            if(in.a==SLMATH_OP_VECTOR_DOT || in.a==SLMATH_OP_VECTOR_NORM)
+                PUSH(slval_double(scalar_result));
+            else
+                PUSH(slval_int((int64_t)h[2]));
+        } break;
         case OP_HALT: return SLR_HALT;
         case OP_GC_HINT: {
             /* Short-term GC cleanup requested by `x = gc N;` / `x = mem N;`.
