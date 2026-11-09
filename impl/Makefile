@@ -748,7 +748,7 @@ $(NATIVE_LOADER_OBJ): $(NATIVE_LOADER_DIR)/native_loader.c $(NATIVE_LOADER_DIR)/
 $(NATIVE_MODULE_TABLE_OBJ): $(NATIVE_LOADER_DIR)/native_module_table.c $(NATIVE_LOADER_DIR)/native_module_table.h $(NATIVE_LOADER_DIR)/native_loader.h | $(BUILD)
 	$(CC) $(CFLAGS) -I$(NATIVE_LOADER_DIR) -c $< -o $@
 
-$(CORE_OBJ): $(CORE_SRC) core/sleela_core.c core/sleela_core.h core/sleela_java_string.h ../runtime/garbage_collector.h core/sleela_thread.h core/pthread.h core/sleela_synchro.h core/sleela_munction.h core/sleela_bestof.h ../os-level-support/osls_vm_bridge.h ../os-level-support/loader/native_module_table.h ../os-level-support/loader/native_loader.h | $(BUILD)
+$(CORE_OBJ): $(CORE_SRC) core/sleela_core.c core/sleela_core.h subjects/math/linear_algebra.h core/sleela_java_string.h ../runtime/garbage_collector.h core/sleela_thread.h core/pthread.h core/sleela_synchro.h core/sleela_munction.h core/sleela_bestof.h ../os-level-support/osls_vm_bridge.h ../os-level-support/loader/native_module_table.h ../os-level-support/loader/native_loader.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c $(CORE_SRC) -o $@
 
 # The reusable Core archive contains the engine, OS abstractions, GC, and
