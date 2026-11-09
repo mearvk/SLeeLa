@@ -25,14 +25,10 @@ class JavaStringValue {
   }
 
   < ---- Java String value operations expressible in the SLeeLa core --- >
+  < The argument must be non-null. Java's NullPointerException behavior is
+    not implemented until the SLeeLa exception bridge is qualified. >
   JavaStringValue concat(JavaStringValue other) {
-    if (other == null) { return null; }
     return of(value + other.value);
-  }
-
-  JavaStringValue concatText(String other) {
-    if (other == null) { return null; }
-    return of(value + other);
   }
 
   JavaStringValue repeatNonNegative(int count) {
