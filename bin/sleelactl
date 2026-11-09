@@ -155,7 +155,7 @@ verb_allowed() { # verb nature
 have_systemctl() { command -v systemctl >/dev/null 2>&1; }
 systemctl_scope() {
   case "${SLEELACTL_SYSTEMCTL_SCOPE:-system}" in
-    system|user) printf '%s\\n' "${SLEELACTL_SYSTEMCTL_SCOPE:-system}" ;;
+    system|user) printf '%s\n' "${SLEELACTL_SYSTEMCTL_SCOPE:-system}" ;;
     *) err "SLEELACTL_SYSTEMCTL_SCOPE must be 'system' or 'user'."; return 64 ;;
   esac
 }
