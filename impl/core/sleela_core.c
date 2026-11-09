@@ -52,12 +52,34 @@
 
 typedef struct { uint8_t op; int32_t a; } SLInstr;
 typedef struct { char* name; int32_t entry; int32_t nargs; int32_t nlocals; } SLFunc;
-typedef struct { int32_t ret_ip; int32_t base; int32_t nargs; } SLFrame;
+#define EXCEPTION_HANDLERS_MAX 1024
+
+typedef struct {
+    int32_t target_ip;
+    int32_t stack_height;
+    int32_t frame_depth;
+    int32_t owner_frame;
+    SLValue exception_value;
+    int has_exception_value;
+} SLExceptionHandler;
+
+typedef struct {
+    int32_t ret_ip;
+    int32_t base;
+    int32_t nargs;
+    int32_t handler_base; /* handlers active when this frame was entered */
+} SLFrame;
 
 typedef struct SLThread {
     SLVM* vm;
     SLValue stack[STACK_MAX]; int sp;
     SLFrame frames[FRAMES_MAX]; int fp;
+    SLExceptionHandler exception_handlers[EXCEPTION_HANDLERS_MAX];
+    int exception_handler_count;
+    SLValue pending_exception;
+    int has_pending_exception;
+    SLValue uncaught_exception;
+    int has_uncaught_exception;
     int entry_func;
     SLValue result;
     char err[256];
@@ -1011,11 +1033,27 @@ static void gc_mark_vm_roots(GarbageCollector *gc, void *context) {
         pthread_mutex_unlock(&vm->mailbox[i].mtx);
     }
     if (roots && roots->current) {
-        for (int j = 0; j < roots->current->sp; ++j) gc_mark_value(vm, gc, roots->current->stack[j]);
+        SLThread *thread = roots->current;
+        for (int j = 0; j < thread->sp; ++j) gc_mark_value(vm, gc, thread->stack[j]);
+        if (thread->has_pending_exception) gc_mark_value(vm, gc, thread->pending_exception);
+        if (thread->has_uncaught_exception) gc_mark_value(vm, gc, thread->uncaught_exception);
+        for (int j = 0; j < thread->exception_handler_count; ++j) {
+            SLExceptionHandler *handler = &thread->exception_handlers[j];
+            if (handler->has_exception_value)
+                gc_mark_value(vm, gc, handler->exception_value);
+        }
     }
     if (roots && roots->suspended && roots->suspended != roots->current) {
-        for (int j = 0; j < roots->suspended->sp; ++j)
-            gc_mark_value(vm, gc, roots->suspended->stack[j]);
+        SLThread *thread = roots->suspended;
+        for (int j = 0; j < thread->sp; ++j)
+            gc_mark_value(vm, gc, thread->stack[j]);
+        if (thread->has_pending_exception) gc_mark_value(vm, gc, thread->pending_exception);
+        if (thread->has_uncaught_exception) gc_mark_value(vm, gc, thread->uncaught_exception);
+        for (int j = 0; j < thread->exception_handler_count; ++j) {
+            SLExceptionHandler *handler = &thread->exception_handlers[j];
+            if (handler->has_exception_value)
+                gc_mark_value(vm, gc, handler->exception_value);
+        }
     }
 }
 static void gc_java_string_destroy(void *payload) {
@@ -2077,7 +2115,7 @@ static int spawn_thread(SLVM* vm, int fi, const SLValue* args, int nargs) {
     SLFunc* f = &vm->funcs[fi]; int n = nargs; if (n > f->nlocals) n = f->nlocals;
     for (int i = 0; i < n; i++) t->stack[t->sp++] = args[i];
     for (int i = n; i < f->nlocals; i++) t->stack[t->sp++] = slval_null();
-    t->frames[0].ret_ip = -1; t->frames[0].base = 0; t->frames[0].nargs = f->nargs; t->fp = 1;
+    t->frames[0].ret_ip = -1; t->frames[0].base = 0; t->frames[0].nargs = f->nargs; t->frames[0].handler_base = t->exception_handler_count; t->fp = 1;
     int id = vm->nthreads; vm->threads[id] = t; vm->nthreads++;
     pthread_mutex_unlock(&vm->thr_mtx);
     if (pthread_create(&t->handle, NULL, thread_trampoline, t) != 0) {
@@ -2278,6 +2316,7 @@ static int slvm_native_host_invoke(void* context, const char* function,
     nested->frames[0].ret_ip = -1;
     nested->frames[0].base = 0;
     nested->frames[0].nargs = (int)argc;
+    nested->frames[0].handler_base = nested->exception_handler_count;
     nested->fp = 1;
     for (uint32_t i = 0; i < argc; ++i) {
         SLValue value;
@@ -2342,6 +2381,7 @@ static int native_bytecode_fallback(SLThread* t, const char* method,
     frame->ret_ip = return_ip;
     frame->base = base;
     frame->nargs = (int)argc;
+    frame->handler_base = t->exception_handler_count;
     for (int i = (int)argc; i < vm->funcs[function].nlocals; ++i)
         t->stack[t->sp++] = slval_null();
     return vm->funcs[function].entry + 1; /* caller stores ip as entry-1 */
@@ -2352,7 +2392,7 @@ static SLResult run_thread(SLThread* t) {
     if (fi < 0 || fi >= vm->nfunc) TERR("no entry function set");
     SLFunc* ef = &vm->funcs[fi];
     if (t->fp == 0) {
-        t->sp = 0; t->frames[0].ret_ip = -1; t->frames[0].base = 0; t->frames[0].nargs = ef->nargs; t->fp = 1;
+        t->sp = 0; t->frames[0].ret_ip = -1; t->frames[0].base = 0; t->frames[0].nargs = ef->nargs; t->frames[0].handler_base = t->exception_handler_count; t->fp = 1;
         for (int i = 0; i < ef->nlocals; i++) PUSH(slval_null());
     }
     int ip = ef->entry;
@@ -2491,7 +2531,7 @@ static SLResult run_thread(SLThread* t) {
             int cfi=in.a; if(cfi<0||cfi>=vm->nfunc) TERR("call to unknown function");
             SLFunc* f=&vm->funcs[cfi]; if(t->fp>=FRAMES_MAX) TERR("call depth exceeded");
             int base=t->sp-f->nargs; if(base<0) TERR("call: not enough arguments on stack");
-            SLFrame* nf=&t->frames[t->fp++]; nf->ret_ip=ip; nf->base=base; nf->nargs=f->nargs;
+            SLFrame* nf=&t->frames[t->fp++]; nf->ret_ip=ip; nf->base=base; nf->nargs=f->nargs; nf->handler_base=t->exception_handler_count;
             for(int i=f->nargs;i<f->nlocals;i++){ PUSH(slval_null()); } ip=f->entry;
         } break;
         case OP_NATIVE_OPEN: {
