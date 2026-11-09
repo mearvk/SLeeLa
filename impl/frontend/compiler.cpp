@@ -965,10 +965,19 @@ private:
 
     bool tryEmitMathBuiltin(const Call& c){
         const std::string& n=c.callee;
+        static const std::set<std::string> mathBuiltins={
+            "mathVectorAdd","mathVectorDot","mathVectorNorm","mathVectorScale",
+            "mathVectorSubtract","mathVectorNormalize","mathVectorCross3",
+            "mathComplexAdd","mathComplexSubtract","mathComplexMultiply","mathComplexDivide",
+            "mathMatrixMultiply","mathMatrixTranspose","mathMatrixInverse","mathMatrixQR",
+            "mathSymmetricEigen","mathFFT"
+        };
+        if(!mathBuiltins.count(n)) return false;
         if(syntax_<SyntaxVersion{3,0}) throw std::runtime_error("Semantic error: native mathematical built-ins require #sleela 3.0");
         int op=0, a=-1, b=-1, out=-1, aux=-1;
         size_t ar=0, ac=0, br=0, bc=0, orows=0, ocols=0;
         const Expr* scalarExpr=nullptr;
+        double scalarDefault=0.0;
         size_t flagsValue=0;
         auto literalDimension=[&](size_t index,const char* label)->size_t {
             auto lit=dynamic_cast<const IntLit*>(c.args[index].get());
@@ -1015,20 +1024,21 @@ private:
             if(c.args.size()!=3) throw std::runtime_error("Semantic error: mathMatrixInverse(a, out, order) takes three arguments");
             op=SLMATH_OP_MATRIX_INVERSE;a=0;out=1;
             ar=literalDimension(2,"matrix order");ac=ar;orows=ar;ocols=ar;
-            scalarExpr=nullptr;
+            scalarDefault=1e-12;
         } else if(n=="mathMatrixQR"){
             if(c.args.size()!=5) throw std::runtime_error("Semantic error: mathMatrixQR(a, q, r, rows, cols) takes five arguments");
             op=SLMATH_OP_QR;a=0;out=1;aux=2;
             ar=literalDimension(3,"matrix rows");ac=literalDimension(4,"matrix columns");
             if(ar<ac) throw std::runtime_error("Semantic error: QR requires rows >= columns");
             orows=ar;ocols=ac;
-            br=ac;bc=ac;
+            br=ac;bc=ac;scalarDefault=1e-12;
         } else if(n=="mathSymmetricEigen"){
             if(c.args.size()!=5) throw std::runtime_error("Semantic error: mathSymmetricEigen(a, values, vectors, order, maxSweeps) takes five arguments");
             op=SLMATH_OP_SYMMETRIC_EIGEN;a=0;out=1;aux=2;
             ar=literalDimension(3,"matrix order");ac=ar;
             orows=1;ocols=ar;br=ar;bc=ar;
             flagsValue=literalDimension(4,"maximum Jacobi sweeps");
+            scalarDefault=1e-12;
         } else if(n=="mathFFT"){
             if(c.args.size()!=4) throw std::runtime_error("Semantic error: mathFFT(input, output, complexLength, inverse) takes four arguments");
             op=SLMATH_OP_FFT;a=0;out=1;
@@ -1060,7 +1070,7 @@ private:
         const size_t frame[8]={ar,ac,br,bc,orows,ocols,aux>=0?br:0,aux>=0?bc:0};
         for(size_t value:frame) emit(OP_CONST,slvm_add_const_int(vm_,(int64_t)value));
         if(scalarExpr) emitExpr(scalarExpr);
-        else emit(OP_CONST,slvm_add_const_double(vm_,0.0));
+        else emit(OP_CONST,slvm_add_const_double(vm_,scalarDefault));
         emit(OP_CONST,slvm_add_const_int(vm_,(int64_t)flagsValue));
         emit(OP_MATH_CALL,op);
         return true;
