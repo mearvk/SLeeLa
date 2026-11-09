@@ -174,3 +174,18 @@ Katkı sunmadan önce ilgili modül README'sini okuyun, değişikliğin kapsamı
 CPU ve donanım modelleri, GUI, ağ bileşenleri, metin işleme, UTF-4088, π araçları, Modium, Registry, `sleelactl` ve AutoCAD Creator™ ayrı proje alanlarıdır. Amaçları, bağımlılıkları ve olgunluk seviyeleri farklı olabilir. Belgelenmiş doğrulama olmadan deneysel bir dizin veya örnek kararlı üretim özelliği olarak tanımlanmamalıdır. UTF-4088'in boyutu veya kayıt sayısı tam Unicode uyumluluğunu kanıtlamaz; AutoCAD uyumluluğu açık bir sürüm matrisi ve test sonuçları gerektirir.
 
 **Çeviri durumu:** Türkçe sürüm; derleyici hattı, tür ve nesne modeli, döngü zamanlaması, kütüphaneler, native entegrasyon, build/kurulum, güvenlik, test ve katkı sürecini kapsayacak şekilde genişletildi. Ancak bu metin, İngilizce kanonik README'nin ve bağlantılı tüm belirtimlerin satır satır tam çevirisi değildir.
+
+
+## XIX. Hedefler, profiller ve yürütme sınırları
+
+SLeeLa, kaynak kodunu derleme ve yürütme hedeflerinden ayırır. Belgelenen hedef ailesi `SLVM`, `SLJVM` ve `SLIR` içerir; `NATIVE` kısıtlı ve koşullu bir hedeftir, her platformda kullanılabildiği varsayılmamalıdır. `BASIC_COMPLETE` ve `ADVANCED_TOTAL` profilleri farklı kapsamları belirtir. Her derlemede gerçek hedefi, profili ve platform desteğini doğrulayın.
+
+Bir reference dosyayı, modülü veya kaynağı tanımlar; tek başına onu yürütme yetkisi vermez. Program dosyalar, harici kütüphaneler, native bindings veya sistem kaynakları kullanıyorsa yetkilendirme sınırları ve yürütme sorumluluğu açıkça belirlenmelidir. Dokümantasyondaki bir açıklama tek başına runtime güvenlik garantisinin kanıtı değildir; uygulamayı ve ilgili testleri inceleyin.
+
+## XX. Kaynak yaşam döngüsü ve hata ayıklama
+
+Fonksiyonlar veya thread'ler arasında paylaşılan kaynakların sahipliğini, yaşam süresini ve senkronizasyon sorumluluğunu belgeleyin. local variables, shared object state, VM handles ve serializable data kavramlarını birbirinden ayırın. VM-local handle, kararlı bir dosya biçimi veya ağ mesajı değildir. Modülün tanımladığı serialization interface'i kullanın; invalid, missing ve boundary values durumlarını test edin.
+
+Hata ayıklarken commit, OS, architecture ve toolchain bilgilerini kaydedin. Önce ilgili en küçük hedefi derleyin, tam hata çıktısını saklayın, compiler errors ile runtime errors ayrımını yapın ve yeniden üretilebilir en küçük örneği hazırlayın. Başarılı bir build tek başına runtime davranışının doğru olduğunu kanıtlamaz.
+
+Doğrulama raporu exact commit, OS/architecture, compiler versions, tam build/test commands, pass/fail/skip sayıları ve bilinen kısıtlamaları içermelidir. Atlanan veya çalıştırılmayan testler başarılı sayılmamalıdır.
