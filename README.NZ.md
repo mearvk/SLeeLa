@@ -6,6 +6,76 @@ SLeeLa is a native systems programming language, compiler, runtime, and virtual-
 
 ---
 
+
+## He aratohu hangarau i te reo Māori
+
+### A. Te hanga me te whakamātau
+
+Ko te kōnae `SLEELA.syntax` te tohutoro matua mō ngā ture wetereo o te reo SLeeLa. Me wehewehe te putanga o te kaiwhakamāori waehere (compiler) i te putanga o te wetereo pūtake: he putanga motuhake ēnei, ā, kāore e tika kia whakaarohia ka tautokona ngā āhuatanga katoa o te wetereo e ia putanga compiler.
+
+Mai i te kōpaki matua o te pūranga waehere, whakahaerehia ngā whakahau e tika ana:
+
+```sh
+make
+make -C impl all
+bash ./test-suites/run-all.sh --all
+```
+
+Ko ētahi atu whakahau Make:
+
+```sh
+make all
+make registry
+make tests
+make ballum
+make help
+make clean
+```
+
+Ki te angitu te hanga o tētahi wāhanga, ehara tēnā i te tohu kua rite katoa ngā whare pukapuka, ngā wāhanga rānei o ngā pūnaha whakahaere mō te tukunga. Me here ngā hua whakamātau ki te Git commit, ki te pūnaha whakahaere me te huinga taputapu i whakamahia. Kaua e kī kua angitu tētahi whakamātautau kāore i whakahaerehia, kua hipa rānei.
+
+### B. Te tāuta
+
+E tautoko ana te kaupapa i te tāutanga mō te pūnaha katoa, i te tāutanga mō te kaiwhakamahi kotahi, me te hanga kōpaki takawaenga mō te whakarite pūmanawa:
+
+```sh
+sudo make install
+make install PREFIX="$HOME/.local"
+make install DESTDIR="$PWD/package-root"
+make install-check
+```
+
+Ko te tāutanga pūnaha ka whakamahi i ngā ara pērā i `/usr/local/bin`, `/usr/local/lib/sleela` me `/usr/local/share/sleela`. Mā `PREFIX="$HOME/.local"` e tāuta ki te rohe o te kaiwhakamahi, ā, i te nuinga o te wā kāore e hiahiatia te `sudo`. Ka hangaia e `DESTDIR` he rākau kōnae mō te whakarite mōkihi; ehara tēnei i te tāutanga tika ki te pūnaha matua.
+
+A pee i te [aratohu tāuta](install/README.md) me ngā tohutohu mō tō pūnaha whakahaere. Kaua e muku i ngā kōnae kāore i tuhia ki te rārangi a te kaiwhakauru.
+
+### C. Te reo, te compiler me te taiao whakahaere
+
+Kei roto i SLeeLa te compiler, te taiao whakahaere (runtime), ngā mīhini mariko, ngā whare pukapuka me ngā taputapu tuhinga. Kei roto hoki i te pūranga te waehere C me C++ taketake, me ngā kōwae SLeeLa. Ina whakawhiti te waehere i te paenga i waenga i te waehere taketake me te runtime, me whai i te kirimana ABI kua tuhia mō taua wāhanga.
+
+Ko ngā wāhanga matua o te ara compiler ko te tātari kupu, te tātari wetereo, te tātari tikanga, te whakawhiti ki te whakaaturanga takawaenga, te whakaputa waehere me te whakahaere i runga i te mīhini mariko. Me whakamātau ia wāhanga, me ngā hononga i waenganui i aua wāhanga. Kāore te whakamātautau wetereo anake e whakaū i te tika o te hōtaka katoa.
+
+### D. Ngā kirimana API me ngā kōwae
+
+Me whakamārama ia API tūmatanui i ngā raraunga tāuru e whakaaetia ana, ngā raraunga whakaputa, ngā hapa ka taea, te mana pupuri mahara me ngā pānga taha. Me tuhi hoki ngā tuhinga kōwae i ngā here tīmatanga, ngā putanga e tika ana kia tutuki, me ngā herenga o te pūnaha whakahaere.
+
+Ehara te ingoa tohu, te tohutoro kōwae rānei i te whakaaetanga kia whakahaerehia he waehere. Me tirotiro motuhake te whakaaetanga me ngā rohe whakahaere i te wāhi tika. Ki te hē ngā raraunga tāuru, ki te ngaro tētahi rauemi, ki te kore rānei e tautokona tētahi āhuatanga, me mutu haumaru te mahinga.
+
+### E. Te whakamātautau regression me te whakahokinga hua
+
+Me whai te huinga whakamātautau i ngā tauira angitu me ngā tauira hapa: ngā kōnae pūtake tika, ngā hapa wetereo, ngā takahitanga momo raraunga, ngā hapa whakawhiti IR, ngā hua whakaputa waehere me ngā hua whakahaere. Mō te hononga ki te waehere taketake, whakamātauria hoki te hototahitanga ABI, te whakahaere hapa me te tuku rauemi.
+
+Tuhia te pūnaha whakahaere, te putanga compiler, ngā putanga taputapu me te Git commit. Me taea te whakatairite i ngā hua o ngā whakamātautau ka whakahaerehia anō; me mārama hoki ngā whakamātautau i mahue. Tirohia te [kaupapa whakamātautau](markdown/TESTING.md) me te [rārangi tautoko pūnaha whakahaere](docs/PLATFORM-SUPPORT.md).
+
+### F. Te reo ā-rohe me te tiaki tuhinga
+
+Kia mau tonu ngā ingoa kōnae, ngā pūtāutu, ngā whakahau, ngā ara, ngā URL, ngā tauira waehere me ngā ingoa API ki tō rātou āhua taketake. Whakamāoritia ngā whakamārama, kaua ko ngā aho e tika ana kia mōhiotia e te compiler, e te anga whakahau rānei. Whakamahia ngā kupu hangarau kia ōrite puta noa i ngā tuhinga; ki te kore he kupu Māori mārama, pūmau rānei, tuhia te kupu hangarau Ingarihi ki roto i ngā taiapa i te whakamahinga tuatahi.
+
+He mahi haere tonu te whakamāoritanga. Ina whakahoutia te README matua, whakatauritea ngā wāhanga ōrite, kātahi ka whakahou i tēnei putanga reo Māori. Me arotake anō e tētahi kaikōrero matatau i te reo Māori, ā, me arotake motuhake hoki e tētahi mātanga hangarau i mua i te kī kua oti katoa te whakamāoritanga.
+
+
+---
+
 ## Full English technical reference
 
 # SLeeLa 3.0 — New Zealand (NZ)
