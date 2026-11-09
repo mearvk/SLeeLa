@@ -9,4 +9,7 @@ with tempfile.TemporaryDirectory() as td:
     (root/"Example.sleela").write_text("#sleela 1.3\njava.lang.String value;\n")
     p=subprocess.run(["python3",str(tool),"--check","--root",str(root)],capture_output=True,text=True)
     if p.returncode!=0: raise SystemExit(p.stdout+p.stderr)
+graph = subprocess.run(["python3", str(ROOT/"tests"/"java_api_dependency_graph_suite.py")], capture_output=True, text=True)
+if graph.returncode:
+    raise SystemExit(graph.stdout + graph.stderr)
 print("java-api-dependency-suite: PASS")
