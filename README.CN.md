@@ -222,3 +222,16 @@ Reference 用于识别文件、模块或资源，本身并不授予执行权限�
 Country-specific README 是不同地区用户的技术文档入口，不取代 normative language specification 或 module API documentation。英文源文档更新后，应逐项检查翻译是否过时。Technical identifiers、commands、paths 和 code examples 应保持不变；尚未完成语言或技术审校的内容应明确标注。
 
 **扩展翻译状态：** 简体中文指南现已增加 target/profile、执行权限边界、资源生命周期、调试与测试报告、跨平台安装注意事项及国际文档维护说明。
+
+
+## 十九、模块 API 契约、兼容性与测试策略
+
+引入新 API 时，应记录输入、输出、错误条件、数据所有权，以及操作是否产生 side effects。文档示例应同时展示正常用法和 invalid/missing input 的处理。未经 implementation 和 tests 验证的行为，不应写成保证。
+
+测试应按 compiler pipeline 分层：lexing/parsing、semantic analysis、IR lowering、code generation、VM execution 和 native integration。每个 regression case 都应保留最小可复现输入、预期结果与实际结果。API 变更必须说明 backward compatibility、migration steps，以及对现有 examples 的影响。
+
+## 二十、本地化、字符编码与可读性
+
+不同语言版本中的 technical identifiers、commands、paths、syntax 和 code blocks 必须保持一致。翻译说明文字，不要翻译 source code 使用的 token 或名称。应明确语言和地区语境；简体中文术语应保持一致，同时避免把地区性用语误写成所有中文用户的统一表达。
+
+每次更新后检查 Markdown links、标题层级、code fences 和示例。英文 canonical documents 更新时，应逐节比对并同步翻译，而不是只更新简介。未经母语者或技术审校的内容应明确标注。
