@@ -1225,7 +1225,7 @@ static void value_to_text(SLVM* vm, SLValue v, char* buf, size_t cap) {
         case SL_DOUBLE: snprintf(buf, cap, "%g", v.as.d); break;
         case SL_BOOL:   snprintf(buf, cap, "%s", v.as.b ? "true" : "false"); break;
         case SL_STR:    snprintf(buf, cap, "%s", slvm_str(vm, v.as.s)); break;
-        case SL_UTF16: snprintf(buf, cap, "[JavaString UTF-16 handle=%d]", v.as.h); break;
+        case SL_UTF16: { SLJavaStringInstance *js = java_string_get(vm, v); snprintf(buf, cap, "[JavaString UTF-16 length=%zu]", js ? js->value.length : 0u); } break;
         case SL_STRUCT: {
             const char* tn = (vm->structs && struct_valid_handle(vm, v.as.h))
                 ? vm->struct_types[vm->structs[v.as.h].type].name : "struct";
@@ -1253,6 +1253,26 @@ static void value_to_text(SLVM* vm, SLValue v, char* buf, size_t cap) {
     }
 }
 
+static void print_java_string(SLVM *vm, SLValue value) {
+    SLJavaStringInstance *instance = java_string_get(vm, value);
+    if (!instance) { fputs("[invalid Java String]", stdout); return; }
+    for (size_t i = 0; i < instance->value.length; ++i) {
+        uint32_t cp = instance->value.units[i];
+        if (cp >= 0xd800u && cp <= 0xdbffu && i + 1 < instance->value.length) {
+            uint32_t low = instance->value.units[i + 1];
+            if (low >= 0xdc00u && low <= 0xdfffu) {
+                cp = 0x10000u + ((cp - 0xd800u) << 10) + (low - 0xdc00u);
+                ++i;
+            } else cp = 0xfffdu;
+        } else if (cp >= 0xd800u && cp <= 0xdfffu) cp = 0xfffdu;
+        unsigned char out[4]; size_t n;
+        if (cp <= 0x7fu) { out[0]=(unsigned char)cp; n=1; }
+        else if (cp <= 0x7ffu) { out[0]=(unsigned char)(0xc0u|(cp>>6)); out[1]=(unsigned char)(0x80u|(cp&0x3fu)); n=2; }
+        else if (cp <= 0xffffu) { out[0]=(unsigned char)(0xe0u|(cp>>12)); out[1]=(unsigned char)(0x80u|((cp>>6)&0x3fu)); out[2]=(unsigned char)(0x80u|(cp&0x3fu)); n=3; }
+        else { out[0]=(unsigned char)(0xf0u|(cp>>18)); out[1]=(unsigned char)(0x80u|((cp>>12)&0x3fu)); out[2]=(unsigned char)(0x80u|((cp>>6)&0x3fu)); out[3]=(unsigned char)(0x80u|(cp&0x3fu)); n=4; }
+        (void)fwrite(out, 1, n, stdout);
+    }
+}
 static void print_value(SLVM* vm, SLValue v) {
     /* A printed String may be a large generated document; size the buffer from
      * SL_MAX_STRTEXT (heap-allocated) so output is not truncated. */
@@ -1260,6 +1280,7 @@ static void print_value(SLVM* vm, SLValue v) {
         printf("%s", slvm_str(vm, v.as.s));
         return;
     }
+    if (v.type == SL_UTF16) { print_java_string(vm, v); return; }
     char buf[1024];
     value_to_text(vm, v, buf, sizeof(buf));
     printf("%s", buf);
@@ -2436,10 +2457,10 @@ static SLResult run_thread(SLThread* t) {
         case OP_NEG: { SLValue a=POP(); if(a.type==SL_INT128) PUSH(slval_int128(-a.as.i128)); else if(a.type==SL_INT) PUSH(slval_int(-a.as.i)); else PUSH(slval_double(-as_num(a))); } break;
         case OP_EQ: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_UTF16||b.type==SL_UTF16) { if(a.type!=SL_UTF16||b.type!=SL_UTF16) e=0; else if(slvm_java_string_equals(vm,a,b,&e)!=SL_JAVA_STRING_OK) TERR("invalid Java String value"); } else if(a.type==SL_NULL||b.type==SL_NULL) e=(a.type==SL_NULL&&b.type==SL_NULL); else if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s==b.as.s); else if(any_i128(a,b)&&both_any_int(a,b)) e=(as_i128(a)==as_i128(b)); else e=(as_num(a)==as_num(b)); PUSH(slval_bool(e)); } break;
         case OP_NE: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_UTF16||b.type==SL_UTF16) { if(a.type!=SL_UTF16||b.type!=SL_UTF16) e=1; else if(slvm_java_string_equals(vm,a,b,&e)!=SL_JAVA_STRING_OK) TERR("invalid Java String value"); else e=!e; } else if(a.type==SL_NULL||b.type==SL_NULL) e=!(a.type==SL_NULL&&b.type==SL_NULL); else if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=!(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=!(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s!=b.as.s); else if(any_i128(a,b)&&both_any_int(a,b)) e=(as_i128(a)!=as_i128(b)); else e=(as_num(a)!=as_num(b)); PUSH(slval_bool(e)); } break;
-        case OP_LT: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)<as_i128(b))); else PUSH(slval_bool(as_num(a)<as_num(b))); } break;
-        case OP_LE: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)<=as_i128(b))); else PUSH(slval_bool(as_num(a)<=as_num(b))); } break;
-        case OP_GT: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)>as_i128(b))); else PUSH(slval_bool(as_num(a)>as_num(b))); } break;
-        case OP_GE: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)>=as_i128(b))); else PUSH(slval_bool(as_num(a)>=as_num(b))); } break;
+        case OP_LT: { SLValue b=POP(),a=POP(); if(a.type==SL_UTF16||b.type==SL_UTF16) { int32_t order; if(a.type!=SL_UTF16||b.type!=SL_UTF16||slvm_java_string_compare_to(vm,a,b,&order)!=SL_JAVA_STRING_OK) TERR("invalid Java String comparison"); PUSH(slval_bool(order<0)); } else if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)<as_i128(b))); else PUSH(slval_bool(as_num(a)<as_num(b))); } break;
+        case OP_LE: { SLValue b=POP(),a=POP(); if(a.type==SL_UTF16||b.type==SL_UTF16) { int32_t order; if(a.type!=SL_UTF16||b.type!=SL_UTF16||slvm_java_string_compare_to(vm,a,b,&order)!=SL_JAVA_STRING_OK) TERR("invalid Java String comparison"); PUSH(slval_bool(order<=0)); } else if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)<=as_i128(b))); else PUSH(slval_bool(as_num(a)<=as_num(b))); } break;
+        case OP_GT: { SLValue b=POP(),a=POP(); if(a.type==SL_UTF16||b.type==SL_UTF16) { int32_t order; if(a.type!=SL_UTF16||b.type!=SL_UTF16||slvm_java_string_compare_to(vm,a,b,&order)!=SL_JAVA_STRING_OK) TERR("invalid Java String comparison"); PUSH(slval_bool(order>0)); } else if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)>as_i128(b))); else PUSH(slval_bool(as_num(a)>as_num(b))); } break;
+        case OP_GE: { SLValue b=POP(),a=POP(); if(a.type==SL_UTF16||b.type==SL_UTF16) { int32_t order; if(a.type!=SL_UTF16||b.type!=SL_UTF16||slvm_java_string_compare_to(vm,a,b,&order)!=SL_JAVA_STRING_OK) TERR("invalid Java String comparison"); PUSH(slval_bool(order>=0)); } else if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)>=as_i128(b))); else PUSH(slval_bool(as_num(a)>=as_num(b))); } break;
         case OP_AND: { SLValue b=POP(),a=POP(); PUSH(slval_bool(is_truthy(a)&&is_truthy(b))); } break;
         case OP_OR: { SLValue b=POP(),a=POP(); PUSH(slval_bool(is_truthy(a)||is_truthy(b))); } break;
         case OP_NOT: { SLValue a=POP(); PUSH(slval_bool(!is_truthy(a))); } break;
