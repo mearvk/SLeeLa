@@ -2704,8 +2704,8 @@ fall back.
 A plugin may optionally export `sl_native_bind_host(const SLNativeHostAPI*)`.
 When a host-authorized module is opened, the loader passes a size-checked
 `SL_NATIVE_HOST_CALLBACK_ABI_VERSION` table. The plugin copies the table and
-may call its `invoke(context, function, argc, argv, result)` entry from a
-typed native method.
+may call its `invoke(context, function, argc, argv, result)` entry synchronously from a
+typed native method. Plugins must not retain or invoke the table asynchronously.
 
 The callback function name must exactly match one compiled SLeeLa function
 name and argument count. Names that are missing or ambiguous are rejected.
