@@ -69,7 +69,13 @@ tail -n +"$((SQUARE_LINES+1))" "$WORK/sleela_full.txt" > "$WORK/sleela_lines.txt
 fail=0
 
 check() { # desc  expected  actual
-  if diff -u "$2" "$3" > "$WORK/diff.txt"; then
+  # Windows text-mode stdout emits CRLF while committed fixtures are LF.
+  # Normalize only line-ending CRs so the byte-content contract is portable.
+  local expected_normalized="$WORK/expected.normalized"
+  local actual_normalized="$WORK/actual.normalized"
+  sed 's/\r$//' "$2" > "$expected_normalized"
+  sed 's/\r$//' "$3" > "$actual_normalized"
+  if diff -u "$expected_normalized" "$actual_normalized" > "$WORK/diff.txt"; then
     echo "PASS: $1"
   else
     echo "FAIL: $1"
