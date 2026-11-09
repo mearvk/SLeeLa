@@ -52,7 +52,7 @@ All implementations were validated with the source-built compiler
 
 ## Native kernel boundary
 
-The source-level `SLVector`, `SLMatrix`, and `SLComplex` classes remain the language-facing mathematical objects and preserve pure-SLeeLa fallback implementations. The native numerical-structure kernel lives under `impl/subjects/math/linear_algebra.{h,cpp}` behind a stable C ABI. `OP_MATH_CALL` (append-only opcode 179) and the typed Core array bridge expose native vector, matrix, complex, factorization, spectral, and Fourier operations to `#sleela 3.0` programs. Native built-ins use VM arrays and compile-time literal dimensions; output arrays must be preallocated to the documented shape. Programs that do not use these built-ins continue to use the pure SLeeLa methods.
+The source-level `SLVector`, `SLMatrix`, and `SLComplex` classes remain the language-facing mathematical objects and preserve pure-SLeeLa fallback implementations. The native numerical-structure kernel lives under `impl/subjects/math/linear_algebra.{h,cpp}` behind a stable C ABI. `OP_MATH_CALL` (append-only opcode 179) and the typed Core array bridge expose native vector, matrix, complex, factorization, spectral, and Fourier operations to `#sleela 3.0` programs. Native built-ins use VM arrays and runtime integer dimensions; output arrays must be preallocated to the documented shape. Programs that do not use these built-ins continue to use the pure SLeeLa methods.
 
 
 ## Native numerical coverage
