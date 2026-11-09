@@ -96,3 +96,27 @@ The first native linear-algebra C ABI is defined in `impl/subjects/math/linear_a
 The ABI supports exact in-place vector operations and stages matrix results so matrix multiplication and transpose can safely write over their inputs. Partially overlapping vector ranges are outside the contract. The opt-in regression command is `make -C impl test-linear-algebra`.
 
 This is the native kernel foundation, not yet a claim of VM dispatch integration. The next integration step is to bind these operations to the existing SLeeLa vector/matrix language objects, preserving their current source-level APIs and validating dimensions and backing-array lengths at the VM boundary. Complex arithmetic, factorizations, spectral routines, and FFT remain subsequent work.
+
+
+## Expanded native mathematical structures
+
+The native kernel now also exposes:
+
+- **LU:** partial-pivoting factorization, triangular solve, and inverse.
+- **QR:** thin modified Gram-Schmidt factorization for tall/square matrices.
+- **Complex:** add, subtract, multiply, stable divide, magnitude, conjugate.
+- **Arrays:** copy, strided slice, and elementwise arithmetic over caller-owned double buffers.
+- **Spectral:** symmetric real eigendecomposition using Jacobi rotations; eigenvectors are returned as columns and eigenvalues are unsorted.
+- **Fourier:** in-place radix-2 complex FFT with inverse normalization. Length must be a nonzero power of two.
+
+The public header also defines slmath_buffer, operation identifiers, and slmath_vm_dispatch. This is the typed, ownership-neutral VM bridge contract: the VM must validate and pin array storage before dispatch and keep it pinned until the call returns. Buffer descriptors do not own or retain storage.
+
+**Integration boundary:** the native object is linked into the sleela and sleelvac executables and libslcore.a. The current branch does not yet add an opcode to the VM interpreter or automatically marshal SLeeLa heap arrays into slmath_buffer; the dispatch ABI is ready for that interpreter hook, but that final heap/GC integration must be implemented against the VM's actual array representation. Do not describe the bridge as VM-executed until that hook and a source-to-runtime regression pass.
+
+Build and run the opt-in C ABI suite with:
+
+```sh
+make -C impl test-linear-algebra
+```
+
+The test suite covers vector/matrix primitives, LU solve and inverse, QR orthogonality, complex division, strided arrays, symmetric eigenvalue invariants, FFT round-trip, and typed dispatch. It is deliberately not part of the default make test aggregate yet.
