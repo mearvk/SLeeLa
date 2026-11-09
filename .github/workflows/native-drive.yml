@@ -21,6 +21,9 @@ jobs:
           python-version: "3.12"
       - name: Verify trusted source manifest
         run: python tools/verify-before-execution.py --manifest security/sha256-manifest.json --root .
+      - name: Compile VM-owned native module lifecycle bridge
+        if: runner.os != 'Windows'
+        run: make -C impl build/native_loader.o build/native_module_table.o build/sleela_core.o
       - name: Check installer inputs
         if: runner.os != 'Windows'
         run: make -C install install-check
