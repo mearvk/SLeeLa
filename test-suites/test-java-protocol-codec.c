@@ -58,6 +58,9 @@ int main(void) {
         assert(pipe.outgoing_length == length);
         assert(memcmp(pipe.outgoing, bytes, length) == 0);
         assert(response_length == pipe.incoming_length);
+        assert(sleela_sljip_decode(response, response_length, &frame));
+        assert(frame.request_id == 0x12345678u);
+        assert(frame.opcode == (uint8_t)(5u | 0x80u));
     }
     puts("SLJIP native frame codec and exchange: PASS");
     return 0;
