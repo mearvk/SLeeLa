@@ -26,7 +26,7 @@ with tempfile.TemporaryDirectory() as tmp:
         'module java.base { requires java.logging; exports java.lang; }\n')
     put(root, "lib/java/early_access/jdk28/docs/api/java.base/java/lang/String.sleela",
         '#sleela 2.5\nclass String {}\n')
-    put(root, "Example.sleela", '''#sleela 2.5
+    put(root, "lib/java/java/lang/Example.sleela", '''#sleela 2.5
 import java.lang.String;
 import java.util.*;
 import static java.util.Map.Entry.comparingByKey;
@@ -47,7 +47,7 @@ class Broken {}
     if p.returncode:
         raise SystemExit(p.stdout + p.stderr)
     graph = json.loads(out.read_text(encoding="utf-8"))
-    assert graph["summary"]["indexed_types"] == 5, graph["summary"]
+    assert graph["summary"]["indexed_types"] == 6, graph["summary"]
     assert graph["summary"]["duplicate_type_paths"] == 1, graph["summary"]
     assert graph["summary"]["wildcard_package_edges"] == 1, graph["summary"]
     assert any(x["reference"] == "java.lang.MissingType" for x in graph["unresolved"])
