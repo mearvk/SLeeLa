@@ -31,6 +31,54 @@ class LinearAlgebraVmSmoke {
         print("MATH_MATRIX_TRANSPOSE");
         print(arrayGet(mt, 0)); print(arrayGet(mt, 1));
         print(arrayGet(mt, 2)); print(arrayGet(mt, 3));
+        let diff = arrayNew(3);
+        mathVectorSubtract(b, a, diff, 3);
+        print("MATH_VECTOR_SUBTRACT"); print(arrayGet(diff, 2));
+        let unit = arrayNew(3);
+        mathVectorNormalize(a, unit, 3);
+        print("MATH_VECTOR_NORMALIZE"); print(arrayGet(unit, 0));
+        let cross = arrayNew(3);
+        mathVectorCross3(a, b, cross);
+        print("MATH_VECTOR_CROSS3"); print(arrayGet(cross, 2));
+
+        let inv = arrayNew(4);
+        mathMatrixInverse(ma, inv, 2);
+        print("MATH_MATRIX_INVERSE"); print(arrayGet(inv, 0));
+        let qrQ = arrayNew(6);
+        let qrR = arrayNew(4);
+        let tall = arrayNew(6);
+        arraySet(tall, 0, 1.0); arraySet(tall, 1, 0.0);
+        arraySet(tall, 2, 1.0); arraySet(tall, 3, 1.0);
+        arraySet(tall, 4, 1.0); arraySet(tall, 5, 2.0);
+        mathMatrixQR(tall, qrQ, qrR, 3, 2);
+        print("MATH_MATRIX_QR"); print(arrayGet(qrR, 0));
+        let eigenValues = arrayNew(2);
+        let eigenVectors = arrayNew(4);
+        let symmetric = arrayNew(4);
+        arraySet(symmetric, 0, 2.0); arraySet(symmetric, 1, 1.0);
+        arraySet(symmetric, 2, 1.0); arraySet(symmetric, 3, 2.0);
+        mathSymmetricEigen(symmetric, eigenValues, eigenVectors, 2, 32);
+        print("MATH_SYMMETRIC_EIGEN"); print(arrayGet(eigenValues, 0));
+        let fftIn = arrayNew(8);
+        let fftOut = arrayNew(8);
+        arraySet(fftIn, 0, 1.0);
+        mathFFT(fftIn, fftOut, 4, 0);
+        print("MATH_FFT"); print(arrayGet(fftOut, 0));
+
+        let ca = arrayNew(2);
+        let cb = arrayNew(2);
+        let cz = arrayNew(2);
+        arraySet(ca, 0, 3.0); arraySet(ca, 1, 2.0);
+        arraySet(cb, 0, 1.0); arraySet(cb, 1, -1.0);
+        mathComplexAdd(ca, cb, cz);
+        print("MATH_COMPLEX_ADD"); print(arrayGet(cz, 0));
+        mathComplexSubtract(ca, cb, cz);
+        print("MATH_COMPLEX_SUBTRACT"); print(arrayGet(cz, 1));
+        mathComplexMultiply(ca, cb, cz);
+        print("MATH_COMPLEX_MULTIPLY"); print(arrayGet(cz, 0));
+        mathComplexDivide(ca, cb, cz);
+        print("MATH_COMPLEX_DIVIDE"); print(arrayGet(cz, 1));
+
         print("NATIVE_MATH_VM_SOURCE=PASS");
     }
 }
