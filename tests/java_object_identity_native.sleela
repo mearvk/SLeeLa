@@ -1,0 +1,19 @@
+#sleela 2.5
+material;
+
+class JavaObjectIdentitySmoke {
+  void main() {
+    JavaObjectIdentity first = new JavaObjectIdentity();
+    JavaObjectIdentity same = new JavaObjectIdentity();
+    JavaObjectIdentity otherHeap = new JavaObjectIdentity();
+    first.bind(7, 42, "sample.Widget");
+    same.bind(7, 42, "sample.Widget");
+    otherHeap.bind(8, 42, "sample.Widget");
+    print("BOUND=" + first.isBound());
+    print("IDENTITY-EQUAL=" + first.equals(same));
+    print("DISTINCT-HEAP=" + first.equals(otherHeap));
+    print("HASH-STABLE=" + (first.hashCode() == same.hashCode()));
+    print("CLASS=" + first.className());
+    print("MONITOR=" + first.supportsMonitorOperations());
+  }
+}
