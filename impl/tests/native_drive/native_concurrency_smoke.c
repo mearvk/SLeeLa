@@ -9,6 +9,13 @@
 #include <time.h>
 #include <unistd.h>
 
+static void release_plugin(int fd) {
+    if (fd >= 0) {
+        (void)lseek(fd, 0, SEEK_SET);
+        (void)write(fd, "x", 1);
+    }
+}
+
 typedef struct {
     SLVM *vm;
     SLNativeHandle handle;
@@ -82,9 +89,8 @@ int main(int argc, char **argv) {
     release_fd = mkstemp(release_path);
     if (entered_fd < 0 || release_fd < 0) goto cleanup;
     close(entered_fd); entered_fd = -1;
-    close(release_fd); release_fd = -1;
+    close(entered_fd); entered_fd = -1;
     unlink(entered_path);
-    unlink(release_path);
 
     vm = slvm_new();
     if (!vm || slvm_set_native_authorizer(vm, authorize_path, argv[1]) != 0 ||
@@ -101,8 +107,7 @@ int main(int argc, char **argv) {
 
     if (pthread_create(&caller, NULL, call_worker, &state) != 0) goto cleanup;
     if (!wait_for_file(entered_path)) {
-        FILE *release = fopen(release_path, "wb");
-        if (release) fclose(release);
+        release_plugin(release_fd);
         (void)pthread_join(caller, NULL);
         goto cleanup;
     }
@@ -123,15 +128,7 @@ int main(int argc, char **argv) {
         goto cleanup;
     }
 
-    {
-        FILE *release = fopen(release_path, "wb");
-        if (!release) {
-            (void)pthread_join(caller, NULL);
-            (void)pthread_join(closer, NULL);
-            goto cleanup;
-        }
-        fclose(release);
-    }
+    release_plugin(release_fd);
     (void)pthread_join(caller, NULL);
     (void)pthread_join(closer, NULL);
 
