@@ -108,6 +108,7 @@ UTF16_SMOKE := $(BUILD)/sleela_utf16_smoke
 JAVA_STRING_OBJ := $(BUILD)/sleela_java_string.o
 JAVA_STRING_SMOKE := $(BUILD)/sleela_java_string_smoke
 JAVA_STRING_VM_SMOKE := $(BUILD)/sleela_java_string_vm_smoke
+JAVA_STRING_CODEC_OBJ := $(BUILD)/sleela_java_string_codec.o
 OSLS_DIR := ../os-level-support
 OSLS_CORE_OBJ := $(BUILD)/osls_core.o
 OSLS_EXT_OBJ := $(BUILD)/osls_extended.o
@@ -733,7 +734,7 @@ $(CORE_OBJ): $(CORE_SRC) core/sleela_core.c core/sleela_core.h core/sleela_java_
 SLCORE_OBJS := $(CORE_OBJ) $(OSLS_OBJS) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) \
   $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) \
   $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(PLATFORM_OBJ) $(TIME_OBJ) \
-  $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SLUI_OBJS) $(UTF16_OBJ) $(JAVA_STRING_OBJ)
+  $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SLUI_OBJS) $(UTF16_OBJ) $(JAVA_STRING_OBJ) $(JAVA_STRING_CODEC_OBJ)
 $(SLCORE_LIB): $(SLCORE_OBJS)
 	$(AR) rcs $@ $(SLCORE_OBJS)
 $(UTF16_OBJ): core/sleela_utf16.c core/sleela_utf16.h | $(BUILD)
@@ -748,8 +749,10 @@ $(JAVA_STRING_SMOKE): core/sleela_java_string_smoke.c $(JAVA_STRING_OBJ) | $(BUI
 	$(CC) $(CFLAGS) -Icore $^ -o $@
 test-java-string: $(JAVA_STRING_SMOKE)
 	@$(JAVA_STRING_SMOKE)
-$(JAVA_STRING_VM_SMOKE): core/sleela_java_string_vm_smoke.c $(SLCORE_LIB) | $(BUILD)
-	$(CXX) $(CXXFLAGS) -Icore $< $(SLCORE_LIB) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+$(JAVA_STRING_CODEC_OBJ): core/sleela_java_string_codec.c core/sleela_java_string_codec.h core/sleela_java_string.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c $< -o $@
+$(JAVA_STRING_VM_SMOKE): core/sleela_java_string_vm_smoke.c $(SLCORE_LIB) $(JAVA_STRING_CODEC_OBJ) | $(BUILD)
+	$(CXX) $(CXXFLAGS) -Icore $< $(JAVA_STRING_CODEC_OBJ) $(SLCORE_LIB) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
 test-java-string-vm: $(JAVA_STRING_VM_SMOKE)
 	@$(JAVA_STRING_VM_SMOKE)
 $(OSLS_VM_CAP_SMOKE_OBJ): tests/osls_vm/osls_vm_capability_test.c | $(BUILD)
