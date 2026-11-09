@@ -356,3 +356,12 @@ broader JDK String API (including locale-aware case mapping, normalization,
 regular expressions, formatting, and charset operations) remain separate
 work. The facade's search methods should be treated as implemented source
 behavior, not as evidence that the complete Java API is implemented.
+
+
+The current compiler exception boundary is more limited than Java's: the
+compiler's present `try` lowering emits the try body and optional `finally`
+body, but does not install catch handlers; `throw` currently evaluates and
+discards its operand. Consequently, Java-style `try/catch/throw` behavior
+must not be claimed for this facade or used as a recovery mechanism. A
+dedicated VM exception/unwind design is required before Java exception
+compatibility can be implemented safely.
