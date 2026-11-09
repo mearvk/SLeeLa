@@ -125,6 +125,12 @@ else
   NATIVE_CALL_FIXTURE := $(BUILD)/native_call_fixture.so
   NATIVE_CALL_FIXTURE_FLAGS := -shared
 endif
+# Shared-library code needs position-independent relocations on ELF and Mach-O.
+# Keep the flag platform-scoped because MinGW/MSVC-compatible Windows builds do
+# not accept the POSIX -fPIC option.
+ifneq ($(PLATFORM),windows)
+  NATIVE_CALL_FIXTURE_CFLAGS := -fPIC
+endif
 NATIVE_CALL_SOURCE := $(BUILD)/native_drive_compile_source.sleela
 NATIVE_CALL_ARTIFACT := $(BUILD)/native_drive_compile_artifact.sleela
 OSLS_OBJS := $(OSLS_CORE_OBJ) $(OSLS_EXT_OBJ) $(OSLS_EXT2_OBJ) $(OSLS_VM_OBJ) $(NATIVE_LOADER_OBJ) $(NATIVE_MODULE_TABLE_OBJ)
@@ -732,7 +738,7 @@ $(OSLS_VM_CAP_SMOKE): $(OSLS_VM_CAP_SMOKE_OBJ) $(SLCORE_LIB)
 $(NATIVE_CALL_SMOKE_OBJ): tests/native_drive/native_call_smoke.c core/sleela_core.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c $< -o $@
 $(NATIVE_CALL_FIXTURE): tests/native_drive/native_call_fixture.c ../os-level-support/loader/native_loader.h | $(BUILD)
-	$(CC) $(CFLAGS) -DSL_NATIVE_PLUGIN_BUILD $(NATIVE_CALL_FIXTURE_FLAGS) -I../os-level-support/loader $< -o $@
+	$(CC) $(CFLAGS) $(NATIVE_CALL_FIXTURE_CFLAGS) -DSL_NATIVE_PLUGIN_BUILD $(NATIVE_CALL_FIXTURE_FLAGS) -I../os-level-support/loader $< -o $@
 $(NATIVE_CALL_SMOKE): $(NATIVE_CALL_SMOKE_OBJ) $(SLCORE_LIB)
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
 $(NATIVE_CALL_SOURCE): tests/native_drive/native_drive_compile.sleela $(NATIVE_CALL_FIXTURE) | $(BUILD)
