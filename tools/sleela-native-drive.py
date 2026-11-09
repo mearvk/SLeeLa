@@ -185,6 +185,26 @@ def pipe_processes(args: argparse.Namespace) -> int:
             if proc and proc.poll() is None: proc.kill()
         producer_err.close()
 
+def xclass_command(args: argparse.Namespace) -> int:
+    """Use the production SecureJDK .xclass loader already shipped by sleela."""
+    sleela = shutil.which(args.sleela or os.environ.get("SLEELA", "sleela"))
+    if not sleela:
+        print("native-drive xclass: sleela CLI not found; set SLEELA or pass --sleela", file=sys.stderr)
+        return EXIT_RUN
+    command = [sleela, "xclass", "--" + args.mode, *args.files]
+    try:
+        result = subprocess.run(command, text=True, stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE, timeout=args.timeout, check=False)
+        if result.stdout: sys.stdout.write(result.stdout)
+        if result.stderr: sys.stderr.write(result.stderr)
+        return result.returncode
+    except subprocess.TimeoutExpired:
+        print(f"native-drive xclass: loader exceeded timeout ({args.timeout:g}s)", file=sys.stderr)
+        return EXIT_TIMEOUT
+    except OSError as exc:
+        print(f"native-drive xclass: could not start sleela: {exc}", file=sys.stderr)
+        return EXIT_RUN
+
 def parser() -> argparse.ArgumentParser:
     root = argparse.ArgumentParser(prog="native-drive",
         description="Build C/C++ or supported @native SLeeLa source and run processes without a shell.")
@@ -202,6 +222,12 @@ def parser() -> argparse.ArgumentParser:
     r.add_argument("--stdin-file"); r.add_argument("--capture", action="store_true")
     r.add_argument("--timeout", type=float, default=30.0)
     r.add_argument("command", nargs=argparse.REMAINDER); r.set_defaults(handler=run_process)
+    x = sub.add_parser("xclass", help="validate, inspect, or reconstruct SecureJDK .xclass input using the production loader")
+    x.add_argument("--mode", choices=("info", "emit", "run"), default="info")
+    x.add_argument("--sleela")
+    x.add_argument("--timeout", type=float, default=30.0)
+    x.add_argument("files", nargs="+")
+    x.set_defaults(handler=xclass_command)
     p = sub.add_parser("pipe", help="connect producer stdout to consumer stdin")
     p.add_argument("--timeout", type=float, default=30.0)
     p.add_argument("pipeline", nargs=argparse.REMAINDER); p.set_defaults(handler=None)
