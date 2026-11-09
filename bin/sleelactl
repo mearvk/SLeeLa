@@ -278,7 +278,11 @@ tool_cmd() { # module verb [args]
     verb="$2"
     case "$verb" in
       info) okay "native-drive — $(summary_of "$1")"; info "location: ${script#$ROOT/}"; info "see: $ROOT/impl/native-drive/README.md" ;;
-      build|run) shift 2; python3 "$script" "$verb" "$@" ;;
+      build) shift 2; python3 "$script" build "$@" ;;
+      run)
+        shift 2
+        if [ "${1:-}" = "pipe" ]; then shift; python3 "$script" pipe "$@"
+        else python3 "$script" run "$@" ; fi ;;
       inspect)
         shift 2
         case "${1:-}" in
