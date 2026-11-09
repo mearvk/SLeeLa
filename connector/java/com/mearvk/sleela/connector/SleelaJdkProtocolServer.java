@@ -81,10 +81,13 @@ public final class SleelaJdkProtocolServer {
         DataOutputStream output = new DataOutputStream(System.out);
         while (true) {
             byte[] header = new byte[HEADER_BYTES];
+            int first = input.read();
+            if (first < 0) break;
+            header[0] = (byte) first;
             try {
-                input.readFully(header);
-            } catch (EOFException end) {
-                break;
+                input.readFully(header, 1, HEADER_BYTES - 1);
+            } catch (EOFException truncated) {
+                throw new IOException("truncated SLJIP frame header", truncated);
             }
             DataInputStream h = new DataInputStream(new ByteArrayInputStream(header));
             byte[] magic = new byte[4];
