@@ -49,3 +49,41 @@ size_t sleela_jlip_encode(uint8_t *out, size_t capacity,
     if (payload_length) memcpy(out + SLEELA_JLIP_HEADER_BYTES, payload, payload_length);
     return required;
 }
+
+
+int sleela_jlip_exchange(SleelaJlipReadExact read_exact,
+                         SleelaJlipWriteExact write_exact, void *context,
+                         const uint8_t *request, size_t request_length,
+                         uint8_t *response, size_t response_capacity,
+                         size_t *response_length) {
+    SleelaJavaInteropFrame outgoing, incoming;
+    uint8_t header[SLEELA_JLIP_HEADER_BYTES];
+    uint32_t payload_length;
+    size_t total;
+    if (!read_exact || !write_exact || !request || !response || !response_length)
+        return 0;
+    *response_length = 0;
+    if (!sleela_jlip_decode(request, request_length, &outgoing)
+        || (outgoing.opcode & SLEELA_JLIP_RESPONSE_MASK) != 0)
+        return 0;
+    if (write_exact(context, request, request_length) != 0) return 0;
+    if (read_exact(context, header, sizeof(header)) != 0) return 0;
+    if (header[0] != 'S' || header[1] != 'L' || header[2] != 'J' || header[3] != 'V'
+        || read_u16(header + 4) != SLEELA_JLIP_VERSION)
+        return 0;
+    payload_length = read_u32(header + 11);
+    if (payload_length > SLEELA_JLIP_MAX_FRAME_BYTES) return 0;
+    total = SLEELA_JLIP_HEADER_BYTES + (size_t)payload_length;
+    if (total > response_capacity) return 0;
+    memcpy(response, header, sizeof(header));
+    if (payload_length
+        && read_exact(context, response + SLEELA_JLIP_HEADER_BYTES,
+                      (size_t)payload_length) != 0)
+        return 0;
+    if (!sleela_jlip_decode(response, total, &incoming)) return 0;
+    if (incoming.request_id != outgoing.request_id
+        || incoming.opcode != (uint8_t)(outgoing.opcode | SLEELA_JLIP_RESPONSE_MASK))
+        return 0;
+    *response_length = total;
+    return 1;
+}
