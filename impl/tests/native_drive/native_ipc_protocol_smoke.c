@@ -26,7 +26,7 @@ static int limb_test(void){
  if(sl_ipc_decode_limbs(wire,n,&b,decoded,3))return 0;
  if(b.sign!=1||b.count!=3||b.limbs[0]!=source[0]||
     b.limbs[1]!=source[1]||b.limbs[2]!=source[2])return 0;
- wire[5]=0;wire[6]=0;wire[7]=0;wire[8]=0; /* non-canonical high zero limb */
+ wire[13]=0;wire[14]=0;wire[15]=0;wire[16]=0; /* non-canonical high zero limb */
  if(sl_ipc_decode_limbs(wire,n,&b,decoded,3)==0)return 0;
  source[0]=1000000000u;
  return sl_ipc_encode_limbs(&a,wire,sizeof(wire),&n)<0;
