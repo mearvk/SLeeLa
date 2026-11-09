@@ -60,7 +60,10 @@ The typed ABI is independently versioned from the legacy module ABI. When a
 plugin exports `sl_native_call`, the loader requires
 `sl_native_typed_abi_version` and checks it against
 `SL_NATIVE_TYPED_ABI_VERSION`. A missing or mismatched typed version fails
-closed with `SL_NATIVE_ABI_MISMATCH`. A legacy run-only plugin remains loadable.
+closed with `SL_NATIVE_ABI_MISMATCH`. A legacy run-only plugin remains loadable. Calling its typed API returns
+`SL_NATIVE_TYPED_ENTRY_NOT_FOUND`. A typed plugin that does not implement a
+particular method returns `SL_NATIVE_CALL_NOT_HANDLED`, mapped to the distinct
+host status `SL_NATIVE_METHOD_NOT_HANDLED`.
 
 The value contract uses fixed-width tags and fields:
 
