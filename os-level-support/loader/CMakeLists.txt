@@ -42,4 +42,13 @@ if(BUILD_TESTING)
   add_test(NAME loader_test_table COMMAND loader_test_table
     $<TARGET_FILE:loader_fixture>
     $<TARGET_FILE:loader_fixture_bad_abi>)
+
+  add_library(loader_fixture_typed SHARED tests/fixture_typed.c)
+  target_include_directories(loader_fixture_typed PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+  target_compile_definitions(loader_fixture_typed PRIVATE SL_NATIVE_PLUGIN_BUILD)
+  add_executable(loader_test_typed tests/test_typed.c)
+  target_link_libraries(loader_test_typed PRIVATE sleela_native_loader)
+  add_test(NAME loader_test_typed COMMAND loader_test_typed
+    $<TARGET_FILE:loader_fixture_typed>
+    $<TARGET_FILE:loader_fixture>)
 endif()
