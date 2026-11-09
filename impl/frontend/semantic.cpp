@@ -533,6 +533,11 @@ class Analyzer{
   for(const auto&a:c.args) argTypes.push_back(expr(*a));
   if(!builtin(c.callee)){err("call to unknown method '"+c.callee+"'");}
   const std::string&n=c.callee;
+  if(n=="javaStringFromCodeUnits") return{Kind::String,{}};
+  if(n=="javaStringLength"||n=="javaStringCharAt"||n=="javaStringCodePointAt"||
+     n=="javaStringCodePointCount"||n=="javaStringOffsetByCodePoints"||
+     n=="javaStringHashCode"||n=="javaStringCompareTo") return{Kind::Int,{}};
+  if(n=="javaStringSubstring"||n=="javaStringConcat") return{Kind::String,{}};
   if(n=="arrayNew")return{Kind::Array,"array",{}};
   if(n=="arrayLength")return{Kind::Int,{}};
   if(n=="arrayPush" || n=="arraySet"){
