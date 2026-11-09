@@ -226,7 +226,7 @@ static inline int sl_ipc_decode_limbs(const uint8_t *data, size_t length,
     if ((count > 1 && storage[count - 1] == 0) ||
         (count == 1 && storage[0] == 0 && data[0] != 1)) return -1;
     out->sign = (int8_t)(data[0] == 1 ? 1 : -1);
-    out->count = count; out->limbs = (const uint8_t *)storage == data ? storage : storage;
+    out->count = count; out->limbs = storage;
     return 0;
 }
 #endif
