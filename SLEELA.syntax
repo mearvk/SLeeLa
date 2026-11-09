@@ -2753,6 +2753,7 @@ historical opcode numbers or artifact record layout:
 | `OP_TRY_PUSH` | 176 | `a` is an in-range catch-entry instruction address; records current operand-stack height and frame depth |
 | `OP_TRY_POP` | 177 | removes the most recently registered handler owned by the current frame; operand must be zero |
 | `OP_THROW` | 178 | pops one arbitrary tagged `SLValue`; dispatches to the newest active handler, or terminates with an uncaught-exception VM error |
+| `OP_MATH_CALL` | 179 | `a = SLMATHFunction ID`; invokes the typed native math kernel; non-scalar VM values fall back to the synthesized `__NativeMath` bytecode helper |
 
 Handler state is per-thread and bounded. A handler is consumed when selected,
 so a throw from the catch body cannot be caught again by the same handler.
