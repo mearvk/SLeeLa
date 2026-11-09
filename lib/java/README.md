@@ -284,3 +284,40 @@ intrinsics. Its stored value is initialized as an empty `SL_UTF16` string;
 input once and no longer calls Native Drive. The wrapper exposes UTF-16
 `length`/`charAt`, code-point navigation, substring, concat, equals,
 compareTo, and Java hashCode.
+
+
+
+## Java API dependency and contract audits
+
+The Java API counterpart inventory now has three complementary static audits:
+
+- `java_api_dependency_graph.py` records direct and transitive type dependencies, imports, nested-type ownership, wildcard package references, module/package metadata, unresolved references, and duplicate counterpart paths.
+- `java_api_member_dependencies.py` extracts field, return, parameter, constructor, generic-bound, inheritance, throws, and annotation dependencies at member level.
+- `java_api_visibility_constructor_audit.py` distinguishes declared from inherited members, models public/protected/package-private/private visibility, and records accessible superclass constructors as explicit `super(...)` options. Constructors are never treated as inherited members.
+
+Run the focused qualification suite with:
+
+```sh
+make -C tests java-api-dependencies
+make -C tests java-api-dependency-graph
+make -C tests java-api-member-dependencies
+make -C tests java-api-visibility-constructor
+```
+
+These tools are conservative source analyzers. They establish counterpart structure and report gaps; they do not prove Java behavioral equivalence, full JDK member coverage, or runtime compatibility.
+
+## Source implementation depth audit
+
+The API inventory is not itself an implementation. The source implementation audit classifies counterpart bodies into generic dispatch placeholders, empty bodies, constant-return placeholders, simple accessors, and substantive-looking implementations. It is a prioritization aid rather than a parser or behavioral proof.
+
+```sh
+make -C tests java-source-implementation-audit
+```
+
+Implementations should be developed dependency-first, with explicit provenance for SLeeLa-native behavior, native C/C++ primitives, or delegated JVM compatibility. Do not report API envelopes as completed Java implementations.
+
+## Initial java.lang implementation contracts
+
+`implementations/java/lang/JavaObjectIdentity.sleela` defines identity equality and identity-derived hashing for a live object when the runtime supplies a stable heap identity and object handle. Monitor/wait-notify, cloning, and default textual conversion remain explicitly unsupported.
+
+`implementations/java/lang/JavaStringValue.sleela` is the VM-backed UTF-16 facade documented above. Its operations use explicit UTF-16 intrinsics; it is not the older scalar-backed subset and does not imply automatic instance-method dispatch for the general SLeeLa `String` type.
