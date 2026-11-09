@@ -7,7 +7,7 @@
 /* Stable VM artifact/runtime ABI identifiers. */
 #define SLEELA_VM_ABI_MAJOR 1u
 #define SLEELA_VM_ABI_MINOR 2u
-#define SLEELA_ARTIFACT_FORMAT_VERSION 2u
+#define SLEELA_ARTIFACT_FORMAT_VERSION 3u
 #include <stdint.h>
 #include "../../os-level-support/osls_vm_bridge.h"
 #include "../../os-level-support/loader/native_module_table.h"
