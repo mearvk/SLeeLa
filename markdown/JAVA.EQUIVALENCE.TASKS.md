@@ -101,7 +101,7 @@ Oracle's Java Language Specification defines checked-exception compile-time chec
 
 Added `lib/java/tools/java_api_dependency_closure.py` and `tests/java_api_dependency_suite.py`, with the `java-api-dependencies` Makefile target. The auditor scans SLeeLa source for Java-qualified API references and verifies that each referenced type maps to a corresponding `/lib/java` envelope without modifying generated or handwritten API sources.
 
-This closes the first dependency-driven layer of API qualification. Full closure still requires member-level dependency extraction, nested/inner types, generic bounds and annotations, inherited API members, module/package metadata, and a dependency graph suitable for complete transitive closure.
+This closes the first dependency-driven layer of API qualification. The initial auditor is retained as a fast source-reference gate; the expanded graph auditor now indexes Java namespace counterparts, explicit/static imports, fully-qualified references, same-package and unambiguous wildcard type uses, nested-type ownership, package inventories, package-info annotations, module requirements/exports, and transitive type reachability. It reports unresolved references and duplicate counterpart paths rather than silently guessing. This remains type-level dependency closure: exact member-level dependency extraction and inherited-member contract comparison are separate signature/API qualification work.
 
 The Java statement model also remains an active companion area: the JLS defines enhanced `for`, `try`-with-resources, switch rules/guards, and detailed reachability/normal-completion constraints. citeturn0search0turn0search2
 
@@ -157,3 +157,21 @@ This upgrade makes Java control-flow qualification a first-class closure task. Q
 Required next coverage: boolean-path-sensitive `&&`, `||`, `!`, and `?:`; constant boolean expressions; break/continue joins and labels; while/do/for completion; switch completion; try/catch/finally abrupt paths; constructor and blank-final definite-unassignment; lambda capture boundaries; and checked-exception propagation.
 
 The work remains source/API qualification and does not imply JVM, bytecode, SLVM, or runtime equivalence.
+
+
+### 0.3.22-dev — Java API dependency graph expansion
+
+Added `lib/java/tools/java_api_dependency_graph.py` as the graph-producing counterpart to the original missing-envelope auditor. The output is deterministic JSON and includes:
+
+- indexed Java API counterpart types and their source paths;
+- explicit imports, static imports, fully-qualified references, and unambiguous wildcard-import type uses;
+- nested-type owner edges where the enclosing type also has a counterpart;
+- direct dependency edges and transitive reachability;
+- package inventories, package-info annotation metadata, and module requires/exports metadata;
+- unresolved references, ambiguous wildcard names, and duplicate counterpart paths.
+
+Added `tests/java_api_dependency_graph_suite.py` and connected it to the existing Java API dependency suite and unified qualification manifest. The library manifest and validator baseline were updated for the additional graph tool.
+
+Run the graph with `python3 lib/java/tools/java_api_dependency_graph.py --json java-api-dependencies.json`; run its isolated regression suite with `python3 tests/java_api_dependency_graph_suite.py`.
+
+A graph edge establishes a source-level dependency relationship only. It does not establish API member completeness, behavioral equivalence, or runtime equivalence. Member-level dependency extraction and inherited API contract comparison remain follow-on work.
