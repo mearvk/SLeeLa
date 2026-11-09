@@ -101,7 +101,8 @@ typedef enum SLNativeStatus {
     SL_NATIVE_TYPED_ENTRY_NOT_FOUND = 8,
     SL_NATIVE_PLUGIN_ERROR = 9,
     SL_NATIVE_METHOD_NOT_HANDLED = 10,
-    SL_NATIVE_HOST_CALLBACK_NOT_FOUND = 11
+    SL_NATIVE_HOST_CALLBACK_NOT_FOUND = 11,
+    SL_NATIVE_REENTRANT_CALL = 12
 } SLNativeStatus;
 
 /* Plugins export these C-linkage functions; initialize module as {0}. */
