@@ -1993,11 +1993,24 @@ static int native_bytecode_fallback(SLThread* t, const char* method,
                                     uint32_t argc, int base, int return_ip) {
     SLVM* vm = t->vm;
     int function = -1;
+    /* Prefer an exact function key. If the compiler flattened a class method
+     * as Class::method, accept its unqualified source method name only when
+     * that name+arity resolves uniquely. */
     for (int i = 0; i < vm->nfunc; ++i) {
         if (vm->funcs[i].nargs == (int)argc &&
             strcmp(vm->funcs[i].name, method) == 0) {
             function = i;
             break;
+        }
+    }
+    if (function < 0) {
+        size_t method_length = strlen(method);
+        for (int i = 0; i < vm->nfunc; ++i) {
+            const char* separator = strstr(vm->funcs[i].name, "::");
+            if (vm->funcs[i].nargs != (int)argc || !separator ||
+                strcmp(separator + 2, method) != 0) continue;
+            if (function >= 0) return 0; /* ambiguous unqualified method */
+            function = i;
         }
     }
     if (function < 0) return 0;
