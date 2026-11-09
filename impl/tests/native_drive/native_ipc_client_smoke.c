@@ -1,6 +1,7 @@
 #include "../native-drive/native_ipc_client.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 typedef struct {
@@ -64,11 +65,12 @@ int main(void) {
     MemoryPipe pipe;
     SLIPCClient client;
     SLNativeValue result;
-    uint8_t workspace[SL_IPC_MAX_PAYLOAD];
+    uint8_t *workspace = (uint8_t *)malloc(4096u);
     char error[128];
     memset(&pipe, 0, sizeof(pipe));
+    if (!workspace) return 1;
     if (sl_ipc_client_init(&client, memory_read, memory_write, &pipe,
-                           workspace, sizeof(workspace)) != 0) {
+                           workspace, 4096u) != 0) {
         fputs("native IPC client handshake: FAIL\n", stderr);
         return 1;
     }
@@ -80,6 +82,7 @@ int main(void) {
         return 1;
     }
     sl_ipc_client_close(&client);
+    free(workspace);
     puts("native IPC client: PASS");
     return 0;
 }
