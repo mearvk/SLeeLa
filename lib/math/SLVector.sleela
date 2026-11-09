@@ -61,7 +61,26 @@ class SLVector {
     while (i < n) { s = s + a[i] * b[i]; i = i + 1; }
     return s;
   }
-  double norm(double[] a, int n) { return sqrt(dot(a, a, n)); }
+  double absolute(double x) { if (x < 0.0) { return 0.0 - x; } return x; }
+  < Scaled sum-of-squares avoids avoidable overflow and underflow. >
+  double norm(double[] a, int n) {
+    double scale = 0.0;
+    int i = 0;
+    while (i < n) {
+      double value = absolute(a[i]);
+      if (value > scale) { scale = value; }
+      i = i + 1;
+    }
+    if (scale == 0.0) { return 0.0; }
+    double sum = 0.0;
+    i = 0;
+    while (i < n) {
+      double ratio = a[i] / scale;
+      sum = sum + ratio * ratio;
+      i = i + 1;
+    }
+    return scale * sqrt(sum);
+  }
   void add(double[] a, double[] b, double[] out, int n) {
     int i = 0;
     while (i < n) { out[i] = a[i] + b[i]; i = i + 1; }
