@@ -102,17 +102,21 @@ def pipe_processes(args: argparse.Namespace) -> int:
     if not args.producer or not args.consumer:
         print("native-drive pipe: producer and consumer must be separated by ::", file=sys.stderr); return EXIT_USAGE
     producer = consumer = None
+    producer_err = tempfile.TemporaryFile()
     try:
-        producer = subprocess.Popen(args.producer, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        # A temporary file prevents a verbose producer from blocking on stderr
+        # while the consumer is still draining the stdout pipe.
+        producer = subprocess.Popen(args.producer, stdout=subprocess.PIPE, stderr=producer_err)
         assert producer.stdout is not None
         consumer = subprocess.Popen(args.consumer, stdin=producer.stdout, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         producer.stdout.close()
         try:
             out, cerr = consumer.communicate(timeout=args.timeout)
-            perr = producer.stderr.read() if producer.stderr else b""
             pcode = producer.wait(timeout=max(0.1, args.timeout))
+            producer_err.seek(0)
+            perr = producer_err.read()
         except subprocess.TimeoutExpired:
-            consumer.kill(); producer.kill(); consumer.communicate(); producer.communicate()
+            consumer.kill(); producer.kill(); consumer.communicate(); producer.wait()
             print(f"native-drive: pipeline exceeded timeout ({args.timeout:g}s)", file=sys.stderr); return EXIT_TIMEOUT
         if out: sys.stdout.buffer.write(out)
         if perr: sys.stderr.buffer.write(perr)
@@ -126,6 +130,7 @@ def pipe_processes(args: argparse.Namespace) -> int:
     finally:
         for proc in (consumer, producer):
             if proc and proc.poll() is None: proc.kill()
+        producer_err.close()
 
 def parser() -> argparse.ArgumentParser:
     root = argparse.ArgumentParser(prog="native-drive",
