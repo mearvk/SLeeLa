@@ -1,5 +1,6 @@
 #include "../native_loader.h"
 #include <assert.h>
+#include <stddef.h>
 
 int main(int argc, char **argv) {
     SLNativeModule module = {0};
