@@ -100,7 +100,7 @@ class EndpointTests(unittest.TestCase):
             'public static String answer() { return "from-jar"; } }', encoding="utf-8"
         )
         subprocess.run(
-            ["javac", "-d", str(class_dir),
+            [os.environ.get("JAVAC", "javac"), "-d", str(class_dir),
              str(package_dir / "ExternalDir.java"), str(package_dir / "ExternalJar.java")],
             check=True,
         )
