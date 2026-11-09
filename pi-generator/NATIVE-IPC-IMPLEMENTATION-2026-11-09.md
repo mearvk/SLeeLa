@@ -15,8 +15,8 @@
   bounded count, range checks, and canonical high-limb/zero rules.
 - **Conformance source:** smoke coverage for headers, scalar values, request
   payloads, and canonical limb payloads.
-- **Integrity:** refreshed only the 13 SHA-256 entries that failed the previous
-  three-OS CI, preserving the other 12,473 entries and the fail-closed verifier.
+- **Integrity:** refreshed only the 14 SHA-256 entries that failed the previous
+  three-OS CI, preserving the other 12,472 entries and the fail-closed verifier.
 - **CI:** Native Drive now runs on Linux, macOS, and Windows for relevant source
   changes and for changes to the trusted-source manifest.
 
@@ -33,8 +33,12 @@
 ## Verification and Pi benchmark boundary
 
 The latest three-OS Native Drive workflow is run
-[42698637600](https://github.com/mearvk/SLeeLa/actions/runs/42698637600).
-Its status must be read from GitHub Actions; no result is assumed here.
+[42699394852](https://github.com/mearvk/SLeeLa/actions/runs/42699394852) (in progress).
+In the preceding run [42699022814](https://github.com/mearvk/SLeeLa/actions/runs/42699022814),
+manifest verification, the Native Drive Python tests, and the IPC codec smoke
+test passed on Linux, macOS, and Windows. The loader ABI build then exposed a
+missing <stddef.h> include in test_reject.c; that include and its manifest hash
+have been corrected in the current run.
 
 The 20,000-digit Pi workload has **not** been routed through this IPC path.
 Existing VM/native arithmetic measurements are not IPC measurements. Do not
