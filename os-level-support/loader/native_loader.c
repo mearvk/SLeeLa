@@ -80,11 +80,10 @@ const char *sl_native_status_string(SLNativeStatus status) {
 SLNativeStatus sl_native_open(SLNativeModule *module, const char *path) {
     SLNativeAbiVersion abi;
     SLNativeEntry entry;
-    SLNativeTypedCall typed_call = NULL;
     void *symbol;
     void *handle;
 
-    if (!module || !path || !*path || module->handle || module->run || module->typed_call)
+    if (!module || !path || !*path || module->handle || module->run)
         return SL_NATIVE_INVALID_ARGUMENT;
 
     handle = open_library(path);
@@ -104,11 +103,6 @@ SLNativeStatus sl_native_open(SLNativeModule *module, const char *path) {
     }
     memcpy(&entry, &symbol, sizeof(entry));
 
-    /* The typed method entry is optional so ABI-v1 run-only modules remain
-     * loadable without recompilation. */
-    symbol = find_symbol(handle, "sl_native_call");
-    if (symbol) memcpy(&typed_call, &symbol, sizeof(typed_call));
-
     if (abi() != SL_NATIVE_ABI_VERSION) {
         close_library(handle);
         return SL_NATIVE_ABI_MISMATCH;
@@ -116,7 +110,6 @@ SLNativeStatus sl_native_open(SLNativeModule *module, const char *path) {
 
     module->handle = handle;
     module->run = entry;
-    module->typed_call = typed_call;
     return SL_NATIVE_OK;
 }
 
@@ -139,15 +132,19 @@ SLNativeStatus sl_native_call_module(SLNativeModule *module, const char *method,
     uint32_t i;
     int plugin_status;
     SLNativeValue result;
+    SLNativeTypedCall typed_call;
+    void *symbol;
     if (!module || !module->handle || !method || !*method ||
         (argc > 0 && !argv) || !out_result)
         return SL_NATIVE_INVALID_ARGUMENT;
-    if (!module->typed_call) return SL_NATIVE_TYPED_ENTRY_NOT_FOUND;
+    symbol = find_symbol(module->handle, "sl_native_call");
+    if (!symbol) return SL_NATIVE_TYPED_ENTRY_NOT_FOUND;
+    memcpy(&typed_call, &symbol, sizeof(typed_call));
     for (i = 0; i < argc; ++i)
         if (!value_valid(&argv[i])) return SL_NATIVE_INVALID_ARGUMENT;
     memset(&result, 0, sizeof(result));
     result.tag = SL_NATIVE_VALUE_NULL;
-    plugin_status = module->typed_call(method, argc, argv, &result);
+    plugin_status = typed_call(method, argc, argv, &result);
     if (plugin_status != 0) return SL_NATIVE_PLUGIN_ERROR;
     if (!value_valid(&result)) return SL_NATIVE_PLUGIN_ERROR;
     *out_result = result;
