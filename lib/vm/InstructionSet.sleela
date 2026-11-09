@@ -395,3 +395,12 @@ class SLISABigDiv { String name; int code; }
 
 < OP_BIGISQRT 162 -- native big-integer floor square root over base-1e9 limb arrays (pops a, result int[]; backs sqrt(10005) in the Chudnovsky constant) >
 class SLISABigISqrt { String name; int code; }
+
+< OP_NATIVE_CALL 163 -- typed native method dispatch through the versioned scalar ABI; missing/unhandled methods and VM-only arguments may fall back to same-name SLeeLa bytecode >
+class SLISANativeCall { String name; int code; }
+
+< OP_NATIVE_OPEN 164 -- host-authorized shared-module open; pops path String and pushes opaque VM-owned generation-checked handle >
+class SLISANativeOpen { String name; int code; }
+
+< OP_NATIVE_CLOSE 165 -- closes and invalidates an opaque native-module handle; pushes null >
+class SLISANativeClose { String name; int code; }
