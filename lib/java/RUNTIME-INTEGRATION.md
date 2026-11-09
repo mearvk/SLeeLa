@@ -14,12 +14,17 @@ that an individual Java method can already be invoked from a SLeeLa expression.
 | Launch compiled class folders | Implemented through the CLI external-host path | Explicit class path and fully qualified main class |
 | Forward arguments and process result | Implemented by the native process-launcher path | OS process boundary; actual exit status/output belong to provider |
 | Describe Java API types | Implemented by /lib/java source envelopes | SLeeLa declarations and package vocabulary |
+| Java-side reflective construction and invocation | Implemented in connector/java through SleelaJdkBridge | Explicit class/package allow-list; public members; non-initializing type lookup |
 | Resolve a Java type and invoke a method from a SLeeLa expression | Not yet established by this module | Requires a typed invocation protocol and compiler/VM integration |
 | Marshal Java objects and exceptions across the language boundary | Not yet established by this module | Requires ownership, lifetime, type and exception contracts |
 | Embedded JVM / JNI Invocation API | Not implemented by the default build | Separate opt-in build and platform qualification required |
 
-The external process path is not JNI, does not load Java bytecode into the SLeeLa VM,
-and does not turn a java.invoke: descriptive string into a callable method.
+The external process path is not JNI and does not load Java bytecode into the SLeeLa VM.
+The Java connector also has a reflective helper (SleelaJdkBridge) backed by
+SleelaClassLoader: it requires explicit class/package allow-list entries, resolves
+types without initialization by default, and checks static versus instance calls.
+That Java-side helper is not yet lowered from java.invoke: source strings into
+SLeeLa VM operations.
 
 ## Existing native host
 
@@ -27,6 +32,8 @@ The external Java host lives in:
 
 - runtime/java_runtime_probe.h and .c
 - runtime/java_runtime_bridge.h and .c
+- connector/java/com/mearvk/sleela/connector/SleelaClassLoader.java
+- connector/java/com/mearvk/sleela/connector/SleelaJdkBridge.java
 - the sleela run command's Java dispatch path
 - test-suites/java-runtime-probe.sh
 - test-suites/java-runtime-bridge.sh
