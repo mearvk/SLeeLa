@@ -2767,10 +2767,28 @@ yet implement runtime exception classes, typed catch ordering, or rethrow
 identity rules beyond preserving the same tagged value. Finally/abrupt-exit
 lowering is not implemented by this milestone.
 
-The runtime opcodes are available to bytecode producers, but the source
-compiler's `try/catch/throw` lowering is a separate follow-up. Parser support
-alone does not imply that source-level exception handling is operational.
+The source compiler now supports this first restricted source form:
+
+```sleela
+try {
+    throw "failure";
+} catch (Any error) {
+    print(error);
+}
+```
+
+The compiler registers a catch-all handler around the try body, removes it
+on normal completion, and stores the thrown tagged value in the catch local
+on exceptional completion. Explicit `throw expression;` lowers to
+`OP_THROW`. This is intentionally not typed matching: the catch variable
+must be declared `Any`, and exactly one catch clause is supported. Multiple
+clauses, narrower catch types, catch-variable shadowing of an existing method
+local, and every `finally` block are rejected at compile time. The runtime
+still does not convert ordinary VM faults into language exceptions.
+
 The VM artifact ABI minor version advances to 6; artifact serialization
 layout remains unchanged. Older runtimes reject artifacts containing these
-new opcodes instead of interpreting them as existing instructions.
+new opcodes instead of interpreting them as existing instructions. Typed
+exception classes, rethrow semantics, selected language-fault conversion,
+and finally/abrupt completion remain future work.
 
