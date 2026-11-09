@@ -490,6 +490,20 @@ SLNativeStatus slvm_native_module_run(SLVM* vm, SLNativeHandle handle,
     return status;
 }
 
+SLNativeStatus slvm_native_module_call(SLVM* vm, SLNativeHandle handle,
+                                       const char* method, uint32_t argc,
+                                       const SLNativeValue* argv, SLNativeValue* out_result) {
+    SLNativeStatus status;
+    if (!vm) return SL_NATIVE_INVALID_ARGUMENT;
+    /* The VM lock prevents close/unload during a typed call. Plugins must not
+     * re-enter this VM's native-module API. Result UTF-8 spans are borrowed
+     * from the plugin and must be copied before the next call or close. */
+    pthread_mutex_lock(&vm->native_mtx);
+    status = sl_native_table_call(&vm->native_modules, handle, method, argc, argv, out_result);
+    pthread_mutex_unlock(&vm->native_mtx);
+    return status;
+}
+
 SLNativeStatus slvm_native_module_close(SLVM* vm, SLNativeHandle handle) {
     SLNativeStatus status;
     if (!vm) return SL_NATIVE_INVALID_ARGUMENT;
