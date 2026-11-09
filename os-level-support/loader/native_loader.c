@@ -55,6 +55,9 @@ const char *sl_native_status_string(SLNativeStatus status) {
     case SL_NATIVE_LOAD_ERROR: return "could not load shared library";
     case SL_NATIVE_ABI_MISMATCH: return "native module ABI version mismatch";
     case SL_NATIVE_ENTRY_NOT_FOUND: return "required module entry point not found";
+    case SL_NATIVE_AUTHORIZATION_DENIED: return "native module path was not authorized by host policy";
+    case SL_NATIVE_TABLE_FULL: return "native module handle table is full";
+    case SL_NATIVE_STALE_HANDLE: return "native module handle is stale or invalid";
     default: return "unknown native-loader status";
     }
 }
