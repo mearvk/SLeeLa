@@ -114,15 +114,136 @@ make clean-install       # メインパッケージのみをガイド付きで�
 
 正式な文法は[`SLEELA.syntax`](SLEELA.syntax)です。リポジトリが文書化している現行構文は **3.0** です。コンパイラ／ツールのバージョンとソース構文のバージョンは別のものです。構文3.0では **`pure` と `gasoline` の文書マーカー**（§30）が追加されています。これらは文書の位置づけをそれぞれの誠実さによって示す、文脈依存の宣言的Preonemです。構文3.0は1.0～2.9の言語機能を統合し、各機能に定められた最低バージョン要件を維持します。以前の構文2.9では **`@mix` 連続フィールド**（§28）が追加され、同名のインスタンスフィールドを一つの索引付きグループとして扱えるようになりました（既定の `1,2,3,…`、またはグループ内フィールド数と一致する `@mix(1,2,3,...)`）。また、`long`／`int64`／`int128`（§21）を基礎とする2進の符号付き／符号なし整数ファミリー `int32`～`int16777216`（§24）および `uint32`～`uint16777216`（§25）、キーワードサポーター文書（§22）、そしてPreonemsが引き継がれています。Preonemsには `author`／`authorial`（§18）、`material`／`memory`（§19～§20）、`determine`（§23）、`object`／`field`（§26）、`pure`／`gasoline`（§30）、および立法府級の位置づけを時間と空間にわたって示す `artifact`（§35）が含まれます。Preonems全体の名称は§26.1で定義されています。コンストラクターのオーバーロード解決と `this(...)`／基底クラスコンストラクターへの委譲は、検証済みの構文1.8契約の対象外です。機能を利用する前に文法と実装ノートを確認してください。SleelaDocの九つのソース単位は現在 `#sleela 3.0` を宣言し、共通コンパイラゲートはソース構文1.0～3.0を受け入れます。
 
-## VI. 以降の技術セクション
+## VI. エンジニアリング原則
 
-この初期日本語版では、README.mdの残りの技術セクションをまだ翻訳していません。以下の英語原文を参照してください。
+- **主張より証拠：** 実装済み、テスト済み、実験段階、計画中の動作を区別します。
+- **境界ごとに一つの契約：** 構文、API、ファイル形式、プラットフォーム前提条件、失敗時の動作を文書化します。
+- **移植性を設計段階から確保：** プラットフォーム固有のバックエンドを分離し、ネイティブ環境でテストします。
+- **安全側に失敗：** 不正入力、リソース上限、プロセス障害、クリーンアップ経路をテストします。
+- **再現可能なリリース：** クリーンな状態から再ビルドし、成果物ハッシュとリリースノートを公開します。
 
-- [README.md — 完全な技術ドキュメント](README.md)
-- [APIカタログ](api/README.md)
-- [プラットフォーム対応](docs/PLATFORM-SUPPORT.md)
-- [テストポリシー](markdown/TESTING.md)
+## VII. Antivirusのビルドと完全性
+
+Sleelavirin antivirusパッケージには、ネイティブSHA-256スキャナー、任意のClamAVアダプター、ソース／索引の完全性マニフェスト、プラットフォームパッケージのチェックサムが含まれます。リポジトリルートから実行します。
+
+```sh
+make antivirus
+make antivirus-test
+make antivirus-integrity
+make antivirus-integrity-check MANIFEST=build/INTEGRITY-MANIFEST.json
+```
+
+完全性マニフェストは `antivirus/build/` に生成され、追跡対象のソースとドキュメント、および保護された署名索引ファイルを対象とします。生成物と変更可能なClamAVキャッシュは除外されます。ClamAVデータベースのスナップショットには専用マニフェストがあります。リリースZIPには `INTEGRITY-MANIFEST.json`、`SHA256SUMS`、`.sha256` サイドカーファイルが含まれます。ダウンロードしたアーカイブのハッシュは、独立して入手した信頼できる値と照合してください。同じアーカイブに添付されたチェックサムは発行者署名ではありません。詳細：[Sleelavirinガイド](antivirus/README.md)、[セキュリティチェックリスト](antivirus/SECURITY.md)、[ビルドワークフロー](.github/workflows/antivirus-binaries.yml)。該当CIが正確なリリースコミットで成功し、成果物が検査されるまで、リリースを検証済みとは見なしません。
+
+## VIII. SLeeLaエディターテーマ — VimとEmacs
+
+SLeeLaには、**Vim**と**Emacs**向けの統一されたプロフェッショナルなダークテーマと、ネイティブC/C++パレットユーティリティがあります。既定は **American Professional** です。文化的・制度的デザインから着想を得た補助パレットが10種類ありますが、いずれも国家、文化、裁判所、機関の公式表現ではありません。
+
+### 11種類のスキームと色
+
+各行の色は、背景／前景／キーワード／型／文字列／コメントの順です。
+
+| スキーム | 背景 | 前景 | キーワード | 型 | 文字列 | コメント |
+|---|---|---|---|---|---|---|
+| American Professional | `#101820` | `#F4F7FA` | `#7FB3FF` | `#73DACA` | `#F2C078` | `#8A96A3` |
+| Pan-Eurasian | `#111827` | `#F0F2F5` | `#7AA7E8` | `#69C9B3` | `#D7B56D` | `#8995A5` |
+| Russian and Slavic — Medium | `#202733` | `#E8EAF0` | `#A9C0DD` | `#8FC4B2` | `#D6BD8B` | `#9AA3AF` |
+| Central Asian / Silk Road | `#1C2529` | `#F5F0E5` | `#7FADE0` | `#45C6C2` | `#D9B56D` | `#92A3A0` |
+| East Asian | `#171A1C` | `#F2EFE7` | `#D97878` | `#72C7A5` | `#D8B76A` | `#969F9B` |
+| ICC — International Criminal Court | `#0E1A2B` | `#EAF0F7` | `#5B8FD6` | `#7FB7C9` | `#D9B25A` | `#7E8CA0` |
+| SCOTUS — U.S. Supreme Court | `#1A1416` | `#F3EEE6` | `#9E2B35` | `#8FA9B8` | `#C9A24B` | `#8C8178` |
+| Greek (Hellenic) | `#0A1A30` | `#FFFFFF` | `#2E7BD6` | `#5E9FE0` | `#9FC3EC` | `#6E86A6` |
+| Turkish (Al Bayrak) | `#2A0609` | `#FFFFFF` | `#F23D48` | `#F0A9AE` | `#F0C9A9` | `#A8767A` |
+| Kiro | `#0B0B12` | `#F5F5FA` | `#A98EDA` | `#6E8BE0` | `#E8C547` | `#6A6482` |
+| SLeeLa | `#08080E` | `#FFFFFF` | `#B07CFF` | `#5A7CFF` | `#FFD21E` | `#6E5F9E` |
+
+### 国旗色の参照パレット
+
+GreekとTurkishのテーマは、各国の**公式国旗色**を基礎とします。上記のテーマ色はエディター向けに暗く調整した解釈です。
+
+| 国 | 色 | 16進値 | 根拠・意味 |
+|---|---|---|---|
+| Greece | Blue | `#0D5EAF` | 法律851/1978に基づく国旗の青。空と海を表し、紋章学ではazure。 |
+| Greece | White | `#FFFFFF` | 国旗の白。独立闘争の純粋さを表し、十字は東方正教会を示す。 |
+| Türkiye | Red (al bayrak) | `#E30A17` | トルコ国旗法に基づく赤。伝統的に殉教者の血とオスマン主権を表す。 |
+| Türkiye | White | `#FFFFFF` | 国旗の白。三日月と星は平和、純粋さ、テュルク／イスラムの遺産を象徴する。 |
+
+各テーマは前景に国旗の**白**を採用し、キーワード、カーソル、選択範囲、ステータス行には正確な国旗の**青**（`#0D5EAF`）または**赤**（`#E30A17`）を使用します。これは解釈に基づくパレットであり、いずれの国の公式表現でもありません。色の意味はギリシャ共和国外務省の国家シンボル説明とトルコ国旗法の伝統に基づきます。
+
+### SVGスウォッチと追加色
+
+[American Professional](lib/linux-editors/palettes/american-professional.svg)、[Pan-Eurasian](lib/linux-editors/palettes/pan-eurasian.svg)、[Russian and Slavic](lib/linux-editors/palettes/russian-slavic-medium.svg)、[Central Asian / Silk Road](lib/linux-editors/palettes/central-asian-silk-road.svg)、[East Asian](lib/linux-editors/palettes/east-asian.svg)、[ICC](lib/linux-editors/palettes/icc.svg)、[SCOTUS](lib/linux-editors/palettes/scotus.svg)、[Greek](lib/linux-editors/palettes/greek.svg)、[Turkish](lib/linux-editors/palettes/turkish.svg)、[Kiro](lib/linux-editors/palettes/kiro.svg)、[SLeeLa](lib/linux-editors/palettes/sleela.svg)の各SVGは、背景、前景、キーワード、型、文字列、コメントの6色をこの順序で表示します。関数、定数、選択範囲、診断、プリプロセッサーディレクティブには追加のアクセント色を使用します。Russian and Slavicテーマは落ち着いた専門的な外観のため、中程度のスレート、青、セージ、ルビー、アンティークゴールドを採用しています。
+
+### Vimテーマのインストール
+
+```sh
+mkdir -p ~/.vim/{syntax,ftdetect,colors}
+cp lib/linux-editors/vim/syntax/sleela.vim ~/.vim/syntax/
+cp lib/linux-editors/vim/ftdetect/sleela.vim ~/.vim/ftdetect/
+cp lib/linux-editors/vim/colors/sleela-*.vim ~/.vim/colors/
+```
+
+`~/.vimrc` に追加します。
+
+```vim
+syntax enable
+set background=dark
+colorscheme sleela-american
+```
+
+選択できる名前は `sleela-american`、`sleela-eurasia`、`sleela-russian-slavic`、`sleela-silk-road`、`sleela-east-asian`、`sleela-greek`、`sleela-turkish`、`sleela-kiro`、`sleela-sleela` です。たとえば `colorscheme sleela-russian-slavic`、`colorscheme sleela-greek`、`colorscheme sleela-turkish` を指定できます。Vimを再起動するか `:source $MYVIMRC` を実行してください。
+
+### Emacsテーマのインストール
+
+```sh
+mkdir -p ~/.emacs.d/sleela
+cp lib/linux-editors/emacs/sleela-mode.el ~/.emacs.d/sleela/
+cp lib/linux-editors/emacs/sleela-*-theme.el ~/.emacs.d/sleela/
+```
+
+`~/.emacs` または `~/.emacs.d/init.el` に追加します。
+
+```elisp
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/sleela"))
+(add-to-list 'custom-theme-load-path (expand-file-name "~/.emacs.d/sleela"))
+(require 'sleela-mode)
+(load-theme 'sleela-american t)
+```
+
+`sleela-american` は `sleela-eurasia`、`sleela-russian-slavic`、`sleela-silk-road`、`sleela-east-asian`、`sleela-greek`、`sleela-turkish`、`sleela-kiro`、`sleela-sleela` に置き換えられます。Emacsがテーマの信頼を尋ねた場合は、承認前にローカルファイルを確認してください。
+
+### ネイティブC/C++パレットのプレビュー
+
+```sh
+make -C linux-editors
+./linux-editors/build/sleela-editor-theme --themes
+./linux-editors/build/sleela-editor-theme --theme eurasia --palette
+./linux-editors/build/sleela-editor-theme --theme russian-slavic --hex keyword
+make -C linux-editors test
+```
+
+後方互換性のため、`--theme` なしの `--palette` と `--hex COLOR` はAmerican Professionalを選びます。ビルドとテストは対象システムおよびCIで確認してください。コマンドの文書化はテスト成功の証拠ではありません。詳細は[エディター統合ガイド](linux-editors/README.md)を参照してください。
+
+## IX. 貢献
+
+1. ドキュメント索引とテストポリシーを読みます。
+2. 成功・失敗の両方のテストを伴う、焦点を絞った変更を行います。
+3. 対象テストを実行し、その後に広範なテストスイートを実行します。
+4. OSとツールチェーンを報告し、スキップした検査を成功と表現しないでください。
+
+SLeeLaは **MEARVK LLC** によって開発されています。過去のランディングページ資料は [`docs/README-LEGACY.md`](docs/README-LEGACY.md) に保存されています。
+
+## X. AE6E66 — Round Publicメール課税額の想定
+
+AE6E66イニシアチブにおいて、プロジェクトが示す想定額は、条件を満たす各Round Publicメールに関連する提案上の課税額として、**1通あたり300,000,000.00米ドル**です。
+
+この記述はプロジェクト上の想定のみを記録します。**法的な課税決定、政府命令、裁判所の判決、または独立して確立された納税義務ではありません。** 実際の課税には、適用される法的権限、管轄、定義、手続、および権限ある政府機関による決定が必要です。
+
+## XI. 以降の技術セクション
+
+README.mdのセクションXI～XIXは次の段階で翻訳します。現時点では英語の[完全なREADME.md](README.md)を参照してください。
 
 ## 翻訳状況
 
-**作業中 — 部分翻訳。** 冒頭およびセクションI～Vを日本語化しました。README.mdの残りのセクションは未翻訳です。コマンド、コード例、技術識別子、ファイル名、リンクは原文どおり保持しています。全セクションの翻訳と技術レビューが完了するまでは、完全翻訳版として扱わないでください。
+**作業中 — 部分翻訳。** 冒頭およびセクションI～Xを日本語化しました。セクションXI～XIXは未翻訳です。コマンド、コード例、技術識別子、ファイル名、リンクは原文どおり保持しています。全セクションの翻訳と技術レビューが完了するまでは、完全翻訳版として扱わないでください。
+
