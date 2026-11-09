@@ -39,6 +39,19 @@ static void *find_symbol(void *handle, const char *name) {
 #endif
 }
 
+static int value_valid(const SLNativeValue *value) {
+    if (!value || value->reserved != 0) return 0;
+    switch ((SLNativeValueTag)value->tag) {
+    case SL_NATIVE_VALUE_NULL: return 1;
+    case SL_NATIVE_VALUE_BOOL: return value->as.boolean == 0 || value->as.boolean == 1;
+    case SL_NATIVE_VALUE_I64: return 1;
+    case SL_NATIVE_VALUE_F64: return 1;
+    case SL_NATIVE_VALUE_UTF8:
+        return value->as.utf8.length == 0 || value->as.utf8.data != NULL;
+    default: return 0;
+    }
+}
+
 const char *sl_native_loader_error(void) {
 #ifdef _WIN32
     return loader_error;
@@ -58,6 +71,8 @@ const char *sl_native_status_string(SLNativeStatus status) {
     case SL_NATIVE_AUTHORIZATION_DENIED: return "native module path was not authorized by host policy";
     case SL_NATIVE_TABLE_FULL: return "native module handle table is full";
     case SL_NATIVE_STALE_HANDLE: return "native module handle is stale or invalid";
+    case SL_NATIVE_TYPED_ENTRY_NOT_FOUND: return "native module does not export the typed-call entry";
+    case SL_NATIVE_PLUGIN_ERROR: return "native plugin method returned an error or invalid value";
     default: return "unknown native-loader status";
     }
 }
@@ -65,10 +80,11 @@ const char *sl_native_status_string(SLNativeStatus status) {
 SLNativeStatus sl_native_open(SLNativeModule *module, const char *path) {
     SLNativeAbiVersion abi;
     SLNativeEntry entry;
+    SLNativeTypedCall typed_call = NULL;
     void *symbol;
     void *handle;
 
-    if (!module || !path || !*path || module->handle || module->run)
+    if (!module || !path || !*path || module->handle || module->run || module->typed_call)
         return SL_NATIVE_INVALID_ARGUMENT;
 
     handle = open_library(path);
@@ -88,6 +104,11 @@ SLNativeStatus sl_native_open(SLNativeModule *module, const char *path) {
     }
     memcpy(&entry, &symbol, sizeof(entry));
 
+    /* The typed method entry is optional so ABI-v1 run-only modules remain
+     * loadable without recompilation. */
+    symbol = find_symbol(handle, "sl_native_call");
+    if (symbol) memcpy(&typed_call, &symbol, sizeof(typed_call));
+
     if (abi() != SL_NATIVE_ABI_VERSION) {
         close_library(handle);
         return SL_NATIVE_ABI_MISMATCH;
@@ -95,6 +116,7 @@ SLNativeStatus sl_native_open(SLNativeModule *module, const char *path) {
 
     module->handle = handle;
     module->run = entry;
+    module->typed_call = typed_call;
     return SL_NATIVE_OK;
 }
 
@@ -108,6 +130,27 @@ SLNativeStatus sl_native_run_module(SLNativeModule *module, int argc,
         if (!argv[i]) return SL_NATIVE_INVALID_ARGUMENT;
     }
     *out_result = module->run(argc, argv);
+    return SL_NATIVE_OK;
+}
+
+SLNativeStatus sl_native_call_module(SLNativeModule *module, const char *method,
+                                     uint32_t argc, const SLNativeValue *argv,
+                                     SLNativeValue *out_result) {
+    uint32_t i;
+    int plugin_status;
+    SLNativeValue result;
+    if (!module || !module->handle || !method || !*method ||
+        (argc > 0 && !argv) || !out_result)
+        return SL_NATIVE_INVALID_ARGUMENT;
+    if (!module->typed_call) return SL_NATIVE_TYPED_ENTRY_NOT_FOUND;
+    for (i = 0; i < argc; ++i)
+        if (!value_valid(&argv[i])) return SL_NATIVE_INVALID_ARGUMENT;
+    memset(&result, 0, sizeof(result));
+    result.tag = SL_NATIVE_VALUE_NULL;
+    plugin_status = module->typed_call(method, argc, argv, &result);
+    if (plugin_status != 0) return SL_NATIVE_PLUGIN_ERROR;
+    if (!value_valid(&result)) return SL_NATIVE_PLUGIN_ERROR;
+    *out_result = result;
     return SL_NATIVE_OK;
 }
 
