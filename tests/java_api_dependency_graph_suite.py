@@ -21,6 +21,9 @@ with tempfile.TemporaryDirectory() as tmp:
     put(root, "lib/java/java/util/Map.sleela", '#sleela 2.5\nclass Map {}\n')
     put(root, "lib/java/java/util/Map.Entry.sleela", '#sleela 2.5\ninterface Entry {}\n')
     put(root, "lib/java/java/util/List.sleela", '#sleela 2.5\ninterface List {}\n')
+    put(root, "lib/java/java/lang/package-info.sleela", '@java.lang.Deprecated package java.lang;\n')
+    put(root, "lib/java/early_access/jdk28/docs/api/java.base/module-info.sleela",
+        'module java.base { requires java.logging; exports java.lang; }\n')
     put(root, "lib/java/early_access/jdk28/docs/api/java.base/java/lang/String.sleela",
         '#sleela 2.5\nclass String {}\n')
     put(root, "Example.sleela", '''#sleela 2.5
