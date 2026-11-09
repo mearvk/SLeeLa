@@ -101,6 +101,7 @@ static int check_callback_nested_native_call_rejected(const char *plugin_path) {
 
     main_function = slvm_begin_func(vm, "NativeCallbackReentry::main", 0, 0);
     if (main_function < 0) goto cleanup;
+    slvm_emit(vm, OP_CONST, module_value);
     slvm_emit(vm, OP_CONST, nested_name);
     slvm_emit(vm, OP_CONST, value);
     slvm_emit(vm, OP_CONST, module_value);
