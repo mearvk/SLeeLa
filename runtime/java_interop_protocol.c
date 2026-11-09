@@ -17,7 +17,7 @@ static void write_u32(uint8_t *p, uint32_t v) {
     p[2] = (uint8_t)(v >> 8); p[3] = (uint8_t)v;
 }
 
-int sleela_jlip_decode(const uint8_t *bytes, size_t length,
+int sleela_sljip_decode(const uint8_t *bytes, size_t length,
                        SleelaJavaInteropFrame *frame) {
     uint32_t payload_length;
     if (!bytes || !frame || length < SLEELA_SLJIP_HEADER_BYTES) return 0;
@@ -34,7 +34,7 @@ int sleela_jlip_decode(const uint8_t *bytes, size_t length,
     return 1;
 }
 
-size_t sleela_jlip_encode(uint8_t *out, size_t capacity,
+size_t sleela_sljip_encode(uint8_t *out, size_t capacity,
                           uint32_t request_id, uint8_t opcode,
                           const uint8_t *payload, uint32_t payload_length) {
     size_t required = SLEELA_SLJIP_HEADER_BYTES + (size_t)payload_length;
@@ -51,8 +51,8 @@ size_t sleela_jlip_encode(uint8_t *out, size_t capacity,
 }
 
 
-int sleela_jlip_exchange(SleelaJlipReadExact read_exact,
-                         SleelaJlipWriteExact write_exact, void *context,
+int sleela_sljip_exchange(SleelaSljipReadExact read_exact,
+                         SleelaSljipWriteExact write_exact, void *context,
                          const uint8_t *request, size_t request_length,
                          uint8_t *response, size_t response_capacity,
                          size_t *response_length) {
@@ -63,7 +63,7 @@ int sleela_jlip_exchange(SleelaJlipReadExact read_exact,
     if (!read_exact || !write_exact || !request || !response || !response_length)
         return 0;
     *response_length = 0;
-    if (!sleela_jlip_decode(request, request_length, &outgoing)
+    if (!sleela_sljip_decode(request, request_length, &outgoing)
         || (outgoing.opcode & SLEELA_SLJIP_RESPONSE_MASK) != 0)
         return 0;
     if (write_exact(context, request, request_length) != 0) return 0;
@@ -80,7 +80,7 @@ int sleela_jlip_exchange(SleelaJlipReadExact read_exact,
         && read_exact(context, response + SLEELA_SLJIP_HEADER_BYTES,
                       (size_t)payload_length) != 0)
         return 0;
-    if (!sleela_jlip_decode(response, total, &incoming)) return 0;
+    if (!sleela_sljip_decode(response, total, &incoming)) return 0;
     if (incoming.request_id != outgoing.request_id
         || incoming.opcode != (uint8_t)(outgoing.opcode | SLEELA_SLJIP_RESPONSE_MASK))
         return 0;
