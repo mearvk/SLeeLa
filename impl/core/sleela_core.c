@@ -2295,6 +2295,8 @@ static SLResult run_thread(SLThread* t) {
             PUSH(slval_null());
         } break;
         case OP_NATIVE_CALL: {
+            if (native_callback_vm == vm)
+                TERR("native callback cannot recursively invoke native-module operations");
             uint32_t argc;
             int base, fallback_ip = -1, unsupported = 0;
             SLValue module_value, method_value, result_value = slval_null();
