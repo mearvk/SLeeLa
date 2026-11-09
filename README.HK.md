@@ -158,3 +158,40 @@ UTF-4088 的百萬項目實驗目錄及其他實驗資料，必須按照各自�
 本香港版本現已涵蓋項目介紹、開始使用、建置、安裝、語言及執行環境、工程驗證、編輯器整合、程式庫範圍和原生 C/C++ 路徑。它仍未逐行翻譯規範 README 的全部章節；在完整翻譯並完成技術審閱之前，英文 [README.md](README.md) 仍是規範性技術來源。
 
 SLeeLa 由 MEARVK LLC 開發。
+
+
+## 十三、編譯器架構與執行流程
+
+SLeeLa 將來源語言、compiler frontend、中介表示、程式碼產生及 runtime execution 分成不同階段。Compiler release、syntax edition 與 VM/ISA version 是不同的版本軸。規格中列出某項功能，並不代表它已在所有 target 完整實作及驗證。
+
+一般流程由 UTF-8 `.sleela` source files 開始，進行 lexical/syntax analysis、symbol/type checks、intermediate representation lowering，為受支援的 VM 或 intermediate targets 產生程式碼，最後由 runtime 執行。規範語法見 [SLEELA.syntax](SLEELA.syntax)；source lifecycle 及 compiler pipeline 見 [source documentation](markdown/SOURCE.md) 和 [compiler documentation](markdown/COMPILER.md)。
+
+## 十四、型別系統與物件模型
+
+已記錄的 source types 包括 `int`、`double`、`boolean`、`String`、`void`、自行宣告的 `struct` types，以及受支援的 reference-type signatures。`int`、`long`、`int64` 為 signed 64-bit integers。`int128` 雖可作為 integer type 接受，但目前文件所述 implementation 仍以 64-bit 為基礎，不應視為完整 128-bit arithmetic。
+
+`struct` 是具名 aggregate。VM 管理的 struct handles 並非 raw pointers；assignment 與 parameter passing 共用同一 instance，equality 依 identity 判斷。跨 VM 傳輸時，應使用 `structPack(instance)` 和 `structUnpack(TypeName, json)` 等文件化 serialization helpers，不可直接傳送 VM-local handle。Class 包含 fields 與 methods；現行模型中的 fields 是共享狀態，method locals 則屬於各 thread。Inheritance、nested classes 及 generics 受 syntax-version gates 限制。
+
+## 十五、迴圈計時、函式庫與 native 整合
+
+Statement-level annotations `@loopDelay` 和 `@loopBudget` 用來設定迴圈暫停或總時間預算，並會 lowering 成 VM instruction `OP_SLEEP`（ISA 157）；built-in `sleep(ms)` 亦使用相同指令。詳情見 [SLEELA.syntax §32](SLEELA.syntax) 及 [Loop Timing API](api/sleela/3.0/LOOP_TIMING_API.md)。
+
+主要文件化模組包括 `lib/advantage`（model-based evaluation、數學、整合、grading 及 routed output）、`lib/xml`（XML DOM）、`lib/text`（character-cell text/string operations）、`lib/sleeladoc`（source documentation 及 CLI reference）、`lib/cpu`、`lib/xlt`（CPU profiles 與 model/timing references），以及 `recursion/stanchion`（C/C++ recursion prototypes）。模組出現在 catalog 不代表已達 production readiness；使用前應檢查測試與平台限制。
+
+C/C++ boundary 必須明確定義 ABI、calling convention、memory ownership、data layout、error handling 及 platform dependencies。`@native` 和 `sleela aot` 並非執行任意 native code 的一般授權。Reference 只識別資源，不授予 execution authorization。
+
+## 十六、建置、安裝與驗證
+
+Native build 通常需要 GCC 或 Clang 及 GNU Make，部分工具使用 Python 3。常用命令：
+
+```sh
+make
+make -C impl all
+bash ./test-suites/run-all.sh --all
+sudo make install
+make install PREFIX="$HOME/.local"
+```
+
+請查閱 [installation guide](install/README.md)、[platform matrix](docs/PLATFORM-SUPPORT.md) 及 [testing policy](markdown/TESTING.md)。Hash manifests 與 verification tools 的 PASS 只適用於明確列出的檢查範圍與時間。測試報告必須分開列出 pass、fail、skip；略過或未執行的測試不可標示為成功。
+
+**更新後的翻譯狀態：** 香港版本已增加 compiler pipeline、types/object model、loop timing、libraries、native integration、build/install 與 verification 等繁體中文技術內容。本文仍不是 canonical English README 及所有相關規格的逐行完整翻譯。
