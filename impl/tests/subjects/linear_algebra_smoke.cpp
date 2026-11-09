@@ -64,6 +64,10 @@ int main() {
                       std::fabs(inverse[0]+0.5) < 1e-12 &&
                       std::fabs(inverse[1]-0.5) < 1e-12,
                       "matrix inverse");
+    double determinant = 0.0;
+    failures += check(slmath_matrix_determinant(system,2,&determinant,1e-14) == SLMATH_OK &&
+                      std::fabs(determinant+6.0) < 1e-12,
+                      "matrix determinant");
     const double tall[] = {1,0, 1,1, 1,2};
     double q[6], rr[4];
     failures += check(slmath_matrix_qr(tall,3,2,q,rr,1e-14) == SLMATH_OK &&
@@ -77,6 +81,10 @@ int main() {
                       std::fabs(cc.re-0.5) < 1e-12 &&
                       std::fabs(cc.im-2.5) < 1e-12,
                       "complex arithmetic");
+    failures += check(std::fabs(slmath_complex_abs(ca)-std::sqrt(13.0)) < 1e-12 &&
+                      std::fabs(slmath_complex_phase(ca)-std::atan2(2.0,3.0)) < 1e-12 &&
+                      slmath_complex_conjugate(ca).im == -2.0,
+                      "complex magnitude, phase, and conjugate");
     const double array_src[] = {0,1,2,3,4,5};
     double sliced[3] = {};
     failures += check(slmath_array_slice(array_src,6,1,3,2,sliced) == SLMATH_OK &&
