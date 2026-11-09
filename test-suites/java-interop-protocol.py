@@ -51,7 +51,7 @@ def main() -> int:
         if os.name == "nt" and compiler_name in {"cl", "cl.exe"}:
             run(cc + ["/nologo", "/std:c11", "/W4", "/WX",
                       "/I" + str(ROOT / "runtime"),
-                      "/Fo" + str(Path(temp) / ""),
+                      "/Fo" + str(Path(temp)) + os.sep,
                       str(C_SOURCES[0]), str(C_SOURCES[1]),
                       "/Fe:" + str(executable)])
         else:
