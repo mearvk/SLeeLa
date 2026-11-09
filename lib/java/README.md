@@ -176,3 +176,28 @@ Unicode scalar values and cannot be represented in standard UTF-8. Preserving
 arbitrary isolated surrogates will require a UTF-16-backed SLeeLa string value
 or a lossless internal string encoding; this adapter does not claim that
 additional case yet.
+
+
+## Lossless Java String semantic core
+
+The native runtime now contains an immutable-by-convention, length-delimited
+UTF-16 Java String value in `impl/core/sleela_java_string.h` and
+`impl/core/sleela_java_string.c`. Unlike the existing `SL_STR` intern table,
+this representation preserves embedded U+0000 and isolated high/low surrogate
+code units exactly as Java `String` permits.
+
+The semantic kernel implements UTF-16 `length`, `charAt`, `codePointAt`,
+`codePointCount`, `offsetByCodePoints`, half-open `substring`,
+`concat`, `equals`, Java's 32-bit `hashCode`, and UTF-16 lexicographic
+`compareTo`. Its focused native smoke target is:
+
+```sh
+make -C impl test-java-string
+```
+
+**Integration status:** this is the storage/semantic foundation, not yet a
+replacement for the VM's existing `SL_STR` value. The current VM value tag,
+artifact serialization, bytecode operators, native ABI, and SLeeLa-level
+`JavaStringValue` binding still require a coordinated follow-up. Existing
+`SL_STR` behavior and artifact tag numbers remain unchanged. The smoke target
+has been added but was not executed as part of this change.
