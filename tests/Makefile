@@ -87,6 +87,9 @@ java-api-dependency-graph:
 java-api-member-dependencies:
 	python3 java_api_member_dependencies_suite.py
 
+java-api-visibility-constructor:
+	python3 java_api_visibility_constructor_suite.py
+
 java-constraints:
 	python3 java_constraints_suite.py
 
