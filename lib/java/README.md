@@ -146,58 +146,58 @@ When extending `/lib/java`, update **the source file, its mapping/documentation 
 
 ## SLeeLa-native String UTF-16 operations
 
-The `JavaStringValue.sleela` implementation exposes `length()` and
-`charAt(int)` through the versioned Native Drive scalar/UTF-8 ABI.
-`length()` returns UTF-16 code units; `charAt(int)` returns the selected
-16-bit code unit as an integer because the current SLeeLa value model does not
-yet define a Java-compatible `char` primitive. Supplementary characters
-therefore occupy two independently addressable positions.
+The legacy `JavaStringValue.sleela` adapter still exposes `length()` and
+`charAt(int)` through the host-authorized Native Drive scalar/UTF-8 ABI.
+That adapter accepts well-formed UTF-8 input and cannot itself preserve
+embedded NUL or isolated surrogate code units. It remains a compatibility
+facade, not the new VM-backed Java String object.
 
-The VM's existing `OP_NATIVE_CALL` retains the active interpreter call frame
-as a GC root while the plugin executes. The UTF-16 plugin methods accept only
-a length-delimited UTF-8 String and an integer index; no VM pointers or object
-handles cross the native ABI. Malformed UTF-8, negative indices, and
-out-of-range indices fail closed with a `java.lang.StringIndexOutOfBoundsException`
-runtime diagnostic; malformed text and invalid arguments use
-`java.lang.IllegalArgumentException` diagnostics. These are class-compatible
-runtime error labels, not yet catchable Java exception objects. The current VM
-String representation also excludes embedded NUL bytes; Java Strings containing NUL
-or isolated surrogate code units require a future UTF-16-backed String storage
-model for full fidelity.
+### VM-backed Java String value
 
-Typed Java exception objects are not yet available at this boundary: the
-present VM does not construct or expose `StringIndexOutOfBoundsException` /
-`IndexOutOfBoundsException` instances. This remains a compatibility gap.
+The native VM now appends `SL_UTF16` to the `SLType` enum without changing
+any pre-existing tag number. A value carries a VM-local handle to a
+length-delimited UTF-16 object; its storage preserves U+0000 and isolated
+surrogates. The VM GC marks these values from globals, constant pools, active
+stacks, suspended native-callback stacks, struct fields, and arrays. Host code
+holding a returned value outside VM-managed storage must explicitly call
+`slvm_java_string_root()` and later `slvm_java_string_unroot()`.
 
+The public C API now exposes construction, copy, length, `charAt`,
+`codePointAt`, `codePointCount`, `offsetByCodePoints`, `substring`,
+`concat`, `equals`, `hashCode`, and `compareTo`. Bytecode `OP_CONST`
+can load UTF-16 values placed in the constant pool through
+`slvm_add_const_utf16()`; `OP_ADD`, `OP_EQ`, and `OP_NE` handle UTF-16
+values without routing them through the legacy UTF-8 intern table.
 
-UTF-16 conversion currently accepts well-formed UTF-8 scalar values. Java
-Strings can also contain isolated surrogate code units, which are not valid
-Unicode scalar values and cannot be represented in standard UTF-8. Preserving
-arbitrary isolated surrogates will require a UTF-16-backed SLeeLa string value
-or a lossless internal string encoding; this adapter does not claim that
-additional case yet.
+### Artifact format v3
 
+Artifact format v3 serializes UTF-16 constant and global values as a
+32-bit little-endian code-unit count followed by little-endian 16-bit code
+units. Loading allocates fresh VM-local handles; runtime handles themselves
+are never persisted. The loader continues to accept artifact versions 1 and
+2, and rejects the new `SL_UTF16` tag in those older formats. The VM ABI minor
+version has advanced to 3.
 
-## Lossless Java String semantic core
+A separate `SLJS` version-1 record codec is available for components that need
+a standalone portable UTF-16 record. It is not a substitute for the artifact
+container and is not used to change the legacy `SL_STR` encoding.
 
-The native runtime now contains an immutable-by-convention, length-delimited
-UTF-16 Java String value in `impl/core/sleela_java_string.h` and
-`impl/core/sleela_java_string.c`. Unlike the existing `SL_STR` intern table,
-this representation preserves embedded U+0000 and isolated high/low surrogate
-code units exactly as Java `String` permits.
+### Remaining source integration boundary
 
-The semantic kernel implements UTF-16 `length`, `charAt`, `codePointAt`,
-`codePointCount`, `offsetByCodePoints`, half-open `substring`,
-`concat`, `equals`, Java's 32-bit `hashCode`, and UTF-16 lexicographic
-`compareTo`. Its focused native smoke target is:
+The SLeeLa-level `JavaStringValue.sleela` facade has not yet been switched to
+the VM-backed value. The compiler and source library still need a source-visible
+UTF-16 String type/constructor and method lowering so Java-facing source can
+create and manipulate `SL_UTF16` values without a host C caller. The legacy
+`String`/`SL_STR` type, native scalar ABI, and existing UTF-8 semantics remain
+unchanged. Typed, catchable Java exception objects are also not yet implemented.
+
+Focused validation targets are:
 
 ```sh
 make -C impl test-java-string
+make -C impl test-java-string-vm
 ```
 
-**Integration status:** this is the storage/semantic foundation, not yet a
-replacement for the VM's existing `SL_STR` value. The current VM value tag,
-artifact serialization, bytecode operators, native ABI, and SLeeLa-level
-`JavaStringValue` binding still require a coordinated follow-up. Existing
-`SL_STR` behavior and artifact tag numbers remain unchanged. The smoke target
-has been added but was not executed as part of this change.
+The VM smoke test covers NUL/surrogate preservation, VM handle operations,
+GC root management, the portable record round trip, and artifact v3 save/load.
+These targets have been added but have not yet been executed in this work.
