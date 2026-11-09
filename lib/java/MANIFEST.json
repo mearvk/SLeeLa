@@ -2,7 +2,7 @@
   "schema": "sleela-java-library-manifest-v1",
   "root": "/lib/java",
   "inventory": {
-    "count": 8988,
+    "count": 8990,
     "count_type": "library-source-baseline",
     "count_source": "git-index excluding declared control metadata",
     "control_files": [
@@ -13,7 +13,7 @@
       "lib/java/RUNTIME-INTEGRATION.md"
     ],
     "count_command": "git ls-files --cached -- lib/java | grep -v -E '^(lib/java/README.md|lib/java/MANIFEST.json|lib/java/validate.py|lib/java/validate.sh|lib/java/RUNTIME-INTEGRATION.md)$' | wc -l",
-    "baseline_policy": "intentional library changes must not silently reduce the established 8,988-file baseline; metadata files are excluded from the library count"
+    "baseline_policy": "intentional library changes must update the exact 8,990-file baseline; metadata control files are excluded"
   },
   "language_bridge": {
     "source_language": "SLeeLa",
