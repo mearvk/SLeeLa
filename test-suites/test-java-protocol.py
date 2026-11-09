@@ -232,6 +232,28 @@ class EndpointTests(unittest.TestCase):
         )
         self.assertEqual(self.success(RELEASE, u64(handle)), b"\x00")
 
+    def test_primitive_argument_conversion(self):
+        owner = "com.mearvk.sleela.connector.SleelaJdkProtocolFixture"
+        widened = self.success(
+            INVOKE_STATIC, string(owner) + string("plusOne")
+            + types("long") + values(7)
+        )
+        self.assertEqual(widened, b"\x04" + struct.pack(">q", 8))
+        scaled = self.success(
+            INVOKE_STATIC, string(owner) + string("scale")
+            + types("float") + values(1.25)
+        )
+        self.assertEqual(scaled, b"\x05" + struct.pack(">d", 2.5))
+        character = self.success(
+            INVOKE_STATIC, string(owner) + string("echo")
+            + types("char") + values(65)
+        )
+        self.assertEqual(character, b"\x03" + struct.pack(">i", 65))
+        self.assertEqual(self.error(
+            INVOKE_STATIC, string(owner) + string("echo")
+            + types("byte") + values(300)
+        )[0], "java.lang.IllegalArgumentException")
+
     def test_external_class_directory_and_jar_roots(self):
         directory_result = self.success(
             INVOKE_STATIC, string("interop.fixture.ExternalDir") + string("answer")
