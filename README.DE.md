@@ -145,6 +145,129 @@ Das Integritätsmanifest wird unter `antivirus/build/` erzeugt. Es umfasst nachv
 
 Ein Release gilt erst dann als verifiziert, wenn die einschlägigen CI-Aufträge für genau den Release-Commit erfolgreich sind und die daraus entstandenen Artefakte geprüft wurden.
 
+## VIII. SLeeLa-Editor-Themes — Vim und Emacs
+
+SLeeLa enthält ein abgestimmtes Set professioneller dunkler Farbschemata für **Vim** und **Emacs** sowie ein natives C/C++-Palettenwerkzeug. Das ursprüngliche Schema **American Professional** bleibt die Voreinstellung. Zehn ergänzende Paletten bieten unterschiedliche kulturelle und institutionelle Designinspirationen; es handelt sich um gestalterische Interpretationen, nicht um offizielle Darstellungen einer Nation, Kultur, eines Gerichts oder einer Institution.
+
+### Die elf Schemata und ihre Farben
+
+| Schema | Hintergrund | Vordergrund | Schlüsselwörter | Typen | Zeichenketten | Kommentare |
+|---|---|---|---|---|---|---|
+| **American Professional** | `#101820` | `#F4F7FA` | `#7FB3FF` | `#73DACA` | `#F2C078` | `#8A96A3` |
+| **Pan-Eurasian** | `#111827` | `#F0F2F5` | `#7AA7E8` | `#69C9B3` | `#D7B56D` | `#8995A5` |
+| **Russian and Slavic — Medium** | `#202733` | `#E8EAF0` | `#A9C0DD` | `#8FC4B2` | `#D6BD8B` | `#9AA3AF` |
+| **Central Asian / Silk Road** | `#1C2529` | `#F5F0E5` | `#7FADE0` | `#45C6C2` | `#D9B56D` | `#92A3A0` |
+| **East Asian** | `#171A1C` | `#F2EFE7` | `#D97878` | `#72C7A5` | `#D8B76A` | `#969F9B` |
+| **ICC — Internationaler Strafgerichtshof** | `#0E1A2B` | `#EAF0F7` | `#5B8FD6` | `#7FB7C9` | `#D9B25A` | `#7E8CA0` |
+| **SCOTUS — Oberster Gerichtshof der USA** | `#1A1416` | `#F3EEE6` | `#9E2B35` | `#8FA9B8` | `#C9A24B` | `#8C8178` |
+| **Greek (Hellenic)** | `#0A1A30` | `#FFFFFF` | `#2E7BD6` | `#5E9FE0` | `#9FC3EC` | `#6E86A6` |
+| **Turkish (Al Bayrak)** | `#2A0609` | `#FFFFFF` | `#F23D48` | `#F0A9AE` | `#F0C9A9` | `#A8767A` |
+| **Kiro** | `#0B0B12` | `#F5F5FA` | `#A98EDA` | `#6E8BE0` | `#E8C547` | `#6A6482` |
+| **SLeeLa** | `#08080E` | `#FFFFFF` | `#B07CFF` | `#5A7CFF` | `#FFD21E` | `#6E5F9E` |
+
+### Nationale Flaggenfarben (Quellpalette)
+
+Die griechischen und türkischen Schemata leiten sich von den **offiziellen Nationalflaggenfarben** beider Länder ab, hier mit den veröffentlichten exakten Hexwerten. Die Hintergründe und Akzente oben sind abgedunkelte, editorfreundliche Interpretationen dieser Quellfarben; die folgende Tabelle dient als Referenz der national verwendeten Farben.
+
+| Land | Farbe | Hex | Grundlage und Bedeutung |
+|---|---|---|---|
+| **Griechenland** | Blau | `#0D5EAF` | Blau der Nationalflagge (Gesetz 851/1978). Himmel und Meere; heraldisch *Azur*. |
+| **Griechenland** | Weiß | `#FFFFFF` | Weiß der Nationalflagge. Reinheit des Unabhängigkeitskampfes; das Kreuz steht für das östlich-orthodoxe Christentum. |
+| **Türkiye** | Rot (*al bayrak*) | `#E30A17` | Rot der Nationalflagge (türkisches Flaggengesetz). Das Feld; traditionell das Blut der Märtyrer und die osmanische Souveränität. |
+| **Türkiye** | Weiß | `#FFFFFF` | Weiß der Nationalflagge. Halbmond und Stern – Frieden, Reinheit und das Symbol des türkisch-islamischen Erbes. |
+
+Die Schemata verwenden nationales **Weiß** als Vordergrund und das exakte nationale **Blau** (`#0D5EAF`) oder **Rot** (`#E30A17`) für Schlüsselwörter, Cursor, Auswahl und Statusleiste. Die entscheidenden Farben sind damit tatsächlich die Nationalfarben. Es handelt sich um interpretative Paletten; die Referenz der Flaggenfarben dokumentiert die Herkunft und ist keine offizielle Darstellung eines der beiden Staaten. Die Farbbedeutungen folgen der Beschreibung staatlicher Symbole durch das griechische Außenministerium und der Tradition des türkischen Flaggengesetzes.
+
+### Farbmuster-Tabelle
+
+Die Palettenzellen verwenden **SVG-Farbmuster**, damit GitHub die tatsächlichen Farben statt leerer HTML-Farbzellen rendert. Jeder Streifen zeigt sechs Farben in dieser Reihenfolge: Hintergrund, Vordergrund, Schlüsselwörter, Typen, Zeichenketten und Kommentare. Die exakten Hexcodes stehen neben den Mustern.
+
+| Schema | Gerenderte Palette | Hexcodes (Hintergrund · Vordergrund · Schlüsselwörter · Typen · Zeichenketten · Kommentare) |
+|---|---|---|
+| **American Professional** | ![American Professional](lib/linux-editors/palettes/american-professional.svg) | `#101820` · `#F4F7FA` · `#7FB3FF` · `#73DACA` · `#F2C078` · `#8A96A3` |
+| **Pan-Eurasian** | ![Pan-Eurasian](lib/linux-editors/palettes/pan-eurasian.svg) | `#111827` · `#F0F2F5` · `#7AA7E8` · `#69C9B3` · `#D7B56D` · `#8995A5` |
+| **Russian and Slavic — Medium** | ![Russian and Slavic Medium](lib/linux-editors/palettes/russian-slavic-medium.svg) | `#202733` · `#E8EAF0` · `#A9C0DD` · `#8FC4B2` · `#D6BD8B` · `#9AA3AF` |
+| **Central Asian / Silk Road** | ![Central Asian Silk Road](lib/linux-editors/palettes/central-asian-silk-road.svg) | `#1C2529` · `#F5F0E5` · `#7FADE0` · `#45C6C2` · `#D9B56D` · `#92A3A0` |
+| **East Asian** | ![East Asian](lib/linux-editors/palettes/east-asian.svg) | `#171A1C` · `#F2EFE7` · `#D97878` · `#72C7A5` · `#D8B76A` · `#969F9B` |
+| **ICC** | ![ICC](lib/linux-editors/palettes/icc.svg) | `#0E1A2B` · `#EAF0F7` · `#5B8FD6` · `#7FB7C9` · `#D9B25A` · `#7E8CA0` |
+| **SCOTUS** | ![SCOTUS](lib/linux-editors/palettes/scotus.svg) | `#1A1416` · `#F3EEE6` · `#9E2B35` · `#8FA9B8` · `#C9A24B` · `#8C8178` |
+| **Greek (Hellenic)** | ![Greek Hellenic](lib/linux-editors/palettes/greek.svg) | `#0A1A30` · `#FFFFFF` · `#2E7BD6` · `#5E9FE0` · `#9FC3EC` · `#6E86A6` |
+| **Turkish (Al Bayrak)** | ![Turkish Al Bayrak](lib/linux-editors/palettes/turkish.svg) | `#2A0609` · `#FFFFFF` · `#F23D48` · `#F0A9AE` · `#F0C9A9` · `#A8767A` |
+| **Kiro** | ![Kiro](lib/linux-editors/palettes/kiro.svg) | `#0B0B12` · `#F5F5FA` · `#A98EDA` · `#6E8BE0` · `#E8C547` · `#6A6482` |
+| **SLeeLa** | ![SLeeLa](lib/linux-editors/palettes/sleela.svg) | `#08080E` · `#FFFFFF` · `#B07CFF` · `#5A7CFF` · `#FFD21E` · `#6E5F9E` |
+
+Zusätzliche Akzentfarben werden für Funktionen, Konstanten, Auswahlen, Diagnosen und Präprozessordirektiven verwendet. Die Russian-and-Slavic-Palette nutzt bewusst mittelintensive Schiefer-, Blau-, Salbei-, Rubin- und Antikgoldtöne für ein ruhigeres professionelles Erscheinungsbild.
+
+### Vim-Schemata installieren
+
+Vom Stammverzeichnis des Repositorys aus:
+
+```sh
+mkdir -p ~/.vim/{syntax,ftdetect,colors}
+cp lib/linux-editors/vim/syntax/sleela.vim ~/.vim/syntax/
+cp lib/linux-editors/vim/ftdetect/sleela.vim ~/.vim/ftdetect/
+cp lib/linux-editors/vim/colors/sleela-*.vim ~/.vim/colors/
+```
+
+Fügen Sie Folgendes zu `~/.vimrc` hinzu, um die SLeeLa-Syntaxhervorhebung zu aktivieren und ein Schema auszuwählen:
+
+```vim
+syntax enable
+set background=dark
+colorscheme sleela-american
+```
+
+Wählen Sie genau einen dieser Schemanamen:
+
+- `sleela-american`
+- `sleela-eurasia`
+- `sleela-russian-slavic`
+- `sleela-silk-road`
+- `sleela-east-asian`
+- `sleela-greek`
+- `sleela-turkish`
+- `sleela-kiro`
+- `sleela-sleela`
+
+Verwenden Sie beispielsweise `colorscheme sleela-russian-slavic` für die mittelintensive russische und slawische Palette oder `colorscheme sleela-greek` / `colorscheme sleela-turkish` für die hellenische und Al-Bayrak-Palette. Starten Sie Vim neu oder laden Sie die Konfiguration mit `:source $MYVIMRC` erneut.
+
+### Emacs-Schemata installieren
+
+Erstellen Sie ein lokales Themenverzeichnis und kopieren Sie die Modus- und Themendateien aus dem Repository-Stammverzeichnis:
+
+```sh
+mkdir -p ~/.emacs.d/sleela
+cp lib/linux-editors/emacs/sleela-mode.el ~/.emacs.d/sleela/
+cp lib/linux-editors/emacs/sleela-*-theme.el ~/.emacs.d/sleela/
+```
+
+Fügen Sie dies zu `~/.emacs` oder `~/.emacs.d/init.el` hinzu:
+
+```elisp
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/sleela"))
+(add-to-list 'custom-theme-load-path (expand-file-name "~/.emacs.d/sleela"))
+(require 'sleela-mode)
+(load-theme 'sleela-american t)
+```
+
+Ersetzen Sie `sleela-american` durch `sleela-eurasia`, `sleela-russian-slavic`, `sleela-silk-road`, `sleela-east-asian`, `sleela-greek`, `sleela-turkish`, `sleela-kiro` oder `sleela-sleela`, um ein anderes Schema auszuwählen. Wenn Emacs fragt, ob dem Theme vertraut werden soll, prüfen Sie die lokale Theme-Datei vor der Bestätigung.
+
+### Native C/C++-Paletten anzeigen
+
+Das kleine native Palettenwerkzeug kann Schemata auflisten, ihre Terminalfarben ausgeben und eine einzelne Farbe nachschlagen:
+
+```sh
+make -C linux-editors
+./linux-editors/build/sleela-editor-theme --themes
+./linux-editors/build/sleela-editor-theme --theme eurasia --palette
+./linux-editors/build/sleela-editor-theme --theme russian-slavic --hex keyword
+make -C linux-editors test
+```
+
+Aus Gründen der Rückwärtskompatibilität wählen `--palette` und `--hex COLOR` ohne `--theme` das Schema American Professional. Build- und Testergebnisse sollten auf dem Zielsystem und in CI geprüft werden; die Dokumentation eines Befehls belegt nicht, dass er erfolgreich ausgeführt wurde.
+
+Weitere Informationen zu Paletten und Werkzeug bietet der [Editor-Integrationsleitfaden](linux-editors/README.md).
+
 ## IX. Mitwirken
 
 1. Lesen Sie den Dokumentationsindex und die Testrichtlinie.
@@ -190,7 +313,7 @@ Der spezialisierte UTF-4088-Katalog definiert seinen räumlichen Eingabekarten-D
 
 ## Noch ausstehende Abschnitte
 
-Die folgenden Abschnitte sind noch nicht übersetzt und werden in weiteren Batches ergänzt: **VIII. SLeeLa-Editor-Themes; XIV–XVII. Weitere Projektbereiche; XVIII. Neueste Ergänzungen; XIX. Internationale README-Ausgaben.** Bis zur Fertigstellung bleibt die englische [kanonische README.md](README.md) die vollständige Referenz.
+Die folgenden Abschnitte sind noch nicht übersetzt und werden in weiteren Batches ergänzt: **XIV–XVII. Weitere Projektbereiche; XVIII. Neueste Ergänzungen; XIX. Internationale README-Ausgaben.** Bis zur Fertigstellung bleibt die englische [kanonische README.md](README.md) die vollständige Referenz.
 
 ---
-**Übersetzungsstatus:** Teilübersetzung – Abschnitte I–VII und IX–XIII übersetzt. Technische Kennungen, Befehle, Codebeispiele, Dateinamen und Links wurden unverändert beibehalten.
+**Übersetzungsstatus:** Teilübersetzung – Abschnitte I–XIII übersetzt. Technische Kennungen, Befehle, Codebeispiele, Dateinamen und Links wurden unverändert beibehalten.
