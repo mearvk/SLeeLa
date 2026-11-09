@@ -415,6 +415,19 @@ subject_cmd() { # module verb [args]
         else
           warn "$1: run of $demo_rel did not complete"; return 1
         fi
+        if [ "$1" = "math" ]; then
+          native_demo="$ROOT/lib/math/examples/NativeMathEngineDemo.sleela"
+          if [ -f "$native_demo" ]; then
+            info "$SLEELA_BIN run lib/math/examples/NativeMathEngineDemo.sleela"
+            if "$SLEELA_BIN" run "$native_demo" 2>/dev/null; then
+              okay "math: native vector/matrix/complex/QR/eigen/FFT facade completed"
+            else
+              warn "math: native numerical facade demo did not complete"; return 1
+            fi
+          else
+            warn "math: native facade demo is not installed ($native_demo)"
+          fi
+        fi
       else
         warn "SLeeLa runtime not built ($SLEELA_BIN); cannot run the native '$1' subject."
         info "build it:  (cd impl && make build/sleela)   then re-run"
