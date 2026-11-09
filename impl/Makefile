@@ -755,6 +755,8 @@ $(JAVA_STRING_VM_SMOKE): core/sleela_java_string_vm_smoke.c $(SLCORE_LIB) $(JAVA
 	$(CXX) $(CXXFLAGS) -Icore $< $(JAVA_STRING_CODEC_OBJ) $(SLCORE_LIB) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
 test-java-string-vm: $(JAVA_STRING_VM_SMOKE)
 	@$(JAVA_STRING_VM_SMOKE)
+test-java-string-source: $(SLEELA_BIN)
+	@cd $(CURDIR)/.. && $(CURDIR)/$(SLEELA_BIN) run impl/tests/java_transition/java_utf16_source.sleela
 $(OSLS_VM_CAP_SMOKE_OBJ): tests/osls_vm/osls_vm_capability_test.c | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c $< -o $@
 $(OSLS_VM_CAP_SMOKE): $(OSLS_VM_CAP_SMOKE_OBJ) $(SLCORE_LIB)
