@@ -4,7 +4,7 @@ CXX ?= c++
 CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -pedantic
 LDLIBS ?= -lm
 
-.PHONY: all clean check ai-neural-nets-xor neural-nets-xor ai-character-recognition character-recognition-smoke character-recognition-cli jdk28-conformance jdk28-functional jdk28-signatures java-source-equivalence java-conversions java-flow java-exceptions java-api-dependencies java-api-dependency-graph java-api-member-dependencies java-api-visibility-constructor java-constraints java-signature-comparison java-platform-qualification
+.PHONY: all clean check ai-neural-nets-xor neural-nets-xor ai-character-recognition character-recognition-smoke character-recognition-cli jdk28-conformance jdk28-functional jdk28-signatures java-source-equivalence java-conversions java-flow java-exceptions java-api-dependencies java-api-dependency-graph java-api-member-dependencies java-api-visibility-constructor java-source-implementation-audit java-constraints java-signature-comparison java-platform-qualification
 
 all: memory reflection nordshrift runtime network-security neural-nets-xor character-recognition-smoke character-recognition-cli
 
@@ -89,6 +89,10 @@ java-api-member-dependencies:
 
 java-api-visibility-constructor:
 	python3 java_api_visibility_constructor_suite.py
+
+java-source-implementation-audit:
+	python3 java_source_implementation_audit_suite.py
+	python3 java_source_implementation_audit.py --top 40
 
 java-constraints:
 	python3 java_constraints_suite.py
