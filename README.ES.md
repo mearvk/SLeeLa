@@ -145,6 +145,129 @@ El manifiesto de integridad se genera en `antivirus/build/`. Incluye entradas de
 
 Una versión solo se considera verificada cuando los trabajos de CI pertinentes han terminado correctamente para el commit exacto de esa versión y se han comprobado los artefactos resultantes.
 
+## VIII. Temas del editor SLeeLa: Vim y Emacs
+
+SLeeLa incluye un conjunto coordinado de esquemas de color oscuros y profesionales para **Vim** y **Emacs**, además de una utilidad nativa de paletas para C/C++. El esquema original **American Professional** sigue siendo el predeterminado. Hay diez paletas complementarias inspiradas en distintos diseños culturales e institucionales; son interpretaciones de diseño, no representaciones oficiales de ninguna nación, cultura, corte o institución.
+
+### Los once esquemas y sus colores
+
+| Esquema | Fondo | Primer plano | Palabras clave | Tipos | Cadenas | Comentarios |
+|---|---|---|---|---|---|---|
+| **American Professional** | `#101820` | `#F4F7FA` | `#7FB3FF` | `#73DACA` | `#F2C078` | `#8A96A3` |
+| **Pan-Eurasian** | `#111827` | `#F0F2F5` | `#7AA7E8` | `#69C9B3` | `#D7B56D` | `#8995A5` |
+| **Russian and Slavic — Medium** | `#202733` | `#E8EAF0` | `#A9C0DD` | `#8FC4B2` | `#D6BD8B` | `#9AA3AF` |
+| **Central Asian / Silk Road** | `#1C2529` | `#F5F0E5` | `#7FADE0` | `#45C6C2` | `#D9B56D` | `#92A3A0` |
+| **East Asian** | `#171A1C` | `#F2EFE7` | `#D97878` | `#72C7A5` | `#D8B76A` | `#969F9B` |
+| **ICC — Corte Penal Internacional** | `#0E1A2B` | `#EAF0F7` | `#5B8FD6` | `#7FB7C9` | `#D9B25A` | `#7E8CA0` |
+| **SCOTUS — Tribunal Supremo de EE. UU.** | `#1A1416` | `#F3EEE6` | `#9E2B35` | `#8FA9B8` | `#C9A24B` | `#8C8178` |
+| **Greek (Hellenic)** | `#0A1A30` | `#FFFFFF` | `#2E7BD6` | `#5E9FE0` | `#9FC3EC` | `#6E86A6` |
+| **Turkish (Al Bayrak)** | `#2A0609` | `#FFFFFF` | `#F23D48` | `#F0A9AE` | `#F0C9A9` | `#A8767A` |
+| **Kiro** | `#0B0B12` | `#F5F5FA` | `#A98EDA` | `#6E8BE0` | `#E8C547` | `#6A6482` |
+| **SLeeLa** | `#08080E` | `#FFFFFF` | `#B07CFF` | `#5A7CFF` | `#FFD21E` | `#6E5F9E` |
+
+### Colores de las banderas nacionales (paleta de origen)
+
+Los esquemas griego y turco derivan de los **colores oficiales de las banderas nacionales** de ambos países, indicados aquí con sus valores hexadecimales publicados. Los fondos y acentos de los esquemas anteriores son interpretaciones oscurecidas y adaptadas a editores; la tabla siguiente conserva los colores de referencia tal como se presentan a nivel nacional.
+
+| País | Color | Hexadecimal | Fundamento y significado |
+|---|---|---|---|
+| **Grecia** | Azul | `#0D5EAF` | Azul de la bandera nacional (Ley 851/1978). El cielo y los mares; en heráldica, *azur*. |
+| **Grecia** | Blanco | `#FFFFFF` | Blanco de la bandera nacional. Pureza de la lucha por la independencia; la cruz representa el cristianismo ortodoxo oriental. |
+| **Türkiye** | Rojo (*al bayrak*) | `#E30A17` | Rojo de la bandera nacional (Ley de la Bandera turca). El campo; por tradición, la sangre de los mártires y la soberanía otomana. |
+| **Türkiye** | Blanco | `#FFFFFF` | Blanco de la bandera nacional. La media luna y la estrella: paz, pureza y el símbolo del patrimonio túrquico/islámico. |
+
+Los esquemas utilizan el **blanco** nacional como base para el primer plano de cada editor y el **azul** nacional exacto (`#0D5EAF`) o el **rojo** (`#E30A17`) para palabras clave, cursor, selección y barra de estado. Así, los colores principales son literalmente los colores nacionales. Son paletas interpretativas; la referencia de colores de las banderas documenta su procedencia y no constituye una representación oficial de ninguno de los dos Estados. Los significados cromáticos siguen la descripción de símbolos estatales del Ministerio de Asuntos Exteriores de la República Helénica y la tradición de la Ley de la Bandera turca.
+
+### Tabla de muestras de color
+
+Las celdas de paleta siguientes utilizan **muestras SVG**, para que GitHub muestre los colores reales en lugar de celdas HTML vacías. Cada franja presenta seis colores en este orden: fondo, primer plano, palabras clave, tipos, cadenas y comentarios. Los códigos hexadecimales exactos aparecen junto a cada muestra, en el mismo orden de esquemas que la tabla de referencia.
+
+| Esquema | Paleta representada | Códigos hexadecimales (fondo · primer plano · palabras clave · tipos · cadenas · comentarios) |
+|---|---|---|
+| **American Professional** | ![Paleta American Professional](lib/linux-editors/palettes/american-professional.svg) | `#101820` · `#F4F7FA` · `#7FB3FF` · `#73DACA` · `#F2C078` · `#8A96A3` |
+| **Pan-Eurasian** | ![Paleta Pan-Eurasian](lib/linux-editors/palettes/pan-eurasian.svg) | `#111827` · `#F0F2F5` · `#7AA7E8` · `#69C9B3` · `#D7B56D` · `#8995A5` |
+| **Russian and Slavic — Medium** | ![Paleta Russian and Slavic Medium](lib/linux-editors/palettes/russian-slavic-medium.svg) | `#202733` · `#E8EAF0` · `#A9C0DD` · `#8FC4B2` · `#D6BD8B` · `#9AA3AF` |
+| **Central Asian / Silk Road** | ![Paleta Central Asian Silk Road](lib/linux-editors/palettes/central-asian-silk-road.svg) | `#1C2529` · `#F5F0E5` · `#7FADE0` · `#45C6C2` · `#D9B56D` · `#92A3A0` |
+| **East Asian** | ![Paleta East Asian](lib/linux-editors/palettes/east-asian.svg) | `#171A1C` · `#F2EFE7` · `#D97878` · `#72C7A5` · `#D8B76A` · `#969F9B` |
+| **ICC — Corte Penal Internacional** | ![Paleta ICC](lib/linux-editors/palettes/icc.svg) | `#0E1A2B` · `#EAF0F7` · `#5B8FD6` · `#7FB7C9` · `#D9B25A` · `#7E8CA0` |
+| **SCOTUS — Tribunal Supremo de EE. UU.** | ![Paleta SCOTUS](lib/linux-editors/palettes/scotus.svg) | `#1A1416` · `#F3EEE6` · `#9E2B35` · `#8FA9B8` · `#C9A24B` · `#8C8178` |
+| **Greek (Hellenic)** | ![Paleta griega helénica](lib/linux-editors/palettes/greek.svg) | `#0A1A30` · `#FFFFFF` · `#2E7BD6` · `#5E9FE0` · `#9FC3EC` · `#6E86A6` |
+| **Turkish (Al Bayrak)** | ![Paleta turca Al Bayrak](lib/linux-editors/palettes/turkish.svg) | `#2A0609` · `#FFFFFF` · `#F23D48` · `#F0A9AE` · `#F0C9A9` · `#A8767A` |
+| **Kiro** | ![Paleta Kiro](lib/linux-editors/palettes/kiro.svg) | `#0B0B12` · `#F5F5FA` · `#A98EDA` · `#6E8BE0` · `#E8C547` · `#6A6482` |
+| **SLeeLa** | ![Paleta SLeeLa](lib/linux-editors/palettes/sleela.svg) | `#08080E` · `#FFFFFF` · `#B07CFF` · `#5A7CFF` · `#FFD21E` · `#6E5F9E` |
+
+Se utilizan colores de acento adicionales para funciones, constantes, selecciones, diagnósticos y directivas del preprocesador. La paleta Russian and Slavic emplea deliberadamente tonos medios de pizarra, azul, salvia, rubí y oro antiguo para ofrecer una apariencia profesional más serena.
+
+### Instalar los esquemas de Vim
+
+Desde la raíz del repositorio:
+
+```sh
+mkdir -p ~/.vim/{syntax,ftdetect,colors}
+cp lib/linux-editors/vim/syntax/sleela.vim ~/.vim/syntax/
+cp lib/linux-editors/vim/ftdetect/sleela.vim ~/.vim/ftdetect/
+cp lib/linux-editors/vim/colors/sleela-*.vim ~/.vim/colors/
+```
+
+Añada lo siguiente a `~/.vimrc` para activar el resaltado de sintaxis de SLeeLa y elegir un esquema:
+
+```vim
+syntax enable
+set background=dark
+colorscheme sleela-american
+```
+
+Elija exactamente uno de estos nombres de esquema:
+
+- `sleela-american`
+- `sleela-eurasia`
+- `sleela-russian-slavic`
+- `sleela-silk-road`
+- `sleela-east-asian`
+- `sleela-greek`
+- `sleela-turkish`
+- `sleela-kiro`
+- `sleela-sleela`
+
+Por ejemplo, utilice `colorscheme sleela-russian-slavic` para la paleta rusa y eslava de intensidad media, o `colorscheme sleela-greek` / `colorscheme sleela-turkish` para las paletas helénica y Al Bayrak. Reinicie Vim o vuelva a cargar la configuración con `:source $MYVIMRC`.
+
+### Instalar los esquemas de Emacs
+
+Cree un directorio local para los temas y copie desde la raíz del repositorio los archivos del modo y de los temas:
+
+```sh
+mkdir -p ~/.emacs.d/sleela
+cp lib/linux-editors/emacs/sleela-mode.el ~/.emacs.d/sleela/
+cp lib/linux-editors/emacs/sleela-*-theme.el ~/.emacs.d/sleela/
+```
+
+Añada lo siguiente a `~/.emacs` o `~/.emacs.d/init.el`:
+
+```elisp
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/sleela"))
+(add-to-list 'custom-theme-load-path (expand-file-name "~/.emacs.d/sleela"))
+(require 'sleela-mode)
+(load-theme 'sleela-american t)
+```
+
+Sustituya `sleela-american` por `sleela-eurasia`, `sleela-russian-slavic`, `sleela-silk-road`, `sleela-east-asian`, `sleela-greek`, `sleela-turkish`, `sleela-kiro` o `sleela-sleela` para seleccionar otro esquema. Si Emacs pregunta si debe confiar en el tema, inspeccione el archivo local del tema antes de aceptarlo.
+
+### Previsualizar las paletas nativas C/C++
+
+La pequeña utilidad nativa de paletas puede enumerar esquemas, mostrar sus colores de terminal y consultar un color individual:
+
+```sh
+make -C linux-editors
+./linux-editors/build/sleela-editor-theme --themes
+./linux-editors/build/sleela-editor-theme --theme eurasia --palette
+./linux-editors/build/sleela-editor-theme --theme russian-slavic --hex keyword
+make -C linux-editors test
+```
+
+Por compatibilidad con versiones anteriores, `--palette` y `--hex COLOR` sin `--theme` seleccionan American Professional. Los resultados de compilación y prueba deben comprobarse en el sistema de destino y en CI; documentar un comando no demuestra por sí solo que se haya ejecutado correctamente.
+
+Consulte la [guía de integración de editores](linux-editors/README.md) para obtener las descripciones completas de las paletas y los detalles de la utilidad.
+
 ## Secciones pendientes de traducción
 
 Todavía deben traducirse las siguientes secciones, que se incorporarán en próximas tandas: **II. Novedades; VIII. Temas del editor SLeeLa; IX. Contribuir; X–XVII. Otras áreas del proyecto; XVIII. Incorporaciones recientes; XIX. Ediciones internacionales del README.** Hasta completar la traducción, el [README.md canónico en inglés](README.md) sigue siendo la referencia completa.
