@@ -184,12 +184,15 @@ container and is not used to change the legacy `SL_STR` encoding.
 
 ### Remaining source integration boundary
 
-The SLeeLa-level `JavaStringValue.sleela` facade has not yet been switched to
-the VM-backed value. The compiler and source library still need a source-visible
-UTF-16 String type/constructor and method lowering so Java-facing source can
-create and manipulate `SL_UTF16` values without a host C caller. The legacy
-`String`/`SL_STR` type, native scalar ABI, and existing UTF-8 semantics remain
-unchanged. Typed, catchable Java exception objects are also not yet implemented.
+The `JavaStringValue.sleela` facade is now switched to the VM-backed `SL_UTF16`
+value. Its bind/concat/substring, UTF-16 indexing, code-point, equality,
+comparison, and Java hash operations use compiler intrinsics rather than
+Native Drive. The compatibility `bind(moduleHandle, text)` signature remains,
+but the module handle is no longer used for String operations. The general
+SLeeLa `String`/`SL_STR` type and existing UTF-8 semantics remain unchanged;
+callers can explicitly convert a legacy string with `javaStringFromUtf8`.
+Typed, catchable Java exception objects and automatic instance-method dispatch
+for the general `String` type are still not implemented.
 
 Focused validation targets are:
 
@@ -273,3 +276,11 @@ The conversion is an append-only VM opcode and advances the VM ABI minor
 version. The source smoke program now checks conversion of an ASCII character,
 a supplementary character, and a non-ASCII BMP character, then exercises
 UTF-16 length and code-point access on the result.
+
+
+The Java String facade source now delegates its operations to the VM-backed
+intrinsics. Its stored value is initialized as an empty `SL_UTF16` string;
+`bind(moduleHandle, text)` preserves its older signature while converting the
+input once and no longer calls Native Drive. The wrapper exposes UTF-16
+`length`/`charAt`, code-point navigation, substring, concat, equals,
+compareTo, and Java hashCode.
