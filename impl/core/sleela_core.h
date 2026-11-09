@@ -13,6 +13,7 @@
 #include "../../os-level-support/loader/native_module_table.h"
 #include <stddef.h>
 #include "../../runtime/garbage_collector.h"
+#include "sleela_java_string.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -20,7 +21,7 @@ extern "C" {
  * (bytecode/const-pool compatibility). It carries a true 128-bit signed value
  * in the i128 union member where the toolchain provides __int128 (GCC/Clang);
  * otherwise it degrades to the 64-bit path (see SLEELA_HAVE_INT128). */
-typedef enum { SL_NULL = 0, SL_INT, SL_DOUBLE, SL_BOOL, SL_STR, SL_STRUCT, SL_ARRAY, SL_INT128 } SLType;
+typedef enum { SL_NULL = 0, SL_INT, SL_DOUBLE, SL_BOOL, SL_STR, SL_STRUCT, SL_ARRAY, SL_INT128, SL_UTF16 } SLType;
 #if defined(__SIZEOF_INT128__)
 #  define SLEELA_HAVE_INT128 1
 typedef __int128 sl_int128_t;
@@ -405,6 +406,20 @@ int slvm_add_const_int(SLVM* vm, int64_t v);
 int slvm_add_const_double(SLVM* vm, double v);
 int slvm_add_const_bool(SLVM* vm, int v);
 int slvm_add_const_str(SLVM* vm, const char* s);
+/* Lossless Java String runtime API. SL_UTF16 values are VM-local GC handles;
+ * code units (including NUL and isolated surrogates) never cross as C strings. */
+SLValue slvm_java_string_new(SLVM* vm, const uint16_t* units, size_t length);
+int slvm_java_string_copy(SLVM* vm, SLValue value, SLJavaString* out);
+int slvm_java_string_length(SLVM* vm, SLValue value, int32_t* out_length);
+int slvm_java_string_char_at(SLVM* vm, SLValue value, int32_t index, uint16_t* out_unit);
+int slvm_java_string_code_point_at(SLVM* vm, SLValue value, int32_t index, int32_t* out_code_point);
+int slvm_java_string_code_point_count(SLVM* vm, SLValue value, int32_t begin_index, int32_t end_index, int32_t* out_count);
+int slvm_java_string_offset_by_code_points(SLVM* vm, SLValue value, int32_t index, int32_t offset, int32_t* out_index);
+SLValue slvm_java_string_substring(SLVM* vm, SLValue value, int32_t begin_index, int32_t end_index);
+SLValue slvm_java_string_concat(SLVM* vm, SLValue left, SLValue right);
+int slvm_java_string_equals(SLVM* vm, SLValue left, SLValue right, int* out_equal);
+int slvm_java_string_hash_code(SLVM* vm, SLValue value, int32_t* out_hash);
+int slvm_java_string_compare_to(SLVM* vm, SLValue left, SLValue right, int32_t* out_order);
 int slvm_declare_global(SLVM* vm, const char* name);
 /* Register a struct type and its ordered field names. Returns the type index
  * used by OP_NEWSTRUCT / OP_STRUCTUNPACK, or -1 on error. Field order defines
