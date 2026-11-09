@@ -26,6 +26,15 @@ class IPCWorkerTests(unittest.TestCase):
         w=self.worker()
         try: self.assertEqual(w.call("pi.compute",50),"3.14159265358979323846264338327950288419716939937510")
         finally: w.close()
+    def test_twenty_thousand_pi_digits_match_reference_hash(self):
+        w=self.worker()
+        try:
+            value=w.call("pi.compute",20000)
+            self.assertEqual(len(value),20002)
+            self.assertEqual(value[:52],"3.14159265358979323846264338327950288419716939937510")
+            self.assertEqual(hashlib.sha256(value.encode()).hexdigest(),
+                "977f8d4251b4f633100b4d2dbc214b874c45353b0e3debe41046753777fd6efc")
+        finally: w.close()
     def test_executable_integrity_fails_closed(self):
         with self.assertRaises(ipc.IPCError):
             ipc.Worker([str(self.python),str(self.script),"--worker"],"0"*64,cwd=str(self.script.parent))

@@ -165,11 +165,19 @@ def _bs(a,b):
     m=(a+b)//2; p1,q1,t1=_bs(a,m); p2,q2,t2=_bs(m,b)
     return p1*p2,q1*q2,t1*q2+p1*t2
 
+def _int_to_decimal(value):
+    if value < 0: return "-" + _int_to_decimal(-value)
+    if value < 1_000_000_000: return str(value)
+    chunks=[]
+    while value:
+        value,rem=divmod(value,1_000_000_000); chunks.append(rem)
+    return str(chunks[-1])+"".join(f"{part:09d}" for part in reversed(chunks[:-1]))
+
 def pi_digits(n):
     if not isinstance(n,int) or isinstance(n,bool) or not 1<=n<=200000: raise ValueError("digits must be 1..200000")
     terms=n//14+2; p,q,t=_bs(0,terms)
     scaled=(426880*__import__("math").isqrt(10005*10**(2*n))*q)//t
-    s=str(scaled).zfill(n+1)
+    s=_int_to_decimal(scaled).zfill(n+1)
     return s[:-n]+"."+s[-n:]
 
 def worker_main():
@@ -184,7 +192,8 @@ def worker_main():
             if method=="math.ping": result="pong"
             elif method=="math.capabilities": result="math.ping,bigint.add,bigint.sub,bigint.mul,pi.compute"
             elif method in ("bigint.add","bigint.sub","bigint.mul") and len(args)==2 and all(isinstance(x,str) for x in args):
-                a,b=map(int,args); result=str(a+b if method.endswith("add") else a-b if method.endswith("sub") else a*b)
+                if any(len(x.lstrip("+-"))>200000 for x in args): raise ValueError("integer operand exceeds 200000 decimal digits")
+                a,b=map(int,args); result=_int_to_decimal(a+b if method.endswith("add") else a-b if method.endswith("sub") else a*b)
             elif method=="pi.compute" and len(args)==1: result=pi_digits(args[0])
             else: raise ValueError("NOT_HANDLED: unsupported method/signature")
             out=_frame(RESPONSE,rid,_encode_value(result),0)
