@@ -235,7 +235,7 @@
     },
     {
       "path": "impl/core/sleela_artifact.c",
-      "sha256": "5e453f0fd0dcb776b8f31f395fca6dbcc653318543c228c3a3e25cd2f9a8a02c"
+      "sha256": "7a5b6a1e15664609f365704d29062d23ca379ebac2d5a3de6af61274249a63ca"
     },
     {
       "path": "impl/core/sleela_audio_bridge.cpp",
@@ -263,11 +263,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "f5e9c296558ab65bcf9d8a2cc8ab058ff6fc937fb50f462fd91f4df1908d882e"
+      "sha256": "2e8b7defa0604a93ee0f886cfe0565d7efd940e82041866ea42c6397ab2c3127"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "466f087b9e9ece7d86b408e64d7ff3a099f56da2fe833ac808fdf3844f4237aa"
+      "sha256": "e746e0d526924cb38fb929d64d7a00416add06546d31ba600705fa755314a561"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -48879,7 +48879,7 @@
     },
     {
       "path": "lib/vm/InstructionSet.sleela",
-      "sha256": "449848d1c5427db7713ca7b9498af39d5a983512d75fe0452962852aadae7aa4"
+      "sha256": "ab84377b9b3fa5c99352e26c031c50da5cf7095c98640142f6300e61fd73ff69"
     },
     {
       "path": "lib/vm/SleelaSLJVM.sleela",
