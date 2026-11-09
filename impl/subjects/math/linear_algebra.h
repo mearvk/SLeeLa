@@ -59,6 +59,8 @@ slmath_status slmath_matrix_lu_solve(const double *lu, const size_t *pivots,
                                      size_t n, const double *b, double *x);
 slmath_status slmath_matrix_inverse(const double *a, size_t n, double *out,
                                     double tolerance);
+slmath_status slmath_matrix_determinant(const double *a, size_t n, double *out,
+                                         double tolerance);
 
 /* Thin QR factorization via modified Gram-Schmidt.
  * A is rows x cols, rows >= cols. Q is rows x cols; R is cols x cols. */
@@ -119,10 +121,14 @@ typedef enum slmath_operation {
     SLMATH_OP_MATRIX_MULTIPLY = 10,
     SLMATH_OP_MATRIX_TRANSPOSE = 11,
     SLMATH_OP_MATRIX_INVERSE = 12,
+    SLMATH_OP_MATRIX_DETERMINANT = 13,
     SLMATH_OP_COMPLEX_MULTIPLY = 20,
     SLMATH_OP_COMPLEX_ADD = 21,
     SLMATH_OP_COMPLEX_SUBTRACT = 22,
     SLMATH_OP_COMPLEX_DIVIDE = 23,
+    SLMATH_OP_COMPLEX_ABS = 24,
+    SLMATH_OP_COMPLEX_PHASE = 25,
+    SLMATH_OP_COMPLEX_CONJUGATE = 26,
     SLMATH_OP_QR = 30,
     SLMATH_OP_SYMMETRIC_EIGEN = 31,
     SLMATH_OP_FFT = 40
