@@ -3,7 +3,7 @@
   "files": [
     {
       "path": ".github/workflows/native-drive.yml",
-      "sha256": "eb6c6044945c586c5a4bd6a803c00155edd8e41eda60eaf8f582a9f0b5bc965f"
+      "sha256": "9bec612c540eb90cef5d2f2c323f7dde64a85cfb6d80a6de975528968fbb1f0a"
     },
     {
       "path": "ballum/include/sleela_ballum/ballum_effects.h",
@@ -263,11 +263,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "2e8b7defa0604a93ee0f886cfe0565d7efd940e82041866ea42c6397ab2c3127"
+      "sha256": "ca01dbf7260ea3cdadda5fc1191b2e9484f6d1ffbf354758d47213f34752111d"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "e746e0d526924cb38fb929d64d7a00416add06546d31ba600705fa755314a561"
+      "sha256": "529a12e3b0e90ea61233e32dc947fdae8ec3f492752aa060771b312310084452"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -658,6 +658,10 @@
       "sha256": "ae11bbaf0e2414d329bd0d0280843bc2bd5ff71959c52af4581e6512cdcbe11c"
     },
     {
+      "path": "impl/Makefile",
+      "sha256": "3932d480e57591195c9811ee3b429de423737b4c7e5119b21bfc693e9782dd18"
+    },
+    {
       "path": "impl/native-drive/native_ipc_client.c",
       "sha256": "fd4eabedc35b3995b427ec6dfad576eb5b5e6dce838456c904fbfa377c6d1d1e"
     },
@@ -900,6 +904,10 @@
     {
       "path": "impl/tests/native_drive/native_ipc_client_smoke.c",
       "sha256": "125451d90441030f8d5c0ba96f93681210de065b28feec509bc7f5eef3255538"
+    },
+    {
+      "path": "impl/tests/native_drive/native_ipc_handle_smoke.c",
+      "sha256": "a831c4a9df65f7dc534e87e18106d6cb8e7253b7d96bfdf5b681d9274d4885ae"
     },
     {
       "path": "impl/tests/native_drive/native_ipc_protocol_smoke.c",
