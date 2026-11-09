@@ -35,7 +35,7 @@ class MathValues {
         check("clamp_hi", math.clamp(15.0, 0.0, 10.0), 10.0, 0.0);
         check("clamp_lo", math.clamp(-5.0, 0.0, 10.0), 0.0, 0.0);
         check("hypot_3_4", math.hypot(3.0, 4.0), 5.0, 0.000001);
-        check("hypot_large", math.hypot(1.0e308, 1.0e308), 1.4142135623730951e308, 1.0e302);
+        check("hypot_large", math.hypot(math.pow(10.0, 308.0), math.pow(10.0, 308.0)), math.pow(10.0, 308.0) * 1.4142135623730951, math.pow(10.0, 302.0));
         check("fmod", math.fmod(7.5, 2.0), 1.5, 0.000001);
         check("fmod_negative", math.fmod(-7.5, 2.0), -1.5, 0.000001);
         check("pi", math.pi(), 3.141592653589793, 0.00001);
