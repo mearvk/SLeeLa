@@ -272,3 +272,12 @@ Smoke programs and runtime runners are wired through
 The current implementation is a documented subset; it is not a claim of full
 `java.lang.Object` or `java.lang.String` compatibility. See
 `lib/java/README.md` for the unsupported semantics and VM prerequisites.
+
+
+## Java API dependency qualification
+
+The API counterpart layer now has separate type-graph, member-dependency, and visibility/constructor audits. These reports distinguish the existence of a type counterpart from the dependencies and access contracts of its members. They are structural evidence only and do not claim behavioral equivalence.
+
+## Java source implementation depth
+
+The source implementation audit identifies generic dispatch placeholders, empty bodies, constant-return placeholders, simple accessors, and substantive-looking bodies. This measurement helps prioritize the translation of Java source into executable SLeeLa implementations. Each implementation still requires behavioral tests and explicit provenance.
