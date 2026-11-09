@@ -794,7 +794,7 @@ $(OSLS_VM_CAP_SMOKE_OBJ): tests/osls_vm/osls_vm_capability_test.c | $(BUILD)
 $(OSLS_VM_CAP_SMOKE): $(OSLS_VM_CAP_SMOKE_OBJ) $(SLCORE_LIB)
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
 $(IPC_HANDLE_SMOKE): tests/native_drive/native_ipc_handle_smoke.c $(SLCORE_LIB) | $(BUILD)
-	$(CC) $(CFLAGS) -Icore $< $(SLCORE_LIB) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+	$(CXX) $(CXXFLAGS) -Icore $< $(SLCORE_LIB) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
 test-native-ipc-handles: $(IPC_HANDLE_SMOKE)
 	@$(IPC_HANDLE_SMOKE)
 
