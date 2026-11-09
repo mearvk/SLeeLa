@@ -89,7 +89,6 @@ int main(int argc, char **argv) {
     release_fd = mkstemp(release_path);
     if (entered_fd < 0 || release_fd < 0) goto cleanup;
     close(entered_fd); entered_fd = -1;
-    close(entered_fd); entered_fd = -1;
     unlink(entered_path);
 
     vm = slvm_new();
@@ -112,8 +111,7 @@ int main(int argc, char **argv) {
         goto cleanup;
     }
     if (pthread_create(&closer, NULL, close_worker, &state) != 0) {
-        FILE *release = fopen(release_path, "wb");
-        if (release) fclose(release);
+        release_plugin(release_fd);
         (void)pthread_join(caller, NULL);
         goto cleanup;
     }
@@ -121,8 +119,7 @@ int main(int argc, char **argv) {
     while (!atomic_load(&state.close_started)) (void)nanosleep(&observation, NULL);
     (void)nanosleep(&observation, NULL);
     if (atomic_load(&state.close_done) || atomic_load(&state.call_done)) {
-        FILE *release = fopen(release_path, "wb");
-        if (release) fclose(release);
+        release_plugin(release_fd);
         (void)pthread_join(caller, NULL);
         (void)pthread_join(closer, NULL);
         goto cleanup;
