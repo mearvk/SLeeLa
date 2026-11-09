@@ -19,6 +19,11 @@ public final class SleelaJdkBridge {
 
     private SleelaJdkBridge() {}
 
+    /** Close configured class roots and release cached Java classes. */
+    public static void closeRuntime() {
+        LOADER.close();
+    }
+
     /** Add one explicitly permitted Java binary class name. */
     public static void allowClass(String binaryName) {
         LOADER.allowClass(binaryName);
