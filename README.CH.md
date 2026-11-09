@@ -1307,4 +1307,76 @@ SLeeLa fornisce punti di ingresso README specifici per paese per i 50 mercati de
 
 **Politica di traduzione:** questi file sono punti di ingresso localizzati iniziali per ciascun paese. Le introduzioni e le intestazioni linguistiche sono localizzate, mentre il riferimento tecnico completo resta il [README.md canonico in inglese](README.md). Un file nazionale non deve essere descritto come traduzione completa finché tutte le sezioni non sono state tradotte, gli identificatori tecnici e i collegamenti non sono stati verificati e l’edizione non ha ricevuto una revisione linguistica. La copertura linguistica di questa prima fase è rappresentativa e non afferma che tutte le lingue riconosciute costituzionalmente, regionali, indigene o dei segni siano state tradotte integralmente.
 
+
+## Rumantsch
+
+### Guid tecnic supplementar en rumantsch
+
+#### 1. Construir e testar
+
+Il file `SLEELA.syntax` è la referenza principala per la grammatica da la lingua. La versiun dal compilatur e la versiun da la specificaziun da la lingua èn duas chaussas differentas. Betg mintga versiun dal compilatur sto sustegnair tut las funcziuns descrittas en la specificaziun.
+
+Da la ragisch dal repository pon ins executar las suandantas cumondas, tenor basegn:
+
+```sh
+make
+make -C impl all
+bash ./test-suites/run-all.sh --all
+```
+
+Auters targets Make impurtants èn:
+
+```sh
+make all
+make registry
+make tests
+make ballum
+make help
+make clean
+```
+
+Sche la construcziun d'in singul component reussescha, quai na signifitga betg che tut las bibliotecas u tut las plattafurmas èn prontas per ina publicaziun. Ils resultats dals tests ston vegnir colliads cun il commit Git, il sistem operativ ed ils utensils utilisads. Tests betg exequids u omess na dastgan betg vegnir rapportads sco reussids.
+
+#### 2. Installaziun
+
+SLeeLa sustegna l'installaziun per l'entir sistem, l'installaziun en il conto d'in singul utilisader e la preparaziun d'in directori per construir pachets:
+
+```sh
+sudo make install
+make install PREFIX="$HOME/.local"
+make install DESTDIR="$PWD/package-root"
+make install-check
+```
+
+In'installaziun dal sistem utilisescha per regla vias sco `/usr/local/bin`, `/usr/local/lib/sleela` e `/usr/local/share/sleela`. Cun `PREFIX="$HOME/.local"` vegnan ils files installads en il directori da l'utilisader; per regla na dovri nagin `sudo`. `DESTDIR` producescha ina structura temporara per la preparaziun da pachets e n'è betg in'installaziun directa sin il sistem ospitant.
+
+Resguardai il [guid d'installaziun](install/README.md) e las instrucziuns specificas per la plattafurma. Na supprimai betg files che n'èn betg registrads sco files administrads dal process d'installaziun.
+
+#### 3. Linguatg, compilatur e runtime
+
+SLeeLa cumpiglia in compilatur, in runtime, maschinas virtualas, bibliotecas ed utensils per la documentaziun. Il repository cuntegna era code nativ C e C++ sco er moduls SLeeLa. Sche code traversa il cunfin tranter code nativ e runtime, sto el respectar il contract ABI dal component pertutgà.
+
+La pipeline dal compilatur cumpiglia normalmain l'analisa lexicala, il parsing, l'analisa semantica, la reducziun ad ina represchentaziun intermediara, la generaziun da code e l'execuziun sin la maschina virtuala. Mintga fasa e mintga cunfin tranter fasas duai vegnir testà. In test dal parser sulet na po betg cumprovar la correctadad d'in program entir.
+
+#### 4. Contracts API e cunfins da moduls
+
+Mintga API publica duai documentar las entradas acceptadas, las sortidas, las pussaivlas situaziuns d'errur, la proprietad da la memoria e las consequenzas lateralas. La documentaziun d'in modul duai descriver cleramain las premissas, las cundiziuns finalas e las restricziuns da la plattafurma.
+
+In num da simbol u ina referenza ad in modul na dat betg automaticamain la permissiun d'exequir code. L'autorisaziun e ils cunfins d'execuziun ston vegnir controllads al lieu previs. Sche las entradas èn invalidas, sch'i mancan resursas u sch'ina funcziun n'è betg sustegnida, duai l'operaziun terminar en moda segira.
+
+#### 5. Tests da regressiun e reproducibilitad
+
+La collecziun da tests duai cuntegnair cas positivs e negativs: files da funtauna valaivels, errurs da parsing, violaziuns da tips, errurs da reducziun IR, generaziun da code e resultats d'execuziun. Per l'integraziun nativa ston era la cumpatibilitad ABI, la gestiun d'errurs e la liberaziun da resursas vegnir testadas.
+
+Registrai il sistem operativ, la versiun dal compilatur, las versiuns dals utensils e il commit Git. Ils resultats da tests repetids duain pudair vegnir cumparegliads; tests omess ston restar visibels en il rapport. Consultai la [politica da tests](markdown/TESTING.md) e la [matrica da sustegn da plattafurmas](docs/PLATFORM-SUPPORT.md).
+
+#### 6. Terminologia e mantegniment
+
+Mantegnai senza midadas ils nums da files, identificaturs, cumondas, vias, URL, exempels da code e nums d'API. Translatà duai vegnir il text explicativ, betg las lingias che il compilatur u la shell sto identifitgar. Utilisai ina terminologia constanta per compilatur, runtime, maschina virtuala, modul ed API. Sche nagin term rumantsch è cler u stabil, agiuntai il term tecnic englais a la prima utilisaziun.
+
+La translaziun è ina lavur cuntinuanta. Cura che la README canonica vegn midada, cumparegliai las secziuns correspundentas e actualisai questa ediziun. Quest guid supplementar porscha ina basa tecnica en rumantsch, ma na remplazza betg la translaziun cumpletta da tut las secziuns existentas ni ina revisiun finala tras persunas cun cumpetenza linguistica.
+
+
+---
+
 **Stato della traduzione:** le sezioni I–XIX sono tradotte in italiano. Identificatori tecnici, comandi, esempi di codice, nomi di file, collegamenti e indirizzi sono stati conservati. Si raccomanda una revisione linguistica finale da parte di madrelingua.
