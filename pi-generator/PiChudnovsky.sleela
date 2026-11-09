@@ -47,7 +47,7 @@
 class PiChudnovsky {
 
     << Decimal digits of Pi after the leading "3.". >>
-    int DIGITS = 1000;
+    int DIGITS = 20000;
     int GUARD = 24;
     String OUT_PATH = "pi-chudnovsky.txt";
     int CHUNK = 4096;
