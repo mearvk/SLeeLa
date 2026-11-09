@@ -125,9 +125,11 @@ From connector/:
 
     make protocol-test protocol-codec-test
 
-The endpoint test exercises allow-list denial, resolve, construction, static
-and instance invocation, public instance/static field reads and writes, handle
-release, stale-handle rejection, structured Java exceptions, and clean close. The native test exercises frame encoding,
+The endpoint test exercises allow-list denial, non-initializing resolve,
+construction, static and instance invocation, public instance/static field reads
+and writes, primitive conversions, class-directory and JAR loading, handle release,
+stale-handle rejection, structured Java exceptions, malformed-payload rejection,
+and clean close. Exception messages are limited to 2,048 Unicode code points. The native test exercises frame encoding,
 decoding, bounds, malformed headers, and callback exchange. A Python orchestration
 runner at test-suites/java-interop-protocol.py supports Windows, Linux, and macOS
 when a JDK, Python, and C compiler are installed. These tests have
