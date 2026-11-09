@@ -915,7 +915,7 @@
     },
     {
       "path": "impl/tests/native_drive/native_ipc_handle_smoke.c",
-      "sha256": "a831c4a9df65f7dc534e87e18106d6cb8e7253b7d96bfdf5b681d9274d4885ae"
+      "sha256": "06feb585be3ea06e98ba59c969ef91313b0782e74d92d455e5a7b8d2ec9ad3f4"
     },
     {
       "path": "impl/tests/native_drive/native_ipc_protocol_smoke.c",
