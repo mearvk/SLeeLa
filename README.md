@@ -652,7 +652,7 @@ On the dedicated subsystem entry points — `sleela registry` and `sleela modium
 - The guided ("beautiful") installer now installs `sleelactl` (the SLeeLa control plane) and its module registry, matching the `make` installer. See [`bin/SLEELACTL.md`](bin/SLEELACTL.md).
 - `sleelactl` gained a new **`subject`** nature for the native C/C++ subject libraries compiled into the runtime, and registers the first one: **`math`**. `sleelactl run math` exercises the native `__NativeMath` backend (`impl/subjects/math/math_native.cpp`) end-to-end via the subject's reference demo; `sleelactl info math` explains how it is reached (`import math;`). The subject nature offers `run info` only — there is deliberately no `check` verb, because `sleela check` does not load the SHEET-registered native subjects.
 
-### `@native` and `sleela aot` — Part 1 of the SLeeLa → native C/C++ path
+### `@native`, Native Drive, and multi-language execution
 
 A new **`@native`** method annotation requests ahead-of-time native compilation of a hot method. The new `sleela aot` command finds `@native` methods, verifies each is within a supported *offloadable subset*, and emits C/C++ — **failing closed** (refusing, with a precise reason) on any construct it cannot yet translate, so a half-translated method is never produced.
 
@@ -661,7 +661,7 @@ sleela aot --list <file.sleela>    # per-method verdict: ok / REFUSED (reason)
 sleela aot --emit <file.sleela>    # emit C/C++ (stdout) for an in-subset program
 ```
 
-`@native` remains a request for AOT treatment, with unsupported constructs rejected before emission. The new [Native Drive](impl/native-drive/README.md) adds direct C/C++ executable or shared-library compilation, compilation of supported SLeeLa AOT output, shell-free process execution, stdin/stdout/stderr handling, and two-process piping. It is available through `sleelactl info native-drive`, `sleelactl build native-drive ...`, and `sleelactl run native-drive ...`. This does **not** yet provide a full C/C++ frontend, shared-library VM dispatch, or automatic systemd unit generation. Details and limitations: [`pi-generator/AT-NATIVE.md`](pi-generator/AT-NATIVE.md).
+`@native` remains a request for AOT treatment, with unsupported constructs rejected before emission. The [Native Drive](impl/native-drive/README.md) now supports multi-unit C/C++ executable and shared-library builds through host compilers (including MSVC), supported SLeeLa AOT output, symbol inspection against the native-loader ABI, shell-free process execution, stdin/stdout/stderr handling, two-process piping, and XClass delegation to the production loader. `sleelactl` exposes its build/run commands and routes XClass inspection and explicit systemd unit rendering/installation through `inspect native-drive`. This is not yet a complete C/C++-to-SLIR frontend, a per-method native ABI, or SLeeLa VM native-symbol dispatch. Source process-policy annotations have a versioned schema but are not yet parsed/enforced. Details, security boundaries, and the seven-workstream ledger: [Native Drive](impl/native-drive/README.md) and [`pi-generator/AT-NATIVE.md`](pi-generator/AT-NATIVE.md).
 
 
 ## XIX. International README Editions
