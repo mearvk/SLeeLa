@@ -3053,7 +3053,7 @@ static SLResult run_thread(SLThread* t) {
                  * and the incremental safepoint above (budget 4) may not reclaim
                  * them in time. A full collect with the real roots frees exactly
                  * the dead ones, so genuinely-live arrays are never lost. */
-                SLGCRootContext roots = { vm, t };
+                SLGCRootContext roots = { vm, t, vm->native_callback_caller };
                 gc_collect_with_roots(&vm->gc, gc_mark_vm_roots, &roots, 0);
                 h=array_alloc(vm,(int)nv.as.i);
             }
