@@ -2783,7 +2783,8 @@ on exceptional completion. Explicit `throw expression;` lowers to
 `OP_THROW`. This is intentionally not typed matching: the catch variable
 must be declared `Any`, and exactly one catch clause is supported. Multiple
 clauses, narrower catch types, catch-variable shadowing of an existing method
-local, and every `finally` block are rejected at compile time. The runtime
+local, `break`/`continue` that would leave the protected try region, and every
+`finally` block are rejected at compile time. The runtime
 still does not convert ordinary VM faults into language exceptions.
 
 The VM artifact ABI minor version advances to 6; artifact serialization
