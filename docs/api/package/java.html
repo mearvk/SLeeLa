@@ -141,7 +141,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; java</div>
 <h1>Package <code>java</code></h1>
-<div class="lead">This package contains <strong>8982</strong> source unit(s) defining <strong>8982</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>8984</strong> source unit(s) defining <strong>8984</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="aboutevent">AboutEvent <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.desktop/java/awt/desktop/AboutEvent.sleela)</span></h2>
 <div data-u="aboutevent aboutevent">
@@ -71760,6 +71760,29 @@
 <tr><td><code>valid</code></td><td><span class="sig">boolean valid()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="javaobjectidentity">JavaObjectIdentity <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/implementations/java/lang/JavaObjectIdentity.sleela)</span></h2>
+<div data-u="javaobjectidentity javaobjectidentity">
+<h3 id="JavaObjectIdentity">JavaObjectIdentity <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>heapIdentity</code></td><td><span class="sig">int heapIdentity = -1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>objectHandle</code></td><td><span class="sig">int objectHandle = -1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>runtimeClassName</code></td><td><span class="sig">String runtimeClassName = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>bind</code></td><td><span class="sig">void bind(int heap, int handle, String className)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isBound</code></td><td><span class="sig">boolean isBound()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>equals</code></td><td><span class="sig">boolean equals(JavaObjectIdentity other)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashCode</code></td><td><span class="sig">int hashCode()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>className</code></td><td><span class="sig">String className()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>implementationName</code></td><td><span class="sig">String implementationName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>supportsMonitorOperations</code></td><td><span class="sig">boolean supportsMonitorOperations()</span></td><td class="desc">Explicitly unsupported until runtime services are implemented.</td></tr>
+<tr><td><code>supportsWaitNotify</code></td><td><span class="sig">boolean supportsWaitNotify()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>supportsClone</code></td><td><span class="sig">boolean supportsClone()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>supportsDefaultToString</code></td><td><span class="sig">boolean supportsDefaultToString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="javashelltoolbuilder">JavaShellToolBuilder <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/jdk.jshell/jdk/jshell/tool/JavaShellToolBuilder.sleela)</span></h2>
 <div data-u="javashelltoolbuilder javashelltoolbuilder">
 <h3 id="JavaShellToolBuilder">JavaShellToolBuilder <span class="pill">class</span></h3>
@@ -71812,6 +71835,35 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="javastringvalue">JavaStringValue <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/implementations/java/lang/JavaStringValue.sleela)</span></h2>
+<div data-u="javastringvalue javastringvalue">
+<h3 id="JavaStringValue">JavaStringValue <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>value</code></td><td><span class="sig">String value = javaStringFromCodeUnits()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nativeModule</code></td><td><span class="sig">int nativeModule = 0</span></td><td class="desc">Retained in bind(...) for source compatibility with the former Native Drive adapter. VM-backed String operations do not need a module.</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>fromUtf16</code></td><td><span class="sig">JavaStringValue fromUtf16(String text)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bind</code></td><td><span class="sig">JavaStringValue bind(int moduleHandle, String text)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isEmpty</code></td><td><span class="sig">boolean isEmpty()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>equals</code></td><td><span class="sig">boolean equals(JavaStringValue other)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>concat</code></td><td><span class="sig">JavaStringValue concat(JavaStringValue other)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>length</code></td><td><span class="sig">int length()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>charAt</code></td><td><span class="sig">int charAt(int index)</span></td><td class="desc">Returns one UTF-16 code unit in the integer range 0..65535. Supplementary characters occupy two independently addressable positions.</td></tr>
+<tr><td><code>codePointAt</code></td><td><span class="sig">int codePointAt(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>codePointCount</code></td><td><span class="sig">int codePointCount(int beginIndex, int endIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>offsetByCodePoints</code></td><td><span class="sig">int offsetByCodePoints(int index, int codePointOffset)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>substring</code></td><td><span class="sig">JavaStringValue substring(int beginIndex, int endIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashCode</code></td><td><span class="sig">int hashCode()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareTo</code></td><td><span class="sig">int compareTo(JavaStringValue other)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>supportsUtf16Indexing</code></td><td><span class="sig">boolean supportsUtf16Indexing()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>supportsCodePointIteration</code></td><td><span class="sig">boolean supportsCodePointIteration()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>supportsJavaHashCode</code></td><td><span class="sig">boolean supportsJavaHashCode()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="javatype">JavaType <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/JavaType.sleela)</span></h2>
@@ -161826,7 +161878,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-08 23:32 UTC.
+<code>/lib</code> tree on 2026-11-09 12:33 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
