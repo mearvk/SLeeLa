@@ -1,10 +1,58 @@
 #!/usr/bin/env python3
 """SLeeLa Native Drive: explicit, shell-free native build and process execution."""
 from __future__ import annotations
-import argparse, ctypes, os, pathlib, re, shutil, subprocess, sys, tempfile
+import argparse, ctypes, os, pathlib, re, shutil, subprocess, sys, tempfile, threading, time
 from typing import Sequence
 
-EXIT_USAGE, EXIT_BUILD, EXIT_RUN, EXIT_TIMEOUT = 2, 3, 4, 5
+EXIT_USAGE, EXIT_BUILD, EXIT_RUN, EXIT_TIMEOUT, EXIT_OUTPUT_LIMIT = 2, 3, 4, 5, 6
+DEFAULT_MAX_OUTPUT_BYTES = 16 * 1024 * 1024
+
+def _positive_int(value: str) -> int:
+    try: parsed = int(value)
+    except ValueError as exc: raise argparse.ArgumentTypeError("must be an integer") from exc
+    if parsed < 1: raise argparse.ArgumentTypeError("must be greater than zero")
+    return parsed
+
+def _terminate_processes(processes: Sequence[subprocess.Popen]) -> None:
+    active = [proc for proc in processes if proc.poll() is None]
+    for proc in active:
+        try: proc.terminate()
+        except OSError: pass
+    for proc in active:
+        try: proc.wait(timeout=0.25)
+        except subprocess.TimeoutExpired:
+            try: proc.kill()
+            except OSError: pass
+    for proc in active:
+        try: proc.wait(timeout=1.0)
+        except subprocess.TimeoutExpired: pass
+
+def _drain_limited(stream, captured: bytearray, state: dict, lock: threading.Lock,
+                   limit: int, processes: Sequence[subprocess.Popen]) -> None:
+    while True:
+        chunk = stream.read(65536)
+        if not chunk: return
+        stop = False
+        with lock:
+            remaining = max(0, limit - state["bytes"])
+            if remaining: captured.extend(chunk[:remaining])
+            state["bytes"] += len(chunk)
+            if state["bytes"] > limit and not state["overflow"]:
+                state["overflow"] = True
+                stop = True
+        if stop: _terminate_processes(processes)
+
+def _capture_pipes(pairs, limit: int, processes: Sequence[subprocess.Popen]):
+    state, lock, buffers, threads = {"bytes": 0, "overflow": False}, threading.Lock(), [], []
+    for stream in pairs:
+        captured = bytearray()
+        thread = threading.Thread(target=_drain_limited,
+            args=(stream, captured, state, lock, limit, processes), daemon=True)
+        buffers.append(captured); threads.append(thread); thread.start()
+    return state, buffers, threads
+
+def _join_capture(threads) -> None:
+    for thread in threads: thread.join()
 
 def _compiler(language: str, explicit: str | None) -> str:
     candidate = explicit or os.environ.get("CC" if language == "c" else "CXX")
@@ -155,19 +203,32 @@ def run_process(args: argparse.Namespace) -> int:
     if not args.command:
         print("native-drive run: missing executable after --", file=sys.stderr); return EXIT_USAGE
     stream = None
+    proc = None
     try:
         if args.stdin_file: stream = open(args.stdin_file, "rb")
-        proc = subprocess.run(args.command, stdin=stream,
-            stdout=subprocess.PIPE if args.capture else None,
-            stderr=subprocess.PIPE if args.capture else None,
-            timeout=args.timeout, check=False)
-        if args.capture:
-            if proc.stdout: sys.stdout.buffer.write(proc.stdout)
-            if proc.stderr: sys.stderr.buffer.write(proc.stderr)
+        if not args.capture:
+            return subprocess.run(args.command, stdin=stream, timeout=args.timeout, check=False).returncode
+        proc = subprocess.Popen(args.command, stdin=stream, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        state, buffers, threads = _capture_pipes([proc.stdout, proc.stderr], args.max_output_bytes, [proc])
+        timed_out = False
+        try: proc.wait(timeout=args.timeout)
+        except subprocess.TimeoutExpired:
+            timed_out = True
+            _terminate_processes([proc])
+        _join_capture(threads)
+        if buffers[0]: sys.stdout.buffer.write(buffers[0])
+        if buffers[1]: sys.stderr.buffer.write(buffers[1])
+        if timed_out:
+            print(f"native-drive: process exceeded timeout ({args.timeout:g}s)", file=sys.stderr); return EXIT_TIMEOUT
+        if state["overflow"]:
+            print(f"native-drive: captured output exceeded --max-output-bytes ({args.max_output_bytes}); process terminated", file=sys.stderr)
+            return EXIT_OUTPUT_LIMIT
         return proc.returncode
     except subprocess.TimeoutExpired:
+        if proc: _terminate_processes([proc])
         print(f"native-drive: process exceeded timeout ({args.timeout:g}s)", file=sys.stderr); return EXIT_TIMEOUT
     except OSError as exc:
+        if proc: _terminate_processes([proc])
         print(f"native-drive: could not start process: {exc}", file=sys.stderr); return EXIT_RUN
     finally:
         if stream: stream.close()
@@ -176,35 +237,40 @@ def pipe_processes(args: argparse.Namespace) -> int:
     if not args.producer or not args.consumer:
         print("native-drive pipe: producer and consumer must be separated by ::", file=sys.stderr); return EXIT_USAGE
     producer = consumer = None
-    producer_err = tempfile.TemporaryFile()
+    threads = []
     try:
-        # A temporary file prevents a verbose producer from blocking on stderr
-        # while the consumer is still draining the stdout pipe.
-        producer = subprocess.Popen(args.producer, stdout=subprocess.PIPE, stderr=producer_err)
+        producer = subprocess.Popen(args.producer, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         assert producer.stdout is not None
         consumer = subprocess.Popen(args.consumer, stdin=producer.stdout, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         producer.stdout.close()
+        state, buffers, threads = _capture_pipes(
+            [producer.stderr, consumer.stdout, consumer.stderr], args.max_output_bytes, [producer, consumer])
+        deadline = time.monotonic() + args.timeout
+        timed_out = False
         try:
-            out, cerr = consumer.communicate(timeout=args.timeout)
-            pcode = producer.wait(timeout=max(0.1, args.timeout))
-            producer_err.seek(0)
-            perr = producer_err.read()
+            consumer.wait(timeout=max(0.0, deadline - time.monotonic()))
+            producer.wait(timeout=max(0.0, deadline - time.monotonic()))
         except subprocess.TimeoutExpired:
-            consumer.kill(); producer.kill(); consumer.communicate(); producer.wait()
+            timed_out = True
+            _terminate_processes([consumer, producer])
+        _join_capture(threads)
+        if buffers[1]: sys.stdout.buffer.write(buffers[1])
+        if buffers[0]: sys.stderr.buffer.write(buffers[0])
+        if buffers[2]: sys.stderr.buffer.write(buffers[2])
+        if timed_out:
             print(f"native-drive: pipeline exceeded timeout ({args.timeout:g}s)", file=sys.stderr); return EXIT_TIMEOUT
-        if out: sys.stdout.buffer.write(out)
-        if perr: sys.stderr.buffer.write(perr)
-        if cerr: sys.stderr.buffer.write(cerr)
-        if pcode: print(f"native-drive: producer exited {pcode}", file=sys.stderr); return pcode
+        if state["overflow"]:
+            print(f"native-drive: pipeline output exceeded --max-output-bytes ({args.max_output_bytes}); processes terminated", file=sys.stderr)
+            return EXIT_OUTPUT_LIMIT
+        if producer.returncode:
+            print(f"native-drive: producer exited {producer.returncode}", file=sys.stderr); return producer.returncode
         return consumer.returncode
     except OSError as exc:
-        for proc in (consumer, producer):
-            if proc and proc.poll() is None: proc.kill()
+        _terminate_processes([p for p in (consumer, producer) if p])
         print(f"native-drive: could not start pipeline: {exc}", file=sys.stderr); return EXIT_RUN
     finally:
-        for proc in (consumer, producer):
-            if proc and proc.poll() is None: proc.kill()
-        producer_err.close()
+        _terminate_processes([p for p in (consumer, producer) if p and p.poll() is None])
+        _join_capture(threads)
 
 def xclass_command(args: argparse.Namespace) -> int:
     """Use the production SecureJDK .xclass loader already shipped by sleela."""
@@ -242,6 +308,8 @@ def parser() -> argparse.ArgumentParser:
     r = sub.add_parser("run", help="run one executable with optional stdin file")
     r.add_argument("--stdin-file"); r.add_argument("--capture", action="store_true")
     r.add_argument("--timeout", type=float, default=30.0)
+    r.add_argument("--max-output-bytes", type=_positive_int, default=DEFAULT_MAX_OUTPUT_BYTES,
+                    help=f"combined stdout/stderr capture limit (default: {DEFAULT_MAX_OUTPUT_BYTES})")
     r.add_argument("command", nargs=argparse.REMAINDER); r.set_defaults(handler=run_process)
     x = sub.add_parser("xclass", help="validate, inspect, or reconstruct SecureJDK .xclass input using the production loader")
     x.add_argument("--mode", choices=("info", "emit", "run"), default="info")
@@ -251,6 +319,8 @@ def parser() -> argparse.ArgumentParser:
     x.set_defaults(handler=xclass_command)
     p = sub.add_parser("pipe", help="connect producer stdout to consumer stdin")
     p.add_argument("--timeout", type=float, default=30.0)
+    p.add_argument("--max-output-bytes", type=_positive_int, default=DEFAULT_MAX_OUTPUT_BYTES,
+                    help=f"combined captured output limit (default: {DEFAULT_MAX_OUTPUT_BYTES})")
     p.add_argument("pipeline", nargs=argparse.REMAINDER); p.set_defaults(handler=None)
     return root
 
