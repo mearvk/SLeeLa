@@ -730,7 +730,7 @@ $(OSLS_VM_CAP_SMOKE): $(OSLS_VM_CAP_SMOKE_OBJ) $(SLCORE_LIB)
 $(NATIVE_CALL_SMOKE_OBJ): tests/native_drive/native_call_smoke.c core/sleela_core.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c $< -o $@
 $(NATIVE_CALL_FIXTURE): tests/native_drive/native_call_fixture.c ../os-level-support/loader/native_loader.h | $(BUILD)
-	$(CC) $(CFLAGS) $(NATIVE_CALL_FIXTURE_FLAGS) -I../os-level-support/loader $< -o $@
+	$(CC) $(CFLAGS) -DSL_NATIVE_PLUGIN_BUILD $(NATIVE_CALL_FIXTURE_FLAGS) -I../os-level-support/loader $< -o $@
 $(NATIVE_CALL_SMOKE): $(NATIVE_CALL_SMOKE_OBJ) $(SLCORE_LIB)
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
 test-native-call: $(NATIVE_CALL_SMOKE) $(NATIVE_CALL_FIXTURE)
