@@ -1,5 +1,7 @@
-<< SLeeLa-native executable subset of java.lang.String.
-   UTF-16 indexing uses the host-authorized native UTF-8/UTF-16 primitive.
+<< Legacy SLeeLa source adapter for java.lang.String.
+   This facade currently uses the host-authorized UTF-8/UTF-16 primitive;
+   the VM-backed SL_UTF16 value is exposed through the native C API but is
+   not yet lowered from this source class.
    charAt returns an integer containing one UTF-16 code unit because SLeeLa
    does not yet define Java's 16-bit char value type. >>
 #sleela 3.0
