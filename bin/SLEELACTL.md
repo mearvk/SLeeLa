@@ -79,7 +79,7 @@ frontend lowers onto the native `__Native<Subject>` methods. `sleelactl run
 <subject>` executes that native backend by running the subject's reference demo
 through `sleela run`. There is deliberately no `check` verb: `sleela check` does
 not load the SHEET-registered native subjects, so `run` is the one faithful
-execution verb. Registered runnable subjects include `math` and `physics`. The math subject currently lowers to synthesized Core methods; the typed C++ `<cmath>` kernel is in `impl/subjects/math/math_kernel.hpp` and is wired into SLVM through append-only `OP_MATH_CALL` (179). Scalar numeric arguments execute in the kernel; VM-owned argument values use the synthesized Core helper fallback. Run `make -C impl test-math` for source-to-VM regression coverage and `make -C impl test-math-kernel` for standalone kernel coverage.
+execution verb. Registered runnable subjects include `math` and `physics`. The math subject now emits append-only `OP_MATH_CALL` (179) for scalar operations, dispatching to the typed C++ `<cmath>` kernel in `impl/subjects/math/math_kernel.hpp`; VM-owned argument values fall back to synthesized Core methods. Scalar numeric arguments execute in the kernel; VM-owned argument values use the synthesized Core helper fallback. Run `make -C impl test-math` for source-to-VM regression coverage and `make -C impl test-math-kernel` for standalone kernel coverage.
 
 The `native-drive` tool builds multi-unit C/C++ executables and shared
 libraries, compiles the supported SLeeLa AOT subset, executes processes without
