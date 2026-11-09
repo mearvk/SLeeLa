@@ -159,3 +159,24 @@ make install PREFIX="$HOME/.local"
 A build rendszerint GCC-t vagy Clanget és GNU Make-et igényel; egyes eszközök Python 3-at használnak. Lásd az [installation guide](install/README.md), a [platform matrix](docs/PLATFORM-SUPPORT.md) és a [testing policy](markdown/TESTING.md) dokumentumokat. A tesztjelentéseknek külön kell kezelniük a pass, fail és skip állapotokat; a kihagyott teszt nem jelent sikert.
 
 **Frissített fordítási állapot:** A magyar útmutató immár a fordítási folyamatot, a típus- és objektummodellt, a könyvtárakat, a ciklusok időzítését, a natív integrációt, a buildet, a telepítést és a tesztelést is lefedi. Ez még nem a teljes kanonikus angol README és az összes kapcsolódó specifikáció teljes, sorról sorra készült fordítása.
+
+
+## 14. Célplatformok, profilok és a natív végrehajtás határai
+
+A SLeeLa külön kezeli a forráskódot és a build/végrehajtási célokat. A dokumentált célcsalád része a `SLVM`, `SLJVM` és `SLIR`; a `NATIVE` korlátozott, feltételekhez kötött cél, ezért nem tekinthető minden platformon általánosan elérhetőnek. A `BASIC_COMPLETE` és `ADVANCED_TOTAL` profilok eltérő hatókört jelölnek. Minden buildnél ellenőrizd a tényleges célt, profilt és platformtámogatást.
+
+A referencia fájlt, modult vagy erőforrást azonosít, de önmagában nem ad végrehajtási engedélyt. Ez különösen fontos fájlok, külső könyvtárak, native bindingok és rendszererőforrások használatakor. Ellenőrizd a bemeneteket, és határozd meg, melyik komponens jogosult az adott műveletre. A dokumentációban szereplő állítás önmagában nem bizonyít runtime-biztonsági garanciát; ehhez implementációs és tesztbizonyíték szükséges.
+
+## 15. Erőforrás-életciklus és hibakeresés
+
+Dokumentáld a függvények vagy szálak között megosztott erőforrások tulajdonjogát, élettartamát és szinkronizációját. Különböztesd meg a lokális változókat, a megosztott objektumállapotot, a VM-handle-öket és a szerializálható adatokat. A VM-local handle nem stabil fájlformátum vagy hálózati üzenet. Használd a modul dokumentált szerializációs felületét, és teszteld az érvénytelen, hiányzó és határértékű bemeneteket.
+
+Hibakereséskor rögzítsd a commitot, az operációs rendszert, az architektúrát és a toolchaint. Először a legkisebb releváns targetet buildeld, őrizd meg a teljes hibaüzenetet, különítsd el a fordítóhibákat a runtime-hibáktól, és készíts minimális reprodukálható példát. A sikeres build önmagában nem bizonyítja a helyes futást.
+
+A megfelelő ellenőrzési jelentés tartalmazza a pontos commitot, az OS/architektúra adatokat, a compiler verziókat, a teljes build- és tesztparancsokat, a pass/fail/skip darabszámokat és az ismert korlátozásokat. A kihagyott vagy le nem futtatott teszt nem számíthat sikeresnek.
+
+## 16. Nemzetközi dokumentáció karbantartása
+
+Az országonkénti README-k helyi belépési pontok a műszaki dokumentációhoz; nem helyettesítik a normatív nyelvi specifikációt vagy a modulok API-dokumentációját. Az angol forrás változásakor ellenőrizd a fordítás elavulását. Az azonosítókat, parancsokat, útvonalakat és kódpéldákat változatlanul kell hagyni; a nyelvi vagy műszaki ellenőrzésre váró részeket egyértelműen jelölni kell.
+
+**Bővített fordítási állapot:** A magyar műszaki útmutató most már a célplatformokat és profilokat, a natív végrehajtás határait, az erőforrások tulajdonjogát, a hibakeresést, a tesztjelentéseket és a nemzetközi dokumentáció karbantartását is tárgyalja.
