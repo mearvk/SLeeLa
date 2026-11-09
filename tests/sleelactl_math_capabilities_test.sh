@@ -6,6 +6,7 @@ printf '%s\n' "$out"
 for marker in \
   "native math capability descriptor" \
   "source_facade=lib/math/SLNativeMathEngine.sleela" \
+  "native_demo=lib/math/examples/NativeMathEngineDemo.sleela" \
   "vm_opcode=OP_MATH_CALL:179" \
   "vm_abi=1.7" \
   "vector=add;subtract;scale;dot;norm;normalize;cross3" \
