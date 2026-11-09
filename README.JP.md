@@ -239,11 +239,204 @@ AE6E66イニシアチブにおいて、プロジェクトが示す想定額は�
 
 この記述はプロジェクト上の想定のみを記録します。**法的な課税決定、政府命令、裁判所の判決、または独立して確立された納税義務ではありません。** 実際の課税には、適用される法的権限、管轄、定義、手続、および権限ある政府機関による決定が必要です。
 
-## XI. 以降の技術セクション
+## XI. アルファベットおよび文字セットランタイム
 
-README.mdのセクションXI～XIXは次の段階で翻訳します。現時点では英語の[完全なREADME.md](README.md)を参照してください。
+SLeeLaのアルファベット文書とネイティブ文字ランタイムは、`alphabet/sleela/` および `lib/alphabet/native/` で管理されています。ネイティブC++17テストでは、UTF-8スカラー値の厳密なデコード／エンコード、`C<n>` 容量シグネチャ、境界付き文字セット所属判定を検証します。
+
+```sh
+make -C lib/alphabet/native test
+```
+
+実験的なUTF-4088カタログとSLeeLa検索アダプターについては、[`utf-4088/SLeeLa-ALPHABET-INTEGRATION.md`](utf-4088/SLeeLa-ALPHABET-INTEGRATION.md)に記載されています。UTF-4088 IDはUnicodeスカラー値とは別の名前空間です。コンパイラーおよびSLVMへのバインディング作業は、これらのネイティブ基盤とは別に追跡されています。
+
+## XII. AutoCAD Creator™
+
+[AutoCAD Creator™](autocad/creator/README.md)は、SLeeLaのみで記述された対話型2D CADアプリケーションです。関連するAutoCAD Rendererが図面を一括生成するのに対し、Creatorでは2D AutoCAD文書をその場で**作成・編集**できます。壁、部屋、寸法、注記を追加し、配置した要素を移動、再ラベル付け、レイヤー変更、削除、取り消しできます。結果は実際のAutoCAD DXF図面（R12テキスト形式。AutoCAD／LibreCADで開けます）として**保存**できます。
+
+GUIはJavaFXではなく、SLeeLa独自のクロスプラットフォームUIツールキット **SleelaUI™**（[`lib/user-interface`](lib/user-interface)）で構築され、X11／Cocoa／Win32上にネイティブウィンドウを表示します。設計原則は **「SleelaUIは提示し、SLeeLaが判断する」** です。GUIはジオメトリ計算もDXF書き込みも行いません。各ツールは、編集可能な文書と可逆的なコマンド履歴を所有する権威ある[`SLCadCreator`](lib/autocad/SLCadCreator.sleela)に作成／変更／削除／取り消し／保存の意図を送ります。キャンバスはCreatorが保持するジオメトリをプレビューするだけです。
+
+再利用可能な編集エンジンは[`lib/autocad`](lib/autocad)にあり、[`SLCadEntity`](lib/autocad/SLCadEntity.sleela)、[`SLCadDocument`](lib/autocad/SLCadDocument.sleela)、[`SLCadCommand`](lib/autocad/SLCadCommand.sleela)、[`SLCadCreator`](lib/autocad/SLCadCreator.sleela)で構成されます。ヘッドレス環境でもエンドツーエンドで動作します。GUIシェルとデモは[`autocad/creator`](autocad/creator)にあります。
+
+```sh
+make creator          # autocad/ から実行：Creatorデモ -> out/altered.dxf
+```
+
+ディスプレイがある環境ではライブ編集ウィンドウが開きます。ヘッドレス環境では図面をメモリ内で構築し、レポートとDXFを出力して正常終了します。
+
+## XIII. UTF-4088入力マップの順序
+
+特殊なUTF-4088カタログでは、空間入力マップの走査順序と抽象的な圧力反復を[`utf-4088/INPUT-MAP-AND-PRESSURE.md`](../utf-4088/INPUT-MAP-AND-PRESSURE.md)に定義しています。National Lienの主題索引ポリシーは[`utf-4088/NATIONAL-LIEN-REGISTER.md`](../utf-4088/NATIONAL-LIEN-REGISTER.md)にあります。マップ座標、圧力レベル（1～50）、永続カタログID、アルファベット順位はそれぞれ独立したフィールドであり、相互に置き換えてはなりません。圧力はアルゴリズム上の反復レベルであり、物理量ではありません。
+
+## XIV. 最近拡張されたパッケージ索引
+
+この追加索引は、最近拡張されたパッケージ、ドメインライブラリ、ソースコレクションを示します。項目はパッケージ名またはトピックのアルファベット順に分類されています。説明はリポジトリ内の場所を示します。実装状況と検証状況は、各パッケージ固有の文書およびテストで確認してください。
+
+### A–C
+
+- **Advantage** — `lib/advantage/` および `advantage/`：モデルに対する独自の配当最適化を、階層化されたSequitur onionとして扱います。5つの主題サブフォルダーがあります。`math/`（共同利益最大化、Nash交渉、二者間ニュースベンダー）、`physics/`（trust-fieldの計量／測地線／接触／SDE。モデル化上の類推であることを明示）、`integration/`（垂直統合コンパートメントと複雑度スコア）、`grading/`（モジュールおよびセット向けA～D複雑度回路グレーダー）、`output/`（端末／CommonRails／ソケット出力）。ネイティブC/C++コンシューマー（`advantage/`）はモデルを実例の取引に組み込みます。[README](lib/advantage/README.md)と[DEFINITIONS.md](lib/advantage/DEFINITIONS.md)を参照してください。
+- **Alphabet and UTF-4088** — `alphabet/sleela/`、`lib/alphabet/native/`、`utf-4088/`：アルファベットカタログ、ネイティブ文字セット対応、入力マップ順序、UTF-4088統合文書。
+- **AutoCAD Creator** — `autocad/creator/` および `lib/autocad/`：対話型2D作図ワークフローと再利用可能なCAD文書／編集コンポーネント。
+- **Ballum** — ピクセル単位のディスプレイ制御：ピクセルの設定／取得、領域blit、画面全体の輝度／暖色度／ガンマ、ポインター／キーボード入力、および全面的に所有する高速ピクセル制御用の**全画面フレームバッファー面**（Linux/X11ではoverride-redirectウィンドウと単一の`XPutImage`／MIT-SHM present）。ネイティブコアは`ballum/`、SLeeLaファサードは`lib/ballum/`、VMブリッジは`impl/`にあります。[ガイド](ballum/README.md)と[実行可能な例](ballum/example/)を参照してください。
+- **CDMA** — `cdma/` および `lib/cdma/`：CDMA関連の技術資料とSLeeLaソースライブラリ。
+- **Character** — `lib/character/`：人物プロファイル、再利用可能な人物統計、経歴プロファイルの例。
+- **Coorenagraph** — `lib/coorenagraph/`：倫理的推論、道徳語彙、熟議、および関連概念。パッケージREADMEとソースを参照してください。
+
+### D–G
+
+- **Governance source models** — [`lib/governance`](lib/governance/README.md)は、提案、匿名の手動投票、集計結果のための宣言的SLeeLaソース形式を定義します。提案中の`@vote`注釈と手動プロセスは[`registry/DEMOCRATIC-VOTING-SYNTAX.md`](registry/DEMOCRATIC-VOTING-SYNTAX.md)に記載されています。現行コンパイラーでは、これは不活性なコメントメタデータとして扱われます。
+
+### H–I
+
+- **HTTP 1.0–8.0** — 利用可能なバージョン別HTTPパッケージディレクトリ（`lib/http-1.0/`以降）：バージョン固有のプロトコル仕様と実装。正確な範囲と検証状況は各バージョンの文書を確認してください。
+- **International Criminal Court** — `lib/international-criminal-court/` および `INTERNATIONAL.CRIMINAL.COURTS.md`：関連する専門分野のソースと文書。
+
+### O–S
+
+- **OFDMA** — `ofdma/`：直交周波数分割多元接続に関する技術資料とC/C++開発リソース。
+- **Philosophy and the Conversation Mask module** — [`philosophy/`](philosophy/README.md)にはネイティブC/C++基盤があり、[`philosophy/module/`](philosophy/module/README.md)は次のモジュール層を3領域に整理します。[data/](philosophy/module/data/README.md)は型付き・日付付き観測、イベント終了、半減期設定、来歴、同意を扱います。[helper/](philosophy/module/helper/README.md)は決定論的検証、関連性の減衰、互換性のある比較、同意に基づく提示を担います。[psychiatry-friend/](philosophy/module/psychiatry-friend/README.md)は支援的で非臨床的な会話インターフェースです。SLeeLa側のハンドルと統合Treeは、より広いphilosophyパッケージとともに[`lib/philosophy/`](lib/philosophy/README.md)にあります。このモジュールは明示的入力と同意を優先し、人やメディアを受動的に監視せず、診断、私的意図の推測、人間の価値の採点、服薬変更の推奨を行いません。イベントリンクは来歴とナビゲーションを保持しますが、独立した裏付けを意味しません。
+- **Synchro** — ネイティブランタイム／コンパイラー統合、パケットディスパッチ、測定関連機能。関連する`impl/`ソースとコンパイラー実装を参照してください。
+- **SleelaUI / terminal UI** — `lib/user-interface/` および`sleela-terminal`プロジェクト：SLeeLa UI統合と端末向け対話コンポーネント。
+
+### U–W
+
+- **United Nations** — `united-nations/`：国連に関するドメイン固有のリポジトリ資料。
+- **Wi-Fi 4、Wi-Fi 5、Wi-Fi 6** — `wi-fi-4/`、`wi-fi-5/`、`wi-fi-6/`、関連する`lib/wifi/`ソースディレクトリ：世代別の無線ネットワーク資料と構成リソース。
+
+### パッケージ索引の保守
+
+パッケージを追加または大幅に拡張した場合は、適切なアルファベット区分に項目を追加し、正式なディレクトリとREADMEにリンクし、チェックイン済みソースで裏付けられる機能だけを説明してください。この索引は追加方式で保守し、パッケージ索引の更新を理由に既存のREADMEセクションを削除または書き換えないでください。
+
+---
+
+## XV. Bitcoin Conjegeum
+
+<escape><img src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="25" height="25" alt="Debian"></escape>
+
+![CremeOak](https://github.com/mearvk/Java.Web.Server.Telnet.Front.Java.21/raw/main/images/national-bitcoin-icc-logo-005.jpg)
+
+`bc1qs6v4q9zsw70t0umk3m0quhvf9dr6cdeskl28dh` :: `⠝⠇⠼⠁⠟⠎⠼⠋⠧⠼⠙⠟⠼⠊⠵⠎⠺⠼⠛⠼⠚⠞⠼⠚⠥⠍⠦⠼⠉⠍⠼⠚⠟⠥⠓⠧⠦⠼⠊⠙⠫⠼⠋⠉⠙⠑⠎⠅⠇⠼⠼⠃⠼⠗⠙⠓`
+
+`bc1qx33vma553gddsjkq372l3xlm8e8huv2vzad3cc` :: `⠃⠉⠼⠁⠟⠭⠼⠉⠼⠉⠪⠍⠁⠼⠑⠑⠛⠙⠙⠎⠚⠅⠟⠼⠉⠼⠛⠼⠝⠇⠼⠉⠼⠭⠇⠍⠼⠨e⠼⠨a⠓⠥⠪⠼⠪⠼⠪⠵⠁⠙⠼⠉⠉`
+
+US Democratic and US Policy.
+
+---
+
+## XVI. National Scienceブランド画像
+
+<p align="center"><img src="https://raw.githubusercontent.com/mearvk/SLeeLa/master/brand/national-sleela-science-004.jpg" alt="National SLeeLa Science" width="560"></p>
+
+<p align="center"><img src="https://raw.githubusercontent.com/mearvk/SLeeLa/master/brand/national-sleela-nsf-001.jpg" alt="National SLeeLa NSF" width="560"></p>
+
+## XVII. UTF-4088 100万件実験カタログ
+
+[UTF-4088カタログ生成ツール](utf-4088/tools/generate_catalogue.py)は、1,048,576件の実験的シンボルカタログを決定論的に生成します。コンパクト形式は[`utf-4088/FORMAT.md`](utf-4088/FORMAT.md)、生成および検証契約は[`utf-4088/GENERATION-RESULTS.md`](utf-4088/GENERATION-RESULTS.md)に記載されています。
+
+Python 3で次のように生成します。
+
+```sh
+python3 utf-4088/tools/generate_catalogue.py \
+  --output utf4088-million.bin \
+  --summary utf4088-million.summary.json
+```
+
+生成バイナリは16,777,244バイトで、20,000,000バイト未満に収まる設計です。ユニットテストとGitHub Actionsワークフローが、エントリー数、グリフの一意性、サイズ、SHA-256を検証します。成功した実行では、バイナリとサマリーが`utf4088-million-catalogue`ワークフロー成果物として公開されます。生成バイナリは意図的にGit履歴へ含めません。UTF-4088は実験段階であり、Unicode互換ではありません。
+
+---
+
+# SLeeLa
+
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>
+
+---
+
+## XVIII. 最近の追加機能 — Pi定数、Modium／Registryの起動、sleelactl Math、`@native`
+
+このセクションは2026-11の作業で追加された機能を、新しいグループから順に記録します。すべて`master`にコミットされています。
+
+### 1億桁のPiカタログ定数
+
+リポジトリには、検証済みの**1億桁**のπ値[`pi-generator/pi.100000000.digits`](pi-generator/pi.100000000.digits)（正しい小数形式、`3.14159…`）と、57,344桁の[`pi-generator/pi.57344.digits`](pi-generator/pi.57344.digits)が含まれます。両方が真のπであることは独立に検証されています。検証内容（教科書的な先頭部分、小数第762位のFeynman point、著名な100万桁目、[`lib/math/SLPiReference.sleela`](lib/math/SLPiReference.sleela)との一致、ファイル全体の数字頻度分析）と一括再現スクリプトは[`pi-generator/VERIFIED.md`](pi-generator/VERIFIED.md)を参照してください。
+
+### Modium™／Registry™はサブシステム起動時にPi定数を読み込む
+
+専用サブシステムのエントリーポイント、すなわち`sleela registry`、`sleela modium`（およびインストーラーの初回実行）で、ModiumとRegistryは大きなπカタログ定数を読み込みます。`sleela run`の実行ごとには読み込みません。対話型端末では、一時的な赤色の`Loading Modium™`／`Loading Registry™`行を表示し、通常出力の前にその場で消去します。この表示はTTYの場合に限定されるため、パイプやテスト出力はバイト単位で変化しません。データ本体ではなくロケーターが、SLeeLaモデル（[`lib/registry/SLRegistry.sleela`](lib/registry/SLRegistry.sleela)）とネイティブシーダー（[`registry/sleela_registry.c`](registry/sleela_registry.c)）の両方で、Registryの`Math`キー既定値`piReferenceLargePath`および`piReferenceLargeDigits`として登録されます。`lib/math/SLPiReference.sleela`は`largePath()`／`largeDigits()`を公開します。π定数は標準の`make`インストーラーとガイド付き「beautiful」インストーラーの両方によって、OS上のSLeeLa配置先（`<data>/pi/`）にインストールされます。詳細は[`pi-generator/MODIUM-REGISTRY-PI-STARTUP.md`](pi-generator/MODIUM-REGISTRY-PI-STARTUP.md)を参照してください。
+
+### `sleelactl` — beautifulインストーラーとネイティブバックエンドの`math` subject
+
+- ガイド付き（「beautiful」）インストーラーは、`make`インストーラーと同様に、SLeeLaコントロールプレーンの`sleelactl`とそのモジュールレジストリをインストールするようになりました。[ドキュメント](bin/SLEELACTL.md)を参照してください。
+- `sleelactl`には、ランタイムにコンパイルされるネイティブC/C++ subjectライブラリ向けの新しい`subject`種別が追加され、最初のsubjectとして`math`が登録されました。`sleelactl run math`は、subjectの参照デモを通じてネイティブ`__NativeMath`バックエンド（`impl/subjects/math/math_native.cpp`）をエンドツーエンドで実行します。`sleelactl info math`は到達方法（`import math;`）を説明します。subject種別が提供する動詞は`run`と`info`のみです。`sleela check`はSHEET登録のネイティブsubjectをロードしないため、意図的に`check`動詞はありません。
+
+### `@native`と`sleela aot` — SLeeLaからネイティブC/C++への経路、第1段階
+
+新しい**`@native`**メソッド注釈は、ホットメソッドのAhead-of-Time（AOT）ネイティブコンパイルを要求します。新しい`sleela aot`コマンドは`@native`メソッドを検出し、各メソッドが対応する*オフロード可能なサブセット*内にあるかを検証して、C/C++を出力します。翻訳できない構文があれば、正確な理由を示して**fail closed**（拒否）します。不完全なメソッドを生成することはありません。
+
+```sh
+sleela aot --list <file.sleela>    # メソッドごとの判定：ok / REFUSED（理由）
+sleela aot --emit <file.sleela>    # サブセット内のプログラムについてC/C++を標準出力へ出力
+```
+
+現在、`@native`は動作を変えません。プログラムは従来どおりチェック・実行され、注釈はネイティブ処理を**要求するだけ**です。これは第1段階であり、注釈の表面と、対応範囲を正直に制限するゲートを確立します。出力されたC/C++を共有オブジェクトへコンパイルし、インタープリターへのフォールバックを備えてVMから呼び出す機能は後続段階です。詳細、対応サブセット、終了コードは[`pi-generator/AT-NATIVE.md`](pi-generator/AT-NATIVE.md)を参照してください。
+
+## XIX. 国際版README
+
+SLeeLaは、国際版に含まれる50市場向けに国別READMEのエントリーポイントを提供します。各国に`README.<CC>.md`というファイルが1つあり、複数言語が関係する場合は同じ国のファイル内にまとめられます。
+
+- [README.AE](README.AE.md)
+- [README.AT](README.AT.md)
+- [README.AU](README.AU.md)
+- [README.BE](README.BE.md)
+- [README.BR](README.BR.md)
+- [README.CA](README.CA.md)
+- [README.CH](README.CH.md)
+- [README.CL](README.CL.md)
+- [README.CN](README.CN.md)
+- [README.CO](README.CO.md)
+- [README.CZ](README.CZ.md)
+- [README.DE](README.DE.md)
+- [README.DK](README.DK.md)
+- [README.EE](README.EE.md)
+- [README.ES](README.ES.md)
+- [README.FI](README.FI.md)
+- [README.FR](README.FR.md)
+- [README.GB](README.GB.md)
+- [README.GR](README.GR.md)
+- [README.HK](README.HK.md)
+- [README.HU](README.HU.md)
+- [README.ID](README.ID.md)
+- [README.IE](README.IE.md)
+- [README.IL](README.IL.md)
+- [README.IN](README.IN.md)
+- [README.IS](README.IS.md)
+- [README.IT](README.IT.md)
+- [README.JP](README.JP.md)
+- [README.KR](README.KR.md)
+- [README.LU](README.LU.md)
+- [README.MX](README.MX.md)
+- [README.MY](README.MY.md)
+- [README.NL](README.NL.md)
+- [README.NO](README.NO.md)
+- [README.NZ](README.NZ.md)
+- [README.PH](README.PH.md)
+- [README.PL](README.PL.md)
+- [README.PT](README.PT.md)
+- [README.QA](README.QA.md)
+- [README.RU](README.RU.md)
+- [README.SA](README.SA.md)
+- [README.SE](README.SE.md)
+- [README.SG](README.SG.md)
+- [README.SI](README.SI.md)
+- [README.SK](README.SK.md)
+- [README.TH](README.TH.md)
+- [README.TR](README.TR.md)
+- [README.TW](README.TW.md)
+- [README.US](README.US.md)
+- [README.ZA](README.ZA.md)
+
+**翻訳ポリシー：** これらのファイルは、最初の段階では各国向けにローカライズされたエントリーポイントです。導入部と見出しは各言語にローカライズされていますが、技術リファレンス全体は英語の正式版[README.md](README.md)にあります。すべてのセクションを翻訳し、技術識別子とリンクを確認し、言語レビューを受けるまでは、国別ファイルを完全翻訳版と表記してはなりません。この初期段階の言語範囲は代表的なものであり、憲法上認められるすべての地域語、先住民語、手話が完全に翻訳されたことを意味しません。
 
 ## 翻訳状況
 
-**作業中 — 部分翻訳。** 冒頭およびセクションI～Xを日本語化しました。セクションXI～XIXは未翻訳です。コマンド、コード例、技術識別子、ファイル名、リンクは原文どおり保持しています。全セクションの翻訳と技術レビューが完了するまでは、完全翻訳版として扱わないでください。
+**作業中 — 部分翻訳。** 日本語版ではREADMEのセクションI～XIXを翻訳しました。技術識別子、コマンド、コード例、ファイル名、URL、アドレス文字列は原文どおり保持しています。公開前にネイティブスピーカーによる言語レビューと技術リンク確認を推奨します。
 
