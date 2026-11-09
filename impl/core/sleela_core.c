@@ -487,6 +487,11 @@ void slvm_patch(SLVM* vm, int at, int32_t a) { if (at >= 0 && at < vm->codelen) 
 int slvm_here(SLVM* vm) { return vm->codelen; }
 void slvm_set_entry(SLVM* vm, int fi) { vm->entry = fi; }
 SLValue slvm_result(SLVM* vm) { return vm->last_result; }
+int slvm_uncaught_exception(SLVM* vm, SLValue* out_exception) {
+    if (!vm || !out_exception || !vm->has_last_exception) return 0;
+    *out_exception = vm->last_exception;
+    return 1;
+}
 
 void slvm_set_audio_native_renderer(SLVM* vm, SLAudioNativeRenderFn fn, void* user) {
     if (!vm) return;
