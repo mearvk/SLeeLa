@@ -1,22 +1,24 @@
 #sleela 3.0
-
 class Callback {
-    static int receive(int value) {
-        return value + 1;
-    }
+    static int receive(int value) { return value + 1; }
 }
-
 class NativeDriveCompile {
-    static int fallback(int value) {
-        return value * 3;
-    }
-
     static int main() {
         int module = nativeOpen("@NATIVE_PLUGIN_PATH@");
         int nativeResult = nativeCall(module, "twice", 21);
         int fallbackResult = nativeCall(module, "fallback", 7);
         int callbackResult = nativeCall(module, "call_sleela", 41);
+        String sample = "Aé😀Z";
+        int utf16Length = nativeCall(module, "utf16_length", sample);
+        int unitA = nativeCall(module, "utf16_char_at", sample, 0);
+        int unitEAcute = nativeCall(module, "utf16_char_at", sample, 1);
+        int highSurrogate = nativeCall(module, "utf16_char_at", sample, 2);
+        int lowSurrogate = nativeCall(module, "utf16_char_at", sample, 3);
+        int unitZ = nativeCall(module, "utf16_char_at", sample, 4);
         nativeClose(module);
+        if (utf16Length != 5 || unitA != 0x0041 || unitEAcute != 0x00e9 ||
+            highSurrogate != 0xd83d || lowSurrogate != 0xde00 || unitZ != 0x005a)
+            return -1;
         return nativeResult + fallbackResult + callbackResult;
     }
 }
