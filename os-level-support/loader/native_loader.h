@@ -21,6 +21,7 @@ extern "C" {
 
 typedef int (*SLNativeEntry)(int argc, const char *const argv[]);
 typedef uint32_t (*SLNativeAbiVersion)(void);
+typedef uint32_t (*SLNativeTypedAbiVersion)(void);
 
 /* Stable tagged scalar/string value contract. Scalar fields use fixed-width
  * integer types; F64 uses the platform's 8-byte C double. String pointers are
@@ -80,6 +81,8 @@ typedef enum SLNativeStatus {
 
 /* Plugins export these C-linkage functions; initialize module as {0}. */
 SL_NATIVE_EXPORT uint32_t sl_native_abi_version(void);
+/* Required when the optional sl_native_call typed entry is exported. */
+SL_NATIVE_EXPORT uint32_t sl_native_typed_abi_version(void);
 SL_NATIVE_EXPORT int sl_native_run(int argc, const char *const argv[]);
 /* Optional typed entry: int sl_native_call(const char*, uint32_t,
  * const SLNativeValue*, SLNativeValue*). */
