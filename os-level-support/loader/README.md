@@ -31,19 +31,33 @@ The loader checks the ABI version before exposing the entry point. The C API is
 in `native_loader.h` / `native_loader.c`; the move-only C++ wrapper is in
 `native_loader.hpp` / `native_loader.cpp`.
 
-## Typed method ABI (optional, version 1)
+## Typed method ABI (version 1)
 
-A plugin may additionally export `sl_native_call`:
+A plugin that supports typed calls exports the following functions in addition
+to the required legacy entry points:
 
 ```c
+uint32_t sl_native_typed_abi_version(void) {
+    return SL_NATIVE_TYPED_ABI_VERSION;
+}
+
 int sl_native_call(const char *method, uint32_t argc,
-                   const SLNativeValue *argv, SLNativeValue *out_result);
+                   const SLNativeValue *argv, SLNativeValue *out_result) {
+    if (strcmp(method, "twice") == 0 && argc == 1 &&
+        argv[0].tag == SL_NATIVE_VALUE_I64) {
+        out_result->tag = SL_NATIVE_VALUE_I64;
+        out_result->as.i64 = argv[0].as.i64 * 2;
+        return SL_NATIVE_CALL_OK;
+    }
+    return SL_NATIVE_CALL_NOT_HANDLED;
+}
 ```
 
-The typed ABI is additive: the required module ABI version remains 1 and
-existing run-only plugins continue to load. Calling a method on a legacy plugin
-returns `SL_NATIVE_TYPED_ENTRY_NOT_FOUND`; it is never silently treated as a
-successful no-op.
+The typed ABI is independently versioned from the legacy module ABI. When a
+plugin exports `sl_native_call`, the loader requires
+`sl_native_typed_abi_version` and checks it against
+`SL_NATIVE_TYPED_ABI_VERSION`. A missing or mismatched typed version fails
+closed with `SL_NATIVE_ABI_MISMATCH`. A legacy run-only plugin remains loadable.
 
 The value contract uses fixed-width tags and fields:
 
@@ -56,22 +70,44 @@ The value contract uses fixed-width tags and fields:
 | `SL_NATIVE_VALUE_UTF8` | borrowed pointer plus explicit byte length |
 
 The loader validates tags, reserved fields, boolean values, and nonempty string
-pointers before calling a plugin. A successful plugin call must return a valid
-value. Nonzero plugin status or malformed output is reported as
-`SL_NATIVE_PLUGIN_ERROR`.
+pointers. Plugin methods return `SL_NATIVE_CALL_OK` on success,
+`SL_NATIVE_CALL_NOT_HANDLED` when the named method is not implemented, or
+`SL_NATIVE_CALL_ERROR` on a handled-method failure. Only NOT_HANDLED enables
+SLeeLa interpreter fallback; plugin errors and ABI errors are surfaced and
+never silently fall back.
 
 UTF-8 pointers are borrowed byte spans, not NUL-terminated strings. Input spans
 remain valid only for the duration of the call. A plugin-returned UTF-8 span
-must remain valid until the next call to that module or module close; the host
-must copy it before making another call. Composite values (arrays, structs,
+must remain valid until the next call to that module or module close; the VM
+copies the result before releasing its module-call lock. SLeeLa's current String
+representation is NUL-terminated, so returned spans containing embedded NUL
+are rejected rather than truncated. Composite values (arrays, structs,
 objects, closures), VM-local handles, and raw pointers are not part of this
-ABI. They must be represented by a future explicit ownership/handle protocol,
-not by copying `SLValue` memory across the boundary.
+ABI. Such values stay in the VM and may be passed to the bytecode fallback.
 
-This typed loader API is the ABI foundation only. It does not yet add a
-SLeeLa bytecode opcode, method registry in the compiler, automatic dispatch,
-or interpreter fallback. Those require VM-side conversion, signature metadata,
-and a stable fallback contract.
+## SLeeLa bytecode and source dispatch
+
+The core appends three opcodes without renumbering existing instructions:
+
+- `OP_NATIVE_OPEN`: pops a module path String, asks the immutable host
+  authorization callback, and pushes an opaque VM-owned module handle.
+- `OP_NATIVE_CALL`: uses stack layout
+  `[handle, method String, arg0, ..., argN-1]`; operand `a` is the argument
+  count. It converts only null, bool, int64, double, and UTF-8 String values.
+- `OP_NATIVE_CLOSE`: closes the module handle and pushes null.
+
+SLeeLa syntax 3.0 exposes these as `nativeOpen(path)`,
+`nativeCall(handle, method, ...args)`, and `nativeClose(handle)`. The host
+must install `slvm_set_native_authorizer` before source execution; without it,
+every open is denied. A path identifies a candidate and never grants authority.
+
+When the plugin reports NOT_HANDLED, or an argument is a VM-owned composite
+that cannot cross the scalar ABI, the interpreter searches for a SLeeLa bytecode
+method with the same name and arity and dispatches it using the original VM
+values. If no matching method exists, execution fails with a diagnostic.
+Plugin execution errors, stale handles, and ABI mismatches do not trigger
+fallback. Module calls are serialized against close/unload. Native code runs in
+the host process and is not sandboxed.
 
 ## Runtime-owned handle table
 
