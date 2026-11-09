@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """SLeeLa Native Drive: explicit, shell-free native build and process execution."""
 from __future__ import annotations
-import argparse, os, pathlib, shutil, subprocess, sys, tempfile
+import argparse, ctypes, os, pathlib, re, shutil, subprocess, sys, tempfile
 from typing import Sequence
 
 EXIT_USAGE, EXIT_BUILD, EXIT_RUN, EXIT_TIMEOUT = 2, 3, 4, 5
@@ -31,16 +31,42 @@ def _run_checked(argv: Sequence[str], timeout: float | None = None) -> subproces
     except OSError as exc:
         raise RuntimeError(f"could not start {argv[0]!r}: {exc}") from exc
 
+def _validate_native_abi(library: pathlib.Path) -> None:
+    """Load a just-built trusted artifact and verify the stable loader ABI."""
+    module = ctypes.CDLL(str(library))
+    try:
+        version = module.sl_native_abi_version
+        version.argtypes = []
+        version.restype = ctypes.c_uint32
+        entry = module.sl_native_run
+        entry.argtypes = [ctypes.c_int, ctypes.POINTER(ctypes.c_char_p)]
+        entry.restype = ctypes.c_int
+    except AttributeError as exc:
+        raise RuntimeError(f"shared library is missing required SLeeLa ABI symbol: {exc}") from exc
+    actual = int(version())
+    if actual != 1:
+        raise RuntimeError(f"native ABI mismatch: module reports {actual}, runtime requires 1")
+
+
 def build(args: argparse.Namespace) -> int:
-    source = pathlib.Path(args.source).expanduser().resolve()
-    if not source.is_file():
-        print(f"native-drive: source file does not exist: {source}", file=sys.stderr); return EXIT_USAGE
-    try: language = _language(source, args.language)
+    sources = [pathlib.Path(p).expanduser().resolve() for p in args.sources]
+    for source in sources:
+        if not source.is_file():
+            print(f"native-drive: source file does not exist: {source}", file=sys.stderr); return EXIT_USAGE
+    try: languages = [_language(source, args.language) for source in sources]
     except ValueError as exc:
         print(f"native-drive: {exc}", file=sys.stderr); return EXIT_USAGE
-    if language == "sleela" and source.suffix.lower() != ".sleela":
+    if len(set(languages)) != 1:
+        print("native-drive: one build invocation must use a single source language", file=sys.stderr); return EXIT_USAGE
+    language = languages[0]
+    if language == "sleela" and len(sources) != 1:
+        print("native-drive: SLeeLa AOT currently accepts exactly one source file", file=sys.stderr); return EXIT_USAGE
+    source = sources[0]
+    except ValueError as exc:
+        print(f"native-drive: {exc}", file=sys.stderr); return EXIT_USAGE
+    if language == "sleela" and any(p.suffix.lower() != ".sleela" for p in sources):
         print("native-drive: --language sleela requires a .sleela source file", file=sys.stderr); return EXIT_USAGE
-    if language in {"c", "cpp"} and source.suffix.lower() == ".sleela":
+    if language in {"c", "cpp"} and any(p.suffix.lower() == ".sleela" for p in sources):
         print("native-drive: SLeeLa source must use --language sleela", file=sys.stderr); return EXIT_USAGE
     if language == "sleela" and args.kind == "shared":
         print("native-drive: SLeeLa AOT shared-library output is not supported until native entry-point ABI emission exists", file=sys.stderr)
@@ -73,7 +99,8 @@ def build(args: argparse.Namespace) -> int:
             if args.kind == "shared":
                 command.extend(["-shared"] if os.name == "nt" else
                                (["-dynamiclib", "-fPIC"] if sys.platform == "darwin" else ["-shared", "-fPIC"]))
-            command.extend([str(compile_source), "-o", str(staged)])
+            compile_inputs = [str(compile_source)] if language == "sleela" else [str(p) for p in sources]
+            command.extend(compile_inputs + ["-o", str(staged)])
             if os.name != "nt":
                 command.append("-lm")
             command.extend(args.compiler_arg)
@@ -82,6 +109,8 @@ def build(args: argparse.Namespace) -> int:
             if result.stderr: sys.stderr.write(result.stderr)
             if result.returncode: return EXIT_BUILD
             if not staged.is_file(): raise RuntimeError("compiler reported success but created no output")
+            if args.kind == "shared" and args.require_sleela_abi:
+                _validate_native_abi(staged)
             # Stage beside the destination so os.replace is atomic even when
             # the system temporary directory is on another filesystem.
             fd, adjacent_name = tempfile.mkstemp(prefix=f".{output.name}.", dir=output.parent)
@@ -161,12 +190,13 @@ def parser() -> argparse.ArgumentParser:
         description="Build C/C++ or supported @native SLeeLa source and run processes without a shell.")
     sub = root.add_subparsers(dest="action", required=True)
     b = sub.add_parser("build", help="compile C, C++, or SLeeLa AOT output into an executable")
-    b.add_argument("source"); b.add_argument("-o", "--output", required=True)
+    b.add_argument("sources", nargs="+"); b.add_argument("-o", "--output", required=True)
     b.add_argument("--language", choices=("auto", "c", "cpp", "sleela"), default="auto")
     b.add_argument("--kind", choices=("executable", "shared"), default="executable")
+    b.add_argument("--require-sleela-abi", action="store_true", help="verify sl_native_abi_version()==1 and sl_native_run before publishing a shared library")
     b.add_argument("--compiler"); b.add_argument("--sleela")
     b.add_argument("--timeout", type=float, default=120.0)
-    b.add_argument("--compiler-arg", action="append", default=[])
+    b.add_argument("--compiler-arg", action="append", default=[], help="extra compiler/linker argv item; repeat as needed")
     b.set_defaults(handler=build)
     r = sub.add_parser("run", help="run one executable with optional stdin file")
     r.add_argument("--stdin-file"); r.add_argument("--capture", action="store_true")
