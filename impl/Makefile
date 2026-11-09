@@ -125,6 +125,8 @@ else
   NATIVE_CALL_FIXTURE := $(BUILD)/native_call_fixture.so
   NATIVE_CALL_FIXTURE_FLAGS := -shared
 endif
+NATIVE_CALL_SOURCE := $(BUILD)/native_drive_compile_source.sleela
+NATIVE_CALL_ARTIFACT := $(BUILD)/native_drive_compile_artifact.sleela
 OSLS_OBJS := $(OSLS_CORE_OBJ) $(OSLS_EXT_OBJ) $(OSLS_EXT2_OBJ) $(OSLS_VM_OBJ) $(NATIVE_LOADER_OBJ) $(NATIVE_MODULE_TABLE_OBJ)
 ifeq ($(PLATFORM),windows)
   OSLS_DEFS := -D_CRT_SECURE_NO_WARNINGS
@@ -733,9 +735,12 @@ $(NATIVE_CALL_FIXTURE): tests/native_drive/native_call_fixture.c ../os-level-sup
 	$(CC) $(CFLAGS) -DSL_NATIVE_PLUGIN_BUILD $(NATIVE_CALL_FIXTURE_FLAGS) -I../os-level-support/loader $< -o $@
 $(NATIVE_CALL_SMOKE): $(NATIVE_CALL_SMOKE_OBJ) $(SLCORE_LIB)
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
-test-native-call: $(SLEELA_BIN) $(NATIVE_CALL_SMOKE) $(NATIVE_CALL_FIXTURE)
-	$(SLEELA_BIN) check tests/native_drive/native_drive_compile.sleela
-	$(NATIVE_CALL_SMOKE) $(abspath $(NATIVE_CALL_FIXTURE))
+$(NATIVE_CALL_SOURCE): tests/native_drive/native_drive_compile.sleela $(NATIVE_CALL_FIXTURE) | $(BUILD)
+	sed 's|@NATIVE_PLUGIN_PATH@|$(abspath $(NATIVE_CALL_FIXTURE))|g' $< > $@
+$(NATIVE_CALL_ARTIFACT): $(NATIVE_CALL_SOURCE) $(SLEELA_BIN)
+	$(SLEELA_BIN) compile $(NATIVE_CALL_SOURCE) -o $@
+test-native-call: $(SLEELA_BIN) $(NATIVE_CALL_SMOKE) $(NATIVE_CALL_FIXTURE) $(NATIVE_CALL_ARTIFACT)
+	$(NATIVE_CALL_SMOKE) $(NATIVE_CALL_ARTIFACT) $(abspath $(NATIVE_CALL_FIXTURE))
 libslcore: $(SLCORE_LIB)
 	@echo "=== reusable Core engine archive: $(SLCORE_LIB) ==="
 $(CHEMISTRY_OBJ): subjects/chemistry/chemistry.cpp subjects/chemistry/chemistry.h | $(BUILD)
