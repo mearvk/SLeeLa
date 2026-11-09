@@ -2445,6 +2445,12 @@ static SLResult run_thread(SLThread* t) {
                 TERR("exception handler removal crossed a call-frame boundary");
             --t->exception_handler_count;
         } break;
+        case OP_IPC_OPEN:
+            TERR("native IPC worker OPEN is reserved but unavailable: process supervisor and VM worker handles are not configured");
+        case OP_IPC_CALL:
+            TERR("native IPC worker CALL is reserved but unavailable: process supervisor and VM worker handles are not configured");
+        case OP_IPC_CLOSE:
+            TERR("native IPC worker CLOSE is reserved but unavailable: process supervisor and VM worker handles are not configured");
         case OP_THROW: {
             SLValue thrown = POP();
             if (t->underflow) TERR("throw requires an exception value");
