@@ -274,6 +274,13 @@ class EndpointTests(unittest.TestCase):
             + types("java.lang.String") + values("not-an-integer")
         )[0], "java.lang.NumberFormatException")
 
+    def test_malformed_payload_terminates_session(self):
+        self.proc.stdin.write(frame(self.next_id, PING, b"\x00"))
+        self.proc.stdin.flush()
+        self.proc.stdin.close()
+        self.assertEqual(self.proc.stdout.read(), b"")
+        self.assertNotEqual(self.proc.wait(timeout=5), 0)
+
     def test_close_ends_session(self):
         self.assertEqual(self.success(CLOSE), b"\x00")
         self.assertEqual(self.proc.wait(timeout=5), 0)
