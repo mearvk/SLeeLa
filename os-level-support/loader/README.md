@@ -37,6 +37,9 @@ A plugin that supports typed calls exports the following functions in addition
 to the required legacy entry points:
 
 ```c
+#include <string.h>
+#include "native_loader.h"
+
 uint32_t sl_native_typed_abi_version(void) {
     return SL_NATIVE_TYPED_ABI_VERSION;
 }
