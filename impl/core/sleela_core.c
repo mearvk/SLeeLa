@@ -2630,7 +2630,9 @@ static SLResult run_thread(SLThread* t) {
                 snprintf(message,sizeof(message),"native math dispatch failed (status %d)",status);
                 TERR(message);
             }
-            if(in.a==SLMATH_OP_VECTOR_DOT || in.a==SLMATH_OP_VECTOR_NORM)
+            if(in.a==SLMATH_OP_VECTOR_DOT || in.a==SLMATH_OP_VECTOR_NORM ||
+               in.a==SLMATH_OP_MATRIX_DETERMINANT ||
+               in.a==SLMATH_OP_COMPLEX_ABS || in.a==SLMATH_OP_COMPLEX_PHASE)
                 PUSH(slval_double(scalar_result));
             else
                 PUSH(slval_array(h[2]));
