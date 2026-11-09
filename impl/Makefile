@@ -825,7 +825,7 @@ $(JAVA_RUNTIME_BRIDGE_OBJ): ../runtime/java_runtime_bridge.c ../runtime/java_run
 	$(CC) $(CFLAGS) -c $< -o $@
 $(JAVA_INTEROP_PROTOCOL_OBJ): ../runtime/java_interop_protocol.c ../runtime/java_interop_protocol.h | $(BUILD)
 	$(CC) $(CFLAGS) -c $< -o $@
-$(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h frontend/version.h subjects/native/native_api.h subjects/chemistry/chemistry_api.h subjects/finance/financial_api.h frontend/http_server_cli.h ../runtime/vm_config.h | $(BUILD)
+$(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h frontend/version.h subjects/native/native_api.h subjects/chemistry/chemistry_api.h subjects/finance/financial_api.h frontend/http_server_cli.h ../runtime/vm_config.h ../runtime/java_runtime_bridge.h ../runtime/java_interop_protocol.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -I../runtime -c $< -o $@
 # Same source, compiled with the compiler product identity for the independent
 # sleelvac binary. Keeps driver.o (runtime) untouched.
