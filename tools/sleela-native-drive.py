@@ -42,6 +42,9 @@ def build(args: argparse.Namespace) -> int:
         print("native-drive: --language sleela requires a .sleela source file", file=sys.stderr); return EXIT_USAGE
     if language in {"c", "cpp"} and source.suffix.lower() == ".sleela":
         print("native-drive: SLeeLa source must use --language sleela", file=sys.stderr); return EXIT_USAGE
+    if language == "sleela" and args.kind == "shared":
+        print("native-drive: SLeeLa AOT shared-library output is not supported until native entry-point ABI emission exists", file=sys.stderr)
+        return EXIT_USAGE
     output = pathlib.Path(args.output).expanduser().resolve()
     output.parent.mkdir(parents=True, exist_ok=True)
     cc_language = "c" if language in {"c", "sleela"} else "cpp"
@@ -60,9 +63,17 @@ def build(args: argparse.Namespace) -> int:
                     raise RuntimeError("sleela aot did not emit a C translation unit")
                 compile_source = temp_dir / "sleela-aot.c"
                 compile_source.write_text(emitted.stdout, encoding="utf-8")
-            staged = temp_dir / ("native-output.exe" if os.name == "nt" else "native-output")
+            if args.kind == "shared":
+                suffix = ".dll" if os.name == "nt" else (".dylib" if sys.platform == "darwin" else ".so")
+                staged = temp_dir / ("native-output" + suffix)
+            else:
+                staged = temp_dir / ("native-output.exe" if os.name == "nt" else "native-output")
             standard = "-std=c11" if cc_language == "c" else "-std=c++17"
-            command = [compiler, standard, "-O2", str(compile_source), "-o", str(staged)]
+            command = [compiler, standard, "-O2"]
+            if args.kind == "shared":
+                command.extend(["-shared"] if os.name == "nt" else
+                               (["-dynamiclib", "-fPIC"] if sys.platform == "darwin" else ["-shared", "-fPIC"]))
+            command.extend([str(compile_source), "-o", str(staged)])
             if os.name != "nt":
                 command.append("-lm")
             command.extend(args.compiler_arg)
@@ -77,7 +88,7 @@ def build(args: argparse.Namespace) -> int:
             os.close(fd)
             try:
                 shutil.copy2(staged, adjacent_name)
-                if os.name != "nt":
+                if os.name != "nt" and args.kind == "executable":
                     os.chmod(adjacent_name, os.stat(adjacent_name).st_mode | 0o111)
                 os.replace(adjacent_name, output)
             finally:
@@ -87,7 +98,7 @@ def build(args: argparse.Namespace) -> int:
         print(f"native-drive: {exc}", file=sys.stderr); return EXIT_TIMEOUT
     except (RuntimeError, OSError) as exc:
         print(f"native-drive: {exc}", file=sys.stderr); return EXIT_BUILD
-    print(f"native-drive: built {language} source -> {output}", file=sys.stderr)
+    print(f"native-drive: built {language} {args.kind} -> {output}", file=sys.stderr)
     return 0
 
 def run_process(args: argparse.Namespace) -> int:
@@ -152,6 +163,7 @@ def parser() -> argparse.ArgumentParser:
     b = sub.add_parser("build", help="compile C, C++, or SLeeLa AOT output into an executable")
     b.add_argument("source"); b.add_argument("-o", "--output", required=True)
     b.add_argument("--language", choices=("auto", "c", "cpp", "sleela"), default="auto")
+    b.add_argument("--kind", choices=("executable", "shared"), default="executable")
     b.add_argument("--compiler"); b.add_argument("--sleela")
     b.add_argument("--timeout", type=float, default=120.0)
     b.add_argument("--compiler-arg", action="append", default=[])
