@@ -166,10 +166,14 @@ static int validate_loaded_vm(const SLVM* vm, char* error, size_t error_size) {
                     in->a != SLMATH_OP_MATRIX_MULTIPLY &&
                     in->a != SLMATH_OP_MATRIX_TRANSPOSE &&
                     in->a != SLMATH_OP_MATRIX_INVERSE &&
+                    in->a != SLMATH_OP_MATRIX_DETERMINANT &&
                     in->a != SLMATH_OP_COMPLEX_MULTIPLY &&
                     in->a != SLMATH_OP_COMPLEX_ADD &&
                     in->a != SLMATH_OP_COMPLEX_SUBTRACT &&
                     in->a != SLMATH_OP_COMPLEX_DIVIDE &&
+                    in->a != SLMATH_OP_COMPLEX_ABS &&
+                    in->a != SLMATH_OP_COMPLEX_PHASE &&
+                    in->a != SLMATH_OP_COMPLEX_CONJUGATE &&
                     in->a != SLMATH_OP_QR &&
                     in->a != SLMATH_OP_SYMMETRIC_EIGEN &&
                     in->a != SLMATH_OP_FFT) {
