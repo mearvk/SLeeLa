@@ -32,7 +32,13 @@ def run(command: list[str]) -> None:
 def main() -> int:
     javac = os.environ.get("JAVAC", "javac")
     java = os.environ.get("JAVA", "java")
-    cc = shlex.split(os.environ.get("CC", "cc"))
+    configured_cc = os.environ.get("CC")
+    if configured_cc:
+        cc = shlex.split(configured_cc)
+    elif os.name == "nt" and shutil.which("cl"):
+        cc = ["cl"]
+    else:
+        cc = ["cc"]
     for tool in (javac, java, cc[0] if cc else ""):
         if not tool or shutil.which(tool) is None:
             print(f"ERROR: required tool not found: {tool}", file=sys.stderr)
