@@ -395,7 +395,7 @@ subject_cmd() { # module verb [args]
       info "reached from SLeeLa as:  import $1;   then qualified calls, e.g.  $1.<fn>(...)"
       [ -f "$demo" ] && info "reference demo: $demo_rel" || warn "reference demo $demo_rel not present in this install"
       if [ "$1" = "math" ]; then
-        capability_file="$SELF/sleelactl.d/math-capabilities.conf"
+        capability_file="$(dirname "$REGISTRY")/math-capabilities.conf"
         if [ -f "$capability_file" ]; then
           info "native math capability descriptor:"
           while IFS= read -r capability_line; do
