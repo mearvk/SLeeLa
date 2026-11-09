@@ -310,7 +310,7 @@ make creator          # autocad/ から実行：Creatorデモ -> out/altered.dxf
 
 ## XV. Bitcoin Conjegeum
 
-<escape><img src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="25" height="25" alt="Debian"></escape>
+<img src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="25" height="25" alt="Debian">
 
 ![CremeOak](https://github.com/mearvk/Java.Web.Server.Telnet.Front.Java.21/raw/main/images/national-bitcoin-icc-logo-005.jpg)
 
