@@ -25,6 +25,8 @@ int main(int argc, char **argv) {
     args[1].as.i64 = 23;
     assert(sl_native_call_module(&module, "sum", 2, args, &result) == SL_NATIVE_OK);
     assert(result.tag == SL_NATIVE_VALUE_I64 && result.as.i64 == 42);
+    assert(sl_native_call_module(&module, "unhandled", 0, NULL, &result) ==
+           SL_NATIVE_METHOD_NOT_HANDLED);
 
     args[1].reserved = 1;
     assert(sl_native_call_module(&module, "sum", 2, args, &result) == SL_NATIVE_INVALID_ARGUMENT);
