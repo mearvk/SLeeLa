@@ -1990,8 +1990,9 @@ static int native_value_from_abi(SLVM* vm, const SLNativeValue* source, SLValue*
 }
 
 /* Fallback is deliberately name+arity based and remains inside the VM. It is
- * used only when the module has no typed entry or an argument is not scalar
- * ABI-representable; plugin execution errors never silently fall back. */
+ * used only when the module has no typed entry, reports METHOD_NOT_HANDLED,
+ * or an argument is not scalar ABI-representable; plugin execution errors
+ * never silently fall back. */
 static int native_bytecode_fallback(SLThread* t, const char* method,
                                     uint32_t argc, int base, int return_ip) {
     SLVM* vm = t->vm;
