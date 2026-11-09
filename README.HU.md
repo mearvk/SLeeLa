@@ -180,3 +180,16 @@ A megfelelő ellenőrzési jelentés tartalmazza a pontos commitot, az OS/archit
 Az országonkénti README-k helyi belépési pontok a műszaki dokumentációhoz; nem helyettesítik a normatív nyelvi specifikációt vagy a modulok API-dokumentációját. Az angol forrás változásakor ellenőrizd a fordítás elavulását. Az azonosítókat, parancsokat, útvonalakat és kódpéldákat változatlanul kell hagyni; a nyelvi vagy műszaki ellenőrzésre váró részeket egyértelműen jelölni kell.
 
 **Bővített fordítási állapot:** A magyar műszaki útmutató most már a célplatformokat és profilokat, a natív végrehajtás határait, az erőforrások tulajdonjogát, a hibakeresést, a tesztjelentéseket és a nemzetközi dokumentáció karbantartását is tárgyalja.
+
+
+## 17. Modul-API-szerződések, kompatibilitás és tesztelés
+
+Új API bevezetésekor dokumentálni kell a bemeneteket, kimeneteket, hibafeltételeket, az adatok tulajdonjogát és az esetleges side effects működést. A példáknak a szokásos használat mellett az invalid vagy missing input kezelését is be kell mutatniuk. Olyan viselkedést ne állítsunk garanciaként, amelyet az implementation és a tests nem igazol.
+
+A teszteket a compiler pipeline rétegei szerint kell csoportosítani: lexing/parsing, semantic analysis, IR lowering, code generation, VM execution és native integration. Minden regression case esetén őrizzük meg a legkisebb reprodukálható bemenetet, az elvárt és a tényleges eredményt. Az API-változásoknál ismertetni kell a backward compatibility kérdéseit, a migration steps lépéseit és a meglévő examples elemekre gyakorolt hatást.
+
+## 18. Lokalizáció, karakterkódolás és olvashatóság
+
+A technical identifiers, commands, paths, syntax és code blocks minden nyelvi változatban maradjanak változatlanok. A magyarázó szöveget fordítsuk, ne a source code tokenjeit vagy neveit. A nyelvi és regionális környezetet egyértelműen jelöljük; a magyar terminológiát következetesen használjuk.
+
+Minden frissítés után ellenőrizzük a Markdown links elemeket, a címsorok hierarchiáját, a code fences párokat és a példákat. Az angol canonical documents módosításakor szakaszonként hasonlítsuk össze és frissítsük a fordítást, ne csak a bevezetőt. A nyelvi vagy műszaki ellenőrzésen még át nem esett tartalmat jelöljük.
