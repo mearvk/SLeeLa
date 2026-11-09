@@ -89,7 +89,7 @@ must require an explicit authorized operation.
 
 1. Keep the external JVM process path stable and independently testable.
 2. Add the typed protocol schema and parser tests without enabling invocation.
-3. Implement a Java helper endpoint using the existing allow-listed class loader.
+3. Expose the existing SleelaJdkBridge helper through a Java-side endpoint using the existing allow-listed class loader.
 4. Implement the native C/C++ transport and bounded request/response framing.
 5. Add compiler/loader lowering for explicit Java interop expressions.
 6. Add typed conversion, object-handle lifetime, and exception tests.
