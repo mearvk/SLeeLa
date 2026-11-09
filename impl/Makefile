@@ -733,7 +733,8 @@ $(NATIVE_CALL_FIXTURE): tests/native_drive/native_call_fixture.c ../os-level-sup
 	$(CC) $(CFLAGS) -DSL_NATIVE_PLUGIN_BUILD $(NATIVE_CALL_FIXTURE_FLAGS) -I../os-level-support/loader $< -o $@
 $(NATIVE_CALL_SMOKE): $(NATIVE_CALL_SMOKE_OBJ) $(SLCORE_LIB)
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
-test-native-call: $(NATIVE_CALL_SMOKE) $(NATIVE_CALL_FIXTURE)
+test-native-call: $(SLEELA_BIN) $(NATIVE_CALL_SMOKE) $(NATIVE_CALL_FIXTURE)
+	$(SLEELA_BIN) check tests/native_drive/native_drive_compile.sleela
 	$(NATIVE_CALL_SMOKE) $(abspath $(NATIVE_CALL_FIXTURE))
 libslcore: $(SLCORE_LIB)
 	@echo "=== reusable Core engine archive: $(SLCORE_LIB) ==="
