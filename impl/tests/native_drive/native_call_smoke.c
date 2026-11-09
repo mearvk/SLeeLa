@@ -71,6 +71,8 @@ static int check_callback_nested_native_call_rejected(const char *plugin_path) {
     int twice_name, nested_name, value, module_value;
     int callback_function, main_function;
     SLValue result;
+    SLNativeValue post_callback_arg, post_callback_result;
+    SLNativeStatus post_callback_status;
     int ok = 0;
     if (!vm) return 0;
     if (slvm_set_native_authorizer(vm, authorize_exact_path, (void *)plugin_path) != 0 ||
@@ -113,6 +115,22 @@ static int check_callback_nested_native_call_rejected(const char *plugin_path) {
     if (slvm_run(vm) != SLR_OK) goto cleanup;
     result = slvm_result(vm);
     ok = result.type == SL_INT && result.as.i == -1 &&
+         slvm_error(vm) &&
+         strcmp(slvm_error(vm),
+                "native callback cannot recursively invoke native-module operations") == 0;
+    if (!ok) goto cleanup;
+
+    /* The rejected nested call must leave the module mutex usable and the
+     * original handle live after the outer callback has unwound. */
+    memset(&post_callback_arg, 0, sizeof(post_callback_arg));
+    memset(&post_callback_result, 0, sizeof(post_callback_result));
+    post_callback_arg.tag = SL_NATIVE_VALUE_I64;
+    post_callback_arg.as.i64 = 41;
+    post_callback_status = slvm_native_module_call(
+        vm, handle, "twice", 1, &post_callback_arg, &post_callback_result);
+    ok = post_callback_status == SL_NATIVE_OK &&
+         post_callback_result.tag == SL_NATIVE_VALUE_I64 &&
+         post_callback_result.as.i64 == 82 &&
          slvm_error(vm) &&
          strcmp(slvm_error(vm),
                 "native callback cannot recursively invoke native-module operations") == 0;
