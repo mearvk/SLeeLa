@@ -74,14 +74,6 @@ class SLComplex {
     out.re = (re * o.re + im * o.im) / denominator;
     out.im = (im * o.re - re * o.im) / denominator;
   }
-  double phaseApprox() {
-    < Principal-axis phase helper; general atan2 awaits the scalar API. >
-    if (re > 0.0 && im == 0.0) { return 0.0; }
-    if (re < 0.0 && im == 0.0) { return 3.141592653589793; }
-    if (re == 0.0 && im > 0.0) { return 1.5707963267948966; }
-    if (re == 0.0 && im < 0.0) { return -1.5707963267948966; }
-    return 0.0;
-  }
   double getRe() { return re; }
   double getIm() { return im; }
 }
