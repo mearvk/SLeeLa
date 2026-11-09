@@ -229,3 +229,29 @@ This remains a conservative source recognizer. It does not yet establish full
 JLS access-control conformance for nested/private nestmate access, protected
 receiver-expression constraints, modules, generic substitution, or all
 syntactic forms.
+
+
+## 0.3.25-dev — Java source implementation depth
+
+The project now explicitly separates API representation from executable
+SLeeLa implementation. Generic `java.invoke` / `java.static` /
+`java.construct` command strings, metadata accessors, and constant-return
+bodies are not counted as Java behavior implementations.
+
+Added `tests/java_source_implementation_audit.py` and its synthetic suite.
+The audit inventories method-body shapes across `lib/java/**/*.sleela` and
+reports a JSON artifact suitable for prioritizing conversion work.
+
+Run:
+
+```text
+python3 tests/java_source_implementation_audit_suite.py
+python3 tests/java_source_implementation_audit.py --top 40
+make -C tests java-source-implementation-audit
+```
+
+This is the first measurement step toward independently implementing Java
+API behavior in SLeeLa. The audit has not been executed in this change, and
+its categories do not establish semantic correctness. The next implementation
+work should establish executable, tested foundations in `java.lang` before
+expanding into collections and higher-level packages.
