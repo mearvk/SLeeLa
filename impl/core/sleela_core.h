@@ -259,6 +259,16 @@ typedef enum {
      * Both operations remain gated by the VM's immutable host authorizer. */
     OP_NATIVE_OPEN,
     OP_NATIVE_CLOSE,
+    /* VM-native java.lang.String operations over VM-owned UTF-16 handles. */
+    OP_JSTR_LENGTH,
+    OP_JSTR_CHAR_AT,
+    OP_JSTR_CODE_POINT_AT,
+    OP_JSTR_CODE_POINT_COUNT,
+    OP_JSTR_OFFSET_BY_CODE_POINTS,
+    OP_JSTR_SUBSTRING,
+    OP_JSTR_CONCAT,
+    OP_JSTR_HASH_CODE,
+    OP_JSTR_COMPARE_TO,
     /* Sentinel: one past the last real opcode. Artifact validation uses this so
      * every defined opcode is accepted and adding a new opcode above never
      * requires updating the validator's upper bound again. KEEP LAST. */
@@ -281,7 +291,9 @@ static_assert(OP_BIGISQRT == 162, "OP_BIGISQRT is append-only opcode 162");
 static_assert(OP_NATIVE_CALL == 163, "OP_NATIVE_CALL is append-only opcode 163");
 static_assert(OP_NATIVE_OPEN == 164, "OP_NATIVE_OPEN is append-only opcode 164");
 static_assert(OP_NATIVE_CLOSE == 165, "OP_NATIVE_CLOSE is append-only opcode 165");
-static_assert(OP__COUNT == 166, "the extended ISA must contain 166 opcodes");
+static_assert(OP_JSTR_LENGTH == 166, "Java String length opcode is append-only 166");
+static_assert(OP_JSTR_COMPARE_TO == 174, "Java String compareTo opcode is append-only 174");
+static_assert(OP__COUNT == 175, "the extended ISA must contain 175 opcodes");
 #else
 _Static_assert(OP_OS_PLATFORM == 103, "legacy OS opcode range must begin at 103");
 _Static_assert(OP_OS_PCLOSE == 123, "legacy OS opcode range must end at 123");
@@ -298,7 +310,9 @@ _Static_assert(OP_BIGISQRT == 162, "OP_BIGISQRT is append-only opcode 162");
 _Static_assert(OP_NATIVE_CALL == 163, "OP_NATIVE_CALL is append-only opcode 163");
 _Static_assert(OP_NATIVE_OPEN == 164, "OP_NATIVE_OPEN is append-only opcode 164");
 _Static_assert(OP_NATIVE_CLOSE == 165, "OP_NATIVE_CLOSE is append-only opcode 165");
-_Static_assert(OP__COUNT == 166, "the extended ISA must contain 166 opcodes");
+_Static_assert(OP_JSTR_LENGTH == 166, "Java String length opcode is append-only 166");
+_Static_assert(OP_JSTR_COMPARE_TO == 174, "Java String compareTo opcode is append-only 174");
+_Static_assert(OP__COUNT == 175, "the extended ISA must contain 175 opcodes");
 #endif
 /* GC-hint aggressiveness bands for OP_GC_HINT (operand a). */
 #define SL_GC_HINT_MAX  100   /* clamp ceiling for the 0..100 aggressiveness scale */
