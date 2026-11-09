@@ -60,7 +60,10 @@ def main():
         parents=[]
         if sm: parents.append(sm.group(1))
         if im: parents.extend(x.strip().split("<",1)[0] for x in im.group(1).split(","))
-        parents=[x if "." in x else package+"."+x for x in parents]
+        import_map={}
+        for imp in re.finditer(r"(?m)^\s*import\s+(?!static\s+)([A-Za-z_$][\w$.]*);",src):
+            import_map[imp.group(1).rsplit(".",1)[-1]]=imp.group(1)
+        parents=[x if "." in x else import_map.get(x,package+"."+x) for x in parents]
         ctors=[]
         for cm in CTOR_RE.finditer(src):
             if cm.group("name")==name:
