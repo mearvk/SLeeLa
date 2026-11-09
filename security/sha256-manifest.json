@@ -49879,7 +49879,7 @@
     },
     {
       "path": "tools/sleela-native-drive.py",
-      "sha256": "7b10394c2b3e115e455669678d813d59836229cab5a5932ed24faf0401222973"
+      "sha256": "54cbcc5021ed458369c20d53832d38107ea87c5136486c44f48805b47722f837"
     },
     {
       "path": "tools/sleela-native-service.py",
