@@ -34,6 +34,12 @@ public final class SleelaJdkProtocolServer {
             INVOKE_INSTANCE = 4, INVOKE_STATIC = 5, RELEASE = 6, CLOSE = 7,
             GET_FIELD = 8, GET_STATIC_FIELD = 9, SET_FIELD = 10, SET_STATIC_FIELD = 11;
 
+    private static final class ProtocolException extends IOException {
+        private static final long serialVersionUID = 1L;
+        ProtocolException(String message) { super(message); }
+        ProtocolException(String message, Throwable cause) { super(message, cause); }
+    }
+
     private final Map<Long, Object> handles = new HashMap<>();
     private final AtomicLong nextHandle = new AtomicLong(1);
 
@@ -96,6 +102,8 @@ public final class SleelaJdkProtocolServer {
             byte[] response;
             try {
                 response = dispatch(opcode, payload);
+            } catch (ProtocolException malformed) {
+                throw new IOException("malformed SLJIP request payload", malformed);
             } catch (Exception | LinkageError failure) {
                 response = errorPayload(failure);
             }
@@ -195,20 +203,20 @@ public final class SleelaJdkProtocolServer {
             default:
                 throw new IllegalArgumentException("unsupported SLJIP opcode: " + opcode);
         }
-        if (in.available() != 0) throw new IOException("trailing bytes in SLJIP request payload");
+        if (in.available() != 0) throw new ProtocolException("trailing bytes in SLJIP request payload");
         return successPayload(result);
     }
 
     private static String readMemberName(DataInputStream in) throws IOException {
         String name = readString(in);
         if (!name.matches("[A-Za-z_$][A-Za-z0-9_$]*"))
-            throw new IOException("invalid Java member name");
+            throw new ProtocolException("invalid Java member name");
         return name;
     }
 
     private Class<?>[] readTypes(DataInputStream in) throws Exception {
         int count = in.readUnsignedShort();
-        if (count > MAX_PARAMETERS) throw new IOException("too many Java parameters");
+        if (count > MAX_PARAMETERS) throw new ProtocolException("too many Java parameters");
         Class<?>[] result = new Class<?>[count];
         for (int i = 0; i < count; i++) result[i] = resolveType(readString(in));
         return result;
@@ -230,7 +238,7 @@ public final class SleelaJdkProtocolServer {
 
     private Object[] readArguments(DataInputStream in, Class<?>[] parameterTypes) throws IOException {
         int count = in.readUnsignedShort();
-        if (count != parameterTypes.length) throw new IOException("parameter and argument counts differ");
+        if (count != parameterTypes.length) throw new ProtocolException("parameter and argument counts differ");
         Object[] values = new Object[count];
         for (int i = 0; i < count; i++) {
             values[i] = coercePrimitive(readValue(in), parameterTypes[i]);
@@ -242,24 +250,24 @@ public final class SleelaJdkProtocolServer {
         if (!target.isPrimitive() || value == null) return value;
         if (target == boolean.class) {
             if (value instanceof Boolean) return value;
-            throw new IOException("boolean parameter requires a boolean value");
+            throw new IllegalArgumentException("boolean parameter requires a boolean value");
         }
         if (target == char.class) {
             if (value instanceof Integer) {
                 int number = (Integer) value;
                 if (number >= Character.MIN_VALUE && number <= Character.MAX_VALUE) return (char) number;
             }
-            throw new IOException("char parameter requires an in-range I32 value");
+            throw new IllegalArgumentException("char parameter requires an in-range I32 value");
         }
         if (target == byte.class || target == short.class || target == int.class) {
-            if (!(value instanceof Integer)) throw new IOException("integer primitive parameter requires an I32 value");
+            if (!(value instanceof Integer)) throw new IllegalArgumentException("integer primitive parameter requires an I32 value");
             int number = (Integer) value;
             if (target == byte.class) {
-                if (number < Byte.MIN_VALUE || number > Byte.MAX_VALUE) throw new IOException("byte parameter is out of range");
+                if (number < Byte.MIN_VALUE || number > Byte.MAX_VALUE) throw new IllegalArgumentException("byte parameter is out of range");
                 return (byte) number;
             }
             if (target == short.class) {
-                if (number < Short.MIN_VALUE || number > Short.MAX_VALUE) throw new IOException("short parameter is out of range");
+                if (number < Short.MIN_VALUE || number > Short.MAX_VALUE) throw new IllegalArgumentException("short parameter is out of range");
                 return (short) number;
             }
             return number;
@@ -267,19 +275,19 @@ public final class SleelaJdkProtocolServer {
         if (target == long.class) {
             if (value instanceof Integer) return ((Integer) value).longValue();
             if (value instanceof Long) return value;
-            throw new IOException("long parameter requires I32 or I64");
+            throw new IllegalArgumentException("long parameter requires I32 or I64");
         }
         if (target == float.class) {
-            if (!(value instanceof Double)) throw new IOException("float parameter requires F64");
+            if (!(value instanceof Double)) throw new IllegalArgumentException("float parameter requires F64");
             double number = (Double) value;
-            if (!Double.isFinite(number) || Math.abs(number) > Float.MAX_VALUE) throw new IOException("float parameter is out of range");
+            if (!Double.isFinite(number) || Math.abs(number) > Float.MAX_VALUE) throw new IllegalArgumentException("float parameter is out of range");
             return (float) number;
         }
         if (target == double.class) {
             if (value instanceof Double) return value;
-            throw new IOException("double parameter requires F64");
+            throw new IllegalArgumentException("double parameter requires F64");
         }
-        throw new IOException("unsupported Java primitive parameter type");
+        throw new IllegalArgumentException("unsupported Java primitive parameter type");
     }
 
     private Object readValue(DataInputStream in) throws IOException {
@@ -292,13 +300,13 @@ public final class SleelaJdkProtocolServer {
             case 5: return in.readDouble();
             case 6: return readString(in);
             case 7: return requireHandle(in.readLong());
-            default: throw new IOException("unknown SLJIP value tag");
+            default: throw new ProtocolException("unknown SLJIP value tag");
         }
     }
 
     private Object requireHandle(long id) throws IOException {
         Object value = handles.get(id);
-        if (id == 0 || value == null) throw new IOException("unknown or released object handle");
+        if (id == 0 || value == null) throw new IllegalArgumentException("unknown or released object handle");
         return value;
     }
 
@@ -359,7 +367,7 @@ public final class SleelaJdkProtocolServer {
 
     private static String readString(DataInputStream in) throws IOException {
         long length = Integer.toUnsignedLong(in.readInt());
-        if (length > MAX_STRING || length > in.available()) throw new IOException("invalid SLJIP string length");
+        if (length > MAX_STRING || length > in.available()) throw new ProtocolException("invalid SLJIP string length");
         byte[] bytes = new byte[(int) length];
         in.readFully(bytes);
         try {
@@ -368,7 +376,7 @@ public final class SleelaJdkProtocolServer {
                     .onUnmappableCharacter(CodingErrorAction.REPORT)
                     .decode(ByteBuffer.wrap(bytes)).toString();
         } catch (CharacterCodingException invalid) {
-            throw new IOException("malformed UTF-8 in SLJIP string", invalid);
+            throw new ProtocolException("malformed UTF-8 in SLJIP string", invalid);
         }
     }
 
