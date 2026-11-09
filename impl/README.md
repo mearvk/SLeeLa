@@ -471,7 +471,8 @@ cannot be represented by the scalar ABI, the interpreter may dispatch a
 same-name, same-arity SLeeLa bytecode method. Plugin failures and ABI mismatches
 remain errors and do not trigger fallback. Plugins may optionally export
 `sl_native_bind_host` to receive a versioned callback table and invoke an exact,
-unique SLeeLa function from native code. Callback execution uses a nested VM
+unique SLeeLa function from native code. The host must separately install
+`slvm_set_native_callback_authorizer`; callback names are denied by default. Callback execution uses a nested VM
 stack, preserves suspended GC roots, and rejects recursive native-module API
 calls to avoid deadlocks.
 
