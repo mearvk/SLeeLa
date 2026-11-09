@@ -48,3 +48,8 @@ The package facade is `SLPackage.sleela`; a runnable tour is in
 
 All implementations were validated with the source-built compiler
 (`impl/build/sleela run`) against known values.
+
+
+## Native kernel boundary
+
+The source-level `SLVector`, `SLMatrix`, and `SLComplex` classes remain the language-facing mathematical objects. The first native numerical-structure kernel is being introduced separately under `impl/subjects/math/linear_algebra.{h,cpp}`. Its current C ABI covers dense vector primitives and row-major matrix multiply/transpose/identity. This native kernel is an opt-in standalone component until compiler/VM dispatch is connected; the pure SLeeLa implementations remain the compatibility fallback.
