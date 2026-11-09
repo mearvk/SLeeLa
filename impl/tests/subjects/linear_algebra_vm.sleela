@@ -63,10 +63,9 @@ class LinearAlgebraVmSmoke {
         mathMatrixInverse(ma, inv, matrixOrder);
         print("MATH_MATRIX_INVERSE"); print(arrayGet(inv, 0));
         if (arrayGet(inv, 0) < -2.001 || arrayGet(inv, 0) > -1.999) { throw "matrix inverse mismatch"; }
-        let determinant = arrayNew(1);
-        mathMatrixDeterminant(ma, determinant, matrixOrder);
-        print("MATH_MATRIX_DETERMINANT"); print(arrayGet(determinant, 0));
-        if (arrayGet(determinant, 0) != -2.0) { throw "matrix determinant mismatch"; }
+        double determinant = mathMatrixDeterminant(ma, matrixOrder);
+        print("MATH_MATRIX_DETERMINANT"); print(determinant);
+        if (determinant != -2.0) { throw "matrix determinant mismatch"; }
         let qrQ = arrayNew(6);
         let qrR = arrayNew(4);
         let tall = arrayNew(6);
@@ -115,13 +114,12 @@ class LinearAlgebraVmSmoke {
         print("MATH_COMPLEX_DIVIDE"); print(arrayGet(cz, 1));
         if (arrayGet(cz, 0) < 0.499 || arrayGet(cz, 0) > 0.501 ||
             arrayGet(cz, 1) < 2.499 || arrayGet(cz, 1) > 2.501) { throw "complex divide mismatch"; }
-        let cscalar = arrayNew(1);
-        mathComplexAbs(ca, cscalar);
-        print("MATH_COMPLEX_ABS"); print(arrayGet(cscalar, 0));
-        if (arrayGet(cscalar, 0) < 3.60 || arrayGet(cscalar, 0) > 3.61) { throw "complex magnitude mismatch"; }
-        mathComplexPhase(ca, cscalar);
-        print("MATH_COMPLEX_PHASE"); print(arrayGet(cscalar, 0));
-        if (arrayGet(cscalar, 0) < 0.58 || arrayGet(cscalar, 0) > 0.60) { throw "complex phase mismatch"; }
+        double cscalar = mathComplexAbs(ca);
+        print("MATH_COMPLEX_ABS"); print(cscalar);
+        if (cscalar < 3.60 || cscalar > 3.61) { throw "complex magnitude mismatch"; }
+        double cphase = mathComplexPhase(ca);
+        print("MATH_COMPLEX_PHASE"); print(cphase);
+        if (cphase < 0.58 || cphase > 0.60) { throw "complex phase mismatch"; }
         mathComplexConjugate(ca, cz);
         print("MATH_COMPLEX_CONJUGATE"); print(arrayGet(cz, 1));
         if (arrayGet(cz, 0) != 3.0 || arrayGet(cz, 1) != -2.0) { throw "complex conjugate mismatch"; }
