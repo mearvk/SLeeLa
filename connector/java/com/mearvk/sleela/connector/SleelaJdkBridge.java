@@ -60,7 +60,11 @@ public final class SleelaJdkBridge {
         Objects.requireNonNull(receiver, "receiver");
         validateMemberName(methodName);
         validateInvocation(parameterTypes, arguments);
-        Method method = receiver.getClass().getMethod(methodName, parameterTypes);
+        Class<?> owner = type(receiver.getClass().getName());
+        if (owner != receiver.getClass()) {
+            throw new IllegalArgumentException("receiver was not resolved by the configured Java loader");
+        }
+        Method method = owner.getMethod(methodName, parameterTypes);
         if (Modifier.isStatic(method.getModifiers())) {
             throw new IllegalArgumentException("instance invocation cannot target a static method: "
                     + method);
