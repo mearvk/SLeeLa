@@ -2004,7 +2004,6 @@ static int native_bytecode_fallback(SLThread* t, const char* method,
         }
     }
     if (function < 0) {
-        size_t method_length = strlen(method);
         for (int i = 0; i < vm->nfunc; ++i) {
             const char* separator = strstr(vm->funcs[i].name, "::");
             if (vm->funcs[i].nargs != (int)argc || !separator ||
