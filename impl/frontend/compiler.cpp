@@ -968,110 +968,123 @@ private:
         static const std::set<std::string> mathBuiltins={
             "mathVectorAdd","mathVectorDot","mathVectorNorm","mathVectorScale",
             "mathVectorSubtract","mathVectorNormalize","mathVectorCross3",
-            "mathComplexAdd","mathComplexSubtract","mathComplexMultiply","mathComplexDivide","mathComplexAbs","mathComplexPhase","mathComplexConjugate",
-            "mathMatrixMultiply","mathMatrixTranspose","mathMatrixInverse","mathMatrixDeterminant","mathMatrixQR",
-            "mathSymmetricEigen","mathFFT"
+            "mathComplexAdd","mathComplexSubtract","mathComplexMultiply","mathComplexDivide",
+            "mathComplexAbs","mathComplexPhase","mathComplexConjugate",
+            "mathMatrixMultiply","mathMatrixTranspose","mathMatrixInverse",
+            "mathMatrixDeterminant","mathMatrixQR","mathSymmetricEigen","mathFFT"
         };
         if(!mathBuiltins.count(n)) return false;
         if(syntax_<SyntaxVersion{3,0}) throw std::runtime_error("Semantic error: native mathematical built-ins require #sleela 3.0");
         int op=0, a=-1, b=-1, out=-1, aux=-1;
-        size_t ar=0, ac=0, br=0, bc=0, orows=0, ocols=0;
+        const Expr* dimensionExpr[8]={nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,nullptr};
+        int64_t dimensionValue[8]={0,0,0,0,0,0,0,0};
+        bool dimensionKnown[8]={false,false,false,false,false,false,false,false};
         const Expr* scalarExpr=nullptr;
+        const Expr* flagsExpr=nullptr;
         double scalarDefault=0.0;
-        size_t flagsValue=0;
-        auto literalDimension=[&](size_t index,const char* label)->size_t {
-            auto lit=dynamic_cast<const IntLit*>(c.args[index].get());
-            if(!lit || lit->value<0 || (uint64_t)lit->value>(uint64_t)SIZE_MAX)
-                throw std::runtime_error(std::string("Semantic error: ")+label+" must be a nonnegative integer literal within size_t");
-            return (size_t)lit->value;
+        int64_t flagsDefault=0;
+        auto setConst=[&](size_t slot,int64_t value){
+            dimensionExpr[slot]=nullptr;dimensionValue[slot]=value;dimensionKnown[slot]=true;
+        };
+        auto setDim=[&](size_t slot,size_t arg,const char* label)->int64_t {
+            if(arg>=c.args.size()) throw std::runtime_error(std::string("Semantic error: missing ")+label);
+            dimensionExpr[slot]=c.args[arg].get();
+            auto lit=dynamic_cast<const IntLit*>(dimensionExpr[slot]);
+            if(!lit){dimensionKnown[slot]=false;dimensionValue[slot]=0;return -1;}
+            if(lit->value<0) throw std::runtime_error(std::string("Semantic error: ")+label+" must be nonnegative");
+            dimensionKnown[slot]=true;dimensionValue[slot]=lit->value;
+            return lit->value;
+        };
+        auto requireArgs=[&](size_t count){
+            if(c.args.size()!=count) throw std::runtime_error("Semantic error: "+n+" expects "+std::to_string(count)+" arguments");
         };
         if(n=="mathVectorAdd" || n=="mathVectorDot"){
-            const size_t want=n=="mathVectorAdd"?4:3;
-            if(c.args.size()!=want) throw std::runtime_error("Semantic error: "+n+" expects "+std::to_string(want)+" arguments");
+            const size_t want=n=="mathVectorAdd"?4:3;requireArgs(want);
             op=n=="mathVectorAdd"?SLMATH_OP_VECTOR_ADD:SLMATH_OP_VECTOR_DOT;
             a=0;b=1;out=n=="mathVectorAdd"?2:-1;
-            ar=literalDimension(want-1,"vector length"); ac=1;
-            br=ar;bc=1;orows=out>=0?ar:1;ocols=1;
+            setDim(0,want-1,"vector length");setConst(1,1);
+            setDim(2,want-1,"vector length");setConst(3,1);
+            if(out>=0){setDim(4,want-1,"vector length");setConst(5,1);}
+            else {setConst(4,1);setConst(5,1);}
         } else if(n=="mathVectorNorm"){
-            if(c.args.size()!=2) throw std::runtime_error("Semantic error: mathVectorNorm(array, length) takes two arguments");
-            op=SLMATH_OP_VECTOR_NORM;a=0;
-            ar=literalDimension(1,"vector length");ac=1;orows=1;ocols=1;
+            requireArgs(2);op=SLMATH_OP_VECTOR_NORM;a=0;
+            setDim(0,1,"vector length");setConst(1,1);setConst(4,1);setConst(5,1);
         } else if(n=="mathVectorScale"){
-            if(c.args.size()!=4) throw std::runtime_error("Semantic error: mathVectorScale(array, scalar, output, length) takes four arguments");
-            op=SLMATH_OP_VECTOR_SCALE;a=0;out=2;scalarExpr=c.args[1].get();
-            ar=literalDimension(3,"vector length");ac=1;orows=ar;ocols=1;
+            requireArgs(4);op=SLMATH_OP_VECTOR_SCALE;a=0;out=2;scalarExpr=c.args[1].get();
+            setDim(0,3,"vector length");setConst(1,1);setDim(4,3,"vector length");setConst(5,1);
         } else if(n=="mathVectorSubtract"){
-            if(c.args.size()!=4) throw std::runtime_error("Semantic error: mathVectorSubtract(a, b, out, length) takes four arguments");
-            op=SLMATH_OP_VECTOR_SUBTRACT;a=0;b=1;out=2;
-            ar=literalDimension(3,"vector length");ac=1;br=ar;bc=1;orows=ar;ocols=1;
+            requireArgs(4);op=SLMATH_OP_VECTOR_SUBTRACT;a=0;b=1;out=2;
+            setDim(0,3,"vector length");setConst(1,1);setDim(2,3,"vector length");setConst(3,1);
+            setDim(4,3,"vector length");setConst(5,1);
         } else if(n=="mathVectorNormalize"){
-            if(c.args.size()!=3) throw std::runtime_error("Semantic error: mathVectorNormalize(a, out, length) takes three arguments");
-            op=SLMATH_OP_VECTOR_NORMALIZE;a=0;out=1;
-            ar=literalDimension(2,"vector length");ac=1;orows=ar;ocols=1;
+            requireArgs(3);op=SLMATH_OP_VECTOR_NORMALIZE;a=0;out=1;
+            setDim(0,2,"vector length");setConst(1,1);setDim(4,2,"vector length");setConst(5,1);
         } else if(n=="mathVectorCross3"){
-            if(c.args.size()!=3) throw std::runtime_error("Semantic error: mathVectorCross3(a, b, out) takes three arguments");
-            op=SLMATH_OP_VECTOR_CROSS3;a=0;b=1;out=2;
-            ar=3;ac=1;br=3;bc=1;orows=3;ocols=1;
+            requireArgs(3);op=SLMATH_OP_VECTOR_CROSS3;a=0;b=1;out=2;
+            setConst(0,3);setConst(1,1);setConst(2,3);setConst(3,1);setConst(4,3);setConst(5,1);
         } else if(n=="mathComplexAdd" || n=="mathComplexSubtract" ||
                   n=="mathComplexMultiply" || n=="mathComplexDivide"){
-            if(c.args.size()!=3) throw std::runtime_error("Semantic error: "+n+"(a, b, out) takes three arguments");
-            if(n=="mathComplexAdd") op=SLMATH_OP_COMPLEX_ADD;
-            else if(n=="mathComplexSubtract") op=SLMATH_OP_COMPLEX_SUBTRACT;
-            else if(n=="mathComplexMultiply") op=SLMATH_OP_COMPLEX_MULTIPLY;
+            requireArgs(3);
+            if(n=="mathComplexAdd")op=SLMATH_OP_COMPLEX_ADD;
+            else if(n=="mathComplexSubtract")op=SLMATH_OP_COMPLEX_SUBTRACT;
+            else if(n=="mathComplexMultiply")op=SLMATH_OP_COMPLEX_MULTIPLY;
             else op=SLMATH_OP_COMPLEX_DIVIDE;
-            a=0;b=1;out=2;ar=2;ac=1;br=2;bc=1;orows=2;ocols=1;
+            a=0;b=1;out=2;
+            setConst(0,2);setConst(1,1);setConst(2,2);setConst(3,1);setConst(4,2);setConst(5,1);
         } else if(n=="mathComplexAbs" || n=="mathComplexPhase"){
-            if(c.args.size()!=2) throw std::runtime_error("Semantic error: "+n+"(value, output) takes two arguments");
-            op=n=="mathComplexAbs"?SLMATH_OP_COMPLEX_ABS:SLMATH_OP_COMPLEX_PHASE;
-            a=0;out=1;ar=2;ac=1;orows=1;ocols=1;
+            requireArgs(2);op=n=="mathComplexAbs"?SLMATH_OP_COMPLEX_ABS:SLMATH_OP_COMPLEX_PHASE;
+            a=0;out=1;setConst(0,2);setConst(1,1);setConst(4,1);setConst(5,1);
         } else if(n=="mathComplexConjugate"){
-            if(c.args.size()!=2) throw std::runtime_error("Semantic error: mathComplexConjugate(value, output) takes two arguments");
-            op=SLMATH_OP_COMPLEX_CONJUGATE;a=0;out=1;ar=2;ac=1;orows=2;ocols=1;
+            requireArgs(2);op=SLMATH_OP_COMPLEX_CONJUGATE;a=0;out=1;
+            setConst(0,2);setConst(1,1);setConst(4,2);setConst(5,1);
+        } else if(n=="mathMatrixMultiply"){
+            requireArgs(7);op=SLMATH_OP_MATRIX_MULTIPLY;a=0;b=1;out=2;
+            int64_t ca=setDim(1,4,"colsA"), rb=setDim(2,5,"rowsB");
+            setDim(0,3,"rowsA");setDim(3,6,"colsB");
+            setDim(4,3,"rowsA");setDim(5,6,"colsB");
+            if(ca>=0 && rb>=0 && ca!=rb) throw std::runtime_error("Semantic error: matrix multiplication requires colsA == rowsB");
+        } else if(n=="mathMatrixTranspose"){
+            requireArgs(4);op=SLMATH_OP_MATRIX_TRANSPOSE;a=0;out=1;
+            setDim(0,2,"rows");setDim(1,3,"cols");
+            setDim(4,3,"cols");setDim(5,2,"rows");
         } else if(n=="mathMatrixInverse"){
-            if(c.args.size()!=3) throw std::runtime_error("Semantic error: mathMatrixInverse(a, out, order) takes three arguments");
-            op=SLMATH_OP_MATRIX_INVERSE;a=0;out=1;
-            ar=literalDimension(2,"matrix order");ac=ar;orows=ar;ocols=ar;
+            requireArgs(3);op=SLMATH_OP_MATRIX_INVERSE;a=0;out=1;
+            setDim(0,2,"matrix order");setDim(1,2,"matrix order");
+            setDim(4,2,"matrix order");setDim(5,2,"matrix order");
             scalarDefault=1e-12;
         } else if(n=="mathMatrixDeterminant"){
-            if(c.args.size()!=3) throw std::runtime_error("Semantic error: mathMatrixDeterminant(a, output, order) takes three arguments");
-            op=SLMATH_OP_MATRIX_DETERMINANT;a=0;out=1;
-            ar=literalDimension(2,"matrix order");ac=ar;orows=1;ocols=1;
+            requireArgs(3);op=SLMATH_OP_MATRIX_DETERMINANT;a=0;out=1;
+            setDim(0,2,"matrix order");setDim(1,2,"matrix order");setConst(4,1);setConst(5,1);
             scalarDefault=1e-12;
         } else if(n=="mathMatrixQR"){
-            if(c.args.size()!=5) throw std::runtime_error("Semantic error: mathMatrixQR(a, q, r, rows, cols) takes five arguments");
-            op=SLMATH_OP_QR;a=0;out=1;aux=2;
-            ar=literalDimension(3,"matrix rows");ac=literalDimension(4,"matrix columns");
-            if(ar<ac) throw std::runtime_error("Semantic error: QR requires rows >= columns");
-            orows=ar;ocols=ac;
-            br=ac;bc=ac;scalarDefault=1e-12;
+            requireArgs(5);op=SLMATH_OP_QR;a=0;out=1;aux=2;
+            int64_t rows=setDim(0,3,"matrix rows"), cols=setDim(1,4,"matrix columns");
+            setDim(4,3,"matrix rows");setDim(5,4,"matrix columns");
+            setDim(6,4,"matrix columns");setDim(7,4,"matrix columns");
+            if(rows>=0 && cols>=0 && rows<cols) throw std::runtime_error("Semantic error: QR requires rows >= columns");
+            scalarDefault=1e-12;
         } else if(n=="mathSymmetricEigen"){
-            if(c.args.size()!=5) throw std::runtime_error("Semantic error: mathSymmetricEigen(a, values, vectors, order, maxSweeps) takes five arguments");
-            op=SLMATH_OP_SYMMETRIC_EIGEN;a=0;out=1;aux=2;
-            ar=literalDimension(3,"matrix order");ac=ar;
-            orows=1;ocols=ar;br=ar;bc=ar;
-            flagsValue=literalDimension(4,"maximum Jacobi sweeps");
+            requireArgs(5);op=SLMATH_OP_SYMMETRIC_EIGEN;a=0;out=1;aux=2;
+            setDim(0,3,"matrix order");setDim(1,3,"matrix order");
+            setConst(4,1);setDim(5,3,"matrix order");
+            setDim(6,3,"matrix order");setDim(7,3,"matrix order");
+            flagsExpr=c.args[4].get();
+            auto sweeps=dynamic_cast<const IntLit*>(flagsExpr);
+            if(sweeps && sweeps->value<0) throw std::runtime_error("Semantic error: maximum Jacobi sweeps must be nonnegative");
+            if(sweeps){flagsDefault=sweeps->value;flagsExpr=nullptr;}
             scalarDefault=1e-12;
         } else if(n=="mathFFT"){
-            if(c.args.size()!=4) throw std::runtime_error("Semantic error: mathFFT(input, output, complexLength, inverse) takes four arguments");
-            op=SLMATH_OP_FFT;a=0;out=1;
-            const size_t n=literalDimension(2,"FFT complex length");
-            if(n==0 || (n&(n-1))!=0 || n>SIZE_MAX/2) throw std::runtime_error("Semantic error: FFT length must be a nonzero power of two");
-            ar=n*2;ac=1;orows=ar;ocols=1;
-            auto inverse=dynamic_cast<const IntLit*>(c.args[3].get());
-            if(!inverse || (inverse->value!=0 && inverse->value!=1)) throw std::runtime_error("Semantic error: FFT inverse flag must be integer literal 0 or 1");
-            flagsValue=(size_t)inverse->value;
-        } else if(n=="mathMatrixMultiply"){
-            if(c.args.size()!=7) throw std::runtime_error("Semantic error: mathMatrixMultiply(a, b, out, rowsA, colsA, rowsB, colsB) takes seven arguments");
-            op=SLMATH_OP_MATRIX_MULTIPLY;a=0;b=1;out=2;
-            ar=literalDimension(3,"rowsA");ac=literalDimension(4,"colsA");
-            br=literalDimension(5,"rowsB");bc=literalDimension(6,"colsB");
-            if(ac!=br) throw std::runtime_error("Semantic error: matrix multiplication requires colsA == rowsB");
-            orows=ar;ocols=bc;
-        } else if(n=="mathMatrixTranspose"){
-            if(c.args.size()!=4) throw std::runtime_error("Semantic error: mathMatrixTranspose(a, out, rows, cols) takes four arguments");
-            op=SLMATH_OP_MATRIX_TRANSPOSE;a=0;out=1;
-            ar=literalDimension(2,"rows");ac=literalDimension(3,"cols");
-            orows=ac;ocols=ar;
+            requireArgs(4);op=SLMATH_OP_FFT;a=0;out=1;
+            int64_t length=setDim(0,2,"FFT interleaved length");
+            setConst(1,1);setDim(4,2,"FFT interleaved length");setConst(5,1);
+            if(length>=0 && (length==0 || (length&1)!=0 || (((uint64_t)length/2)&(((uint64_t)length/2)-1))!=0))
+                throw std::runtime_error("Semantic error: FFT interleaved length must be twice a nonzero power of two");
+            flagsExpr=c.args[3].get();
+            auto inverse=dynamic_cast<const IntLit*>(flagsExpr);
+            if(inverse){
+                if(inverse->value!=0 && inverse->value!=1) throw std::runtime_error("Semantic error: FFT inverse flag must be 0 or 1");
+                flagsDefault=inverse->value;flagsExpr=nullptr;
+            }
         } else return false;
 
         auto emitHandle=[&](int index){
@@ -1079,11 +1092,14 @@ private:
             else emitExpr(c.args[(size_t)index].get());
         };
         emitHandle(a);emitHandle(b);emitHandle(out);emitHandle(aux);
-        const size_t frame[8]={ar,ac,br,bc,orows,ocols,aux>=0?br:0,aux>=0?bc:0};
-        for(size_t value:frame) emit(OP_CONST,slvm_add_const_int(vm_,(int64_t)value));
+        for(size_t i=0;i<8;++i){
+            if(dimensionExpr[i]) emitExpr(dimensionExpr[i]);
+            else emit(OP_CONST,slvm_add_const_int(vm_,dimensionValue[i]));
+        }
         if(scalarExpr) emitExpr(scalarExpr);
         else emit(OP_CONST,slvm_add_const_double(vm_,scalarDefault));
-        emit(OP_CONST,slvm_add_const_int(vm_,(int64_t)flagsValue));
+        if(flagsExpr) emitExpr(flagsExpr);
+        else emit(OP_CONST,slvm_add_const_int(vm_,flagsDefault));
         emit(OP_MATH_CALL,op);
         return true;
     }
