@@ -36,8 +36,8 @@ int main(int argc, char **argv) {
     }
     result = slvm_result(vm);
     slvm_free(vm);
-    if (result.type != SL_INT || result.as.i != 63) {
-        fprintf(stderr, "expected 63 from compiler-produced native dispatch + bytecode fallback\\n");
+    if (result.type != SL_INT || result.as.i != 105) {
+        fprintf(stderr, "expected 105 from native dispatch, SLeeLa callback, and bytecode fallback\\n");
         return 1;
     }
     /* Re-load the same compiler-produced artifact with a deliberately
@@ -61,6 +61,6 @@ int main(int argc, char **argv) {
         return 1;
     }
     slvm_free(vm);
-    puts("compiled source -> artifact -> authorized native dispatch -> bytecode fallback -> authorization denial: PASS");
+    puts("compiled source -> artifact -> native dispatch -> SLeeLa callback -> bytecode fallback -> authorization denial: PASS");
     return 0;
 }
