@@ -128,3 +128,7 @@ Projektin uutiset, julkaisutiedot ja kansainvälisten README-tiedostojen luettel
 **Svenska:** Den här landsutgåvan innehåller en utökad finskspråkig teknisk introduktion och en svensk ingång. Den är ännu inte en fullständig rad-för-rad-översättning av den kanoniska engelska README-filen. Kontrollera alltid den engelska specifikationen för normativa tekniska detaljer.
 
 SLeeLa on MEARVK LLC:n kehittämä.
+
+## Käännöksen tila
+
+Tämä suomenkielinen maaeditio on laajennettu tekninen opas, joka kattaa projektin keskeiset käsitteet, rakentamisen, asennuksen, varmennuksen ja dokumentaatiopolut. Se ei vielä ole kanonisen englanninkielisen README-tiedoston täydellinen rivi riviltä tehty käännös. Ennen täydellisen käännöksen ja teknisen tarkastuksen valmistumista [README.md](README.md) on normatiivinen tekninen lähde.
