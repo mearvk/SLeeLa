@@ -213,3 +213,16 @@ bash ./test-suites/run-all.sh --all
 تتطلب عملية البناء عادةً GCC أو Clang وGNU Make، وقد تحتاج بعض الأدوات إلى Python 3. راجع [دليل التثبيت](install/README.md) قبل تثبيت النظام أو تثبيت المستخدم. يجب أن تميز تقارير الاختبار بين pass وfail وskip، وألا تعتبر الاختبارات المتروكة ناجحة. راجع [سياسة الاختبار](markdown/TESTING.md).
 
 **حالة الترجمة:** أضيف هذا الملحق العربي إلى جانب الدليل العبري الموسع. وهو مدخل تقني موجز، وليس ترجمة عربية كاملة سطراً بسطر لجميع وثائق المشروع.
+
+
+## XVII. חוזי API של מודולים, תאימות ואסטרטגיית בדיקות
+
+בעת הוספת API חדש, יש לתעד קלט, פלט, תנאי שגיאה, בעלות על נתונים והאם הפעולה יוצרת side effects. דוגמאות התיעוד צריכות להציג שימוש רגיל וגם טיפול ב-invalid או missing input. אין להציג התנהגות כהתחייבות אם היא לא אומתה באמצעות ה-implementation וה-tests המתאימים.
+
+יש לחלק בדיקות לפי שלבי compiler pipeline: lexing/parsing, semantic analysis, IR lowering, code generation, VM execution ו-native integration. לכל regression case יש לשמור קלט מינימלי שניתן לשחזור, תוצאה צפויה ותוצאה בפועל. שינויים ב-API צריכים להסביר backward compatibility, migration steps והשפעה על examples קיימים.
+
+## XVIII. לוקליזציה, קידוד ותחזוקת תרגום
+
+יש לשמור על technical identifiers, commands, paths, syntax ו-code blocks ללא שינוי בין גרסאות השפה. יש לתרגם את הטקסט המסביר, ולא tokens או שמות המשמשים ב-source code. יש לציין בבירור את ההקשר הלשוני והאזורי, ולשמור על מינוח עברי עקבי.
+
+לאחר כל עדכון יש לבדוק Markdown links, היררכיית כותרות, code fences ודוגמאות. כאשר canonical English documents משתנים, יש להשוות ולעדכן את הסעיפים המקבילים במלואם ולא רק את המבוא. יש לסמן תוכן שטרם עבר בדיקה לשונית או טכנית.
