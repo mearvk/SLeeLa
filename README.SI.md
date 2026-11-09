@@ -213,3 +213,18 @@ Ta slovenska izdaja je namenjena predvsem bralcem slovenščine. Ne trdi, da pok
 - [Repozitorij SLeeLa na GitHubu](https://github.com/mearvk/SLeeLa)
 
 **Stanje prevoda:** Slovenska izdaja je razširjena v tehnični uvod, ki zajema začetek dela, gradnjo, namestitev, jezik in izvajalno okolje, izvorno integracijo, knjižnice, varnost, razvojni potek in glavna projektna področja. Še ne gre za vrstični prevod vseh podrobnosti kanoničnega angleškega README. Pred dokončno objavo sta priporočena tehnični pregled in jezikovna redakcija strokovnjaka za slovenščino.
+
+
+## XVI. Cilji, profili in meje izvajanja
+
+SLeeLa ločuje izvorno kodo od ciljev gradnje in izvajanja. Dokumentirana družina ciljev vključuje `SLVM`, `SLJVM` in `SLIR`; `NATIVE` je omejen cilj s pogoji in ni samoumevno na voljo na vseh platformah. Profila `BASIC_COMPLETE` in `ADVANCED_TOTAL` določata različen obseg. Pri vsaki gradnji preverite dejanski cilj, profil in podporo platforme.
+
+Referenca identificira datoteko, modul ali vir, vendar sama po sebi ne dovoljuje njegovega izvajanja. Pri uporabi datotek, zunanjih knjižnic, native bindings ali sistemskih virov morajo biti meje pooblastil in odgovornost za izvajanje izrecno določene. Opis v dokumentaciji sam po sebi ni dokaz varnostnega jamstva runtime; preverite implementacijo in ustrezne teste.
+
+## XVII. Življenjski cikel virov in odpravljanje napak
+
+Dokumentirajte lastništvo, življenjsko dobo in odgovornosti za sinhronizacijo virov, ki si jih delijo funkcije ali niti. Ločujte local variables, shared object state, VM handles in serializable data. VM-local handle ni stabilna oblika datoteke ali omrežno sporočilo. Uporabite serializacijski vmesnik modula ter preizkusite invalid, missing in boundary values.
+
+Pri odpravljanju napak zabeležite commit, OS, architecture in toolchain. Najprej zgradite najmanjši ustrezni cilj, shranite celoten izpis napak, ločite compiler errors od runtime errors in pripravite minimalen ponovljiv primer. Uspešna gradnja sama po sebi ne dokazuje pravilnega delovanja runtime.
+
+Poročilo o preverjanju mora navesti exact commit, OS/architecture, compiler versions, vse build/test commands, število pass/fail/skip in znane omejitve. Preskočeni ali neizvedeni testi ne štejejo kot uspešni.
