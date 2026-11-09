@@ -175,6 +175,32 @@ This is the human-readable support map for the canonical source-defined SLeeLa I
 155 | `OP_OSLS_CALL` | Implemented | `impl/core/sleela_core.c` (`os-level-support/osls_vm_bridge.c`) — typed OSLS ABI registry; JSON result marshalling
 
 
+156 | `OP_BIGMUL` | Implemented | `impl/core/sleela_core.c`
+157 | `OP_SLEEP` | Implemented | `impl/core/sleela_core.c`
+158 | `OP_BIGADD` | Implemented | `impl/core/sleela_core.c`
+159 | `OP_BIGDIVMOD` | Implemented | `impl/core/sleela_core.c`
+160 | `OP_BIGSUB` | Implemented | `impl/core/sleela_core.c`
+161 | `OP_BIGDIV` | Implemented | `impl/core/sleela_core.c`
+162 | `OP_BIGISQRT` | Implemented | `impl/core/sleela_core.c`
+163 | `OP_NATIVE_CALL` | Implemented | `impl/core/sleela_core.c`
+164 | `OP_NATIVE_OPEN` | Implemented | `impl/core/sleela_core.c`
+165 | `OP_NATIVE_CLOSE` | Implemented | `impl/core/sleela_core.c`
+166 | `OP_JSTR_LENGTH` | Implemented | `impl/core/sleela_core.c`
+167 | `OP_JSTR_CHAR_AT` | Implemented | `impl/core/sleela_core.c`
+168 | `OP_JSTR_CODE_POINT_AT` | Implemented | `impl/core/sleela_core.c`
+169 | `OP_JSTR_CODE_POINT_COUNT` | Implemented | `impl/core/sleela_core.c`
+170 | `OP_JSTR_OFFSET_BY_CODE_POINTS` | Implemented | `impl/core/sleela_core.c`
+171 | `OP_JSTR_SUBSTRING` | Implemented | `impl/core/sleela_core.c`
+172 | `OP_JSTR_CONCAT` | Implemented | `impl/core/sleela_core.c`
+173 | `OP_JSTR_HASH_CODE` | Implemented | `impl/core/sleela_core.c`
+174 | `OP_JSTR_COMPARE_TO` | Implemented | `impl/core/sleela_core.c`
+175 | `OP_JSTR_FROM_UTF8` | Implemented | `impl/core/sleela_core.c`
+176 | `OP_TRY_PUSH` | Implemented | `impl/core/sleela_core.c`
+177 | `OP_TRY_POP` | Implemented | `impl/core/sleela_core.c`
+178 | `OP_THROW` | Implemented | `impl/core/sleela_core.c`
+
+
+
 The operating-system opcodes (`OP_OS_*`) are the host System Call API: the `os*`
 built-ins (`osRun`/`osSpawn`/`osGetEnv`/`osExists`/...) lower to these opcodes,
 which the VM services through `impl/core/sleela_os.c` on Windows (Win32), Linux,
