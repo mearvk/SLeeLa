@@ -472,6 +472,9 @@ int slvm_here(SLVM* vm);
 void slvm_set_entry(SLVM* vm, int func_index);
 SLResult slvm_run(SLVM* vm);
 SLValue slvm_result(SLVM* vm);
+/* Returns 1 and copies the last uncaught language exception payload when one
+ * exists; returns 0 when the most recent run had no uncaught exception. */
+int slvm_uncaught_exception(SLVM* vm, SLValue* out_exception);
 void slvm_joinall(SLVM* vm);
 SLValue slval_null(void);
 SLValue slval_int(int64_t v);
