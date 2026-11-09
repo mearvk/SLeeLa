@@ -8,55 +8,34 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.jar.JarFile;
 
 /**
- * Intelligent loader of raw compiled classes for the SLeeLa &rarr; Java bridge.
+ * Allow-listed loader for raw compiled Java classes used by SLeeLa.
  *
- * <p>This is a {@code Class.forName()}-style facility, but <b>hardened</b>. A raw
- * {@code Class.forName(userString)} on a JVM is a code-execution / deserialization
- * hazard: it can resolve and static-initialize <i>any</i> class on the classpath.
- * SLeeLa's bridge instead loads only what an operator has explicitly permitted,
- * validates the request, caches the result, and <b>fails closed</b> on anything
- * unknown — matching the allow-list posture already used by the java28 memory
- * server.</p>
- *
- * <h2>What "intelligent" means here</h2>
- * <ul>
- *   <li><b>Allow-listed.</b> A class resolves only if its fully-qualified name is
- *       explicitly allowed, or it lives under an allowed package prefix.</li>
- *   <li><b>Explicit roots.</b> Raw compiled {@code .class} directories and
- *       {@code .jar} files can be added as load roots; classes are read from
- *       those via a {@link URLClassLoader} layered on the bridge's own loader.</li>
- *   <li><b>Non-initializing by default.</b> Resolution does <i>not</i> run the
- *       class's static initializers unless the caller opts in, so merely looking
- *       a class up cannot trigger side effects.</li>
- *   <li><b>Cached.</b> Successful resolutions are memoized.</li>
- *   <li><b>Fail closed.</b> A disallowed or missing class yields a clear
- *       {@link ClassResolutionException}, never a silent or arbitrary load.</li>
- * </ul>
- *
- * <p>Thread-safe. Not {@code AutoCloseable}-required, but {@link #close()} releases
- * any {@link URLClassLoader} opened for jar/dir roots.</p>
+ * Resolution is non-initializing by default. Explicit roots may be directories
+ * or readable JAR files. Adding a root invalidates cached resolutions so a
+ * class loaded before the root was added cannot shadow the new search space.
  */
 public final class SleelaClassLoader implements AutoCloseable {
-
-    /** Thrown when a class cannot be resolved under the loader's policy. */
     public static final class ClassResolutionException extends Exception {
         private static final long serialVersionUID = 1L;
         public ClassResolutionException(String message) { super(message); }
         public ClassResolutionException(String message, Throwable cause) { super(message, cause); }
     }
 
+    private static final String BINARY_NAME =
+            "[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*";
+
     private final Set<String> allowedNames = ConcurrentHashMap.newKeySet();
     private final Set<String> allowedPackages = ConcurrentHashMap.newKeySet();
     private final Map<String, Class<?>> cache = new ConcurrentHashMap<>();
     private final ClassLoader parent;
-
-    // Lazily-built loader over the operator-supplied roots (dirs/jars).
     private final List<URL> roots = new ArrayList<>();
     private volatile URLClassLoader rootLoader;
 
@@ -68,100 +47,120 @@ public final class SleelaClassLoader implements AutoCloseable {
         this.parent = Objects.requireNonNull(parent, "parent");
     }
 
-    // ---- policy configuration -------------------------------------------
-
-    /** Permit one fully-qualified class name (e.g. {@code "com.acme.Widget"}). */
     public SleelaClassLoader allowClass(String fqcn) {
-        allowedNames.add(requireFqcn(fqcn));
-        cache.remove(fqcn); // re-evaluate under the new policy if it was denied
+        String name = requireBinaryName(fqcn, "class name");
+        allowedNames.add(name);
+        cache.remove(name);
         return this;
     }
 
-    /** Permit every class under a package prefix (e.g. {@code "com.acme"}). */
     public SleelaClassLoader allowPackage(String packagePrefix) {
-        Objects.requireNonNull(packagePrefix, "packagePrefix");
-        if (packagePrefix.isBlank()) {
-            throw new IllegalArgumentException("packagePrefix must not be blank");
-        }
-        allowedPackages.add(packagePrefix);
+        String name = requireBinaryName(packagePrefix, "package prefix");
+        allowedPackages.add(name);
+        cache.clear();
         return this;
     }
 
-    /** Add a directory of raw compiled {@code .class} files or a {@code .jar}. */
+    /** Add a directory of class files or a readable .jar file. */
     public SleelaClassLoader addRoot(Path dirOrJar) throws IOException {
         Objects.requireNonNull(dirOrJar, "dirOrJar");
-        if (!Files.exists(dirOrJar)) {
-            throw new IOException("load root does not exist: " + dirOrJar);
+        Path root = dirOrJar.toAbsolutePath().normalize();
+        if (Files.isDirectory(root)) {
+            // A directory root is a package-preserving class-file tree.
+        } else if (Files.isRegularFile(root)
+                && root.getFileName().toString().toLowerCase(Locale.ROOT).endsWith(".jar")) {
+            // Opening the archive here makes malformed/unreadable roots fail
+            // at configuration time, not during an unrelated class lookup.
+            try (JarFile ignored = new JarFile(root.toFile(), false)) {
+                // Validation only; URLClassLoader owns subsequent reads.
+            }
+        } else {
+            throw new IOException("load root must be a directory or readable .jar: " + root);
         }
+
+        URL url = root.toUri().toURL();
         synchronized (roots) {
-            roots.add(dirOrJar.toUri().toURL());
-            // Rebuild the loader so the new root is visible; close the old one.
+            if (roots.contains(url)) {
+                return this;
+            }
+            List<URL> nextRoots = new ArrayList<>(roots);
+            nextRoots.add(url);
+            URLClassLoader replacement = new URLClassLoader(nextRoots.toArray(new URL[0]), parent);
             URLClassLoader previous = rootLoader;
-            rootLoader = new URLClassLoader(roots.toArray(new URL[0]), parent);
+            roots.add(url);
+            rootLoader = replacement;
+            cache.clear();
             if (previous != null) {
-                try { previous.close(); } catch (IOException ignored) { /* best effort */ }
+                try {
+                    previous.close();
+                } catch (IOException ignored) {
+                    // The new loader is active; a previous loader close failure
+                    // must not silently restore stale class-resolution results.
+                }
             }
         }
         return this;
     }
 
-    // ---- resolution ------------------------------------------------------
-
-    /** Resolve a class by name under the policy, without running its static
-     *  initializers. Equivalent intent to {@code Class.forName(name, false, cl)}. */
+    /** Resolve a class without running static initializers. */
     public Class<?> resolve(String fqcn) throws ClassResolutionException {
         return resolve(fqcn, false);
     }
 
     /**
-     * Resolve a class by name under the policy. The {@code Class.forName()}
-     * analogue, but allow-listed, cached, and fail-closed.
+     * Resolve a class under the configured allow-list.
      *
-     * @param fqcn       fully-qualified class name
-     * @param initialize if true, run the class's static initializers
+     * @param initialize explicitly opt in to static initialization
      */
     public Class<?> resolve(String fqcn, boolean initialize) throws ClassResolutionException {
-        requireFqcn(fqcn);
-        if (!isAllowed(fqcn)) {
-            throw new ClassResolutionException("class not allow-listed: " + fqcn);
+        String name = requireBinaryName(fqcn, "class name");
+        if (!isAllowed(name)) {
+            throw new ClassResolutionException("class not allow-listed: " + name);
         }
-        Class<?> cached = cache.get(fqcn);
-        if (cached != null) {
-            if (initialize) {
-                forceInit(cached);
+        synchronized (roots) {
+            Class<?> cached = cache.get(name);
+            if (cached != null) {
+                if (initialize) {
+                    forceInit(cached);
+                }
+                return cached;
             }
-            return cached;
-        }
-        ClassLoader loader = rootLoader != null ? rootLoader : parent;
-        try {
-            Class<?> type = Class.forName(fqcn, initialize, loader);
-            cache.put(fqcn, type);
-            return type;
-        } catch (ClassNotFoundException e) {
-            throw new ClassResolutionException("class not found on any load root: " + fqcn, e);
-        } catch (LinkageError e) {
-            // e.g. bad/incompatible bytecode in a raw .class root.
-            throw new ClassResolutionException("class failed to link: " + fqcn + " (" + e.getMessage() + ")", e);
+            ClassLoader loader = rootLoader != null ? rootLoader : parent;
+            try {
+                Class<?> type = Class.forName(name, initialize, loader);
+                cache.put(name, type);
+                return type;
+            } catch (ClassNotFoundException e) {
+                throw new ClassResolutionException("class not found on configured roots: " + name, e);
+            } catch (LinkageError e) {
+                throw new ClassResolutionException(
+                        "class failed to link: " + name + " (" + e.getMessage() + ")", e);
+            }
         }
     }
 
-    /** True if {@code fqcn} would resolve under the current policy (no load). */
+    /** Check policy only; this method does not load or initialize the class. */
     public boolean isAllowed(String fqcn) {
-        if (fqcn == null || fqcn.isBlank()) {
+        if (fqcn == null) {
             return false;
         }
-        if (allowedNames.contains(fqcn)) {
+        final String name;
+        try {
+            name = requireBinaryName(fqcn, "class name");
+        } catch (IllegalArgumentException invalid) {
+            return false;
+        }
+        if (allowedNames.contains(name)) {
             return true;
         }
         for (String pkg : allowedPackages) {
-            if (fqcn.equals(pkg) || fqcn.startsWith(pkg + ".")) {
+            if (name.startsWith(pkg + ".")) {
                 return true;
             }
         }
         return false;
     }
 
-    /** Snapshot of the explicitly-allowed class names (diagnostics). */
     public Set<String> allowedClassNames() {
         return new LinkedHashSet<>(allowedNames);
     }
@@ -169,34 +168,38 @@ public final class SleelaClassLoader implements AutoCloseable {
     @Override
     public void close() {
         synchronized (roots) {
-            if (rootLoader != null) {
-                try { rootLoader.close(); } catch (IOException ignored) { /* best effort */ }
-                rootLoader = null;
+            URLClassLoader current = rootLoader;
+            rootLoader = null;
+            roots.clear();
+            cache.clear();
+            if (current != null) {
+                try {
+                    current.close();
+                } catch (IOException ignored) {
+                    // Closing is best effort; all future lookups use the parent.
+                }
             }
         }
     }
-
-    // ---- helpers ---------------------------------------------------------
 
     private static void forceInit(Class<?> type) throws ClassResolutionException {
         try {
             Class.forName(type.getName(), true, type.getClassLoader());
         } catch (ClassNotFoundException e) {
-            throw new ClassResolutionException("class disappeared during init: " + type.getName(), e);
+            throw new ClassResolutionException("class disappeared during initialization: "
+                    + type.getName(), e);
+        } catch (LinkageError e) {
+            throw new ClassResolutionException("class failed during initialization: "
+                    + type.getName(), e);
         }
     }
 
-    private static String requireFqcn(String fqcn) {
-        Objects.requireNonNull(fqcn, "fqcn");
-        String s = fqcn.trim();
-        if (s.isEmpty()) {
-            throw new IllegalArgumentException("class name must not be blank");
+    private static String requireBinaryName(String value, String label) {
+        Objects.requireNonNull(value, label);
+        String name = value.trim();
+        if (name.isEmpty() || !name.matches(BINARY_NAME)) {
+            throw new IllegalArgumentException("invalid " + label + ": " + value);
         }
-        // Reject obvious junk / injection: only a dotted Java identifier chain
-        // (optionally with '$' for nested classes) is a valid binary name.
-        if (!s.matches("[A-Za-z_$][A-Za-z0-9_$]*(\\.[A-Za-z_$][A-Za-z0-9_$]*)*")) {
-            throw new IllegalArgumentException("not a valid class name: " + fqcn);
-        }
-        return s;
+        return name;
     }
 }
