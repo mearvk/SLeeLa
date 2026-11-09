@@ -1,6 +1,6 @@
 # VM Exception and Stack-Unwind Design
 
-Status: runtime foundation and catch-all dispatch opcodes implemented on `work/vm-exception-runtime-stage1`; source compiler lowering, typed catches, and finally remain incomplete.
+Status: runtime foundation and first source-level catch-all lowering implemented on `work/vm-exception-compiler-stage1`; typed catches and finally remain incomplete.
 
 ## Why this work is required
 
@@ -171,9 +171,27 @@ has been added but has not been run in this milestone.
 
 ## Current limitation
 
-The VM opcodes are operational for bytecode producers, but the source compiler
-still has its previous `emitTry` behavior and does not yet lower source
-`try/catch/throw` to these opcodes. The initial dispatch is catch-all only.
-Typed catches, rethrow syntax/identity semantics, selected language-fault
-conversion, and `finally`/abrupt-completion lowering remain unimplemented.
-Therefore source-level Java exception compatibility is not yet claimed.
+The source compiler now lowers a single `catch (Any name)` clause to
+`OP_TRY_PUSH`, `OP_TRY_POP`, and a handler prologue that stores the thrown
+value in the catch local. Explicit `throw expression;` now emits `OP_THROW`.
+The compiler rejects multiple catch clauses, narrower declared catch types,
+catch-variable collisions with existing method locals, and any `finally`
+block. This is deliberately narrower than Java: matching is catch-all only,
+and the catch variable holds the original arbitrary tagged `SLValue`.
+
+Typed exception classes and ordered matching, rethrow syntax/identity
+semantics, selected language-fault conversion, and `finally`/abrupt-completion
+lowering remain unimplemented. The compiler change and opt-in runtime smoke
+test have not been executed in this milestone; source-level Java exception
+compatibility is not claimed.
+
+
+## Implemented compiler milestone
+
+On `work/vm-exception-compiler-stage1`, `try { ... } catch (Any error) { ... }`
+registers a catch-all handler, removes it on normal completion, and transfers
+the thrown value into `error` on exceptional completion. `throw expression;`
+now dispatches the evaluated value rather than discarding it. `finally` and
+all unsupported catch shapes fail compilation explicitly. This is a first
+source-to-bytecode integration step, not a claim of full Java exception
+semantics.
