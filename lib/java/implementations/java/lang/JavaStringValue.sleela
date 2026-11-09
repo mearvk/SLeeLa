@@ -28,18 +28,12 @@ class JavaStringValue {
   }
 
   int length() {
-    if (nativeModule <= 0) {
-      throw new RuntimeException("JavaStringValue requires an authorized UTF-16 native module");
-    }
     return nativeCall(nativeModule, "utf16_length", value);
   }
 
   // Returns a UTF-16 code unit in the integer range 0..65535.
   // For supplementary characters, high and low surrogates are separate indices.
   int charAt(int index) {
-    if (nativeModule <= 0) {
-      throw new RuntimeException("JavaStringValue requires an authorized UTF-16 native module");
-    }
     return nativeCall(nativeModule, "utf16_char_at", value, index);
   }
 
