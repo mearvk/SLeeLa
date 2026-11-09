@@ -186,6 +186,60 @@ class NativeDriveTests(unittest.TestCase):
             self.assertEqual(unit.read_text(), previous)
             self.assertFalse(backup.exists())
 
+    def test_systemd_system_status_is_read_only_for_unprivileged_caller(self):
+        if sys.platform != "linux": self.skipTest("systemd lifecycle is Linux-specific")
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            fakebin = root / "bin"; fakebin.mkdir()
+            log = root / "systemctl.log"
+            fake = fakebin / "systemctl"
+            fake.write_text("#!/bin/sh\\nprintf '%s\\\\n' \\"$*\\" >> \\"$SLEELA_SYSTEMCTL_LOG\\"\\nexit 0\\n")
+            fake.chmod(0o755)
+            env = dict(__import__("os").environ)
+            env["PATH"] = str(fakebin) + __import__("os").pathsep + env.get("PATH", "")
+            env["HOME"] = str(root)
+            env["SLEELA_SYSTEMCTL_LOG"] = str(log)
+            result = subprocess.run([sys.executable, str(SERVICE), "--name", "worker",
+                "--system", "--status"], env=env, text=True, capture_output=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn("--system --no-pager status worker.service", log.read_text())
+
+    def test_failed_service_start_restores_previous_unit_and_disables_it(self):
+        if sys.platform != "linux": self.skipTest("systemd lifecycle is Linux-specific")
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            fakebin = root / "bin"; fakebin.mkdir()
+            log = root / "systemctl.log"
+            fake = fakebin / "systemctl"
+            fake.write_text(
+                "#!/bin/sh\\n"
+                "printf '%s\\\\n' \\"$*\\" >> \\"$SLEELA_SYSTEMCTL_LOG\\"\\n"
+                "[ \\"$1\\" = --user ] && shift\\n"
+                "[ \\"$1\\" = start ] && exit 9\\n"
+                "exit 0\\n")
+            fake.chmod(0o755)
+            env = dict(__import__("os").environ)
+            env["PATH"] = str(fakebin) + __import__("os").pathsep + env.get("PATH", "")
+            env["HOME"] = str(root)
+            env["SLEELA_SYSTEMCTL_LOG"] = str(log)
+            exe = root / "worker"; exe.write_text("#!/bin/sh\\nexit 0\\n"); exe.chmod(0o755)
+            args = [sys.executable, str(SERVICE), "--install", "--name", "worker",
+                    "--executable", str(exe), "--working-directory", str(root)]
+            first = subprocess.run(args, env=env, text=True, capture_output=True)
+            self.assertEqual(first.returncode, 0, first.stderr)
+            unit = root / ".config/systemd/user/worker.service"
+            original = unit.read_text()
+            failed = subprocess.run(args + ["--replace", "--description", "replacement",
+                "--enable", "--start"], env=env, text=True, capture_output=True)
+            self.assertNotEqual(failed.returncode, 0)
+            self.assertIn("previous state was restored", failed.stderr)
+            self.assertEqual(unit.read_text(), original)
+            self.assertFalse(unit.with_name("worker.service.sleela-backup").exists())
+            commands = log.read_text()
+            self.assertIn("--user stop worker.service", commands)
+            self.assertIn("--user disable worker.service", commands)
+            self.assertGreaterEqual(commands.count("--user daemon-reload"), 3)
+
     def test_systemd_unit_rejects_unsafe_unit_names(self):
         if sys.platform == "win32": self.skipTest("systemd unit generation requires POSIX executable semantics")
         with tempfile.TemporaryDirectory() as tmp:
