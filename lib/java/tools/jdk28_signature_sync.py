@@ -1,175 +1,200 @@
 #!/usr/bin/env python3
-"""Synchronize JDK 28 declared member signatures into SLeeLa source.
+"""Synchronize JDK 28 Javadoc member declarations as non-executable metadata.
 
-The official JDK 28 Javadoc is the authority. Existing SLeeLa envelopes are
-enriched in-place with Java-like constructors and method declarations. The
-generated declarations preserve return types and parameter types; behavior is
-not invented and uses deterministic placeholder returns.
+The official Javadoc is the authority. This tool deliberately records member
+signatures as comments instead of synthesizing executable method bodies:
+placeholder returns (false/0/null) are not Java behavior and must never be
+mistaken for a working implementation.
 
-Use --check for a non-mutating audit.
+Use --check for a non-mutating drift audit. Use --index with a saved Javadoc
+index to make type discovery reproducible/offline; member pages are still
+fetched from the official Javadoc host.
 """
-
 from __future__ import annotations
-import argparse, html, re, sys, urllib.request
+
+import argparse
+import html
+import re
+import sys
+import urllib.request
 from html.parser import HTMLParser
 from pathlib import Path
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 
 INDEX_URL = "https://download.java.net/java/early_access/jdk28/docs/api/allclasses-index.html"
 ROOT = Path(__file__).resolve().parents[1]
-BEGIN = "// BEGIN JDK28 API SIGNATURES (generated; do not edit)"
-END = "// END JDK28 API SIGNATURES"
+BEGIN = "// BEGIN JDK28 API SIGNATURE CATALOG (generated; do not edit)"
+END = "// END JDK28 API SIGNATURE CATALOG"
+VOID_TAGS = {
+    "area", "base", "br", "col", "embed", "hr", "img", "input",
+    "link", "meta", "param", "source", "track", "wbr",
+}
+IGNORED_NAMES = {
+    "module-info", "package-info", "package-summary", "module-summary",
+    "package-use", "deprecated-list", "index", "overview-summary",
+    "class-use", "serialized-form",
+}
+
 
 class SignatureParser(HTMLParser):
-    def __init__(self):
-        super().__init__()
-        self.active = False
+    """Extract text only from Javadoc's div.member-signature elements."""
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
         self.depth = 0
-        self.parts = []
-        self.signatures = []
-    def handle_starttag(self, tag, attrs):
-        attrs = dict(attrs)
-        if tag == "div" and "member-signature" in attrs.get("class", "").split():
-            self.active = True
-            self.depth = 1
-            self.parts = []
-        elif self.active:
-            self.depth += 1
-    def handle_endtag(self, tag):
-        if self.active:
-            self.depth -= 1
-            if self.depth <= 0:
-                value = re.sub(r"\s+", " ", html.unescape("".join(self.parts))).strip()
-                if value:
-                    self.signatures.append(value)
-                self.active = False
+        self.parts: list[str] = []
+        self.signatures: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        classes = dict(attrs).get("class") or ""
+        is_signature = tag == "div" and "member-signature" in classes.split()
+        if self.depth == 0:
+            if is_signature:
+                self.depth = 1
                 self.parts = []
-    def handle_data(self, data):
-        if self.active:
+            return
+        if tag not in VOID_TAGS:
+            self.depth += 1
+
+    def handle_startendtag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        # Self-closing tags never change nesting depth.
+        return
+
+    def handle_endtag(self, tag: str) -> None:
+        if self.depth == 0:
+            return
+        self.depth -= 1
+        if self.depth == 0:
+            value = re.sub(r"\\s+", " ", "".join(self.parts)).strip()
+            if value:
+                self.signatures.append(value)
+            self.parts = []
+
+    def handle_data(self, data: str) -> None:
+        if self.depth:
             self.parts.append(data)
 
+
 def fetch(url: str) -> str:
-    req = urllib.request.Request(url, headers={"User-Agent": "SLeeLa-JDK28-Signature-Synchronizer/2.0"})
-    with urllib.request.urlopen(req, timeout=60) as response:
+    request = urllib.request.Request(
+        url, headers={"User-Agent": "SLeeLa-JDK28-Signature-Catalog/3.0"}
+    )
+    with urllib.request.urlopen(request, timeout=60) as response:
         return response.read().decode("utf-8", errors="replace")
 
-def index_types(document: str) -> list[tuple[str,str]]:
-    found = set()
-    for raw in re.findall(r'href=["\']([^"\']+\.html(?:#[^"\']*)?)["\']', document):
-        href = html.unescape(raw.split("#",1)[0])
-        parts = href.split("/")
+
+def index_types(document: str) -> list[tuple[str, str]]:
+    found: set[tuple[str, str]] = set()
+    for raw_href in re.findall(r'href=["\\']([^"\\']+\\.html(?:#[^"\\']*)?)["\\']', document):
+        href = html.unescape(raw_href.split("#", 1)[0])
+        parsed = urlparse(urljoin(INDEX_URL, href))
+        parts = parsed.path.strip("/").split("/")
         if len(parts) < 3 or not parts[-1].endswith(".html"):
             continue
         name = parts[-1][:-5]
-        if name in {"module-info","package-info","package-summary","module-summary","class-use","serialized-form"}:
+        if name in IGNORED_NAMES or any(
+            part in {"doc-files", "index-files", "class-use"} for part in parts
+        ):
             continue
-        if any(x in parts for x in ("doc-files","index-files")):
+        package_parts = parts[1:-1]  # Drop the Javadoc module directory.
+        if not package_parts:
             continue
-        package = ".".join(parts[1:-1])
-        if package:
-            found.add((package + "." + name, href))
+        qualified = ".".join(package_parts + [name])
+        found.add((qualified, href))
     return sorted(found)
 
-def normalize(raw: str) -> str | None:
-    s = re.sub(r"\s+", " ", html.unescape(raw)).strip()
-    s = re.sub(r"\b(?:public|protected|private|abstract|static|final|default|synchronized|native|strictfp|sealed|non-sealed)\b\s*", "", s)
-    s = re.sub(r"@[\w$.]+(?:\([^)]*\))?\s*", "", s)
-    s = re.split(r"\s+throws\s+", s, maxsplit=1)[0].strip()
-    s = s.replace("...", "[]")
-    return s if "(" in s and ")" in s else None
 
-def extract(page: str) -> list[str]:
-    p = SignatureParser()
-    p.feed(page)
-    out=[]; seen=set()
-    for raw in p.signatures:
-        sig=normalize(raw)
-        if sig and sig not in seen:
-            seen.add(sig); out.append(sig)
-    return out
+def extract_signatures(page: str) -> list[str]:
+    parser = SignatureParser()
+    parser.feed(page)
+    parser.close()
+    # Preserve distinct declarations in document order; do not strip generic
+    # parameters, annotations, throws clauses, or modifiers.
+    result: list[str] = []
+    seen: set[str] = set()
+    for raw in parser.signatures:
+        signature = re.sub(r"\\s+", " ", html.unescape(raw)).strip()
+        if signature and signature not in seen:
+            seen.add(signature)
+            result.append(signature)
+    return result
 
-def split_signature(sig: str, simple: str):
-    sig = re.sub(r"\s+", " ", sig).strip()
-    if sig.startswith(simple + "("):
-        return ("constructor", simple, "", sig[len(simple):].strip())
-    # Find the method identifier immediately preceding the opening parenthesis.
-    m = re.match(r"(?P<prefix>.+?)\s+(?P<name>[A-Za-z_$][\w$]*)\s*(?P<params>\(.*\))$", sig)
-    if not m:
-        return None
-    prefix=m.group("prefix").strip()
-    name=m.group("name")
-    params=m.group("params")
-    return ("method", name, prefix, params)
-
-def default_body(return_type: str) -> str:
-    t=return_type.strip()
-    if t == "void":
-        return ""
-    if t == "boolean":
-        return " return false;"
-    if t in {"byte","short","int","long","float","double","char"}:
-        return " return 0;"
-    return " return null;"
 
 def render(signatures: list[str], qualified: str) -> str:
-    simple=qualified.rsplit(".",1)[-1]
-    lines=[BEGIN, "// Exact declared JDK 28 member signatures; generated from official Javadoc."]
-    for sig in signatures:
-        parsed=split_signature(sig,simple)
-        if not parsed:
-            lines.append("  // " + sig)
-            continue
-        kind,name,ret,params=parsed
-        if kind == "constructor":
-            lines.append(f"  {simple}{params} {{ }}")
-        else:
-            body=default_body(ret)
-            lines.append(f"  {ret} {name}{params} {{{body} }}")
+    lines = [
+        BEGIN,
+        f"// Source: {urljoin(INDEX_URL, qualified.replace('.', '/') + '.html')}",
+        "// Declarations are documentary metadata, not executable SLeeLa methods.",
+        "// Java behavior remains delegated to the configured Java runtime boundary.",
+    ]
+    lines.extend("// JDK declaration: " + signature for signature in signatures)
     lines.append(END)
     return "\n".join(lines)
 
+
 def replace_section(source: str, section: str) -> str:
-    pattern=re.escape(BEGIN)+r".*?"+re.escape(END)
-    if re.search(pattern,source,re.S):
-        return re.sub(pattern,section,source,count=1,flags=re.S)
-    pos=source.rfind("}")
-    if pos < 0:
-        return source.rstrip()+"\n"+section+"\n"
-    return source[:pos].rstrip()+"\n"+section+"\n"+source[pos:]
+    pattern = re.escape(BEGIN) + r".*?" + re.escape(END)
+    if re.search(pattern, source, flags=re.S):
+        return re.sub(pattern, lambda _match: section, source, count=1, flags=re.S)
+    closing = source.rfind("}")
+    if closing < 0:
+        raise ValueError("target source has no class closing brace")
+    return source[:closing].rstrip() + "\n" + section + "\n" + source[closing:]
+
 
 def main() -> int:
-    ap=argparse.ArgumentParser()
-    ap.add_argument("--check",action="store_true")
-    ap.add_argument("--index",type=Path)
-    args=ap.parse_args()
-    index=args.index.read_text(encoding="utf-8") if args.index else fetch(INDEX_URL)
-    types=index_types(index)
-    changed=missing=checked=0
-    for qualified,href in types:
-        target=ROOT/(qualified.replace(".","/")+".sleela")
-        if not target.exists():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--check", action="store_true",
+                        help="report drift without writing files")
+    parser.add_argument("--index", type=Path,
+                        help="use a saved allclasses-index.html for type discovery")
+    parser.add_argument("--limit", type=int,
+                        help="process at most N types (useful for controlled batches)")
+    args = parser.parse_args()
+    if args.limit is not None and args.limit < 1:
+        parser.error("--limit must be at least 1")
+
+    try:
+        index = args.index.read_text(encoding="utf-8") if args.index else fetch(INDEX_URL)
+        types = index_types(index)
+        if args.limit is not None:
+            types = types[:args.limit]
+    except (OSError, UnicodeError, ValueError) as exc:
+        print(f"ERROR: cannot read JDK API index: {exc}", file=sys.stderr)
+        return 1
+
+    checked = missing = changed = 0
+    failures = 0
+    for qualified, href in types:
+        target = ROOT / (qualified.replace(".", "/") + ".sleela")
+        if not target.is_file():
             continue
         checked += 1
         try:
-            signatures=extract(fetch(urljoin(INDEX_URL,href)))
-        except Exception as exc:
-            print(f"ERROR {qualified}: {exc}",file=sys.stderr)
-            return 1
-        if not signatures:
-            missing += 1
-            print(f"NO_DECLARED_SIGNATURES {qualified}")
-            continue
-        source=target.read_text(encoding="utf-8",errors="replace")
-        updated=replace_section(source,render(signatures,qualified))
-        if updated != source:
-            changed += 1
-            if not args.check:
-                target.write_text(updated,encoding="utf-8")
-    print(f"JDK 28 documented types: {len(types)}")
-    print(f"Existing SLeeLa types checked: {checked}")
-    print(f"Types without extracted declarations: {missing}")
+            signatures = extract_signatures(fetch(urljoin(INDEX_URL, href)))
+            if not signatures:
+                missing += 1
+                print(f"NO_DECLARED_SIGNATURES {qualified}")
+                continue
+            source = target.read_text(encoding="utf-8")
+            updated = replace_section(source, render(signatures, qualified))
+            if updated != source:
+                changed += 1
+                if not args.check:
+                    target.write_text(updated, encoding="utf-8")
+        except (OSError, UnicodeError, ValueError) as exc:
+            failures += 1
+            print(f"ERROR {qualified}: {exc}", file=sys.stderr)
+
+    print(f"JDK 28 documented types discovered: {len(types)}")
+    print(f"Existing SLeeLa type files checked: {checked}")
+    print(f"Types without extracted member declarations: {missing}")
     print(f"Files {'requiring update' if args.check else 'updated'}: {changed}")
+    print(f"Errors: {failures}")
+    if failures:
+        return 1
     return 1 if args.check and changed else 0
+
 
 if __name__ == "__main__":
     raise SystemExit(main())
