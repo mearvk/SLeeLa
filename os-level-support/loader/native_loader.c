@@ -133,6 +133,7 @@ SLNativeStatus sl_native_call_module(SLNativeModule *module, const char *method,
     int plugin_status;
     SLNativeValue result;
     SLNativeTypedCall typed_call;
+    SLNativeTypedAbiVersion typed_abi;
     void *symbol;
     if (!module || !module->handle || !method || !*method ||
         (argc > 0 && !argv) || !out_result)
@@ -140,6 +141,11 @@ SLNativeStatus sl_native_call_module(SLNativeModule *module, const char *method,
     symbol = find_symbol(module->handle, "sl_native_call");
     if (!symbol) return SL_NATIVE_TYPED_ENTRY_NOT_FOUND;
     memcpy(&typed_call, &symbol, sizeof(typed_call));
+    symbol = find_symbol(module->handle, "sl_native_typed_abi_version");
+    if (!symbol) return SL_NATIVE_ABI_MISMATCH;
+    memcpy(&typed_abi, &symbol, sizeof(typed_abi));
+    if (typed_abi() != SL_NATIVE_TYPED_ABI_VERSION)
+        return SL_NATIVE_ABI_MISMATCH;
     for (i = 0; i < argc; ++i)
         if (!value_valid(&argv[i])) return SL_NATIVE_INVALID_ARGUMENT;
     memset(&result, 0, sizeof(result));
