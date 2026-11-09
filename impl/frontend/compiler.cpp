@@ -1373,6 +1373,31 @@ private:
     }
     void emitCall(const Call& c){
         if(tryEmitBuiltin(c))return;
+        // Imported math subject calls are emitted as one typed VM instruction.
+        // Keep the two-item fallback prefix so OP_MATH_CALL can reuse the same
+        // exact bytecode fallback contract as OP_NATIVE_CALL.
+        if(c.callee.rfind("__native_math_",0)==0){
+            static const std::pair<const char*,int> mathIds[] = {
+                {"__native_math_pi",0}, {"__native_math_e",1}, {"__native_math_tau",2},
+                {"__native_math_abs",3}, {"__native_math_sign",4},
+                {"__native_math_min",5}, {"__native_math_max",6}, {"__native_math_clamp",7},
+                {"__native_math_sqrt",8}, {"__native_math_exp",9}, {"__native_math_log",10},
+                {"__native_math_log10",11}, {"__native_math_trunc",12},
+                {"__native_math_floor",13}, {"__native_math_ceil",14},
+                {"__native_math_pow",15}, {"__native_math_sin",16},
+                {"__native_math_cos",17}, {"__native_math_tan",18},
+                {"__native_math_hypot",19}, {"__native_math_fmod",20}
+            };
+            for(const auto& entry : mathIds){
+                if(c.callee==entry.first){
+                    emit(OP_CONST,addNullConst());
+                    emit(OP_CONST,slvm_add_const_str(vm_,c.callee.c_str()));
+                    for(const auto& arg:c.args) emitExpr(arg.get());
+                    emit(OP_MATH_CALL,entry.second);
+                    return;
+                }
+            }
+        }
         auto it=funcIndex_.find(currentClass_+"::"+c.callee);
         if(it!=funcIndex_.end()){
             const Method* target=methods_[it->second].method;
