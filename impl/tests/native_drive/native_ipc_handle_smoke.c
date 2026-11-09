@@ -1,3 +1,4 @@
+#define _POSIX_C_SOURCE 200809L
 /* Native IPC VM handle-table lifecycle and stale-handle regression. */
 #include "../../core/sleela_core.h"
 #include <pthread.h>
