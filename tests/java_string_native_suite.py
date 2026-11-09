@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the SLeeLa-native Java String subset smoke program."""
+"""Run the VM-backed Java String facade smoke program."""
 from __future__ import annotations
 
 import os
@@ -11,14 +11,21 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 BINARY = pathlib.Path(os.environ.get("SLEELA_BIN", ROOT / "impl/build/sleela"))
 SOURCE = ROOT / "tests/java_string_native.sleela"
 EXPECTED = [
-    "CONCAT=Hello World",
-    "EQUALS=true",
-    "EMPTY=true",
-    "REPEAT=ababab",
-    "JOIN=red, green, blue",
-    "JOIN-EMPTY=",
-    "NATIVE=SLeeLa-native/java.lang.String-subset",
-    "UTF16=false",
+    "JAVA-STRING-VM=PASS",
+    "11",
+    "101",
+    "87",
+    "5",
+    "true",
+    "0",
+    "-862545276",
+    "false",
+    "true",
+    "true",
+    "true",
+    "3",
+    "0",
+    "55296",
 ]
 DIAGNOSTIC_PREFIXES = (
     "[memory-manager]", "[security]", "[defender]", "verification: PASS (",
@@ -43,13 +50,13 @@ def main() -> int:
     while output and not output[-1].strip():
         output.pop()
     if result.returncode != 0 or output != EXPECTED:
-        print("FAIL: SLeeLa-native Java String smoke test", file=sys.stderr)
+        print("FAIL: VM-backed Java String smoke test", file=sys.stderr)
         print(f"exit={result.returncode}", file=sys.stderr)
         print(f"expected={EXPECTED!r}", file=sys.stderr)
         print(f"actual={output!r}", file=sys.stderr)
         print(result.stdout, file=sys.stderr)
         return 1
-    print(f"PASS: SLeeLa-native Java String subset ({len(EXPECTED)} output assertions)")
+    print(f"PASS: VM-backed Java String facade ({len(EXPECTED)} output assertions)")
     return 0
 
 
