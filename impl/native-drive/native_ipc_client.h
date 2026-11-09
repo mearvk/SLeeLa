@@ -23,7 +23,7 @@ typedef struct {
     int handshaken;
 } SLIPCClient;
 
-/* workspace must be at least SL_IPC_MAX_PAYLOAD bytes. The client borrows it
+/* workspace is caller-sized (1..SL_IPC_MAX_PAYLOAD bytes). The client borrows it
  * until close; decoded UTF-8 response spans point into this workspace and are
  * valid only until the next call. The caller serializes calls per client. */
 int sl_ipc_client_init(SLIPCClient *client, SLIPCReadExactFn read_exact,
