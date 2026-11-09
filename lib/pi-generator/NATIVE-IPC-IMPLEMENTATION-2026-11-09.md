@@ -15,8 +15,8 @@
   bounded count, range checks, and canonical high-limb/zero rules.
 - **Conformance source:** smoke coverage for headers, scalar values, request
   payloads, and canonical limb payloads.
-- **Integrity:** refreshed only the 14 SHA-256 entries that failed the previous
-  three-OS CI, preserving the other 12,472 entries and the fail-closed verifier.
+- **Integrity:** refreshed the 14 stale SHA-256 entries and added the new IPC header and smoke
+test to the manifest, preserving 12,472 pre-existing entries and the fail-closed verifier.
 - **CI:** Native Drive now runs on Linux, macOS, and Windows for relevant source
   changes and for changes to the trusted-source manifest.
 
@@ -32,13 +32,15 @@
 
 ## Verification and Pi benchmark boundary
 
-The latest three-OS Native Drive workflow is run
-[42699394852](https://github.com/mearvk/SLeeLa/actions/runs/42699394852) (in progress).
-In the preceding run [42699022814](https://github.com/mearvk/SLeeLa/actions/runs/42699022814),
-manifest verification, the Native Drive Python tests, and the IPC codec smoke
-test passed on Linux, macOS, and Windows. The loader ABI build then exposed a
-missing <stddef.h> include in test_reject.c; that include and its manifest hash
-have been corrected in the current run.
+The latest three-OS run is
+[42700006500](https://github.com/mearvk/SLeeLa/actions/runs/42700006500) (in progress)
+and includes the new IPC files in the trusted manifest. In run
+[42699765554](https://github.com/mearvk/SLeeLa/actions/runs/42699765554),
+Linux and macOS passed manifest verification, Native Drive tests, IPC codec
+smoke tests, and all native-loader ABI tests; Windows had reached its final
+native-loader test stage when last checked. The earlier failures led to fixes
+for the rollback diagnostic assertion, the loader test's missing <stddef.h>,
+and the C++ test's incorrect fixture selection.
 
 The 20,000-digit Pi workload has **not** been routed through this IPC path.
 Existing VM/native arithmetic measurements are not IPC measurements. Do not
