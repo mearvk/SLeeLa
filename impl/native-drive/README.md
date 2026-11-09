@@ -113,12 +113,15 @@ validated before entering the VM String store.
 
 A plugin may optionally export `sl_native_bind_host(const SLNativeHostAPI*)`.
 The loader supplies a version-1, size-checked host table when the authorized
-module is opened. A plugin copies this table and may call `host_api.invoke`
+module is opened and rebinds it immediately before each plugin entrypoint. A
+plugin copies this table into thread-local storage and may call `host_api.invoke`
 synchronously from its typed method to execute an exact, unique compiled SLeeLa
 function name such as `Callback::receive`. The host must separately install
 `slvm_set_native_callback_authorizer`; callback targets are denied by default
 and the host policy must explicitly approve each callable name. Plugins must not retain or invoke the
-table asynchronously. Callback arguments and results use only the
+table asynchronously. Thread-local storage keeps callbacks associated with
+the correct VM when a shared library is used by multiple VM instances.
+Callback arguments and results use only the
 same null/bool/int64/double/UTF-8 ABI; raw VM pointers and `SLValue` objects
 are never exposed.
 
