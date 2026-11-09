@@ -204,3 +204,28 @@ This layer does not yet prove inherited effective-member equivalence. The next
 qualification task is to compare each type's effective API against its
 superclasses and interfaces, including overrides, covariant returns, generic
 substitution, default interface methods, and visibility.
+
+
+### 0.3.24-dev — Visibility and constructor inheritance audit
+
+Added `lib/java/tools/java_api_visibility_constructor_audit.py` with a
+synthetic regression suite. The report distinguishes public, protected,
+package-private, and private members; computes inherited members subject to
+package/subclass access rules; and records unresolved superclass/interface
+references.
+
+Constructor behavior is modeled separately from member inheritance:
+constructors are never inherited, while accessible superclass constructors
+are listed as explicit `super(...)` invocation options. A class with no
+declared constructor receives a modeled implicit default constructor whose
+visibility follows the class declaration.
+
+Run `python3 tests/java_api_visibility_constructor_suite.py` or
+`make -C tests java-api-visibility-constructor`. The unified API dependency
+suite now includes this qualification layer. The library inventory baseline is
+8,991 files.
+
+This remains a conservative source recognizer. It does not yet establish full
+JLS access-control conformance for nested/private nestmate access, protected
+receiver-expression constraints, modules, generic substitution, or all
+syntactic forms.
