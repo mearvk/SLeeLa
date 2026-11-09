@@ -35,6 +35,16 @@ SLNativeStatus NativeModule::run(const std::vector<std::string> &args, int &resu
                                 argv.empty() ? nullptr : argv.data(), &result);
 }
 
+SLNativeStatus NativeModule::call(const std::string &method,
+                                  const std::vector<SLNativeValue> &args,
+                                  SLNativeValue &result) {
+    if (args.size() > static_cast<std::size_t>(std::numeric_limits<uint32_t>::max()))
+        return SL_NATIVE_INVALID_ARGUMENT;
+    return sl_native_call_module(&module_, method.c_str(),
+                                static_cast<uint32_t>(args.size()),
+                                args.empty() ? nullptr : args.data(), &result);
+}
+
 SLNativeStatus NativeModule::close() noexcept {
     return sl_native_close(&module_);
 }
