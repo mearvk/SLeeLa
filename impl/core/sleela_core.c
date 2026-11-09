@@ -258,6 +258,7 @@ struct SLVM {
         int closing;
     } ipc_workers[SL_MAX_IPC_WORKERS];
     int ipc_workers_init;
+    int ipc_workers_shutdown;
 
     /* Trusted native modules are VM-owned bounded handles. The host must
      * install an authorization callback before any module can be opened. */
@@ -308,6 +309,9 @@ static void ipc_worker_advance_generation(uint32_t *generation) {
 static void ipc_worker_close_all(SLVM *vm) {
     uint32_t i;
     if (!vm || !vm->ipc_workers_init) return;
+    pthread_mutex_lock(&vm->ipc_worker_mtx);
+    vm->ipc_workers_shutdown = 1; /* callbacks cannot repopulate a dying VM */
+    pthread_mutex_unlock(&vm->ipc_worker_mtx);
     for (i = 0; i < SL_MAX_IPC_WORKERS; ++i) {
         int32_t handle = -1;
         pthread_mutex_lock(&vm->ipc_worker_mtx);
@@ -324,6 +328,7 @@ int32_t slvm_ipc_worker_register(SLVM *vm, void *worker,
     uint32_t i;
     if (!vm || !worker || !close_fn || !vm->ipc_workers_init) return -1;
     pthread_mutex_lock(&vm->ipc_worker_mtx);
+    if (vm->ipc_workers_shutdown) { pthread_mutex_unlock(&vm->ipc_worker_mtx); return -1; }
     for (i = 0; i < SL_MAX_IPC_WORKERS; ++i) {
         if (!vm->ipc_workers[i].active && !vm->ipc_workers[i].closing &&
             vm->ipc_workers[i].leases == 0 && vm->ipc_workers[i].worker == NULL) {
@@ -349,7 +354,7 @@ void *slvm_ipc_worker_acquire(SLVM *vm, int32_t handle) {
     if (!vm || !vm->ipc_workers_init ||
         ipc_worker_decode(handle, &slot, &generation) != 0) return NULL;
     pthread_mutex_lock(&vm->ipc_worker_mtx);
-    if (vm->ipc_workers[slot].active && !vm->ipc_workers[slot].closing &&
+    if (!vm->ipc_workers_shutdown && vm->ipc_workers[slot].active && !vm->ipc_workers[slot].closing &&
         vm->ipc_workers[slot].generation == generation && vm->ipc_workers[slot].worker) {
         ++vm->ipc_workers[slot].leases;
         worker = vm->ipc_workers[slot].worker;
