@@ -1,0 +1,74 @@
+name: SLeeLa Native Math Synthesis
+
+on:
+  push:
+    branches: [master, main]
+    paths: ['.github/workflows/math-synthesis.yml', 'bin/sleelactl', 'bin/sleelactl.d/registry.conf', 'impl/**', 'Makefile', 'tools/generate-sha256-manifest.py']
+  pull_request:
+    branches: [master, main]
+    paths: ['.github/workflows/math-synthesis.yml', 'bin/sleelactl', 'bin/sleelactl.d/registry.conf', 'impl/**', 'Makefile', 'tools/generate-sha256-manifest.py']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  math-synthesis:
+    if: github.actor != 'github-actions[bot]'
+    name: Build, activate native math, verify accuracy and speed
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+      - name: Install build prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential pkg-config python3 libx11-dev libfreetype-dev libfontconfig1-dev
+      - name: Generate checkout-specific integrity manifest
+        run: python3 tools/generate-sha256-manifest.py --root . --output /tmp/sleela-ci-manifest.json
+      - name: Build SLeeLa runtime and compiler
+        env:
+          SLEELA_SHA256_MANIFEST: /tmp/sleela-ci-manifest.json
+          SLEELA_SHEET: ${{ github.workspace }}/SHEET.sheet
+        run: make -C impl all
+      - name: Start sleelactl and exercise the native Math subject
+        env:
+          SLEELA_SHA256_MANIFEST: /tmp/sleela-ci-manifest.json
+          SLEELA_SHEET: ${{ github.workspace }}/SHEET.sheet
+        run: |
+          chmod +x bin/sleelactl
+          bin/sleelactl info math
+          bin/sleelactl run math
+      - name: Run math accuracy suite and collect timing samples
+        env:
+          SLEELA_SHA256_MANIFEST: /tmp/sleela-ci-manifest.json
+          SLEELA_SHEET: ${{ github.workspace }}/SHEET.sheet
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          MATH_BENCH_REPEATS: '7'
+        run: python3 impl/tests/subjects/math_synthesis_ci.py
+      - name: Commit measured Markdown report on master
+        if: github.event_name != 'pull_request' && github.ref_name == 'master'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add impl/tests/subjects/MATH_SYNTHESIS_RESULTS.md
+          if ! git diff --cached --quiet; then
+            git commit -m "Record native math synthesis CI results"
+            git push origin HEAD:master
+          else
+            echo "Math synthesis report is unchanged."
+          fi
+      - name: Retain report and integrity manifest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sleela-native-math-synthesis-results
+          path: |
+            impl/tests/subjects/MATH_SYNTHESIS_RESULTS.md
+            /tmp/sleela-ci-manifest.json
+          if-no-files-found: warn
