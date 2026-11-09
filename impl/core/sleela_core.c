@@ -1148,6 +1148,93 @@ static int array_valid_handle(SLVM* vm, int h) {
     return vm->arrays && h >= 0 && h < SL_MAX_ARRAYS && vm->arrays[h].active;
 }
 
+/* Convert VM-owned scalar arrays to contiguous native double buffers. The
+ * array mutex is held by the caller for the entire conversion/dispatch/writeback
+ * sequence, so no VM array can be resized or mutated during the native call. */
+#include <math.h>
+#include "../subjects/math/linear_algebra.h"
+
+static int sl_math_array_to_double(SLVM *vm, int handle,
+                                   double **data, size_t *length) {
+    if (!array_valid_handle(vm, handle) || !data || !length) return SLMATH_INVALID_ARGUMENT;
+    SLArrayInstance *array = &vm->arrays[handle];
+    *length = (size_t)array->len;
+    *data = (double*)malloc((*length ? *length : 1) * sizeof(double));
+    if (!*data) return SLMATH_ALLOCATION_FAILURE;
+    for (size_t i = 0; i < *length; ++i) {
+        SLValue value = array->elems[i];
+        if (value.type == SL_INT) (*data)[i] = (double)value.as.i;
+        else if (value.type == SL_INT128) (*data)[i] = (double)value.as.i128;
+        else if (value.type == SL_DOUBLE) (*data)[i] = value.as.d;
+        else if (value.type == SL_BOOL) (*data)[i] = value.as.b ? 1.0 : 0.0;
+        else { free(*data); *data = NULL; return SLMATH_INVALID_ARGUMENT; }
+    }
+    return SLMATH_OK;
+}
+
+static int sl_math_double_to_array(SLVM *vm, int handle,
+                                   const double *data, size_t length) {
+    if (!array_valid_handle(vm, handle) || !data) return SLMATH_INVALID_ARGUMENT;
+    SLArrayInstance *array = &vm->arrays[handle];
+    if ((size_t)array->len < length) return SLMATH_DIMENSION_MISMATCH;
+    for (size_t i = 0; i < length; ++i) array->elems[i] = slval_double(data[i]);
+    return SLMATH_OK;
+}
+
+int slvm_math_dispatch_arrays(SLVM* vm, int operation,
+                              int a_handle, int b_handle,
+                              int out_handle, int aux_handle,
+                              size_t a_rows, size_t a_cols,
+                              size_t b_rows, size_t b_cols,
+                              size_t out_rows, size_t out_cols,
+                              size_t aux_rows, size_t aux_cols,
+                              double scalar, size_t flags,
+                              double* scalar_result) {
+    if (!vm || !array_valid_handle(vm, a_handle)) return SLMATH_INVALID_ARGUMENT;
+    double *a_data=NULL,*b_data=NULL,*out_data=NULL,*aux_data=NULL;
+    size_t a_len=0,b_len=0,out_len=0,aux_len=0;
+    double scalar_out=0.0;
+    int status=SLMATH_INVALID_ARGUMENT;
+    pthread_mutex_lock(&vm->array_mtx);
+    status=sl_math_array_to_double(vm,a_handle,&a_data,&a_len);
+    if(status!=SLMATH_OK) goto done;
+    if(b_handle>=0) {
+        status=sl_math_array_to_double(vm,b_handle,&b_data,&b_len);
+        if(status!=SLMATH_OK) goto done;
+    }
+    if(out_handle>=0) {
+        status=sl_math_array_to_double(vm,out_handle,&out_data,&out_len);
+        if(status!=SLMATH_OK) goto done;
+    } else {
+        out_data=&scalar_out; out_len=1;
+        if(!scalar_result) { status=SLMATH_INVALID_ARGUMENT; goto done; }
+    }
+    if(aux_handle>=0) {
+        status=sl_math_array_to_double(vm,aux_handle,&aux_data,&aux_len);
+        if(status!=SLMATH_OK) goto done;
+    }
+    {
+        slmath_buffer a={a_data,a_len,a_rows,a_cols};
+        slmath_buffer b={b_data,b_len,b_rows,b_cols};
+        slmath_buffer out={out_data,out_len,out_rows,out_cols};
+        slmath_buffer aux={aux_data,aux_len,aux_rows,aux_cols};
+        status=(int)slmath_vm_dispatch((slmath_operation)operation,&a,
+              b_handle>=0?&b:NULL,&out,aux_handle>=0?&aux:NULL,scalar,flags);
+    }
+    if(status==SLMATH_OK) {
+        if(out_handle>=0) status=sl_math_double_to_array(vm,out_handle,out_data,out_len);
+        else *scalar_result=scalar_out;
+        if(status==SLMATH_OK && aux_handle>=0)
+            status=sl_math_double_to_array(vm,aux_handle,aux_data,aux_len);
+    }
+done:
+    free(a_data); free(b_data);
+    if(out_handle>=0) free(out_data);
+    free(aux_data);
+    pthread_mutex_unlock(&vm->array_mtx);
+    return status;
+}
+
 /* Allocate an array of `n` null elements. Returns a VM-local handle, or -1 on
  * exhaustion / bad length. The instance store is grown lazily. */
 static int array_alloc(SLVM* vm, int n) {
