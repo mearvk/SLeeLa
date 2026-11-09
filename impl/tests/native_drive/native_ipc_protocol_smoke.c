@@ -17,8 +17,15 @@ static int value_test(void){
  if(sl_ipc_encode_value(&a,w,sizeof(w),&n))return 0;
  c=(SLIPCCursor){w,n,0};
  if(sl_ipc_decode_value(&c,&b)||b.as.utf8.length!=5||memcmp(a.as.utf8.data,b.as.utf8.data,5))return 0;
- memset(&a,0,sizeof(a));a.tag=SL_NATIVE_VALUE_BOOL;a.as.boolean=2;
- if(sl_ipc_encode_value(&a,w,sizeof(w),&n)==0)return 0;
- w[0]=SL_NATIVE_VALUE_I64;c=(SLIPCCursor){w,1,0};return sl_ipc_decode_value(&c,&b)<0;
+ memset(&a,0,sizeof(a));a.tag=SL_NATIVE_VALUE_F64;a.as.f64=3.141592653589793;
+ if(sl_ipc_encode_value(&a,w,sizeof(w),&n))return 0;
+ c=(SLIPCCursor){w,n,0};
+ if(sl_ipc_decode_value(&c,&b)||b.as.f64!=a.as.f64)return 0;
+ memset(&a,0,sizeof(a));a.tag=SL_NATIVE_VALUE_BOOL;a.as.boolean=1;
+ if(sl_ipc_encode_value(&a,w,sizeof(w),&n))return 0;
+ w[1]=2;c=(SLIPCCursor){w,n,0};
+ if(sl_ipc_decode_value(&c,&b)==0)return 0;
+ w[0]=SL_NATIVE_VALUE_I64;c=(SLIPCCursor){w,1,0};
+ return sl_ipc_decode_value(&c,&b)<0;
 }
 int main(void){if(!header_test()||!value_test()){fputs("native IPC codec: FAIL\n",stderr);return 1;}puts("native IPC codec: PASS");return 0;}
