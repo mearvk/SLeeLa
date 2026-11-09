@@ -1031,8 +1031,8 @@ private:
             a=0;b=1;out=2;
             setConst(0,2);setConst(1,1);setConst(2,2);setConst(3,1);setConst(4,2);setConst(5,1);
         } else if(n=="mathComplexAbs" || n=="mathComplexPhase"){
-            requireArgs(2);op=n=="mathComplexAbs"?SLMATH_OP_COMPLEX_ABS:SLMATH_OP_COMPLEX_PHASE;
-            a=0;out=1;setConst(0,2);setConst(1,1);setConst(4,1);setConst(5,1);
+            requireArgs(1);op=n=="mathComplexAbs"?SLMATH_OP_COMPLEX_ABS:SLMATH_OP_COMPLEX_PHASE;
+            a=0;out=-1;setConst(0,2);setConst(1,1);setConst(4,1);setConst(5,1);
         } else if(n=="mathComplexConjugate"){
             requireArgs(2);op=SLMATH_OP_COMPLEX_CONJUGATE;a=0;out=1;
             setConst(0,2);setConst(1,1);setConst(4,2);setConst(5,1);
@@ -1052,8 +1052,8 @@ private:
             setDim(4,2,"matrix order");setDim(5,2,"matrix order");
             scalarDefault=1e-12;
         } else if(n=="mathMatrixDeterminant"){
-            requireArgs(3);op=SLMATH_OP_MATRIX_DETERMINANT;a=0;out=1;
-            setDim(0,2,"matrix order");setDim(1,2,"matrix order");setConst(4,1);setConst(5,1);
+            requireArgs(2);op=SLMATH_OP_MATRIX_DETERMINANT;a=0;out=-1;
+            setDim(0,1,"matrix order");setDim(1,1,"matrix order");setConst(4,1);setConst(5,1);
             scalarDefault=1e-12;
         } else if(n=="mathMatrixQR"){
             requireArgs(5);op=SLMATH_OP_QR;a=0;out=1;aux=2;
