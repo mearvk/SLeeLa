@@ -118,7 +118,7 @@ public final class SleelaJdkProtocolServer {
             case CONSTRUCT: {
                 String name = readString(in);
                 Class<?>[] types = readTypes(in);
-                Object[] values = readArguments(in, types.length);
+                Object[] values = readArguments(in, types);
                 result = SleelaJdkBridge.construct(name, types, values);
                 break;
             }
@@ -127,7 +127,7 @@ public final class SleelaJdkProtocolServer {
                 Object receiver = requireHandle(handle);
                 String member = readString(in);
                 Class<?>[] types = readTypes(in);
-                Object[] values = readArguments(in, types.length);
+                Object[] values = readArguments(in, types);
                 result = SleelaJdkBridge.invoke(receiver, member, types, values);
                 break;
             }
@@ -135,7 +135,7 @@ public final class SleelaJdkProtocolServer {
                 String name = readString(in);
                 String member = readString(in);
                 Class<?>[] types = readTypes(in);
-                Object[] values = readArguments(in, types.length);
+                Object[] values = readArguments(in, types);
                 result = SleelaJdkBridge.invokeStatic(name, member, types, values);
                 break;
             }
@@ -180,12 +180,58 @@ public final class SleelaJdkProtocolServer {
         }
     }
 
-    private Object[] readArguments(DataInputStream in, int expected) throws IOException {
+    private Object[] readArguments(DataInputStream in, Class<?>[] parameterTypes) throws IOException {
         int count = in.readUnsignedShort();
-        if (count != expected) throw new IOException("parameter and argument counts differ");
+        if (count != parameterTypes.length) throw new IOException("parameter and argument counts differ");
         Object[] values = new Object[count];
-        for (int i = 0; i < count; i++) values[i] = readValue(in);
+        for (int i = 0; i < count; i++) {
+            values[i] = coercePrimitive(readValue(in), parameterTypes[i]);
+        }
         return values;
+    }
+
+    private static Object coercePrimitive(Object value, Class<?> target) throws IOException {
+        if (!target.isPrimitive() || value == null) return value;
+        if (target == boolean.class) {
+            if (value instanceof Boolean) return value;
+            throw new IOException("boolean parameter requires a boolean value");
+        }
+        if (target == char.class) {
+            if (value instanceof Integer) {
+                int number = (Integer) value;
+                if (number >= Character.MIN_VALUE && number <= Character.MAX_VALUE) return (char) number;
+            }
+            throw new IOException("char parameter requires an in-range I32 value");
+        }
+        if (target == byte.class || target == short.class || target == int.class) {
+            if (!(value instanceof Integer)) throw new IOException("integer primitive parameter requires an I32 value");
+            int number = (Integer) value;
+            if (target == byte.class) {
+                if (number < Byte.MIN_VALUE || number > Byte.MAX_VALUE) throw new IOException("byte parameter is out of range");
+                return (byte) number;
+            }
+            if (target == short.class) {
+                if (number < Short.MIN_VALUE || number > Short.MAX_VALUE) throw new IOException("short parameter is out of range");
+                return (short) number;
+            }
+            return number;
+        }
+        if (target == long.class) {
+            if (value instanceof Integer) return ((Integer) value).longValue();
+            if (value instanceof Long) return value;
+            throw new IOException("long parameter requires I32 or I64");
+        }
+        if (target == float.class) {
+            if (!(value instanceof Double)) throw new IOException("float parameter requires F64");
+            double number = (Double) value;
+            if (!Double.isFinite(number) || Math.abs(number) > Float.MAX_VALUE) throw new IOException("float parameter is out of range");
+            return (float) number;
+        }
+        if (target == double.class) {
+            if (value instanceof Double) return value;
+            throw new IOException("double parameter requires F64");
+        }
+        throw new IOException("unsupported Java primitive parameter type");
     }
 
     private Object readValue(DataInputStream in) throws IOException {
