@@ -98,7 +98,7 @@ class NativeDriveTests(unittest.TestCase):
             self.assertEqual(ran.returncode, 0)
             self.assertEqual(ran.stdout.strip(), "42")
 
-    def test_wrong_native_abi_is_rejected_before_publish(self):
+    def test_missing_native_abi_export_is_rejected_before_publish(self):
         if sys.platform == "win32": self.skipTest("POSIX shared-library fixture")
         compiler = c_compiler()
         if not compiler: self.skipTest("no C compiler installed")
@@ -108,13 +108,12 @@ class NativeDriveTests(unittest.TestCase):
             suffix = ".dylib" if sys.platform == "darwin" else ".so"
             out = root / ("wrong_abi" + suffix)
             src.write_text('#include <stdint.h>\n'
-                '__attribute__((visibility("default"))) uint32_t sl_native_abi_version(void) { return 999u; }\n'
-                '__attribute__((visibility("default"))) int sl_native_run(int n, const char *const a[]) { (void)a; return n; }\n')
+                '__attribute__((visibility("default"))) uint32_t sl_native_abi_version(void) { return 1u; }\n')
             result = subprocess.run([sys.executable, str(SCRIPT), "build", str(src), "-o", str(out),
                 "--kind", "shared", "--require-sleela-abi", "--compiler", compiler],
                 text=True, capture_output=True)
             self.assertNotEqual(result.returncode, 0)
-            self.assertIn("ABI mismatch", result.stderr)
+            self.assertIn("missing required SLeeLa ABI exports", result.stderr)
             self.assertFalse(out.exists())
 
     def test_systemd_unit_generation_is_unprivileged_and_hardened(self):
