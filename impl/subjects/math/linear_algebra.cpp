@@ -305,6 +305,7 @@ slmath_status slmath_complex_divide(slmath_complex a, slmath_complex b,
     return SLMATH_OK;
 }
 double slmath_complex_abs(slmath_complex z) { return std::hypot(z.re, z.im); }
+double slmath_complex_phase(slmath_complex z) { return std::atan2(z.im, z.re); }
 slmath_complex slmath_complex_conjugate(slmath_complex z) { return {z.re, -z.im}; }
 
 slmath_status slmath_array_copy(const double *src, double *dst, size_t n) {
