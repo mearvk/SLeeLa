@@ -5,6 +5,10 @@ SL_NATIVE_EXPORT uint32_t sl_native_abi_version(void) {
     return SL_NATIVE_ABI_VERSION;
 }
 
+SL_NATIVE_EXPORT uint32_t sl_native_typed_abi_version(void) {
+    return SL_NATIVE_TYPED_ABI_VERSION;
+}
+
 SL_NATIVE_EXPORT int sl_native_run(int argc, const char *const argv[]) {
     (void)argv;
     return argc;
