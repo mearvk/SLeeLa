@@ -334,7 +334,11 @@ public final class SleelaJdkProtocolServer {
         out.writeByte(1);
         writeString(out, cause.getClass().getName());
         String message = cause.getMessage();
-        writeString(out, message == null ? "" : message);
+        if (message == null) message = "";
+        if (message.codePointCount(0, message.length()) > 2048) {
+            message = message.substring(0, message.offsetByCodePoints(0, 2048));
+        }
+        writeString(out, message);
         out.flush();
         return bytes.toByteArray();
     }
