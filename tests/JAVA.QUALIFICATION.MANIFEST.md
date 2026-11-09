@@ -61,3 +61,22 @@ The suite is also invoked by `tests/java_api_dependency_suite.py`.
 
 This is conservative source-level evidence, not complete JLS access-control
 or behavioral equivalence proof.
+
+
+## Java source implementation depth (0.3.25-dev)
+
+A separate implementation-depth audit is available at
+`tests/java_source_implementation_audit.py`, with synthetic regression
+coverage in `tests/java_source_implementation_audit_suite.py`.
+
+It classifies method bodies into generic dispatch placeholders, empty bodies,
+constant placeholders, accessor/field-copy bodies, and substantive-looking
+candidates. This provides a measurable baseline before translating API
+representations into executable SLeeLa behavior.
+
+Direct target: `make -C tests java-source-implementation-audit`.
+
+The audit is deliberately not treated as behavioral equivalence evidence.
+Substantive-looking methods still require semantic review and Java-contract
+conformance tests. The source implementation program begins with foundational
+`java.lang` and `java.util` behavior and expands by dependency order.
