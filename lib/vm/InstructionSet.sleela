@@ -404,3 +404,42 @@ class SLISANativeOpen { String name; int code; }
 
 < OP_NATIVE_CLOSE 165 -- closes and invalidates an opaque native-module handle; pushes null >
 class SLISANativeClose { String name; int code; }
+
+< OP_JSTR_LENGTH 166 -- return the UTF-16 code-unit length of a VM-owned Java String >
+class SLISAJavaStringLength { String name; int code; }
+
+< OP_JSTR_CHAR_AT 167 -- read one UTF-16 code unit by index >
+class SLISAJavaStringCharAt { String name; int code; }
+
+< OP_JSTR_CODE_POINT_AT 168 -- read the Unicode code point at a UTF-16 index >
+class SLISAJavaStringCodePointAt { String name; int code; }
+
+< OP_JSTR_CODE_POINT_COUNT 169 -- count Unicode code points in a UTF-16 range >
+class SLISAJavaStringCodePointCount { String name; int code; }
+
+< OP_JSTR_OFFSET_BY_CODE_POINTS 170 -- translate a code-point offset to a UTF-16 index >
+class SLISAJavaStringOffsetByCodePoints { String name; int code; }
+
+< OP_JSTR_SUBSTRING 171 -- create a Java String substring using UTF-16 indices >
+class SLISAJavaStringSubstring { String name; int code; }
+
+< OP_JSTR_CONCAT 172 -- concatenate two VM-owned Java UTF-16 Strings >
+class SLISAJavaStringConcat { String name; int code; }
+
+< OP_JSTR_HASH_CODE 173 -- compute Java String.hashCode over UTF-16 code units >
+class SLISAJavaStringHashCode { String name; int code; }
+
+< OP_JSTR_COMPARE_TO 174 -- compare Java UTF-16 Strings using String.compareTo ordering >
+class SLISAJavaStringCompareTo { String name; int code; }
+
+< OP_JSTR_FROM_UTF8 175 -- convert a validated legacy UTF-8 String into a VM-owned Java UTF-16 String >
+class SLISAJavaStringFromUtf8 { String name; int code; }
+
+< OP_TRY_PUSH 176 -- register a catch-all handler at instruction address a; captures stack height and frame depth >
+class SLISATryPush { String name; int code; }
+
+< OP_TRY_POP 177 -- remove the current frame's most recently registered exception handler >
+class SLISATryPop { String name; int code; }
+
+< OP_THROW 178 -- pop an arbitrary SLValue and dispatch it to the newest active handler; uncaught values terminate with SLR_ERROR >
+class SLISAThrow { String name; int code; }

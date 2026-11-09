@@ -2743,3 +2743,53 @@ does not know these opcodes rejects the artifact rather than misinterpreting
 the instructions. See `impl/core/sleela_core.h`,
 `impl/core/sleela_core.c`, and `lib/vm/InstructionSet.sleela`.
 
+## 37. VM language exceptions (runtime opcode milestone)
+
+The core ISA appends three exception-control instructions without changing
+historical opcode numbers or artifact record layout:
+
+| Opcode | Index | Operand / behavior |
+|---|---:|---|
+| `OP_TRY_PUSH` | 176 | `a` is an in-range catch-entry instruction address; records current operand-stack height and frame depth |
+| `OP_TRY_POP` | 177 | removes the most recently registered handler owned by the current frame; operand must be zero |
+| `OP_THROW` | 178 | pops one arbitrary tagged `SLValue`; dispatches to the newest active handler, or terminates with an uncaught-exception VM error |
+
+Handler state is per-thread and bounded. A handler is consumed when selected,
+so a throw from the catch body cannot be caught again by the same handler.
+Dispatch restores the saved operand-stack height and call-frame depth, pushes
+the thrown value at the catch entry, and transfers control to its target.
+Returning from a frame discards handlers registered by that frame.
+
+The thrown payload is held in an explicit pending slot while the operand stack
+is truncated, and the pending/uncaught payloads are included in the existing
+GC root callback. Catch matching is currently catch-all only: the VM does not
+yet implement runtime exception classes, typed catch ordering, or rethrow
+identity rules beyond preserving the same tagged value. Finally/abrupt-exit
+lowering is not implemented by this milestone.
+
+The source compiler now supports this first restricted source form:
+
+```sleela
+try {
+    throw "failure";
+} catch (Any error) {
+    print(error);
+}
+```
+
+The compiler registers a catch-all handler around the try body, removes it
+on normal completion, and stores the thrown tagged value in the catch local
+on exceptional completion. Explicit `throw expression;` lowers to
+`OP_THROW`. This is intentionally not typed matching: the catch variable
+must be declared `Any`, and exactly one catch clause is supported. Multiple
+clauses, narrower catch types, catch-variable shadowing of an existing method
+local, `break`/`continue` that would leave the protected try region, and every
+`finally` block are rejected at compile time. The runtime
+still does not convert ordinary VM faults into language exceptions.
+
+The VM artifact ABI minor version advances to 6; artifact serialization
+layout remains unchanged. Older runtimes reject artifacts containing these
+new opcodes instead of interpreting them as existing instructions. Typed
+exception classes, rethrow semantics, selected language-fault conversion,
+and finally/abrupt completion remain future work.
+
