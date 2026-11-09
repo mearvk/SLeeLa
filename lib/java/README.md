@@ -13,7 +13,7 @@ The `/lib/java` library family defines the SLeeLa boundary for Java interoperabi
 
 ## Native Library Inventory
 
-The current repository inventory contains **8,988 files under `/lib/java`**. This count is validated from the Git index by the repository CI rather than being treated as an unverified documentation number.
+The current repository inventory contains **8,989 files under `/lib/java`**. This count is validated from the Git index by the repository CI rather than being treated as an unverified documentation number.
 
 The collection is a native SLeeLa source surface for Java-facing language and framework concepts. It is intended to give the SLeeLa Compiler, Loader, SST, and Nordshrift a stable source-level vocabulary for Java packages, classes, procedures, interfaces, runtime concepts, and interoperability boundaries.
 
@@ -32,7 +32,7 @@ python3 lib/java/validate.py
 The validator checks:
 
 - the `/lib/java` directory exists;
-- the Git-indexed file count matches the recorded **8,988-file** baseline;
+- the Git-indexed file count matches the recorded **8,989-file** baseline;
 - manifest schema and root metadata are present;
 - the expected Java interoperability boundary is documented;
 - required source-role metadata is present; and
@@ -55,7 +55,7 @@ A Java-facing source unit should identify, where applicable:
 5. **Loader visibility** — how the Compiler and Loader discover the symbol.
 6. **Compatibility surface** — the Java/JDK version or API family represented.
 
-This makes the Java relationship traceable instead of leaving the 8,988-file collection as an opaque directory.
+This makes the Java relationship traceable instead of leaving the 8,989-file collection as an opaque directory.
 
 ## JDK 28 Framework Bindings
 
@@ -162,3 +162,11 @@ out-of-range indices fail closed as native-call errors.
 Typed Java exception objects are not yet available at this boundary: the
 present VM does not construct or expose `StringIndexOutOfBoundsException` /
 `IndexOutOfBoundsException` instances. This remains a compatibility gap.
+
+
+UTF-16 conversion currently accepts well-formed UTF-8 scalar values. Java
+Strings can also contain isolated surrogate code units, which are not valid
+Unicode scalar values and cannot be represented in standard UTF-8. Preserving
+arbitrary isolated surrogates will require a UTF-16-backed SLeeLa string value
+or a lossless internal string encoding; this adapter does not claim that
+additional case yet.
