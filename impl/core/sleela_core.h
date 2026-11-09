@@ -6,7 +6,7 @@
 
 /* Stable VM artifact/runtime ABI identifiers. */
 #define SLEELA_VM_ABI_MAJOR 1u
-#define SLEELA_VM_ABI_MINOR 4u
+#define SLEELA_VM_ABI_MINOR 5u
 #define SLEELA_ARTIFACT_FORMAT_VERSION 3u
 #include <stdint.h>
 #include "../../os-level-support/osls_vm_bridge.h"
@@ -269,6 +269,7 @@ typedef enum {
     OP_JSTR_CONCAT,
     OP_JSTR_HASH_CODE,
     OP_JSTR_COMPARE_TO,
+    OP_JSTR_FROM_UTF8,
     /* Sentinel: one past the last real opcode. Artifact validation uses this so
      * every defined opcode is accepted and adding a new opcode above never
      * requires updating the validator's upper bound again. KEEP LAST. */
@@ -293,7 +294,8 @@ static_assert(OP_NATIVE_OPEN == 164, "OP_NATIVE_OPEN is append-only opcode 164")
 static_assert(OP_NATIVE_CLOSE == 165, "OP_NATIVE_CLOSE is append-only opcode 165");
 static_assert(OP_JSTR_LENGTH == 166, "Java String length opcode is append-only 166");
 static_assert(OP_JSTR_COMPARE_TO == 174, "Java String compareTo opcode is append-only 174");
-static_assert(OP__COUNT == 175, "the extended ISA must contain 175 opcodes");
+static_assert(OP_JSTR_FROM_UTF8 == 175, "Java String UTF-8 conversion is append-only 175");
+static_assert(OP__COUNT == 176, "the extended ISA must contain 176 opcodes");
 #else
 _Static_assert(OP_OS_PLATFORM == 103, "legacy OS opcode range must begin at 103");
 _Static_assert(OP_OS_PCLOSE == 123, "legacy OS opcode range must end at 123");
@@ -312,7 +314,8 @@ _Static_assert(OP_NATIVE_OPEN == 164, "OP_NATIVE_OPEN is append-only opcode 164"
 _Static_assert(OP_NATIVE_CLOSE == 165, "OP_NATIVE_CLOSE is append-only opcode 165");
 _Static_assert(OP_JSTR_LENGTH == 166, "Java String length opcode is append-only 166");
 _Static_assert(OP_JSTR_COMPARE_TO == 174, "Java String compareTo opcode is append-only 174");
-_Static_assert(OP__COUNT == 175, "the extended ISA must contain 175 opcodes");
+_Static_assert(OP_JSTR_FROM_UTF8 == 175, "Java String UTF-8 conversion is append-only 175");
+_Static_assert(OP__COUNT == 176, "the extended ISA must contain 176 opcodes");
 #endif
 /* GC-hint aggressiveness bands for OP_GC_HINT (operand a). */
 #define SL_GC_HINT_MAX  100   /* clamp ceiling for the 0..100 aggressiveness scale */
@@ -424,6 +427,7 @@ int slvm_add_const_str(SLVM* vm, const char* s);
 /* Lossless Java String runtime API. SL_UTF16 values are VM-local GC handles;
  * code units (including NUL and isolated surrogates) never cross as C strings. */
 SLValue slvm_java_string_new(SLVM* vm, const uint16_t* units, size_t length);
+SLValue slvm_java_string_from_utf8(SLVM* vm, const char* utf8);
 int slvm_add_const_utf16(SLVM* vm, const uint16_t* units, size_t length);
 int slvm_java_string_copy(SLVM* vm, SLValue value, SLJavaString* out);
 int slvm_java_string_root(SLVM* vm, SLValue value);
