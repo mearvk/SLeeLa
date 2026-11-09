@@ -32,6 +32,7 @@
 #define SL_IDEA_CANVAS_MAX 16   /* bounded VM-local realtime-canvas table */
 #endif
 
+#include <limits.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
