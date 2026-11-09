@@ -12,6 +12,59 @@ static int authorize_callback_name(const char *function, void *context) {
     return function && approved && strcmp(function, approved) == 0;
 }
 
+
+static int check_host_run_callback_rejected(const char *plugin_path) {
+    SLVM *vm = slvm_new();
+    SLNativeHandle handle = SL_NATIVE_HANDLE_INVALID;
+    int plugin_result = 0;
+    SLNativeStatus status;
+    int ok = 0;
+    if (!vm) return 0;
+    if (slvm_set_native_authorizer(vm, authorize_exact_path, (void *)plugin_path) != 0 ||
+        slvm_set_native_callback_authorizer(
+            vm, authorize_callback_name, (void *)"Callback::receive") != 0 ||
+        slvm_native_module_open(vm, plugin_path, &handle) != SL_NATIVE_OK) {
+        slvm_free(vm);
+        return 0;
+    }
+    status = slvm_native_module_run(vm, handle, 0, NULL, &plugin_result);
+    ok = status == SL_NATIVE_OK && plugin_result == -1 &&
+         slvm_error(vm) &&
+         strcmp(slvm_error(vm),
+                "native callback requires an active source-level nativeCall context") == 0;
+    (void)slvm_native_module_close(vm, handle);
+    slvm_free(vm);
+    return ok;
+}
+
+static int check_host_call_callback_rejected(const char *plugin_path) {
+    SLVM *vm = slvm_new();
+    SLNativeHandle handle = SL_NATIVE_HANDLE_INVALID;
+    SLNativeValue arg, result;
+    SLNativeStatus status;
+    int ok = 0;
+    if (!vm) return 0;
+    memset(&arg, 0, sizeof(arg));
+    memset(&result, 0, sizeof(result));
+    arg.tag = SL_NATIVE_VALUE_I64;
+    arg.as.i64 = 41;
+    if (slvm_set_native_authorizer(vm, authorize_exact_path, (void *)plugin_path) != 0 ||
+        slvm_set_native_callback_authorizer(
+            vm, authorize_callback_name, (void *)"Callback::receive") != 0 ||
+        slvm_native_module_open(vm, plugin_path, &handle) != SL_NATIVE_OK) {
+        slvm_free(vm);
+        return 0;
+    }
+    status = slvm_native_module_call(vm, handle, "call_sleela", 1, &arg, &result);
+    ok = status == SL_NATIVE_PLUGIN_ERROR &&
+         slvm_error(vm) &&
+         strcmp(slvm_error(vm),
+                "native callback requires an active source-level nativeCall context") == 0;
+    (void)slvm_native_module_close(vm, handle);
+    slvm_free(vm);
+    return ok;
+}
+
 int main(int argc, char **argv) {
     SLVM *vm;
     SLValue result;
@@ -92,6 +145,14 @@ int main(int argc, char **argv) {
         return 1;
     }
     slvm_free(vm);
-    puts("compiled source -> artifact -> native dispatch -> SLeeLa callback -> bytecode fallback -> module and callback authorization denial: PASS");
+    if (!check_host_run_callback_rejected(argv[2])) {
+        fprintf(stderr, "host-side slvm_native_module_run did not reject its SLeeLa callback\n");
+        return 1;
+    }
+    if (!check_host_call_callback_rejected(argv[2])) {
+        fprintf(stderr, "host-side slvm_native_module_call did not reject its SLeeLa callback\n");
+        return 1;
+    }
+    puts("compiled source callback and native dispatch; host module_run/module_call callback rejection; module and callback authorization denial: PASS");
     return 0;
 }
