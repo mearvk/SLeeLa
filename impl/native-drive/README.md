@@ -129,7 +129,19 @@ Install as a user service only when intentionally requested (an existing unit is
 For a system unit, additionally pass --system --user sleela-worker and run
 with root privileges. --start is separately required to start it immediately.
 systemctl is Linux/systemd-specific; native executable builds remain
-available on Windows and macOS.
+available on Windows and macOS. Replacing an existing unit saves one explicit
+rollback copy (`.sleela-backup`); a second replacement is refused until that
+backup is rolled back. Use the lifecycle actions to inspect or control the
+installed unit:
+
+    sleelactl inspect native-drive service --status --name sleela-worker
+    sleelactl inspect native-drive service --restart --name sleela-worker
+    sleelactl inspect native-drive service --stop --name sleela-worker
+    sleelactl inspect native-drive service --disable --name sleela-worker
+    sleelactl inspect native-drive service --rollback --name sleela-worker
+
+Rollback restores the previous unit file and runs `systemctl daemon-reload`;
+it does not automatically restart the workload.
 
 ## Seven-workstream completion ledger
 
