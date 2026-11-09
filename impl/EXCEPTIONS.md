@@ -1,6 +1,6 @@
 # VM Exception and Stack-Unwind Design
 
-Status: design contract; no catchable-exception behavior is claimed by this document.
+Status: runtime foundation and catch-all dispatch opcodes implemented on `work/vm-exception-runtime-stage1`; source compiler lowering, typed catches, and finally remain incomplete.
 
 ## Why this work is required
 
@@ -151,9 +151,29 @@ during unwind, finally execution on every abrupt exit, and typed catch
 ordering. A source parser accepting `try/catch/throw` is not evidence of
 runtime support.
 
+## Implemented runtime milestone
+
+The current runtime branch now includes:
+
+- bounded per-thread handler records and pending/uncaught exception slots;
+- per-frame handler-stack ownership depth;
+- GC marking for active exception payloads in the executing and suspended
+  native-callback thread roots;
+- append-only `OP_TRY_PUSH` (176), `OP_TRY_POP` (177), and `OP_THROW` (178);
+- catch-all dispatch with saved stack/frame restoration and cross-frame unwind;
+- an accessor for the last uncaught exception payload;
+- artifact validation for handler targets and zero-operand exception opcodes;
+- VM ABI minor version 6, with the artifact serialization layout unchanged.
+
+An opt-in C smoke test is available as `make -C impl test-exceptions`. It covers
+cross-frame catch dispatch and preservation of an uncaught false payload. It
+has been added but has not been run in this milestone.
+
 ## Current limitation
 
-This document is the architecture contract and implementation checklist. It
-does not add bytecode, alter compiler behavior, or claim that `try/catch`,
-`throw`, or `finally` works at runtime. The existing behavior remains
-unchanged until the runtime and compiler changes land together.
+The VM opcodes are operational for bytecode producers, but the source compiler
+still has its previous `emitTry` behavior and does not yet lower source
+`try/catch/throw` to these opcodes. The initial dispatch is catch-all only.
+Typed catches, rethrow syntax/identity semantics, selected language-fault
+conversion, and `finally`/abrupt-completion lowering remain unimplemented.
+Therefore source-level Java exception compatibility is not yet claimed.
