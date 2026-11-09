@@ -382,7 +382,9 @@ void slvm_set_audio_native_renderer(SLVM* vm, SLAudioNativeRenderFn fn, void* us
  * execution is synchronous within a plugin entry point, uses a nested VM
  * stack, and preserves the suspended caller stack as a GC root. The VM must
  * have no active workers; callback bytecode cannot re-enter native-module
- * operations or spawn/join VM workers.
+ * operations or spawn/join VM workers. The public native-module lifecycle
+ * APIs also return SL_NATIVE_REENTRANT_CALL when re-entered on the same VM
+ * from an active plugin entrypoint or callback-policy hook.
  * Callback invocation is denied by default; the host must install a separate
  * immutable callback-name authorizer before a plugin can invoke SLeeLa code.
  * Do not call these APIs concurrently with slvm_free(). */
