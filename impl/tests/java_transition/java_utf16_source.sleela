@@ -1,0 +1,10 @@
+#sleela 3.0
+class JavaUtf16SourceSmoke {
+    static void main() {
+        // A, embedded NUL, isolated high surrogate, and a supplementary pair.
+        // These are UTF-16 code units, not Unicode scalar values.
+        String value = javaStringFromCodeUnits(0x0041, 0x0000, 0xD800, 0xD83D, 0xDE00);
+        print("JAVA-UTF16-SOURCE-CONSTRUCTOR=PASS");
+        print(value);
+    }
+}
