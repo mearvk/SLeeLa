@@ -101,13 +101,17 @@ jobs:
             echo "updated=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          cp "$RUNNER_TEMP/sha256-manifest.candidate.json" security/sha256-manifest.json
           TARGET_BRANCH="${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}"
+          # pull_request workflows check out a synthetic merge ref in detached HEAD.
+          # Rebase the manifest update onto the actual PR head before pushing.
+          git fetch origin "$TARGET_BRANCH"
+          git checkout -B "$TARGET_BRANCH" "origin/$TARGET_BRANCH"
+          cp "$RUNNER_TEMP/sha256-manifest.candidate.json" security/sha256-manifest.json
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add security/sha256-manifest.json
           git commit -m "Refresh SHA-256 integrity baseline for verified source"
-          git push origin "HEAD:$TARGET_BRANCH"
+          git push origin "$TARGET_BRANCH"
           gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/411159338/dispatches" \
             -f ref="$TARGET_BRANCH"
           echo "updated=true" >> "$GITHUB_OUTPUT"
