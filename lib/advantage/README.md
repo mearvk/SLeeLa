@@ -26,6 +26,7 @@ a self-contained, validated module with its own literature.
 
 **Documentation (the Advantage™ literature):**
 
+- [`EXAMPLES.md`](./EXAMPLES.md) — the runnable-example guide, commands, expected checks, and subject-by-subject walkthrough.
 - [`DEFINITIONS.md`](./DEFINITIONS.md) — the consolidated glossary of every
   term across the whole package.
 - [`MATH.md`](./MATH.md) — the bilateral trade-economics subject (joint profit
