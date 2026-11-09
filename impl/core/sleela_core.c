@@ -2245,7 +2245,8 @@ static SLResult run_thread(SLThread* t) {
                 status = SL_NATIVE_PLUGIN_ERROR;
             pthread_mutex_unlock(&vm->native_mtx);
             free(argv);
-            if (status == SL_NATIVE_TYPED_ENTRY_NOT_FOUND) {
+            if (status == SL_NATIVE_TYPED_ENTRY_NOT_FOUND ||
+                status == SL_NATIVE_METHOD_NOT_HANDLED) {
                 fallback_ip = native_bytecode_fallback(t, method, argc, base, ip);
                 if (fallback_ip == 0) TERR("native call: no typed native method or matching SLeeLa fallback exists");
                 if (fallback_ip < 0) TERR("native call: fallback call depth or stack limit exceeded");
