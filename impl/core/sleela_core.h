@@ -348,8 +348,11 @@ SLVM* slvm_new(void);
 int slvm_memory_safe_mode(const SLVM* vm);
 void slvm_set_audio_native_renderer(SLVM* vm, SLAudioNativeRenderFn fn, void* user);
 /* Native modules are host-authorized only. Without an installed authorization
- * callback, every module open is denied. These APIs manage VM-owned opaque
- * handles; they do not add a SLeeLa bytecode opcode or interpreter fallback. */
+ * callback, every module open is denied. The callback is immutable after its
+ * first installation and must not re-enter this VM's native-module API. These
+ * APIs manage VM-owned opaque handles; they do not add a bytecode opcode,
+ * typed SLeeLa value ABI, or interpreter fallback. Do not call these APIs
+ * concurrently with slvm_free(). */
 int slvm_set_native_authorizer(SLVM* vm, SLNativeAuthorizePath authorize, void* context);
 SLNativeStatus slvm_native_module_open(SLVM* vm, const char* path, SLNativeHandle* out_handle);
 SLNativeStatus slvm_native_module_run(SLVM* vm, SLNativeHandle handle,
