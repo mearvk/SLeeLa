@@ -384,9 +384,49 @@ python3 utf-4088/tools/generate_catalogue.py \
 
 Die erzeugte Binärdatei ist 16.777.244 Byte groß und soll unter 20.000.000 Byte bleiben. Unit-Tests und ein GitHub-Actions-Workflow prüfen Eintragszahl, Glypheneindeutigkeit, Größe und SHA-256; erfolgreiche Läufe veröffentlichen Binärdatei und Zusammenfassung als Workflow-Artefakt `utf4088-million-catalogue`. Die generierte Binärdatei bleibt bewusst außerhalb der Git-Historie. UTF-4088 ist weiterhin experimentell und nicht Unicode-kompatibel.
 
-## Noch ausstehende Abschnitte
+## XVIII. Neueste Ergänzungen – Pi-Konstante, Modium-/Registry-Start, sleelactl-Math und `@native`
 
-Die folgenden Abschnitte sind noch nicht übersetzt und werden in weiteren Batches ergänzt: **XVIII. Neueste Ergänzungen; XIX. Internationale README-Ausgaben.** Bis zur Fertigstellung bleibt die englische [kanonische README.md](README.md) die vollständige Referenz.
+Dieser Abschnitt dokumentiert Funktionen aus den Arbeiten von 2026-11, beginnend mit den neuesten Gruppen. Alle sind in `master` eingecheckt.
 
----
-**Übersetzungsstatus:** Teilübersetzung – Abschnitte I–XVII übersetzt. Technische Kennungen, Befehle, Codebeispiele, Dateinamen und Links wurden unverändert beibehalten.
+### Die Pi-Katalogkonstante mit 100.000.000 Stellen
+
+Das Repository enthält einen verifizierten **hundertmillionenstelligen** Wert von π unter [`pi-generator/pi.100000000.digits`](pi-generator/pi.100000000.digits) (eine korrekt formatierte Dezimalzahl, `3.14159…`) sowie einen Wert mit 57.344 Stellen unter [`pi-generator/pi.57344.digits`](pi-generator/pi.57344.digits). Beide sind unabhängig verifizierte echte π-Werte. [`pi-generator/VERIFIED.md`](pi-generator/VERIFIED.md) dokumentiert die Prüfungen (Lehrbuch-Präfix, Feynman-Punkt an der Nachkommastellenposition 762, die bekannte Millionstel-Ziffer, Übereinstimmung mit `lib/math/SLPiReference.sleela`, eine Ziffernhäufigkeitsanalyse der gesamten Datei) sowie ein Ein-Schritt-Reproduktionsskript.
+
+### Modium™ / Registry™ laden die Pi-Konstante beim Start des Subsystems
+
+An den dedizierten Subsystem-Einstiegspunkten – `sleela registry` und `sleela modium` (sowie beim ersten Installationsstart), **nicht** bei jedem `sleela run`, laden Modium und Registry die große π-Katalogkonstante. In einem interaktiven Terminal erscheint eine vorübergehende rote Zeile `Loading Modium™` / `Loading Registry™`, die vor der normalen Ausgabe an Ort und Stelle gelöscht wird. Der Effekt ist strikt an TTY gebunden; umgeleitete und Testausgaben bleiben bytegenau unverändert. Der Locator (nicht die Bytes) wird als Standardwert der Registry-`Math`-Schlüssel `piReferenceLargePath` und `piReferenceLargeDigits` gesetzt, sowohl im SLeeLa-Modell ([`lib/registry/SLRegistry.sleela`](lib/registry/SLRegistry.sleela)) als auch im nativen Seeder ([`registry/sleela_registry.c`](registry/sleela_registry.c)); `lib/math/SLPiReference.sleela` stellt `largePath()` / `largeDigits()` bereit. Die π-Konstante wird durch den Standard-`make`-Installer und den geführten „beautiful“-Installer am SLeeLa-Betriebssystempfad (`<data>/pi/`) installiert. Details: [`pi-generator/MODIUM-REGISTRY-PI-STARTUP.md`](pi-generator/MODIUM-REGISTRY-PI-STARTUP.md).
+
+### `sleelactl` – der „beautiful“-Installer und ein nativ gestütztes `math`-Subject
+
+- Der geführte („beautiful“) Installer installiert jetzt `sleelactl` (die SLeeLa-Steuerungsebene) und seine Modulregistrierung, entsprechend dem `make`-Installer. Siehe [`bin/SLEELACTL.md`](bin/SLEELACTL.md).
+- `sleelactl` erhielt eine neue **`subject`**-Natur für native C/C++-Subject-Bibliotheken, die in die Laufzeitumgebung kompiliert werden, und registriert das erste Subject: **`math`**. `sleelactl run math` führt das native Backend `__NativeMath` (`impl/subjects/math/math_native.cpp`) über die Referenzdemo des Subjects vollständig aus; `sleelactl info math` erklärt den Zugriff (`import math;`). Diese Subject-Natur bietet nur `run` und `info`; ein `check`-Verb gibt es bewusst nicht, da `sleela check` keine über SHEET registrierten nativen Subjects lädt.
+
+### `@native` und `sleela aot` – Teil 1 des SLeeLa-zu-nativem-C/C++-Pfads
+
+Eine neue Methodenannotation **`@native`** fordert die Ahead-of-Time-Kompilierung einer rechenintensiven Methode in nativen Code an. Der neue Befehl `sleela aot` findet `@native`-Methoden, prüft, ob jede davon innerhalb einer unterstützten *Offload-Teilmenge* liegt, und gibt C/C++ aus. Der Vorgang **bricht geschlossen ab**: Jede noch nicht übersetzbare Konstruktion wird mit genauer Begründung abgelehnt, sodass niemals eine teilweise übersetzte Methode entsteht.
+
+```sh
+sleela aot --list <file.sleela>    # Urteil je Methode: ok / REFUSED (Grund)
+sleela aot --emit <file.sleela>    # C/C++ (stdout) für ein Programm innerhalb der Teilmenge ausgeben
+```
+
+`@native` ist derzeit verhaltensneutral: Programme werden weiterhin unverändert geprüft und ausgeführt; die Annotation *fordert* lediglich native Behandlung an. Dies ist Teil 1: Er etabliert die Annotationsoberfläche und die klare Grenze der unterstützten Teilmenge. Die Kompilierung des ausgegebenen C/C++ in ein Shared Object und das Dispatching der VM dorthin (mit Interpreter-Fallback) sind spätere Schritte. Details, unterstützte Teilmenge und Exitcodes: [`pi-generator/AT-NATIVE.md`](pi-generator/AT-NATIVE.md).
+
+## XIX. Internationale README-Ausgaben
+
+SLeeLa stellt länderspezifische README-Einstiegspunkte für die 50 Märkte seiner internationalen Edition bereit. Jedes Land hat eine Datei namens `README.<CC>.md`; wenn mehrere Sprachen relevant sind, werden sie in der jeweiligen Länderdatei zusammengefasst.
+
+- [README.AE](README.AE.md) · [README.AT](README.AT.md) · [README.AU](README.AU.md) · [README.BE](README.BE.md) · [README.BR](README.BR.md)
+- [README.CA](README.CA.md) · [README.CH](README.CH.md) · [README.CL](README.CL.md) · [README.CN](README.CN.md) · [README.CO](README.CO.md)
+- [README.CZ](README.CZ.md) · [README.DE](README.DE.md) · [README.DK](README.DK.md) · [README.EE](README.EE.md) · [README.ES](README.ES.md)
+- [README.FI](README.FI.md) · [README.FR](README.FR.md) · [README.GB](README.GB.md) · [README.GR](README.GR.md) · [README.HK](README.HK.md)
+- [README.HU](README.HU.md) · [README.ID](README.ID.md) · [README.IE](README.IE.md) · [README.IL](README.IL.md) · [README.IN](README.IN.md)
+- [README.IS](README.IS.md) · [README.IT](README.IT.md) · [README.JP](README.JP.md) · [README.KR](README.KR.md) · [README.LU](README.LU.md)
+- [README.MX](README.MX.md) · [README.MY](README.MY.md) · [README.NL](README.NL.md) · [README.NO](README.NO.md) · [README.NZ](README.NZ.md)
+- [README.PH](README.PH.md) · [README.PL](README.PL.md) · [README.PT](README.PT.md) · [README.QA](README.QA.md) · [README.RU](README.RU.md)
+- [README.SA](README.SA.md) · [README.SE](README.SE.md) · [README.SG](README.SG.md) · [README.SI](README.SI.md) · [README.SK](README.SK.md)
+- [README.TH](README.TH.md) · [README.TR](README.TR.md) · [README.TW](README.TW.md) · [README.US](README.US.md) · [README.ZA](README.ZA.md)
+
+**Übersetzungsrichtlinie:** Diese Dateien sind zunächst lokalisierte Länder-Einstiegspunkte. Einleitungen und Sprachüberschriften sind lokalisiert; die vollständige technische Referenz bleibt die kanonische englische [README.md](README.md). Eine Länderdatei darf erst dann als vollständige Übersetzung bezeichnet werden, wenn alle Abschnitte übersetzt, technische Bezeichner und Links geprüft und die Ausgabe sprachlich begutachtet wurden. Die Sprachabdeckung dieser ersten Phase ist repräsentativ und behauptet nicht, dass jede verfassungsrechtlich anerkannte, regionale, indigene oder Gebärdensprache vollständig übersetzt wurde.
+
+**Übersetzungsstatus:** Die Abschnitte I–XIX sind ins Deutsche übersetzt. Technische Kennungen, Befehle, Codebeispiele, Dateinamen, Links und Adressen wurden beibehalten. Eine abschließende sprachliche Prüfung durch Muttersprachler wird empfohlen.
