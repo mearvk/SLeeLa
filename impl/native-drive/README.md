@@ -243,7 +243,7 @@ integer result, while the typed-call entrypoint must return
 `SL_NATIVE_PLUGIN_ERROR`. Both cases close the module and free the VM.
 
 A further reentrancy regression constructs a small VM program through the public
-core bytecode-building API. Its source-level `nativeCall` enters the fixture,
+core bytecode-building API. Its outer `OP_NATIVE_CALL` enters the fixture,
 which invokes `Callback::receive_nested(value, module)`; that callback attempts
 a second `nativeCall` while callback execution is active. The VM must reject
 the nested operation with
