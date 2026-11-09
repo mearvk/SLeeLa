@@ -6,7 +6,10 @@ import os
 import struct
 import subprocess
 import sys
+import tempfile
 import unittest
+import zipfile
+from pathlib import Path
 
 MAGIC = b"SLJV"
 VERSION = 1
@@ -81,14 +84,50 @@ class EndpointTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.classes = CLASSES_DIR
+        cls.external = tempfile.TemporaryDirectory(prefix="sleela-java-roots-")
+        root = Path(cls.external.name)
+        source_dir = root / "source"
+        class_dir = root / "classes"
+        package_dir = source_dir / "interop" / "fixture"
+        package_dir.mkdir(parents=True)
+        class_dir.mkdir()
+        (package_dir / "ExternalDir.java").write_text(
+            "package interop.fixture; public final class ExternalDir { "
+            "public static int answer() { return 42; } }", encoding="utf-8"
+        )
+        (package_dir / "ExternalJar.java").write_text(
+            'package interop.fixture; public final class ExternalJar { '
+            'public static String answer() { return "from-jar"; } }', encoding="utf-8"
+        )
+        subprocess.run(
+            ["javac", "-d", str(class_dir),
+             str(package_dir / "ExternalDir.java"), str(package_dir / "ExternalJar.java")],
+            check=True,
+        )
+        jar_path = root / "external-api.jar"
+        jar_class = class_dir / "interop" / "fixture" / "ExternalJar.class"
+        with zipfile.ZipFile(jar_path, "w", compression=zipfile.ZIP_STORED) as archive:
+            archive.write(jar_class, "interop/fixture/ExternalJar.class")
+        jar_class.unlink()
+        cls.class_root = class_dir
+        cls.jar_root = jar_path
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.external.cleanup()
 
     def setUp(self):
         env = os.environ.copy()
         env["SLEELA_JAVA_ALLOW_CLASSES"] = (
-            "java.lang.String,java.lang.Object,java.lang.Integer,java.util.ArrayList,com.mearvk.sleela.connector.SleelaJdkProtocolFixture"
+            "java.lang.String,java.lang.Object,java.lang.Integer,java.util.ArrayList,"
+            "com.mearvk.sleela.connector.SleelaJdkProtocolFixture,"
+            "interop.fixture.ExternalDir,interop.fixture.ExternalJar"
+        )
+        env["SLEELA_JAVA_CLASS_PATHS"] = os.pathsep.join(
+            [str(self.class_root), str(self.jar_root)]
         )
         self.proc = subprocess.Popen(
-            ["java", "-cp", self.classes,
+            [os.environ.get("JAVA", "java"), "-cp", self.classes,
              "com.mearvk.sleela.connector.SleelaJdkProtocolServer"],
             stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
             env=env,
@@ -154,7 +193,7 @@ class EndpointTests(unittest.TestCase):
             INVOKE_INSTANCE, u64(handle) + string("add")
             + types("java.lang.Object") + values("SLeeLa"),
         )
-        self.assertEqual(added, b"\x02")  # Boolean true.
+        self.assertEqual(added, b"\x02")
 
         rendered = self.success(
             INVOKE_INSTANCE, u64(handle) + string("toString") + types() + values()
@@ -192,6 +231,18 @@ class EndpointTests(unittest.TestCase):
             b"\x03" + struct.pack(">i", 99),
         )
         self.assertEqual(self.success(RELEASE, u64(handle)), b"\x00")
+
+    def test_external_class_directory_and_jar_roots(self):
+        directory_result = self.success(
+            INVOKE_STATIC, string("interop.fixture.ExternalDir") + string("answer")
+            + types() + values()
+        )
+        self.assertEqual(directory_result, b"\x03" + struct.pack(">i", 42))
+        jar_result = self.success(
+            INVOKE_STATIC, string("interop.fixture.ExternalJar") + string("answer")
+            + types() + values()
+        )
+        self.assertEqual(jar_result, b"\x06" + string("from-jar"))
 
     def test_allowlist_and_structured_java_exception(self):
         self.assertEqual(self.error(RESOLVE, string("java.lang.Runtime"))[0],
