@@ -32,5 +32,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Check sleelactl shell syntax
+        if: runner.os != 'Windows'
+        run: sh -n bin/sleelactl
       - name: Run Native Drive tests
         run: python -m unittest discover -s tools/tests -p "test_native_drive.py" -v
