@@ -110,7 +110,7 @@ class SLNativeMathEngine {
   }
 
   < FFT arrays store interleaved real/imaginary pairs; inverse is 0 or 1. >
-  void fft(double[] input, double[] output, int complexLength, int inverse) {
-    mathFFT(input, output, complexLength, inverse);
+  void fft(double[] input, double[] output, int interleavedLength, int inverse) {
+    mathFFT(input, output, interleavedLength, inverse);
   }
 }
