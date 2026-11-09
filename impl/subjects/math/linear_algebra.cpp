@@ -479,26 +479,26 @@ slmath_status slmath_vm_dispatch(slmath_operation operation,
         return SLMATH_SIZE_OVERFLOW;
     switch (operation) {
     case SLMATH_OP_VECTOR_ADD:
-        if (!b || !b->data || a->length != b->length ||
-            out->length < a->length) return SLMATH_DIMENSION_MISMATCH;
-        return slmath_vector_add(a->data,b->data,out->data,a->length);
-    case SLMATH_OP_VECTOR_DOT:
-        if (!b || !b->data || a->length != b->length || out->length < 1)
+        if (!b || !b->data || a_shape != b_shape || out_shape < a_shape)
             return SLMATH_DIMENSION_MISMATCH;
-        return slmath_vector_dot(a->data,b->data,a->length,out->data);
+        return slmath_vector_add(a->data,b->data,out->data,a_shape);
+    case SLMATH_OP_VECTOR_DOT:
+        if (!b || !b->data || a_shape != b_shape || out->length < 1)
+            return SLMATH_DIMENSION_MISMATCH;
+        return slmath_vector_dot(a->data,b->data,a_shape,out->data);
     case SLMATH_OP_VECTOR_NORM:
         if (out->length < 1) return SLMATH_DIMENSION_MISMATCH;
-        return slmath_vector_norm(a->data,a->length,out->data);
+        return slmath_vector_norm(a->data,a_shape,out->data);
     case SLMATH_OP_VECTOR_SCALE:
-        if (out->length < a->length) return SLMATH_DIMENSION_MISMATCH;
-        return slmath_vector_scale(a->data,scalar,out->data,a->length);
+        if (out_shape < a_shape) return SLMATH_DIMENSION_MISMATCH;
+        return slmath_vector_scale(a->data,scalar,out->data,a_shape);
     case SLMATH_OP_VECTOR_SUBTRACT:
-        if (!b || !b->data || a->length != b->length ||
-            out->length < a->length) return SLMATH_DIMENSION_MISMATCH;
-        return slmath_vector_subtract(a->data,b->data,out->data,a->length);
+        if (!b || !b->data || a_shape != b_shape || out_shape < a_shape)
+            return SLMATH_DIMENSION_MISMATCH;
+        return slmath_vector_subtract(a->data,b->data,out->data,a_shape);
     case SLMATH_OP_VECTOR_NORMALIZE:
-        if (out->length < a->length) return SLMATH_DIMENSION_MISMATCH;
-        return slmath_vector_normalize(a->data,out->data,a->length);
+        if (out_shape < a_shape) return SLMATH_DIMENSION_MISMATCH;
+        return slmath_vector_normalize(a->data,out->data,a_shape);
     case SLMATH_OP_VECTOR_CROSS3:
         if (!b || !b->data || a->length < 3 || b->length < 3 ||
             out->length < 3) return SLMATH_DIMENSION_MISMATCH;
@@ -591,12 +591,13 @@ slmath_status slmath_vm_dispatch(slmath_operation operation,
         return slmath_symmetric_eigen(a->data,a->rows,out->data,aux->data,
                                       flags,scalar);
     case SLMATH_OP_FFT:
-        if (out->length < a->length || (a->length % 2) != 0)
+        if (flags > 1 || a_shape == 0 || (a_shape % 2) != 0 ||
+            out_shape < a_shape || a->length < a_shape)
             return SLMATH_DIMENSION_MISMATCH;
         if (out->data != a->data)
-            std::memmove(out->data,a->data,a->length*sizeof(double));
+            std::memmove(out->data,a->data,a_shape*sizeof(double));
         return slmath_fft(reinterpret_cast<slmath_complex*>(out->data),
-                          a->length/2,flags ? 1 : 0);
+                          a_shape/2,(int)flags);
     default:
         return SLMATH_INVALID_ARGUMENT;
     }
