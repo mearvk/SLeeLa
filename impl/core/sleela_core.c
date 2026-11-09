@@ -1900,6 +1900,120 @@ void slvm_joinall(SLVM* vm) {
  * a TERR("stack underflow") before the corrupt result can be used. */
 #define POP() (t->sp > 0 ? t->stack[--t->sp] : (t->underflow = 1, slval_null()))
 
+/* Convert only values represented by the versioned native ABI. VM-local
+ * arrays/structs, 128-bit integers, and all opaque handles stay in the VM. */
+static int native_value_to_abi(SLVM* vm, SLValue source, SLNativeValue* target) {
+    memset(target, 0, sizeof(*target));
+    switch (source.type) {
+        case SL_NULL: target->tag = SL_NATIVE_VALUE_NULL; return 1;
+        case SL_BOOL:
+            target->tag = SL_NATIVE_VALUE_BOOL;
+            target->as.boolean = source.as.b ? 1 : 0;
+            return 1;
+        case SL_INT:
+            target->tag = SL_NATIVE_VALUE_I64;
+            target->as.i64 = source.as.i;
+            return 1;
+        case SL_DOUBLE:
+            target->tag = SL_NATIVE_VALUE_F64;
+            target->as.f64 = source.as.d;
+            return 1;
+        case SL_STR: {
+            const char* value = slvm_str(vm, source.as.s);
+            size_t length = strlen(value);
+            if (length > UINT32_MAX) return 0;
+            target->tag = SL_NATIVE_VALUE_UTF8;
+            target->as.utf8.data = (const uint8_t*)value;
+            target->as.utf8.length = (uint32_t)length;
+            return 1;
+        }
+        default: return 0;
+    }
+}
+
+/* The VM currently stores String values as NUL-terminated interned strings.
+ * Validate UTF-8 and reject embedded NUL on the return path rather than
+ * silently truncating a plugin result when it is interned. */
+static int native_utf8_valid(const uint8_t* s, uint32_t n) {
+    uint32_t i = 0;
+    if (n && !s) return 0;
+    while (i < n) {
+        uint8_t a = s[i++];
+        if (a == 0) return 0;
+        if (a < 0x80) continue;
+        if (a >= 0xc2 && a <= 0xdf) {
+            if (i >= n || (s[i++] & 0xc0) != 0x80) return 0;
+        } else if (a >= 0xe0 && a <= 0xef) {
+            uint8_t b, c;
+            if (i + 1 >= n) return 0;
+            b = s[i++]; c = s[i++];
+            if ((c & 0xc0) != 0x80 || (b & 0xc0) != 0x80) return 0;
+            if ((a == 0xe0 && b < 0xa0) || (a == 0xed && b >= 0xa0)) return 0;
+        } else if (a >= 0xf0 && a <= 0xf4) {
+            uint8_t b, c, d;
+            if (i + 2 >= n) return 0;
+            b = s[i++]; c = s[i++]; d = s[i++];
+            if ((b & 0xc0) != 0x80 || (c & 0xc0) != 0x80 || (d & 0xc0) != 0x80) return 0;
+            if ((a == 0xf0 && b < 0x90) || (a == 0xf4 && b >= 0x90)) return 0;
+        } else return 0;
+    }
+    return 1;
+}
+
+static int native_value_from_abi(SLVM* vm, const SLNativeValue* source, SLValue* target) {
+    if (!source || !target || source->reserved != 0) return 0;
+    switch ((SLNativeValueTag)source->tag) {
+        case SL_NATIVE_VALUE_NULL: *target = slval_null(); return 1;
+        case SL_NATIVE_VALUE_BOOL:
+            if (source->as.boolean != 0 && source->as.boolean != 1) return 0;
+            *target = slval_bool(source->as.boolean); return 1;
+        case SL_NATIVE_VALUE_I64: *target = slval_int(source->as.i64); return 1;
+        case SL_NATIVE_VALUE_F64: *target = slval_double(source->as.f64); return 1;
+        case SL_NATIVE_VALUE_UTF8: {
+            uint32_t length = source->as.utf8.length;
+            char* copy;
+            if (length > SL_MAX_STRTEXT || !native_utf8_valid(source->as.utf8.data, length)) return 0;
+            copy = (char*)malloc((size_t)length + 1u);
+            if (!copy) return 0;
+            if (length) memcpy(copy, source->as.utf8.data, length);
+            copy[length] = '\0';
+            target->type = SL_STR;
+            target->as.s = intern(vm, copy);
+            free(copy);
+            return 1;
+        }
+        default: return 0;
+    }
+}
+
+/* Fallback is deliberately name+arity based and remains inside the VM. It is
+ * used only when the module has no typed entry or an argument is not scalar
+ * ABI-representable; plugin execution errors never silently fall back. */
+static int native_bytecode_fallback(SLThread* t, const char* method,
+                                    uint32_t argc, int base, int return_ip) {
+    SLVM* vm = t->vm;
+    int function = -1;
+    for (int i = 0; i < vm->nfunc; ++i) {
+        if (vm->funcs[i].nargs == (int)argc &&
+            strcmp(vm->funcs[i].name, method) == 0) {
+            function = i;
+            break;
+        }
+    }
+    if (function < 0) return 0;
+    if (t->fp >= FRAMES_MAX || base < 0 ||
+        base + vm->funcs[function].nlocals > STACK_MAX) return -1;
+    memmove(&t->stack[base], &t->stack[base + 2u], (size_t)argc * sizeof(SLValue));
+    t->sp = base + (int)argc;
+    SLFrame* frame = &t->frames[t->fp++];
+    frame->ret_ip = return_ip;
+    frame->base = base;
+    frame->nargs = (int)argc;
+    for (int i = (int)argc; i < vm->funcs[function].nlocals; ++i)
+        t->stack[t->sp++] = slval_null();
+    return vm->funcs[function].entry + 1; /* caller stores ip as entry-1 */
+}
+
 static SLResult run_thread(SLThread* t) {
     SLVM* vm = t->vm; int fi = t->entry_func;
     if (fi < 0 || fi >= vm->nfunc) TERR("no entry function set");
@@ -2031,6 +2145,71 @@ static SLResult run_thread(SLThread* t) {
             int base=t->sp-f->nargs; if(base<0) TERR("call: not enough arguments on stack");
             SLFrame* nf=&t->frames[t->fp++]; nf->ret_ip=ip; nf->base=base; nf->nargs=f->nargs;
             for(int i=f->nargs;i<f->nlocals;i++){ PUSH(slval_null()); } ip=f->entry;
+        } break;
+        case OP_NATIVE_CALL: {
+            uint32_t argc;
+            int base, fallback_ip = -1, unsupported = 0;
+            SLValue module_value, method_value, result_value = slval_null();
+            SLNativeHandle handle;
+            const char* method;
+            SLNativeValue* argv = NULL;
+            SLNativeValue native_result;
+            SLNativeStatus status;
+            if (in.a < 0) TERR("native call: negative argument count");
+            argc = (uint32_t)in.a;
+            if (t->sp < (int)argc + 2) TERR("native call: expected module handle, method name, and arguments");
+            base = t->sp - (int)argc - 2;
+            module_value = t->stack[base];
+            method_value = t->stack[base + 1];
+            if (module_value.type != SL_INT || module_value.as.i <= 0 ||
+                (uint64_t)module_value.as.i > UINT32_MAX)
+                TERR("native call: module handle must be a valid positive native handle");
+            if (method_value.type != SL_STR) TERR("native call: method name must be a String");
+            method = slvm_str(vm, method_value.as.s);
+            if (!method[0]) TERR("native call: method name cannot be empty");
+            if (argc) {
+                argv = (SLNativeValue*)calloc(argc, sizeof(*argv));
+                if (!argv) TERR("native call: out of memory preparing arguments");
+            }
+            for (uint32_t i = 0; i < argc; ++i) {
+                if (!native_value_to_abi(vm, t->stack[base + 2 + (int)i], &argv[i])) {
+                    unsupported = 1;
+                    break;
+                }
+            }
+            if (unsupported) {
+                free(argv);
+                fallback_ip = native_bytecode_fallback(t, method, argc, base, ip);
+                if (fallback_ip == 0) TERR("native call: argument type is VM-owned and no matching SLeeLa fallback exists");
+                if (fallback_ip < 0) TERR("native call: fallback call depth or stack limit exceeded");
+                ip = fallback_ip - 1;
+                break;
+            }
+            handle = (SLNativeHandle)module_value.as.i;
+            memset(&native_result, 0, sizeof(native_result));
+            native_result.tag = SL_NATIVE_VALUE_NULL;
+            pthread_mutex_lock(&vm->native_mtx);
+            status = sl_native_table_call(&vm->native_modules, handle, method, argc, argv, &native_result);
+            if (status == SL_NATIVE_OK &&
+                !native_value_from_abi(vm, &native_result, &result_value))
+                status = SL_NATIVE_PLUGIN_ERROR;
+            pthread_mutex_unlock(&vm->native_mtx);
+            free(argv);
+            if (status == SL_NATIVE_TYPED_ENTRY_NOT_FOUND) {
+                fallback_ip = native_bytecode_fallback(t, method, argc, base, ip);
+                if (fallback_ip == 0) TERR("native call: no typed native method or matching SLeeLa fallback exists");
+                if (fallback_ip < 0) TERR("native call: fallback call depth or stack limit exceeded");
+                ip = fallback_ip - 1;
+                break;
+            }
+            if (status != SL_NATIVE_OK) {
+                char message[256];
+                snprintf(message, sizeof(message), "native call '%s' failed: %s", method,
+                         sl_native_status_string(status));
+                TERR(message);
+            }
+            t->sp = base;
+            PUSH(result_value);
         } break;
         case OP_RET: {
             SLValue rv=(t->sp>t->frames[t->fp-1].base)?POP():slval_null(); SLFrame f=t->frames[--t->fp]; t->sp=f.base;
