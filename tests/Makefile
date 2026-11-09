@@ -92,3 +92,22 @@ java-platform-qualification:
 
 java-qualification:
 	python3 java_qualification_manifest.py
+
+.PHONY: java-api-dependency-graph java-api-member-dependencies java-api-visibility-constructor java-source-implementation-audit java-lang-native
+
+java-api-dependency-graph:
+	python3 java_api_dependency_graph_suite.py
+
+java-api-member-dependencies:
+	python3 java_api_member_dependencies_suite.py
+
+java-api-visibility-constructor:
+	python3 java_api_visibility_constructor_suite.py
+
+java-source-implementation-audit:
+	python3 java_source_implementation_audit_suite.py
+	python3 java_source_implementation_audit.py --top 40
+
+java-lang-native:
+	python3 java_object_identity_native_suite.py
+	python3 java_string_native_suite.py
