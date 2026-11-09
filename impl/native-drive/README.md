@@ -196,7 +196,15 @@ it does not automatically restart the workload.
     sh -n bin/sleelactl
 
 The focused `test-native-call` target is opt-in and is not part of the default
-test aggregate. The Native Drive GitHub Actions workflow is
-`workflow_dispatch`-only; no workflow is automatically started by pushes.
-The new source compiler fixture and VM dispatch smoke target have been added
-but are not claimed as run until explicitly executed.
+test aggregate. It substitutes the built fixture's exact path into the
+SLeeLa source fixture, compiles that source to a persistent Core artifact,
+loads the artifact through `slvm_load_file`, installs a host-owned exact-path
+authorization callback, and executes the program. The source program invokes
+the plugin's `twice` method, exercises bytecode fallback for `fallback`,
+closes the module, and returns the combined result. The harness then reloads
+the same artifact with a deliberately mismatched allowlist and asserts that
+source-level `nativeOpen` fails closed before plugin execution.
+
+The Native Drive GitHub Actions workflow is `workflow_dispatch`-only; no
+workflow is automatically started by pushes. This end-to-end target has been
+added but is not claimed as run until explicitly executed.
