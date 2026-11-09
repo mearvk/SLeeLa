@@ -115,6 +115,6 @@ int main(void) {
         return fail(vm, "release explicit host roots");
     slvm_free(vm);
     puts("JAVA-STRING-VM-UTF16=PASS");
-    puts("JAVA-STRING-VM-NUL-SURROGATE-GC-ROOTS=PASS");
+    puts("JAVA-STRING-VM-NUL-SURROGATE-GC-ROOT-API=PASS");
     return 0;
 }
