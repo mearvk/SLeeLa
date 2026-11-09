@@ -94,7 +94,7 @@ public final class SleelaJdkProtocolServer {
             int opcode = h.readUnsignedByte();
             long payloadLength = Integer.toUnsignedLong(h.readInt());
             if (magic[0] != 'S' || magic[1] != 'L' || magic[2] != 'J' || magic[3] != 'V'
-                    || version != VERSION || payloadLength > MAX_FRAME) {
+                    || version != VERSION || opcode >= 0x80 || payloadLength > MAX_FRAME) {
                 throw new IOException("invalid SLJIP frame header");
             }
             byte[] payload = new byte[(int) payloadLength];
@@ -104,6 +104,8 @@ public final class SleelaJdkProtocolServer {
                 response = dispatch(opcode, payload);
             } catch (ProtocolException malformed) {
                 throw new IOException("malformed SLJIP request payload", malformed);
+            } catch (EOFException malformed) {
+                throw new IOException("truncated SLJIP request payload", malformed);
             } catch (Exception | LinkageError failure) {
                 response = errorPayload(failure);
             }
