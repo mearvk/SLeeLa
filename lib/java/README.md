@@ -321,3 +321,38 @@ Implementations should be developed dependency-first, with explicit provenance f
 `implementations/java/lang/JavaObjectIdentity.sleela` defines identity equality and identity-derived hashing for a live object when the runtime supplies a stable heap identity and object handle. Monitor/wait-notify, cloning, and default textual conversion remain explicitly unsupported.
 
 `implementations/java/lang/JavaStringValue.sleela` is the VM-backed UTF-16 facade documented above. Its operations use explicit UTF-16 intrinsics; it is not the older scalar-backed subset and does not imply automatic instance-method dispatch for the general SLeeLa `String` type.
+
+
+### Additional Java String search operations
+
+The VM-backed `JavaStringValue` facade now also implements the common
+UTF-16-indexed search operations directly over its `SL_UTF16` value:
+
+- `startsWith(prefix)` and `endsWith(suffix)`
+- `contains(sequence)`
+- `indexOf(sequence)` and `lastIndexOf(sequence)`
+
+The returned positions are UTF-16 code-unit offsets, not Unicode code-point
+indices. Empty search values follow Java's `String` behavior: the empty
+prefix/suffix matches, `indexOf("")` returns zero, and
+`lastIndexOf("")` returns the receiver's UTF-16 length. Comparisons preserve
+surrogate code units exactly; a supplementary character therefore occupies
+two searchable/indexable positions, as it does in Java `String`.
+
+These are source-level facade methods using the existing VM-backed
+`length` and `charAt` intrinsics. They do not convert the value back to
+legacy UTF-8. Null arguments are not silently mapped to false or -1; until
+typed catchable Java exceptions are integrated, invalid/null argument
+failures remain VM runtime diagnostics.
+
+### Remaining Java String completion boundary
+
+This extension improves the VM-backed Java facade but does not yet make the
+general SLeeLa `String` representation equivalent to `java.lang.String`.
+Ordinary literals and existing `SL_STR` values retain their legacy
+NUL-terminated UTF-8 representation. Automatic Java-style method dispatch on
+those values, a 16-bit `char` type, typed/catchable exceptions, and the
+broader JDK String API (including locale-aware case mapping, normalization,
+regular expressions, formatting, and charset operations) remain separate
+work. The facade's search methods should be treated as implemented source
+behavior, not as evidence that the complete Java API is implemented.
