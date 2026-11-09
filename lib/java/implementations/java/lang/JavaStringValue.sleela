@@ -32,7 +32,6 @@ class JavaStringValue {
   }
 
   JavaStringValue concat(JavaStringValue other) {
-    if (other == null) { return this; }
     return fromUtf16(javaStringConcat(value, other.value));
   }
 
@@ -56,7 +55,6 @@ class JavaStringValue {
 
   int hashCode() { return javaStringHashCode(value); }
   int compareTo(JavaStringValue other) {
-    if (other == null) { return 1; }
     return javaStringCompareTo(value, other.value);
   }
 
