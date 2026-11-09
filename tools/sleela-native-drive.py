@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """SLeeLa Native Drive: explicit, shell-free native build and process execution."""
 from __future__ import annotations
-import argparse, ctypes, os, pathlib, re, shutil, subprocess, sys, tempfile, threading, time
+import argparse, ctypes, math, os, pathlib, re, shutil, subprocess, sys, tempfile, threading, time
 from typing import Sequence
 
 EXIT_USAGE, EXIT_BUILD, EXIT_RUN, EXIT_TIMEOUT, EXIT_OUTPUT_LIMIT = 2, 3, 4, 5, 6
@@ -11,6 +11,13 @@ def _positive_int(value: str) -> int:
     try: parsed = int(value)
     except ValueError as exc: raise argparse.ArgumentTypeError("must be an integer") from exc
     if parsed < 1: raise argparse.ArgumentTypeError("must be greater than zero")
+    return parsed
+
+def _positive_float(value: str) -> float:
+    try: parsed = float(value)
+    except ValueError as exc: raise argparse.ArgumentTypeError("must be a number") from exc
+    if not math.isfinite(parsed) or parsed <= 0:
+        raise argparse.ArgumentTypeError("must be a finite number greater than zero")
     return parsed
 
 def _terminate_processes(processes: Sequence[subprocess.Popen]) -> None:
@@ -30,7 +37,7 @@ def _terminate_processes(processes: Sequence[subprocess.Popen]) -> None:
 def _drain_limited(stream, captured: bytearray, state: dict, lock: threading.Lock,
                    limit: int, processes: Sequence[subprocess.Popen]) -> None:
     while True:
-        chunk = stream.read(65536)
+        chunk = stream.read1(65536) if hasattr(stream, "read1") else stream.read(65536)
         if not chunk: return
         stop = False
         with lock:
@@ -302,23 +309,23 @@ def parser() -> argparse.ArgumentParser:
     b.add_argument("--kind", choices=("executable", "shared"), default="executable")
     b.add_argument("--require-sleela-abi", action="store_true", help="verify sl_native_abi_version()==1 and sl_native_run before publishing a shared library")
     b.add_argument("--compiler"); b.add_argument("--sleela")
-    b.add_argument("--timeout", type=float, default=120.0)
+    b.add_argument("--timeout", type=_positive_float, default=120.0)
     b.add_argument("--compiler-arg", action="append", default=[], help="extra compiler/linker argv item; repeat as needed")
     b.set_defaults(handler=build)
     r = sub.add_parser("run", help="run one executable with optional stdin file")
     r.add_argument("--stdin-file"); r.add_argument("--capture", action="store_true")
-    r.add_argument("--timeout", type=float, default=30.0)
+    r.add_argument("--timeout", type=_positive_float, default=30.0)
     r.add_argument("--max-output-bytes", type=_positive_int, default=DEFAULT_MAX_OUTPUT_BYTES,
                     help=f"combined stdout/stderr capture limit (default: {DEFAULT_MAX_OUTPUT_BYTES})")
     r.add_argument("command", nargs=argparse.REMAINDER); r.set_defaults(handler=run_process)
     x = sub.add_parser("xclass", help="validate, inspect, or reconstruct SecureJDK .xclass input using the production loader")
     x.add_argument("--mode", choices=("info", "emit", "run"), default="info")
     x.add_argument("--sleela")
-    x.add_argument("--timeout", type=float, default=30.0)
+    x.add_argument("--timeout", type=_positive_float, default=30.0)
     x.add_argument("files", nargs="+")
     x.set_defaults(handler=xclass_command)
     p = sub.add_parser("pipe", help="connect producer stdout to consumer stdin")
-    p.add_argument("--timeout", type=float, default=30.0)
+    p.add_argument("--timeout", type=_positive_float, default=30.0)
     p.add_argument("--max-output-bytes", type=_positive_int, default=DEFAULT_MAX_OUTPUT_BYTES,
                     help=f"combined captured output limit (default: {DEFAULT_MAX_OUTPUT_BYTES})")
     p.add_argument("pipeline", nargs=argparse.REMAINDER); p.set_defaults(handler=None)
