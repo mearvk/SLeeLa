@@ -61,7 +61,7 @@ sleelactl build decompiler          # build the Slecompiler CLI
 sleelactl run decompiler <binary>   # invoke the built decompiler
 
 sleelactl run math                  # exercise the native math subject (__NativeMath)
-sleelactl info math                 # how the math subject is reached (import math;)
+sleelactl info math                 # how the math subject is reached (import math;)\nsleelactl run physics               # execute the registered physics reference demo
 
 sleelactl info native-drive
 sleelactl build native-drive main.c helper.c -o build/app
@@ -79,7 +79,7 @@ frontend lowers onto the native `__Native<Subject>` methods. `sleelactl run
 <subject>` executes that native backend by running the subject's reference demo
 through `sleela run`. There is deliberately no `check` verb: `sleela check` does
 not load the SHEET-registered native subjects, so `run` is the one faithful
-execution verb. The first registered subject is `math`.
+execution verb. Registered runnable subjects include `math` and `physics`. The math subject currently lowers to synthesized Core methods; the typed C++ <cmath> kernel contract is in `impl/subjects/math/math_kernel.hpp` and is tested independently with `make -C impl test-math-kernel`. This kernel is not yet wired into VM dispatch, so `sleelactl info math` explicitly distinguishes it from the active execution path.
 
 The `native-drive` tool builds multi-unit C/C++ executables and shared
 libraries, compiles the supported SLeeLa AOT subset, executes processes without

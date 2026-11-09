@@ -393,6 +393,11 @@ subject_cmd() { # module verb [args]
       okay "$1 — $(summary_of "$1")"
       info "nature: subject — native C/C++ library compiled into the sleela runtime"
       info "reached from SLeeLa as:  import $1;   then qualified calls, e.g.  $1.<fn>(...)"
+      info "execution today: frontend lowers calls to synthesized __Native* Core methods; VM bytecode is the portable fallback"
+      if [ "$1" = math ]; then
+        info "typed C++ kernel: impl/subjects/math/math_kernel.hpp (IEEE-754 <cmath> contract; standalone test: make -C impl test-math-kernel)"
+        info "direct VM-to-kernel dispatch: not yet enabled; kernel tests do not claim runtime integration"
+      fi
       [ -f "$demo" ] && info "reference demo: $demo_rel" || warn "reference demo $demo_rel not present in this install" ;;
     run)
       [ -f "$demo" ] || { warn "$1: reference demo $demo_rel not present; cannot run"; return 1; }
