@@ -25,7 +25,7 @@ JAR_FILE ?= $(DIST_DIR)/sleela-connector.jar
 JAVA_SOURCES := $(shell find java -type f -name '*.java' -print 2>/dev/null)
 CLASS_STAMP := $(CLASSES_DIR)/.compiled
 PROTOCOL_CLASSES_DIR ?= $(BUILD_DIR)/protocol-classes
-PROTOCOL_SOURCES := java/com/mearvk/sleela/connector/SleelaClassLoader.java java/com/mearvk/sleela/connector/SleelaJdkBridge.java java/com/mearvk/sleela/connector/SleelaJdkProtocolServer.java
+PROTOCOL_SOURCES := java/com/mearvk/sleela/connector/SleelaClassLoader.java java/com/mearvk/sleela/connector/SleelaJdkBridge.java java/com/mearvk/sleela/connector/SleelaJdkProtocolServer.java java/com/mearvk/sleela/connector/SleelaJdkProtocolFixture.java
 
 .PHONY: all build deps check java-check compile test conformance protocol-test protocol-codec-test jar package install clean help
 
