@@ -124,3 +124,38 @@ A hírek, kiadási megjegyzések és a nemzetközi README-fájlok jegyzéke a f�
 Ez a magyar kiadás kibővített műszaki útmutató: bemutatja a projektet, a build- és telepítési folyamatot, a nyelvet és a runtime-ot, az ellenőrzési elveket, a fejlesztőeszközöket és a fő projektterületeket. Még nem a kanonikus angol README teljes, sorról sorra készült fordítása. A teljes fordítás és szakmai ellenőrzés befejezéséig a [README.md](README.md) marad a normatív műszaki forrás.
 
 A SLeeLa fejlesztője a MEARVK LLC.
+
+
+## 11. A fordító felépítése és a végrehajtási folyamat
+
+A SLeeLa külön rétegként kezeli a forrásnyelvet, a fordító frontendjét, a köztes reprezentációt, a kódgenerálást és a runtime végrehajtást. A fordító kiadása, a szintaxisverzió és a VM/ISA verzió külön verziótengelyek. Egy funkció specifikációban való szereplése nem bizonyítja, hogy minden célplatformon megvalósították és ellenőrizték.
+
+A szokásos folyamat UTF-8 kódolású `.sleela` forrásfájlokat olvas be, lexikai és szintaktikai elemzést végez, ellenőrzi a szimbólumokat és típusokat, strukturált köztes reprezentációt alakít át, kódot állít elő a támogatott VM- vagy köztes célokhoz, majd a runtime-ban végrehajtja az eredményt. A normatív nyelvtan a [SLEELA.syntax](SLEELA.syntax); lásd a [source documentation](markdown/SOURCE.md) és a [compiler documentation](markdown/COMPILER.md) anyagát.
+
+## 12. Típusok, objektummodell és könyvtárak
+
+A dokumentált forrástípusok közé tartozik az `int`, `double`, `boolean`, `String`, `void`, a deklarált `struct` típusok és a támogatott reference-type signatures. Az `int`, `long` és `int64` előjeles, 64 bites egész számok. Az `int128` egész számtípusként elfogadott, de a jelenleg dokumentált implementáció továbbra is 64 bitre épül; nem szabad teljes 128 bites aritmetikát feltételezni.
+
+A `struct` névvel ellátott összetett típus. A VM által kezelt struct handle nem nyers pointer; az értékadás és a paraméterátadás ugyanazt az instance-t osztja meg, az egyenlőség pedig identitásalapú. Hordozható szerializáláshoz a dokumentált `structPack(instance)` és `structUnpack(TypeName, json)` segédfüggvényeket kell használni. Az osztályok fields és methods elemeket tartalmaznak; az öröklés, a beágyazott osztályok és a generics szintaxisverzióhoz kötöttek.
+
+A fontosabb modulok: `lib/advantage` (modellalapú értékelés, matematika, integráció, osztályozás és irányítható kimenet), `lib/xml` (XML DOM), `lib/text` (szöveg- és karakterlánc-műveletek), `lib/sleeladoc` (forrásdokumentáció és CLI), `lib/cpu`, `lib/xlt` (CPU-profilok és időzítési hivatkozások), valamint `recursion/stanchion` (C/C++ rekurziós prototípusok). Egy modul jelenléte nem bizonyítja a production readiness állapotot; ellenőrizni kell a teszteket és a platformkorlátozásokat.
+
+## 13. Ciklusok időzítése, natív integráció és tesztelés
+
+A `@loopDelay` és `@loopBudget` annotációk ciklusszünetet vagy teljes időkeretet határoznak meg. A VM `OP_SLEEP` utasítására (ISA 157) fordulnak le; a beépített `sleep(ms)` ugyanazt az utasítást használja. Lásd [SLEELA.syntax §32](SLEELA.syntax) és [Loop Timing API](api/sleela/3.0/LOOP_TIMING_API.md).
+
+A repository C/C++ komponenseket és korlátozott natív kódgenerálási útvonalat tartalmaz. Az `@native` és a `sleela aot` nem ad általános engedélyt tetszőleges natív kód futtatására. A C/C++ határoknak egyértelműen meg kell határozniuk az ABI-t, a hívási konvenciót, a memóriatulajdonlást, az adatelrendezést, a hibakezelést és a platformfüggőségeket.
+
+Tipikus parancsok:
+
+```sh
+make
+make -C impl all
+bash ./test-suites/run-all.sh --all
+sudo make install
+make install PREFIX="$HOME/.local"
+```
+
+A build rendszerint GCC-t vagy Clanget és GNU Make-et igényel; egyes eszközök Python 3-at használnak. Lásd az [installation guide](install/README.md), a [platform matrix](docs/PLATFORM-SUPPORT.md) és a [testing policy](markdown/TESTING.md) dokumentumokat. A tesztjelentéseknek külön kell kezelniük a pass, fail és skip állapotokat; a kihagyott teszt nem jelent sikert.
+
+**Frissített fordítási állapot:** A magyar útmutató immár a fordítási folyamatot, a típus- és objektummodellt, a könyvtárakat, a ciklusok időzítését, a natív integrációt, a buildet, a telepítést és a tesztelést is lefedi. Ez még nem a teljes kanonikus angol README és az összes kapcsolódó specifikáció teljes, sorról sorra készült fordítása.
