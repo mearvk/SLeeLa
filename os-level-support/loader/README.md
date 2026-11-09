@@ -12,7 +12,7 @@ Only load modules from trusted locations after any integrity checks required by
 your application's policy. This API never invokes a shell or compiles
 caller-provided source at runtime.
 
-## Plugin ABI
+## Legacy plugin entry
 
 Export these two C-linkage functions, including when the implementation is
 written in C++:
@@ -30,6 +30,48 @@ int sl_native_run(int argc, const char *const argv[]) {
 The loader checks the ABI version before exposing the entry point. The C API is
 in `native_loader.h` / `native_loader.c`; the move-only C++ wrapper is in
 `native_loader.hpp` / `native_loader.cpp`.
+
+## Typed method ABI (optional, version 1)
+
+A plugin may additionally export `sl_native_call`:
+
+```c
+int sl_native_call(const char *method, uint32_t argc,
+                   const SLNativeValue *argv, SLNativeValue *out_result);
+```
+
+The typed ABI is additive: the required module ABI version remains 1 and
+existing run-only plugins continue to load. Calling a method on a legacy plugin
+returns `SL_NATIVE_TYPED_ENTRY_NOT_FOUND`; it is never silently treated as a
+successful no-op.
+
+The value contract uses fixed-width tags and fields:
+
+| Tag | Payload |
+|---|---|
+| `SL_NATIVE_VALUE_NULL` | no payload |
+| `SL_NATIVE_VALUE_BOOL` | `int32_t`, exactly 0 or 1 |
+| `SL_NATIVE_VALUE_I64` | `int64_t` |
+| `SL_NATIVE_VALUE_F64` | `double` |
+| `SL_NATIVE_VALUE_UTF8` | borrowed pointer plus explicit byte length |
+
+The loader validates tags, reserved fields, boolean values, and nonempty string
+pointers before calling a plugin. A successful plugin call must return a valid
+value. Nonzero plugin status or malformed output is reported as
+`SL_NATIVE_PLUGIN_ERROR`.
+
+UTF-8 pointers are borrowed byte spans, not NUL-terminated strings. Input spans
+remain valid only for the duration of the call. A plugin-returned UTF-8 span
+must remain valid until the next call to that module or module close; the host
+must copy it before making another call. Composite values (arrays, structs,
+objects, closures), VM-local handles, and raw pointers are not part of this
+ABI. They must be represented by a future explicit ownership/handle protocol,
+not by copying `SLValue` memory across the boundary.
+
+This typed loader API is the ABI foundation only. It does not yet add a
+SLeeLa bytecode opcode, method registry in the compiler, automatic dispatch,
+or interpreter fallback. Those require VM-side conversion, signature metadata,
+and a stable fallback contract.
 
 ## Runtime-owned handle table
 
@@ -60,11 +102,13 @@ cmake --build build/os-level-support
 ctest --test-dir build/os-level-support --output-on-failure
 ```
 
-The tests exercise the C interface and C++ wrapper against a small fixture,
-move-only ownership, ABI mismatch and missing-entry rejection, authorization
-denial, bounded-table exhaustion, and stale-handle rejection. On POSIX, CMake
-links the system dynamic-loader library as needed. On Windows, use a
-compiler/toolchain that produces the plugin DLL and exports both ABI symbols.
+The tests exercise the C interface and C++ wrapper against fixtures, move-only
+ownership, ABI mismatch and missing-entry rejection, authorization denial,
+bounded-table exhaustion, stale-handle rejection, and typed-call success,
+argument/result validation, and compatibility with a legacy run-only module.
+On POSIX, CMake links the system dynamic-loader library as needed. On Windows,
+use a compiler/toolchain that produces the plugin DLL and exports the ABI
+symbols.
 
 ## Nine-unit plugin build
 
