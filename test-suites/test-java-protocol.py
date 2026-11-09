@@ -72,13 +72,15 @@ def read_string(data: bytes, offset: int):
     return value, offset + length
 
 
+CLASSES_DIR = sys.argv.pop(1) if len(sys.argv) > 1 else None
+if not CLASSES_DIR:
+    raise RuntimeError("usage: test-java-protocol.py CLASSES_DIR")
+
+
 class EndpointTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        if len(sys.argv) < 2:
-            raise RuntimeError("usage: test-java-protocol.py CLASSES_DIR")
-        cls.classes = sys.argv[1]
-        cls.argv = [sys.executable, __file__, cls.classes]
+        cls.classes = CLASSES_DIR
 
     def setUp(self):
         env = os.environ.copy()
