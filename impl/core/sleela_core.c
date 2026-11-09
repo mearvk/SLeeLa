@@ -2212,6 +2212,7 @@ static SLResult run_thread(SLThread* t) {
             if (method_value.type != SL_STR) TERR("native call: method name must be a String");
             method = slvm_str(vm, method_value.as.s);
             if (!method[0]) TERR("native call: method name cannot be empty");
+            handle = (SLNativeHandle)module_value.as.i;
             if (argc) {
                 argv = (SLNativeValue*)calloc(argc, sizeof(*argv));
                 if (!argv) TERR("native call: out of memory preparing arguments");
@@ -2223,14 +2224,18 @@ static SLResult run_thread(SLThread* t) {
                 }
             }
             if (unsupported) {
+                int handle_valid;
+                pthread_mutex_lock(&vm->native_mtx);
+                handle_valid = sl_native_table_is_valid(&vm->native_modules, handle);
+                pthread_mutex_unlock(&vm->native_mtx);
                 free(argv);
+                if (!handle_valid) TERR("native call: stale or invalid module handle");
                 fallback_ip = native_bytecode_fallback(t, method, argc, base, ip);
                 if (fallback_ip == 0) TERR("native call: argument type is VM-owned and no matching SLeeLa fallback exists");
                 if (fallback_ip < 0) TERR("native call: fallback call depth or stack limit exceeded");
                 ip = fallback_ip - 1;
                 break;
             }
-            handle = (SLNativeHandle)module_value.as.i;
             memset(&native_result, 0, sizeof(native_result));
             native_result.tag = SL_NATIVE_VALUE_NULL;
             pthread_mutex_lock(&vm->native_mtx);
