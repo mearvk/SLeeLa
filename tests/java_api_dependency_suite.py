@@ -15,4 +15,7 @@ if graph.returncode:
 member = subprocess.run(["python3", str(ROOT/"tests"/"java_api_member_dependencies_suite.py")], capture_output=True, text=True)
 if member.returncode:
     raise SystemExit(member.stdout + member.stderr)
+visibility = subprocess.run(["python3", str(ROOT/"tests"/"java_api_visibility_constructor_suite.py")], capture_output=True, text=True)
+if visibility.returncode:
+    raise SystemExit(visibility.stdout + visibility.stderr)
 print("java-api-dependency-suite: PASS")
