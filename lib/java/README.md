@@ -69,7 +69,7 @@ python3 tests/java_api_dependency_graph_suite.py
 The graph indexes Java namespace counterpart types and records direct imports,
 static imports, fully-qualified references, same-package and unambiguous
 wildcard-import type uses, nested-type ownership, package inventories,
-package-info annotations, module requirements/exports, and transitive
+package-info annotations, module requires/exports/opens/uses/provides, and transitive
 type reachability. It reports unresolved references and duplicate counterpart
 paths with source locations.
 
