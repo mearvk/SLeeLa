@@ -93,9 +93,9 @@ The first native linear-algebra C ABI is defined in `impl/subjects/math/linear_a
 - row-major dense matrix multiplication, transpose, and identity construction;
 - explicit status codes for invalid arguments, dimension mismatch, size overflow, allocation failure, and singular-operation reservations.
 
-The ABI supports exact in-place vector operations and stages matrix results so matrix multiplication and transpose can safely write over their inputs. Partially overlapping vector ranges are outside the contract. The opt-in regression command is `make -C impl test-linear-algebra test-linear-algebra-vm`.
+The ABI supports exact in-place vector operations and stages matrix results so matrix multiplication and transpose can safely write over their inputs. Partially overlapping vector ranges are outside the contract. The opt-in regression commands are `make -C impl test-linear-algebra`, `make -C impl test-linear-algebra-vm`, and `make -C impl test-linear-algebra-bytecode`.
 
-This is the native kernel foundation, not yet a claim of VM dispatch integration. The next integration step is to bind these operations to the existing SLeeLa vector/matrix language objects, preserving their current source-level APIs and validating dimensions and backing-array lengths at the VM boundary. Complex arithmetic, factorizations, spectral routines, and FFT remain subsequent work.
+The VM/compiler integration now provides append-only `OP_MATH_CALL` (opcode 179) and source built-ins for vector add/dot/norm/scale and matrix multiply/transpose under `#sleela 3.0`. The built-ins require preallocated output arrays and nonnegative integer-literal dimensions; the VM checks array tags and delegates to the typed Core bridge. Complex arithmetic, factorizations, spectral routines, and FFT are present in the native C ABI but are not yet exposed as source-level built-ins.
 
 
 ## Expanded native mathematical structures
@@ -113,10 +113,10 @@ The public header also defines slmath_buffer, operation identifiers, and slmath_
 
 **Integration boundary:** the native object is linked into the sleela and sleelvac executables and libslcore.a. The current branch now includes the heap-array marshalling helper and an append-only `OP_MATH_CALL` interpreter instruction (opcode 179). Its operand is the `slmath_operation`; the stack carries four optional/required array handles, eight nonnegative shape dimensions, a numeric scalar, and nonnegative flags. Vector dot/norm return a double; array-producing operations return the output handle. The instruction delegates to the Core adapter, which validates and marshals the VM-local arrays under the array mutex. The compiler now lowers `mathVectorAdd`, `mathVectorDot`, `mathVectorNorm`, `mathVectorScale`, `mathMatrixMultiply`, and `mathMatrixTranspose` to `OP_MATH_CALL`. These source built-ins require `#sleela 3.0`; dimensions are currently compile-time nonnegative integer literals so the fixed-shape VM frame is unambiguous. Array arguments are VM `SL_ARRAY` values, not exposed integer handles. The runtime validates those tags and converts them to VM-local handles before calling the bridge. An end-to-end source fixture and opt-in `test-linear-algebra-vm` target exercise the compiler/interpreter/array path. A local build and execution are still required before treating the tests as passing.
 
-Build and run the opt-in C ABI suite with:
+Build and run all opt-in native math regressions with:
 
 ```sh
-make -C impl test-linear-algebra
+make -C impl test-linear-algebra test-linear-algebra-vm test-linear-algebra-bytecode
 ```
 
 The test suite covers vector/matrix primitives, LU solve and inverse, QR orthogonality, complex division, strided arrays, symmetric eigenvalue invariants, FFT round-trip, and typed dispatch. It is deliberately not part of the default make test aggregate yet.
