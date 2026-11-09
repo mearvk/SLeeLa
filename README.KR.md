@@ -239,11 +239,204 @@ AE6E66 이니셔티브에서 프로젝트가 제시하는 예상액은 자격을
 
 이 문구는 프로젝트의 예상만을 기록합니다. **법적 세금 부과 결정, 정부 명령, 법원 판결 또는 독립적으로 확정된 납세 의무가 아닙니다.** 실제 부과에는 적용 가능한 법적 권한, 관할권, 정의, 절차 및 권한 있는 정부 기관의 결정이 필요합니다.
 
-## XI. 나머지 기술 섹션
+## XI. 알파벳 및 문자 집합 런타임
 
-README.md의 XI~XIX 섹션은 다음 단계에서 번역할 예정입니다. 현재 전체 기술 내용은 영어 [README.md](README.md)를 참조하세요.
+SLeeLa의 알파벳 문서와 네이티브 문자 런타임은 `alphabet/sleela/` 및 `lib/alphabet/native/`에서 관리됩니다. 네이티브 C++17 테스트는 엄격한 UTF-8 스칼라 디코딩/인코딩, `C<n>` 용량 시그니처, 경계가 제한된 문자 집합 포함 여부를 검사합니다.
+
+```sh
+make -C lib/alphabet/native test
+```
+
+실험적인 UTF-4088 카탈로그와 SLeeLa 조회 어댑터는 [`utf-4088/SLeeLa-ALPHABET-INTEGRATION.md`](utf-4088/SLeeLa-ALPHABET-INTEGRATION.md)에 설명되어 있습니다. UTF-4088 ID는 Unicode 스칼라 값과 별개의 네임스페이스입니다. 컴파일러 및 SLVM 바인딩 작업은 이러한 네이티브 기반 작업과 별도로 추적됩니다.
+
+## XII. AutoCAD Creator™
+
+[AutoCAD Creator™](autocad/creator/README.md)는 SLeeLa만으로 작성된 대화형 2D CAD 애플리케이션입니다. 함께 제공되는 AutoCAD Renderer가 도면을 한 번에 생성하는 반면, Creator에서는 2D AutoCAD 문서를 실시간으로 **만들고 수정**할 수 있습니다. 벽, 방, 치수 및 메모를 추가한 다음 배치한 요소를 이동, 재라벨링, 레이어 변경, 삭제하고 실행 취소할 수 있으며, 결과를 실제 AutoCAD DXF 도면(R12 텍스트 형식, AutoCAD/LibreCAD에서 열림)으로 **저장**할 수 있습니다.
+
+그래픽 인터페이스는 JavaFX가 아니라 SLeeLa 자체의 크로스 플랫폼 UI 툴킷인 **SleelaUI™**([`lib/user-interface`](lib/user-interface))으로 구축되며 X11/Cocoa/Win32에서 네이티브 창을 표시합니다. 설계 원칙은 **“SleelaUI는 보여 주고, SLeeLa가 결정한다”**입니다. GUI는 기하 계산이나 DXF 쓰기를 수행하지 않습니다. 각 도구는 편집 가능한 문서와 되돌릴 수 있는 명령 기록을 소유한 권위 있는 [`SLCadCreator`](lib/autocad/SLCadCreator.sleela)에 생성/수정/삭제/실행 취소/저장 의도를 전달합니다. 캔버스는 Creator가 보유한 기하 정보를 미리 보기만 합니다.
+
+재사용 가능한 편집 엔진은 [`lib/autocad`](lib/autocad)에 있으며 [`SLCadEntity`](lib/autocad/SLCadEntity.sleela), [`SLCadDocument`](lib/autocad/SLCadDocument.sleela), [`SLCadCommand`](lib/autocad/SLCadCommand.sleela), [`SLCadCreator`](lib/autocad/SLCadCreator.sleela)로 구성됩니다. 헤드리스 환경에서도 처음부터 끝까지 실행됩니다. GUI 셸과 데모는 [`autocad/creator`](autocad/creator)에 있습니다.
+
+```sh
+make creator          # autocad/ 디렉터리에서 실행: Creator 데모 -> out/altered.dxf
+```
+
+디스플레이가 있는 환경에서는 실시간 편집 창이 열립니다. 헤드리스 호스트에서는 메모리에서 도면을 만들고 보고서와 DXF를 출력한 뒤 정상 종료합니다.
+
+## XIII. UTF-4088 입력 맵 순서
+
+특수 UTF-4088 카탈로그는 공간 입력 맵 순회와 추상 압력 반복을 [`utf-4088/INPUT-MAP-AND-PRESSURE.md`](../utf-4088/INPUT-MAP-AND-PRESSURE.md)에 정의합니다. National Lien 주제 색인 정책은 [`utf-4088/NATIONAL-LIEN-REGISTER.md`](../utf-4088/NATIONAL-LIEN-REGISTER.md)에 있습니다. 맵 좌표, 압력 수준(1–50), 영구 카탈로그 ID 및 알파벳 순위는 서로 독립된 필드이며 어느 하나를 다른 필드 대신 사용해서는 안 됩니다. 압력은 알고리즘의 반복 수준이지 물리량이 아닙니다.
+
+## XIV. 최근 확장된 패키지 색인
+
+이 추가 색인은 최근 확장된 패키지, 도메인 라이브러리 및 소스 컬렉션을 소개합니다. 항목은 패키지 이름 또는 주제의 알파벳 순으로 묶었습니다. 설명은 저장소 내 위치를 안내합니다. 구현 및 검증 상태는 각 패키지의 문서와 테스트에서 확인해야 합니다.
+
+### A–C
+
+- **Advantage** — `lib/advantage/` 및 `advantage/`: 모델에 대한 고유 배당 최적화를 계층형 Sequitur onion으로 다룹니다. 다섯 주제 하위 폴더는 `math/`(공동 이익 최대화, Nash 협상, 양자 뉴스벤더), `physics/`(trust-field 계량/측지선/접촉/SDE — 모델링 유추임을 표시), `integration/`(수직 통합 구획과 정교성 점수), `grading/`(모듈과 세트를 위한 A–D 정교성 회로 채점기), `output/`(터미널/CommonRails/소켓 출력)입니다. 네이티브 C/C++ 소비자(`advantage/`)는 모델을 실제 거래 예제에 연결합니다. [README](lib/advantage/README.md) 및 [DEFINITIONS.md](lib/advantage/DEFINITIONS.md)를 참조하세요.
+- **Alphabet and UTF-4088** — `alphabet/sleela/`, `lib/alphabet/native/`, `utf-4088/`: 알파벳 카탈로그, 네이티브 문자 집합 지원, 입력 맵 순서 및 UTF-4088 통합 문서.
+- **AutoCAD Creator** — `autocad/creator/` 및 `lib/autocad/`: 대화형 2D 도면 작업 흐름과 재사용 가능한 CAD 문서/편집 구성 요소.
+- **Ballum** — 픽셀 수준 디스플레이 제어: 픽셀 설정/가져오기, 영역 blit, 전체 디스플레이 밝기/따뜻함/감마, 포인터/키보드 입력, 전면적이고 빠른 픽셀 제어를 위한 **전체 화면 프레임버퍼 표면**(Linux/X11에서는 override-redirect 창과 단일 `XPutImage`/MIT-SHM present). 네이티브 코어는 `ballum/`, SLeeLa 파사드는 `lib/ballum/`, VM 브리지는 `impl/`에 있습니다. [안내서](ballum/README.md)와 [실행 가능한 예제](ballum/example/)를 참조하세요.
+- **CDMA** — `cdma/` 및 `lib/cdma/`: CDMA 관련 기술 자료와 SLeeLa 소스 라이브러리 작업.
+- **Character** — `lib/character/`: 인물 프로필과 재사용 가능한 인물 통계, 전기 프로필 예제.
+- **Coorenagraph** — `lib/coorenagraph/`: 윤리적 추론, 도덕 어휘, 숙의 및 관련 개념. 패키지 README와 소스 파일을 참조하세요.
+
+### D–G
+
+- **Governance source models** — [`lib/governance`](lib/governance/README.md)는 제안, 익명 수동 투표 및 집계 결과를 위한 선언형 SLeeLa 소스 형태를 정의합니다. 제안된 `@vote` 주석과 수동 절차는 [`registry/DEMOCRATIC-VOTING-SYNTAX.md`](registry/DEMOCRATIC-VOTING-SYNTAX.md)에 설명되어 있습니다. 현재 컴파일러에서는 실행되지 않는 주석 메타데이터로 취급됩니다.
+
+### H–I
+
+- **HTTP 1.0–8.0** — 사용 가능한 버전별 HTTP 패키지 디렉터리(`lib/http-1.0/`부터): 버전별 프로토콜 사양과 구현입니다. 정확한 범위와 검증 상태는 각 버전의 문서를 확인하세요.
+- **International Criminal Court** — `lib/international-criminal-court/` 및 `INTERNATIONAL.CRIMINAL.COURTS.md`: 관련 전문 분야 소스와 문서입니다.
+
+### O–S
+
+- **OFDMA** — `ofdma/`: 직교 주파수 분할 다중 접속 기술 자료와 C/C++ 개발 리소스.
+- **Philosophy and the Conversation Mask module** — [`philosophy/`](philosophy/README.md)에는 네이티브 C/C++ 기반이 있으며, [`philosophy/module/`](philosophy/module/README.md)은 다음 모듈 계층을 세 영역으로 구성합니다. [data/](philosophy/module/data/README.md)는 타입 지정 및 날짜가 있는 관찰, 이벤트 종료, 반감기 설정, 출처 정보 및 동의를 다룹니다. [helper/](philosophy/module/helper/README.md)는 결정론적 검증, 관련성 감소, 호환 가능한 비교 및 동의 기반 표시를 담당합니다. [psychiatry-friend/](philosophy/module/psychiatry-friend/README.md)는 지원적이고 비임상적인 대화 인터페이스입니다. SLeeLa 측 핸들과 통합 Tree는 더 넓은 philosophy 패키지와 함께 [`lib/philosophy/`](lib/philosophy/README.md)에 있습니다. 이 모듈은 명시적 입력과 동의를 우선합니다. 사람이나 미디어를 수동으로 감시하거나, 진단하거나, 사적인 의도를 추론하거나, 인간의 가치를 점수화하거나, 약물 변경을 권고하지 않습니다. 이벤트 링크는 출처 정보와 탐색 경로를 보존할 뿐 독립적인 사실 확인을 의미하지 않습니다.
+- **Synchro** — 네이티브 런타임/컴파일러 통합, 패킷 디스패치 및 측정 관련 기능. 관련 `impl/` 소스와 컴파일러 구현을 참조하세요.
+- **SleelaUI / terminal UI** — `lib/user-interface/` 및 `sleela-terminal` 프로젝트: SLeeLa UI 통합과 터미널 중심 상호작용 구성 요소.
+
+### U–W
+
+- **United Nations** — `united-nations/`: UN 관련 도메인별 저장소 자료.
+- **Wi-Fi 4, Wi-Fi 5, Wi-Fi 6** — `wi-fi-4/`, `wi-fi-5/`, `wi-fi-6/` 및 관련 `lib/wifi/` 소스 디렉터리: 세대별 무선 네트워킹 자료와 구성 리소스.
+
+### 패키지 색인 유지 관리
+
+패키지를 추가하거나 크게 확장하면 적절한 알파벳 그룹에 항목을 추가하고, 정식 디렉터리와 README에 연결하며, 저장소에 포함된 소스로 뒷받침되는 기능만 설명합니다. 이 색인은 추가 방식으로 유지합니다. 패키지 색인을 갱신한다는 이유로 기존 README 섹션을 삭제하거나 다시 작성하지 마세요.
+
+---
+
+## XV. Bitcoin Conjegeum
+
+<escape><img src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="25" height="25" alt="Debian"></escape>
+
+![CremeOak](https://github.com/mearvk/Java.Web.Server.Telnet.Front.Java.21/raw/main/images/national-bitcoin-icc-logo-005.jpg)
+
+`bc1qs6v4q9zsw70t0umk3m0quhvf9dr6cdeskl28dh` :: `⠝⠇⠼⠁⠟⠎⠼⠋⠧⠼⠙⠟⠼⠊⠵⠎⠺⠼⠛⠼⠚⠞⠼⠚⠥⠍⠦⠼⠉⠍⠼⠚⠟⠥⠓⠧⠦⠼⠊⠙⠫⠼⠋⠉⠙⠑⠎⠅⠇⠼⠼⠃⠼⠗⠙⠓`
+
+`bc1qx33vma553gddsjkq372l3xlm8e8huv2vzad3cc` :: `⠃⠉⠼⠁⠟⠭⠼⠉⠼⠉⠪⠍⠁⠼⠑⠑⠛⠙⠙⠎⠚⠅⠟⠼⠉⠼⠛⠼⠝⠇⠼⠉⠼⠭⠇⠍⠼⠨e⠼⠨a⠓⠥⠪⠼⠪⠼⠪⠵⠁⠙⠼⠉⠉`
+
+US Democratic and US Policy.
+
+---
+
+## XVI. National Science 브랜드 이미지
+
+<p align="center"><img src="https://raw.githubusercontent.com/mearvk/SLeeLa/master/brand/national-sleela-science-004.jpg" alt="National SLeeLa Science" width="560"></p>
+
+<p align="center"><img src="https://raw.githubusercontent.com/mearvk/SLeeLa/master/brand/national-sleela-nsf-001.jpg" alt="National SLeeLa NSF" width="560"></p>
+
+## XVII. UTF-4088 백만 항목 실험 카탈로그
+
+[UTF-4088 카탈로그 생성기](utf-4088/tools/generate_catalogue.py)는 1,048,576개 항목으로 구성된 실험용 기호 카탈로그를 결정론적으로 생성합니다. 압축 형식은 [`utf-4088/FORMAT.md`](utf-4088/FORMAT.md)에, 생성 및 검증 계약은 [`utf-4088/GENERATION-RESULTS.md`](utf-4088/GENERATION-RESULTS.md)에 설명되어 있습니다.
+
+Python 3으로 다음 명령을 실행합니다.
+
+```sh
+python3 utf-4088/tools/generate_catalogue.py \
+  --output utf4088-million.bin \
+  --summary utf4088-million.summary.json
+```
+
+생성된 바이너리는 16,777,244바이트이며 20,000,000바이트 미만을 유지하도록 설계되었습니다. 단위 테스트와 GitHub Actions 워크플로가 항목 수, 글리프 고유성, 크기 및 SHA-256을 검증합니다. 실행이 성공하면 바이너리와 요약 파일이 `utf4088-million-catalogue` 워크플로 아티팩트로 게시됩니다. 생성 바이너리는 의도적으로 Git 기록에 포함하지 않습니다. UTF-4088은 실험 단계이며 Unicode와 호환되지 않습니다.
+
+---
+
+# SLeeLa
+
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>
+
+---
+
+## XVIII. 최근 추가 사항 — Pi 상수, Modium/Registry 시작, sleelactl Math 및 `@native`
+
+이 섹션은 2026-11 작업에서 추가된 기능을 최신 그룹부터 기록합니다. 모두 `master`에 커밋되어 있습니다.
+
+### 100,000,000자리 Pi 카탈로그 상수
+
+저장소에는 검증된 **1억 자리** π 값인 [`pi-generator/pi.100000000.digits`](pi-generator/pi.100000000.digits)(올바른 소수 형식, `3.14159…`)과 57,344자리 값인 [`pi-generator/pi.57344.digits`](pi-generator/pi.57344.digits)이 포함되어 있습니다. 두 값 모두 실제 π임을 독립적으로 검증했습니다. 검증 항목(교과서적 접두부, 소수부 762번째 위치의 Feynman point, 유명한 백만 번째 자리, [`lib/math/SLPiReference.sleela`](lib/math/SLPiReference.sleela)와의 일치, 전체 파일 숫자 빈도 분석)과 한 번에 재현하는 스크립트는 [`pi-generator/VERIFIED.md`](pi-generator/VERIFIED.md)를 참조하세요.
+
+### Modium™ / Registry™는 하위 시스템 시작 시 Pi 상수를 로드합니다
+
+전용 하위 시스템 진입점인 `sleela registry`, `sleela modium`(및 설치 프로그램 최초 실행)에서 Modium과 Registry는 대형 π 카탈로그 상수를 로드합니다. 모든 `sleela run` 실행 때마다 로드하는 것은 아닙니다. 대화형 터미널에서는 일시적인 빨간색 `Loading Modium™` / `Loading Registry™` 줄을 표시한 뒤 정상 출력이 시작되기 전에 같은 위치에서 지웁니다. 이 효과는 TTY에서만 작동하므로 파이프 및 테스트 출력은 바이트 단위로도 바뀌지 않습니다. 데이터 자체가 아니라 위치 정보가 SLeeLa 모델([`lib/registry/SLRegistry.sleela`](lib/registry/SLRegistry.sleela))과 네이티브 시더([`registry/sleela_registry.c`](registry/sleela_registry.c)) 모두에서 Registry의 `Math` 키 기본값 `piReferenceLargePath` 및 `piReferenceLargeDigits`로 설정됩니다. `lib/math/SLPiReference.sleela`는 `largePath()` / `largeDigits()`를 제공합니다. π 상수는 표준 `make` 설치 프로그램과 안내형 “beautiful” 설치 프로그램 모두를 통해 OS의 SLeeLa 위치(`<data>/pi/`)에 설치됩니다. 자세한 내용은 [`pi-generator/MODIUM-REGISTRY-PI-STARTUP.md`](pi-generator/MODIUM-REGISTRY-PI-STARTUP.md)를 참조하세요.
+
+### `sleelactl` — beautiful 설치 프로그램과 네이티브 백엔드 `math` subject
+
+- 안내형(“beautiful”) 설치 프로그램은 이제 `make` 설치 프로그램과 동일하게 SLeeLa 제어 플레인인 `sleelactl`과 모듈 레지스트리를 설치합니다. [문서](bin/SLEELACTL.md)를 참조하세요.
+- `sleelactl`에는 런타임에 컴파일된 네이티브 C/C++ subject 라이브러리를 위한 새로운 `subject` 종류가 추가되었고, 첫 subject로 `math`가 등록되었습니다. `sleelactl run math`는 subject 참조 데모를 통해 네이티브 `__NativeMath` 백엔드(`impl/subjects/math/math_native.cpp`)를 처음부터 끝까지 실행합니다. `sleelactl info math`는 접근 방법(`import math;`)을 설명합니다. subject 종류는 `run`과 `info`만 제공합니다. `sleela check`는 SHEET에 등록된 네이티브 subject를 로드하지 않으므로 의도적으로 `check` 동사는 제공하지 않습니다.
+
+### `@native` 및 `sleela aot` — SLeeLa에서 네이티브 C/C++로 가는 경로의 1단계
+
+새로운 **`@native`** 메서드 주석은 핫 메서드의 AOT(Ahead-of-Time) 네이티브 컴파일을 요청합니다. 새 `sleela aot` 명령은 `@native` 메서드를 찾아 각 메서드가 지원되는 *오프로딩 가능 부분집합*에 속하는지 확인한 뒤 C/C++를 출력합니다. 번역할 수 없는 구문이 있으면 정확한 이유를 제시하며 **fail closed** 방식으로 거부하므로 반쯤 번역된 메서드는 생성되지 않습니다.
+
+```sh
+sleela aot --list <file.sleela>    # 메서드별 판정: ok / REFUSED (사유)
+sleela aot --emit <file.sleela>    # 부분집합에 속하는 프로그램의 C/C++ 출력(stdout)
+```
+
+현재 `@native`는 동작에 영향을 주지 않습니다. 프로그램은 이전과 동일하게 검사 및 실행되며, 주석은 네이티브 처리를 **요청만** 합니다. 이것은 1단계로, 주석 표면과 지원 범위를 정직하게 제한하는 게이트를 마련합니다. 출력된 C/C++를 공유 객체로 컴파일하고 인터프리터 대체 경로를 두어 VM에서 디스패치하는 기능은 이후 단계입니다. 자세한 내용, 지원 부분집합 및 종료 코드는 [`pi-generator/AT-NATIVE.md`](pi-generator/AT-NATIVE.md)를 참조하세요.
+
+## XIX. 국제 README 에디션
+
+SLeeLa는 국제 에디션에 포함된 50개 시장을 위해 국가별 README 진입점을 제공합니다. 각 국가에는 `README.<CC>.md` 형식의 파일이 하나 있으며, 여러 언어가 관련된 경우 해당 국가 파일 안에 함께 구성됩니다.
+
+- [README.AE](README.AE.md)
+- [README.AT](README.AT.md)
+- [README.AU](README.AU.md)
+- [README.BE](README.BE.md)
+- [README.BR](README.BR.md)
+- [README.CA](README.CA.md)
+- [README.CH](README.CH.md)
+- [README.CL](README.CL.md)
+- [README.CN](README.CN.md)
+- [README.CO](README.CO.md)
+- [README.CZ](README.CZ.md)
+- [README.DE](README.DE.md)
+- [README.DK](README.DK.md)
+- [README.EE](README.EE.md)
+- [README.ES](README.ES.md)
+- [README.FI](README.FI.md)
+- [README.FR](README.FR.md)
+- [README.GB](README.GB.md)
+- [README.GR](README.GR.md)
+- [README.HK](README.HK.md)
+- [README.HU](README.HU.md)
+- [README.ID](README.ID.md)
+- [README.IE](README.IE.md)
+- [README.IL](README.IL.md)
+- [README.IN](README.IN.md)
+- [README.IS](README.IS.md)
+- [README.IT](README.IT.md)
+- [README.JP](README.JP.md)
+- [README.KR](README.KR.md)
+- [README.LU](README.LU.md)
+- [README.MX](README.MX.md)
+- [README.MY](README.MY.md)
+- [README.NL](README.NL.md)
+- [README.NO](README.NO.md)
+- [README.NZ](README.NZ.md)
+- [README.PH](README.PH.md)
+- [README.PL](README.PL.md)
+- [README.PT](README.PT.md)
+- [README.QA](README.QA.md)
+- [README.RU](README.RU.md)
+- [README.SA](README.SA.md)
+- [README.SE](README.SE.md)
+- [README.SG](README.SG.md)
+- [README.SI](README.SI.md)
+- [README.SK](README.SK.md)
+- [README.TH](README.TH.md)
+- [README.TR](README.TR.md)
+- [README.TW](README.TW.md)
+- [README.US](README.US.md)
+- [README.ZA](README.ZA.md)
+
+**번역 정책:** 이 파일들은 국가별 현지화 진입점의 초기 버전입니다. 소개와 언어 제목은 현지화되어 있지만 전체 기술 참조는 표준 영어 [README.md](README.md)에 있습니다. 모든 섹션을 번역하고 기술 식별자와 링크를 확인하며 언어 검토를 마치기 전에는 국가별 파일을 완역본으로 표시해서는 안 됩니다. 이 첫 단계의 언어 범위는 대표적인 예시이며 헌법상 인정되는 모든 지역어, 토착어 또는 수어가 완전히 번역되었다는 뜻은 아닙니다.
 
 ## 번역 상태
 
-**진행 중 — 부분 번역.** 소개와 I~X 섹션을 한국어로 번역했습니다. XI~XIX 섹션은 아직 번역되지 않았습니다. 명령, 코드 예제, 기술 식별자, 파일명 및 링크는 원문 그대로 유지했습니다. 모든 섹션의 번역과 기술 검토가 끝나기 전에는 완역본으로 표시하지 않습니다.
+**완역 초안 — 언어 검토 필요.** 한국어판은 README의 I~XIX 섹션을 번역했습니다. 기술 식별자, 명령, 코드 예제, 파일명, URL 및 주소 문자열은 원문 그대로 유지했습니다. 공개 전에 한국어 원어민의 언어 검토와 기술 링크 확인을 권장합니다.
 
