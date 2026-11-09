@@ -164,7 +164,9 @@ The Native IPC client now has a portable stdio adapter
 caller-supplied streams. The host remains responsible for launching and
 authorizing the worker, connecting its stdout/stdin pipes, enforcing
 timeouts/cancellation, and reaping the child. The adapter is blocking and is
-not itself a process supervisor. See [IPC-PROTOCOL.md](IPC-PROTOCOL.md).
+not itself a process supervisor. Its smoke-test source is provided; it is not
+yet wired into the manifest-verified CI workflow. See
+[IPC-PROTOCOL.md](IPC-PROTOCOL.md) for manual commands.
 
 ## systemd service lifecycle
 
