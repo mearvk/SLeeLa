@@ -443,3 +443,6 @@ class SLISATryPop { String name; int code; }
 
 < OP_THROW 178 -- pop an arbitrary SLValue and dispatch it to the newest active handler; uncaught values terminate with SLR_ERROR >
 class SLISAThrow { String name; int code; }
+
+< OP_MATH_CALL 179 -- typed native math kernel call; a is a stable math function ID, stack is [fallback marker, helper name, numeric args...]; VM-owned values fall back to synthesized __NativeMath bytecode >
+class SLISAMathCall { String name; int code; }
