@@ -49883,7 +49883,7 @@
     },
     {
       "path": "tools/sleela-native-service.py",
-      "sha256": "24f97518eeff075d68cbcfeaa8f25dbd2103e2739adcd87dc81fea98e7088508"
+      "sha256": "3a5a70a4767bd9f13e48bcb7c11197638b4ba670c4d878e797167838b8ad878a"
     },
     {
       "path": "wifi-common/include/sleela_wifi/wifi_manager_cpp.hpp",
