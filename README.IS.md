@@ -124,3 +124,38 @@ Fréttir, útgáfuupplýsingar og skrá yfir alþjóðleg README-skjöl eru við
 Þessi íslenska útgáfa er ítarleg tæknileg kynning sem nær yfir verkefnið, byggingu, uppsetningu, mál og keyrsluumhverfi, sannprófun, þróunarverkfæri og helstu verkefnasvið. Hún er ekki enn full þýðing línu fyrir línu á öllu staðlaða enska README-skjalinu. Þar til fullri þýðingu og tæknilegri yfirferð er lokið er [README.md](README.md) áfram staðlaða tæknilega heimildin.
 
 SLeeLa er þróað af MEARVK LLC.
+
+
+## 11. Þýðandabygging og keyrslulíkan
+
+SLeeLa aðgreinir upprunamál, framenda þýðandans, milliframsetningu, kóðagerð og keyrsluumhverfi. Útgáfa þýðandans, málskipanarútgáfa og VM/ISA-útgáfa eru aðskilin hugtök. Það að eiginleiki sé nefndur í forskrift sannar ekki að hann sé útfærður á öllum markkerfum.
+
+Venjulegt ferli les UTF-8 `.sleela`-skrár, framkvæmir lexíska og setningafræðilega greiningu, sannprófar tákn og tegundir, umbreytir skipulagðri milliframsetningu, býr til úttak fyrir studd VM- eða millimarkkerfi og keyrir niðurstöðuna í runtime. Staðlaða málskipanin er [SLEELA.syntax](SLEELA.syntax); sjá einnig [source documentation](markdown/SOURCE.md) og [compiler documentation](markdown/COMPILER.md).
+
+## 12. Gagnagerðir, hlutir og söfn
+
+Skjalfestar grunngerðir eru `int`, `double`, `boolean`, `String`, `void`, skilgreindar `struct`-gerðir og studdar reference-type signatures. `int`, `long` og `int64` eru 64-bita heiltölur með formerki. `int128` er samþykkt sem heiltölugerð, en núverandi skjalfesta útfærslan byggir enn á 64 bitum.
+
+`struct` er nafngreind samsett gerð. Struct-handföng sem VM stýrir eru ekki hráir bendlar; úthlutun og færibreytuflutningur deila sama tilviki og jafngildi byggist á auðkenni. Notaðu `structPack(instance)` og `structUnpack(TypeName, json)` fyrir skjalfesta færanlega raðvæðingu. Classes innihalda fields og methods; erfðir, nested classes og generics lúta útgáfuhliðum málskipanar.
+
+Helstu einingar eru `lib/advantage` (líkansbundið mat, stærðfræði, samþætting, einkunnagjöf og beint úttak), `lib/xml` (XML DOM), `lib/text` (texta- og strengjaaðgerðir), `lib/sleeladoc` (frumkóðaskjöl og CLI), `lib/cpu`, `lib/xlt` (CPU-snið og tímasetningarviðmið) og `recursion/stanchion` (C/C++-frumgerðir fyrir endurkvæmni). Tilvist einingar sannar ekki framleiðsluhæfni; skoðaðu prófanir og takmarkanir stýrikerfa.
+
+## 13. Lykkjutímasetning, native-samþætting og prófanir
+
+`@loopDelay` og `@loopBudget` skilgreina bið í lykkju eða heildartímamörk. Þær eru lækkaðar í VM-skipunina `OP_SLEEP` (ISA 157); innbyggða fallið `sleep(ms)` notar sömu skipun. Sjá [SLEELA.syntax §32](SLEELA.syntax) og [Loop Timing API](api/sleela/3.0/LOOP_TIMING_API.md).
+
+Geymslan inniheldur C/C++-einingar og afmarkaða leið fyrir native-kóðagerð. `@native` og `sleela aot` veita ekki almennt leyfi til að keyra hvaða native-kóða sem er. C/C++-mörk þurfa að skilgreina ABI, kallavenjur, eignarhald minnis, gagnaskipan, villumeðhöndlun og kerfisháðar forsendur.
+
+Dæmigerðar skipanir:
+
+```sh
+make
+make -C impl all
+bash ./test-suites/run-all.sh --all
+sudo make install
+make install PREFIX="$HOME/.local"
+```
+
+Bygging krefst yfirleitt GCC eða Clang og GNU Make; sum verkfæri nota Python 3. Sjá [installation guide](install/README.md), [platform matrix](docs/PLATFORM-SUPPORT.md) og [testing policy](markdown/TESTING.md). Prófunarskýrslur verða að greina á milli pass, fail og skip. PASS gildir aðeins um tilgreint umfang og tíma sannprófunar.
+
+**Uppfærð þýðingarstaða:** Íslenski leiðarvísirinn nær nú einnig yfir þýðandapípuna, gagnagerðir, hlutalíkan, söfn, lykkjutímasetningu, native-samþættingu, byggingu, uppsetningu og prófanir. Hann er ekki fullkomin línu-fyrir-línu þýðing á öllu kanóníska enska README-skjalinu.
