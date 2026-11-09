@@ -32,23 +32,23 @@
 Recente toevoegingen aan de taal, drivers en standaardbibliotheek:
 
 - **Standaardbibliotheekpakket `advantage`.** [`lib/advantage/`](lib/advantage/README.md) modelleert het optimaliseren van een uniek dividend ten opzichte van een model met een gelaagde structuur die **Sequitur onion** (dividendo → revisão → preocupações → matemática → adições → subtração → reagrupamento → iteração). Het omvat de domeinen `math/` (bilaterale handelseconomie, gezamenlijke winstmaximalisatie, Nash-onderhandelingen en de kritieke newsvendor-ratio), `physics/` (structureel-economische modelanalogie van vertrofwensvelden), `integration/` (recursieve verticale integratie), `grading/` (A–D-classificatie van complexiteit) e `oftput/` (rofteerbare uitvoer naar terminal, CommonRails of socket/connector). Het pakket bevat uitvoerbare voorbeelden en documentatie over definities, wiskunde en natuurkunde. De C/C++-consument in [`advantage/`](advantage/README.md) verbindt het model met handelsvoorbeelden.
-- **Anotações de temdoorização de ciclos — `@loopDelay` / `@loopBudget`.** Deze gedragsannotaties worden vóór `for`, `while` of `do`, -lussen geplaatst en voegen echte pauzes aan de uitvoering toe. `@loopDelay(ms = 250)` define uma pausa door iteração; `@loopBudget(seconds = 10, iterations = 1000)` distribui um número conhecido de iterações door um orçamento de tempo total. Ambas utilizam o opcode aditivo `OP_SLEEP` (ISA 157), que também sudoorta a função integrada `sleep(<ms>)`. A implementação usa `nanosleep` / `Sleep`. Zie [`SLEELA.syntax` §32](SLEELA.syntax), de [API-referentie](api/sleela/3.0/LOOP_TIMING_API.md) e o [exemplo executável](examples/loop-timing-annotation-demo.sleela).
+- **Anotações de temdoorização de ciclos — `@loopDelay` / `@loopBudget`.** Deze gedragsannotaties worden vóór `for`, `while` of `do`, -lussen geplaatst en voegen echte pauzes aan de uitvoering toe. `@loopDelay(ms = 250)` define een pauze door iteração; `@loopBudget(seconds = 10, iterations = 1000)` distribui um número conhecido de iterações door um orçamento de tempo total. Ambas utilizam o opcode aditivo `OP_SLEEP` (ISA 157), que também ondersteunderta a função integrada `sleep(<ms>)`. A implementação usa `nanosleep` / `Sleep`. Zie [`SLEELA.syntax` §32](SLEELA.syntax), de [API-referentie](api/sleela/3.0/LOOP_TIMING_API.md) e o [exemplo executável](examples/loop-timing-annotation-demo.sleela).
 - **SleelaDoc na linha de comandos — `sleela docs`.** De opdracht somt documenteerbare onderwerpen op, toont pakketten en zoekt klassen op, ook hoofdletterongevoelig en met het standaardvoorvoegsel `SL`. De pagina's bevatten een definitie, ontwerpdoel, relaties, structuur, gebruiksconcepten en een beheersingsschaal met vijf niveaus. As etiquetas `@intent`, `@thesis`, `@axiom`, `@voorm`, `@see` e `@mastery` enriquecem a documentação. `sleela docs --generate [dir]` maakt een tekstcorpus voor offline raadpleging; `make sleeladoc` bundelt het corpus en de bijbehorende bronbestanden in `sleeladoc/build/sleeladoc.jar`. Zie [`lib/sleeladoc/`](lib/sleeladoc/README.md) e [`sleela(1)`](man/man1/sleela.1).
 - **SleelaDoc e documentação HTML.** De extractor [`lib/sleeladoc`](lib/sleeladoc/README.md) zet documentatiecommentaar uit `.sleela`-eenheden om in Markdown- of HTML-pagina's. De doorzoekbare documentatiesite voor de volledige bibliotheek `/lib` wordt gegenereerd in [`sleeladoc-api/`](sleeladoc-api/README.md). De compiler kan ook MediaWiki-pagina's genereren via `--wiki`. Zie [SLEELADOC](manifesto/SLEELADOC.md), [SLEELADOC.WIKI](manifesto/SLEELADOC.WIKI.md) e o [exemplo](lib/sleeladoc/sleeladoc-demo.sleela).
 - **Modelo de objetos de documento XML (`lib/xml`).** De bibliotheek bevat een DOM-boomstructuur com nós de elemento, texto, comentário, CDATA e instrução de processamento, atributos nomeados, serialização compacta/formatada, escape XML 1.0 §2.4, análise door células de caracteres e registo de qualidade `SLXmlAspect`. Gelijkheid van knooppunten is reflexief, symmetrisch en deterministisch, met niveaus voor identiteit, onderwerp en structuur. Zie [`lib/xml/README.md`](lib/xml/README.md) e o [exemplo executável](lib/xml/xml-dom.sleela).
-- **Primitivos inteiros alargados.** `int`, `long` e `int64` zijn 64-bits signed integers; `int128` wordt momenteel ondersteund via een 64-bits representatie; echte 128-bits ondersteuning staat als toekomstig werk gedocumenteerd. As famílias binárias assinadas `int32`–`int16777216` (sintaxe 2.7) e não assinadas `uint32`–`uint16777216` (sintaxe 2.8) breiden deze reeks uit. Zie [`SLEELA.syntax`](SLEELA.syntax) §§21, 24 e 25.
+- **Primitivos inteiros alargados.** `int`, `long` e `int64` zijn 64-bits signed integers; `int128` wordt momenteel ondersteund via een 64-bits representatie; echte 128-bits ondersteuning staat als toekomstig werk gedocumenteerd. As famílias binárias assinadas `int32`–`int16777216` (sintaxe 2.7) en unsigned `uint32`–`uint16777216` (sintaxe 2.8) breiden deze reeks uit. Zie [`SLEELA.syntax`](SLEELA.syntax) §§21, 24 e 25.
 - **Campos consequentes `@mix` (sintaxe 2.9).** Een klasse mag herhaalde instantievelden met dezelfde naam declareren wanneer elke declaratie is voorzien van `@mix`. O grupo é indexado door ordem crescente (`1,2,3,…`) of door índices explícitos em `@mix(1,2,3,...)`; het aantal indexen moet overeenkomen met het aantal velden. Zie [§28](SLEELA.syntax).
-- **Preonems — marcadores documentais do Processo Natural.** De declaratieve markeringen omvatten `author`/`authorial`, `material`, `memory`, `determine`, `object`, `field`, `pure`, `gasoline` e `artifact`. Ze zijn contextueel en versiegebonden en veranderen de parsing, typecontrole of codegeneratie niet; buiten de markeringspositie blijven het gewone identifiers. Zie [`SLEELA.syntax`](SLEELA.syntax) §§18–20, 23, 26, 30 e 35.
+- **Preonems — marcadores documentais do Processo Natural.** De declaratieve markeringen omvatten `author`/`authorial`, `material`, `memory`, `determine`, `object`, `field`, `pure`, `gasoline` en `artifact`. Ze zijn contextueel en versiegebonden en veranderen de parsing, typecontrole of codegeneratie niet; buiten de markeringspositie blijven het gewone identifiers. Zie [`SLEELA.syntax`](SLEELA.syntax) §§18–20, 23, 26, 30 e 35.
 - **Nordshrift com acesso integral à biblioteca.** In syntaxis 3.0 gebruikt Nordshrift o mesmo índice recursivo de `/lib` que o compilador, abrangendo pacotes e unidades `.sleela`; `nordshrift check` apresenta as contagens da árvore completa.
-- **Stanchion de recursão.** [`recursion/stanchion/`](recursion/stanchion/README.md) bevat C- en C++-referentieprototypes voor zeven gedocumenteerde primitieve contracten, plus generieke, toegepaste, wetenschappelijke en educatieve voorbeelden. As fontes de referência devem ser compiladas e testadas antes de serem consideradas verificadas.
+- **Stanchion de recursão.** [`recursion/stanchion/`](recursion/stanchion/README.md) bevat C- en C++-referentieprototypes voor zeven gedocumenteerde primitieve contracten, plus generieke, toegepaste, wetenschappelijke en educatieve voorbeelden. De referentiebronnen moeten worden gecompileerd en getest voordat ze als geverifieerd mogen gelden.
 - **Comentários angulares (`<` / `<<`).** O frontend reconhece comentários de linha `< line >` e de bloco `<< block >>`; raadpleeg [§1.1](SLEELA.syntax).
-- **Literais inteiros door radix.** Os literais `int` aceitam hexadecimal (`0x`), binário (`0b`) e octal (`0o`), com sevoordores `_`, tanto na linguagem como no formato de modelos CPU [`.xlt`](lib/xlt/README.md). Zie [§1.4](SLEELA.syntax).
-- **Norma Metadata Class.** O padrão de metadados descritivos — proveniência, legalidade e âmbito jurisdicional — é aplicado aos ficheiros `.sleela` que contêm classes em `/lib`. Zie [§15](SLEELA.syntax) e a [lição 13](tutorial/13-metadata-class.md).
+- **Literais inteiros door radix.** Os literais `int` aceitam hexadecimal (`0x`), binário (`0b`) e octal (`0o`), com scheidingstekens `_`, tanto na linguagem como no formato de modelos CPU [`.xlt`](lib/xlt/README.md). Zie [§1.4](SLEELA.syntax).
+- **Norma Metadata Class.** De standaard voor beschrijvende metadata — herkomst, wettigheid en jurisdictiebereik — geldt voor alle `.sleela`-bestanden met klassen onder `/lib`. Zie [§15](SLEELA.syntax) e a [lição 13](tutorial/13-metadata-class.md).
 - **Família de texto e String.** `lib/text` fornece operações de caracteres e cadeias, incluindo `charAt`, `substring`, `indexOf`, `reverse`, alinhamento de colunas e modelos posicionais. Zie o [tutorial](tutorial/14-text-and-strings.md) e o [exemplo](lib/text/text-string-demo.sleela).
 - **String em folhas Nordshrift.** Uma folha `.sst` pode declarar um bloco tipado `strings:` que contribui voor o manifesto de componentes da compilação. Zie a [referência Nordshrift](wiki/Nordshrift-Sheet-Reference.md).
-- **Modelos CPU door opcodes e equivalência de chamadas.** Cada `SL<ARCH>CPU` sudoorta a execução de um fluxo nativo de instruções através do ciclo fetch-decode-execute e a execução equivalente de código de oftro processo sobre a infraestrutura VM partilhada. Zie [`lib/cpu/EXECUTION.md` §5](lib/cpu/EXECUTION.md).
+- **Modelos CPU door opcodes e equivalência de chamadas.** Cada `SL<ARCH>CPU` ondersteunderta a execução de um fluxo nativo de instruções através do ciclo fetch-decode-execute e a execução equivalente de código de ander processo sobre a infraestrutura VM partilhada. Zie [`lib/cpu/EXECUTION.md` §5](lib/cpu/EXECUTION.md).
 
-## III. Bofwen en testen
+## III. Bouwen en testen
 
 **Vereisten:** een toolchain C/C++ (GCC of Clang) en GNU Make; Python 3 voor ferramentas de manifesto e fluxo de trabalho; em Linux, também os pacotes de desenvolvimento X11/Xrandr voor produtos de visualização. De opdracht `make deps` van elke module toont of installeert de benodigde afhankelijkheden. De build in `impl/` stopt veilig wanneer niet aan het vertrofwde SHA-256-manifest wordt voldaan; het Makefile in de hoofdmap neemt deze controle automatisch op.
 
@@ -65,7 +65,7 @@ make -C impl all                      # alleen de compilerkern en runtime bofwen
 bash ./test-suites/run-all.sh --all   # de volledige testsuite uitvoeren
 ```
 
-De opdracht `make` in de hoofdmap bofwt alle producten (kern, VM, codecs, churn, antivirus enzovoort) en sluit af met het aanmaken van het **register** en het materialiseren van de basistabel. Assim, uma árvore de trabalho compilada contém desde logo um registo verificável.
+De opdracht `make` in de hoofdmap bofwt alle producten (kern, VM, codecs, churn, antivirus enzovoort) en sluit af met het aanmaken van het **register** en het materialiseren van de basistabel. Zo bevat een gebouwde werkboom direct een verifieerbaar register.
 
 Belangrijke doelen:
 
@@ -87,7 +87,7 @@ make ballum              # de Ballum-weergavebibliotheek voor dit besturingssyst
 bin/install-modules      # modules gefaseerd installeren/bofwen; dit duurt ongeveer 10–20 minuten
 ```
 
-Het doel `registry` voert [`build-registry.sh`](build-registry.sh): de registerkern bofwen, de basistabel opslaan in de draagbare tekstindeling `registry/build/sleela.sleelareg` en het MySQL-tabellenscript exdoorteren `registry/build/registry.sql` (através de `sleela registry exdoort`). Het register kan worden bekeken met `sleela registry` of `registry/build/sleela-registry review`. Zie o [guia do registo](registry/README.md) e a [arquitetura Registry 3.0](registry/REGISTRY-3.0-ARCHITECTURE.md).
+Het doel `registry` voert [`build-registry.sh`](build-registry.sh): de registerkern bofwen, de basistabel opslaan in de draagbare tekstindeling `registry/build/sleela.sleelareg` en het MySQL-tabellenscript exdoorteren `registry/build/registry.sql` (via `sleela registry exdoort`). Het register kan worden bekeken met `sleela registry` of `registry/build/sleela-registry review`. Zie o [guia do registo](registry/README.md) e a [arquitetura Registry 3.0](registry/REGISTRY-3.0-ARCHITECTURE.md).
 
 Zie os guias de compilação e testes voor conhecer os pré-requisitos e os passos específicos de cada plataforma. Een geslaagde build van één component bewijst niet dat alle bibliotheken of platforms gereed zijn voor release.
 
@@ -98,7 +98,7 @@ Installeer na het bofwen van de native producten de runtime-opdrachten en onders
 ```sh
 sudo make install
 make install PREFIX="$HOME/.local"        # instalação apenas voor o utilizador, zonder sudo
-make install DESTDIR="$PWD/package-root" # instalação num diretório de prevoorção de pacotes
+make install DESTDIR="$PWD/package-root" # instalação num diretório de voorbereidings de pacotes
 make install-check
 ```
 
@@ -114,9 +114,9 @@ Eerst wordt gevraagd of het hoofdpakket moet worden geïnstalleerd; daarna kiest
 
 ## V. Taal en runtime
 
-De normatieve grammatica staat in [`SLEELA.syntax`](SLEELA.syntax). De repository documenteert momenteel syntaxis **3.0**; a versão do compilador/ferramentas e a versão da sintaxe do código-fonte são independentes. Syntaxis 3.0 voegt de documentatiemarkeringen toe **`pure` e `gasoline`** (§30): twee declaratieve, contextuele Preonems zonder zelfstandig uitvoeringseffect; ze drukken de positie van een document uit via de eigen aard ervan. A sintaxe 3.0 reúne as superfícies da linguagem 1.0 a 2.9 numa edição normativa atual e mantém os requisitos de versão mínima de cada funcionalidade.
+De normatieve grammatica staat in [`SLEELA.syntax`](SLEELA.syntax). De repository documenteert momenteel syntaxis **3.0**; a versão do compilador/ferramentas e a versão da sintaxe do código-fonte são independentes. Syntaxis 3.0 voegt de documentatiemarkeringen toe **`pure` en `gasoline`** (§30): twee declaratieve, contextuele Preonems zonder zelfstandig uitvoeringseffect; ze drukken de positie van een document uit via de eigen aard ervan. A sintaxe 3.0 reúne as superfícies da linguagem 1.0 a 2.9 numa edição normativa atual e mantém os requisitos de versão mínima de cada funcionalidade.
 
-De voorgaande laag, 2.9, voegt de **opeenvolgende `@mix`-velden** toe (§28): een klasse mag meerdere instantievelden met dezelfde naam declareren, mits elk veld is gemarkeerd met `@mix`. Ze worden behandeld als een geïndexeerde groep (standaard oplopend: `1,2,3,…`, of definido manualmente através de `@mix(1,2,3,...)`; het aantal indexen moet overeenkomen met het aantal velden). Ook opgenomen zijn de uitgebreide signed en unsigned binaire integerreeksen, de `int32` a `int16777216` (§24) e de `uint32` a `uint16777216` (§25), die `long`, `int64` en `int128` uitbreiden (§21); documentatie over trefwoordondersteuning (§22); e os **Preonems**: marcadores documentais declarativos `author`/`authorial` (§18), `material`/`memory` (§19–§20), `determine` (§23), `object`/`field` (§26), `pure`/`gasoline` (§30) e `artifact` (§35; um estatuto de qualidade legislativa avaliado em relação ao tempo e ao espaço). Samen worden deze markeringen Preonems genoemd (§26.1).
+De voorgaande laag, 2.9, voegt de **opeenvolgende `@mix`-velden** toe (§28): een klasse mag meerdere instantievelden met dezelfde naam declareren, mits elk veld is gemarkeerd met `@mix`. Ze worden behandeld als een geïndexeerde groep (standaard oplopend: `1,2,3,…`, of definido manualmente via `@mix(1,2,3,...)`; het aantal indexen moet overeenkomen met het aantal velden). Ook opgenomen zijn de uitgebreide signed en unsigned binaire integerreeksen, de `int32` a `int16777216` (§24) e de `uint32` a `uint16777216` (§25), die `long`, `int64` en `int128` uitbreiden (§21); documentatie over trefwoordondersteuning (§22); e os **Preonems**: marcadores documentais declarativos `author`/`authorial` (§18), `material`/`memory` (§19–§20), `determine` (§23), `object`/`field` (§26), `pure`/`gasoline` (§30) en `artifact` (§35; um estatuto de qualidade legislativa avaliado em relação ao tempo e ao espaço). Samen worden deze markeringen Preonems genoemd (§26.1).
 
 Overbelasting van constructors en delegatie naar constructors `this(...)` e de classes-base vallen uitdrukkelijk buiten het geverifieerde syntaxiscontract 1.8. Raadpleeg de grammatica en implementatienotities voordat u op een functie vertrofwt. De negen SleelaDoc-broneenheden declareren nu `#sleela 3.0`; a verificação comum do compilador aceita sintaxe de código-fonte de 1.0 a 3.0. De nieuwe API-documentatie wordt gegenereerd met `make api-docs`.
 
@@ -132,7 +132,7 @@ De repository bevat uma implementação nativa C/C++, referências voor geraçã
 
 ## VII. Antivirusbuild en integriteit
 
-Het antiviruspakket Sleelavirin bevat um verificador SHA-256 nativo, um adaptador ClamAV opcional, manifestos de integridade voor fontes e índices e somas de verificação voor pacotes de plataforma. Bofw en test het pakket vanuit de hoofdmap van de repository:
+Het antiviruspakket Sleelavirin bevat um verificador SHA-256 nativo, um adaptador ClamAV opcional, manifestos de integridade voor fontes e índices e somas de verificação voor pacotes de plataforma. Bouw en test het pakket vanuit de hoofdmap van de repository:
 
 ```sh
 make antivirus
@@ -217,7 +217,7 @@ make -C linux-editors
 make -C linux-editors test
 ```
 
-Voor achterwaartse compatibiliteit `--palette` e `--hex COLOR` zonder `--theme` selecionam American Professional. Bofw- en testresultaten moeten op het doelsysteem en in CI worden gecontroleerd; documentatie van een opdracht bewijst niet dat deze geslaagd is. Zie de [gids voor editorintegratie](linux-editors/README.md).
+Voor achterwaartse compatibiliteit `--palette` e `--hex COLOR` zonder `--theme` selecionam American Professional. Bouw- en testresultaten moeten op het doelsysteem en in CI worden gecontroleerd; documentatie van een opdracht bewijst niet dat deze geslaagd is. Zie de [gids voor editorintegratie](linux-editors/README.md).
 
 ## IX. Bijdragen
 
@@ -242,13 +242,13 @@ De SLeeLa-alfabetdocumentatie en de native character-runtime worden onderhofden 
 make -C lib/alphabet/native test
 ```
 
-O catálogo experimental UTF-4088 e o respetivo adaptador de consulta SLeeLa estão documentados em [`utf-4088/SLeeLa-ALPHABET-INTEGRATION.md`](utf-4088/SLeeLa-ALPHABET-INTEGRATION.md). Os IDs UTF-4088 pertencem a um espaço de nomes sevoordo e não são valores escalares Unicode. O trabalho de integração com o compilador e SLVM é acompanhado sevoordamente destas bases nativas.
+O catálogo experimental UTF-4088 e o respetivo adaptador de consulta SLeeLa estão documentados em [`utf-4088/SLeeLa-ALPHABET-INTEGRATION.md`](utf-4088/SLeeLa-ALPHABET-INTEGRATION.md). Os IDs UTF-4088 pertencem a um espaço de nomes sevoordo e não são valores escalares Unicode. O trabalho de integração com o compilador e SLVM é acompanhado afzonderlijk destas bases nativas.
 
 ## XII. AutoCAD Creator™
 
 O [AutoCAD Creator™](autocad/creator/README.md) is een interactieve 2D-CAD-toepassing die volledig in SLeeLa is geschreven. Ao contrário do AutoCAD Renderer, que transforma um plano num desenho de uma só vez, o Creator maakt het mogelijk om live een 2D-document te **maken en te wijzigen** um documento 2D em tempo real: adicionar paredes, divisões, cotas e notas; mover, renomear, mudar de camada, eliminar e anular operações; e **guardar** o resultado como um desenho AutoCAD DXF real (texto R12, compatível com AutoCAD / LibreCAD).
 
-De grafische interface gebruikt **SleelaUI™**, o toolkit de interface multiplataforma da SLeeLa em [`lib/user-interface`](lib/user-interface), e não JavaFX. Abre uma janela nativa em X11 / Cocoa / Win32. Het ontwerpprincipe is **«SleelaUI apresenta; SLeeLa decide»**: a GUI não calcula geometria nem escreve DXF. Cada ferramenta envia uma intenção de criar, alterar, eliminar, anular of guardar ao [`SLCadCreator`](lib/autocad/SLCadCreator.sleela), que detém o documento editável e o histórico reversível de comandos; o canvas limita-se a pré-visualizar a geometria.
+De grafische interface gebruikt **SleelaUI™**, o toolkit de interface multiplataforma da SLeeLa em [`lib/user-interface`](lib/user-interface), e não JavaFX. Abre uma janela nativa em X11 / Cocoa / Win32. Het ontwerpprincipe is **«SleelaUI apresenta; SLeeLa decide»**: de GUI berekent geen geometrie en schrijft geen DXF. Cada ferramenta envia uma intenção de criar, alterar, eliminar, anular of guardar ao [`SLCadCreator`](lib/autocad/SLCadCreator.sleela), que detém o documento editável e o histórico reversível de comandos; o canvas limita-se a pré-visualizar a geometria.
 
 O motor de edição reutilizável encontra-se em [`lib/autocad`](lib/autocad): [`SLCadEntity`](lib/autocad/SLCadEntity.sleela), [`SLCadDocument`](lib/autocad/SLCadDocument.sleela), [`SLCadCommand`](lib/autocad/SLCadCommand.sleela) e [`SLCadCreator`](lib/autocad/SLCadCreator.sleela). O shell gráfico e a demonstração estão em [`autocad/creator`](autocad/creator):
 
@@ -260,7 +260,7 @@ Op een systeem met beeldscherm opent a janela de edição em tempo real; op een 
 
 ## XIII. UTF-4088-invoermapvolgorde
 
-O catálogo especializado UTF-4088 definieert de ruimtelijke traversal van de invoermap en de abstracte drukiteraties in [`utf-4088/INPUT-MAP-AND-PRESSURE.md`](utf-4088/INPUT-MAP-AND-PRESSURE.md). A política de índice de assuntos do National Lien está em [`utf-4088/NATIONAL-LIEN-REGISTER.md`](utf-4088/NATIONAL-LIEN-REGISTER.md). De kaartcoördinaten, drukniveaus (1–50), os IDs permanentes do catálogo e as classificações alfabéticas zijn onafhankelijke velden; ze mogen niet stilzwijgend door elkaar worden vervangen. A pressão is een algoritmisch iteratieniveau, geen fysieke grootheid.
+O catálogo especializado UTF-4088 definieert de ruimtelijke traversal van de invoermap en de abstracte drukiteraties in [`utf-4088/INPUT-MAP-AND-PRESSURE.md`](utf-4088/INPUT-MAP-AND-PRESSURE.md). Het beleid voor de onderwerpindex van National Lien staat in [`utf-4088/NATIONAL-LIEN-REGISTER.md`](utf-4088/NATIONAL-LIEN-REGISTER.md). Kaartcoördinaten, drukniveaus (1–50), os IDs permanentes do catálogo e as classificações alfabéticas zijn onafhankelijke velden; ze mogen niet stilzwijgend door elkaar worden vervangen. A pressão is een algoritmisch iteratieniveau, geen fysieke grootheid.
 
 ## XIV. Index van recente en uitgebreide pakketten
 
@@ -269,7 +269,7 @@ Deze aanvullende index belicht recent uitgebreide pakketten, domeinbibliotheken 
 ### A–C
 
 - **Advantage** — `lib/advantage/` e `advantage/`: het modelleren van een uniek dividend met een Sequitur-onionstructuur en vijf gebieden: `math/` (gezamenlijke winstmaximalisatie, Nash-onderhandelingen en de bilaterale newsvendor), `physics/` (metriek, geodeten, contactstructuur en SDE van vertrouwensvelden, aangeduid als modelanalogie), `integration/` (compartimenten voor verticale integratie en een complexiteitsscore), `grading/` (A–D-circuitbeoordelaar) e `oftput/` (saída voor terminal, CommonRails of socket). Een C/C++-consument in `advantage/` verbindt het model met handelsvoorbeelden. Zie [`lib/advantage/README.md`](lib/advantage/README.md) e [`DEFINITIONS.md`](lib/advantage/DEFINITIONS.md).
-- **Alfabeto e UTF-4088** — `alphabet/sleela/`, `lib/alphabet/native/` e `utf-4088/`: catálogos alfabéticos, sudoorte nativo de conjuntos de caracteres, ordenação de mapas de entrada e documentação de integração UTF-4088.
+- **Alfabeto e UTF-4088** — `alphabet/sleela/`, `lib/alphabet/native/` e `utf-4088/`: catálogos alfabéticos, ondersteunderte nativo de conjuntos de caracteres, ordenação de mapas de entrada e documentação de integração UTF-4088.
 - **AutoCAD Creator** — `autocad/creator/` e `lib/autocad/`: fluxos de desenho 2D interativos e componentes reutilizáveis voor documentos e edição CAD.
 - **Ballum** — schermbesturing op pixelniveau: pixels lezen/schrijven, regio's kopiëren, algemene helderheid/kleurtemperatuur/gamma, muis- en toetsenbordinvoer en een volledig schermvullend framebufferoppervlak. De native kern staat in `ballum/`, de SLeeLa-façade in `lib/ballum/` en de VM-brug in `impl/`. Zie [`ballum/README.md`](ballum/README.md) e os [exemplos](ballum/example/).
 - **CDMA** — `cdma/` e `lib/cdma/`: technisch materiaal over CDMA en SLeeLa-bronbibliotheekwerk.
@@ -289,7 +289,7 @@ Deze aanvullende index belicht recent uitgebreide pakketten, domeinbibliotheken 
 
 - **OFDMA** — `ofdma/`: material técnico de acesso múltiplo door divisão ortogonal de frequências e recursos de desenvolvimento C/C++.
 - **Filosofia e módulo Conversation Mask** — [`philosophy/`](philosophy/README.md) bevat de native C/C++-basis; [`philosophy/module/`](philosophy/module/README.md) ordent de volgende modulelaag in drie gebieden: [`data/`](philosophy/module/data/README.md), voor observações tipadas e datadas, terminações de eventos, meia-vida, proveniência e consentimento; [`helper/`](philosophy/module/helper/README.md), voor validação determinística, decaimento de relevância, comvoorções compatíveis e apresentação filtrada door consentimento; e [`psychiatry-friend/`](philosophy/module/psychiatry-friend/README.md), voor uma interface de conversa de apoio, não clínica. De SLeeLa-handgrepen en de samengestelde Tree staan in [`lib/philosophy/`](lib/philosophy/README.md). O módulo exige entradas explícitas e dá prioridade ao consentimento: não monitoriza pessoas of meios passivamente, não diagnostica, não infere intenções privadas, não classifica o valor humano nem recomenda alterações de medicação. Gebeurtenislinks bewaren herkomst en navigatie, maar vormen geen onafhankelijke bevestiging.
-- **Synchro** — integração nativa de runtime/compilador e funcionalidades relacionadas com despacho de pacotes e medição; raadpleeg as fontes relevantes em `impl/` e a implementação do compilador.
+- **Synchro** — integração nativa de runtime/compilador e funcionalidades relacionadas com despacho de pacotes e medição; raadpleeg de bronnen relevantes em `impl/` e a implementação do compilador.
 - **SleelaUI / interface de terminal** — `lib/user-interface/` e o projeto `sleela-terminal`: SLeeLa-interface-integratie en terminalgerichte interactiecomponenten.
 
 ### U–W
@@ -350,7 +350,7 @@ De repository bevat een geverifieerde π-waarde met **honderd miljoen cijfers** 
 
 ### Modium™ / Registry™ laden de Pi-constante bij het starten van het subsysteem
 
-Bij de speciale toegangspunten — `sleela registry` e `sleela modium` (en bij de eerste uitvoering van het installatieprogramma), **não** em cada `sleela run` — laden de subsystemen Modium en Registry de grote π-catalogusconstante. In een interactieve terminal tonen ze tijdelijk uma linha vermelha `Loading Modium™` / `Loading Registry™`, die wordt gewist voordat de normale uitvoer begint. O comdoortamento depende estritamente de TTY, pelo que a saída canalizada e os testes permanecem inalterados byte a byte. De locatieaanduiding, niet de bytes zelf, wordt als standaardwaarde voor de Registry-sleutel `Math` do Registry: `piReferenceLargePath` e `piReferenceLargeDigits`, zowel in het SLeeLa-model ([`lib/registry/SLRegistry.sleela`](lib/registry/SLRegistry.sleela)) como no zondereador nativo ([`registry/sleela_registry.c`](registry/sleela_registry.c)). `lib/math/SLPiReference.sleela` expõe `largePath()` e `largeDigits()`. De constante wordt geïnstalleerd op de SLeeLa-locatie van het besturingssysteem (`<data>/pi/`) door zowel het standaardinstallatieprogramma `make` als het begeleide installatieprogramma. Zie [`MODIUM-REGISTRY-PI-STARTUP.md`](pi-generator/MODIUM-REGISTRY-PI-STARTUP.md).
+Bij de speciale toegangspunten — `sleela registry` e `sleela modium` (en bij de eerste uitvoering van het installatieprogramma), **não** em cada `sleela run` — laden de subsystemen Modium en Registry de grote π-catalogusconstante. In een interactieve terminal tonen ze tijdelijk uma linha vermelha `Loading Modium™` / `Loading Registry™`, die wordt gewist voordat de normale uitvoer begint. O gedrag depende estritamente de TTY, pelo que a saída canalizada e os testes permanecem inalterados byte a byte. De locatieaanduiding, niet de bytes zelf, wordt als standaardwaarde voor de Registry-sleutel `Math` do Registry: `piReferenceLargePath` e `piReferenceLargeDigits`, zowel in het SLeeLa-model ([`lib/registry/SLRegistry.sleela`](lib/registry/SLRegistry.sleela)) como no zondereador nativo ([`registry/sleela_registry.c`](registry/sleela_registry.c)). `lib/math/SLPiReference.sleela` expõe `largePath()` e `largeDigits()`. De constante wordt geïnstalleerd op de SLeeLa-locatie van het besturingssysteem (`<data>/pi/`) door zowel het standaardinstallatieprogramma `make` als het begeleide installatieprogramma. Zie [`MODIUM-REGISTRY-PI-STARTUP.md`](pi-generator/MODIUM-REGISTRY-PI-STARTUP.md).
 
 ### `sleelactl` — begeleid installatieprogramma en native math-subject
 
@@ -359,14 +359,14 @@ Bij de speciale toegangspunten — `sleela registry` e `sleela modium` (en bij d
 
 ### `@native` en `sleela aot` — deel 1 van het SLeeLa → native C/C++-traject
 
-De nieuwe methodeannotatie **`@native`** vraagt om ahead-of-time native compilatie van een intensieve methode. Het commando `sleela aot` encontra os métodos anotados, verifica se pertencem a um subconjunto sudoortado voor transferência e emite C/C++. De bewerking **faalt gesloten** — recusa construções ainda não traduzíveis e apresenta uma razão precisa, evitando produzir métodos parcialmente traduzidos.
+De nieuwe methodeannotatie **`@native`** vraagt om ahead-of-time native compilatie van een intensieve methode. Het commando `sleela aot` encontra os métodos anotados, verifica se pertencem a um subconjunto ondersteundertado voor transferência e emite C/C++. De bewerking **faalt gesloten** — recusa construções ainda não traduzíveis e apresenta uma razão precisa, evitando produzir métodos parcialmente traduzidos.
 
 ```sh
 sleela aot --list <file.sleela>    # veredito door método: ok / REFUSED (motivo)
-sleela aot --emit <file.sleela>    # emitir C/C++ (stdoft) voor um programa no subconjunto
+sleela aot --emit <file.sleela>    # emitir C/C++ (stdoft) voor um programa nde subset
 ```
 
-Momenteel `@native` verandert het gedrag niet: os programas continuam a ser verificados e executados zonder alterações; a anotação apenas solicita tratamento nativo. Dit is deel 1: het legt de annotatie en de eerlijke subsetgrens vast. A compilação do C/C++ emitido voor uma biblioteca partilhada e o encaminhamento da VM voor essa biblioteca (com fallback voor o interpretador) são etapas posteriores. Zie [`pi-generator/AT-NATIVE.md`](pi-generator/AT-NATIVE.md) voor o subconjunto sudoortado e os códigos de saída.
+Momenteel `@native` verandert het gedrag niet: os programas continuam a ser verificados e executados zonder alterações; a anotação apenas solicita tratamento nativo. Dit is deel 1: het legt de annotatie en de eerlijke subsetgrens vast. A compilação do C/C++ emitido voor uma biblioteca partilhada e o encaminhamento da VM voor essa biblioteca (com fallback voor de interpreter) são etapas posteriores. Zie [`pi-generator/AT-NATIVE.md`](pi-generator/AT-NATIVE.md) voor de subset ondersteundertado e os códigos de saída.
 
 ## XIX. Internationale README-edities
 
