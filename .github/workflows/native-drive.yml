@@ -7,6 +7,8 @@ on:
       - 'impl/native-drive/**'
       - 'impl/tests/native_drive/**'
       - 'tools/tests/test_native_drive.py'
+      - 'tools/tests/test_sleela_ipc_worker.py'
+      - 'tools/sleela-ipc-worker.py'
       - 'os-level-support/loader/native_loader.h'
       - 'os-level-support/loader/tests/**'
       - 'os-level-support/loader/CMakeLists.txt'
@@ -52,6 +54,8 @@ jobs:
           if ($errors.Count -gt 0) { $errors | Format-List; exit 1 }
       - name: Run Native Drive tests
         run: python -m unittest discover -s tools/tests -p "test_native_drive.py" -v
+      - name: Run persistent Native IPC worker tests
+        run: python -m unittest discover -s tools/tests -p "test_sleela_ipc_worker.py" -v
       - name: Compile and run Native IPC codec smoke test (POSIX)
         if: runner.os != 'Windows'
         run: |

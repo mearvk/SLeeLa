@@ -2,6 +2,10 @@
   "algorithm": "sha256",
   "files": [
     {
+      "path": ".github/workflows/native-drive.yml",
+      "sha256": "c8caa7f950777221c33662604d709398bcaf2bf054147fde8b4f9fd591eb091a"
+    },
+    {
       "path": "ballum/include/sleela_ballum/ballum_effects.h",
       "sha256": "0f49660f73a7878ca0fbc21e0adbdaaf788c08b23d7313d978881f5a0516fc4c"
     },
@@ -49910,12 +49914,20 @@
       "sha256": "ad7abf87d8012a2bc41a85f5e6ef5eea526d1e818c15e053f0f79d3352dc5adf"
     },
     {
+      "path": "tools/sleela-ipc-worker.py",
+      "sha256": "46da9967b98014f2ff26530e61e4c2385b567474c905b589c86571724cd4297c"
+    },
+    {
       "path": "tools/sleela-native-drive.py",
       "sha256": "e9d073e2e3fa8485554c5f2a80dcaf4230780bc67e0c2abde881cf2c97d67b97"
     },
     {
       "path": "tools/sleela-native-service.py",
       "sha256": "708750edc7fe41ff484a4ecbe5dd5b47c93704724ab60c17a0895f97582bbfa0"
+    },
+    {
+      "path": "tools/tests/test_sleela_ipc_worker.py",
+      "sha256": "404a0dec9a752fdd217691251db745307cd63eb41dbec8a111171d98f2ea5c02"
     },
     {
       "path": "wifi-common/include/sleela_wifi/wifi_manager_cpp.hpp",
