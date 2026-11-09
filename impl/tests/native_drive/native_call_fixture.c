@@ -73,6 +73,28 @@ SL_NATIVE_EXPORT int sl_native_call(const char *method, uint32_t argc,
             callback_result.tag != SL_NATIVE_VALUE_I64) return SL_NATIVE_CALL_ERROR;
         *out_result = callback_result; return SL_NATIVE_CALL_OK;
     }
+    if (strcmp(method, "call_sleela_open") == 0 ||
+        strcmp(method, "call_sleela_close") == 0) {
+        const char *callback_name = strcmp(method, "call_sleela_open") == 0
+            ? "Callback::receive_open" : "Callback::receive_close";
+        SLNativeValue callback_arg, callback_result;
+        if (!host_api_bound || !host_api.invoke || argc != 1 || !argv ||
+            argv[0].tag != SL_NATIVE_VALUE_I64)
+            return SL_NATIVE_CALL_ERROR;
+        callback_arg = argv[0];
+        memset(&callback_result, 0, sizeof(callback_result));
+        if (!host_api.invoke(host_api.context, callback_name, 1,
+                             &callback_arg, &callback_result)) {
+            memset(out_result, 0, sizeof(*out_result));
+            out_result->tag = SL_NATIVE_VALUE_I64;
+            out_result->as.i64 = -1;
+            return SL_NATIVE_CALL_OK;
+        }
+        if (callback_result.tag != SL_NATIVE_VALUE_I64)
+            return SL_NATIVE_CALL_ERROR;
+        *out_result = callback_result;
+        return SL_NATIVE_CALL_OK;
+    }
     if (strcmp(method, "call_sleela_nested") == 0) {
         SLNativeValue callback_args[2], callback_result;
         if (!host_api_bound || !host_api.invoke || argc != 2 || !argv ||
