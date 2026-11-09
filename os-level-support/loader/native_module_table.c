@@ -82,6 +82,10 @@ SLNativeStatus sl_native_table_call(SLNativeModuleTable *table,
     return sl_native_call_module(&slot->module, method, argc, argv, out_result);
 }
 
+int sl_native_table_is_valid(SLNativeModuleTable *table, SLNativeHandle handle) {
+    return resolve(table, handle) != NULL;
+}
+
 SLNativeStatus sl_native_table_close(SLNativeModuleTable *table,
                                      SLNativeHandle handle) {
     SLNativeModuleSlot *slot = resolve(table, handle);
