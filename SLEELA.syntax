@@ -2714,8 +2714,10 @@ contract in section 36.2; raw VM pointers, object handles, and internal
 `SLValue` structures never cross the boundary.
 
 The VM executes callback bytecode on a separate nested interpreter stack and
-keeps the suspended native-calling stack visible to garbage collection.
-Recursive native-module operations from callback bytecode are rejected with
+keeps the suspended native-calling stack visible to garbage collection. A
+callback is accepted only when the VM has no active worker threads; callback
+bytecode cannot spawn or join workers. Recursive native-module operations
+from callback bytecode are rejected with
 `SL_NATIVE_REENTRANT_CALL`, preventing re-entry into the module lock and
 avoiding unload races. A callback failure is a handled plugin error and never
 triggers NOT_HANDLED interpreter fallback. The binder is optional; plugins
