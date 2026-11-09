@@ -1188,7 +1188,7 @@ int slvm_math_dispatch_arrays(SLVM* vm, int operation,
                               size_t aux_rows, size_t aux_cols,
                               double scalar, size_t flags,
                               double* scalar_result) {
-    if (!vm) return SLMATH_INVALID_ARGUMENT;
+    if (!vm || (out_handle >= 0 && aux_handle >= 0 && out_handle == aux_handle)) return SLMATH_INVALID_ARGUMENT;
     double *a_data=NULL,*b_data=NULL,*out_data=NULL,*aux_data=NULL;
     size_t a_len=0,b_len=0,out_len=0,aux_len=0;
     double scalar_out=0.0;
