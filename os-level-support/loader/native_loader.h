@@ -84,7 +84,8 @@ typedef enum SLNativeStatus {
     SL_NATIVE_TABLE_FULL = 6,
     SL_NATIVE_STALE_HANDLE = 7,
     SL_NATIVE_TYPED_ENTRY_NOT_FOUND = 8,
-    SL_NATIVE_PLUGIN_ERROR = 9
+    SL_NATIVE_PLUGIN_ERROR = 9,
+    SL_NATIVE_METHOD_NOT_HANDLED = 10
 } SLNativeStatus;
 
 /* Plugins export these C-linkage functions; initialize module as {0}. */
