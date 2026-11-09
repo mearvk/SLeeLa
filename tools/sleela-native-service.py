@@ -175,28 +175,93 @@ def main() -> int:
         target_dir.mkdir(parents=True, exist_ok=True)
         target = target_dir / f"{args.name}.service"
         backup = target.with_name(target.name + ".sleela-backup")
-        if target.exists() and not args.replace:
+        existed = target.exists()
+        if existed and not args.replace:
             raise RuntimeError(f"unit already exists: {target}; pass --replace to replace it explicitly")
-        if target.exists() and args.replace:
-            if backup.exists():
-                raise RuntimeError(f"rollback backup already exists: {backup}; run --rollback before replacing again")
-            shutil.copy2(target, backup)
+        if existed and backup.exists():
+            raise RuntimeError(f"rollback backup already exists: {backup}; run --rollback before replacing again")
+
+        # Preserve the previous unit before changing the live file. The backup
+        # is written atomically and is retained after success for explicit
+        # rollback. A failed install attempts to restore the previous state.
+        if existed:
+            backup_fd, backup_tmp = tempfile.mkstemp(prefix=f".{args.name}.backup.", dir=target_dir)
+            try:
+                with os.fdopen(backup_fd, "wb") as stream, target.open("rb") as source:
+                    shutil.copyfileobj(source, stream)
+                    stream.flush()
+                    os.fsync(stream.fileno())
+                shutil.copystat(target, backup_tmp)
+                os.replace(backup_tmp, backup)
+            finally:
+                if os.path.exists(backup_tmp):
+                    os.unlink(backup_tmp)
+
         fd, temp_name = tempfile.mkstemp(prefix=f".{args.name}.", dir=target_dir)
+        installed = False
+        enabled = False
+        started = False
         try:
             with os.fdopen(fd, "w", encoding="utf-8") as stream:
                 stream.write(unit)
                 stream.flush()
                 os.fsync(stream.fileno())
             os.replace(temp_name, target)
+            installed = True
+
+            scope = ["--system"] if args.system else ["--user"]
+            subprocess.run(["systemctl", *scope, "daemon-reload"], check=True)
+            if args.enable:
+                subprocess.run(["systemctl", *scope, "enable", f"{args.name}.service"], check=True)
+                enabled = True
+            if args.start:
+                subprocess.run(["systemctl", *scope, "start", f"{args.name}.service"], check=True)
+                started = True
+        except (OSError, subprocess.CalledProcessError) as exc:
+            # Undo side effects in reverse order. Keep the backup if any
+            # recovery step fails so an administrator can recover manually.
+            recovery_errors = []
+            if started or args.start:
+                try:
+                    subprocess.run(["systemctl", *scope, "stop", f"{args.name}.service"], check=True)
+                except (OSError, subprocess.CalledProcessError) as recovery_exc:
+                    recovery_errors.append(f"stop: {recovery_exc}")
+            if enabled or args.enable:
+                try:
+                    subprocess.run(["systemctl", *scope, "disable", f"{args.name}.service"], check=True)
+                except (OSError, subprocess.CalledProcessError) as recovery_exc:
+                    recovery_errors.append(f"disable: {recovery_exc}")
+            if installed:
+                try:
+                    if existed:
+                        restore_fd, restore_tmp = tempfile.mkstemp(prefix=f".{args.name}.restore.", dir=target_dir)
+                        try:
+                            with os.fdopen(restore_fd, "wb") as stream, backup.open("rb") as source:
+                                shutil.copyfileobj(source, stream)
+                                stream.flush()
+                                os.fsync(stream.fileno())
+                            shutil.copystat(backup, restore_tmp)
+                            os.replace(restore_tmp, target)
+                        finally:
+                            if os.path.exists(restore_tmp):
+                                os.unlink(restore_tmp)
+                    else:
+                        target.unlink(missing_ok=True)
+                    subprocess.run(["systemctl", *scope, "daemon-reload"], check=True)
+                    if existed and not recovery_errors:
+                        backup.unlink(missing_ok=True)
+                except (OSError, subprocess.CalledProcessError) as recovery_exc:
+                    recovery_errors.append(f"restore/reload: {recovery_exc}")
+            if recovery_errors:
+                raise RuntimeError(
+                    f"installation failed ({exc}); automatic recovery was incomplete: "
+                    + "; ".join(recovery_errors)
+                    + (f"; preserve/review backup at {backup}" if backup.exists() else "")
+                ) from exc
+            raise RuntimeError(f"installation failed and previous state was restored: {exc}") from exc
         finally:
             if os.path.exists(temp_name):
                 os.unlink(temp_name)
-        scope = ["--system"] if args.system else ["--user"]
-        subprocess.run(["systemctl", *scope, "daemon-reload"], check=True)
-        if args.enable:
-            subprocess.run(["systemctl", *scope, "enable", f"{args.name}.service"], check=True)
-        if args.start:
-            subprocess.run(["systemctl", *scope, "start", f"{args.name}.service"], check=True)
         print(f"installed {target}", file=sys.stderr)
         return 0
     except (OSError, ValueError, RuntimeError, subprocess.CalledProcessError) as exc:
