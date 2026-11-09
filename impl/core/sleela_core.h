@@ -277,6 +277,18 @@ typedef enum {
     OP_TRY_PUSH,
     OP_TRY_POP,
     OP_THROW,
+    /* Native IPC worker ABI. OPEN consumes a host-authorized worker capability
+     * name (not an arbitrary executable path) and pushes an opaque VM-local
+     * worker handle. CALL has operand a=argc and stack layout
+     * [worker-handle, method-name String, arg0, ..., argN-1]; it pushes one
+     * scalar/UTF-8 result. CLOSE consumes the handle and pushes null.
+     *
+     * These IDs are reserved and artifact-validated, but runtime dispatch stays
+     * fail-closed until the native process supervisor and VM worker table are
+     * integrated. Appended; never renumber prior opcodes. */
+    OP_IPC_OPEN,
+    OP_IPC_CALL,
+    OP_IPC_CLOSE,
     /* Sentinel: one past the last real opcode. Artifact validation uses this so
      * every defined opcode is accepted and adding a new opcode above never
      * requires updating the validator's upper bound again. KEEP LAST. */
@@ -305,7 +317,10 @@ static_assert(OP_JSTR_FROM_UTF8 == 175, "Java String UTF-8 conversion is append-
 static_assert(OP_TRY_PUSH == 176, "OP_TRY_PUSH is append-only opcode 176");
 static_assert(OP_TRY_POP == 177, "OP_TRY_POP is append-only opcode 177");
 static_assert(OP_THROW == 178, "OP_THROW is append-only opcode 178");
-static_assert(OP__COUNT == 179, "the extended ISA must contain 179 opcodes");
+static_assert(OP_IPC_OPEN == 179, "OP_IPC_OPEN is append-only opcode 179");
+static_assert(OP_IPC_CALL == 180, "OP_IPC_CALL is append-only opcode 180");
+static_assert(OP_IPC_CLOSE == 181, "OP_IPC_CLOSE is append-only opcode 181");
+static_assert(OP__COUNT == 182, "the extended ISA must contain 182 opcodes");
 #else
 _Static_assert(OP_OS_PLATFORM == 103, "legacy OS opcode range must begin at 103");
 _Static_assert(OP_OS_PCLOSE == 123, "legacy OS opcode range must end at 123");
@@ -328,7 +343,10 @@ _Static_assert(OP_JSTR_FROM_UTF8 == 175, "Java String UTF-8 conversion is append
 _Static_assert(OP_TRY_PUSH == 176, "OP_TRY_PUSH is append-only opcode 176");
 _Static_assert(OP_TRY_POP == 177, "OP_TRY_POP is append-only opcode 177");
 _Static_assert(OP_THROW == 178, "OP_THROW is append-only opcode 178");
-_Static_assert(OP__COUNT == 179, "the extended ISA must contain 179 opcodes");
+_Static_assert(OP_IPC_OPEN == 179, "OP_IPC_OPEN is append-only opcode 179");
+_Static_assert(OP_IPC_CALL == 180, "OP_IPC_CALL is append-only opcode 180");
+_Static_assert(OP_IPC_CLOSE == 181, "OP_IPC_CLOSE is append-only opcode 181");
+_Static_assert(OP__COUNT == 182, "the extended ISA must contain 182 opcodes");
 #endif
 /* GC-hint aggressiveness bands for OP_GC_HINT (operand a). */
 #define SL_GC_HINT_MAX  100   /* clamp ceiling for the 0..100 aggressiveness scale */
