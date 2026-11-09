@@ -73,6 +73,30 @@ SL_NATIVE_EXPORT int sl_native_call(const char *method, uint32_t argc,
             callback_result.tag != SL_NATIVE_VALUE_I64) return SL_NATIVE_CALL_ERROR;
         *out_result = callback_result; return SL_NATIVE_CALL_OK;
     }
+    if (strcmp(method, "call_sleela_nested") == 0) {
+        SLNativeValue callback_args[2], callback_result;
+        if (!host_api_bound || !host_api.invoke || argc != 2 || !argv ||
+            argv[0].tag != SL_NATIVE_VALUE_I64 ||
+            argv[1].tag != SL_NATIVE_VALUE_I64)
+            return SL_NATIVE_CALL_ERROR;
+        callback_args[0] = argv[0];
+        callback_args[1] = argv[1];
+        memset(&callback_result, 0, sizeof(callback_result));
+        if (!host_api.invoke(host_api.context, "Callback::receive_nested", 2,
+                             callback_args, &callback_result)) {
+            /* The nested nativeCall is expected to be rejected by the VM.
+             * Return a sentinel successfully so the harness can inspect the
+             * precise VM diagnostic rather than an outer plugin error. */
+            memset(out_result, 0, sizeof(*out_result));
+            out_result->tag = SL_NATIVE_VALUE_I64;
+            out_result->as.i64 = -1;
+            return SL_NATIVE_CALL_OK;
+        }
+        if (callback_result.tag != SL_NATIVE_VALUE_I64)
+            return SL_NATIVE_CALL_ERROR;
+        *out_result = callback_result;
+        return SL_NATIVE_CALL_OK;
+    }
     if (strcmp(method, "twice") != 0) return SL_NATIVE_CALL_NOT_HANDLED;
     if (argc != 1 || !argv || argv[0].tag != SL_NATIVE_VALUE_I64) return SL_NATIVE_CALL_ERROR;
     memset(out_result, 0, sizeof(*out_result));
