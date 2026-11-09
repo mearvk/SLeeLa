@@ -28,9 +28,12 @@ class NativeDriveTests(unittest.TestCase):
             self.assertIn("source file does not exist", result.stderr)
 
     def test_unknown_extension_is_rejected(self):
-        result = subprocess.run([sys.executable, str(SCRIPT), "build", "unit.txt", "-o", "out"],
-                                text=True, capture_output=True)
-        self.assertIn("cannot infer source language", result.stderr)
+        with tempfile.TemporaryDirectory() as tmp:
+            src = pathlib.Path(tmp) / "unit.txt"
+            src.write_text("not a supported source")
+            result = subprocess.run([sys.executable, str(SCRIPT), "build", str(src), "-o", str(pathlib.Path(tmp) / "out")],
+                                    text=True, capture_output=True)
+            self.assertIn("cannot infer source language", result.stderr)
 
     def test_compile_and_run_c_source(self):
         compiler = c_compiler()
