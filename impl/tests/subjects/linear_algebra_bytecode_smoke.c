@@ -54,7 +54,7 @@ int main(void) {
     }
 
     const char *artifact="/tmp/sleela-native-math-bytecode-smoke.sleela";
-    if(!slvm_save_file(vm,artifact)) { fprintf(stderr,"math bytecode smoke: artifact save failed\n"); slvm_free(vm); return 1; }
+    if(slvm_save_file(vm,artifact)!=0) { fprintf(stderr,"math bytecode smoke: artifact save failed\n"); slvm_free(vm); return 1; }
     SLVM *loaded=slvm_load_file(artifact);
     unlink(artifact);
     if(!loaded || slvm_run(loaded)!=SLR_OK) {
