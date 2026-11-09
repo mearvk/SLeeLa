@@ -18,7 +18,7 @@ tools/sleela-native-drive.py provides:
   followed by a host C compiler. The current emitter covers the whole program
   when its C backend can translate it; it is not yet a method-only ABI emitter.
 - Argument-vector process execution without an implicit shell.
-- Optional stdin-file input, stdout/stderr capture, two-process piping, timeouts,
+- Optional stdin-file input, stdout/stderr capture, multi-stage process piping, timeouts,
   and exit-code propagation. Captured output is capped at 16 MiB by default
   across stdout and stderr; `--max-output-bytes` configures the combined limit.
   Exceeding the cap terminates the child process(es), drains the pipes, emits only
@@ -50,8 +50,8 @@ argv elements using repeatable --compiler-arg.
 
     # Process invocation and a stdout-to-stdin pipeline
     python3 tools/sleela-native-drive.py run --capture --max-output-bytes 1048576 --timeout 10 -- build/app arg1
-    python3 tools/sleela-native-drive.py pipe --max-output-bytes 1048576 --timeout 10 -- producer arg :: consumer arg
-    sleelactl run native-drive pipe --max-output-bytes 1048576 -- producer arg :: consumer arg
+    python3 tools/sleela-native-drive.py pipe --max-output-bytes 1048576 --timeout 10 -- producer arg :: filter arg :: consumer arg
+    sleelactl run native-drive pipe --max-output-bytes 1048576 -- producer arg :: filter arg :: consumer arg
 
 ## What the frontends mean
 
