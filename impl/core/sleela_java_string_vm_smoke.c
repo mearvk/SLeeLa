@@ -1,7 +1,9 @@
 #include "sleela_core.h"
+#include "sleela_java_string_codec.h"
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 static int fail(SLVM *vm, const char *what) {
     fprintf(stderr, "java-string-vm smoke failed: %s (vm=%s)\n",
@@ -59,6 +61,20 @@ int main(void) {
         sljava_string_destroy(&copy);
         return fail(vm, "copy preserves all code units");
     }
+    uint8_t *record = NULL;
+    size_t record_size = 0;
+    SLJavaString decoded;
+    sljava_string_init_empty(&decoded);
+    if (sljava_string_encode_record(&copy, &record, &record_size) != SL_JAVA_STRING_OK ||
+        sljava_string_decode_record(&decoded, record, record_size) != SL_JAVA_STRING_OK ||
+        decoded.length != copy.length || decoded.units[1] != 0 || decoded.units[4] != 0xd800u) {
+        free(record);
+        sljava_string_destroy(&decoded);
+        sljava_string_destroy(&copy);
+        return fail(vm, "versioned little-endian UTF-16 record round trip");
+    }
+    free(record);
+    sljava_string_destroy(&decoded);
     sljava_string_destroy(&copy);
 
     if (slvm_java_string_unroot(vm, joined) != 0 ||
