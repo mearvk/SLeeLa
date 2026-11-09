@@ -191,14 +191,20 @@ def main() -> int:
         for kind,owner,name,offset,refs in records:
             mid=f"{q}#{owner}.{name}@{offset}"
             resolved=[]
-            for expr,role in refs:
+            # Include declaration-site annotations for methods, constructors,
+            # and fields as well as type declarations.
+            prefix=src[max(0,offset-400):offset]
+            member_refs=list(refs)+[(ann,"annotation") for ann in annotations(prefix)]
+            for expr,role in member_refs:
                 for token in type_names(expr):
                     targets=resolve(token,package,imports,index)
                     for target in targets:
                         if target!=q:
                             resolved.append((target,role,token))
-                    if not targets and (token in index or "." in token and any(token.startswith(r+".") for r in ROOTS)):
-                        unresolved.append({"source":rel,"owner":owner,"member":name,"reference":token,"role":role,"line":src.count("\n",0,offset)+1})
+                    imported_missing=[it["name"] for it in imports if not it["wild"] and it["name"].rsplit(".",1)[-1]==token and any(it["name"].startswith(r+".") for r in ROOTS) and it["name"] not in index]
+                    qualified_missing="." in token and any(token.startswith(r+".") for r in ROOTS) and not any(token==x or token.startswith(x+".") for x in index)
+                    if not targets and (imported_missing or qualified_missing):
+                        unresolved.append({"source":rel,"owner":owner,"member":name,"reference":imported_missing[0] if imported_missing else token,"role":role,"line":src.count("\n",0,offset)+1})
             for target,role,token in sorted(set(resolved)):
                 edges.append({"from":q,"to":target,"owner":owner,"member":name,"member_kind":kind,"role":role,"reference":token,"line":src.count("\n",0,offset)+1})
             members.append({"id":mid,"owner":owner,"name":name,"kind":kind,"dependency_count":len(set(resolved))})
