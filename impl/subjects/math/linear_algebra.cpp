@@ -465,6 +465,37 @@ slmath_status slmath_vm_dispatch(slmath_operation operation,
     case SLMATH_OP_VECTOR_SCALE:
         if (out->length < a->length) return SLMATH_DIMENSION_MISMATCH;
         return slmath_vector_scale(a->data,scalar,out->data,a->length);
+    case SLMATH_OP_VECTOR_SUBTRACT:
+        if (!b || !b->data || a->length != b->length ||
+            out->length < a->length) return SLMATH_DIMENSION_MISMATCH;
+        return slmath_vector_subtract(a->data,b->data,out->data,a->length);
+    case SLMATH_OP_VECTOR_NORMALIZE:
+        if (out->length < a->length) return SLMATH_DIMENSION_MISMATCH;
+        return slmath_vector_normalize(a->data,out->data,a->length);
+    case SLMATH_OP_VECTOR_CROSS3:
+        if (!b || !b->data || a->length < 3 || b->length < 3 ||
+            out->length < 3) return SLMATH_DIMENSION_MISMATCH;
+        return slmath_vector_cross3(a->data,b->data,out->data);
+    case SLMATH_OP_COMPLEX_ADD:
+    case SLMATH_OP_COMPLEX_SUBTRACT:
+    case SLMATH_OP_COMPLEX_MULTIPLY:
+    case SLMATH_OP_COMPLEX_DIVIDE:
+        if (!b || !b->data || a->length < 2 || b->length < 2 ||
+            out->length < 2) return SLMATH_DIMENSION_MISMATCH;
+        {
+            const slmath_complex x={a->data[0],a->data[1]};
+            const slmath_complex y={b->data[0],b->data[1]};
+            slmath_complex z{};
+            if (operation == SLMATH_OP_COMPLEX_ADD) z=slmath_complex_add(x,y);
+            else if (operation == SLMATH_OP_COMPLEX_SUBTRACT) z=slmath_complex_subtract(x,y);
+            else if (operation == SLMATH_OP_COMPLEX_MULTIPLY) z=slmath_complex_multiply(x,y);
+            else {
+                slmath_status status=slmath_complex_divide(x,y,&z);
+                if(status!=SLMATH_OK) return status;
+            }
+            out->data[0]=z.re; out->data[1]=z.im;
+        }
+        return SLMATH_OK;
     case SLMATH_OP_MATRIX_MULTIPLY:
         if (!b || !b->data || a->cols != b->rows ||
             a->length < a_shape || b->length < b_shape ||
