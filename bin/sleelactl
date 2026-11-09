@@ -393,7 +393,7 @@ subject_cmd() { # module verb [args]
       okay "$1 — $(summary_of "$1")"
       info "nature: subject — native C/C++ library compiled into the sleela runtime"
       info "reached from SLeeLa as:  import $1;   then qualified calls, e.g.  $1.<fn>(...)"
-      info "execution today: frontend lowers calls to synthesized __Native* Core methods; VM bytecode is the portable fallback"
+      info "execution: scalar math calls dispatch through OP_MATH_CALL to the typed C++ kernel; synthesized __NativeMath Core methods remain the fallback"
       if [ "$1" = math ]; then
         info "typed C++ kernel: impl/subjects/math/math_kernel.hpp (IEEE-754 <cmath> contract; standalone test: make -C impl test-math-kernel)"
         info "direct VM-to-kernel dispatch: enabled for scalar math calls via OP_MATH_CALL; VM-owned argument values retain synthesized Core fallback"
