@@ -12,7 +12,7 @@ static int check(bool ok, const char *name) {
 
 int main() {
     int failures = 0;
-    const double a[] = {3.0, 4.0, 12.0};
+    double a[] = {3.0, 4.0, 12.0};
     const double b[] = {1.0, 2.0, 3.0};
     double out[9] = {};
     double scalar = 0.0;
@@ -31,7 +31,7 @@ int main() {
     failures += check(slmath_vector_cross3(a, b, out) == SLMATH_OK &&
                       out[0] == -12.0 && out[1] == 3.0 && out[2] == 2.0,
                       "3D cross product");
-    failures += check(slmath_vector_add(a, b, const_cast<double *>(a), 3) == SLMATH_OK &&
+    failures += check(slmath_vector_add(a, b, a, 3) == SLMATH_OK &&
                       a[0] == 4.0, "exact in-place vector operation");
 
     const double m1[] = {1, 2, 3, 4, 5, 6}; // 2x3
