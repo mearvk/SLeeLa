@@ -159,6 +159,15 @@ Native in-process execution is trusted-only; use an isolated process for
 untrusted workloads. The current CLI uses argv arrays and does not invoke a
 shell implicitly.
 
+The Native IPC client now has a portable stdio adapter
+(`native_ipc_stdio.h/.c`) that implements exact reads and writes over
+caller-supplied streams. The host remains responsible for launching and
+authorizing the worker, connecting its stdout/stdin pipes, enforcing
+timeouts/cancellation, and reaping the child. The adapter is blocking and is
+not itself a process supervisor. Its smoke-test source is provided; it is not
+yet wired into the manifest-verified CI workflow. See
+[IPC-PROTOCOL.md](IPC-PROTOCOL.md) for manual commands.
+
 ## systemd service lifecycle
 
 tools/sleela-native-service.py renders a hardened service unit and supports

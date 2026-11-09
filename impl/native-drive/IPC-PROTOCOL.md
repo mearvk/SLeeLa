@@ -3,7 +3,16 @@
 **Implementation status:** The portable 24-byte frame codec and scalar-value
 codec are implemented in `native_ipc_protocol.h`; the focused C smoke test is
 `native_ipc_protocol_smoke.c`. The request-payload codec and canonical big-integer limb codec are now implemented.
-The persistent worker, pipe supervisor, and Pi integration remain in progress. This is not yet an end-to-end IPC claim.
+A portable stdio exact-transfer adapter is now implemented in
+`native_ipc_stdio.h/.c`, with a focused smoke-test source in
+`native_ipc_stdio_smoke.c`. It binds the existing client callbacks to
+caller-owned `FILE*` streams. It does not launch or supervise a child and is
+blocking: the host must still provide authorized stdin/stdout pipe streams
+and enforce deadlines, cancellation, process termination, and reaping.
+The smoke source has not yet been added to the manifest-verified CI workflow;
+run it manually with the platform C compiler as shown below. The native process
+supervisor, VM-owned worker handles, and Pi integration remain in progress.
+This is not yet an end-to-end VM IPC claim.
 
 ## Why a second boundary is needed
 
@@ -60,7 +69,9 @@ handshake. A method result must be differential-tested against the VM kernel.
 
 ## Process and security contract
 
-The first transport is a private child process using stdin/stdout pipes.
+The intended transport is a private child process using stdin/stdout pipes.
+The stdio adapter implements exact byte transfers over streams supplied by
+the host; it deliberately does not choose or launch the executable.
 Launch with an argv vector, never a shell string. Stderr is diagnostic-only
 and separately bounded. The supervisor owns the child, request IDs, deadlines,
 and buffers. Enforce exact executable authorization and integrity policy,
@@ -96,6 +107,25 @@ values, request payload round-trip/trailing-byte rejection, and canonical limb
 round-trip plus rejection of non-canonical high zero limbs and out-of-range limbs. It does not test a process transport. The existing
 native-call smoke suite tests the in-process typed ABI, source dispatch,
 fallback, callbacks, authorization, and reentrancy; it does not prove IPC.
+
+The stdio adapter smoke test checks exact binary transfer, flush behavior,
+and truncated-read rejection using standard C streams. It does not test a
+real child process, concurrent requests, or deadline enforcement.
+
+Manual smoke-test commands:
+
+```sh
+cc -std=c11 -Wall -Wextra -Werror impl/native-drive/native_ipc_stdio.c \
+  impl/tests/native_drive/native_ipc_stdio_smoke.c -o native-ipc-stdio-smoke
+./native-ipc-stdio-smoke
+```
+
+On Windows with an initialized MSVC environment:
+
+```powershell
+cl /nologo /std:c11 /W4 impl/native-drive/native_ipc_stdio.c impl/tests/native_drive/native_ipc_stdio_smoke.c /Fenative-ipc-stdio-smoke.exe
+.\native-ipc-stdio-smoke.exe
+```
 
 Before routing Pi through the worker, add tests for fragmented reads/writes,
 multiple frames per read, malformed/oversized frames, invalid UTF-8, duplicate
