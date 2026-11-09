@@ -256,3 +256,20 @@ substring and concatenation opcodes root their input handles across allocation.
 Invalid indices currently surface as VM runtime errors; Java-compatible,
 catchable exception objects and ordinary instance-method syntax remain future
 work. The VM ABI minor version is advanced for the append-only opcode set.
+
+
+### Runtime UTF-8 conversion
+
+The source intrinsic `javaStringFromUtf8(value)` converts a runtime legacy
+SLeeLa `SL_STR` into a VM-owned `SL_UTF16` value. It decodes valid UTF-8
+into UTF-16 code units, including supplementary Unicode scalar values as
+surrogate pairs. Malformed UTF-8 and allocation failures fail closed with a
+VM runtime diagnostic. The current legacy `SL_STR` representation is
+NUL-terminated, so this conversion cannot preserve embedded NUL bytes; use
+`javaStringFromCodeUnits(...)` when exact code units, embedded U+0000, or
+isolated surrogates are required.
+
+The conversion is an append-only VM opcode and advances the VM ABI minor
+version. The source smoke program now checks conversion of an ASCII character,
+a supplementary character, and a non-ASCII BMP character, then exercises
+UTF-16 length and code-point access on the result.
