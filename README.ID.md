@@ -209,3 +209,16 @@ Saat debugging, catat commit, OS, architecture, dan toolchain. Build target rele
 Laporan validasi harus menyebutkan exact commit, OS/architecture, compiler versions, seluruh build/test commands, jumlah pass/fail/skip, dan batasan yang diketahui. Test yang dilewati atau tidak dijalankan tidak boleh dihitung sebagai passed.
 
 **Status terjemahan diperluas:** Panduan Bahasa Indonesia kini juga membahas target/profil, batas otorisasi eksekusi, siklus hidup resource, debugging, dan pelaporan validasi.
+
+
+## XVIII. Kontrak API modul, kompatibilitas, dan strategi pengujian
+
+Saat API baru diperkenalkan, dokumentasikan input, output, kondisi error, kepemilikan data, dan apakah operasi menghasilkan side effects. Contoh dokumentasi harus menunjukkan penggunaan normal sekaligus penanganan input invalid atau missing. Jangan menyatakan perilaku sebagai jaminan jika implementation dan tests belum membuktikannya.
+
+Pisahkan pengujian menurut tahapan compiler pipeline: lexing/parsing, semantic analysis, IR lowering, code generation, VM execution, dan native integration. Untuk setiap regression case, simpan input terkecil yang dapat direproduksi, hasil yang diharapkan, dan hasil aktual. Perubahan API harus menjelaskan backward compatibility, migration steps, serta dampaknya terhadap examples yang sudah ada.
+
+## XIX. Lokalisasi, encoding, dan keterbacaan
+
+Pertahankan technical identifiers, commands, paths, syntax, dan code blocks dalam bentuk yang sama di semua bahasa. Terjemahkan teks penjelasan, bukan token atau nama yang digunakan source code. Nyatakan bahasa dan konteks wilayah secara jelas; istilah Bahasa Indonesia tidak selalu identik dengan istilah Melayu di negara lain.
+
+Setelah setiap pembaruan, periksa Markdown links, hierarki heading, code fences, dan examples. Ketika canonical English documents berubah, bandingkan bagian terkait dan perbarui terjemahan secara menyeluruh, bukan hanya bagian pengantar. Tandai konten yang belum ditinjau penutur asli atau reviewer teknis.
