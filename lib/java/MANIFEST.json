@@ -2,7 +2,7 @@
   "schema": "sleela-java-library-manifest-v1",
   "root": "/lib/java",
   "inventory": {
-    "count": 8990,
+    "count": 8991,
     "count_type": "library-source-baseline",
     "count_source": "git-index excluding declared control metadata",
     "control_files": [
@@ -12,7 +12,7 @@
       "lib/java/validate.sh"
     ],
     "count_command": "git ls-files --cached -- lib/java | grep -v -E '^(lib/java/README.md|lib/java/MANIFEST.json|lib/java/validate.py|lib/java/validate.sh)$' | wc -l",
-    "baseline_policy": "intentional library changes must not silently reduce the established 8,989-file baseline; metadata files are excluded from the library count"
+    "baseline_policy": "intentional library changes must not silently reduce the established 8,991-file baseline; metadata files are excluded from the library count"
   },
   "language_bridge": {
     "source_language": "SLeeLa",
@@ -69,6 +69,8 @@
     "java_api_dependency_graph": "lib/java/tools/java_api_dependency_graph.py",
     "java_api_dependency_graph_test": "tests/java_api_dependency_graph_suite.py",
     "java_api_member_dependencies": "lib/java/tools/java_api_member_dependencies.py",
-    "java_api_member_dependencies_test": "tests/java_api_member_dependencies_suite.py"
+    "java_api_member_dependencies_test": "tests/java_api_member_dependencies_suite.py",
+    "java_api_visibility_constructor_audit": "lib/java/tools/java_api_visibility_constructor_audit.py",
+    "java_api_visibility_constructor_test": "tests/java_api_visibility_constructor_suite.py"
   }
 }
