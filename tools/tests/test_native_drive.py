@@ -136,7 +136,7 @@ class NativeDriveTests(unittest.TestCase):
             self.assertNotIn("systemctl", result.stdout)
 
     def test_service_lifecycle_status_and_restart_delegate_to_systemctl(self):
-        if sys.platform == "win32": self.skipTest("systemd lifecycle is Linux-specific")
+        if sys.platform != "linux": self.skipTest("systemd lifecycle is Linux-specific")
         with tempfile.TemporaryDirectory() as tmp:
             root = pathlib.Path(tmp)
             fakebin = root / "bin"; fakebin.mkdir()
@@ -158,7 +158,7 @@ class NativeDriveTests(unittest.TestCase):
                 self.assertIn(expected, log.read_text())
 
     def test_service_replace_creates_rollback_and_restores_previous_unit(self):
-        if sys.platform == "win32": self.skipTest("systemd lifecycle is Linux-specific")
+        if sys.platform != "linux": self.skipTest("systemd lifecycle is Linux-specific")
         with tempfile.TemporaryDirectory() as tmp:
             root = pathlib.Path(tmp)
             fakebin = root / "bin"; fakebin.mkdir()
