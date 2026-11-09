@@ -95,7 +95,7 @@ The first native linear-algebra C ABI is defined in `impl/subjects/math/linear_a
 
 The ABI supports exact in-place vector operations and stages matrix results so matrix multiplication and transpose can safely write over their inputs. Partially overlapping vector ranges are outside the contract. The opt-in regression commands are `make -C impl test-linear-algebra`, `make -C impl test-linear-algebra-vm`, and `make -C impl test-linear-algebra-bytecode`.
 
-The VM/compiler integration provides append-only `OP_MATH_CALL` (opcode 179) and source built-ins under `#sleela 3.0` for vector add/subtract/dot/norm/scale/normalize/cross3, matrix multiply/transpose/inverse/QR, complex add/subtract/multiply/divide, symmetric eigendecomposition, and FFT. The built-ins require preallocated output arrays and nonnegative integer-literal dimensions; the VM checks array tags and delegates to the typed Core bridge.
+The VM/compiler integration provides append-only `OP_MATH_CALL` (opcode 179) and source built-ins under `#sleela 3.0` for vector add/subtract/dot/norm/scale/normalize/cross3, matrix multiply/transpose/inverse/determinant/QR, complex add/subtract/multiply/divide/magnitude/phase/conjugate, symmetric eigendecomposition, and FFT. The built-ins require preallocated output arrays and nonnegative integer-literal dimensions; the VM checks array tags and delegates to the typed Core bridge.
 
 
 ## Expanded native mathematical structures
