@@ -157,7 +157,10 @@ The VM's existing `OP_NATIVE_CALL` retains the active interpreter call frame
 as a GC root while the plugin executes. The UTF-16 plugin methods accept only
 a length-delimited UTF-8 String and an integer index; no VM pointers or object
 handles cross the native ABI. Malformed UTF-8, negative indices, and
-out-of-range indices fail closed as native-call errors.
+out-of-range indices fail closed as native-call errors. The current VM String
+representation also excludes embedded NUL bytes; Java Strings containing NUL
+or isolated surrogate code units require a future UTF-16-backed String storage
+model for full fidelity.
 
 Typed Java exception objects are not yet available at this boundary: the
 present VM does not construct or expose `StringIndexOutOfBoundsException` /
