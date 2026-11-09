@@ -35,7 +35,10 @@
     real pause into its execution. Section 34 (normative) adds the native
     **big-integer built-ins** `bigmul`, `bigadd`, and `bigdivmod` — one-opcode
     arithmetic over base-1,000,000,000 limb `int[]` arrays (the VM bridge
-    `SLBigInteger` was designed to call) — and records two enabling VM changes:
+    `SLBigInteger` was designed to call) — plus the host-authorized Native Drive
+    built-ins `nativeOpen`, `nativeCall`, and `nativeClose` (section 36), which
+    dispatch through a versioned scalar ABI and preserve interpreter fallback.
+    The edition also records two enabling VM changes:
     the single-array ceiling `SL_MAX_ARRAY_LEN` was raised from 2^20 to
     **2^24 (16,777,216) elements** so multi-million-limb operands are
     allocatable, and a `double` value may now be **narrowed by explicit cast**
@@ -588,6 +591,9 @@ Expected output (order of the concurrent phase aside):
                     count; backs @loopDelay/@loopBudget/@spill (syntax 3.0, §32,§34)
     big-integer(3): bigmul bigadd bigdivmod    one-opcode arithmetic over
                     base-1e9 limb int[] arrays (the SLBigInteger bridge) (syntax 3.0, §34)
+    native(3):      nativeOpen nativeCall nativeClose
+                    host-authorized native module lifecycle and typed dispatch
+                    with same-name bytecode fallback (syntax 3.0, §36)
 
 Contextual built-ins are recognized in call position only (they are not reserved
 words). The Munction fluent chain is one sane reach sentence of 4..16 calls; see
@@ -2621,3 +2627,91 @@ The documentary application of this marker for the `advantage` standard-library
 package — where every `.md` document opens with the `artifact;` preonem to
 declare the package's documents a legislature graded unto time and space — is
 recorded in `lib/advantage/PREONEM.md`.
+
+
+--------------------------------------------------------------------------------
+## 36. Syntax 3.0 — host-authorized Native Drive
+
+This section is **normative** for syntax **3.0**. Native Drive connects SLeeLa
+bytecode execution to explicitly authorized C/C++ shared modules. Loading a
+module executes native code in the host process; it is not a sandbox and is
+never authorized by a source path alone. The embedding host must install an
+immutable authorization callback with `slvm_set_native_authorizer` before
+execution. Without that callback, `nativeOpen` always fails closed.
+
+### 36.1 Source built-ins
+
+```sleela
+#sleela 3.0
+
+int module = nativeOpen("/trusted/modules/example.so");
+int answer = nativeCall(module, "twice", 21);
+nativeClose(module);
+```
+
+- `nativeOpen(path)` accepts a String path, invokes the host authorization
+  callback, loads the module, and returns a VM-owned opaque integer handle.
+- `nativeCall(handle, method, ...args)` invokes the typed native method when
+  available and returns its converted SLeeLa value.
+- `nativeClose(handle)` closes the module, invalidates its handle, and returns
+  null. The VM also closes any remaining modules when it is destroyed.
+
+A native handle is an opaque, generation-checked VM value. It is not a pointer,
+a library address, or a transferable cross-VM identifier.
+
+### 36.2 Versioned typed value contract
+
+The typed method ABI is independently versioned by
+`SL_NATIVE_TYPED_ABI_VERSION`. A plugin exporting `sl_native_call` must also
+export `sl_native_typed_abi_version()`; the loader rejects a missing or
+mismatched typed ABI version. The first value ABI supports only:
+
+| SLeeLa value | Native ABI tag |
+|---|---|
+| null | `SL_NATIVE_VALUE_NULL` |
+| boolean | `SL_NATIVE_VALUE_BOOL` |
+| 64-bit integer | `SL_NATIVE_VALUE_I64` |
+| double | `SL_NATIVE_VALUE_F64` |
+| String | `SL_NATIVE_VALUE_UTF8` (pointer plus explicit byte length) |
+
+The native ABI never receives the internal `SLValue` struct. VM-local array
+and struct handles, 128-bit integers, closures, and raw pointers are not
+representable and must not be copied across this boundary. The current VM
+String store is NUL-terminated; a plugin result containing an embedded NUL is
+rejected rather than silently truncated.
+
+### 36.3 Native method result and interpreter fallback
+
+The plugin method returns one of three statuses:
+
+- `SL_NATIVE_CALL_OK`: the typed result is valid and is converted back into a
+  VM value.
+- `SL_NATIVE_CALL_NOT_HANDLED`: the plugin does not implement this method;
+  the interpreter searches for a SLeeLa bytecode method with the same name and
+  argument count and dispatches it with the original VM-owned arguments.
+- `SL_NATIVE_CALL_ERROR`: the plugin handled the request but failed. This is
+  a runtime error and **does not** trigger fallback.
+
+When an argument is an array, struct, or another VM-only value, it remains
+inside the VM and the same-name bytecode fallback is attempted without
+serializing or exposing the object handle. If no matching bytecode method
+exists, execution fails with a diagnostic. Stale handles, authorization
+failures, typed ABI mismatches, invalid plugin results, and plugin errors never
+fall back.
+
+### 36.4 Bytecode and compatibility
+
+The append-only instruction set adds:
+
+| Opcode | Index | Operand / behavior |
+|---|---:|---|
+| `OP_NATIVE_CALL` | 163 | `a = argc`; stack is `[handle, method, arg0, ...]` |
+| `OP_NATIVE_OPEN` | 164 | pops path String; pushes opaque handle |
+| `OP_NATIVE_CLOSE` | 165 | pops handle; pushes null |
+
+Existing opcode numbers are unchanged. The VM ABI minor version advances to
+2; artifact serialization layout remains unchanged. An older runtime that
+does not know these opcodes rejects the artifact rather than misinterpreting
+the instructions. See `impl/core/sleela_core.h`,
+`impl/core/sleela_core.c`, and `lib/vm/InstructionSet.sleela`.
+
