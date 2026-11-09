@@ -224,8 +224,13 @@ static int slvm_native_host_invoke(void* context, const char* function,
                                    uint32_t argc, const SLNativeValue* argv,
                                    SLNativeValue* out_result);
 
-static _Thread_local SLVM* native_callback_vm = NULL;
-static _Thread_local SLVM* native_plugin_call_vm = NULL;
+#if defined(_MSC_VER)
+#  define SL_NATIVE_THREAD_LOCAL __declspec(thread)
+#else
+#  define SL_NATIVE_THREAD_LOCAL _Thread_local
+#endif
+static SL_NATIVE_THREAD_LOCAL SLVM* native_callback_vm = NULL;
+static SL_NATIVE_THREAD_LOCAL SLVM* native_plugin_call_vm = NULL;
 
 static void set_err(SLVM* vm, const char* msg) {
     if (!vm) return;
