@@ -235,7 +235,7 @@ exit 0
             failed = subprocess.run(args + ["--replace", "--description", "replacement",
                 "--enable", "--start"], env=env, text=True, capture_output=True)
             self.assertNotEqual(failed.returncode, 0)
-            self.assertIn("previous state was restored", failed.stderr)
+            self.assertIn("previous unit was restored", failed.stderr)
             self.assertEqual(unit.read_text(), original)
             self.assertFalse(unit.with_name("worker.service.sleela-backup").exists())
             commands = log.read_text()
