@@ -235,7 +235,7 @@
     },
     {
       "path": "impl/core/sleela_artifact.c",
-      "sha256": "68bd2d79b6af26100daa58d82ed9010f822fe8040e8cd467a6c3beb4281187f2"
+      "sha256": "5e453f0fd0dcb776b8f31f395fca6dbcc653318543c228c3a3e25cd2f9a8a02c"
     },
     {
       "path": "impl/core/sleela_audio_bridge.cpp",
@@ -263,11 +263,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "a0d3536d5914488e5cb2303c1daa8c00a5c2d5281c16d85250dbca44eb652dfb"
+      "sha256": "f5e9c296558ab65bcf9d8a2cc8ab058ff6fc937fb50f462fd91f4df1908d882e"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "d1e2b4bf3d31cbfbf002a8616fe3d4272a31681f67f2984861fff1b264d3defc"
+      "sha256": "466f087b9e9ece7d86b408e64d7ff3a099f56da2fe833ac808fdf3844f4237aa"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -515,7 +515,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "38f441dbb491fa4fac9a3da80b72c880e83ab4cc9435ba648c58f5d2130bed81"
+      "sha256": "90ec29a1f11bfe4addb63e4910d42a437878a591009c44de3145b690725ecd12"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -627,7 +627,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "81a0cb733cae84efcf060d337da79850d47b362f6f5fdd3ebb0e8aaf358b2d49"
+      "sha256": "bac618f4c075ac8f6de6227ce0ce01e9a1171f1b468546a0a15962ad63274d15"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -48719,7 +48719,7 @@
     },
     {
       "path": "lib/vm/InstructionSet.sleela",
-      "sha256": "b7dbaa134f54fcabfc8a6d750c295e8e0f5702807caea830f7e38ff978c022ef"
+      "sha256": "449848d1c5427db7713ca7b9498af39d5a983512d75fe0452962852aadae7aa4"
     },
     {
       "path": "lib/vm/SLNativeMemory.sleela",
@@ -49747,27 +49747,27 @@
     },
     {
       "path": "os-level-support/loader/native_loader.c",
-      "sha256": "f31f82b9da0ef379fdfc9822644de5bac54cee124268ed915ac8636cc933d24b"
+      "sha256": "105c8260e64a58d26c759662607aa53a2889324f11b5accd70a70a8514fe1892"
     },
     {
       "path": "os-level-support/loader/native_loader.cpp",
-      "sha256": "fdf7a3c620e4585d799955973c5cfa8cb0d6971fc917cfa00928149345463ebe"
+      "sha256": "a7b0cea1623ce6e128bad66584aa0e9b03d252978a88c10e86feeb87d29e2f68"
     },
     {
       "path": "os-level-support/loader/native_loader.h",
-      "sha256": "b0e39fbd4d25df9b5344c1da5a559fab118badd168603988a480586660e08b12"
+      "sha256": "0e1d3a2cee075eb93639908d87608bdef2396a07acccf519f1395adc27788c28"
     },
     {
       "path": "os-level-support/loader/native_loader.hpp",
-      "sha256": "bd4b334a5a2c3d52d04dbade3551c2434f2ff59546bf69f44d5fa1258884984c"
+      "sha256": "cb668933f3681f166cce1029e4095447a87a522c559d84dd7a042ef14827383a"
     },
     {
       "path": "os-level-support/loader/native_module_table.c",
-      "sha256": "2fc11aa3857c30e6fac4bb04aee6bfa55cf603064b48210e41e759e5eb5ae950"
+      "sha256": "a7480b1f873a160042a2534aacb48a79d7e6b63f105d25a8c0b266cd87e887da"
     },
     {
       "path": "os-level-support/loader/native_module_table.h",
-      "sha256": "bb2d3ee076bd31683bba71e048ce082c439ec12d5611fa946d13825c8e263dd1"
+      "sha256": "b6112be39fce0ad4a6cc2e36f058156f71e71138dd26a93dbe48951fe19ee44b"
     },
     {
       "path": "os-level-support/loader/tests/fixture.c",
@@ -49787,7 +49787,7 @@
     },
     {
       "path": "os-level-support/loader/tests/test_cpp.cpp",
-      "sha256": "5a7d5a33ac58d3a5be24668ee8e6704249a4c377baecc07f70629613b0aa7cf2"
+      "sha256": "c19319c0f5594f5051c8e9dc0e72e0f4adc741f1023a29588bf54056be871e93"
     },
     {
       "path": "os-level-support/loader/tests/test_reject.c",
