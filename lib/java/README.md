@@ -231,3 +231,28 @@ automatic lowering of every ordinary SLeeLa string literal to `SL_UTF16`
 remain separate compiler/runtime integration work. Existing `String`
 operations continue to use the legacy `SL_STR` representation unless a
 source intrinsic explicitly constructs an `SL_UTF16` value.
+
+
+### Source-level Java String operations
+
+The compiler now lowers the following explicit `#sleela 3.0` intrinsics to
+append-only VM opcodes operating on `SL_UTF16` values:
+
+| Intrinsic | Java operation |
+|---|---|
+| `javaStringLength(value)` | `String.length()` |
+| `javaStringCharAt(value, index)` | `String.charAt(int)` (returns a UTF-16 code unit) |
+| `javaStringCodePointAt(value, index)` | `String.codePointAt(int)` |
+| `javaStringCodePointCount(value, begin, end)` | `String.codePointCount(int, int)` |
+| `javaStringOffsetByCodePoints(value, index, offset)` | `String.offsetByCodePoints(int, int)` |
+| `javaStringSubstring(value, begin, end)` | `String.substring(int, int)` |
+| `javaStringConcat(left, right)` | `String.concat(String)` |
+| `javaStringHashCode(value)` | `String.hashCode()` |
+| `javaStringCompareTo(left, right)` | `String.compareTo(String)` |
+
+These are explicit intrinsics rather than automatic method dispatch: they reject
+legacy `SL_STR` values at runtime and require VM-owned UTF-16 values. The
+substring and concatenation opcodes root their input handles across allocation.
+Invalid indices currently surface as VM runtime errors; Java-compatible,
+catchable exception objects and ordinary instance-method syntax remain future
+work. The VM ABI minor version is advanced for the append-only opcode set.
