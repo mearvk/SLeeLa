@@ -195,3 +195,24 @@ make install PREFIX="$HOME/.local"
 請查閱 [installation guide](install/README.md)、[platform matrix](docs/PLATFORM-SUPPORT.md) 及 [testing policy](markdown/TESTING.md)。Hash manifests 與 verification tools 的 PASS 只適用於明確列出的檢查範圍與時間。測試報告必須分開列出 pass、fail、skip；略過或未執行的測試不可標示為成功。
 
 **更新後的翻譯狀態：** 香港版本已增加 compiler pipeline、types/object model、loop timing、libraries、native integration、build/install 與 verification 等繁體中文技術內容。本文仍不是 canonical English README 及所有相關規格的逐行完整翻譯。
+
+
+## 十七、編譯目標、設定檔與安全邊界
+
+SLeeLa 將 source code 與 execution/build targets 分開。文件列出的 target family 包括 `SLVM`、`SLJVM` 及 `SLIR`；`NATIVE` 是受限制且有條件的 target，不應假設所有平台均可使用。`BASIC_COMPLETE` 與 `ADVANCED_TOTAL` 代表不同的 profile scope。每次 build 都應核對實際 target、profile 及平台支援情況。
+
+Reference 用來識別檔案、module 或 resource，本身不會授予執行權限。程式使用檔案、外部 libraries、native bindings 或 system resources 時，必須明確界定執行權限及安全邊界。文件中的功能描述不能單獨作為 runtime security guarantee 的證據；應同時查閱 implementation 和相應測試。
+
+## 十八、資源生命週期與錯誤處理
+
+對跨 function 或 thread 共用的資源，應記錄 ownership、lifetime 和同步責任。區分 local variables、shared object state、VM handles 及 serializable data。VM-local handle 不應當作穩定的 file format 或 network message。使用 module 提供的 serialization interface，並測試 invalid、missing 及 boundary values。
+
+Debug 時記錄 commit、OS、architecture 和 toolchain。先 build 最小相關 target，再執行對應測試；保留完整 error output，分辨 compiler errors 與 runtime errors，並盡量建立可重現的最小案例。Build 成功不等於 runtime behavior 已正確。
+
+驗證報告應列出 exact commit、OS/architecture、compiler versions、完整 build/test commands、pass/fail/skip 數量及已知限制。Skipped 或未執行的 tests 不可列為 passed。
+
+## 十九、國際文件維護與版本同步
+
+Country-specific README 是各地區使用者的文件入口，不取代 normative language specification 或 module API documentation。英文來源更新後，應逐項檢查翻譯是否過時。Technical identifiers、commands、paths 和 code examples 應保持原樣；未經語言或技術審校的內容須明確標示。
+
+**擴充翻譯狀態：** 香港繁體中文技術指南現亦涵蓋 target/profile、native execution boundary、resource ownership、debugging、test reporting 及國際文件維護。
