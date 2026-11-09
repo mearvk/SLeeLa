@@ -5,6 +5,9 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+_Static_assert(sizeof(double)==8, "SLeeLa IPC v1 requires IEEE-754 binary64 storage");
+#endif
 #include "../../os-level-support/loader/native_loader.h"
 #define SL_IPC_HEADER_SIZE 24u
 #define SL_IPC_MAX_PAYLOAD (16u*1024u*1024u)
@@ -53,7 +56,7 @@ static inline int sl_ipc_decode_value(SLIPCCursor*c,SLNativeValue*v){
  case SL_NATIVE_VALUE_BOOL:n=2;if(c->length-c->offset<n||c->data[c->offset+1]>1)return-1;v->as.boolean=c->data[c->offset+1];break;
  case SL_NATIVE_VALUE_I64:n=9;if(c->length-c->offset<n)return-1;v->as.i64=(int64_t)sl_ipc_get64(c->data+c->offset+1);break;
  case SL_NATIVE_VALUE_F64:n=9;if(c->length-c->offset<n)return-1;bits=sl_ipc_get64(c->data+c->offset+1);memcpy(&v->as.f64,&bits,8);break;
- case SL_NATIVE_VALUE_UTF8:if(c->length-c->offset<5)return-1;v->as.utf8.length=sl_ipc_get32(c->data+c->offset+1);n=5u+v->as.utf8.length;if(v->as.utf8.length>SL_IPC_MAX_PAYLOAD||n>c->length-c->offset)return-1;v->as.utf8.data=c->data+c->offset+5;break;
+ case SL_NATIVE_VALUE_UTF8:if(c->length-c->offset<5)return-1;v->as.utf8.length=sl_ipc_get32(c->data+c->offset+1);if(v->as.utf8.length>SL_IPC_MAX_PAYLOAD)return-1;n=5u+(size_t)v->as.utf8.length;if(n>c->length-c->offset)return-1;v->as.utf8.data=c->data+c->offset+5;break;
  default:return-1;}if(n>c->length-c->offset)return-1;c->offset+=n;return 0;
 }
 #endif
