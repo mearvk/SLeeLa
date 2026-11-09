@@ -443,3 +443,12 @@ class SLISATryPop { String name; int code; }
 
 < OP_THROW 178 -- pop an arbitrary SLValue and dispatch it to the newest active handler; uncaught values terminate with SLR_ERROR >
 class SLISAThrow { String name; int code; }
+
+< OP_IPC_OPEN 179 -- open a host-authorized worker capability name; pushes an opaque VM-local worker handle (reserved; runtime supervisor integration pending) >
+class SLISAIPcOpen { String name; int code; }
+
+< OP_IPC_CALL 180 -- operand a is argc; stack is worker handle, method String, then arguments; pushes scalar/UTF-8 result (reserved; runtime supervisor integration pending) >
+class SLISAIPcCall { String name; int code; }
+
+< OP_IPC_CLOSE 181 -- close and invalidate a VM-local worker handle; pushes null (reserved; runtime supervisor integration pending) >
+class SLISAIPcClose { String name; int code; }
