@@ -67,6 +67,8 @@ sleelactl info native-drive        # direct native source and process toolchain
 sleelactl build native-drive source.c -o build/source
 sleelactl build native-drive plugin.cpp --kind shared -o build/plugin.so
 sleelactl run native-drive --capture -- build/source arg1
+sleelactl inspect native-drive xclass --mode info Example.xclass
+sleelactl inspect native-drive service --name sleela-worker --executable /opt/sleela/bin/worker --working-directory /var/lib/sleela-worker
 ```
 
 The **subject** nature is for the native C/C++ subject libraries compiled into
@@ -79,7 +81,7 @@ through `sleela run`. There is deliberately no `check` verb: `sleela check` does
 not load the SHEET-registered native subjects, so `run` is the one faithful
 execution verb. The first registered subject is `math`.
 
-The `native-drive` tool is a separate host-toolchain utility. It builds direct C/C++ sources as executables or shared libraries, compiles the currently supported SLeeLa `@native` AOT subset to an executable, and provides shell-free process execution and stdout-to-stdin pipelines. It does not yet dispatch SLeeLa VM methods through a loaded native shared object or install a systemd unit automatically; see [Native Drive](../impl/native-drive/README.md).
+The `native-drive` tool is a separate host-toolchain utility. It builds multi-unit C/C++ executables or shared libraries, compiles the currently supported SLeeLa `@native` AOT subset to an executable, and provides shell-free process execution and stdout-to-stdin pipelines. Use `sleelactl inspect native-drive xclass ...` to reach the existing XClass loader, or `sleelactl inspect native-drive service ...` to render/install a systemd unit with explicit flags. It does not yet dispatch SLeeLa VM methods through a loaded native shared object; see [Native Drive](../impl/native-drive/README.md).
 
 `sleelactl <verb> all` applies the verb to every module whose nature accepts it
 (e.g. `sleelactl enable all` enables the daemons; `sleelactl build all` builds
