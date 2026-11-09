@@ -1,0 +1,49 @@
+<< SLeeLa-native executable subset of java.lang.String.
+   UTF-16 indexing uses the host-authorized native UTF-8/UTF-16 primitive.
+   charAt returns an integer containing one UTF-16 code unit because SLeeLa
+   does not yet define Java's 16-bit char value type. >>
+#sleela 3.0
+material;
+
+class JavaStringValue {
+  String value = "";
+  int nativeModule = 0;
+
+  JavaStringValue bind(int moduleHandle, String text) {
+    JavaStringValue result = new JavaStringValue();
+    result.nativeModule = moduleHandle;
+    result.value = text;
+    return result;
+  }
+
+  String toString() { return value; }
+  boolean isEmpty() { return value == ""; }
+  boolean equals(JavaStringValue other) {
+    if (other == null) { return false; }
+    return value == other.value;
+  }
+
+  JavaStringValue concat(JavaStringValue other) {
+    return bind(nativeModule, value + other.value);
+  }
+
+  int length() {
+    if (nativeModule <= 0) {
+      throw new RuntimeException("JavaStringValue requires an authorized UTF-16 native module");
+    }
+    return nativeCall(nativeModule, "utf16_length", value);
+  }
+
+  // Returns a UTF-16 code unit in the integer range 0..65535.
+  // For supplementary characters, high and low surrogates are separate indices.
+  int charAt(int index) {
+    if (nativeModule <= 0) {
+      throw new RuntimeException("JavaStringValue requires an authorized UTF-16 native module");
+    }
+    return nativeCall(nativeModule, "utf16_char_at", value, index);
+  }
+
+  boolean supportsUtf16Indexing() { return nativeModule > 0; }
+  boolean supportsCodePointIteration() { return false; }
+  boolean supportsJavaHashCode() { return false; }
+}
