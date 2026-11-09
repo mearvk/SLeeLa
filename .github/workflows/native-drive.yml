@@ -74,6 +74,19 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           .\build\native-ipc-protocol-smoke.exe
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Compile and run Native IPC client smoke test (POSIX)
+        if: runner.os != 'Windows'
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror impl/native-drive/native_ipc_client.c impl/tests/native_drive/native_ipc_client_smoke.c -o build/native-ipc-client-smoke
+          ./build/native-ipc-client-smoke
+      - name: Compile and run Native IPC client smoke test (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          cl /nologo /std:c11 /W4 impl/native-drive/native_ipc_client.c impl/tests/native_drive/native_ipc_client_smoke.c /Febuild/native-ipc-client-smoke.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          .\\build\\native-ipc-client-smoke.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Configure native loader ABI tests
         run: cmake -S os-level-support -B build/native-loader -DBUILD_TESTING=ON
       - name: Build native loader ABI tests
