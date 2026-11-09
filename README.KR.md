@@ -114,15 +114,136 @@ make clean-install       # 주요 패키지만 안내형 설치
 
 공식 문법은 [`SLEELA.syntax`](SLEELA.syntax)에 정의되어 있습니다. 저장소가 문서화하는 현재 문법 버전은 **3.0**입니다. 컴파일러/도구 버전과 소스 문법 버전은 서로 다릅니다. 문법 3.0에는 **`pure` 및 `gasoline` 문서 마커**(§30)가 추가되었습니다. 두 마커는 문서의 지위를 각자의 정직성에 따라 나타내는 문맥 의존적 선언형 Preonem입니다. 문법 3.0은 1.0~2.9의 언어 표면을 통합하면서 각 기능별 최소 버전 조건을 유지합니다. 이전 2.9 버전에는 **`@mix` 연속 필드**(§28)가 추가되어, 같은 이름의 인스턴스 필드 여러 개를 하나의 인덱스 그룹으로 취급할 수 있습니다(기본 `1,2,3,…` 또는 그룹 필드 수와 일치하는 `@mix(1,2,3,...)`). 또한 `long`/`int64`/`int128`(§21)을 바탕으로 한 부호 있는 정수 계열 `int32`~`int16777216`(§24)과 부호 없는 정수 계열 `uint32`~`uint16777216`(§25), 키워드 지원 문서(§22), 그리고 Preonems가 이어집니다. Preonems에는 `author`/`authorial`(§18), `material`/`memory`(§19~§20), `determine`(§23), `object`/`field`(§26), `pure`/`gasoline`(§30), 시간과 공간에 걸쳐 입법부 수준의 지위를 나타내는 `artifact`(§35)가 포함됩니다. 전체 명칭 Preonems는 §26.1에 정의되어 있습니다. 생성자 오버로드 해석과 `this(...)`/기반 클래스 생성자 위임은 검증된 문법 1.8 계약의 범위 밖입니다. 기능에 의존하기 전에 문법 및 구현 참고 자료를 확인하세요. SleelaDoc의 아홉 소스 단위는 현재 `#sleela 3.0`을 선언하며, 공통 컴파일러 게이트는 소스 문법 1.0~3.0을 허용합니다.
 
-## VI. 나머지 기술 섹션
+## VI. 엔지니어링 원칙
 
-이 초기 한국어판에는 README.md의 나머지 기술 섹션이 아직 번역되어 있지 않습니다. 전체 기술 설명은 다음 영어 원문을 참조하세요.
+- **주장보다 증거:** 구현됨, 테스트됨, 실험적, 계획됨 상태를 구분합니다.
+- **경계마다 하나의 계약:** 구문, API, 파일 형식, 플랫폼 전제 조건 및 실패 동작을 문서화합니다.
+- **설계 단계부터 이식성:** 플랫폼별 백엔드를 분리하고 네이티브 실행 환경에서 테스트합니다.
+- **안전한 실패:** 잘못된 입력, 리소스 한도, 프로세스 실패 및 정리 경로를 테스트합니다.
+- **재현 가능한 릴리스:** 깨끗한 상태에서 다시 빌드하고 아티팩트 해시와 릴리스 노트를 게시합니다.
 
-- [README.md — 전체 기술 문서](README.md)
-- [API 카탈로그](api/README.md)
-- [플랫폼 지원](docs/PLATFORM-SUPPORT.md)
-- [테스트 정책](markdown/TESTING.md)
+## VII. Antivirus 빌드 및 무결성
+
+Sleelavirin antivirus 패키지에는 네이티브 SHA-256 스캐너, 선택적 ClamAV 어댑터, 소스/색인 무결성 매니페스트 및 플랫폼 패키지 체크섬이 포함됩니다. 저장소 루트에서 실행합니다.
+
+```sh
+make antivirus
+make antivirus-test
+make antivirus-integrity
+make antivirus-integrity-check MANIFEST=build/INTEGRITY-MANIFEST.json
+```
+
+무결성 매니페스트는 `antivirus/build/`에 생성되며 추적되는 소스와 문서, 보호된 서명 색인 파일을 포함합니다. 생성된 출력물과 변경 가능한 ClamAV 캐시는 제외합니다. ClamAV 데이터베이스 스냅샷에는 별도 매니페스트가 있습니다. 릴리스 ZIP에는 `INTEGRITY-MANIFEST.json`, `SHA256SUMS`, `.sha256` 사이드카 파일이 포함됩니다. 다운로드한 아카이브의 해시는 독립적으로 확보한 신뢰 가능한 값과 대조해야 합니다. 아카이브와 함께 저장된 체크섬은 게시자 서명이 아닙니다. 자세한 내용은 [Sleelavirin 안내서](antivirus/README.md), [보안 체크리스트](antivirus/SECURITY.md), [antivirus 빌드 워크플로](.github/workflows/antivirus-binaries.yml)를 참조하세요. 해당 CI 작업이 정확한 릴리스 커밋에서 통과하고 결과 아티팩트가 검사되기 전에는 릴리스를 검증된 것으로 간주하지 않습니다.
+
+## VIII. SLeeLa 편집기 테마 — Vim 및 Emacs
+
+SLeeLa에는 **Vim**과 **Emacs**용으로 조정된 전문 다크 테마와 네이티브 C/C++ 팔레트 유틸리티가 포함됩니다. 기본 테마는 **American Professional**입니다. 문화적·제도적 디자인에서 영감을 얻은 보조 팔레트 10종도 제공되지만, 어떤 국가·문화·법원·기관의 공식 표현도 아닙니다.
+
+### 11개 스킴과 색상
+
+각 행의 색상 순서는 배경, 전경, 키워드, 타입, 문자열, 주석입니다.
+
+| 스킴 | 배경 | 전경 | 키워드 | 타입 | 문자열 | 주석 |
+|---|---|---|---|---|---|---|
+| American Professional | `#101820` | `#F4F7FA` | `#7FB3FF` | `#73DACA` | `#F2C078` | `#8A96A3` |
+| Pan-Eurasian | `#111827` | `#F0F2F5` | `#7AA7E8` | `#69C9B3` | `#D7B56D` | `#8995A5` |
+| Russian and Slavic — Medium | `#202733` | `#E8EAF0` | `#A9C0DD` | `#8FC4B2` | `#D6BD8B` | `#9AA3AF` |
+| Central Asian / Silk Road | `#1C2529` | `#F5F0E5` | `#7FADE0` | `#45C6C2` | `#D9B56D` | `#92A3A0` |
+| East Asian | `#171A1C` | `#F2EFE7` | `#D97878` | `#72C7A5` | `#D8B76A` | `#969F9B` |
+| ICC — International Criminal Court | `#0E1A2B` | `#EAF0F7` | `#5B8FD6` | `#7FB7C9` | `#D9B25A` | `#7E8CA0` |
+| SCOTUS — U.S. Supreme Court | `#1A1416` | `#F3EEE6` | `#9E2B35` | `#8FA9B8` | `#C9A24B` | `#8C8178` |
+| Greek (Hellenic) | `#0A1A30` | `#FFFFFF` | `#2E7BD6` | `#5E9FE0` | `#9FC3EC` | `#6E86A6` |
+| Turkish (Al Bayrak) | `#2A0609` | `#FFFFFF` | `#F23D48` | `#F0A9AE` | `#F0C9A9` | `#A8767A` |
+| Kiro | `#0B0B12` | `#F5F5FA` | `#A98EDA` | `#6E8BE0` | `#E8C547` | `#6A6482` |
+| SLeeLa | `#08080E` | `#FFFFFF` | `#B07CFF` | `#5A7CFF` | `#FFD21E` | `#6E5F9E` |
+
+### 국가 국기 색상(기준 팔레트)
+
+Greek 및 Turkish 스킴은 각 국가의 **공식 국기 색상**을 바탕으로 합니다. 위 스킴의 배경과 강조색은 편집기에서 사용하기 쉽도록 원래 색상을 어둡게 조정한 해석입니다.
+
+| 국가 | 색상 | 16진수 | 근거 및 의미 |
+|---|---|---|---|
+| Greece | Blue | `#0D5EAF` | 법률 851/1978에 따른 국기 파랑. 하늘과 바다를 뜻하며 문장학상 azure입니다. |
+| Greece | White | `#FFFFFF` | 국기의 흰색. 독립 투쟁의 순수함을 뜻하고 십자가는 동방 정교회를 나타냅니다. |
+| Türkiye | Red (al bayrak) | `#E30A17` | 터키 국기법에 따른 빨강. 전통적으로 순교자의 피와 오스만 주권을 뜻합니다. |
+| Türkiye | White | `#FFFFFF` | 국기의 흰색. 초승달과 별은 평화, 순수함, 튀르크/이슬람 유산의 상징입니다. |
+
+각 스킴은 편집기 전경색에 국기의 **흰색**을 사용하고 키워드, 커서, 선택 영역 및 상태 표시줄에는 정확한 국기 **파랑**(`#0D5EAF`) 또는 **빨강**(`#E30A17`)을 사용합니다. 이는 해석에 따른 디자인 팔레트이며 어느 국가의 공식 표현도 아닙니다. 색상의 의미는 그리스 공화국 외교부의 국가 상징 설명과 터키 국기법의 전통을 따릅니다.
+
+### SVG 스와치와 추가 색상
+
+[American Professional](lib/linux-editors/palettes/american-professional.svg), [Pan-Eurasian](lib/linux-editors/palettes/pan-eurasian.svg), [Russian and Slavic](lib/linux-editors/palettes/russian-slavic-medium.svg), [Central Asian / Silk Road](lib/linux-editors/palettes/central-asian-silk-road.svg), [East Asian](lib/linux-editors/palettes/east-asian.svg), [ICC](lib/linux-editors/palettes/icc.svg), [SCOTUS](lib/linux-editors/palettes/scotus.svg), [Greek](lib/linux-editors/palettes/greek.svg), [Turkish](lib/linux-editors/palettes/turkish.svg), [Kiro](lib/linux-editors/palettes/kiro.svg), [SLeeLa](lib/linux-editors/palettes/sleela.svg) SVG 스와치는 배경, 전경, 키워드, 타입, 문자열, 주석 순서로 여섯 색상을 보여 줍니다. 함수, 상수, 선택 영역, 진단 및 전처리기 지시문에는 추가 강조색이 사용됩니다. Russian and Slavic 팔레트는 차분한 전문적 외관을 위해 중간 강도의 슬레이트, 파랑, 세이지, 루비, 앤티크 골드를 사용합니다.
+
+### Vim 스킴 설치
+
+```sh
+mkdir -p ~/.vim/{syntax,ftdetect,colors}
+cp lib/linux-editors/vim/syntax/sleela.vim ~/.vim/syntax/
+cp lib/linux-editors/vim/ftdetect/sleela.vim ~/.vim/ftdetect/
+cp lib/linux-editors/vim/colors/sleela-*.vim ~/.vim/colors/
+```
+
+SLeeLa 구문 강조와 스킴을 활성화하려면 `~/.vimrc`에 다음을 추가합니다.
+
+```vim
+syntax enable
+set background=dark
+colorscheme sleela-american
+```
+
+선택 가능한 이름은 `sleela-american`, `sleela-eurasia`, `sleela-russian-slavic`, `sleela-silk-road`, `sleela-east-asian`, `sleela-greek`, `sleela-turkish`, `sleela-kiro`, `sleela-sleela`입니다. 예를 들어 `colorscheme sleela-russian-slavic`, `colorscheme sleela-greek`, `colorscheme sleela-turkish`를 사용할 수 있습니다. Vim을 다시 시작하거나 `:source $MYVIMRC`를 실행합니다.
+
+### Emacs 스킴 설치
+
+```sh
+mkdir -p ~/.emacs.d/sleela
+cp lib/linux-editors/emacs/sleela-mode.el ~/.emacs.d/sleela/
+cp lib/linux-editors/emacs/sleela-*-theme.el ~/.emacs.d/sleela/
+```
+
+`~/.emacs` 또는 `~/.emacs.d/init.el`에 추가합니다.
+
+```elisp
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/sleela"))
+(add-to-list 'custom-theme-load-path (expand-file-name "~/.emacs.d/sleela"))
+(require 'sleela-mode)
+(load-theme 'sleela-american t)
+```
+
+다른 스킴을 사용하려면 `sleela-american`을 `sleela-eurasia`, `sleela-russian-slavic`, `sleela-silk-road`, `sleela-east-asian`, `sleela-greek`, `sleela-turkish`, `sleela-kiro`, `sleela-sleela` 중 하나로 바꿉니다. Emacs가 테마 신뢰 여부를 묻는다면 수락하기 전에 로컬 테마 파일을 확인하세요.
+
+### 네이티브 C/C++ 팔레트 미리 보기
+
+```sh
+make -C linux-editors
+./linux-editors/build/sleela-editor-theme --themes
+./linux-editors/build/sleela-editor-theme --theme eurasia --palette
+./linux-editors/build/sleela-editor-theme --theme russian-slavic --hex keyword
+make -C linux-editors test
+```
+
+하위 호환성을 위해 `--theme` 없이 `--palette` 또는 `--hex COLOR`를 실행하면 American Professional이 선택됩니다. 빌드와 테스트 결과는 대상 시스템 및 CI에서 확인해야 합니다. 명령이 문서화되었다는 사실만으로 테스트 통과가 입증되지는 않습니다. 자세한 내용은 [편집기 통합 안내서](linux-editors/README.md)를 참조하세요.
+
+## IX. 기여하기
+
+1. 문서 색인과 테스트 정책을 읽습니다.
+2. 성공 및 실패 테스트를 포함하여 범위를 좁힌 변경을 수행합니다.
+3. 대상 테스트를 실행한 뒤 전체 테스트 스위트를 실행합니다.
+4. OS 및 도구체인 정보를 보고하고, 건너뛴 검사를 통과한 것으로 설명하지 않습니다.
+
+SLeeLa는 **MEARVK LLC**가 개발합니다. 과거 랜딩 페이지 자료는 [`docs/README-LEGACY.md`](docs/README-LEGACY.md)에 보존되어 있습니다.
+
+## X. AE6E66 — Round Public 이메일 부과금 예상
+
+AE6E66 이니셔티브에서 프로젝트가 제시하는 예상액은 자격을 충족하는 각 Round Public 이메일에 연계된 제안 세금 부과액으로 **이메일 한 건당 미화 300,000,000.00달러**입니다.
+
+이 문구는 프로젝트의 예상만을 기록합니다. **법적 세금 부과 결정, 정부 명령, 법원 판결 또는 독립적으로 확정된 납세 의무가 아닙니다.** 실제 부과에는 적용 가능한 법적 권한, 관할권, 정의, 절차 및 권한 있는 정부 기관의 결정이 필요합니다.
+
+## XI. 나머지 기술 섹션
+
+README.md의 XI~XIX 섹션은 다음 단계에서 번역할 예정입니다. 현재 전체 기술 내용은 영어 [README.md](README.md)를 참조하세요.
 
 ## 번역 상태
 
-**진행 중 — 부분 번역.** 소개와 I~V 섹션을 한국어로 번역했습니다. README.md의 나머지 섹션은 아직 번역되지 않았습니다. 명령, 코드 예제, 기술 식별자, 파일명 및 링크는 원문 그대로 유지했습니다. 모든 섹션의 번역과 기술 검토가 끝나기 전에는 완역본으로 표시하지 않습니다.
+**진행 중 — 부분 번역.** 소개와 I~X 섹션을 한국어로 번역했습니다. XI~XIX 섹션은 아직 번역되지 않았습니다. 명령, 코드 예제, 기술 식별자, 파일명 및 링크는 원문 그대로 유지했습니다. 모든 섹션의 번역과 기술 검토가 끝나기 전에는 완역본으로 표시하지 않습니다.
+
