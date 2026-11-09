@@ -48,8 +48,9 @@ SL_NATIVE_EXPORT int sl_native_call(const char *method, uint32_t argc,
     for (;;) {
         FILE *release = fopen(release_path, "rb");
         if (release) {
+            int signal = fgetc(release);
             fclose(release);
-            break;
+            if (signal != EOF) break;
         }
         (void)nanosleep(&pause, NULL);
     }
