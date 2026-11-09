@@ -16,7 +16,11 @@
     "INVOKE_INSTANCE": 4,
     "INVOKE_STATIC": 5,
     "RELEASE": 6,
-    "CLOSE": 7
+    "CLOSE": 7,
+    "GET_FIELD": 8,
+    "GET_STATIC_FIELD": 9,
+    "SET_FIELD": 10,
+    "SET_STATIC_FIELD": 11
   },
   "value_tags": {
     "NULL": 0,
@@ -31,12 +35,16 @@
   "response": {
     "success_status": 0,
     "error_status": 1,
-    "error_fields": ["exception_class_utf8", "safe_message_utf8"]
+    "error_fields": [
+      "exception_class_utf8",
+      "safe_message_utf8"
+    ]
   },
   "allowlist_environment": {
     "classes": "SLEELA_JAVA_ALLOW_CLASSES",
     "packages": "SLEELA_JAVA_ALLOW_PACKAGES",
-    "separator": ","
+    "separator": ",",
+    "class_paths": "SLEELA_JAVA_CLASS_PATHS"
   },
   "limits": {
     "max_parameters": 256,
