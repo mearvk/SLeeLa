@@ -7,6 +7,7 @@ on:
       - 'impl/native-drive/**'
       - 'impl/tests/native_drive/**'
       - 'os-level-support/loader/native_loader.h'
+      - 'security/sha256-manifest.json'
   workflow_dispatch:
 
 permissions:
