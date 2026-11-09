@@ -2069,6 +2069,11 @@ static int slvm_native_host_invoke(void* context, const char* function,
         set_err(vm, "native callback could not resolve exact SLeeLa function and arity");
         return 0;
     }
+    if (vm->funcs[function_index].nlocals < (int)argc ||
+        vm->funcs[function_index].nlocals > STACK_MAX) {
+        set_err(vm, "native callback target has an invalid local-frame size");
+        return 0;
+    }
     nested = (SLThread*)calloc(1, sizeof(*nested));
     if (!nested) {
         set_err(vm, "native callback could not allocate interpreter frame");
