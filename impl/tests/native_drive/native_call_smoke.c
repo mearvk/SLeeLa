@@ -40,6 +40,27 @@ int main(int argc, char **argv) {
         fprintf(stderr, "expected 63 from compiler-produced native dispatch + bytecode fallback\\n");
         return 1;
     }
-    puts("compiled source -> artifact -> authorized native dispatch -> bytecode fallback: PASS");
+    /* Re-load the same compiler-produced artifact with a deliberately
+     * mismatched allowlist. Source-level nativeOpen must fail closed before
+     * any plugin code is entered. */
+    vm = slvm_load_file(argv[1]);
+    if (!vm) {
+        fprintf(stderr, "could not reload artifact for authorization-denial check\\n");
+        return 2;
+    }
+    if (slvm_set_native_authorizer(vm, authorize_exact_path,
+                                  (void *)"not-the-approved-plugin") != 0) {
+        fprintf(stderr, "could not install denial-test authorization callback\\n");
+        slvm_free(vm);
+        return 2;
+    }
+    if (slvm_run(vm) != SLR_ERROR ||
+        !slvm_error(vm) || !strstr(slvm_error(vm), "denied")) {
+        fprintf(stderr, "source-level nativeOpen did not fail closed for an unapproved path\\n");
+        slvm_free(vm);
+        return 1;
+    }
+    slvm_free(vm);
+    puts("compiled source -> artifact -> authorized native dispatch -> bytecode fallback -> authorization denial: PASS");
     return 0;
 }
