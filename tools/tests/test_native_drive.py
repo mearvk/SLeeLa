@@ -160,6 +160,25 @@ class NativeDriveTests(unittest.TestCase):
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("must run as an unprivileged account", result.stderr)
 
+    def test_run_capture_enforces_combined_output_limit(self):
+        result = subprocess.run([sys.executable, str(SCRIPT), "run", "--capture",
+            "--max-output-bytes", "1024", "--", sys.executable, "-c",
+            "import sys; sys.stdout.write('x'*1000000); sys.stderr.write('y'*1000000)"],
+            text=False, capture_output=True, timeout=10)
+        self.assertEqual(result.returncode, 6, result.stderr.decode(errors="replace"))
+        self.assertLessEqual(len(result.stdout) + len(result.stderr), 1024 + 256)
+        self.assertIn(b"exceeded --max-output-bytes", result.stderr)
+
+    def test_pipeline_enforces_output_limit_and_terminates_children(self):
+        result = subprocess.run([sys.executable, str(SCRIPT), "pipe", "--timeout", "5",
+            "--max-output-bytes", "2048", "--", sys.executable, "-c",
+            "import sys; sys.stdout.write('z'*1000000); sys.stdout.flush()", "::",
+            sys.executable, "-c", "import sys; sys.stdout.write(sys.stdin.read())"],
+            text=False, capture_output=True, timeout=10)
+        self.assertEqual(result.returncode, 6, result.stderr.decode(errors="replace"))
+        self.assertLessEqual(len(result.stdout) + len(result.stderr), 2048 + 256)
+        self.assertIn(b"exceeded --max-output-bytes", result.stderr)
+
     def test_process_pipeline(self):
         result = subprocess.run([sys.executable, str(SCRIPT), "pipe", "--timeout", "5", "--",
             sys.executable, "-c", "print('sleela-pipe')", "::",
