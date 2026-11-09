@@ -101,6 +101,8 @@ int main(int argc, char **argv) {
 
     if (pthread_create(&caller, NULL, call_worker, &state) != 0) goto cleanup;
     if (!wait_for_file(entered_path)) {
+        FILE *release = fopen(release_path, "wb");
+        if (release) fclose(release);
         (void)pthread_join(caller, NULL);
         goto cleanup;
     }
