@@ -56,6 +56,7 @@ extern "C" {
 #include "../core/sleela_terminal.h"
 #include "../core/sleela_design_activity.h"
 #include "../../runtime/java_runtime_bridge.h"
+#include "../../runtime/java_interop_protocol.h"
 }
 #if defined(_WIN32)
 #  include <windows.h>
