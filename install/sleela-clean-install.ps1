@@ -142,13 +142,13 @@ try {
     if ($excluded -contains $entry.Name) { continue }
     Copy-Item -Recurse -Force $entry.FullName (Join-Path $runtimeRoot "lib")
   }
-  Get-ChildItem $libRoot -File -Filter "*.md" | Copy-Item -Destination (Join-Path $stage "lib") -Force
+  Get-ChildItem $libRoot -File -Filter "*.md" | Copy-Item -Destination (Join-Path $runtimeRoot "lib") -Force
   # Stage selected top-level (non-lib/) programs into their own directories.
   foreach ($prog in $toplevelInclude) {
     $progSrc = Join-Path $RepoRoot $prog
     if (Test-Path $progSrc -PathType Container) { Copy-Item -Recurse -Force $progSrc $stage }
   }
-  if (Test-Path (Join-Path $RepoRoot "SHEET.sheet")) { Copy-Item -Force (Join-Path $RepoRoot "SHEET.sheet") $stage }
+  if (Test-Path (Join-Path $RepoRoot "SHEET.sheet")) { Copy-Item -Force (Join-Path $RepoRoot "SHEET.sheet") $runtimeRoot }
   $servers = if ($excluded -contains "http") { "excluded" } else { "included" }
   $ides = if ($excluded -contains "ide") { "excluded" } else { "included" }
   $wifi = if ($excluded -contains "wifi") { "excluded" } else { "included" }
