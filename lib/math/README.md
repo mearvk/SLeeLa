@@ -34,9 +34,10 @@ The package facade is `SLPackage.sleela`; a runnable tour is in
 
 ## Implementation notes
 
-- Pure SLeeLa (`#sleela 2.5`). No native builtins are assumed: `sqrt`, `exp`,
-  `ln`, `sin`/`cos`, and `nth-root` are implemented inline (Newton iteration /
-  range-reduced Taylor series).
+- The established math classes are pure SLeeLa (`#sleela 2.5`). No native
+  builtins are assumed: `sqrt`, `exp`, `ln`, `sin`/`cos`, and `nth-root` are
+  implemented inline (Newton iteration / range-reduced Taylor series). The
+  separate `SLNativeMathEngine` facade opts into `#sleela 3.0` native kernels.
 - Matrices and tensors are flat row-major `double[]` arrays with an explicit
   shape, which keeps them within the language's array support.
 - Functions that are inherently "bring your own f(x)" take sampled data
@@ -46,8 +47,10 @@ The package facade is `SLPackage.sleela`; a runnable tour is in
   exist in other `/lib` packages (`core`, `deliberation`); refer to the math
   versions through a versioned import when a program pulls in several packages.
 
-All implementations were validated with the source-built compiler
-(`impl/build/sleela run`) against known values.
+The established pure-SLeeLa classes have been validated with the source-built
+compiler (`impl/build/sleela run`) against known values. The newer native facade
+has focused regression targets documented below; those targets remain
+unexecuted in the current environment.
 
 
 ## Native kernel boundary
