@@ -1,4 +1,4 @@
-#include "../core/sleela_core.h"
+#include "../../core/sleela_core.h"
 #include <stdio.h>
 #include <string.h>
 
