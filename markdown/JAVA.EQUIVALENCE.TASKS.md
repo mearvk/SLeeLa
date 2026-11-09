@@ -255,3 +255,20 @@ API behavior in SLeeLa. The audit has not been executed in this change, and
 its categories do not establish semantic correctness. The next implementation
 work should establish executable, tested foundations in `java.lang` before
 expanding into collections and higher-level packages.
+
+
+## 0.3.26-dev — First SLeeLa-native java.lang behavior
+
+The implementation layer now contains a first executable slice separate from
+the JDK API declaration envelopes:
+
+- `JavaObjectIdentity`: identity equality and stable identity-derived hash
+  over a runtime-provided heap identity/object handle pair.
+- `JavaStringValue`: immutable scalar-backed value operations, equality,
+  concatenation, non-negative repetition, and String-array joining.
+
+Smoke programs and runtime runners are wired through
+`make -C tests java-lang-native`. They are not yet executed in this change.
+The current implementation is a documented subset; it is not a claim of full
+`java.lang.Object` or `java.lang.String` compatibility. See
+`lib/java/README.md` for the unsupported semantics and VM prerequisites.
