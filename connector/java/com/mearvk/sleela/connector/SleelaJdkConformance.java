@@ -1,6 +1,8 @@
 package com.mearvk.sleela.connector;
 
 import java.util.Objects;
+import java.io.IOException;
+import java.nio.file.Path;
 
 /** Differential checks between direct Java execution and the SLeeLa JDK bridge. */
 public final class SleelaJdkConformance {
@@ -61,6 +63,16 @@ public final class SleelaJdkConformance {
             rejectedStaticAsInstance = true;
         }
         assert rejectedStaticAsInstance;
+
+        // Adding roots after resolution could split class identity and invalidate
+        // object handles, so the loader must freeze its search roots at first use.
+        boolean rejectedLateRoot = false;
+        try {
+            SleelaJdkBridge.addRoot(Path.of("."));
+        } catch (IOException expected) {
+            rejectedLateRoot = true;
+        }
+        assert rejectedLateRoot;
     }
 
     public static void main(String[] args) throws Exception {
