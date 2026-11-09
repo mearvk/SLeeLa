@@ -12,6 +12,7 @@
 #define _POSIX_C_SOURCE 200809L
 #endif
 #include "sleela_core.h"
+#include "sleela_utf16.h"
 #include "sleela_net.h"
 #include "sleela_io.h"
 #include "sleela_time.h"
@@ -673,6 +674,16 @@ static SLJavaStringInstance *java_string_get(SLVM *vm, SLValue value) {
     SLJavaStringInstance *instance = vm->java_strings[value.as.h];
     pthread_mutex_unlock(&vm->java_string_mtx);
     return instance;
+}
+SLValue slvm_java_string_from_utf8(SLVM *vm, const char *utf8) {
+    if (!vm || !utf8) return slval_null();
+    uint16_t *units = NULL;
+    size_t length = 0;
+    int status = sleela_utf8_to_utf16(utf8, strlen(utf8), &units, &length);
+    if (status != 0) return slval_null();
+    SLValue value = slvm_java_string_new(vm, units, length);
+    free(units);
+    return value;
 }
 SLValue slvm_java_string_new(SLVM *vm, const uint16_t *units, size_t length) {
     if (!vm || (!units && length) || length > (SIZE_MAX - sizeof(SLJavaStringInstance)) / sizeof(uint16_t)) return slval_null();
@@ -2428,6 +2439,7 @@ static SLResult run_thread(SLThread* t) {
         case OP_JSTR_CONCAT: { SLValue right=POP(),left=POP(); if(left.type!=SL_UTF16 || right.type!=SL_UTF16) TERR("String.concat requires two Java UTF-16 Strings"); if(slvm_java_string_root(vm,left)!=SL_JAVA_STRING_OK) TERR("String.concat could not root left operand"); if(slvm_java_string_root(vm,right)!=SL_JAVA_STRING_OK) { (void)slvm_java_string_unroot(vm,left); TERR("String.concat could not root right operand"); } SLValue result=slvm_java_string_concat(vm,left,right); (void)slvm_java_string_unroot(vm,right); (void)slvm_java_string_unroot(vm,left); if(result.type!=SL_UTF16) TERR("String.concat failed"); PUSH(result); } break;
         case OP_JSTR_HASH_CODE: { SLValue value=POP(); int32_t hash=0; if(value.type!=SL_UTF16 || slvm_java_string_hash_code(vm,value,&hash)!=SL_JAVA_STRING_OK) TERR("String.hashCode requires a valid Java UTF-16 String"); PUSH(slval_int(hash)); } break;
         case OP_JSTR_COMPARE_TO: { SLValue right=POP(),left=POP(); int32_t order=0; if(left.type!=SL_UTF16 || right.type!=SL_UTF16 || slvm_java_string_compare_to(vm,left,right,&order)!=SL_JAVA_STRING_OK) TERR("String.compareTo requires two Java UTF-16 Strings"); PUSH(slval_int(order)); } break;
+        case OP_JSTR_FROM_UTF8: { SLValue value=POP(); if(value.type!=SL_STR || value.as.s<0 || value.as.s>=vm->nstr) TERR("javaStringFromUtf8 requires a valid legacy UTF-8 String"); SLValue converted=slvm_java_string_from_utf8(vm,vm->strs[value.as.s]); if(converted.type!=SL_UTF16) TERR("javaStringFromUtf8 rejected malformed UTF-8 or allocation failure"); PUSH(converted); } break;
         case OP_POP: (void)POP(); break;
         case OP_DUP: { if (t->sp < 1) TERR("stack underflow"); SLValue dupv = t->stack[t->sp-1]; PUSH(dupv); } break;
         case OP_DUP2: { if (t->sp < 2) TERR("stack underflow"); SLValue av = t->stack[t->sp-2], bv = t->stack[t->sp-1]; PUSH(av); PUSH(bv); } break;
