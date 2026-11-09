@@ -193,7 +193,10 @@ class NativeDriveTests(unittest.TestCase):
             fakebin = root / "bin"; fakebin.mkdir()
             log = root / "systemctl.log"
             fake = fakebin / "systemctl"
-            fake.write_text("#!/bin/sh\\nprintf '%s\\\\n' \\"$*\\" >> \\"$SLEELA_SYSTEMCTL_LOG\\"\\nexit 0\\n")
+            fake.write_text("""#!/bin/sh
+printf '%s\\n' "$*" >> "$SLEELA_SYSTEMCTL_LOG"
+exit 0
+""")
             fake.chmod(0o755)
             env = dict(__import__("os").environ)
             env["PATH"] = str(fakebin) + __import__("os").pathsep + env.get("PATH", "")
@@ -211,12 +214,12 @@ class NativeDriveTests(unittest.TestCase):
             fakebin = root / "bin"; fakebin.mkdir()
             log = root / "systemctl.log"
             fake = fakebin / "systemctl"
-            fake.write_text(
-                "#!/bin/sh\\n"
-                "printf '%s\\\\n' \\"$*\\" >> \\"$SLEELA_SYSTEMCTL_LOG\\"\\n"
-                "[ \\"$1\\" = --user ] && shift\\n"
-                "[ \\"$1\\" = start ] && exit 9\\n"
-                "exit 0\\n")
+            fake.write_text("""#!/bin/sh
+printf '%s\\n' "$*" >> "$SLEELA_SYSTEMCTL_LOG"
+[ "$1" = --user ] && shift
+[ "$1" = start ] && exit 9
+exit 0
+""")
             fake.chmod(0o755)
             env = dict(__import__("os").environ)
             env["PATH"] = str(fakebin) + __import__("os").pathsep + env.get("PATH", "")
