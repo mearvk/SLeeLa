@@ -67,9 +67,9 @@ protocol-test: java-check
 	"$(PYTHON)" ../test-suites/test-java-protocol.py "$(PROTOCOL_CLASSES_DIR)"
 
 protocol-codec-test:
-	@command -v "${CC:-cc}" >/dev/null 2>&1 || { echo "ERROR: C compiler not found." >&2; exit 1; }
+	@command -v "$(CC)" >/dev/null 2>&1 || { echo "ERROR: C compiler not found." >&2; exit 1; }
 	@tmp="$(BUILD_DIR)/java-protocol-codec-test"; mkdir -p "$(BUILD_DIR)"; \
-	  "${CC:-cc}" -std=c11 -Wall -Wextra -Werror -pedantic -I../runtime \
+	  "$(CC)" -std=c11 -Wall -Wextra -Werror -pedantic -I../runtime \
 	  ../runtime/java_interop_protocol.c ../test-suites/test-java-protocol-codec.c -o "$tmp" && "$tmp"
 
 check:
