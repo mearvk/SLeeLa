@@ -514,7 +514,7 @@ int slvm_set_native_callback_authorizer(SLVM* vm,
 SLNativeStatus slvm_native_module_open(SLVM* vm, const char* path, SLNativeHandle* out_handle) {
     SLNativeStatus status;
     if (!vm || !out_handle) return SL_NATIVE_INVALID_ARGUMENT;
-    if (native_callback_vm == vm) return SL_NATIVE_REENTRANT_CALL;
+    if (native_callback_vm == vm || native_plugin_call_vm == vm) return SL_NATIVE_REENTRANT_CALL;
     *out_handle = SL_NATIVE_HANDLE_INVALID;
     pthread_mutex_lock(&vm->native_mtx);
     status = sl_native_table_open(&vm->native_modules, path, out_handle);
@@ -550,7 +550,7 @@ SLNativeStatus slvm_native_module_run(SLVM* vm, SLNativeHandle handle,
                                       int argc, const char* const argv[], int* out_result) {
     SLNativeStatus status;
     if (!vm) return SL_NATIVE_INVALID_ARGUMENT;
-    if (native_callback_vm == vm) return SL_NATIVE_REENTRANT_CALL;
+    if (native_callback_vm == vm || native_plugin_call_vm == vm) return SL_NATIVE_REENTRANT_CALL;
     /* Serialize calls against close/free so code cannot be unloaded while it
      * is executing. A plugin entry point must not re-enter this VM's native
      * module lifecycle API. */
@@ -571,7 +571,7 @@ SLNativeStatus slvm_native_module_call(SLVM* vm, SLNativeHandle handle,
                                        const SLNativeValue* argv, SLNativeValue* out_result) {
     SLNativeStatus status;
     if (!vm) return SL_NATIVE_INVALID_ARGUMENT;
-    if (native_callback_vm == vm) return SL_NATIVE_REENTRANT_CALL;
+    if (native_callback_vm == vm || native_plugin_call_vm == vm) return SL_NATIVE_REENTRANT_CALL;
     /* The VM lock prevents close/unload during a typed call. Plugins must not
      * re-enter this VM's native-module API. Result UTF-8 spans are borrowed
      * from the plugin and must be copied before the next call or close. */
@@ -590,7 +590,7 @@ SLNativeStatus slvm_native_module_call(SLVM* vm, SLNativeHandle handle,
 SLNativeStatus slvm_native_module_close(SLVM* vm, SLNativeHandle handle) {
     SLNativeStatus status;
     if (!vm) return SL_NATIVE_INVALID_ARGUMENT;
-    if (native_callback_vm == vm) return SL_NATIVE_REENTRANT_CALL;
+    if (native_callback_vm == vm || native_plugin_call_vm == vm) return SL_NATIVE_REENTRANT_CALL;
     pthread_mutex_lock(&vm->native_mtx);
     status = sl_native_table_close(&vm->native_modules, handle);
     pthread_mutex_unlock(&vm->native_mtx);
@@ -2474,6 +2474,7 @@ static SLResult run_thread(SLThread* t) {
             for(int i=f->nargs;i<f->nlocals;i++){ PUSH(slval_null()); } ip=f->entry;
         } break;
         case OP_NATIVE_OPEN: {
+            if (native_callback_vm == vm) TERR("native callback cannot recursively invoke native-module operations");
             SLValue path_value = POP();
             SLNativeHandle handle = SL_NATIVE_HANDLE_INVALID;
             SLNativeStatus status;
@@ -2488,6 +2489,7 @@ static SLResult run_thread(SLThread* t) {
             PUSH(slval_int((int64_t)handle));
         } break;
         case OP_NATIVE_CLOSE: {
+            if (native_callback_vm == vm) TERR("native callback cannot recursively invoke native-module operations");
             SLValue handle_value = POP();
             SLNativeStatus status;
             if (handle_value.type != SL_INT || handle_value.as.i <= 0 ||
