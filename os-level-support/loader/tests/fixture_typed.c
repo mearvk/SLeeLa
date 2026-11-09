@@ -1,4 +1,5 @@
 #include "native_loader.h"
+#include <string.h>
 
 SL_NATIVE_EXPORT uint32_t sl_native_abi_version(void) {
     return SL_NATIVE_ABI_VERSION;
