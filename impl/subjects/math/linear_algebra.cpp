@@ -244,6 +244,33 @@ slmath_status slmath_matrix_inverse(const double *a, size_t n, double *out,
     return SLMATH_OK;
 }
 
+slmath_status slmath_matrix_determinant(const double *a, size_t n,
+                                         double *out, double tolerance) {
+    if (!out) return SLMATH_INVALID_ARGUMENT;
+    size_t count=0;
+    if (!count_ok(n,n,&count)) return SLMATH_SIZE_OVERFLOW;
+    if (!valid_range(a,count) || !std::isfinite(tolerance) || tolerance<0.0)
+        return SLMATH_INVALID_ARGUMENT;
+    std::vector<double> lu;
+    std::vector<size_t> pivots;
+    std::vector<unsigned char> visited;
+    try { lu.resize(count); pivots.resize(n); visited.assign(n,0); }
+    catch (...) { return SLMATH_ALLOCATION_FAILURE; }
+    slmath_status status=slmath_matrix_lu(a,n,lu.data(),pivots.data(),tolerance);
+    if (status==SLMATH_SINGULAR) { *out=0.0; return SLMATH_OK; }
+    if (status!=SLMATH_OK) return status;
+    size_t cycles=0;
+    for(size_t i=0;i<n;++i) if(!visited[i]) {
+        ++cycles;
+        size_t j=i;
+        while(j<n && !visited[j]) { visited[j]=1; j=pivots[j]; }
+    }
+    double value=((n-cycles)&1u)?-1.0:1.0;
+    for(size_t i=0;i<n;++i) value*=lu[i*n+i];
+    *out=value;
+    return SLMATH_OK;
+}
+
 slmath_status slmath_matrix_qr(const double *a, size_t rows, size_t cols,
                                double *q, double *r, double tolerance) {
     size_t ac = 0, qc = 0, rc = 0;
@@ -476,6 +503,22 @@ slmath_status slmath_vm_dispatch(slmath_operation operation,
         if (!b || !b->data || a->length < 3 || b->length < 3 ||
             out->length < 3) return SLMATH_DIMENSION_MISMATCH;
         return slmath_vector_cross3(a->data,b->data,out->data);
+    case SLMATH_OP_COMPLEX_ABS:
+    case SLMATH_OP_COMPLEX_PHASE:
+        if (a->length < 2 || out->length < 1) return SLMATH_DIMENSION_MISMATCH;
+        {
+            const slmath_complex z={a->data[0],a->data[1]};
+            out->data[0]=(operation==SLMATH_OP_COMPLEX_ABS)
+                ?slmath_complex_abs(z):slmath_complex_phase(z);
+        }
+        return SLMATH_OK;
+    case SLMATH_OP_COMPLEX_CONJUGATE:
+        if (a->length < 2 || out->length < 2) return SLMATH_DIMENSION_MISMATCH;
+        {
+            const slmath_complex z=slmath_complex_conjugate({a->data[0],a->data[1]});
+            out->data[0]=z.re; out->data[1]=z.im;
+        }
+        return SLMATH_OK;
     case SLMATH_OP_COMPLEX_ADD:
     case SLMATH_OP_COMPLEX_SUBTRACT:
     case SLMATH_OP_COMPLEX_MULTIPLY:
@@ -509,6 +552,10 @@ slmath_status slmath_vm_dispatch(slmath_operation operation,
             out->cols != a->rows || out->length < out_shape)
             return SLMATH_DIMENSION_MISMATCH;
         return slmath_matrix_transpose(a->data,a->rows,a->cols,out->data);
+    case SLMATH_OP_MATRIX_DETERMINANT:
+        if (a->rows != a->cols || a->length < a_shape || out->length < 1)
+            return SLMATH_DIMENSION_MISMATCH;
+        return slmath_matrix_determinant(a->data,a->rows,out->data,scalar);
     case SLMATH_OP_MATRIX_INVERSE:
         if (a->rows != a->cols || a->length < a_shape ||
             out->rows != a->rows || out->cols != a->cols ||
