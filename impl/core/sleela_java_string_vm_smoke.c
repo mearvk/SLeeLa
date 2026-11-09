@@ -77,6 +77,38 @@ int main(void) {
     sljava_string_destroy(&decoded);
     sljava_string_destroy(&copy);
 
+    /* Exercise artifact v3 end-to-end: a UTF-16 constant survives save/load,
+       including embedded NUL and an isolated surrogate code unit. */
+    int constant_index = slvm_add_const_utf16(vm, units, sizeof(units) / sizeof(units[0]));
+    int entry = slvm_begin_func(vm, "javaStringArtifactEntry", 0, 0);
+    const char *artifact_path = "build/java_string_vm_roundtrip.sleela";
+    if (constant_index < 0 || entry < 0 ||
+        slvm_emit(vm, OP_CONST, constant_index) < 0 ||
+        slvm_emit0(vm, OP_RET) < 0) return fail(vm, "build UTF-16 artifact entry");
+    slvm_end_func(vm);
+    slvm_set_entry(vm, entry);
+    if (slvm_save_file(vm, artifact_path) != 0)
+        return fail(vm, "save UTF-16 artifact v3");
+    SLVM *loaded = slvm_load_file(artifact_path);
+    remove(artifact_path);
+    if (!loaded) return fail(vm, "load UTF-16 artifact v3");
+    if (slvm_run(loaded) != SLR_OK) {
+        slvm_free(loaded);
+        return fail(vm, "execute UTF-16 artifact v3");
+    }
+    SLValue loaded_value = slvm_result(loaded);
+    int32_t loaded_length = -1;
+    uint16_t loaded_unit = 0;
+    if (loaded_value.type != SL_UTF16 ||
+        slvm_java_string_length(loaded, loaded_value, &loaded_length) != SL_JAVA_STRING_OK ||
+        loaded_length != 5 ||
+        slvm_java_string_char_at(loaded, loaded_value, 4, &loaded_unit) != SL_JAVA_STRING_OK ||
+        loaded_unit != 0xd800u) {
+        slvm_free(loaded);
+        return fail(vm, "artifact v3 preserves UTF-16 constant payload");
+    }
+    slvm_free(loaded);
+
     if (slvm_java_string_unroot(vm, joined) != 0 ||
         slvm_java_string_unroot(vm, pair) != 0 ||
         slvm_java_string_unroot(vm, value) != 0)
