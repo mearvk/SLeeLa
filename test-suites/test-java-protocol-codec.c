@@ -48,6 +48,7 @@ int main(void) {
         uint8_t response_payload[] = {0, 0};
         uint8_t response[64];
         size_t response_length = 0;
+        length = sleela_jlip_encode(bytes, sizeof(bytes), 0x12345678u, 5u, payload, sizeof(payload));
         pipe.incoming_length = sleela_jlip_encode(pipe.incoming, sizeof(pipe.incoming),
                                                   0x12345678u, (uint8_t)(5u | 0x80u),
                                                   response_payload, sizeof(response_payload));
