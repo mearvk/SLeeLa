@@ -87,6 +87,7 @@ class SLMatrix {
       row = row + 1;
     }
   }
+  double absolute(double x) { if (x < 0.0) { return 0.0 - x; } return x; }
   < Caller supplies scratch for pivoted Gaussian elimination. >
   double determinant(double[] a, double[] scratch, int n) {
     int i = 0;
@@ -98,7 +99,7 @@ class SLMatrix {
       int pivot = k;
       int row = k + 1;
       while (row < n) {
-        if (abs(scratch[row * n + k]) >
+        if (absolute(scratch[row * n + k]) >
             abs(scratch[pivot * n + k])) { pivot = row; }
         row = row + 1;
       }
