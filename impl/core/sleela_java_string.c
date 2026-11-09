@@ -135,6 +135,7 @@ int sljava_string_substring(SLJavaString *out, const SLJavaString *value,
     if (begin_index < 0 || end_index < begin_index ||
         (size_t)end_index > value->length) return SL_JAVA_STRING_RANGE_OUT_OF_BOUNDS;
     length = (size_t)(end_index - begin_index);
+    if (length > SIZE_MAX / sizeof(*copy)) return SL_JAVA_STRING_TOO_LARGE;
     if (length) {
         copy = (uint16_t *)malloc(length * sizeof(*copy));
         if (!copy) return SL_JAVA_STRING_OUT_OF_MEMORY;
@@ -155,6 +156,7 @@ int sljava_string_concat(SLJavaString *out, const SLJavaString *left,
     if (right->length > SL_JAVA_STRING_MAX_LENGTH - left->length)
         return SL_JAVA_STRING_TOO_LARGE;
     length = left->length + right->length;
+    if (length > SIZE_MAX / sizeof(*joined)) return SL_JAVA_STRING_TOO_LARGE;
     if (length) {
         joined = (uint16_t *)malloc(length * sizeof(*joined));
         if (!joined) return SL_JAVA_STRING_OUT_OF_MEMORY;
