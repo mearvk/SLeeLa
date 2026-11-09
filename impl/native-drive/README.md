@@ -64,8 +64,9 @@ remain limited architecture/lowering models.
 SLeeLa source uses the current sleela aot --emit implementation. The command
 fails closed when annotated methods exceed its supported subset, but the current
 emitter still translates a whole program rather than emitting independent
-method entry points. A full per-method ABI and transparent VM fallback remain
-compiler/runtime work.
+method entry points. Native Drive bytecode dispatch is now separate from that
+AOT limitation: syntax 3.0 exposes host-authorized `nativeOpen`, typed
+`nativeCall`, and `nativeClose` built-ins.
 
 XClass is a structural class interchange format. sleela xclass validates and
 reconstructs its represented class structure into the SLeeLa AST; method bodies
@@ -87,17 +88,33 @@ version at load time. Loading a native module executes code in the current
 process; ABI validation is not a sandbox, signature check, or trust decision. Only load modules from a trusted location after applying the host
 integrity policy.
 
-The loader now also supports an optional typed `sl_native_call` entry point
-for named methods. Its version-1 value contract covers null, boolean, signed
-64-bit integer, 64-bit double, and length-delimited UTF-8 values. The VM host API
-can invoke this typed entry through its authorized, generation-checked module
-handle. Legacy run-only plugins remain compatible.
+The loader supports an optional typed `sl_native_call` entry point for
+named methods. Its separately negotiated version-1 value contract covers null,
+boolean, signed 64-bit integer, 64-bit double, and length-delimited UTF-8 values.
+A typed plugin must export `sl_native_typed_abi_version()` and report
+`SL_NATIVE_TYPED_ABI_VERSION`; a mismatch fails closed. Legacy run-only
+plugins remain compatible.
 
-This is not yet compiler-generated per-method registration or bytecode
-dispatch. The VM does not automatically marshal its internal `SLValue` into
-the plugin ABI, and VM-owned strings, arrays, structs, closures, and object
-handles are not exposed across the boundary. Interpreter fallback, output
-parity, and concurrent-call stress coverage remain future work.
+The SLeeLa VM now connects this ABI to bytecode. Syntax 3.0 exposes:
+
+- `nativeOpen(path)` — asks the host-installed authorization callback, opens
+  a shared module, and returns a generation-checked VM-owned handle.
+- `nativeCall(handle, method, ...args)` — dispatches through the typed ABI.
+- `nativeClose(handle)` — closes and invalidates the handle.
+
+The append-only `OP_NATIVE_CALL`, `OP_NATIVE_OPEN`, and `OP_NATIVE_CLOSE`
+opcodes preserve every prior opcode number. The interpreter marshals only
+null, bool, int64, double, and UTF-8 String values; it never passes its internal
+`SLValue` structure, arrays, structs, closures, object handles, or pointers to
+a plugin. Returned strings are copied while the module-call lock is held and
+validated before entering the VM String store.
+
+If a plugin reports `SL_NATIVE_CALL_NOT_HANDLED`, or an argument is not
+representable by the scalar ABI, the VM may fall back to a same-name,
+same-arity SLeeLa bytecode method using the original VM-owned values. Ambiguous
+unqualified class methods do not fall back. Plugin errors, stale handles,
+authorization failures, and ABI mismatches are surfaced as errors and never
+silently routed to bytecode.
 
 ## Process policy and annotations
 
@@ -156,12 +173,12 @@ it does not automatically restart the workload.
 | Workstream | Current result | Still required |
 |---|---|---|
 | 1. C/C++ frontends | Production system compiler integration, multi-unit builds | Native SLeeLa frontend adapters and SLIR conformance, not a replacement C++ compiler |
-| 2. SLeeLa/XClass translation | Existing @native AOT + XClass loader delegated; optional typed scalar/string entry ABI | Compiler-generated per-method emission/registration, XClass method-body fidelity where encoded |
-| 3. Native build/link/load | Executable/shared builds, ABI validation, optional typed method entry and VM-owned authorized handle registry | Signature/integrity policy and compiler-generated method metadata |
+| 2. SLeeLa/XClass translation | Existing @native AOT + XClass loader delegated; syntax 3.0 native built-ins compile to bytecode | Per-method AOT emission, XClass method-body fidelity where encoded |
+| 3. Native build/link/load | Executable/shared builds, legacy and versioned typed ABI validation, VM-owned authorized handle registry | Deployment signature/integrity policy and compiler-generated native method metadata |
 | 4. Process piping | argv execution, stdin file, bounded capture, multi-stage pipe, timeout, exit propagation | Annotation parser/runtime policy and richer stream-routing semantics |
 | 5. systemd | Hardened unit rendering, explicit install/enable/start, status/restart/stop/disable, transactional failed-install recovery, one-level replacement rollback | Generated service manifests and integration tests against a real systemd host |
-| 6. VM dispatch | VM-owned nine-slot module table, authorization, generation-checked handles, host open/run/typed-call/close API, close-on-VM-destruction | Bytecode dispatch, SLValue marshalling, composite object/array ABI, interpreter fallback, output parity and concurrency stress tests |
-| 7. Conformance | C/C++ loader tests, ABI mismatch/missing-entry rejection, C++ move ownership, authorization denial, table-full/stale-handle tests, service failure recovery tests | Run the local test suites and complete compiler/VM/loader/process/systemd matrix, sanitizer and cross-ABI coverage |
+| 6. VM dispatch | Appended open/call/close opcodes, scalar/String marshalling, host authorization, stale-handle checks, NOT_HANDLED and VM-composite interpreter fallback | Explicit composite object/array ownership ABI, output parity, concurrency stress tests |
+| 7. Conformance | Loader fixtures, versioned typed ABI, source compile fixture, opt-in VM dispatch/fallback smoke target, service recovery coverage | Run local test suites and complete compiler/VM/loader/process/systemd matrix, sanitizer and cross-ABI coverage |
 
 ## Security invariants
 
@@ -175,6 +192,11 @@ it does not automatically restart the workload.
 ## Tests
 
     python3 -m unittest discover -s tools/tests -p 'test_native_drive.py' -v
+    make -C impl test-native-call
     sh -n bin/sleelactl
 
-The GitHub Actions workflow runs the Python tests on Ubuntu, macOS, and Windows.
+The focused `test-native-call` target is opt-in and is not part of the default
+test aggregate. The Native Drive GitHub Actions workflow is
+`workflow_dispatch`-only; no workflow is automatically started by pushes.
+The new source compiler fixture and VM dispatch smoke target have been added
+but are not claimed as run until explicitly executed.
