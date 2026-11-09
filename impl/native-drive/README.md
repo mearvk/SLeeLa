@@ -250,9 +250,11 @@ the nested operation with
 `native callback cannot recursively invoke native-module operations`. The
 fixture converts the rejected callback into an integer sentinel so the harness
 can assert the exact VM diagnostic without masking it with an outer plugin
-error. This case is deliberately a direct bytecode/API test rather than a
-compiler-produced source artifact; the existing positive callback path remains
-covered by the compiler-produced artifact.
+error. After the callback unwinds, the harness calls the same module again and
+checks the expected typed result, proving the module lock was released and the
+original handle remains usable. This case is deliberately a direct bytecode/API
+test rather than a compiler-produced source artifact; the existing positive
+callback path remains covered by the compiler-produced artifact.
 
 The Native Drive GitHub Actions workflow is `workflow_dispatch`-only; no
 workflow is automatically started by pushes. This end-to-end target has been
