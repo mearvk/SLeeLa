@@ -143,3 +143,22 @@ These paths are architectural test targets; a particular binding must not claim 
 Future Java library work should extend this family rather than placing Java interoperability types in unrelated library directories.
 
 When extending `/lib/java`, update **the source file, its mapping/documentation where needed, `MANIFEST.json`, and validation expectations together**. This keeps the native library count, language bridge, compiler/loader visibility, and CI contract synchronized.
+
+## SLeeLa-native String UTF-16 operations
+
+The `JavaStringValue.sleela` implementation exposes `length()` and
+`charAt(int)` through the versioned Native Drive scalar/UTF-8 ABI.
+`length()` returns UTF-16 code units; `charAt(int)` returns the selected
+16-bit code unit as an integer because the current SLeeLa value model does not
+yet define a Java-compatible `char` primitive. Supplementary characters
+therefore occupy two independently addressable positions.
+
+The VM's existing `OP_NATIVE_CALL` retains the active interpreter call frame
+as a GC root while the plugin executes. The UTF-16 plugin methods accept only
+a length-delimited UTF-8 String and an integer index; no VM pointers or object
+handles cross the native ABI. Malformed UTF-8, negative indices, and
+out-of-range indices fail closed as native-call errors.
+
+Typed Java exception objects are not yet available at this boundary: the
+present VM does not construct or expose `StringIndexOutOfBoundsException` /
+`IndexOutOfBoundsException` instances. This remains a compatibility gap.
