@@ -783,7 +783,7 @@ test-java-string-vm: $(JAVA_STRING_VM_SMOKE)
 	@$(JAVA_STRING_VM_SMOKE)
 # test-exceptions is deliberately opt-in while the exception VM milestone is reviewed.
 $(EXCEPTION_VM_SMOKE): tests/exceptions/exception_vm_smoke.c $(SLCORE_LIB) | $(BUILD)
-	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) -Icore $< $(SLCORE_LIB) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+	$(CXX) $(CXXFLAGS) -Icore $< $(SLCORE_LIB) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
 test-exceptions: $(EXCEPTION_VM_SMOKE)
 	@$(EXCEPTION_VM_SMOKE)
 
