@@ -32,13 +32,12 @@ python3 lib/java/validate.py
 The validator checks:
 
 - the `/lib/java` directory exists;
-- the Git-indexed file count matches the recorded **8,988-file** baseline;
-- manifest schema and root metadata are present;
-- the expected Java interoperability boundary is documented;
-- required source-role metadata is present; and
-- the inventory has not silently fallen below its established baseline.
+- the Git-indexed library-file count exactly equals the manifest count (8,988 at this revision);
+- every declared control file is tracked and excluded from the library count;
+- manifest schema, root, bridge, source-role, execution-boundary, and mapping metadata are valid; and
+- missing or additional tracked files cause a validation failure until the manifest is deliberately updated.
 
-When files are intentionally added or removed, the baseline and manifest must be updated in the same change. CI therefore makes library growth an explicit engineering event rather than allowing the documented count to drift.
+When library source files are intentionally added or removed, update inventory.count in the same change. Documentation and validator control files are explicitly listed in inventory.control_files and excluded. The validator uses exact equality: both unexpected growth and unexpected shrinkage fail.
 
 ## Java-to-SLeeLa Mapping
 
@@ -137,6 +136,18 @@ The native execution foundation should also remain testable:
 `SLeeLa source → Compiler → C/C++ VM → execution`
 
 These paths are architectural test targets; a particular binding must not claim support until its implementation and CI tests establish that support.
+
+## Runtime Capability Boundary
+
+The library's source envelopes describe Java API types; they do not, by themselves, implement Java method execution. The repository currently has an external-JVM host path for Java source, runnable JARs, and compiled class folders. This is a child-process integration, not JNI or an embedded JVM.
+
+Direct construction and method invocation from SLeeLa expressions, Java object-handle marshalling, and structured Java exception propagation still require an end-to-end typed protocol and compiler/VM integration. In particular, descriptive strings such as java.invoke: are not invocation opcodes. See RUNTIME-INTEGRATION.md for the capability matrix, safety rules, and implementation sequence.
+
+## JDK Signature Catalog
+
+The JDK 28 signature synchronizer records official Javadoc member declarations as comments inside a generated catalog section. It does not generate executable method bodies or placeholder return values. This keeps API metadata useful without suggesting that a stub returning false, zero, or null is a conforming Java implementation.
+
+Use tools/jdk28_signature_sync.py --check to audit drift, or --limit N for a controlled batch. Run the focused regression tests with python3 test-suites/java-library-integrity.py from the repository root.
 
 ## Expansion
 
