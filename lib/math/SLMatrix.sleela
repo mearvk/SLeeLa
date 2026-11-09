@@ -131,6 +131,70 @@ class SLMatrix {
     }
     return det * sign;
   }
+  < Gauss-Jordan inverse fallback. Caller supplies n*(2*n) scratch. >
+  void inverse(double[] a, double[] out, double[] scratch, int n) {
+    int width = 2 * n;
+    int row = 0;
+    while (row < n) {
+      int col = 0;
+      while (col < n) {
+        scratch[row * width + col] = a[row * n + col];
+        scratch[row * width + n + col] = row == col ? 1.0 : 0.0;
+        col = col + 1;
+      }
+      row = row + 1;
+    }
+    int pivotCol = 0;
+    while (pivotCol < n) {
+      int pivotRow = pivotCol;
+      row = pivotCol + 1;
+      while (row < n) {
+        if (absolute(scratch[row * width + pivotCol]) >
+            absolute(scratch[pivotRow * width + pivotCol])) { pivotRow = row; }
+        row = row + 1;
+      }
+      double pivot = scratch[pivotRow * width + pivotCol];
+      if (pivot == 0.0) { throw "Matrix is singular"; }
+      if (pivotRow != pivotCol) {
+        int col = 0;
+        while (col < width) {
+          double temp = scratch[pivotCol * width + col];
+          scratch[pivotCol * width + col] = scratch[pivotRow * width + col];
+          scratch[pivotRow * width + col] = temp;
+          col = col + 1;
+        }
+      }
+      pivot = scratch[pivotCol * width + pivotCol];
+      int col = 0;
+      while (col < width) {
+        scratch[pivotCol * width + col] = scratch[pivotCol * width + col] / pivot;
+        col = col + 1;
+      }
+      row = 0;
+      while (row < n) {
+        if (row != pivotCol) {
+          double factor = scratch[row * width + pivotCol];
+          col = 0;
+          while (col < width) {
+            scratch[row * width + col] = scratch[row * width + col] -
+              factor * scratch[pivotCol * width + col];
+            col = col + 1;
+          }
+        }
+        row = row + 1;
+      }
+      pivotCol = pivotCol + 1;
+    }
+    row = 0;
+    while (row < n) {
+      int col = 0;
+      while (col < n) {
+        out[row * n + col] = scratch[row * width + n + col];
+        col = col + 1;
+      }
+      row = row + 1;
+    }
+  }
   < Identity matrix of order n written into `m`. >
   void identity(double[] m, int n) {
     int i = 0;
