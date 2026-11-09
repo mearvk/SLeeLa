@@ -2146,6 +2146,35 @@ static SLResult run_thread(SLThread* t) {
             SLFrame* nf=&t->frames[t->fp++]; nf->ret_ip=ip; nf->base=base; nf->nargs=f->nargs;
             for(int i=f->nargs;i<f->nlocals;i++){ PUSH(slval_null()); } ip=f->entry;
         } break;
+        case OP_NATIVE_OPEN: {
+            SLValue path_value = POP();
+            SLNativeHandle handle = SL_NATIVE_HANDLE_INVALID;
+            SLNativeStatus status;
+            if (path_value.type != SL_STR) TERR("nativeOpen: path must be a String");
+            status = slvm_native_module_open(vm, slvm_str(vm, path_value.as.s), &handle);
+            if (status != SL_NATIVE_OK) {
+                char message[256];
+                snprintf(message, sizeof(message), "nativeOpen denied or failed: %s",
+                         sl_native_status_string(status));
+                TERR(message);
+            }
+            PUSH(slval_int((int64_t)handle));
+        } break;
+        case OP_NATIVE_CLOSE: {
+            SLValue handle_value = POP();
+            SLNativeStatus status;
+            if (handle_value.type != SL_INT || handle_value.as.i <= 0 ||
+                (uint64_t)handle_value.as.i > UINT32_MAX)
+                TERR("nativeClose: handle must be a valid positive native handle");
+            status = slvm_native_module_close(vm, (SLNativeHandle)handle_value.as.i);
+            if (status != SL_NATIVE_OK) {
+                char message[256];
+                snprintf(message, sizeof(message), "nativeClose failed: %s",
+                         sl_native_status_string(status));
+                TERR(message);
+            }
+            PUSH(slval_null());
+        } break;
         case OP_NATIVE_CALL: {
             uint32_t argc;
             int base, fallback_ip = -1, unsupported = 0;
