@@ -1130,3 +1130,13 @@ test-unsigned-integer: $(UNSIGNED_INTEGER_TEST)
 # fine -- the first build creates them. '-include' never errors on missing files.
 -include $(wildcard $(BUILD)/*.d)
 -include $(wildcard $(BUILD)/slui/*.d)
+
+# Native mathematical structures (standalone C ABI regression; opt-in, not part
+# of the default test aggregate until the VM dispatch layer is connected).
+LINEAR_ALGEBRA_SMOKE := $(BUILD)/linear_algebra_smoke
+$(LINEAR_ALGEBRA_SMOKE): subjects/math/linear_algebra.cpp tests/subjects/linear_algebra_smoke.cpp subjects/math/linear_algebra.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) -Isubjects/math tests/subjects/linear_algebra_smoke.cpp subjects/math/linear_algebra.cpp -o $@ $(LDFLAGS) $(LIBS)
+
+test-linear-algebra: $(LINEAR_ALGEBRA_SMOKE)
+	@echo "=== Native SLeeLa linear algebra C ABI ==="; $(LINEAR_ALGEBRA_SMOKE)
+
