@@ -13,7 +13,7 @@ The `/lib/java` library family defines the SLeeLa boundary for Java interoperabi
 
 ## Native Library Inventory
 
-The current repository inventory contains **8,990 files under `/lib/java`**. This count is validated from the Git index by the repository CI rather than being treated as an unverified documentation number.
+The current repository inventory contains **8,991 files under `/lib/java`**. This count is validated from the Git index by the repository CI rather than being treated as an unverified documentation number.
 
 The collection is a native SLeeLa source surface for Java-facing language and framework concepts. It is intended to give the SLeeLa Compiler, Loader, SST, and Nordshrift a stable source-level vocabulary for Java packages, classes, procedures, interfaces, runtime concepts, and interoperability boundaries.
 
@@ -32,7 +32,7 @@ python3 lib/java/validate.py
 The validator checks:
 
 - the `/lib/java` directory exists;
-- the Git-indexed file count matches the recorded **8,990-file** baseline;
+- the Git-indexed file count matches the recorded **8,991-file** baseline;
 - manifest schema and root metadata are present;
 - the expected Java interoperability boundary is documented;
 - required source-role metadata is present; and
@@ -55,7 +55,7 @@ A Java-facing source unit should identify, where applicable:
 5. **Loader visibility** — how the Compiler and Loader discover the symbol.
 6. **Compatibility surface** — the Java/JDK version or API family represented.
 
-This makes the Java relationship traceable instead of leaving the 8,990-file collection as an opaque directory.
+This makes the Java relationship traceable instead of leaving the 8,991-file collection as an opaque directory.
 
 ## Java API Dependency Graph
 
@@ -188,3 +188,26 @@ These paths are architectural test targets; a particular binding must not claim 
 Future Java library work should extend this family rather than placing Java interoperability types in unrelated library directories.
 
 When extending `/lib/java`, update **the source file, its mapping/documentation where needed, `MANIFEST.json`, and validation expectations together**. This keeps the native library count, language bridge, compiler/loader visibility, and CI contract synchronized.
+## Visibility and constructor inheritance audit
+
+Run the source-level visibility/constructor audit with:
+
+```text
+python3 lib/java/tools/java_api_visibility_constructor_audit.py --json java-api-visibility.json
+python3 tests/java_api_visibility_constructor_suite.py
+make -C tests java-api-visibility-constructor
+```
+
+The report classifies declared members as public, protected, package-private,
+or private; computes inherited public/protected members and same-package
+package-private members; and records unresolved Java-namespace supertypes.
+Private members are excluded from inheritance.
+
+Java constructors are never inherited. The audit reports accessible superclass
+constructors as explicit `super(...)` invocation options, not as members of
+the subclass. It also models an implicit default constructor when a class
+declares no constructor, using the class visibility.
+
+The parser is intentionally conservative and operates on the repository's
+SLeeLa source representations. Results are qualification evidence requiring
+review, not a claim that every Java language edge case has been resolved.
