@@ -18,6 +18,7 @@
 #include "library_index.h"
 #include "../core/sleela_ui_ids.h"
 #include "../core/sleela_ui_vm.h"
+#include "../subjects/math/linear_algebra.h"
 
 namespace sleela {
 
@@ -964,6 +965,7 @@ private:
 
     bool tryEmitMathBuiltin(const Call& c){
         const std::string& n=c.callee;
+        if(syntax_<SyntaxVersion{3,0}) throw std::runtime_error("Semantic error: native mathematical built-ins require #sleela 3.0");
         int op=0, a=-1, b=-1, out=-1, aux=-1;
         size_t ar=0, ac=0, br=0, bc=0, orows=0, ocols=0;
         const Expr* scalarExpr=nullptr;
