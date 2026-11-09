@@ -17,7 +17,7 @@ _Static_assert(sizeof(double) == 8, "IPC v1 requires 8-byte binary64 storage");
 #define SL_IPC_MAX_PAYLOAD (16u * 1024u * 1024u)
 #define SL_IPC_VERSION 1u
 #define SL_IPC_LIMB_BASE UINT32_C(1000000000)
-#define SL_IPC_MAX_LIMBS ((SL_IPC_MAX_PAYLOAD - 9u) / 4u)
+#define SL_IPC_MAX_LIMBS ((SL_IPC_MAX_PAYLOAD - 5u) / 4u)
 
 typedef enum {
     SL_IPC_REQUEST = 1, SL_IPC_RESPONSE = 2, SL_IPC_CANCEL = 3,
