@@ -1,0 +1,81 @@
+<< lib/math/SLNativeMathEngine.sleela
+   SLeeLa Standard Library Definition.
+   Definition: SLeeLa-facing facade for the typed native mathematical kernels. >>
+#sleela 3.0
+material;
+< Native math facade. Arrays are caller-owned; matrices are flat row-major arrays.
+  Output arrays must be allocated to the documented result size before calling.
+  Dimensions and transform flags are compile-time integer literals. The
+  SLVector, SLMatrix, SLComplex, and SLMathEngine classes remain the pure
+  SLeeLa/Core fallback and reference implementations. >
+class SLNativeMathEngine {
+  String metaVersion = "1.0.0";
+  int metaId = 9501;
+  String metaAuthor = "SLeeLa project";
+  String metaDate = "2026-11-09";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-09";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "none";
+
+  void vectorAdd(double[] a, double[] b, double[] out, int n) {
+    mathVectorAdd(a, b, out, n);
+  }
+  void vectorSubtract(double[] a, double[] b, double[] out, int n) {
+    mathVectorSubtract(a, b, out, n);
+  }
+  double vectorDot(double[] a, double[] b, int n) {
+    return mathVectorDot(a, b, n);
+  }
+  double vectorNorm(double[] a, int n) {
+    return mathVectorNorm(a, n);
+  }
+  void vectorScale(double[] a, double scalar, double[] out, int n) {
+    mathVectorScale(a, scalar, out, n);
+  }
+  void vectorNormalize(double[] a, double[] out, int n) {
+    mathVectorNormalize(a, out, n);
+  }
+  void vectorCross3(double[] a, double[] b, double[] out) {
+    mathVectorCross3(a, b, out);
+  }
+
+  void matrixMultiply(double[] a, double[] b, double[] out,
+                      int rowsA, int colsA, int rowsB, int colsB) {
+    mathMatrixMultiply(a, b, out, rowsA, colsA, rowsB, colsB);
+  }
+  void matrixTranspose(double[] a, double[] out, int rows, int cols) {
+    mathMatrixTranspose(a, out, rows, cols);
+  }
+  void matrixInverse(double[] a, double[] out, int order) {
+    mathMatrixInverse(a, out, order);
+  }
+  void matrixQR(double[] a, double[] q, double[] r, int rows, int cols) {
+    mathMatrixQR(a, q, r, rows, cols);
+  }
+  void symmetricEigen(double[] a, double[] values, double[] vectors,
+                      int order, int maxSweeps) {
+    mathSymmetricEigen(a, values, vectors, order, maxSweeps);
+  }
+
+  void complexAdd(double[] a, double[] b, double[] out) {
+    mathComplexAdd(a, b, out);
+  }
+  void complexSubtract(double[] a, double[] b, double[] out) {
+    mathComplexSubtract(a, b, out);
+  }
+  void complexMultiply(double[] a, double[] b, double[] out) {
+    mathComplexMultiply(a, b, out);
+  }
+  void complexDivide(double[] a, double[] b, double[] out) {
+    mathComplexDivide(a, b, out);
+  }
+
+  < FFT arrays store interleaved real/imaginary pairs; inverse is 0 or 1. >
+  void fft(double[] input, double[] output, int complexLength, int inverse) {
+    mathFFT(input, output, complexLength, inverse);
+  }
+}
