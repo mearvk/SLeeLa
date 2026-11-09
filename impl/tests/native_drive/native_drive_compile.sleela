@@ -1,5 +1,11 @@
 #sleela 3.0
 
+class Callback {
+    static int receive(int value) {
+        return value + 1;
+    }
+}
+
 class NativeDriveCompile {
     static int fallback(int value) {
         return value * 3;
@@ -9,7 +15,8 @@ class NativeDriveCompile {
         int module = nativeOpen("@NATIVE_PLUGIN_PATH@");
         int nativeResult = nativeCall(module, "twice", 21);
         int fallbackResult = nativeCall(module, "fallback", 7);
+        int callbackResult = nativeCall(module, "call_sleela", 41);
         nativeClose(module);
-        return nativeResult + fallbackResult;
+        return nativeResult + fallbackResult + callbackResult;
     }
 }
