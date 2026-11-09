@@ -51,6 +51,11 @@ class Broken {}
     assert not any(x["reference"] == "java.lang.DoesNotExist" for x in graph["unresolved"])
     assert any(x["to"] == "java.util.Map.Entry" for x in graph["edges"])
     assert any(x["kind"] == "static-import" for x in graph["edges"])
+    nested = next(x for x in graph["transitive_dependencies"] if x["name"] == "java.util.Map.Entry")
+    assert "java.util.Map" in nested["dependencies"], nested
+    assert graph["modules"][0]["requires"] == ["java.logging"], graph["modules"]
+    assert graph["modules"][0]["exports"] == ["java.lang"], graph["modules"]
+    assert graph["package_metadata"][0]["name"] == "java.lang", graph["package_metadata"]
     check = subprocess.run([sys.executable, str(TOOL), "--root", str(root),
                             "--check"], capture_output=True, text=True)
     assert check.returncode == 1, (check.stdout, check.stderr)
