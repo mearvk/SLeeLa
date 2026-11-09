@@ -55,15 +55,16 @@ or VM handles would violate the ownership boundary. The next route is an
 isolated math worker process, with canonical serialization of base-1e9 limbs.
 
 The first IPC implementation slice now exists:
-- `impl/native-drive/native_ipc_protocol.h`: 24-byte version-1 frame header
-  and scalar-value codec, field-by-field little-endian.
+- `impl/native-drive/native_ipc_protocol.h`: 24-byte version-1 frame header,
+  scalar/request codec, and canonical signed base-1e9 limb codec, field-by-field
+  little-endian.
 - `impl/tests/native_drive/native_ipc_protocol_smoke.c`: focused codec test.
 - `impl/native-drive/IPC-PROTOCOL.md`: request/response, limb, lifecycle,
   security, and verification contract.
 
-This is only the wire-codec foundation. A persistent worker, request-payload
-codec, process supervisor, canonical limb payloads, and Pi integration remain
-in progress. No end-to-end IPC benchmark is claimed.
+This is only the wire-codec foundation. A persistent worker, process supervisor, and Pi integration remain in
+progress; the request and limb wire codecs are implemented but not yet
+connected to the VM dispatch path. No end-to-end IPC benchmark is claimed.
 
 ## 4. Required implementation gates
 
