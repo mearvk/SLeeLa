@@ -960,6 +960,14 @@ private:
             emit(OP_CONST,slvm_add_const_utf16(vm_,units.data(),units.size()));
             return true;
         }
+        // Convert a runtime legacy UTF-8 String to a VM-owned Java UTF-16 String.
+        // The current SL_STR storage is NUL-terminated, so embedded NUL must be
+        // created with javaStringFromCodeUnits; malformed UTF-8 fails closed.
+        if(n=="javaStringFromUtf8"){
+            if(syntax_<SyntaxVersion{3,0})throw std::runtime_error("Semantic error: javaStringFromUtf8 requires #sleela 3.0");
+            if(c.args.size()!=1)throw std::runtime_error("Semantic error: javaStringFromUtf8(value) takes exactly one argument");
+            emitExpr(c.args[0].get()); emit(OP_JSTR_FROM_UTF8); return true;
+        }
         // Runtime operations on VM-owned Java UTF-16 String values.
         if(n=="javaStringLength" || n=="javaStringHashCode"){
             if(syntax_<SyntaxVersion{3,0})throw std::runtime_error("Semantic error: Java UTF-16 String operations require #sleela 3.0");
