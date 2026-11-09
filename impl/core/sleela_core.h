@@ -6,10 +6,11 @@
 
 /* Stable VM artifact/runtime ABI identifiers. */
 #define SLEELA_VM_ABI_MAJOR 1u
-#define SLEELA_VM_ABI_MINOR 1u
+#define SLEELA_VM_ABI_MINOR 2u
 #define SLEELA_ARTIFACT_FORMAT_VERSION 2u
 #include <stdint.h>
 #include "../../os-level-support/osls_vm_bridge.h"
+#include "../../os-level-support/loader/native_module_table.h"
 #include <stddef.h>
 #include "../../runtime/garbage_collector.h"
 #ifdef __cplusplus
@@ -245,6 +246,17 @@ typedef enum {
      * (len(a)+1)/2 + 1 limbs), pushes the significant result-limb count. Used
      * for sqrt(10005) in the Chudnovsky constant. */
     OP_BIGISQRT,
+    /* Typed native method dispatch. Operand a is argc; stack layout is
+     * [native-module-handle, method-name String, arg0, ..., argN-1].
+     * Only null/bool/int64/double/UTF-8 cross the versioned native ABI.
+     * Unsupported VM-owned values stay in the interpreter and use a matching
+     * SLeeLa bytecode method as fallback. Appended to preserve existing opcodes. */
+    OP_NATIVE_CALL,
+    /* Host-authorized native module lifecycle. OPEN pops a path String and
+     * pushes an opaque integer handle; CLOSE pops that handle and pushes null.
+     * Both operations remain gated by the VM's immutable host authorizer. */
+    OP_NATIVE_OPEN,
+    OP_NATIVE_CLOSE,
     /* Sentinel: one past the last real opcode. Artifact validation uses this so
      * every defined opcode is accepted and adding a new opcode above never
      * requires updating the validator's upper bound again. KEEP LAST. */
@@ -264,7 +276,10 @@ static_assert(OP_BIGDIVMOD == 159, "OP_BIGDIVMOD is append-only opcode 159");
 static_assert(OP_BIGSUB == 160, "OP_BIGSUB is append-only opcode 160");
 static_assert(OP_BIGDIV == 161, "OP_BIGDIV is append-only opcode 161");
 static_assert(OP_BIGISQRT == 162, "OP_BIGISQRT is append-only opcode 162");
-static_assert(OP__COUNT == 163, "the extended ISA must contain 163 opcodes");
+static_assert(OP_NATIVE_CALL == 163, "OP_NATIVE_CALL is append-only opcode 163");
+static_assert(OP_NATIVE_OPEN == 164, "OP_NATIVE_OPEN is append-only opcode 164");
+static_assert(OP_NATIVE_CLOSE == 165, "OP_NATIVE_CLOSE is append-only opcode 165");
+static_assert(OP__COUNT == 166, "the extended ISA must contain 166 opcodes");
 #else
 _Static_assert(OP_OS_PLATFORM == 103, "legacy OS opcode range must begin at 103");
 _Static_assert(OP_OS_PCLOSE == 123, "legacy OS opcode range must end at 123");
@@ -278,7 +293,10 @@ _Static_assert(OP_BIGDIVMOD == 159, "OP_BIGDIVMOD is append-only opcode 159");
 _Static_assert(OP_BIGSUB == 160, "OP_BIGSUB is append-only opcode 160");
 _Static_assert(OP_BIGDIV == 161, "OP_BIGDIV is append-only opcode 161");
 _Static_assert(OP_BIGISQRT == 162, "OP_BIGISQRT is append-only opcode 162");
-_Static_assert(OP__COUNT == 163, "the extended ISA must contain 163 opcodes");
+_Static_assert(OP_NATIVE_CALL == 163, "OP_NATIVE_CALL is append-only opcode 163");
+_Static_assert(OP_NATIVE_OPEN == 164, "OP_NATIVE_OPEN is append-only opcode 164");
+_Static_assert(OP_NATIVE_CLOSE == 165, "OP_NATIVE_CLOSE is append-only opcode 165");
+_Static_assert(OP__COUNT == 166, "the extended ISA must contain 166 opcodes");
 #endif
 /* GC-hint aggressiveness bands for OP_GC_HINT (operand a). */
 #define SL_GC_HINT_MAX  100   /* clamp ceiling for the 0..100 aggressiveness scale */
@@ -331,6 +349,7 @@ _Static_assert(OP__COUNT == 163, "the extended ISA must contain 163 opcodes");
 #define SL_MAX_ARRAY_LEN 33554432 /* maximum elements in a single array (2^25)  */
 typedef enum { SLR_OK = 0, SLR_ERROR, SLR_HALT } SLResult;
 typedef struct SLVM SLVM;
+typedef int (*SLNativeAuthorizeCallback)(const char* function, void* context);
 typedef int (*SLAudioNativeRenderFn)(
     const char* output_path, uint32_t sample_rate,
     const char* const* input_paths, const double* start_seconds,
@@ -346,6 +365,37 @@ SLVM* slvm_new(void);
 /* True when Sleela source values use the bounded VM-owned memory/handle model. */
 int slvm_memory_safe_mode(const SLVM* vm);
 void slvm_set_audio_native_renderer(SLVM* vm, SLAudioNativeRenderFn fn, void* user);
+/* Native modules are host-authorized only. Without an installed authorization
+ * callback, every module open is denied. The callback is immutable after its
+ * first installation and must not re-enter this VM's native-module API. These
+ * APIs manage VM-owned opaque handles. Typed calls accept only the versioned
+ * scalar/UTF-8 SLNativeValue contract; OP_NATIVE_CALL performs bytecode
+ * dispatch and may fall back to a same-name, same-arity SLeeLa method when a
+ * plugin reports NOT_HANDLED or arguments are VM-owned composites. Raw SLValue
+ * and VM object handles never cross the plugin boundary.
+ *
+ * Native plugins may optionally export sl_native_bind_host() to receive a
+ * versioned callback table, rebound before each plugin entrypoint. Plugins
+ * must retain the copied table in thread-local storage. Its invoke() entry
+ * executes an exact, unique
+ * SLeeLa function by name using only scalar/UTF-8 ABI values. Callback
+ * execution is synchronous within a plugin entry point, uses a nested VM
+ * stack, and preserves the suspended caller stack as a GC root. The VM must
+ * have no active workers; callback bytecode cannot re-enter native-module
+ * operations or spawn/join VM workers.
+ * Callback invocation is denied by default; the host must install a separate
+ * immutable callback-name authorizer before a plugin can invoke SLeeLa code.
+ * Do not call these APIs concurrently with slvm_free(). */
+int slvm_set_native_authorizer(SLVM* vm, SLNativeAuthorizePath authorize, void* context);
+/* Callback invocation is denied unless the host installs an immutable exact-name policy. */
+int slvm_set_native_callback_authorizer(SLVM* vm, SLNativeAuthorizeCallback authorize, void* context);
+SLNativeStatus slvm_native_module_open(SLVM* vm, const char* path, SLNativeHandle* out_handle);
+SLNativeStatus slvm_native_module_run(SLVM* vm, SLNativeHandle handle,
+                                      int argc, const char* const argv[], int* out_result);
+SLNativeStatus slvm_native_module_call(SLVM* vm, SLNativeHandle handle,
+                                       const char* method, uint32_t argc,
+                                       const SLNativeValue* argv, SLNativeValue* out_result);
+SLNativeStatus slvm_native_module_close(SLVM* vm, SLNativeHandle handle);
 /* Set the host capabilities available to OSLS bindings before execution.
  * The default is read-only host inspection; pass 0 to deny OSLS access. */
 int slvm_set_osls_capabilities(SLVM* vm, uint64_t capabilities);

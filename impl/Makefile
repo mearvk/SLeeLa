@@ -108,9 +108,32 @@ OSLS_CORE_OBJ := $(BUILD)/osls_core.o
 OSLS_EXT_OBJ := $(BUILD)/osls_extended.o
 OSLS_EXT2_OBJ := $(BUILD)/osls_extended2.o
 OSLS_VM_OBJ := $(BUILD)/osls_vm_bridge.o
+NATIVE_LOADER_DIR := ../os-level-support/loader
+NATIVE_LOADER_OBJ := $(BUILD)/native_loader.o
+NATIVE_MODULE_TABLE_OBJ := $(BUILD)/native_module_table.o
 OSLS_VM_CAP_SMOKE := $(BUILD)/osls_vm_capability_smoke
 OSLS_VM_CAP_SMOKE_OBJ := $(BUILD)/osls_vm_capability_test.o
-OSLS_OBJS := $(OSLS_CORE_OBJ) $(OSLS_EXT_OBJ) $(OSLS_EXT2_OBJ) $(OSLS_VM_OBJ)
+NATIVE_CALL_SMOKE := $(BUILD)/native_call_smoke
+NATIVE_CALL_SMOKE_OBJ := $(BUILD)/native_call_smoke.o
+ifeq ($(PLATFORM),macos)
+  NATIVE_CALL_FIXTURE := $(BUILD)/native_call_fixture.dylib
+  NATIVE_CALL_FIXTURE_FLAGS := -dynamiclib
+else ifeq ($(PLATFORM),windows)
+  NATIVE_CALL_FIXTURE := $(BUILD)/native_call_fixture.dll
+  NATIVE_CALL_FIXTURE_FLAGS := -shared
+else
+  NATIVE_CALL_FIXTURE := $(BUILD)/native_call_fixture.so
+  NATIVE_CALL_FIXTURE_FLAGS := -shared
+endif
+# Shared-library code needs position-independent relocations on ELF and Mach-O.
+# Keep the flag platform-scoped because MinGW/MSVC-compatible Windows builds do
+# not accept the POSIX -fPIC option.
+ifneq ($(PLATFORM),windows)
+  NATIVE_CALL_FIXTURE_CFLAGS := -fPIC
+endif
+NATIVE_CALL_SOURCE := $(BUILD)/native_drive_compile_source.sleela
+NATIVE_CALL_ARTIFACT := $(BUILD)/native_drive_compile_artifact.sleela
+OSLS_OBJS := $(OSLS_CORE_OBJ) $(OSLS_EXT_OBJ) $(OSLS_EXT2_OBJ) $(OSLS_VM_OBJ) $(NATIVE_LOADER_OBJ) $(NATIVE_MODULE_TABLE_OBJ)
 ifeq ($(PLATFORM),windows)
   OSLS_DEFS := -D_CRT_SECURE_NO_WARNINGS
 else
@@ -378,7 +401,7 @@ else
 endif
 ALL_OBJECTS := $(CORE_OBJ) $(OSLS_OBJS) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) $(AUDIO_MIXER_OBJ) $(AI_OBJ) $(DESIGN_ACTIVITY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(VM_CONFIG_OBJ) $(CONFIG_LOCATION_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(DRIVER_SLEELVAC_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(NS_OBJ) $(COMMON_RAILS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(SYNCHRO_SMOKE) $(MUNCTION_SMOKE) $(BESTOF_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE)
 
-.PHONY: all install install-all uninstall uninstall-all sleelvac libslcore test-platform test-osls-isa test-osls-vm stage package build-verified rebuild-verified clean test test-java-runtime test-sleela test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-common-rails test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security regen-manifest check-manifest build-runtime test-runtime test-memmgr test-memmgr-grades test-system-monitor test-media test-audio-mixer test-ai test-regex test-astrophysics test-sociology test-design-activity test-unsigned-integer
+.PHONY: all install install-all uninstall uninstall-all sleelvac libslcore test-platform test-osls-isa test-osls-vm stage package build-verified rebuild-verified clean test test-java-runtime test-sleela test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-common-rails test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security regen-manifest check-manifest build-runtime test-runtime test-memmgr test-memmgr-grades test-system-monitor test-media test-audio-mixer test-ai test-regex test-astrophysics test-sociology test-design-activity test-unsigned-integer test-native-call
 
 all: verify-security $(SLEELA_BIN) $(SLEELAVC_BIN) $(NORDSHRIFT_BIN) $(SLCORE_LIB) stage
 
@@ -598,7 +621,7 @@ else
 $(BALLUM_BACKEND_OBJ): $(BALLUM_BACKEND_SRC) $(BALLUM_DIR)/include/sleela_ballum/ballum_manager.h | $(BUILD)
 	$(CC) $(CFLAGS) $(BALLUM_INC) $(BALLUM_BACKEND_DEF) -c $< -o $@
 endif
-$(BESTOF_OBJ): core/sleela_bestof.c core/sleela_bestof.h ../os-level-support/osls_vm_bridge.h | $(BUILD)
+$(BESTOF_OBJ): core/sleela_bestof.c core/sleela_bestof.h ../os-level-support/osls_vm_bridge.h ../os-level-support/loader/native_module_table.h ../os-level-support/loader/native_loader.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_bestof.c -o $@
 $(PATH_OBJ): core/sleela_path.c core/sleela_path.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_path.c -o $@
@@ -688,8 +711,12 @@ $(OSLS_EXT2_OBJ): $(OSLS_DIR)/osls_extended2.c $(OSLS_DIR)/osls.h $(OSLS_DIR)/os
 	$(CC) $(CFLAGS) $(OSLS_DEFS) -I$(OSLS_DIR) -c $< -o $@
 $(OSLS_VM_OBJ): $(OSLS_DIR)/osls_vm_bridge.c $(OSLS_DIR)/osls_vm_bridge.h $(OSLS_DIR)/osls.h | $(BUILD)
 	$(CC) $(CFLAGS) $(OSLS_DEFS) -I$(OSLS_DIR) -c $< -o $@
+$(NATIVE_LOADER_OBJ): $(NATIVE_LOADER_DIR)/native_loader.c $(NATIVE_LOADER_DIR)/native_loader.h | $(BUILD)
+	$(CC) $(CFLAGS) -I$(NATIVE_LOADER_DIR) -c $< -o $@
+$(NATIVE_MODULE_TABLE_OBJ): $(NATIVE_LOADER_DIR)/native_module_table.c $(NATIVE_LOADER_DIR)/native_module_table.h $(NATIVE_LOADER_DIR)/native_loader.h | $(BUILD)
+	$(CC) $(CFLAGS) -I$(NATIVE_LOADER_DIR) -c $< -o $@
 
-$(CORE_OBJ): $(CORE_SRC) core/sleela_core.c core/sleela_core.h ../runtime/garbage_collector.h core/sleela_thread.h core/pthread.h core/sleela_synchro.h core/sleela_munction.h core/sleela_bestof.h ../os-level-support/osls_vm_bridge.h | $(BUILD)
+$(CORE_OBJ): $(CORE_SRC) core/sleela_core.c core/sleela_core.h ../runtime/garbage_collector.h core/sleela_thread.h core/pthread.h core/sleela_synchro.h core/sleela_munction.h core/sleela_bestof.h ../os-level-support/osls_vm_bridge.h ../os-level-support/loader/native_module_table.h ../os-level-support/loader/native_loader.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c $(CORE_SRC) -o $@
 
 # The reusable Core archive contains the engine, OS abstractions, GC, and
@@ -708,6 +735,18 @@ $(OSLS_VM_CAP_SMOKE_OBJ): tests/osls_vm/osls_vm_capability_test.c | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c $< -o $@
 $(OSLS_VM_CAP_SMOKE): $(OSLS_VM_CAP_SMOKE_OBJ) $(SLCORE_LIB)
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+$(NATIVE_CALL_SMOKE_OBJ): tests/native_drive/native_call_smoke.c core/sleela_core.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c $< -o $@
+$(NATIVE_CALL_FIXTURE): tests/native_drive/native_call_fixture.c ../os-level-support/loader/native_loader.h | $(BUILD)
+	$(CC) $(CFLAGS) $(NATIVE_CALL_FIXTURE_CFLAGS) -DSL_NATIVE_PLUGIN_BUILD $(NATIVE_CALL_FIXTURE_FLAGS) -I../os-level-support/loader $< -o $@
+$(NATIVE_CALL_SMOKE): $(NATIVE_CALL_SMOKE_OBJ) $(SLCORE_LIB)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+$(NATIVE_CALL_SOURCE): tests/native_drive/native_drive_compile.sleela $(NATIVE_CALL_FIXTURE) | $(BUILD)
+	sed 's|@NATIVE_PLUGIN_PATH@|$(abspath $(NATIVE_CALL_FIXTURE))|g' $< > $@
+$(NATIVE_CALL_ARTIFACT): $(NATIVE_CALL_SOURCE) $(SLEELA_BIN)
+	$(SLEELA_BIN) compile $(NATIVE_CALL_SOURCE) -o $@
+test-native-call: $(SLEELA_BIN) $(NATIVE_CALL_SMOKE) $(NATIVE_CALL_FIXTURE) $(NATIVE_CALL_ARTIFACT)
+	$(NATIVE_CALL_SMOKE) $(NATIVE_CALL_ARTIFACT) $(abspath $(NATIVE_CALL_FIXTURE))
 libslcore: $(SLCORE_LIB)
 	@echo "=== reusable Core engine archive: $(SLCORE_LIB) ==="
 $(CHEMISTRY_OBJ): subjects/chemistry/chemistry.cpp subjects/chemistry/chemistry.h | $(BUILD)

@@ -39,6 +39,19 @@ static void *find_symbol(void *handle, const char *name) {
 #endif
 }
 
+static int value_valid(const SLNativeValue *value) {
+    if (!value || value->reserved != 0) return 0;
+    switch ((SLNativeValueTag)value->tag) {
+    case SL_NATIVE_VALUE_NULL: return 1;
+    case SL_NATIVE_VALUE_BOOL: return value->as.boolean == 0 || value->as.boolean == 1;
+    case SL_NATIVE_VALUE_I64: return 1;
+    case SL_NATIVE_VALUE_F64: return 1;
+    case SL_NATIVE_VALUE_UTF8:
+        return value->as.utf8.length == 0 || value->as.utf8.data != NULL;
+    default: return 0;
+    }
+}
+
 const char *sl_native_loader_error(void) {
 #ifdef _WIN32
     return loader_error;
@@ -55,6 +68,14 @@ const char *sl_native_status_string(SLNativeStatus status) {
     case SL_NATIVE_LOAD_ERROR: return "could not load shared library";
     case SL_NATIVE_ABI_MISMATCH: return "native module ABI version mismatch";
     case SL_NATIVE_ENTRY_NOT_FOUND: return "required module entry point not found";
+    case SL_NATIVE_AUTHORIZATION_DENIED: return "native module path was not authorized by host policy";
+    case SL_NATIVE_TABLE_FULL: return "native module handle table is full";
+    case SL_NATIVE_STALE_HANDLE: return "native module handle is stale or invalid";
+    case SL_NATIVE_TYPED_ENTRY_NOT_FOUND: return "native module does not export the typed-call entry";
+    case SL_NATIVE_PLUGIN_ERROR: return "native plugin method returned an error or invalid value";
+    case SL_NATIVE_METHOD_NOT_HANDLED: return "native plugin does not implement the requested method";
+    case SL_NATIVE_HOST_CALLBACK_NOT_FOUND: return "native plugin does not accept host callbacks";
+    case SL_NATIVE_REENTRANT_CALL: return "native-module API re-entry from a host callback is not allowed";
     default: return "unknown native-loader status";
     }
 }
@@ -106,6 +127,53 @@ SLNativeStatus sl_native_run_module(SLNativeModule *module, int argc,
     }
     *out_result = module->run(argc, argv);
     return SL_NATIVE_OK;
+}
+
+SLNativeStatus sl_native_call_module(SLNativeModule *module, const char *method,
+                                     uint32_t argc, const SLNativeValue *argv,
+                                     SLNativeValue *out_result) {
+    uint32_t i;
+    int plugin_status;
+    SLNativeValue result;
+    SLNativeTypedCall typed_call;
+    SLNativeTypedAbiVersion typed_abi;
+    void *symbol;
+    if (!module || !module->handle || !method || !*method ||
+        (argc > 0 && !argv) || !out_result)
+        return SL_NATIVE_INVALID_ARGUMENT;
+    symbol = find_symbol(module->handle, "sl_native_call");
+    if (!symbol) return SL_NATIVE_TYPED_ENTRY_NOT_FOUND;
+    memcpy(&typed_call, &symbol, sizeof(typed_call));
+    symbol = find_symbol(module->handle, "sl_native_typed_abi_version");
+    if (!symbol) return SL_NATIVE_ABI_MISMATCH;
+    memcpy(&typed_abi, &symbol, sizeof(typed_abi));
+    if (typed_abi() != SL_NATIVE_TYPED_ABI_VERSION)
+        return SL_NATIVE_ABI_MISMATCH;
+    for (i = 0; i < argc; ++i)
+        if (!value_valid(&argv[i])) return SL_NATIVE_INVALID_ARGUMENT;
+    memset(&result, 0, sizeof(result));
+    result.tag = SL_NATIVE_VALUE_NULL;
+    plugin_status = typed_call(method, argc, argv, &result);
+    if (plugin_status == SL_NATIVE_CALL_NOT_HANDLED)
+        return SL_NATIVE_METHOD_NOT_HANDLED;
+    if (plugin_status != SL_NATIVE_CALL_OK) return SL_NATIVE_PLUGIN_ERROR;
+    if (!value_valid(&result)) return SL_NATIVE_PLUGIN_ERROR;
+    *out_result = result;
+    return SL_NATIVE_OK;
+}
+
+SLNativeStatus sl_native_bind_host_api(SLNativeModule *module,
+                                       const SLNativeHostAPI *host_api) {
+    SLNativeBindHost bind_host;
+    void *symbol;
+    if (!module || !module->handle || !host_api ||
+        host_api->abi_version != SL_NATIVE_HOST_CALLBACK_ABI_VERSION ||
+        host_api->struct_size < sizeof(SLNativeHostAPI) || !host_api->invoke)
+        return SL_NATIVE_INVALID_ARGUMENT;
+    symbol = find_symbol(module->handle, "sl_native_bind_host");
+    if (!symbol) return SL_NATIVE_HOST_CALLBACK_NOT_FOUND;
+    memcpy(&bind_host, &symbol, sizeof(bind_host));
+    return bind_host(host_api) == 0 ? SL_NATIVE_OK : SL_NATIVE_PLUGIN_ERROR;
 }
 
 SLNativeStatus sl_native_close(SLNativeModule *module) {

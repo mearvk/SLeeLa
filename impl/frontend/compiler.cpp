@@ -928,6 +928,27 @@ private:
         const std::string& n=c.callee;
         if(n.size()>2 && n[0]=='u' && n[1]=='i' && n[2]>='A' && n[2]<='Z'){ if(tryEmitUiBuiltin(c)) return true; }
         auto litInt=[&](const Expr*e,const char*what)->int{auto il=dynamic_cast<const IntLit*>(e);if(!il)throw std::runtime_error("Semantic error: "+std::string(what)+" must be an integer literal");return(int)il->value;};
+        // Host-authorized Native Drive. nativeOpen/nativeClose manage a
+        // VM-owned opaque module handle; nativeCall crosses only the versioned
+        // scalar/UTF-8 ABI and falls back to a same-name SLeeLa method when the
+        // plugin has no typed entry (or arguments are VM-owned composites).
+        if(n=="nativeOpen"){
+            if(syntax_<SyntaxVersion{3,0})throw std::runtime_error("Semantic error: Native Drive requires #sleela 3.0");
+            if(c.args.size()!=1)throw std::runtime_error("Semantic error: nativeOpen(path) takes exactly one String argument");
+            emitExpr(c.args[0].get()); emit(OP_NATIVE_OPEN); return true;
+        }
+        if(n=="nativeClose"){
+            if(syntax_<SyntaxVersion{3,0})throw std::runtime_error("Semantic error: Native Drive requires #sleela 3.0");
+            if(c.args.size()!=1)throw std::runtime_error("Semantic error: nativeClose(handle) takes exactly one argument");
+            emitExpr(c.args[0].get()); emit(OP_NATIVE_CLOSE); return true;
+        }
+        if(n=="nativeCall"){
+            if(syntax_<SyntaxVersion{3,0})throw std::runtime_error("Semantic error: Native Drive requires #sleela 3.0");
+            if(c.args.size()<2 || c.args.size()>4096)throw std::runtime_error("Semantic error: nativeCall(handle, method, ...args) requires a handle, method String, and at most 4094 arguments");
+            for(const auto& argument : c.args) emitExpr(argument.get());
+            emit(OP_NATIVE_CALL, (int)c.args.size()-2); return true;
+        }
+
         if(n=="spawn"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: spawn(method) takes exactly one argument");auto var=dynamic_cast<const VarExpr*>(c.args[0].get());if(!var)throw std::runtime_error("Semantic error: spawn(method) argument must be a method name");auto it=funcIndex_.find(var->name);if(it==funcIndex_.end())it=funcIndex_.find(currentClass_+"::"+var->name);if(it==funcIndex_.end())throw std::runtime_error("Semantic error: spawn of unknown method '"+var->name+"'");if(!methods_[it->second].method->isStatic)throw std::runtime_error("Semantic error: spawn target '"+var->name+"' must be static because a thread has no instance receiver");if(!methods_[it->second].method->params.empty())throw std::runtime_error("Semantic error: spawn target '"+var->name+"' must take no parameters");emit(OP_SPAWN,it->second);return true;}
         if(n=="join"){if(!c.args.empty())throw std::runtime_error("Semantic error: join() takes no arguments");emit(OP_JOINALL);emit(OP_CONST,addNullConst());return true;}
         if(n=="lock"||n=="unlock"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: "+n+"(id) takes exactly one argument");int id=litInt(c.args[0].get(),(n+" id").c_str());emit(n=="lock"?OP_LOCK:OP_UNLOCK,id);emit(OP_CONST,addNullConst());return true;}

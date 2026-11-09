@@ -208,7 +208,31 @@ struct SLVM {
     pthread_mutex_t os_mtx;
     SLOSProcess os_proc[SL_MAX_OS_PROCESSES];
     int os_proc_init;
+
+    /* Trusted native modules are VM-owned bounded handles. The host must
+     * install an authorization callback before any module can be opened. */
+    pthread_mutex_t native_mtx;
+    SLNativeModuleTable native_modules;
+    SLNativeAuthorizePath native_authorizer;
+    void* native_authorizer_context;
+    SLNativeAuthorizeCallback native_callback_authorizer;
+    void* native_callback_authorizer_context;
+    int native_modules_init;
+    SLNativeHostAPI native_host_api;
+    SLThread* native_callback_caller; /* suspended OP_NATIVE_CALL stack, rooted during callback */
 };
+
+static int slvm_native_host_invoke(void* context, const char* function,
+                                   uint32_t argc, const SLNativeValue* argv,
+                                   SLNativeValue* out_result);
+
+#if defined(_MSC_VER)
+#  define SL_NATIVE_THREAD_LOCAL __declspec(thread)
+#else
+#  define SL_NATIVE_THREAD_LOCAL _Thread_local
+#endif
+static SL_NATIVE_THREAD_LOCAL SLVM* native_callback_vm = NULL;
+static SL_NATIVE_THREAD_LOCAL SLVM* native_plugin_call_vm = NULL;
 
 static void set_err(SLVM* vm, const char* msg) {
     if (!vm) return;
@@ -440,6 +464,126 @@ int slvm_set_osls_capabilities(SLVM* vm, uint64_t capabilities) {
     return 0;
 }
 
+static int slvm_native_authorize_bridge(const char* path, void* context) {
+    SLVM* vm = (SLVM*)context;
+    return vm && vm->native_authorizer
+        ? vm->native_authorizer(path, vm->native_authorizer_context) : 0;
+}
+
+int slvm_set_native_authorizer(SLVM* vm, SLNativeAuthorizePath authorize, void* context) {
+    if (!vm || !authorize || native_callback_vm == vm) return -1;
+    pthread_mutex_lock(&vm->native_mtx);
+    if (vm->native_authorizer) {
+        pthread_mutex_unlock(&vm->native_mtx);
+        return -1; /* immutable after first installation */
+    }
+    vm->native_authorizer = authorize;
+    vm->native_authorizer_context = context;
+    pthread_mutex_unlock(&vm->native_mtx);
+    return 0;
+}
+
+int slvm_set_native_callback_authorizer(SLVM* vm,
+                                        SLNativeAuthorizeCallback authorize,
+                                        void* context) {
+    if (!vm || !authorize || native_callback_vm == vm) return -1;
+    pthread_mutex_lock(&vm->native_mtx);
+    if (vm->native_callback_authorizer) {
+        pthread_mutex_unlock(&vm->native_mtx);
+        return -1; /* immutable after first installation */
+    }
+    vm->native_callback_authorizer = authorize;
+    vm->native_callback_authorizer_context = context;
+    pthread_mutex_unlock(&vm->native_mtx);
+    return 0;
+}
+
+SLNativeStatus slvm_native_module_open(SLVM* vm, const char* path, SLNativeHandle* out_handle) {
+    SLNativeStatus status;
+    if (!vm || !out_handle) return SL_NATIVE_INVALID_ARGUMENT;
+    if (native_callback_vm == vm) return SL_NATIVE_REENTRANT_CALL;
+    *out_handle = SL_NATIVE_HANDLE_INVALID;
+    pthread_mutex_lock(&vm->native_mtx);
+    status = sl_native_table_open(&vm->native_modules, path, out_handle);
+    if (status == SL_NATIVE_OK) {
+        SLNativeStatus bind_status = sl_native_table_bind_host(
+            &vm->native_modules, *out_handle, &vm->native_host_api);
+        /* Callback support is optional for legacy typed and run-only modules.
+         * A plugin that advertises the binder but rejects the host table fails
+         * closed and is unloaded rather than left partially initialized. */
+        if (bind_status != SL_NATIVE_OK &&
+            bind_status != SL_NATIVE_HOST_CALLBACK_NOT_FOUND) {
+            (void)sl_native_table_close(&vm->native_modules, *out_handle);
+            *out_handle = SL_NATIVE_HANDLE_INVALID;
+            status = bind_status;
+        }
+    }
+    pthread_mutex_unlock(&vm->native_mtx);
+    return status;
+}
+
+/* Rebind immediately before each plugin entrypoint. A shared library may
+ * be loaded by multiple VM instances in one process; plugins must copy this
+ * table into thread-local storage so concurrent VM calls cannot overwrite one
+ * another's callback context. Caller holds native_mtx. */
+static SLNativeStatus slvm_native_bind_module_host_locked(
+    SLVM* vm, SLNativeHandle handle) {
+    SLNativeStatus status = sl_native_table_bind_host(
+        &vm->native_modules, handle, &vm->native_host_api);
+    return status == SL_NATIVE_HOST_CALLBACK_NOT_FOUND ? SL_NATIVE_OK : status;
+}
+
+SLNativeStatus slvm_native_module_run(SLVM* vm, SLNativeHandle handle,
+                                      int argc, const char* const argv[], int* out_result) {
+    SLNativeStatus status;
+    if (!vm) return SL_NATIVE_INVALID_ARGUMENT;
+    if (native_callback_vm == vm) return SL_NATIVE_REENTRANT_CALL;
+    /* Serialize calls against close/free so code cannot be unloaded while it
+     * is executing. A plugin entry point must not re-enter this VM's native
+     * module lifecycle API. */
+    pthread_mutex_lock(&vm->native_mtx);
+    status = slvm_native_bind_module_host_locked(vm, handle);
+    if (status == SL_NATIVE_OK) {
+        SLVM* previous_plugin_vm = native_plugin_call_vm;
+        native_plugin_call_vm = vm;
+        status = sl_native_table_run(&vm->native_modules, handle, argc, argv, out_result);
+        native_plugin_call_vm = previous_plugin_vm;
+    }
+    pthread_mutex_unlock(&vm->native_mtx);
+    return status;
+}
+
+SLNativeStatus slvm_native_module_call(SLVM* vm, SLNativeHandle handle,
+                                       const char* method, uint32_t argc,
+                                       const SLNativeValue* argv, SLNativeValue* out_result) {
+    SLNativeStatus status;
+    if (!vm) return SL_NATIVE_INVALID_ARGUMENT;
+    if (native_callback_vm == vm) return SL_NATIVE_REENTRANT_CALL;
+    /* The VM lock prevents close/unload during a typed call. Plugins must not
+     * re-enter this VM's native-module API. Result UTF-8 spans are borrowed
+     * from the plugin and must be copied before the next call or close. */
+    pthread_mutex_lock(&vm->native_mtx);
+    status = slvm_native_bind_module_host_locked(vm, handle);
+    if (status == SL_NATIVE_OK) {
+        SLVM* previous_plugin_vm = native_plugin_call_vm;
+        native_plugin_call_vm = vm;
+        status = sl_native_table_call(&vm->native_modules, handle, method, argc, argv, out_result);
+        native_plugin_call_vm = previous_plugin_vm;
+    }
+    pthread_mutex_unlock(&vm->native_mtx);
+    return status;
+}
+
+SLNativeStatus slvm_native_module_close(SLVM* vm, SLNativeHandle handle) {
+    SLNativeStatus status;
+    if (!vm) return SL_NATIVE_INVALID_ARGUMENT;
+    if (native_callback_vm == vm) return SL_NATIVE_REENTRANT_CALL;
+    pthread_mutex_lock(&vm->native_mtx);
+    status = sl_native_table_close(&vm->native_modules, handle);
+    pthread_mutex_unlock(&vm->native_mtx);
+    return status;
+}
+
 int slvm_memory_safe_mode(const SLVM* vm) {
     /* Sleela source never receives native pointers. Globals, locals, files,
      * sockets, threads, reaches, probes, and struct instances are VM-owned
@@ -456,6 +600,17 @@ SLVM* slvm_new(void) {
     vm->entry = -1;
     vm->last_result = slval_null();
     vm->osls_capabilities = OSLS_VM_CAP_HOST_READ;
+    pthread_mutex_init(&vm->native_mtx, NULL);
+    if (sl_native_table_init(&vm->native_modules, slvm_native_authorize_bridge, vm) != SL_NATIVE_OK) {
+        pthread_mutex_destroy(&vm->native_mtx);
+        free(vm);
+        return NULL;
+    }
+    vm->native_modules_init = 1;
+    vm->native_host_api.abi_version = SL_NATIVE_HOST_CALLBACK_ABI_VERSION;
+    vm->native_host_api.struct_size = (uint32_t)sizeof(vm->native_host_api);
+    vm->native_host_api.context = vm;
+    vm->native_host_api.invoke = slvm_native_host_invoke;
     pthread_mutex_init(&vm->intern_mtx, NULL);
     pthread_mutex_init(&vm->global_mtx, NULL);
     pthread_mutex_init(&vm->print_mtx, NULL);
@@ -501,6 +656,13 @@ static void close_file_slot(SLFile* f) {
 void slvm_free(SLVM* vm) {
     if (!vm) return;
     slvm_joinall(vm);
+    if (vm->native_modules_init) {
+        pthread_mutex_lock(&vm->native_mtx);
+        (void)sl_native_table_close_all(&vm->native_modules);
+        pthread_mutex_unlock(&vm->native_mtx);
+        vm->native_modules_init = 0;
+    }
+    pthread_mutex_destroy(&vm->native_mtx);
     for (int i = 0; i < SL_MAX_SOCKETS; i++) {
         pthread_mutex_lock(&vm->sockets[i].mtx);
         if (vm->sockets[i].active) { slnet_close(vm->sockets[i].handle); vm->sockets[i].handle = SL_NET_INVALID; vm->sockets[i].active = 0; }
@@ -736,7 +898,7 @@ static void gc_mark_value(SLVM *vm, GarbageCollector *gc, SLValue v) {
     SLGCObject *object = gc_object_for_value(vm, v);
     if (gc && object) gc_mark(gc, object);
 }
-typedef struct { SLVM *vm; SLThread *current; } SLGCRootContext;
+typedef struct { SLVM *vm; SLThread *current; SLThread *suspended; } SLGCRootContext;
 static void gc_mark_vm_roots(GarbageCollector *gc, void *context) {
     SLGCRootContext *roots = (SLGCRootContext *)context;
     SLVM *vm = roots ? roots->vm : NULL;
@@ -752,6 +914,10 @@ static void gc_mark_vm_roots(GarbageCollector *gc, void *context) {
     }
     if (roots && roots->current) {
         for (int j = 0; j < roots->current->sp; ++j) gc_mark_value(vm, gc, roots->current->stack[j]);
+    }
+    if (roots && roots->suspended && roots->suspended != roots->current) {
+        for (int j = 0; j < roots->suspended->sp; ++j)
+            gc_mark_value(vm, gc, roots->suspended->stack[j]);
     }
 }
 static void gc_struct_destroy(void *payload) {
@@ -774,7 +940,7 @@ static void slvm_gc_safepoint(SLVM *vm, SLThread *current, size_t budget) {
      * reclamation until structured-concurrency quiescence so all stacks are
      * observed consistently. */
     if (workers == 0) {
-        SLGCRootContext roots = { vm, current };
+        SLGCRootContext roots = { vm, current, vm->native_callback_caller };
         gc_safepoint_with_roots(&vm->gc, gc_mark_vm_roots, &roots, 1, budget);
     }
 }
@@ -1813,6 +1979,235 @@ void slvm_joinall(SLVM* vm) {
  * a TERR("stack underflow") before the corrupt result can be used. */
 #define POP() (t->sp > 0 ? t->stack[--t->sp] : (t->underflow = 1, slval_null()))
 
+static int native_utf8_valid(const uint8_t* s, uint32_t n);
+
+/* Convert only values represented by the versioned native ABI. VM-local
+ * arrays/structs, 128-bit integers, and all opaque handles stay in the VM. */
+static int native_value_to_abi(SLVM* vm, SLValue source, SLNativeValue* target) {
+    memset(target, 0, sizeof(*target));
+    switch (source.type) {
+        case SL_NULL: target->tag = SL_NATIVE_VALUE_NULL; return 1;
+        case SL_BOOL:
+            target->tag = SL_NATIVE_VALUE_BOOL;
+            target->as.boolean = source.as.b ? 1 : 0;
+            return 1;
+        case SL_INT:
+            target->tag = SL_NATIVE_VALUE_I64;
+            target->as.i64 = source.as.i;
+            return 1;
+        case SL_DOUBLE:
+            target->tag = SL_NATIVE_VALUE_F64;
+            target->as.f64 = source.as.d;
+            return 1;
+        case SL_STR: {
+            const char* value = slvm_str(vm, source.as.s);
+            size_t length = strlen(value);
+            if (length > SL_MAX_STRTEXT || length > UINT32_MAX ||
+                !native_utf8_valid((const uint8_t*)value, (uint32_t)length)) return 0;
+            target->tag = SL_NATIVE_VALUE_UTF8;
+            target->as.utf8.data = (const uint8_t*)value;
+            target->as.utf8.length = (uint32_t)length;
+            return 1;
+        }
+        default: return 0;
+    }
+}
+
+/* The VM currently stores String values as NUL-terminated interned strings.
+ * Validate UTF-8 and reject embedded NUL on the return path rather than
+ * silently truncating a plugin result when it is interned. */
+static int native_utf8_valid(const uint8_t* s, uint32_t n) {
+    uint32_t i = 0;
+    if (n && !s) return 0;
+    while (i < n) {
+        uint8_t a = s[i++];
+        if (a == 0) return 0;
+        if (a < 0x80) continue;
+        if (a >= 0xc2 && a <= 0xdf) {
+            if (i >= n || (s[i++] & 0xc0) != 0x80) return 0;
+        } else if (a >= 0xe0 && a <= 0xef) {
+            uint8_t b, c;
+            if (i + 1 >= n) return 0;
+            b = s[i++]; c = s[i++];
+            if ((c & 0xc0) != 0x80 || (b & 0xc0) != 0x80) return 0;
+            if ((a == 0xe0 && b < 0xa0) || (a == 0xed && b >= 0xa0)) return 0;
+        } else if (a >= 0xf0 && a <= 0xf4) {
+            uint8_t b, c, d;
+            if (i + 2 >= n) return 0;
+            b = s[i++]; c = s[i++]; d = s[i++];
+            if ((b & 0xc0) != 0x80 || (c & 0xc0) != 0x80 || (d & 0xc0) != 0x80) return 0;
+            if ((a == 0xf0 && b < 0x90) || (a == 0xf4 && b >= 0x90)) return 0;
+        } else return 0;
+    }
+    return 1;
+}
+
+static int native_value_from_abi(SLVM* vm, const SLNativeValue* source, SLValue* target) {
+    if (!source || !target || source->reserved != 0) return 0;
+    switch ((SLNativeValueTag)source->tag) {
+        case SL_NATIVE_VALUE_NULL: *target = slval_null(); return 1;
+        case SL_NATIVE_VALUE_BOOL:
+            if (source->as.boolean != 0 && source->as.boolean != 1) return 0;
+            *target = slval_bool(source->as.boolean); return 1;
+        case SL_NATIVE_VALUE_I64: *target = slval_int(source->as.i64); return 1;
+        case SL_NATIVE_VALUE_F64: *target = slval_double(source->as.f64); return 1;
+        case SL_NATIVE_VALUE_UTF8: {
+            uint32_t length = source->as.utf8.length;
+            char* copy;
+            if (length > SL_MAX_STRTEXT || !native_utf8_valid(source->as.utf8.data, length)) return 0;
+            copy = (char*)malloc((size_t)length + 1u);
+            if (!copy) return 0;
+            if (length) memcpy(copy, source->as.utf8.data, length);
+            copy[length] = '\0';
+            target->type = SL_STR;
+            target->as.s = intern(vm, copy);
+            free(copy);
+            return 1;
+        }
+        default: return 0;
+    }
+}
+
+/* Native-to-SLeeLa callback bridge. Only exact, unique compiled function
+ * names and scalar/UTF-8 arguments are accepted. The nested interpreter has
+ * its own stack/frames; the suspended caller stack is added to GC roots. */
+static int slvm_native_host_invoke(void* context, const char* function,
+                                   uint32_t argc, const SLNativeValue* argv,
+                                   SLNativeValue* out_result) {
+    SLVM* vm = (SLVM*)context;
+    SLThread* nested;
+    int function_index = -1;
+    size_t name_length;
+    int active_workers;
+    SLResult run_status;
+    SLVM* previous_callback_vm;
+    if (!vm || !function || !*function || !out_result ||
+        (argc && !argv) || argc > STACK_MAX - 1 ||
+        native_callback_vm == vm || native_plugin_call_vm != vm)
+        return 0;
+    pthread_mutex_lock(&vm->thr_mtx);
+    active_workers = vm->nthreads;
+    pthread_mutex_unlock(&vm->thr_mtx);
+    if (active_workers != 0) {
+        set_err(vm, "native callback requires a quiescent VM with no active worker threads");
+        return 0;
+    }
+    if (!vm->native_callback_authorizer) {
+        set_err(vm, "native callback denied: host callback-name policy is not installed");
+        return 0;
+    }
+    {
+        SLVM* previous_callback_vm = native_callback_vm;
+        int authorized;
+        native_callback_vm = vm;
+        authorized = vm->native_callback_authorizer(
+            function, vm->native_callback_authorizer_context);
+        native_callback_vm = previous_callback_vm;
+        if (!authorized) {
+            set_err(vm, "native callback denied by host callback-name policy");
+            return 0;
+        }
+    }
+    name_length = strlen(function);
+    if (name_length > 255u) return 0;
+    for (int i = 0; i < vm->nfunc; ++i) {
+        if (vm->funcs[i].nargs != (int)argc ||
+            strcmp(vm->funcs[i].name, function) != 0) continue;
+        if (function_index >= 0) {
+            set_err(vm, "native callback rejected ambiguous SLeeLa function name");
+            return 0;
+        }
+        function_index = i;
+    }
+    if (function_index < 0) {
+        set_err(vm, "native callback could not resolve exact SLeeLa function and arity");
+        return 0;
+    }
+    if (vm->funcs[function_index].nlocals < (int)argc ||
+        vm->funcs[function_index].nlocals > STACK_MAX) {
+        set_err(vm, "native callback target has an invalid local-frame size");
+        return 0;
+    }
+    nested = (SLThread*)calloc(1, sizeof(*nested));
+    if (!nested) {
+        set_err(vm, "native callback could not allocate interpreter frame");
+        return 0;
+    }
+    nested->vm = vm;
+    nested->entry_func = function_index;
+    nested->result = slval_null();
+    nested->frames[0].ret_ip = -1;
+    nested->frames[0].base = 0;
+    nested->frames[0].nargs = (int)argc;
+    nested->fp = 1;
+    for (uint32_t i = 0; i < argc; ++i) {
+        SLValue value;
+        if (!native_value_from_abi(vm, &argv[i], &value)) {
+            free(nested);
+            set_err(vm, "native callback argument is invalid or unsupported");
+            return 0;
+        }
+        nested->stack[nested->sp++] = value;
+    }
+    while (nested->sp < vm->funcs[function_index].nlocals)
+        nested->stack[nested->sp++] = slval_null();
+
+    previous_callback_vm = native_callback_vm;
+    native_callback_vm = vm;
+    run_status = run_thread(nested);
+    native_callback_vm = previous_callback_vm;
+    if (run_status != SLR_OK ||
+        !native_value_to_abi(vm, nested->result, out_result)) {
+        if (run_status == SLR_OK)
+            set_err(vm, "native callback result is not representable by the host ABI");
+        free(nested);
+        return 0;
+    }
+    free(nested);
+    return 1;
+}
+
+/* Fallback is deliberately name+arity based and remains inside the VM. It is
+ * used only when the module has no typed entry, reports METHOD_NOT_HANDLED,
+ * or an argument is not scalar ABI-representable; plugin execution errors
+ * never silently fall back. */
+static int native_bytecode_fallback(SLThread* t, const char* method,
+                                    uint32_t argc, int base, int return_ip) {
+    SLVM* vm = t->vm;
+    int function = -1;
+    /* Prefer an exact function key. If the compiler flattened a class method
+     * as Class::method, accept its unqualified source method name only when
+     * that name+arity resolves uniquely. */
+    for (int i = 0; i < vm->nfunc; ++i) {
+        if (vm->funcs[i].nargs == (int)argc &&
+            strcmp(vm->funcs[i].name, method) == 0) {
+            function = i;
+            break;
+        }
+    }
+    if (function < 0) {
+        for (int i = 0; i < vm->nfunc; ++i) {
+            const char* separator = strstr(vm->funcs[i].name, "::");
+            if (vm->funcs[i].nargs != (int)argc || !separator ||
+                strcmp(separator + 2, method) != 0) continue;
+            if (function >= 0) return 0; /* ambiguous unqualified method */
+            function = i;
+        }
+    }
+    if (function < 0) return 0;
+    if (t->fp >= FRAMES_MAX || base < 0 ||
+        base + vm->funcs[function].nlocals > STACK_MAX) return -1;
+    memmove(&t->stack[base], &t->stack[base + 2u], (size_t)argc * sizeof(SLValue));
+    t->sp = base + (int)argc;
+    SLFrame* frame = &t->frames[t->fp++];
+    frame->ret_ip = return_ip;
+    frame->base = base;
+    frame->nargs = (int)argc;
+    for (int i = (int)argc; i < vm->funcs[function].nlocals; ++i)
+        t->stack[t->sp++] = slval_null();
+    return vm->funcs[function].entry + 1; /* caller stores ip as entry-1 */
+}
+
 static SLResult run_thread(SLThread* t) {
     SLVM* vm = t->vm; int fi = t->entry_func;
     if (fi < 0 || fi >= vm->nfunc) TERR("no entry function set");
@@ -1861,7 +2256,7 @@ static SLResult run_thread(SLThread* t) {
                 int workers = vm->nthreads;
                 pthread_mutex_unlock(&vm->thr_mtx);
                 if (workers == 0) {
-                    SLGCRootContext roots = { vm, t };
+                    SLGCRootContext roots = { vm, t, vm->native_callback_caller };
                     int young_only = (level >= SL_GC_HINT_FULL) ? 0 : 1;
                     gc_collect_with_roots(&vm->gc, gc_mark_vm_roots, &roots,
                                           young_only);
@@ -1945,12 +2340,124 @@ static SLResult run_thread(SLThread* t) {
             SLFrame* nf=&t->frames[t->fp++]; nf->ret_ip=ip; nf->base=base; nf->nargs=f->nargs;
             for(int i=f->nargs;i<f->nlocals;i++){ PUSH(slval_null()); } ip=f->entry;
         } break;
+        case OP_NATIVE_OPEN: {
+            SLValue path_value = POP();
+            SLNativeHandle handle = SL_NATIVE_HANDLE_INVALID;
+            SLNativeStatus status;
+            if (path_value.type != SL_STR) TERR("nativeOpen: path must be a String");
+            status = slvm_native_module_open(vm, slvm_str(vm, path_value.as.s), &handle);
+            if (status != SL_NATIVE_OK) {
+                char message[256];
+                snprintf(message, sizeof(message), "nativeOpen denied or failed: %s",
+                         sl_native_status_string(status));
+                TERR(message);
+            }
+            PUSH(slval_int((int64_t)handle));
+        } break;
+        case OP_NATIVE_CLOSE: {
+            SLValue handle_value = POP();
+            SLNativeStatus status;
+            if (handle_value.type != SL_INT || handle_value.as.i <= 0 ||
+                (uint64_t)handle_value.as.i > UINT32_MAX)
+                TERR("nativeClose: handle must be a valid positive native handle");
+            status = slvm_native_module_close(vm, (SLNativeHandle)handle_value.as.i);
+            if (status != SL_NATIVE_OK) {
+                char message[256];
+                snprintf(message, sizeof(message), "nativeClose failed: %s",
+                         sl_native_status_string(status));
+                TERR(message);
+            }
+            PUSH(slval_null());
+        } break;
+        case OP_NATIVE_CALL: {
+            if (native_callback_vm == vm)
+                TERR("native callback cannot recursively invoke native-module operations");
+            uint32_t argc;
+            int base, fallback_ip = -1, unsupported = 0;
+            SLValue module_value, method_value, result_value = slval_null();
+            SLNativeHandle handle;
+            const char* method;
+            SLNativeValue* argv = NULL;
+            SLNativeValue native_result;
+            SLNativeStatus status;
+            if (in.a < 0 || in.a > STACK_MAX - 2)
+                TERR("native call: argument count outside operand-stack limit");
+            argc = (uint32_t)in.a;
+            if (t->sp < (int)argc + 2) TERR("native call: expected module handle, method name, and arguments");
+            base = t->sp - (int)argc - 2;
+            module_value = t->stack[base];
+            method_value = t->stack[base + 1];
+            if (module_value.type != SL_INT || module_value.as.i <= 0 ||
+                (uint64_t)module_value.as.i > UINT32_MAX)
+                TERR("native call: module handle must be a valid positive native handle");
+            if (method_value.type != SL_STR) TERR("native call: method name must be a String");
+            method = slvm_str(vm, method_value.as.s);
+            if (!method[0]) TERR("native call: method name cannot be empty");
+            handle = (SLNativeHandle)module_value.as.i;
+            if (argc) {
+                argv = (SLNativeValue*)calloc(argc, sizeof(*argv));
+                if (!argv) TERR("native call: out of memory preparing arguments");
+            }
+            for (uint32_t i = 0; i < argc; ++i) {
+                if (!native_value_to_abi(vm, t->stack[base + 2 + (int)i], &argv[i])) {
+                    unsupported = 1;
+                    break;
+                }
+            }
+            if (unsupported) {
+                int handle_valid;
+                pthread_mutex_lock(&vm->native_mtx);
+                handle_valid = sl_native_table_is_valid(&vm->native_modules, handle);
+                pthread_mutex_unlock(&vm->native_mtx);
+                free(argv);
+                if (!handle_valid) TERR("native call: stale or invalid module handle");
+                fallback_ip = native_bytecode_fallback(t, method, argc, base, ip);
+                if (fallback_ip == 0) TERR("native call: argument type is VM-owned and no matching SLeeLa fallback exists");
+                if (fallback_ip < 0) TERR("native call: fallback call depth or stack limit exceeded");
+                ip = fallback_ip - 1;
+                break;
+            }
+            memset(&native_result, 0, sizeof(native_result));
+            native_result.tag = SL_NATIVE_VALUE_NULL;
+            pthread_mutex_lock(&vm->native_mtx);
+            status = slvm_native_bind_module_host_locked(vm, handle);
+            if (status == SL_NATIVE_OK) {
+                SLVM* previous_plugin_vm = native_plugin_call_vm;
+                native_plugin_call_vm = vm;
+                vm->native_callback_caller = t;
+                status = sl_native_table_call(&vm->native_modules, handle, method, argc, argv, &native_result);
+                vm->native_callback_caller = NULL;
+                native_plugin_call_vm = previous_plugin_vm;
+            }
+            if (status == SL_NATIVE_OK &&
+                !native_value_from_abi(vm, &native_result, &result_value))
+                status = SL_NATIVE_PLUGIN_ERROR;
+            pthread_mutex_unlock(&vm->native_mtx);
+            free(argv);
+            if (status == SL_NATIVE_TYPED_ENTRY_NOT_FOUND ||
+                status == SL_NATIVE_METHOD_NOT_HANDLED) {
+                fallback_ip = native_bytecode_fallback(t, method, argc, base, ip);
+                if (fallback_ip == 0) TERR("native call: no typed native method or matching SLeeLa fallback exists");
+                if (fallback_ip < 0) TERR("native call: fallback call depth or stack limit exceeded");
+                ip = fallback_ip - 1;
+                break;
+            }
+            if (status != SL_NATIVE_OK) {
+                char message[256];
+                snprintf(message, sizeof(message), "native call '%s' failed: %s", method,
+                         sl_native_status_string(status));
+                TERR(message);
+            }
+            t->sp = base;
+            PUSH(result_value);
+        } break;
         case OP_RET: {
             SLValue rv=(t->sp>t->frames[t->fp-1].base)?POP():slval_null(); SLFrame f=t->frames[--t->fp]; t->sp=f.base;
             if(f.ret_ip<0){t->result=rv; return SLR_OK;} PUSH(rv); ip=f.ret_ip;
         } break;
         case OP_PRINT: { SLValue v=POP(); pthread_mutex_lock(&vm->print_mtx); print_value(vm,v); printf("\n"); pthread_mutex_unlock(&vm->print_mtx); } break;
         case OP_SPAWN: {
+            if (native_callback_vm == vm) TERR("native callback cannot spawn VM worker threads");
             int sfi=in.a; if(sfi<0||sfi>=vm->nfunc) TERR("spawn of unknown function"); int nargs=vm->funcs[sfi].nargs; if(t->sp<nargs) TERR("spawn: not enough arguments on stack");
             SLValue args[FRAMES_MAX]; for(int i=0;i<nargs;i++) args[i]=t->stack[t->sp-nargs+i]; t->sp-=nargs; PUSH(slval_int(spawn_thread(vm,sfi,args,nargs)));
             /* A worker now exists; refresh immediately so the array opcodes take
@@ -1958,7 +2465,9 @@ static SLResult run_thread(SLThread* t) {
              * batched safepoint (which could be up to a stride away). */
             { pthread_mutex_lock(&vm->thr_mtx); t->workers_cached = vm->nthreads; pthread_mutex_unlock(&vm->thr_mtx); }
         } break;
-        case OP_JOINALL: slvm_joinall(vm); break;
+        case OP_JOINALL:
+            if (native_callback_vm == vm) TERR("native callback cannot join VM worker threads");
+            slvm_joinall(vm); break;
         case OP_LOCK: if(in.a<0||in.a>=SL_MAX_LOCKS) TERR("lock id out of range"); pthread_mutex_lock(&vm->locks[in.a]); break;
         case OP_UNLOCK: if(in.a<0||in.a>=SL_MAX_LOCKS) TERR("lock id out of range"); pthread_mutex_unlock(&vm->locks[in.a]); break;
         case OP_SEND: {
@@ -2628,7 +3137,7 @@ static SLResult run_thread(SLThread* t) {
                  * and the incremental safepoint above (budget 4) may not reclaim
                  * them in time. A full collect with the real roots frees exactly
                  * the dead ones, so genuinely-live arrays are never lost. */
-                SLGCRootContext roots = { vm, t };
+                SLGCRootContext roots = { vm, t, vm->native_callback_caller };
                 gc_collect_with_roots(&vm->gc, gc_mark_vm_roots, &roots, 0);
                 h=array_alloc(vm,(int)nv.as.i);
             }

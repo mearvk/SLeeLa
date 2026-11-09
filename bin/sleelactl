@@ -92,6 +92,32 @@ warn() { printf '  %s!%s %s\n' "$Y" "$R" "$*"; }
 err()  { printf '  %s✗%s %s\n' "$RD" "$R" "$*" >&2; }
 die()  { err "$*"; exit 1; }
 
+# Resolve helper scripts in both repository/quick-safe layouts (ROOT/tools)
+# and conventional installs (PREFIX/lib/sleela/tools).
+runtime_file() {
+  relative=$1
+  for candidate in "$ROOT/$relative" "$ROOT/lib/sleela/$relative" "$SELF/../lib/sleela/$relative"; do
+    [ -f "$candidate" ] && { printf '%s\n' "$candidate"; return 0; }
+  done
+  return 1
+}
+
+# Python 3 launcher for POSIX hosts and Windows installations (py -3).
+run_python() {
+  if command -v python3 >/dev/null 2>&1; then
+    python3 "$@"
+  elif command -v py >/dev/null 2>&1; then
+    py -3 "$@"
+  elif command -v python >/dev/null 2>&1; then
+    python -c 'import sys; raise SystemExit(0 if sys.version_info.major >= 3 else 1)' >/dev/null 2>&1 \
+      || { warn "Python 3 is required for Native Drive"; return 3; }
+    python "$@"
+  else
+    warn "Python 3 is required for Native Drive (python3, py -3, or python not found)"
+    return 3
+  fi
+}
+
 # --- registry access ----------------------------------------------------------
 # Each lookup reads the plain-text registry; small enough to re-scan cheaply.
 reg_require() { [ -f "$REGISTRY" ] || die "module registry not found: $REGISTRY"; }
@@ -146,25 +172,49 @@ verb_allowed() { # verb nature
 }
 
 # =============================================================================
-# systemctl plumbing for daemons. Use the system bus when root, else the user
-# bus, and report honestly when systemd is not the init (e.g. containers).
+# systemctl plumbing for daemons. Scope is explicit and configurable:
+#   system (default): system bus; root calls directly, non-root uses sudo.
+#   user:             per-user bus; never invokes sudo.
+# This avoids silently treating an unprivileged caller as a user service when
+# the registry names a system unit. Containers/non-systemd hosts fail honestly.
 # =============================================================================
 have_systemctl() { command -v systemctl >/dev/null 2>&1; }
+systemctl_scope() {
+  case "${SLEELACTL_SYSTEMCTL_SCOPE:-system}" in
+    system|user) printf '%s\n' "${SLEELACTL_SYSTEMCTL_SCOPE:-system}" ;;
+    *) err "SLEELACTL_SYSTEMCTL_SCOPE must be 'system' or 'user'."; return 64 ;;
+  esac
+}
 sctl() {
   have_systemctl || { err "systemctl not available on this host; cannot control daemons here."; return 3; }
-  if [ "$(id -u)" -eq 0 ]; then systemctl "$@"; else sudo systemctl "$@"; fi
+  scope=$(systemctl_scope) || return $?
+  case "$scope" in
+    user) systemctl --user "$@" ;;
+    system)
+      if [ "$(id -u)" -eq 0 ]; then
+        systemctl --system "$@"
+      elif [ "${1:-}" = "--no-pager" ] && [ "${2:-}" = "status" ]; then
+        # systemctl status is read-only and normally available to unprivileged
+        # callers; do not require sudo merely to inspect a system unit.
+        systemctl --system "$@"
+      else
+        command -v sudo >/dev/null 2>&1 || { err "sudo is required for system-unit control; use SLEELACTL_SYSTEMCTL_SCOPE=user for user units."; return 3; }
+        sudo systemctl --system "$@"
+      fi ;;
+  esac
 }
 
 daemon_cmd() { # module verb
   unit=$(handle_of "$1")
   [ -n "$unit" ] || die "no systemd unit mapped for '$1'"
+  scope=$(systemctl_scope) || return $?
   case "$2" in
-    start|stop|restart|reload) info "systemctl $2 $unit"; sctl "$2" "$unit" && okay "$1: $2 issued" ;;
-    enable)  info "systemctl enable $unit";  sctl enable "$unit"  && okay "$1 enabled (starts at boot)" ;;
-    disable) info "systemctl disable $unit"; sctl disable "$unit" && okay "$1 disabled (will not start at boot)" ;;
+    start|stop|restart|reload) info "systemctl --$scope $2 $unit"; sctl "$2" "$unit" && okay "$1: $2 issued ($scope scope)" ;;
+    enable)  info "systemctl --$scope enable $unit";  sctl enable "$unit"  && okay "$1 enabled ($scope scope)" ;;
+    disable) info "systemctl --$scope disable $unit"; sctl disable "$unit" && okay "$1 disabled ($scope scope)" ;;
     status)
       if have_systemctl; then sctl --no-pager status "$unit" 2>/dev/null \
-        || { warn "$1 ($unit): not loaded/active"; return 1; }
+        || { warn "$1 ($unit, $scope scope): not loaded/active"; return 1; }
       else warn "$1: systemctl unavailable; unit is $unit"; return 3; fi ;;
     *) die "daemon verb '$2' not understood" ;;
   esac
@@ -271,6 +321,31 @@ protocol_cmd() { # module verb [args]
 # tool (compiler/decompiler/debugger): one-shot build-time tools.
 # =============================================================================
 tool_cmd() { # module verb [args]
+  if [ "$1" = "native-drive" ]; then
+    script=$(runtime_file "$(handle_of "$1")") || { warn "native-drive script not present in repository or installed runtime"; return 1; }
+    : # run_python selects python3, py -3, or a verified Python 3 interpreter
+    verb="$2"
+    case "$verb" in
+      info) okay "native-drive — $(summary_of "$1")"; info "location: ${script#$ROOT/}"; if [ -f "$ROOT/impl/native-drive/README.md" ]; then info "see: $ROOT/impl/native-drive/README.md"; else info "documentation: impl/native-drive/README.md in the source repository"; fi ;;
+      build) shift 2; run_python "$script" build "$@" ;;
+      run)
+        shift 2
+        if [ "${1:-}" = "pipe" ]; then shift; run_python "$script" pipe "$@"
+        else run_python "$script" run "$@" ; fi ;;
+      inspect)
+        shift 2
+        case "${1:-}" in
+          xclass) shift; run_python "$script" xclass "$@" ;;
+          service)
+            shift
+            service_script=$(runtime_file "tools/sleela-native-service.py") || { warn "native service helper not present in installed runtime"; return 1; }
+            run_python "$service_script" "$@" ;;
+          *) run_python "$script" --help ;;
+        esac ;;
+      *) die "native-drive verb '$verb' not understood" ;;
+    esac
+    return $?
+  fi
   dir="$ROOT/$(handle_of "$1")"
   [ -d "$dir" ] || { warn "$1: directory not present in this install"; return 1; }
   case "$2" in
@@ -453,6 +528,8 @@ ${B}Examples${R}
   $PROG available database          report the database data-source availability
   $PROG validate http-9.0           validate the HTTP/9.0 protocol spec
   $PROG build decompiler            build the decompiler CLI
+  $PROG inspect native-drive service --status --name worker
+  $PROG inspect native-drive service --rollback --name worker
 
 Verbs are gated by module nature (see '$PROG natures'); an unsupported verb is
 refused with the correct verb set — sleelactl never fakes an action a module

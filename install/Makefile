@@ -149,10 +149,19 @@ install-check:
 	@test -f quick-safe-install.ps1
 	@test -f quick-safe-install.cmd
 	@test -f install-runtime.py
+	@test -f ../tools/sleela-native-drive.py
+	@test -f ../tools/sleela-native-service.py
 	@test -f system-install.sh
 	@grep -q 'Required compiled product missing' quick-safe-install.sh
+	@grep -q 'sleela-native-drive.py' quick-safe-install.sh
+	@grep -q 'sleela-native-service.py' quick-safe-install.sh
+	@grep -q 'sleela-native-drive.py' quick-safe-install.ps1
+	@grep -q 'sleela-native-service.py' quick-safe-install.ps1
+	@grep -q 'sleela-native-drive.py' Makefile
+	@grep -q 'sleela-native-service.py' Makefile
+	@python3 -c 'import json; p="../security/sha256-manifest.json"; paths={x["path"] for x in json.load(open(p, encoding="utf-8"))["files"]}; required={"tools/sleela-native-drive.py","tools/sleela-native-service.py"}; missing=required-paths; assert not missing, "Native Drive manifest entries missing: "+", ".join(sorted(missing))'
 	@grep -q 'System-wide' README.md
-	@echo "Installer entry points and compiled-product installation checks present for Linux, macOS, and Windows 10+."
+	@echo "Installer entry points, Native Drive staging, trusted-manifest entries, and compiled-product checks present for Linux, macOS, and Windows 10+."
 
 # install: scope-aware entry point. Offers the SHA-256 manifest step, then
 # installs. A user-local prefix stays as the current user; a system prefix with
@@ -403,6 +412,8 @@ do-install:
 	@echo "Staging standard library (MODULES=$(MODULES); SERVERS=$(SERVERS); EXCLUDE=$(EFFECTIVE_EXCLUDE))"
 	python3 "$(REPO_ROOT)/install/install-runtime.py" stage-lib "$(REPO_ROOT)" "$(RUNTIME_DIR)/lib" "$(MODULES)" "$(EFFECTIVE_EXCLUDE)"
 	install -m 644 "$(REPO_ROOT)/tools/verify-before-execution.py" "$(RUNTIME_DIR)/tools/"
+	install -m 644 "$(REPO_ROOT)/tools/sleela-native-drive.py" "$(RUNTIME_DIR)/tools/"
+	install -m 644 "$(REPO_ROOT)/tools/sleela-native-service.py" "$(RUNTIME_DIR)/tools/"
 	install -m 644 "$(REPO_ROOT)/security/sha256-manifest.json" "$(RUNTIME_DIR)/security/"
 	if [ -f "$(REPO_ROOT)/SHEET.sheet" ]; then install -m 644 "$(REPO_ROOT)/SHEET.sheet" "$(RUNTIME_DIR)/SHEET.sheet"; fi
 	python3 "$(REPO_ROOT)/install/install-runtime.py" copy-manifest "$(REPO_ROOT)" "$(RUNTIME_DIR)" "$(MODULES)" "$(EFFECTIVE_EXCLUDE)"

@@ -1,0 +1,50 @@
+name: Native Drive
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-drive:
+    name: Native Drive (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify trusted source manifest
+        run: python tools/verify-before-execution.py --manifest security/sha256-manifest.json --root .
+      - name: Compile VM-owned native module lifecycle bridge
+        if: runner.os != 'Windows'
+        run: make -C impl build/native_loader.o build/native_module_table.o build/sleela_core.o
+      - name: Check installer inputs
+        if: runner.os != 'Windows'
+        run: make -C install install-check
+      - name: Check POSIX installer syntax
+        if: runner.os != 'Windows'
+        run: |
+          sh -n bin/sleelactl
+          bash -n install/quick-safe-install.sh
+      - name: Check Windows installer syntax
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $tokens = $null
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path "install/quick-safe-install.ps1"), [ref]$tokens, [ref]$errors) | Out-Null
+          if ($errors.Count -gt 0) { $errors | Format-List; exit 1 }
+      - name: Run Native Drive tests
+        run: python -m unittest discover -s tools/tests -p "test_native_drive.py" -v
+      - name: Configure native loader ABI tests
+        run: cmake -S os-level-support -B build/native-loader -DBUILD_TESTING=ON
+      - name: Build native loader ABI tests
+        run: cmake --build build/native-loader --config Release
+      - name: Run native loader ABI tests
+        run: ctest --test-dir build/native-loader -C Release --output-on-failure

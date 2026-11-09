@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-add_library(sleela_native_loader STATIC native_loader.c)
+add_library(sleela_native_loader STATIC native_loader.c native_module_table.c)
 target_include_directories(sleela_native_loader PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_compile_features(sleela_native_loader PUBLIC c_std_99)
 if(CMAKE_DL_LIBS)
@@ -24,4 +24,31 @@ if(BUILD_TESTING)
   add_executable(loader_test_cpp tests/test_cpp.cpp)
   target_link_libraries(loader_test_cpp PRIVATE sleela_native_loader_cpp)
   add_test(NAME loader_test_cpp COMMAND loader_test_cpp $<TARGET_FILE:loader_fixture>)
+
+  add_library(loader_fixture_bad_abi SHARED tests/fixture_bad_abi.c)
+  target_include_directories(loader_fixture_bad_abi PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+  target_compile_definitions(loader_fixture_bad_abi PRIVATE SL_NATIVE_PLUGIN_BUILD)
+  add_library(loader_fixture_missing_entry SHARED tests/fixture_missing_entry.c)
+  target_include_directories(loader_fixture_missing_entry PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+  target_compile_definitions(loader_fixture_missing_entry PRIVATE SL_NATIVE_PLUGIN_BUILD)
+  add_executable(loader_test_reject tests/test_reject.c)
+  target_link_libraries(loader_test_reject PRIVATE sleela_native_loader)
+  add_test(NAME loader_test_reject COMMAND loader_test_reject
+    $<TARGET_FILE:loader_fixture_bad_abi>
+    $<TARGET_FILE:loader_fixture_missing_entry>)
+
+  add_executable(loader_test_table tests/test_table.c)
+  target_link_libraries(loader_test_table PRIVATE sleela_native_loader)
+  add_test(NAME loader_test_table COMMAND loader_test_table
+    $<TARGET_FILE:loader_fixture>
+    $<TARGET_FILE:loader_fixture_bad_abi>)
+
+  add_library(loader_fixture_typed SHARED tests/fixture_typed.c)
+  target_include_directories(loader_fixture_typed PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+  target_compile_definitions(loader_fixture_typed PRIVATE SL_NATIVE_PLUGIN_BUILD)
+  add_executable(loader_test_typed tests/test_typed.c)
+  target_link_libraries(loader_test_typed PRIVATE sleela_native_loader)
+  add_test(NAME loader_test_typed COMMAND loader_test_typed
+    $<TARGET_FILE:loader_fixture_typed>
+    $<TARGET_FILE:loader_fixture>)
 endif()

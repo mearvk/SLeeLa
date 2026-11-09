@@ -8,6 +8,7 @@ extern "C" {
 #endif
 
 #define SL_NATIVE_ABI_VERSION 1u
+#define SL_NATIVE_TYPED_ABI_VERSION 1u
 #define SL_NATIVE_MAX_UNITS 9u
 
 #if defined(_WIN32) && defined(SL_NATIVE_PLUGIN_BUILD)
@@ -20,7 +21,69 @@ extern "C" {
 
 typedef int (*SLNativeEntry)(int argc, const char *const argv[]);
 typedef uint32_t (*SLNativeAbiVersion)(void);
+typedef uint32_t (*SLNativeTypedAbiVersion)(void);
 
+/* Stable tagged scalar/string value contract. Scalar fields use fixed-width
+ * integer types; F64 uses the platform's 8-byte C double. String pointers are
+ * borrowed UTF-8 byte spans, never NUL-terminated by contract, and may contain
+ * embedded NUL bytes. Composite VM objects and raw VM handles are deliberately
+ * not representable in this first ABI version. */
+typedef enum SLNativeValueTag {
+    SL_NATIVE_VALUE_NULL = 0,
+    SL_NATIVE_VALUE_BOOL = 1,
+    SL_NATIVE_VALUE_I64 = 2,
+    SL_NATIVE_VALUE_F64 = 3,
+    SL_NATIVE_VALUE_UTF8 = 4
+} SLNativeValueTag;
+
+typedef struct SLNativeValue {
+    uint32_t tag;
+    uint32_t reserved;
+    union {
+        int32_t boolean;
+        int64_t i64;
+        double f64;
+        struct {
+            const uint8_t *data;
+            uint32_t length;
+        } utf8;
+    } as;
+} SLNativeValue;
+
+/* Optional typed method export. Return 0 for success and nonzero for a
+ * plugin-defined failure. The result is initialized to NULL by the loader.
+ * Any returned UTF-8 bytes must remain valid until the next call to this
+ * module or module close; the host copies them before making another call. */
+typedef enum SLNativeCallStatus {
+    SL_NATIVE_CALL_OK = 0,
+    /* The module does not implement this method; the VM may use bytecode fallback. */
+    SL_NATIVE_CALL_NOT_HANDLED = 1,
+    /* A handled method failed; this must never trigger interpreter fallback. */
+    SL_NATIVE_CALL_ERROR = 2
+} SLNativeCallStatus;
+
+typedef int (*SLNativeTypedCall)(const char *method,
+                                 uint32_t argc,
+                                 const SLNativeValue *argv,
+                                 SLNativeValue *out_result);
+
+/* Optional native-to-host callback bridge. A plugin copies this immutable
+ * table during sl_native_bind_host(); it must not retain any SLValue or VM
+ * pointer. invoke() accepts only the scalar/UTF-8 ABI values above. */
+#define SL_NATIVE_HOST_CALLBACK_ABI_VERSION 1u
+typedef int (*SLNativeHostInvoke)(void *context, const char *function,
+                                  uint32_t argc, const SLNativeValue *argv,
+                                  SLNativeValue *out_result);
+typedef struct SLNativeHostAPI {
+    uint32_t abi_version;
+    uint32_t struct_size;
+    void *context;
+    SLNativeHostInvoke invoke;
+} SLNativeHostAPI;
+typedef int (*SLNativeBindHost)(const SLNativeHostAPI *host_api);
+
+/* Keep the public module layout stable: the optional typed symbol is resolved
+ * from handle at call time rather than stored in this struct. */
 typedef struct SLNativeModule {
     void *handle;
     SLNativeEntry run;
@@ -31,17 +94,39 @@ typedef enum SLNativeStatus {
     SL_NATIVE_INVALID_ARGUMENT = 1,
     SL_NATIVE_LOAD_ERROR = 2,
     SL_NATIVE_ABI_MISMATCH = 3,
-    SL_NATIVE_ENTRY_NOT_FOUND = 4
+    SL_NATIVE_ENTRY_NOT_FOUND = 4,
+    SL_NATIVE_AUTHORIZATION_DENIED = 5,
+    SL_NATIVE_TABLE_FULL = 6,
+    SL_NATIVE_STALE_HANDLE = 7,
+    SL_NATIVE_TYPED_ENTRY_NOT_FOUND = 8,
+    SL_NATIVE_PLUGIN_ERROR = 9,
+    SL_NATIVE_METHOD_NOT_HANDLED = 10,
+    SL_NATIVE_HOST_CALLBACK_NOT_FOUND = 11,
+    SL_NATIVE_REENTRANT_CALL = 12
 } SLNativeStatus;
 
 /* Plugins export these C-linkage functions; initialize module as {0}. */
 SL_NATIVE_EXPORT uint32_t sl_native_abi_version(void);
+/* Required when the optional sl_native_call typed entry is exported. */
+SL_NATIVE_EXPORT uint32_t sl_native_typed_abi_version(void);
 SL_NATIVE_EXPORT int sl_native_run(int argc, const char *const argv[]);
+/* Optional typed entry: int sl_native_call(const char*, uint32_t,
+ * const SLNativeValue*, SLNativeValue*). */
+SL_NATIVE_EXPORT int sl_native_call(const char *method, uint32_t argc,
+                                    const SLNativeValue *argv,
+                                    SLNativeValue *out_result);
+/* Optional: int sl_native_bind_host(const SLNativeHostAPI *host_api). */
+SL_NATIVE_EXPORT int sl_native_bind_host(const SLNativeHostAPI *host_api);
 
 /* Opens a trusted shared library (DLL, .dylib, or .so); loading executes native code. */
 SLNativeStatus sl_native_open(SLNativeModule *module, const char *path);
 SLNativeStatus sl_native_run_module(SLNativeModule *module, int argc,
                                     const char *const argv[], int *out_result);
+SLNativeStatus sl_native_call_module(SLNativeModule *module, const char *method,
+                                     uint32_t argc, const SLNativeValue *argv,
+                                     SLNativeValue *out_result);
+SLNativeStatus sl_native_bind_host_api(SLNativeModule *module,
+                                       const SLNativeHostAPI *host_api);
 SLNativeStatus sl_native_close(SLNativeModule *module);
 const char *sl_native_status_string(SLNativeStatus status);
 const char *sl_native_loader_error(void);

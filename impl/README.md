@@ -457,3 +457,38 @@ same native frontend and version resolver; both report and enforce source syntax
 **1.0–3.0**. Nordshrift delegates to that resolver. Older source declarations
 remain accepted, and historical feature gates (such as `@mix` at syntax 2.9)
 remain in force. Tool release numbers are independent of the language edition.
+
+
+## Native Drive: bytecode-to-native dispatch
+
+Syntax 3.0 exposes the host-authorized `nativeOpen(path)`,
+`nativeCall(handle, method, ...args)`, and `nativeClose(handle)` built-ins.
+The VM owns the generation-checked module handles and dispatches calls through
+the separately versioned `SLNativeValue` scalar/UTF-8 contract. Internal
+`SLValue` memory, arrays, structs, and VM handles are never passed to plugins.
+When a native method reports `SL_NATIVE_CALL_NOT_HANDLED`, or its arguments
+cannot be represented by the scalar ABI, the interpreter may dispatch a
+same-name, same-arity SLeeLa bytecode method. Plugin failures and ABI mismatches
+remain errors and do not trigger fallback. Plugins may optionally export
+`sl_native_bind_host` to receive a versioned callback table and invoke an exact,
+unique SLeeLa function from native code. The host must separately install
+`slvm_set_native_callback_authorizer`; callback names are denied by default. Callback execution uses a nested VM
+stack, preserves suspended GC roots, and rejects recursive native-module API
+calls to avoid deadlocks.
+
+The host must install `slvm_set_native_authorizer` before execution. With no
+authorization callback, native module loading is denied. Native code runs in the
+host process and is not sandboxed. See
+[`os-level-support/loader/README.md`](../os-level-support/loader/README.md)
+and the normative [Native Drive syntax contract](../SLEELA.syntax).
+
+The focused VM bridge smoke test is opt-in and is not part of the default test
+aggregate:
+
+```sh
+make -C impl test-native-call
+```
+
+It builds a small typed plugin and exercises host-authorized module open,
+typed bytecode dispatch, NOT_HANDLED interpreter fallback, and close. This
+target has been added for local verification; no CI workflow is started by it.
