@@ -48,6 +48,8 @@ SLNativeStatus sl_native_table_call(SLNativeModuleTable *table,
                                     uint32_t argc,
                                     const SLNativeValue *argv,
                                     SLNativeValue *out_result);
+/* Check a generation-checked handle without invoking plugin code. */
+int sl_native_table_is_valid(SLNativeModuleTable *table, SLNativeHandle handle);
 SLNativeStatus sl_native_table_close(SLNativeModuleTable *table,
                                      SLNativeHandle handle);
 SLNativeStatus sl_native_table_close_all(SLNativeModuleTable *table);
