@@ -167,7 +167,7 @@ Added `lib/java/tools/java_api_dependency_graph.py` as the graph-producing count
 - explicit imports, static imports, fully-qualified references, and unambiguous wildcard-import type uses;
 - nested-type owner edges where the enclosing type also has a counterpart;
 - direct dependency edges and transitive reachability;
-- package inventories, package-info annotation metadata, and module requires/exports metadata;
+- package inventories, package-info annotation metadata, and module requires/exports/opens/uses/provides metadata;
 - unresolved references, ambiguous wildcard names, and duplicate counterpart paths.
 
 Added `tests/java_api_dependency_graph_suite.py` and connected it to the existing Java API dependency suite and unified qualification manifest. The library manifest and validator baseline were updated for the additional graph tool.
