@@ -3,13 +3,15 @@ class LinearAlgebraVmSmoke {
     static void main() {
         let a = arrayNew(3);
         let b = arrayNew(3);
-        let sum = arrayNew(3);
+        let sum = arrayNew(5);
+        arraySet(sum, 4, 99.0);
         let vectorLength = 3;
         arraySet(a, 0, 1.0); arraySet(a, 1, 2.0); arraySet(a, 2, 3.0);
         arraySet(b, 0, 4.0); arraySet(b, 1, 5.0); arraySet(b, 2, 6.0);
         mathVectorAdd(a, b, sum, vectorLength);
         print("MATH_VECTOR_ADD");
         print(arrayGet(sum, 0)); print(arrayGet(sum, 1)); print(arrayGet(sum, 2));
+        print("MATH_OUTPUT_EXTRA_CAPACITY"); print(arrayGet(sum, 4));
         print("MATH_VECTOR_DOT"); print(mathVectorDot(a, b, vectorLength));
         print("MATH_VECTOR_NORM"); print(mathVectorNorm(a, vectorLength));
         let scaled = arrayNew(3);
