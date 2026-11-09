@@ -234,7 +234,21 @@ it does not automatically restart the workload.
 
     python3 -m unittest discover -s tools/tests -p 'test_native_drive.py' -v
     make -C impl test-native-call
+    make -C impl test-native-concurrency  # POSIX/Linux and macOS only
     sh -n bin/sleelactl
+
+The focused `test-native-concurrency` target is also opt-in and is not part
+of the default test aggregate or CI. On POSIX hosts it builds a typed plugin
+that blocks inside `slvm_native_module_call` until the harness creates a
+release marker. A second host thread requests `slvm_native_module_close`
+while that call is held. The harness asserts that the call remains active and
+close has not completed during the observation window, then releases the
+plugin, joins both threads, checks the typed result, and verifies that the
+closed generation-checked handle is stale. The fixture currently uses
+POSIX file and timing primitives and is not yet enabled on Windows. This test
+covers native-module call/close serialization only; it does not relax the
+separate host requirement to quiesce all external VM callers before
+`slvm_free()`.
 
 The focused `test-native-call` target is opt-in and is not part of the default
 test aggregate. It substitutes the built fixture's exact path into the
