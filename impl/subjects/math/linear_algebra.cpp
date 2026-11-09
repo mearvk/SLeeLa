@@ -432,6 +432,18 @@ slmath_status slmath_vm_dispatch(slmath_operation operation,
                                  double scalar, size_t flags) {
     if (!a || !out || !a->data || !out->data)
         return SLMATH_INVALID_ARGUMENT;
+    size_t a_shape = 0, out_shape = 0, b_shape = 0, aux_shape = 0;
+    if (!count_ok(a->rows,a->cols,&a_shape) ||
+        !count_ok(out->rows,out->cols,&out_shape))
+        return SLMATH_SIZE_OVERFLOW;
+    if (a->rows && a->cols && a->length < a_shape)
+        return SLMATH_DIMENSION_MISMATCH;
+    if (out->rows && out->cols && out->length < out_shape)
+        return SLMATH_DIMENSION_MISMATCH;
+    if (b && !count_ok(b->rows,b->cols,&b_shape))
+        return SLMATH_SIZE_OVERFLOW;
+    if (aux && !count_ok(aux->rows,aux->cols,&aux_shape))
+        return SLMATH_SIZE_OVERFLOW;
     switch (operation) {
     case SLMATH_OP_VECTOR_ADD:
         if (!b || !b->data || a->length != b->length ||
@@ -449,21 +461,21 @@ slmath_status slmath_vm_dispatch(slmath_operation operation,
         return slmath_vector_scale(a->data,scalar,out->data,a->length);
     case SLMATH_OP_MATRIX_MULTIPLY:
         if (!b || !b->data || a->cols != b->rows ||
-            a->length < a->rows*a->cols || b->length < b->rows*b->cols ||
+            a->length < a_shape || b->length < b_shape ||
             out->rows != a->rows || out->cols != b->cols ||
-            out->length < out->rows*out->cols)
+            out->length < out_shape)
             return SLMATH_DIMENSION_MISMATCH;
         return slmath_matrix_multiply(a->data,a->rows,a->cols,b->data,
                                       b->rows,b->cols,out->data);
     case SLMATH_OP_MATRIX_TRANSPOSE:
-        if (a->length < a->rows*a->cols || out->rows != a->cols ||
-            out->cols != a->rows || out->length < a->rows*a->cols)
+        if (a->length < a_shape || out->rows != a->cols ||
+            out->cols != a->rows || out->length < out_shape)
             return SLMATH_DIMENSION_MISMATCH;
         return slmath_matrix_transpose(a->data,a->rows,a->cols,out->data);
     case SLMATH_OP_MATRIX_INVERSE:
-        if (a->rows != a->cols || a->length < a->rows*a->cols ||
+        if (a->rows != a->cols || a->length < a_shape ||
             out->rows != a->rows || out->cols != a->cols ||
-            out->length < a->rows*a->cols)
+            out->length < out_shape)
             return SLMATH_DIMENSION_MISMATCH;
         return slmath_matrix_inverse(a->data,a->rows,out->data,scalar);
     case SLMATH_OP_COMPLEX_MULTIPLY:
@@ -478,17 +490,17 @@ slmath_status slmath_vm_dispatch(slmath_operation operation,
         return SLMATH_OK;
     case SLMATH_OP_QR:
         if (!aux || !aux->data || a->rows < a->cols ||
-            a->length < a->rows*a->cols ||
-            out->length < a->rows*a->cols ||
+            a->length < a_shape ||
+            out->length < a_shape ||
             aux->rows != a->cols || aux->cols != a->cols ||
-            aux->length < a->cols*a->cols)
+            aux->length < aux_shape)
             return SLMATH_DIMENSION_MISMATCH;
         return slmath_matrix_qr(a->data,a->rows,a->cols,out->data,
                                 aux->data,scalar);
     case SLMATH_OP_SYMMETRIC_EIGEN:
         if (!aux || !aux->data || a->rows != a->cols ||
-            a->length < a->rows*a->cols || out->length < a->rows ||
-            aux->length < a->rows*a->cols)
+            a->length < a_shape || out->length < a->rows ||
+            aux->length < a_shape)
             return SLMATH_DIMENSION_MISMATCH;
         return slmath_symmetric_eigen(a->data,a->rows,out->data,aux->data,
                                       flags,scalar);
