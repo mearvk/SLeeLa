@@ -942,6 +942,24 @@ private:
             if(c.args.size()!=1)throw std::runtime_error("Semantic error: nativeClose(handle) takes exactly one argument");
             emitExpr(c.args[0].get()); emit(OP_NATIVE_CLOSE); return true;
         }
+        // Java String construction from explicit UTF-16 code units. This is
+        // intentionally a compile-time constructor: each argument must be an
+        // integer literal in [0, 65535], so embedded NUL and isolated surrogate
+        // code units are represented losslessly without a C-string boundary.
+        // The resulting constant is an SL_UTF16 value, not a legacy SL_STR.
+        if(n=="javaStringFromCodeUnits"){
+            if(syntax_<SyntaxVersion{3,0})throw std::runtime_error("Semantic error: javaStringFromCodeUnits requires #sleela 3.0");
+            if(c.args.size()>65535)throw std::runtime_error("Semantic error: javaStringFromCodeUnits accepts at most 65535 UTF-16 code units");
+            std::vector<uint16_t> units; units.reserve(c.args.size());
+            for(size_t i=0;i<c.args.size();++i){
+                auto literal=dynamic_cast<const IntLit*>(c.args[i].get());
+                if(!literal)throw std::runtime_error("Semantic error: javaStringFromCodeUnits argument "+std::to_string(i+1)+" must be an integer literal");
+                if(literal->value<0 || literal->value>65535)throw std::runtime_error("Semantic error: javaStringFromCodeUnits argument "+std::to_string(i+1)+" is outside the UTF-16 code-unit range 0..65535");
+                units.push_back(static_cast<uint16_t>(literal->value));
+            }
+            emit(OP_CONST,slvm_add_const_utf16(vm_,units.data(),units.size()));
+            return true;
+        }
         if(n=="nativeCall"){
             if(syntax_<SyntaxVersion{3,0})throw std::runtime_error("Semantic error: Native Drive requires #sleela 3.0");
             if(c.args.size()<2 || c.args.size()>4096)throw std::runtime_error("Semantic error: nativeCall(handle, method, ...args) requires a handle, method String, and at most 4094 arguments");
