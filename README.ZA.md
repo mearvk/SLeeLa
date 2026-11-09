@@ -128,3 +128,34 @@ Lees [testing policy](markdown/TESTING.md), [documentation index](docs/README.md
 Hierdie Afrikaanse tegniese afdeling vul die bestaande kort inleidings in isiZulu, isiXhosa, Sepedi, Setswana, Sesotho, siSwati, Tshivenda, Xitsonga en isiNdebele aan. Dit is nie 'n volledige tegniese vertaling in al elf amptelike tale nie. Suid-Afrikaanse Gebaretaal vereis toeganklike video- of gebaretaalmateriaal en kan nie deur 'n geskrewe taalopsomming vervang word nie. Verdere vertalings behoort deur moedertaalsprekers met tegniese kennis nagegaan te word.
 
 **Translation status:** The South African edition now includes a substantial Afrikaans technical guide alongside the English practical guide and multilingual introductions. Full technical translations into all South African languages and dedicated South African Sign Language resources remain outstanding.
+
+
+## X. Gevorderde taal- en VM-konsepte
+
+### Teikens en profiele
+
+SLeeLa onderskei die taal se bronvlak van die uitvoerteikens. Die gedokumenteerde teikenfamilie sluit `SLVM`, `SLJVM` en `SLIR` in; `NATIVE` is 'n afgebakende, voorwaardelike teiken en moet nie as 'n universeel beskikbare uitvoermodus aanvaar word nie. Die profiele `BASIC_COMPLETE` en `ADVANCED_TOTAL` beskryf verskillende omvangsvlakke. Bevestig altyd die werklike teiken, profiel en platformondersteuning vir die betrokke bou.
+
+### Veiligheidsgrens en bevoegdheid
+
+'n Verwysing identifiseer 'n bron, lêer, module of hulpbron; dit verleen nie vanself toestemming om dit uit te voer nie. Hierdie onderskeid is belangrik wanneer 'n program lêers, eksterne biblioteke, native bindings of ander stelselhulpbronne gebruik. Valideer invoer, beperk die uitvoergrens en dokumenteer watter komponent die bevoegdheid besit. Moenie 'n dokumentasieverklaring as bewys van 'n runtime-sekuriteitswaarborg beskou sonder 'n toepaslike toets of implementeringsverwysing nie.
+
+### Geheue, toestand en gelyktydigheid
+
+Dokumenteer die eienaarskap en lewensduur van elke hulpbron wat tussen funksies of drade gedeel word. Onderskei plaaslike veranderlikes, gedeelde objektoestand, VM-handvatsels en serialiseerbare data. Moenie VM-lokale handvatsels as stabiele lêerformate of netwerkboodskappe gebruik nie. Gebruik die module se gedefinieerde serialiseringskoppelvlak en toets ongeldige, ontbrekende en grenswaardes.
+
+## XI. Praktiese foutopsporing en vrystelling
+
+Begin met 'n skoon werkboom en teken die commit, bedryfstelsel, argitektuur, compiler en weergawes aan. Bou die kleinste betrokke teiken voordat jy die volledige toetssuite uitvoer. Wanneer 'n fout voorkom, bewaar die volledige uitvoer, onderskei compilerfoute van runtime-foute en verminder die voorbeeld tot 'n klein reproduseerbare program. Moenie 'n suksesvolle bou as bewys van korrekte runtime-gedrag rapporteer nie.
+
+'n Nuttige verifikasieverslag noem:
+
+1. Die presiese commit en plaaslike veranderinge.
+2. Die bedryfstelsel, argitektuur en compiler/toolchain.
+3. Die presiese bou- en toetsopdragte.
+4. Die aantal geslaagde, mislukte en oorgeslane toetse.
+5. Bekende beperkings en nie-getoetste teikens.
+
+Die internasionale README-lêers is landgerigte toegangspunte; hulle vervang nie die normatiewe taalspesifikasie of module-API-dokumentasie nie. Hou vertaalde beskrywings in lyn met die Engelse bron en behou identifiseerders, opdragte, lêerpaaie en kode onveranderd.
+
+**Uitgebreide vertalingstatus:** Die Afrikaanse afdeling dek nou ook teikenprofiele, VM-veiligheidsgrense, hulpbron-eienaarskap, foutopsporing en vrystellingsverifikasie. Dit bly 'n substansiële tegniese gids, nie 'n volledige vertaling van elke Engelse afdeling nie.
