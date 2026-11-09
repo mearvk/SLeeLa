@@ -201,3 +201,33 @@ make -C impl test-java-string-vm
 The VM smoke test covers NUL/surrogate preservation, VM handle operations,
 GC root management, the portable record round trip, and artifact v3 save/load.
 These targets have been added but have not yet been executed in this work.
+
+
+## VM-backed Java UTF-16 String construction
+
+The VM integration branch adds the source-level compiler intrinsic
+`javaStringFromCodeUnits(...)` for `#sleela 3.0`. It accepts integer
+literals in the inclusive range `0..65535` and emits an `SL_UTF16`
+constant directly. This is deliberately distinct from the legacy UTF-8
+`String` literal path and does not cross a C-string boundary.
+
+For example:
+
+```sleela
+#sleela 3.0
+class Example {
+    static void main() {
+        String value = javaStringFromCodeUnits(0x0041, 0x0000, 0xD800);
+        print(value);
+    }
+}
+```
+
+The arguments are UTF-16 *code units*, not Unicode scalar values. The
+constructor therefore preserves embedded U+0000 and isolated surrogate
+values. At this stage the constructor is compile-time/literal-only: runtime
+code-unit arrays, instance methods such as `length()` and `charAt()`, and
+automatic lowering of every ordinary SLeeLa string literal to `SL_UTF16`
+remain separate compiler/runtime integration work. Existing `String`
+operations continue to use the legacy `SL_STR` representation unless a
+source intrinsic explicitly constructs an `SL_UTF16` value.
