@@ -2703,10 +2703,13 @@ fall back.
 
 A plugin may optionally export `sl_native_bind_host(const SLNativeHostAPI*)`.
 When a host-authorized module is opened, the loader passes a size-checked
-`SL_NATIVE_HOST_CALLBACK_ABI_VERSION` table. The plugin copies the table and
-may call its `invoke(context, function, argc, argv, result)` entry synchronously from a
+`SL_NATIVE_HOST_CALLBACK_ABI_VERSION` table and rebinds it immediately before
+each plugin entrypoint. The plugin copies the table into thread-local storage
+and may call its `invoke(context, function, argc, argv, result)` entry synchronously from a
 typed native method. Plugins must not retain or invoke the table asynchronously.
-The embedding host must also install `slvm_set_native_callback_authorizer` with an explicit function-name allowlist; callback invocation is denied by default and the policy is immutable after installation.
+Thread-local storage keeps callback context isolated when the same shared
+library is used by multiple VM instances. The embedding host must also install
+`slvm_set_native_callback_authorizer` with an explicit function-name allowlist; callback invocation is denied by default and the policy is immutable after installation.
 
 The callback function name must exactly match one compiled SLeeLa function
 name and argument count. Names that are missing or ambiguous are rejected.
