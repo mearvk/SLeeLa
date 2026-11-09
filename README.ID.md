@@ -192,3 +192,20 @@ Proyek memiliki alat dan dokumentasi terpisah untuk pembuatan π, Modium, Regist
 - [Repositori SLeeLa di GitHub](https://github.com/mearvk/SLeeLa)
 
 **Status terjemahan:** Edisi Bahasa Indonesia ini telah diperluas menjadi panduan teknis yang mencakup pengenalan, build, instalasi, bahasa dan runtime, fitur, pustaka, integrasi native, keamanan, pengembangan, dan area utama proyek. Dokumen ini belum merupakan terjemahan baris demi baris dari seluruh README kanonis berbahasa Inggris. Pemeriksaan teknis dan penyuntingan bahasa oleh penutur Bahasa Indonesia yang memahami bidang teknis tetap disarankan.
+
+
+## XVI. Target, profil, dan batas eksekusi
+
+SLeeLa memisahkan kode sumber dari target build dan execution. Keluarga target yang didokumentasikan mencakup `SLVM`, `SLJVM`, dan `SLIR`; `NATIVE` merupakan target terbatas dan bersyarat, bukan mode yang dapat diasumsikan tersedia pada semua platform. Profil `BASIC_COMPLETE` dan `ADVANCED_TOTAL` menunjukkan cakupan yang berbeda. Verifikasi target, profil, dan dukungan platform yang benar-benar digunakan pada setiap build.
+
+Reference mengidentifikasi file, modul, atau resource; reference tidak dengan sendirinya memberikan izin untuk mengeksekusinya. Ketika program menggunakan file, pustaka eksternal, native bindings, atau sumber daya sistem, batas otorisasi dan tanggung jawab eksekusi harus ditetapkan secara eksplisit. Pernyataan dokumentasi saja bukan bukti jaminan keamanan runtime; periksa implementasi dan pengujian terkait.
+
+## XVII. Siklus hidup resource dan debugging
+
+Dokumentasikan ownership, lifetime, dan tanggung jawab sinkronisasi untuk resource yang dibagikan antar-fungsi atau thread. Bedakan local variables, shared object state, VM handles, dan serializable data. VM-local handle bukan format file atau pesan jaringan yang stabil. Gunakan serialization interface yang ditetapkan modul, lalu uji nilai invalid, missing, dan boundary.
+
+Saat debugging, catat commit, OS, architecture, dan toolchain. Build target relevan yang paling kecil terlebih dahulu, simpan seluruh error output, bedakan compiler errors dari runtime errors, dan buat contoh minimal yang dapat direproduksi. Build yang berhasil tidak otomatis membuktikan runtime behavior benar.
+
+Laporan validasi harus menyebutkan exact commit, OS/architecture, compiler versions, seluruh build/test commands, jumlah pass/fail/skip, dan batasan yang diketahui. Test yang dilewati atau tidak dijalankan tidak boleh dihitung sebagai passed.
+
+**Status terjemahan diperluas:** Panduan Bahasa Indonesia kini juga membahas target/profil, batas otorisasi eksekusi, siklus hidup resource, debugging, dan pelaporan validasi.
