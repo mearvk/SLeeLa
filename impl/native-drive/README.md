@@ -226,8 +226,10 @@ authorization callback, and executes the program. The source program invokes
 the plugin's `twice` method, calls the SLeeLa `Callback::receive` method
 synchronously from native code, exercises bytecode fallback for `fallback`,
 closes the module, and returns the combined result (105). The harness then reloads
-the same artifact with a deliberately mismatched allowlist and asserts that
-source-level `nativeOpen` fails closed before plugin execution.
+the same artifact with a deliberately mismatched module allowlist and asserts
+that source-level `nativeOpen` fails closed. A third run authorizes the module
+but omits callback-name authorization, proving the plugin cannot invoke
+`Callback::receive` unless the host explicitly allows it.
 
 The Native Drive GitHub Actions workflow is `workflow_dispatch`-only; no
 workflow is automatically started by pushes. This end-to-end target has been
