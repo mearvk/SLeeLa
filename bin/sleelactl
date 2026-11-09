@@ -275,13 +275,12 @@ tool_cmd() { # module verb [args]
     script="$ROOT/$(handle_of "$1")"
     [ -f "$script" ] || { warn "native-drive script not present: $script"; return 1; }
     command -v python3 >/dev/null 2>&1 || { warn "python3 is required for native-drive"; return 3; }
-    case "$2" in
+    verb="$2"
+    case "$verb" in
       info) okay "native-drive — $(summary_of "$1")"; info "location: ${script#$ROOT/}"; info "see: $ROOT/impl/native-drive/README.md" ;;
-      build|run|inspect)
-        shift 2
-        [ "$1" = "inspect" ] 2>/dev/null && set -- build --help "$@"
-        python3 "$script" "$2" "$@" ;;
-      *) die "native-drive verb '$2' not understood" ;;
+      build|run) shift 2; python3 "$script" "$verb" "$@" ;;
+      inspect) python3 "$script" --help ;;
+      *) die "native-drive verb '$verb' not understood" ;;
     esac
     return $?
   fi
