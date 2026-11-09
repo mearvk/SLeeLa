@@ -49,9 +49,9 @@ def main() -> int:
         executable = Path(temp) / ("sljip-codec.exe" if os.name == "nt" else "sljip-codec")
         compiler_name = Path(cc[0]).name.lower()
         if os.name == "nt" and compiler_name in {"cl", "cl.exe"}:
-            obj = Path(temp) / "sljip-codec.obj"
             run(cc + ["/nologo", "/std:c11", "/W4", "/WX",
                       "/I" + str(ROOT / "runtime"),
+                      "/Fo" + str(Path(temp) / ""),
                       str(C_SOURCES[0]), str(C_SOURCES[1]),
                       "/Fe:" + str(executable)])
         else:
