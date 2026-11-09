@@ -244,6 +244,13 @@ the same callback through each entrypoint without an active source-level
 The run-style entrypoint reports the plugin's observed refusal through its
 integer result, while the typed-call entrypoint must return
 `SL_NATIVE_PLUGIN_ERROR`. Both cases close the module and free the VM.
+The callback-bytecode regression also attempts `nativeOpen` and
+`nativeClose` from inside an authorized callback; both must fail with the
+same explicit reentrancy diagnostic before touching the module table. A
+callback-policy test deliberately calls each public host lifecycle API
+(open/run/call/close) from the callback authorizer while the plugin entrypoint
+is active; all four must return `SL_NATIVE_REENTRANT_CALL` immediately, and
+the approved callback must still complete normally.
 
 A further reentrancy regression constructs a small VM program through the public
 core bytecode-building API. Its outer `OP_NATIVE_CALL` enters the fixture,
