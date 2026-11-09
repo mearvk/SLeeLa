@@ -61,14 +61,21 @@ static int wr_value(FILE* f, SLVM* vm, SLValue v) {
         /* A live struct handle is VM-local runtime state (like a socket/file
          * handle) and is not persisted; a global holding one saves as null. */
         case SL_STRUCT: return 1;
+        case SL_UTF16: {
+            SLJavaStringInstance *instance = java_string_get(vm, v);
+            if (!instance || instance->value.length > INT32_MAX || !wr_u32_le(f, (uint32_t)instance->value.length)) return 0;
+            for (size_t i = 0; i < instance->value.length; ++i)
+                if (!wr_u16_le(f, instance->value.units[i])) return 0;
+            return 1;
+        }
         case SL_NULL:   return 1;
         default:        return 0;
     }
 }
 
-static int rd_value(FILE* f, SLVM* vm, SLValue* v) {
+static int rd_value(FILE* f, SLVM* vm, SLValue* v, uint32_t artifact_version) {
     int32_t t = 0;
-    if (!rd_i32(f, &t) || t < SL_NULL || t > SL_UTF16) return 0;
+    if (!rd_i32(f, &t) || t < SL_NULL || t > (artifact_version >= 3u ? SL_UTF16 : SL_STRUCT)) return 0;
     memset(v, 0, sizeof(*v));
     v->type = (SLType)t;
     switch (v->type) {
@@ -89,6 +96,22 @@ static int rd_value(FILE* f, SLVM* vm, SLValue* v) {
         /* A persisted struct-typed value is loaded as null: the handle it once
          * named is not meaningful in a freshly loaded VM. */
         case SL_STRUCT: v->type = SL_NULL; v->as.i = 0; return 1;
+        case SL_UTF16: {
+            uint32_t length = 0;
+            uint16_t *units = NULL;
+            if (!rd_u32_le(f, &length) || length > INT32_MAX ||
+                (size_t)length > SIZE_MAX / sizeof(uint16_t)) return 0;
+            if (length) {
+                units = (uint16_t *)malloc((size_t)length * sizeof(uint16_t));
+                if (!units) return 0;
+            }
+            for (uint32_t i = 0; i < length; ++i) {
+                if (!rd_u16_le(f, &units[i])) { free(units); return 0; }
+            }
+            *v = slvm_java_string_new(vm, units, length);
+            free(units);
+            return v->type == SL_UTF16;
+        }
         case SL_NULL: return 1;
         default: return 0;
     }
@@ -266,12 +289,12 @@ SLVM* slvm_load_file(const char* path) {
     if (ok) {
         for (uint32_t i = 0; ok && i < codelen; ++i)
             ok = rd(f, &vm->code[i].op, sizeof(vm->code[i].op)) && rd_i32(f, &vm->code[i].a);
-        for (uint32_t i = 0; ok && i < nconst; ++i) ok = rd_value(f, vm, &vm->consts[i]);
+        for (uint32_t i = 0; ok && i < nconst; ++i) ok = rd_value(f, vm, &vm->consts[i], version);
         for (uint32_t i = 0; ok && i < nstr; ++i) vm->strs[i] = rd_string(f), ok = vm->strs[i] != NULL;
         for (uint32_t i = 0; ok && i < nglobal; ++i) {
             vm->gnames[i] = rd_string(f);
             ok = vm->gnames[i] != NULL;
-            if (ok) ok = rd_value(f, vm, &vm->globals[i]);
+            if (ok) ok = rd_value(f, vm, &vm->globals[i], version);
         }
         for (uint32_t i = 0; ok && i < nfunc; ++i) {
             vm->funcs[i].name = rd_string(f);
