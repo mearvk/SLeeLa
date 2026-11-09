@@ -56,6 +56,8 @@ echo "Staging runtime..."
 mkdir -p "$STAGE_DIR/lib" "$STAGE_DIR/bin" "$STAGE_DIR/config" "$STAGE_DIR/tools" "$STAGE_DIR/security"
 cp -a "$REPO_ROOT/lib/." "$STAGE_DIR/lib/"
 cp -a "$REPO_ROOT/tools/verify-before-execution.py" "$STAGE_DIR/tools/"
+cp -a "$REPO_ROOT/tools/sleela-native-drive.py" "$STAGE_DIR/tools/"
+cp -a "$REPO_ROOT/tools/sleela-native-service.py" "$STAGE_DIR/tools/"
 cp -a "$REPO_ROOT/security/sha256-manifest.json" "$STAGE_DIR/security/"
 # Ship every source file named by the trusted manifest so installed verifier
 # calls can validate against the same root rather than a partial source tree.
