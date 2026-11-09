@@ -2,7 +2,7 @@ name: Native Drive
 
 on:
   push:
-    branches: [main, master, feat/native-drive-integration, feat/native-drive-completion]
+    branches: [main, master, feat/native-drive-integration, feat/native-drive-completion, feat/native-drive-final]
     paths:
       - "tools/sleela-native-drive.py"
       - "tools/sleela-native-service.py"
