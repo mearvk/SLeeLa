@@ -152,9 +152,9 @@ it does not automatically restart the workload.
 | 2. SLeeLa/XClass translation | Existing @native AOT + XClass loader delegated | Per-method native emission, typed entry ABI, XClass method-body fidelity where encoded |
 | 3. Native build/link/load | Executable/shared builds and optional ABI validation | Runtime-owned plugin registry, signature/integrity policy, VM-visible typed symbols |
 | 4. Process piping | argv execution, stdin file, bounded capture, multi-stage pipe, timeout, exit propagation | Annotation parser/runtime policy and richer stream-routing semantics |
-| 5. systemd | Hardened unit rendering, explicit install/enable/start, status/restart/stop/disable, one-level replacement rollback | Generated service manifests and integration tests against a real systemd host |
-| 6. VM dispatch | Stable native-loader ABI is available | VM-owned module handles, typed argument/result marshalling, fallback and parity tests |
-| 7. Conformance | Native Drive smoke/integration CI | Full compiler/VM/loader/process/systemd matrix, sanitizer and cross-ABI coverage |
+| 5. systemd | Hardened unit rendering, explicit install/enable/start, status/restart/stop/disable, transactional failed-install recovery, one-level replacement rollback | Generated service manifests and integration tests against a real systemd host |
+| 6. VM dispatch | VM-owned nine-slot module table, generation-checked opaque handles, host authorization callback, open/run/close API, close-on-VM-destruction | SLeeLa bytecode dispatch, typed object/value ABI, interpreter fallback, output parity and concurrency stress tests |
+| 7. Conformance | C/C++ loader tests, ABI mismatch/missing-entry rejection, C++ move ownership, authorization denial, table-full/stale-handle tests, service failure recovery tests | Run the local test suites and complete compiler/VM/loader/process/systemd matrix, sanitizer and cross-ABI coverage |
 
 ## Security invariants
 
