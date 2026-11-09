@@ -44,11 +44,11 @@ int main(void) {
     if(ok) ok=emit_array_set(vm,1,0,4.0)&&emit_array_set(vm,1,1,5.0)&&emit_array_set(vm,1,2,6.0);
     if(ok) ok=emit_math_frame(vm,0,1,2,SLMATH_OP_VECTOR_ADD,0);
     if(ok) ok=slvm_emit0(vm,OP_POP)>=0;
-    if(ok) ok=emit_math_frame(vm,0,1,-1,SLMATH_OP_VECTOR_DOT,1);
+    if(ok) ok=emit_math_frame(vm,2,0,-1,SLMATH_OP_VECTOR_DOT,1);
     if(ok) ok=slvm_emit0(vm,OP_RET)>=0;
     if(ok) { slvm_end_func(vm); slvm_set_entry(vm,fn); ok=slvm_run(vm)==SLR_OK; }
     SLValue result=slvm_result(vm);
-    if(!ok || result.type!=SL_DOUBLE || result.as.d!=32.0) {
+    if(!ok || result.type!=SL_DOUBLE || result.as.d!=44.0) {
         fprintf(stderr,"math bytecode smoke: execution failed (%s)\n",slvm_error(vm)?slvm_error(vm):"wrong result");
         slvm_free(vm); return 1;
     }
@@ -63,7 +63,7 @@ int main(void) {
         slvm_free(vm); return 1;
     }
     result=slvm_result(loaded);
-    ok=result.type==SL_DOUBLE && result.as.d==32.0;
+    ok=result.type==SL_DOUBLE && result.as.d==44.0;
     slvm_free(loaded); slvm_free(vm);
     if(!ok) { fprintf(stderr,"math bytecode smoke: artifact result mismatch\n"); return 1; }
     puts("native math bytecode + artifact smoke: PASS");
