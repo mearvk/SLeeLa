@@ -37,7 +37,7 @@ int sl_ipc_client_init(SLIPCClient *c, SLIPCReadExactFn read_exact,
     static const uint8_t hello[] = "sleela-ipc/1";
     SLIPCHeader response;
     if (!c || !read_exact || !write_exact || !workspace ||
-        workspace_capacity < SL_IPC_MAX_PAYLOAD) return -1;
+        workspace_capacity == 0 || workspace_capacity > SL_IPC_MAX_PAYLOAD) return -1;
     memset(c, 0, sizeof(*c));
     c->read_exact = read_exact;
     c->write_exact = write_exact;
