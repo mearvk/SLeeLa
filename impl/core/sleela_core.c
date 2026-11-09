@@ -215,6 +215,8 @@ struct SLVM {
     SLNativeModuleTable native_modules;
     SLNativeAuthorizePath native_authorizer;
     void* native_authorizer_context;
+    SLNativeAuthorizeCallback native_callback_authorizer;
+    void* native_callback_authorizer_context;
     int native_modules_init;
     SLNativeHostAPI native_host_api;
     SLThread* native_callback_caller; /* suspended OP_NATIVE_CALL stack, rooted during callback */
@@ -477,6 +479,21 @@ int slvm_set_native_authorizer(SLVM* vm, SLNativeAuthorizePath authorize, void* 
     }
     vm->native_authorizer = authorize;
     vm->native_authorizer_context = context;
+    pthread_mutex_unlock(&vm->native_mtx);
+    return 0;
+}
+
+int slvm_set_native_callback_authorizer(SLVM* vm,
+                                        SLNativeAuthorizeCallback authorize,
+                                        void* context) {
+    if (!vm || !authorize) return -1;
+    pthread_mutex_lock(&vm->native_mtx);
+    if (vm->native_callback_authorizer) {
+        pthread_mutex_unlock(&vm->native_mtx);
+        return -1; /* immutable after first installation */
+    }
+    vm->native_callback_authorizer = authorize;
+    vm->native_callback_authorizer_context = context;
     pthread_mutex_unlock(&vm->native_mtx);
     return 0;
 }
@@ -2061,6 +2078,22 @@ static int slvm_native_host_invoke(void* context, const char* function,
     if (active_workers != 0) {
         set_err(vm, "native callback requires a quiescent VM with no active worker threads");
         return 0;
+    }
+    if (!vm->native_callback_authorizer) {
+        set_err(vm, "native callback denied: host callback-name policy is not installed");
+        return 0;
+    }
+    {
+        SLVM* previous_callback_vm = native_callback_vm;
+        int authorized;
+        native_callback_vm = vm;
+        authorized = vm->native_callback_authorizer(
+            function, vm->native_callback_authorizer_context);
+        native_callback_vm = previous_callback_vm;
+        if (!authorized) {
+            set_err(vm, "native callback denied by host callback-name policy");
+            return 0;
+        }
     }
     name_length = strlen(function);
     if (name_length > 255u) return 0;
