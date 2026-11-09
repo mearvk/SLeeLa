@@ -67,8 +67,12 @@ def _unit_paths(args: argparse.Namespace):
     if not NAME.fullmatch(args.name):
         raise ValueError("service name must contain only letters, digits, dot, underscore, @, or hyphen")
     if args.system:
-        if os.name != "nt" and os.geteuid() != 0:
-            raise RuntimeError("system service lifecycle requires root; no implicit sudo is invoked")
+        # Reading system-unit status does not require root on a normally
+        # configured host. Mutating operations (restart/stop/disable/rollback)
+        # remain explicit administrator actions; never invoke sudo implicitly.
+        mutating = not args.status
+        if mutating and os.name != "nt" and os.geteuid() != 0:
+            raise RuntimeError("mutating a system service requires root; no implicit sudo is invoked")
         directory = pathlib.Path("/etc/systemd/system")
     else:
         directory = pathlib.Path.home() / ".config/systemd/user"
