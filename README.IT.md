@@ -145,6 +145,129 @@ Il manifesto di integrità viene generato in `antivirus/build/`. Comprende input
 
 Una release è considerata verificata soltanto quando i job CI pertinenti hanno esito positivo per l’esatto commit della release e gli artefatti risultanti sono stati controllati.
 
+## VIII. Temi dell’editor SLeeLa — Vim ed Emacs
+
+SLeeLa include un insieme coordinato di schemi cromatici scuri e professionali per **Vim** ed **Emacs**, oltre a un’utilità nativa per le palette C/C++. Lo schema originale **American Professional** rimane quello predefinito. Dieci palette complementari offrono ispirazioni progettuali culturali e istituzionali diverse; sono interpretazioni grafiche, non rappresentazioni ufficiali di alcuna nazione, cultura, corte o istituzione.
+
+### Gli undici schemi e i relativi colori
+
+| Schema | Sfondo | Primo piano | Parole chiave | Tipi | Stringhe | Commenti |
+|---|---|---|---|---|---|---|
+| **American Professional** | `#101820` | `#F4F7FA` | `#7FB3FF` | `#73DACA` | `#F2C078` | `#8A96A3` |
+| **Pan-Eurasian** | `#111827` | `#F0F2F5` | `#7AA7E8` | `#69C9B3` | `#D7B56D` | `#8995A5` |
+| **Russian and Slavic — Medium** | `#202733` | `#E8EAF0` | `#A9C0DD` | `#8FC4B2` | `#D6BD8B` | `#9AA3AF` |
+| **Central Asian / Silk Road** | `#1C2529` | `#F5F0E5` | `#7FADE0` | `#45C6C2` | `#D9B56D` | `#92A3A0` |
+| **East Asian** | `#171A1C` | `#F2EFE7` | `#D97878` | `#72C7A5` | `#D8B76A` | `#969F9B` |
+| **ICC — Corte penale internazionale** | `#0E1A2B` | `#EAF0F7` | `#5B8FD6` | `#7FB7C9` | `#D9B25A` | `#7E8CA0` |
+| **SCOTUS — Corte Suprema degli Stati Uniti** | `#1A1416` | `#F3EEE6` | `#9E2B35` | `#8FA9B8` | `#C9A24B` | `#8C8178` |
+| **Greek (Hellenic)** | `#0A1A30` | `#FFFFFF` | `#2E7BD6` | `#5E9FE0` | `#9FC3EC` | `#6E86A6` |
+| **Turkish (Al Bayrak)** | `#2A0609` | `#FFFFFF` | `#F23D48` | `#F0A9AE` | `#F0C9A9` | `#A8767A` |
+| **Kiro** | `#0B0B12` | `#F5F5FA` | `#A98EDA` | `#6E8BE0` | `#E8C547` | `#6A6482` |
+| **SLeeLa** | `#08080E` | `#FFFFFF` | `#B07CFF` | `#5A7CFF` | `#FFD21E` | `#6E5F9E` |
+
+### Colori delle bandiere nazionali (palette di origine)
+
+Gli schemi greco e turco derivano dai **colori ufficiali delle bandiere nazionali** dei due paesi, qui riportati con i valori esadecimali pubblicati. Gli sfondi e gli accenti degli schemi sopra sono interpretazioni scurite e adatte agli editor; la tabella seguente conserva i colori di riferimento esposti a livello nazionale.
+
+| Paese | Colore | Esadecimale | Fondamento e significato |
+|---|---|---|---|
+| **Grecia** | Blu | `#0D5EAF` | Blu della bandiera nazionale (legge 851/1978). Il cielo e i mari; in araldica, *azzurro*. |
+| **Grecia** | Bianco | `#FFFFFF` | Bianco della bandiera nazionale. Purezza della lotta per l’indipendenza; la croce rappresenta il cristianesimo ortodosso orientale. |
+| **Türkiye** | Rosso (*al bayrak*) | `#E30A17` | Rosso della bandiera nazionale (legge turca sulla bandiera). Il campo; per tradizione, il sangue dei martiri e la sovranità ottomana. |
+| **Türkiye** | Bianco | `#FFFFFF` | Bianco della bandiera nazionale. La mezzaluna e la stella: pace, purezza e simbolo dell’eredità turco-islamica. |
+
+Gli schemi utilizzano il **bianco** nazionale come primo piano e il **blu** nazionale esatto (`#0D5EAF`) o il **rosso** (`#E30A17`) per parole chiave, cursore, selezione e barra di stato. I colori più importanti sono quindi letteralmente quelli nazionali. Si tratta di palette interpretative; il riferimento ai colori delle bandiere ne documenta la provenienza e non costituisce una rappresentazione ufficiale di nessuno dei due Stati. I significati cromatici seguono la descrizione dei simboli statali del Ministero degli Affari Esteri della Repubblica Ellenica e la tradizione della legge turca sulla bandiera.
+
+### Tabella dei campioni cromatici
+
+Le celle della palette utilizzano **campioni SVG**, così GitHub mostra i colori effettivi invece di celle HTML vuote. Ogni striscia presenta sei colori in questo ordine: sfondo, primo piano, parole chiave, tipi, stringhe e commenti. I codici esadecimali esatti sono indicati accanto a ogni campione.
+
+| Schema | Palette visualizzata | Codici esadecimali (sfondo · primo piano · parole chiave · tipi · stringhe · commenti) |
+|---|---|---|
+| **American Professional** | ![Palette American Professional](lib/linux-editors/palettes/american-professional.svg) | `#101820` · `#F4F7FA` · `#7FB3FF` · `#73DACA` · `#F2C078` · `#8A96A3` |
+| **Pan-Eurasian** | ![Palette Pan-Eurasian](lib/linux-editors/palettes/pan-eurasian.svg) | `#111827` · `#F0F2F5` · `#7AA7E8` · `#69C9B3` · `#D7B56D` · `#8995A5` |
+| **Russian and Slavic — Medium** | ![Palette Russian and Slavic Medium](lib/linux-editors/palettes/russian-slavic-medium.svg) | `#202733` · `#E8EAF0` · `#A9C0DD` · `#8FC4B2` · `#D6BD8B` · `#9AA3AF` |
+| **Central Asian / Silk Road** | ![Palette Central Asian Silk Road](lib/linux-editors/palettes/central-asian-silk-road.svg) | `#1C2529` · `#F5F0E5` · `#7FADE0` · `#45C6C2` · `#D9B56D` · `#92A3A0` |
+| **East Asian** | ![Palette East Asian](lib/linux-editors/palettes/east-asian.svg) | `#171A1C` · `#F2EFE7` · `#D97878` · `#72C7A5` · `#D8B76A` · `#969F9B` |
+| **ICC** | ![Palette ICC](lib/linux-editors/palettes/icc.svg) | `#0E1A2B` · `#EAF0F7` · `#5B8FD6` · `#7FB7C9` · `#D9B25A` · `#7E8CA0` |
+| **SCOTUS** | ![Palette SCOTUS](lib/linux-editors/palettes/scotus.svg) | `#1A1416` · `#F3EEE6` · `#9E2B35` · `#8FA9B8` · `#C9A24B` · `#8C8178` |
+| **Greek (Hellenic)** | ![Palette greca ellenica](lib/linux-editors/palettes/greek.svg) | `#0A1A30` · `#FFFFFF` · `#2E7BD6` · `#5E9FE0` · `#9FC3EC` · `#6E86A6` |
+| **Turkish (Al Bayrak)** | ![Palette turca Al Bayrak](lib/linux-editors/palettes/turkish.svg) | `#2A0609` · `#FFFFFF` · `#F23D48` · `#F0A9AE` · `#F0C9A9` · `#A8767A` |
+| **Kiro** | ![Palette Kiro](lib/linux-editors/palettes/kiro.svg) | `#0B0B12` · `#F5F5FA` · `#A98EDA` · `#6E8BE0` · `#E8C547` · `#6A6482` |
+| **SLeeLa** | ![Palette SLeeLa](lib/linux-editors/palettes/sleela.svg) | `#08080E` · `#FFFFFF` · `#B07CFF` · `#5A7CFF` · `#FFD21E` · `#6E5F9E` |
+
+Ulteriori colori di accento sono utilizzati per funzioni, costanti, selezioni, diagnostica e direttive del preprocessore. La palette Russian and Slavic utilizza intenzionalmente tonalità medie di ardesia, blu, salvia, rubino e oro antico per un aspetto professionale più tranquillo.
+
+### Installare gli schemi Vim
+
+Dalla radice del repository:
+
+```sh
+mkdir -p ~/.vim/{syntax,ftdetect,colors}
+cp lib/linux-editors/vim/syntax/sleela.vim ~/.vim/syntax/
+cp lib/linux-editors/vim/ftdetect/sleela.vim ~/.vim/ftdetect/
+cp lib/linux-editors/vim/colors/sleela-*.vim ~/.vim/colors/
+```
+
+Aggiungere quanto segue a `~/.vimrc` per abilitare l’evidenziazione della sintassi SLeeLa e scegliere uno schema:
+
+```vim
+syntax enable
+set background=dark
+colorscheme sleela-american
+```
+
+Scegliere esattamente uno dei seguenti nomi:
+
+- `sleela-american`
+- `sleela-eurasia`
+- `sleela-russian-slavic`
+- `sleela-silk-road`
+- `sleela-east-asian`
+- `sleela-greek`
+- `sleela-turkish`
+- `sleela-kiro`
+- `sleela-sleela`
+
+Ad esempio, usare `colorscheme sleela-russian-slavic` per la palette russa e slava di intensità media, oppure `colorscheme sleela-greek` / `colorscheme sleela-turkish` per le palette ellenica e Al Bayrak. Riavviare Vim oppure ricaricare la configurazione con `:source $MYVIMRC`.
+
+### Installare gli schemi Emacs
+
+Creare una directory locale per i temi e copiare i file della modalità e dei temi dalla radice del repository:
+
+```sh
+mkdir -p ~/.emacs.d/sleela
+cp lib/linux-editors/emacs/sleela-mode.el ~/.emacs.d/sleela/
+cp lib/linux-editors/emacs/sleela-*-theme.el ~/.emacs.d/sleela/
+```
+
+Aggiungere questo a `~/.emacs` o `~/.emacs.d/init.el`:
+
+```elisp
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/sleela"))
+(add-to-list 'custom-theme-load-path (expand-file-name "~/.emacs.d/sleela"))
+(require 'sleela-mode)
+(load-theme 'sleela-american t)
+```
+
+Sostituire `sleela-american` con `sleela-eurasia`, `sleela-russian-slavic`, `sleela-silk-road`, `sleela-east-asian`, `sleela-greek`, `sleela-turkish`, `sleela-kiro` o `sleela-sleela` per selezionare un altro schema. Se Emacs chiede se considerare attendibile il tema, esaminare il file locale del tema prima di accettare.
+
+### Anteprima delle palette native C/C++
+
+La piccola utilità nativa per le palette può elencare gli schemi, stampare i relativi colori del terminale e cercare un singolo colore:
+
+```sh
+make -C linux-editors
+./linux-editors/build/sleela-editor-theme --themes
+./linux-editors/build/sleela-editor-theme --theme eurasia --palette
+./linux-editors/build/sleela-editor-theme --theme russian-slavic --hex keyword
+make -C linux-editors test
+```
+
+Per compatibilità con le versioni precedenti, `--palette` e `--hex COLOR` senza `--theme` selezionano American Professional. I risultati di build e test devono essere verificati sul sistema di destinazione e in CI; documentare un comando non dimostra che sia stato eseguito con successo.
+
+Vedere la [guida all’integrazione degli editor](linux-editors/README.md) per le descrizioni complete delle palette e i dettagli dell’utilità.
+
 ## IX. Contribuire
 
 1. Leggere l’indice della documentazione e la politica di test.
@@ -190,7 +313,7 @@ Il catalogo specializzato UTF-4088 definisce il percorso spaziale della mappa di
 
 ## Sezioni ancora da tradurre
 
-Le seguenti sezioni non sono ancora tradotte e saranno aggiunte nelle prossime fasi: **VIII. Temi dell’editor SLeeLa; XIV–XVII. Altre aree del progetto; XVIII. Aggiunte recenti; XIX. Edizioni internazionali del README.** Fino al completamento della traduzione, il [README.md canonico in inglese](README.md) rimane il riferimento completo.
+Le seguenti sezioni non sono ancora tradotte e saranno aggiunte nelle prossime fasi: **XIV–XVII. Altre aree del progetto; XVIII. Aggiunte recenti; XIX. Edizioni internazionali del README.** Fino al completamento della traduzione, il [README.md canonico in inglese](README.md) rimane il riferimento completo.
 
 ---
-**Stato della traduzione:** traduzione parziale — sezioni I–VII e IX–XIII tradotte. Identificatori tecnici, comandi, esempi di codice, nomi di file e collegamenti sono stati mantenuti invariati.
+**Stato della traduzione:** traduzione parziale — sezioni I–XIII tradotte. Identificatori tecnici, comandi, esempi di codice, nomi di file e collegamenti sono stati mantenuti invariati.
