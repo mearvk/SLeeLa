@@ -16,7 +16,7 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
-JAVA_ROOTS = ("java", "javax", "jdk", "sun", "com.sun")
+JAVA_ROOTS = ("java", "javax", "jdk", "sun", "com.sun", "org.w3c", "org.xml", "org.ietf", "org.omg")
 IDENT = r"[A-Za-z_$][\w$]*"
 QNAME = rf"{IDENT}(?:\.{IDENT})+"
 IMPORT_RE = re.compile(rf"(?m)^\s*import\s+(?P<static>static\s+)?(?P<name>{QNAME})(?P<wild>\.\*)?\s*;")
@@ -60,7 +60,7 @@ def main() -> int:
     ap.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[3])
     ap.add_argument("--json", type=Path, help="write deterministic graph JSON")
     ap.add_argument("--check", action="store_true", help="fail on unresolved explicit/FQ references")
-    ap.add_argument("--strict", action="store_true", help="also fail on unresolved simple imported type references")
+    ap.add_argument("--strict", action="store_true", help="also fail on duplicate counterpart paths")
     args = ap.parse_args()
     repo = args.root.resolve()
     api_root = repo / "lib" / "java"
@@ -215,6 +215,9 @@ def main() -> int:
                 "path": descriptor.relative_to(repo).as_posix(),
                 "requires": sorted(set(REQUIRES_RE.findall(source))),
                 "exports": sorted(set(EXPORTS_RE.findall(source))),
+                "opens": sorted(set(OPENS_RE.findall(source))),
+                "uses": sorted(set(USES_RE.findall(source))),
+                "provides": [{"service": service, "implementations": sorted(x.strip() for x in impls.split(","))} for service, impls in PROVIDES_RE.findall(source)],
             })
     package_metadata = []
     for descriptor in sorted(api_root.rglob("package-info.sleela")):
@@ -225,6 +228,7 @@ def main() -> int:
                 "name": package_match.group(1),
                 "path": descriptor.relative_to(repo).as_posix(),
                 "annotations": sorted(set(FQ_RE.findall(source))),
+                "imports": [{"name": m.group("name"), "static": bool(m.group("static")), "wildcard": bool(m.group("wild"))} for m in IMPORT_RE.finditer(source)],
             })
 
     # Duplicate counterpart paths are surfaced separately: multiple release
