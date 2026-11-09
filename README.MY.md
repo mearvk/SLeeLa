@@ -208,3 +208,16 @@ Semasa debug, rekodkan commit, OS, architecture dan toolchain. Bina sasaran terk
 Laporan pengesahan hendaklah menyatakan exact commit, OS/architecture, compiler versions, arahan build/test penuh, bilangan pass/fail/skip dan batasan yang diketahui. Ujian yang dilangkau atau tidak dijalankan tidak boleh dikira sebagai lulus.
 
 **Status terjemahan diperluas:** Panduan Bahasa Melayu kini turut merangkumi sasaran/profil, sempadan pelaksanaan, kitar hayat sumber, penyahpepijatan dan laporan pengesahan.
+
+
+## XX. Kontrak API modul, keserasian dan strategi ujian
+
+Apabila API baharu diperkenalkan, dokumentasikan input, output, keadaan ralat, pemilikan data dan sama ada operasi menghasilkan side effects. Contoh dokumentasi hendaklah menunjukkan penggunaan biasa serta pengendalian input invalid atau missing. Jangan menyatakan sesuatu tingkah laku sebagai jaminan jika implementation dan tests belum mengesahkannya.
+
+Asingkan ujian mengikut peringkat compiler pipeline: lexing/parsing, semantic analysis, IR lowering, code generation, VM execution dan native integration. Bagi setiap regression case, simpan input minimum yang boleh diulang, hasil yang dijangka dan hasil sebenar. Perubahan API mesti menerangkan backward compatibility, migration steps dan kesan terhadap examples sedia ada.
+
+## XXI. Penyetempatan, pengekodan dan kebolehbacaan
+
+Kekalkan technical identifiers, commands, paths, syntax dan code blocks dalam bentuk yang sama merentas bahasa. Terjemahkan penerangan, bukan token atau nama yang digunakan dalam source code. Nyatakan bahasa dan konteks wilayah dengan jelas; istilah Bahasa Melayu boleh berbeza mengikut komuniti dan negara.
+
+Selepas setiap kemas kini, periksa Markdown links, hierarki tajuk, code fences dan examples. Apabila canonical English documents berubah, bandingkan bahagian berkaitan dan kemas kini terjemahan secara menyeluruh, bukan sekadar pengenalan. Tandakan kandungan yang belum disemak oleh penutur asli atau penyemak teknikal.
