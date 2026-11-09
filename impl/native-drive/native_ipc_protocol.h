@@ -7,6 +7,42 @@
 #include <string.h>
 #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
 _Static_assert(sizeof(double)==8, "SLeeLa IPC v1 requires IEEE-754 binary64 storage");
+
+typedef struct {
+ const uint8_t *method;
+ uint16_t method_length,argument_count;
+ SLIPCCursor arguments;
+} SLIPCRequestView;
+
+/* Request payload: u16 method byte length, method UTF-8 bytes, u16 argc,
+ * then argc encoded SLNativeValue records. Method names are bounded to 1024
+ * bytes; UTF-8 validation is performed by the caller's language boundary. */
+static inline int sl_ipc_encode_request(const uint8_t*method,uint16_t method_len,
+ const SLNativeValue*argv,uint16_t argc,uint8_t*out,size_t cap,size_t*written){
+ size_t off=0,n;uint16_t i;
+ if(!method||!method_len||method_len>1024||(!argv&&argc)||!out||!written)return-1;
+ if(cap<4u+(size_t)method_len||cap>SL_IPC_MAX_PAYLOAD)return-1;
+ for(i=0;i<method_len;i++)if(method[i]==0)return-1;
+ sl_ipc_put16(out,method_len);off=2;memcpy(out+off,method,method_len);off+=method_len;
+ sl_ipc_put16(out+off,argc);off+=2;
+ for(i=0;i<argc;i++){if(sl_ipc_encode_value(&argv[i],out+off,cap-off,&n))return-1;off+=n;}
+ if(off>SL_IPC_MAX_PAYLOAD)return-1;*written=off;return 0;
+}
+static inline int sl_ipc_decode_request(const uint8_t*payload,size_t length,
+ SLIPCRequestView*out){
+ uint16_t ml,argc,i;size_t start;SLIPCCursor scan;SLNativeValue value;
+ if(!payload||!out||length<4||length>SL_IPC_MAX_PAYLOAD)return-1;
+ ml=sl_ipc_get16(payload);if(!ml||ml>1024||(size_t)ml>length-4)return-1;
+ for(i=0;i<ml;i++)if(payload[2+i]==0)return-1;
+ argc=sl_ipc_get16(payload+2+ml);start=4u+ml;
+ scan.data=payload;scan.length=length;scan.offset=start;
+ for(i=0;i<argc;i++)if(sl_ipc_decode_value(&scan,&value))return-1;
+ if(scan.offset!=length)return-1;
+ out->method=payload+2;out->method_length=ml;out->argument_count=argc;
+ out->arguments.data=payload;out->arguments.length=length;out->arguments.offset=start;
+ return 0;
+}
+
 #endif
 #include "../../os-level-support/loader/native_loader.h"
 #define SL_IPC_HEADER_SIZE 24u
