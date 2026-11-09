@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-#define SL_NATIVE_TABLE_CAPACITY SL_NATIVE_MAX_UNITS
+#define SL_NATIVE_TABLE_CAPACITY 9u
 #define SL_NATIVE_HANDLE_INVALID 0u
 
 typedef uint32_t SLNativeHandle;
