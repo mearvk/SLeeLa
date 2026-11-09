@@ -110,3 +110,113 @@ SLeeLa 由 **MEARVK LLC** 開發。
 - [GitHub 儲存庫](https://github.com/mearvk/SLeeLa)
 
 **翻譯狀態：** 已翻譯專案介紹、快速開始、建置、安裝、語言與執行環境概述、工程驗證及貢獻指南。完整技術章節仍需持續翻譯，並由熟悉技術領域的繁體中文審校者複核。
+
+
+## 八、編譯器架構與程式流程
+
+SLeeLa 將來源語言、編譯器前端、中介表示、程式碼產生及 runtime 分成不同層次。Compiler release、syntax edition 與 VM/ISA version 是不同的版本軸。某項功能出現在規格中，不代表它已在所有目標平台完整實作並通過驗證。
+
+一般流程如下：
+
+1. **來源檔案：** 使用 UTF-8 編碼的 `.sleela` 檔案，包含版本宣告與程式宣告。
+2. **詞法與語法分析：** 將文字轉換成 token 與語法結構。
+3. **語意分析：** 檢查名稱、符號、型別與語言規則。
+4. **中介表示：** 產生供後續 lowering 使用的結構化程式表示。
+5. **程式碼產生：** 輸出至受支援的 VM 或中介目標。
+6. **Runtime：** 使用現有的記憶體管理與控制流程機制執行編譯結果。
+
+規範依據為 [SLEELA.syntax](SLEELA.syntax)。來源格式與生命週期請參閱 [source documentation](markdown/SOURCE.md) 及 [compiler documentation](markdown/COMPILER.md)。
+
+## 九、型別系統與物件模型
+
+SLeeLa 的核心型別詞彙包括 `int`、`double`、`boolean`、`String`、`void`、自行宣告的 `struct`，以及受支援的 reference-type signatures。依目前文件，`int`、`long` 與 `int64` 都是 signed 64-bit integer。`int128` 雖可作為整數型別接受，但目前以 64-bit 為基礎，不應視為完整的 128-bit arithmetic。
+
+`struct` 是由具名欄位組成的 aggregate。VM 管理的 struct handle 並非直接暴露的 raw pointer。指派與參數傳遞會共用同一個 instance；相等性依 identity 判斷。跨程序或跨 VM 傳輸時，應使用文件所述的序列化方式，例如 `structPack(instance)` 與 `structUnpack(TypeName, json)`，不可將 VM-local handle 當作可攜式網路資料。
+
+Class 包含 fields 與 methods。現行執行模型中的 fields 是共享的 class state，而 method-local variables 屬於各 thread。Inheritance、nested classes 與 generics 受 syntax-version gates 限制。完整說明見 [International Language Reference](LANGUAGE.INTERNATIONAL.3.0.md)。
+
+## 十、控制流程與迴圈計時
+
+語言支援條件判斷、迴圈、方法呼叫及遞迴。Statement-level annotations `@loopDelay` 與 `@loopBudget` 用於指定迴圈暫停時間或總時間預算。標註寫在迴圈之前，並會 lowering 成 VM instruction `OP_SLEEP`（ISA 157）；一般內建函式 `sleep(ms)` 也使用此指令。
+
+```sleela
+@loopDelay(ms = 250)
+while (running) {
+    processNext();
+}
+```
+
+此程式碼僅展示語法形式；實際程式必須自行定義所需的 identifiers 與 enclosing class。請參閱 [SLEELA.syntax §32](SLEELA.syntax) 及 [Loop Timing API](api/sleela/3.0/LOOP_TIMING_API.md)。
+
+## 十一、標準函式庫與主要模組
+
+Repository 包含成熟度不同的多個模組：
+
+- `lib/advantage` — 以模型為基礎的分層結果評估，涵蓋數學、雙邊貿易經濟、整合、分級及可路由輸出。文件中的 trust-field physics 應視為建模類比，而非物理定律主張。
+- `lib/xml` — XML document tree，包含 element、text、comment、CDATA、processing instruction、attributes、parser 與 serializer。
+- `lib/text` — 以 character cell 為基礎的文字與字串操作，例如 `charAt`、`substring`、`indexOf`、`reverse` 及位置格式化。
+- `lib/sleeladoc` — 原始碼文件擷取與 CLI reference pages。`sleela docs` 可查詢 topics、packages 與 classes；`sleela docs --generate [dir]` 可建立離線文字語料。
+- `lib/cpu` 與 `lib/xlt` — CPU profiles、架構元件、模型格式及 timing references。
+- `recursion/stanchion` — C/C++ reference prototypes 與 recursion examples。
+
+模組出現在 catalog 中，不代表它已可用於 production。使用前應檢查模組 README、測試涵蓋率、平台限制及 validation records。
+
+## 十二、C/C++ 整合與 native 邊界
+
+SLeeLa repository 包含 C 與 C++ components，以及受限制的 native code-generation path。`@native` 與 `sleela aot` 等項目屬於 native development 範圍，不是執行任意 native code 的通用授權。
+
+C/C++ 整合必須明確定義 ABI、calling convention、memory ownership、data layout、error handling 與 platform dependencies。應將 native code 視為獨立的 trust boundary。Reference 或 declaration 只能識別資源，不能授予執行權限。請參閱 [native implementation](impl/README.md)、[platform matrix](docs/PLATFORM-SUPPORT.md) 與 [comparison standards](comparison/README.md)。
+
+## 十三、建置、安裝與平台支援
+
+Native build 通常需要 C/C++ toolchain（例如 GCC 或 Clang）及 GNU Make。部分 tooling 使用 Python 3；Linux GUI components 可能需要 X11 與 XRandR development packages。
+
+```sh
+make
+make -C impl all
+bash ./test-suites/run-all.sh --all
+```
+
+系統層級安裝通常使用：
+
+```sh
+sudo make install
+```
+
+僅供目前使用者安裝：
+
+```sh
+make install PREFIX="$HOME/.local"
+```
+
+請依照 [installation guide](install/README.md) 與 [platform support matrix](docs/PLATFORM-SUPPORT.md) 檢查平台需求。Linux、macOS 與 Windows 的相依套件及安裝方式不應被假設為完全相同。
+
+## 十四、完整性、安全與測試
+
+Hash manifests 與 verification tools 可檢查 repository files 是否符合預期內容。PASS 只適用於明確檢查的範圍與時間。測試報告必須分開列出 pass、fail 與 skip；被略過或未執行的測試不得標示為通過。
+
+重要原則：
+
+- Reference 用來識別資源，不代表授權執行。
+- Native interfaces 必須明確且受限制。
+- Platform-support claims 必須有實際 build 與 tests 支持。
+- Generated documentation 必須能追溯至 source 與 generator。
+- 缺少必要 integrity data 時，security checks 應採 fail-closed 行為。
+
+請參閱 [testing policy](markdown/TESTING.md) 與 [platform validation](docs/PLATFORM-SUPPORT.md)。
+
+## 十五、文件、編輯器與貢獻流程
+
+建議從 [documentation index](docs/README.md)、[generated API reference](docs/api/README.md)、[API catalogue](api/README.md) 及 [SleelaDoc](lib/sleeladoc/README.md) 開始。Linux editor resources 請見 [linux-editors](linux-editors/README.md)。
+
+提交變更前，請閱讀相關 module README、界定修改範圍、加入 positive 與 negative tests、執行相關測試、記錄 OS/toolchain/commands/actual results，並在 public behavior 改變時同步更新 README 與 API documentation。
+
+## 十六、其他專案領域
+
+CPU 與 hardware models、GUI、networking、text processing、UTF-4088、π tools、Modium、Registry、`sleelactl` 及 AutoCAD Creator™ 都是不同的 project areas，其目的、相依性與成熟度可能不同。沒有文件化驗證時，不應將 experimental directory 或 example 描述為穩定的 production feature。UTF-4088 的資料量或 entry count 本身不能證明完整 Unicode compatibility；AutoCAD compatibility 則需要明確的版本矩陣與測試結果。
+
+## 十七、台灣繁體中文在地化
+
+本版本以台灣常用的繁體中文術語為主，例如「建置」、「執行環境」、「函式庫」、「程式碼」及「驗證」。技術 identifiers、commands、filenames、API names 與 source code 必須維持原樣，避免翻譯後無法直接複製執行。後續術語調整應維持全文件一致，並建議由熟悉系統程式設計的繁體中文母語者審閱。
+
+**翻譯狀態：** 本繁體中文版已擴充編譯流程、型別與物件模型、迴圈計時、函式庫、native integration、建置與安裝、安全、測試及貢獻流程。它仍不是 canonical English README 與所有連結規格的逐行完整翻譯。
