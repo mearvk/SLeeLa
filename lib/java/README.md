@@ -211,3 +211,54 @@ declares no constructor, using the class visibility.
 The parser is intentionally conservative and operates on the repository's
 SLeeLa source representations. Results are qualification evidence requiring
 review, not a claim that every Java language edge case has been resolved.
+
+
+## From Java API representations to executable SLeeLa implementations
+
+The existing JDK counterpart files are an API/source representation layer, not
+a completed translation of Java's implementation. In particular, a class
+envelope containing metadata and generic `construct()` / `invoke()` command
+strings does not implement the Java type's methods or semantics. The presence
+of thousands of counterpart files must not be reported as thousands of
+implemented Java classes.
+
+The implementation phase therefore has a separate completion standard:
+
+1. **API contract** — identify the Java type, constructors, methods, fields,
+   overloads, exceptions, and relevant inherited behavior.
+2. **SLeeLa implementation** — provide executable SLeeLa method bodies and
+   state/data representations, not only names or generic dispatch strings.
+3. **Runtime primitives** — add only the native C/C++ operations needed for
+   well-defined VM services; keep language behavior in SLeeLa where practical.
+4. **Conformance** — test observable behavior against documented Java
+   contracts, including edge cases and exception behavior.
+5. **Provenance** — record whether a method is SLeeLa-native, a thin native
+   primitive, or an explicitly delegated JVM operation.
+
+Start by measuring the current source depth:
+
+```text
+python3 tests/java_source_implementation_audit.py --top 40
+python3 tests/java_source_implementation_audit.py --json java-source-implementation-audit.json
+python3 tests/java_source_implementation_audit_suite.py
+make -C tests java-source-implementation-audit
+```
+
+The audit separates generic Java dispatch placeholders, empty bodies,
+constant-return placeholders, simple field accessors, and substantive-looking
+method bodies. It is a prioritization aid, not a parser or behavioral proof.
+A substantive-looking method still requires implementation and conformance
+tests.
+
+The first implementation families should be foundational and dependency-led:
+`java.lang.Object`, primitive wrappers and numeric conversion, `String`,
+`Math`, then collection interfaces and core implementations, followed by
+I/O, NIO, time, networking, and concurrency. Each family should have a
+SLeeLa-native implementation path wherever the language and VM can support it.
+JVM delegation remains an explicit compatibility fallback, never a substitute
+for claiming that a SLeeLa implementation exists.
+
+Do not copy OpenJDK implementation source wholesale. Implement the documented
+API contracts independently in SLeeLa, using the Java specification and
+behavioral tests as references. Preserve license/provenance boundaries for
+any third-party or upstream material.
