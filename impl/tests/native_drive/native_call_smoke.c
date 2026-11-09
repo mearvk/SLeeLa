@@ -65,6 +65,66 @@ static int check_host_call_callback_rejected(const char *plugin_path) {
     return ok;
 }
 
+static int check_callback_lifecycle_opcode_rejected(const char *plugin_path,
+                                                         int close_opcode) {
+    SLVM *vm = slvm_new();
+    SLNativeHandle handle = SL_NATIVE_HANDLE_INVALID;
+    const char *callback_name = close_opcode
+        ? "Callback::receive_close" : "Callback::receive_open";
+    const char *plugin_method = close_opcode
+        ? "call_sleela_close" : "call_sleela_open";
+    int method_name, value, module_value, path_value;
+    int callback_function, main_function;
+    SLValue result;
+    int ok = 0;
+    if (!vm) return 0;
+    if (slvm_set_native_authorizer(vm, authorize_exact_path, (void *)plugin_path) != 0 ||
+        slvm_set_native_callback_authorizer(
+            vm, authorize_callback_name, (void *)callback_name) != 0 ||
+        slvm_native_module_open(vm, plugin_path, &handle) != SL_NATIVE_OK)
+        goto cleanup;
+
+    method_name = slvm_add_const_str(vm, plugin_method);
+    value = slvm_add_const_int(vm, (int64_t)handle);
+    module_value = slvm_add_const_int(vm, (int64_t)handle);
+    path_value = slvm_add_const_str(vm, "callback-open-must-be-rejected");
+    if (method_name < 0 || value < 0 || module_value < 0 || path_value < 0)
+        goto cleanup;
+
+    callback_function = slvm_begin_func(vm, callback_name, 1, 1);
+    if (callback_function < 0) goto cleanup;
+    if (close_opcode) {
+        slvm_emit(vm, OP_LOADL, 0);
+        slvm_emit0(vm, OP_NATIVE_CLOSE);
+    } else {
+        slvm_emit(vm, OP_CONST, path_value);
+        slvm_emit0(vm, OP_NATIVE_OPEN);
+    }
+    slvm_emit0(vm, OP_RET);
+    slvm_end_func(vm);
+
+    main_function = slvm_begin_func(vm, "NativeCallbackLifecycle::main", 0, 0);
+    if (main_function < 0) goto cleanup;
+    slvm_emit(vm, OP_CONST, module_value);
+    slvm_emit(vm, OP_CONST, method_name);
+    slvm_emit(vm, OP_CONST, value);
+    slvm_emit(vm, OP_NATIVE_CALL, 1);
+    slvm_emit0(vm, OP_RET);
+    slvm_end_func(vm);
+    slvm_set_entry(vm, main_function);
+
+    if (slvm_run(vm) != SLR_OK) goto cleanup;
+    result = slvm_result(vm);
+    ok = result.type == SL_INT && result.as.i == -1 &&
+         slvm_error(vm) &&
+         strcmp(slvm_error(vm),
+                "native callback cannot recursively invoke native-module operations") == 0;
+cleanup:
+    (void)slvm_native_module_close(vm, handle);
+    slvm_free(vm);
+    return ok;
+}
+
 static int check_callback_nested_native_call_rejected(const char *plugin_path) {
     SLVM *vm = slvm_new();
     SLNativeHandle handle = SL_NATIVE_HANDLE_INVALID;
@@ -229,10 +289,18 @@ int main(int argc, char **argv) {
         fprintf(stderr, "host-side slvm_native_module_call did not reject its SLeeLa callback\n");
         return 1;
     }
+    if (!check_callback_lifecycle_opcode_rejected(argv[2], 0)) {
+        fprintf(stderr, "callback bytecode did not reject recursive nativeOpen\\n");
+        return 1;
+    }
+    if (!check_callback_lifecycle_opcode_rejected(argv[2], 1)) {
+        fprintf(stderr, "callback bytecode did not reject recursive nativeClose\\n");
+        return 1;
+    }
     if (!check_callback_nested_native_call_rejected(argv[2])) {
         fprintf(stderr, "callback bytecode did not reject recursive nativeCall\\n");
         return 1;
     }
-    puts("compiled source callback and native dispatch; host module_run/module_call callback rejection; recursive callback nativeCall rejection; module and callback authorization denial: PASS");
+    puts("compiled source callback and native dispatch; host module_run/module_call callback rejection; recursive callback nativeOpen/nativeCall/nativeClose rejection; module and callback authorization denial: PASS");
     return 0;
 }
