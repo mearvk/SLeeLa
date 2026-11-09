@@ -102,6 +102,22 @@ runtime_file() {
   return 1
 }
 
+# Python 3 launcher for POSIX hosts and Windows installations (py -3).
+run_python() {
+  if command -v python3 >/dev/null 2>&1; then
+    python3 "$@"
+  elif command -v py >/dev/null 2>&1; then
+    py -3 "$@"
+  elif command -v python >/dev/null 2>&1; then
+    python -c 'import sys; raise SystemExit(0 if sys.version_info.major >= 3 else 1)' >/dev/null 2>&1 \
+      || { warn "Python 3 is required for Native Drive"; return 3; }
+    python "$@"
+  else
+    warn "Python 3 is required for Native Drive (python3, py -3, or python not found)"
+    return 3
+  fi
+}
+
 # --- registry access ----------------------------------------------------------
 # Each lookup reads the plain-text registry; small enough to re-scan cheaply.
 reg_require() { [ -f "$REGISTRY" ] || die "module registry not found: $REGISTRY"; }
@@ -303,24 +319,24 @@ protocol_cmd() { # module verb [args]
 tool_cmd() { # module verb [args]
   if [ "$1" = "native-drive" ]; then
     script=$(runtime_file "$(handle_of "$1")") || { warn "native-drive script not present in repository or installed runtime"; return 1; }
-    command -v python3 >/dev/null 2>&1 || { warn "python3 is required for native-drive"; return 3; }
+    : # run_python selects python3, py -3, or a verified Python 3 interpreter
     verb="$2"
     case "$verb" in
       info) okay "native-drive — $(summary_of "$1")"; info "location: ${script#$ROOT/}"; if [ -f "$ROOT/impl/native-drive/README.md" ]; then info "see: $ROOT/impl/native-drive/README.md"; else info "documentation: impl/native-drive/README.md in the source repository"; fi ;;
-      build) shift 2; python3 "$script" build "$@" ;;
+      build) shift 2; run_python "$script" build "$@" ;;
       run)
         shift 2
-        if [ "${1:-}" = "pipe" ]; then shift; python3 "$script" pipe "$@"
-        else python3 "$script" run "$@" ; fi ;;
+        if [ "${1:-}" = "pipe" ]; then shift; run_python "$script" pipe "$@"
+        else run_python "$script" run "$@" ; fi ;;
       inspect)
         shift 2
         case "${1:-}" in
-          xclass) shift; python3 "$script" xclass "$@" ;;
+          xclass) shift; run_python "$script" xclass "$@" ;;
           service)
             shift
             service_script=$(runtime_file "tools/sleela-native-service.py") || { warn "native service helper not present in installed runtime"; return 1; }
-            python3 "$service_script" "$@" ;;
-          *) python3 "$script" --help ;;
+            run_python "$service_script" "$@" ;;
+          *) run_python "$script" --help ;;
         esac ;;
       *) die "native-drive verb '$verb' not understood" ;;
     esac
