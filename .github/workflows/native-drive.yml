@@ -54,6 +54,9 @@ jobs:
           if ($errors.Count -gt 0) { $errors | Format-List; exit 1 }
       - name: Run Native Drive tests
         run: python -m unittest discover -s tools/tests -p "test_native_drive.py" -v
+      - name: Build and run Native IPC VM handle lifecycle tests (POSIX)
+        if: runner.os != 'Windows'
+        run: make -C impl test-native-ipc-handles
       - name: Run persistent Native IPC worker tests
         run: python -m unittest discover -s tools/tests -p "test_sleela_ipc_worker.py" -v
       - name: Compile and run Native IPC codec smoke test (POSIX)
