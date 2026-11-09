@@ -2196,7 +2196,8 @@ static SLResult run_thread(SLThread* t) {
             SLNativeValue* argv = NULL;
             SLNativeValue native_result;
             SLNativeStatus status;
-            if (in.a < 0) TERR("native call: negative argument count");
+            if (in.a < 0 || in.a > STACK_MAX - 2)
+                TERR("native call: argument count outside operand-stack limit");
             argc = (uint32_t)in.a;
             if (t->sp < (int)argc + 2) TERR("native call: expected module handle, method name, and arguments");
             base = t->sp - (int)argc - 2;
