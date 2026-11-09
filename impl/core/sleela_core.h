@@ -6,7 +6,7 @@
 
 /* Stable VM artifact/runtime ABI identifiers. */
 #define SLEELA_VM_ABI_MAJOR 1u
-#define SLEELA_VM_ABI_MINOR 1u
+#define SLEELA_VM_ABI_MINOR 2u
 #define SLEELA_ARTIFACT_FORMAT_VERSION 2u
 #include <stdint.h>
 #include "../../os-level-support/osls_vm_bridge.h"
@@ -252,6 +252,11 @@ typedef enum {
      * Unsupported VM-owned values stay in the interpreter and use a matching
      * SLeeLa bytecode method as fallback. Appended to preserve existing opcodes. */
     OP_NATIVE_CALL,
+    /* Host-authorized native module lifecycle. OPEN pops a path String and
+     * pushes an opaque integer handle; CLOSE pops that handle and pushes null.
+     * Both operations remain gated by the VM's immutable host authorizer. */
+    OP_NATIVE_OPEN,
+    OP_NATIVE_CLOSE,
     /* Sentinel: one past the last real opcode. Artifact validation uses this so
      * every defined opcode is accepted and adding a new opcode above never
      * requires updating the validator's upper bound again. KEEP LAST. */
@@ -272,7 +277,9 @@ static_assert(OP_BIGSUB == 160, "OP_BIGSUB is append-only opcode 160");
 static_assert(OP_BIGDIV == 161, "OP_BIGDIV is append-only opcode 161");
 static_assert(OP_BIGISQRT == 162, "OP_BIGISQRT is append-only opcode 162");
 static_assert(OP_NATIVE_CALL == 163, "OP_NATIVE_CALL is append-only opcode 163");
-static_assert(OP__COUNT == 164, "the extended ISA must contain 164 opcodes");
+static_assert(OP_NATIVE_OPEN == 164, "OP_NATIVE_OPEN is append-only opcode 164");
+static_assert(OP_NATIVE_CLOSE == 165, "OP_NATIVE_CLOSE is append-only opcode 165");
+static_assert(OP__COUNT == 166, "the extended ISA must contain 166 opcodes");
 #else
 _Static_assert(OP_OS_PLATFORM == 103, "legacy OS opcode range must begin at 103");
 _Static_assert(OP_OS_PCLOSE == 123, "legacy OS opcode range must end at 123");
@@ -287,7 +294,9 @@ _Static_assert(OP_BIGSUB == 160, "OP_BIGSUB is append-only opcode 160");
 _Static_assert(OP_BIGDIV == 161, "OP_BIGDIV is append-only opcode 161");
 _Static_assert(OP_BIGISQRT == 162, "OP_BIGISQRT is append-only opcode 162");
 _Static_assert(OP_NATIVE_CALL == 163, "OP_NATIVE_CALL is append-only opcode 163");
-_Static_assert(OP__COUNT == 164, "the extended ISA must contain 164 opcodes");
+_Static_assert(OP_NATIVE_OPEN == 164, "OP_NATIVE_OPEN is append-only opcode 164");
+_Static_assert(OP_NATIVE_CLOSE == 165, "OP_NATIVE_CLOSE is append-only opcode 165");
+_Static_assert(OP__COUNT == 166, "the extended ISA must contain 166 opcodes");
 #endif
 /* GC-hint aggressiveness bands for OP_GC_HINT (operand a). */
 #define SL_GC_HINT_MAX  100   /* clamp ceiling for the 0..100 aggressiveness scale */
