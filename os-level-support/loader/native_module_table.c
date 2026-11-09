@@ -71,6 +71,17 @@ SLNativeStatus sl_native_table_run(SLNativeModuleTable *table,
     return sl_native_run_module(&slot->module, argc, argv, out_result);
 }
 
+SLNativeStatus sl_native_table_call(SLNativeModuleTable *table,
+                                    SLNativeHandle handle,
+                                    const char *method,
+                                    uint32_t argc,
+                                    const SLNativeValue *argv,
+                                    SLNativeValue *out_result) {
+    SLNativeModuleSlot *slot = resolve(table, handle);
+    if (!slot) return SL_NATIVE_STALE_HANDLE;
+    return sl_native_call_module(&slot->module, method, argc, argv, out_result);
+}
+
 SLNativeStatus sl_native_table_close(SLNativeModuleTable *table,
                                      SLNativeHandle handle) {
     SLNativeModuleSlot *slot = resolve(table, handle);
