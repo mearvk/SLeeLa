@@ -1148,7 +1148,7 @@ test-linear-algebra: $(LINEAR_ALGEBRA_SMOKE)
 
 # End-to-end source -> compiler -> OP_MATH_CALL -> VM array bridge regression.
 test-linear-algebra-vm: $(SLEELA_BIN)
-	@set -eu; out=$(cd $(CURDIR)/.. && $(CURDIR)/$(SLEELA_BIN) run impl/tests/subjects/linear_algebra_vm.sleela); \
+	@set -eu; out=$(cd $(CURDIR)/.. && $(CURDIR)/$(SLEELA_BIN) run impl/../lib/math/examples/NativeMathEngineDemo.sleela); \
 	printf '%s\n' "$out"; \
 	printf '%s\n' "$out" | grep -q 'NATIVE_MATH_VM_SOURCE=PASS'; \
 	printf '%s\n' "$out" | grep -q 'MATH_VECTOR_DOT'; \
