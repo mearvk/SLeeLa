@@ -62,8 +62,6 @@ def build(args: argparse.Namespace) -> int:
     if language == "sleela" and len(sources) != 1:
         print("native-drive: SLeeLa AOT currently accepts exactly one source file", file=sys.stderr); return EXIT_USAGE
     source = sources[0]
-    except ValueError as exc:
-        print(f"native-drive: {exc}", file=sys.stderr); return EXIT_USAGE
     if language == "sleela" and any(p.suffix.lower() != ".sleela" for p in sources):
         print("native-drive: --language sleela requires a .sleela source file", file=sys.stderr); return EXIT_USAGE
     if language in {"c", "cpp"} and any(p.suffix.lower() == ".sleela" for p in sources):
