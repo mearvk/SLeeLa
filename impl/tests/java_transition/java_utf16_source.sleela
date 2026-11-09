@@ -1,0 +1,24 @@
+#sleela 3.0
+class JavaUtf16SourceSmoke {
+    static void main() {
+        // A, embedded NUL, isolated high surrogate, and a supplementary pair.
+        String value = javaStringFromCodeUnits(0x0041, 0x0000, 0xD800, 0xD83D, 0xDE00);
+        String suffix = javaStringFromCodeUnits(0x0021);
+        // Runtime conversion of ordinary UTF-8 literals into VM-owned UTF-16.
+        String converted = javaStringFromUtf8("A😀é");
+        print("JAVA-UTF16-SOURCE-CONSTRUCTOR=PASS");
+        print(javaStringLength(converted));                 // 4 UTF-16 units
+        print(javaStringCharAt(converted, 1));               // 55357 (high surrogate)
+        print(javaStringCodePointAt(converted, 1));          // 128512 (U+1F600)
+        print(javaStringCodePointCount(converted, 0, 4));    // 3 code points
+        print(javaStringLength(value));                 // 5 UTF-16 code units
+        print(javaStringCharAt(value, 2));              // 55296 (0xD800)
+        print(javaStringCodePointAt(value, 3));         // 128512 (U+1F600)
+        print(javaStringCodePointCount(value, 0, 5));   // 4 code points
+        print(javaStringOffsetByCodePoints(value, 3, 1)); // 5
+        print(javaStringLength(javaStringSubstring(value, 3, 5))); // 2
+        print(javaStringLength(javaStringConcat(value, suffix)));  // 6
+        print(javaStringHashCode(value));
+        print(javaStringCompareTo(value, value));       // 0
+    }
+}

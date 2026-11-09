@@ -66,7 +66,7 @@ static bool assignable(const Type&to,const Type&from){
 }
 static bool builtin(const std::string&n){
  static const std::set<std::string> s={
- "spawn","join","lock","unlock","send","recv","structPack","structUnpack","listen","accept","connect","sockread","sockwrite","sockclose",
+ "javaStringFromCodeUnits","javaStringFromUtf8","javaStringLength","javaStringCharAt","javaStringCodePointAt","javaStringCodePointCount","javaStringOffsetByCodePoints","javaStringSubstring","javaStringConcat","javaStringHashCode","javaStringCompareTo","spawn","join","lock","unlock","send","recv","structPack","structUnpack","listen","accept","connect","sockread","sockwrite","sockclose",
  "pipe","pipePeer","fifoCreate","npfsCreate","openFile","read","write","close","unlinkFile",
  "timeUtcMillis","timeUtcNanos","timeMonotonicNanos","timePrecisionMillis","timeLocation","timeHttpDate","timeJson","timeNtp","timeSetLocation","sleep",
  "Munction.start","synchroOpen","synchroDispatch","synchroReport","synchroClose","synchroSent","synchroReceived","synchroMean","synchroMin","synchroMax","synchroP95","synchroLoss",
@@ -533,6 +533,31 @@ class Analyzer{
   for(const auto&a:c.args) argTypes.push_back(expr(*a));
   if(!builtin(c.callee)){err("call to unknown method '"+c.callee+"'");}
   const std::string&n=c.callee;
+  if(n=="javaStringFromCodeUnits") return{Kind::String,{}};
+  if(n=="javaStringFromUtf8"){
+   if(argTypes.size()!=1)err("javaStringFromUtf8(value) takes exactly one argument");
+   if(!argTypes.empty() && argTypes[0].kind!=Kind::String && argTypes[0].kind!=Kind::Unknown)
+    err("javaStringFromUtf8 requires a legacy UTF-8 String argument");
+   return{Kind::String,{}};
+  }
+  const std::set<std::string> javaStringUnary={"javaStringLength","javaStringHashCode"};
+  const std::set<std::string> javaStringIndexed={"javaStringCharAt","javaStringCodePointAt"};
+  const std::set<std::string> javaStringTriple={"javaStringCodePointCount","javaStringOffsetByCodePoints","javaStringSubstring"};
+  if(javaStringUnary.count(n)||javaStringIndexed.count(n)||javaStringTriple.count(n)){
+   if(argTypes.empty() || (argTypes[0].kind!=Kind::String && argTypes[0].kind!=Kind::Unknown))
+    err(n+" requires an SL_UTF16 Java String as its first argument");
+   for(size_t i=1;i<argTypes.size();++i)
+    if(argTypes[i].kind!=Kind::Int && argTypes[i].kind!=Kind::Unsigned && argTypes[i].kind!=Kind::Unknown)
+     err(n+" index/range arguments must be integers");
+  }
+  if(n=="javaStringConcat"||n=="javaStringCompareTo"){
+   if(argTypes.size()>0 && argTypes[0].kind!=Kind::String && argTypes[0].kind!=Kind::Unknown)err(n+" requires a Java String as its first argument");
+   if(argTypes.size()>1 && argTypes[1].kind!=Kind::String && argTypes[1].kind!=Kind::Unknown)err(n+" requires a Java String as its second argument");
+  }
+  if(n=="javaStringLength"||n=="javaStringCharAt"||n=="javaStringCodePointAt"||
+     n=="javaStringCodePointCount"||n=="javaStringOffsetByCodePoints"||
+     n=="javaStringHashCode"||n=="javaStringCompareTo") return{Kind::Int,{}};
+  if(n=="javaStringSubstring"||n=="javaStringConcat") return{Kind::String,{}};
   if(n=="arrayNew")return{Kind::Array,"array",{}};
   if(n=="arrayLength")return{Kind::Int,{}};
   if(n=="arrayPush" || n=="arraySet"){

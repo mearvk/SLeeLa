@@ -942,6 +942,55 @@ private:
             if(c.args.size()!=1)throw std::runtime_error("Semantic error: nativeClose(handle) takes exactly one argument");
             emitExpr(c.args[0].get()); emit(OP_NATIVE_CLOSE); return true;
         }
+        // Java String construction from explicit UTF-16 code units. This is
+        // intentionally a compile-time constructor: each argument must be an
+        // integer literal in [0, 65535], so embedded NUL and isolated surrogate
+        // code units are represented losslessly without a C-string boundary.
+        // The resulting constant is an SL_UTF16 value, not a legacy SL_STR.
+        if(n=="javaStringFromCodeUnits"){
+            if(syntax_<SyntaxVersion{3,0})throw std::runtime_error("Semantic error: javaStringFromCodeUnits requires #sleela 3.0");
+            if(c.args.size()>65535)throw std::runtime_error("Semantic error: javaStringFromCodeUnits accepts at most 65535 UTF-16 code units");
+            std::vector<uint16_t> units; units.reserve(c.args.size());
+            for(size_t i=0;i<c.args.size();++i){
+                auto literal=dynamic_cast<const IntLit*>(c.args[i].get());
+                if(!literal)throw std::runtime_error("Semantic error: javaStringFromCodeUnits argument "+std::to_string(i+1)+" must be an integer literal");
+                if(literal->value<0 || literal->value>65535)throw std::runtime_error("Semantic error: javaStringFromCodeUnits argument "+std::to_string(i+1)+" is outside the UTF-16 code-unit range 0..65535");
+                units.push_back(static_cast<uint16_t>(literal->value));
+            }
+            emit(OP_CONST,slvm_add_const_utf16(vm_,units.data(),units.size()));
+            return true;
+        }
+        // Convert a runtime legacy UTF-8 String to a VM-owned Java UTF-16 String.
+        // The current SL_STR storage is NUL-terminated, so embedded NUL must be
+        // created with javaStringFromCodeUnits; malformed UTF-8 fails closed.
+        if(n=="javaStringFromUtf8"){
+            if(syntax_<SyntaxVersion{3,0})throw std::runtime_error("Semantic error: javaStringFromUtf8 requires #sleela 3.0");
+            if(c.args.size()!=1)throw std::runtime_error("Semantic error: javaStringFromUtf8(value) takes exactly one argument");
+            emitExpr(c.args[0].get()); emit(OP_JSTR_FROM_UTF8); return true;
+        }
+        // Runtime operations on VM-owned Java UTF-16 String values.
+        if(n=="javaStringLength" || n=="javaStringHashCode"){
+            if(syntax_<SyntaxVersion{3,0})throw std::runtime_error("Semantic error: Java UTF-16 String operations require #sleela 3.0");
+            if(c.args.size()!=1)throw std::runtime_error("Semantic error: "+n+"(value) takes exactly one argument");
+            emitExpr(c.args[0].get()); emit(n=="javaStringLength"?OP_JSTR_LENGTH:OP_JSTR_HASH_CODE); return true;
+        }
+        if(n=="javaStringCharAt" || n=="javaStringCodePointAt"){
+            if(syntax_<SyntaxVersion{3,0})throw std::runtime_error("Semantic error: Java UTF-16 String operations require #sleela 3.0");
+            if(c.args.size()!=2)throw std::runtime_error("Semantic error: "+n+"(value, index) takes exactly two arguments");
+            emitExpr(c.args[0].get()); emitExpr(c.args[1].get()); emit(n=="javaStringCharAt"?OP_JSTR_CHAR_AT:OP_JSTR_CODE_POINT_AT); return true;
+        }
+        if(n=="javaStringCodePointCount" || n=="javaStringOffsetByCodePoints" || n=="javaStringSubstring"){
+            if(syntax_<SyntaxVersion{3,0})throw std::runtime_error("Semantic error: Java UTF-16 String operations require #sleela 3.0");
+            if(c.args.size()!=3)throw std::runtime_error("Semantic error: "+n+"(value, index, count/end) takes exactly three arguments");
+            for(const auto& a:c.args)emitExpr(a.get());
+            emit(n=="javaStringCodePointCount"?OP_JSTR_CODE_POINT_COUNT:(n=="javaStringOffsetByCodePoints"?OP_JSTR_OFFSET_BY_CODE_POINTS:OP_JSTR_SUBSTRING)); return true;
+        }
+        if(n=="javaStringConcat" || n=="javaStringCompareTo"){
+            if(syntax_<SyntaxVersion{3,0})throw std::runtime_error("Semantic error: Java UTF-16 String operations require #sleela 3.0");
+            if(c.args.size()!=2)throw std::runtime_error("Semantic error: "+n+"(left, right) takes exactly two arguments");
+            emitExpr(c.args[0].get()); emitExpr(c.args[1].get());
+            emit(n=="javaStringConcat"?OP_JSTR_CONCAT:OP_JSTR_COMPARE_TO); return true;
+        }
         if(n=="nativeCall"){
             if(syntax_<SyntaxVersion{3,0})throw std::runtime_error("Semantic error: Native Drive requires #sleela 3.0");
             if(c.args.size()<2 || c.args.size()>4096)throw std::runtime_error("Semantic error: nativeCall(handle, method, ...args) requires a handle, method String, and at most 4094 arguments");

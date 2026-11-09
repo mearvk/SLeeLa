@@ -101,7 +101,7 @@ Oracle's Java Language Specification defines checked-exception compile-time chec
 
 Added `lib/java/tools/java_api_dependency_closure.py` and `tests/java_api_dependency_suite.py`, with the `java-api-dependencies` Makefile target. The auditor scans SLeeLa source for Java-qualified API references and verifies that each referenced type maps to a corresponding `/lib/java` envelope without modifying generated or handwritten API sources.
 
-This closes the first dependency-driven layer of API qualification. Full closure still requires member-level dependency extraction, nested/inner types, generic bounds and annotations, inherited API members, module/package metadata, and a dependency graph suitable for complete transitive closure.
+This closes the first dependency-driven layer of API qualification. The initial auditor is retained as a fast source-reference gate; the expanded graph auditor now indexes Java namespace counterparts, explicit/static imports, fully-qualified references, same-package and unambiguous wildcard type uses, nested-type ownership, package inventories, package-info annotations, module requires/exports/opens/uses/provides, and transitive type reachability. It reports unresolved references and duplicate counterpart paths rather than silently guessing. This remains type-level dependency closure: member-level dependency extraction is now added as a second static layer; inherited-member contract comparison remains separate signature/API qualification work.
 
 The Java statement model also remains an active companion area: the JLS defines enhanced `for`, `try`-with-resources, switch rules/guards, and detailed reachability/normal-completion constraints. citeturn0search0turn0search2
 
@@ -157,3 +157,127 @@ This upgrade makes Java control-flow qualification a first-class closure task. Q
 Required next coverage: boolean-path-sensitive `&&`, `||`, `!`, and `?:`; constant boolean expressions; break/continue joins and labels; while/do/for completion; switch completion; try/catch/finally abrupt paths; constructor and blank-final definite-unassignment; lambda capture boundaries; and checked-exception propagation.
 
 The work remains source/API qualification and does not imply JVM, bytecode, SLVM, or runtime equivalence.
+
+
+### 0.3.22-dev — Java API dependency graph expansion
+
+Added `lib/java/tools/java_api_dependency_graph.py` as the graph-producing counterpart to the original missing-envelope auditor. The output is deterministic JSON and includes:
+
+- indexed Java API counterpart types and their source paths;
+- explicit imports, static imports, fully-qualified references, and unambiguous wildcard-import type uses;
+- nested-type owner edges where the enclosing type also has a counterpart;
+- direct dependency edges and transitive reachability;
+- package inventories, package-info annotation metadata, and module requires/exports/opens/uses/provides metadata;
+- unresolved references, ambiguous wildcard names, and duplicate counterpart paths.
+
+Added `tests/java_api_dependency_graph_suite.py` and connected it to the existing Java API dependency suite and unified qualification manifest. The library manifest and validator baseline were updated for the additional graph tool.
+
+Run the graph with `python3 lib/java/tools/java_api_dependency_graph.py --json java-api-dependencies.json`; run its isolated regression suite with `python3 tests/java_api_dependency_graph_suite.py`.
+
+A graph edge establishes a source-level dependency relationship only. It does not establish API member completeness, behavioral equivalence, or runtime equivalence. Member-level dependency extraction and inherited API contract comparison remain follow-on work.
+
+
+### 0.3.23-dev — Member-level dependency extraction
+
+Added `lib/java/tools/java_api_member_dependencies.py` and its isolated
+regression suite. The member graph records dependencies by declaring type,
+member, member kind, and role, including:
+
+- field types;
+- method return and parameter types;
+- constructor parameter types;
+- generic type-variable bounds;
+- class/interface inheritance and permits clauses;
+- declared exception types;
+- annotations attached to declarations.
+
+Explicit Java-namespace imports that do not resolve to an indexed counterpart
+are emitted as actionable unresolved diagnostics. The graph is deterministic
+JSON and is intentionally separate from the type-level graph.
+
+Run `python3 lib/java/tools/java_api_member_dependencies.py --json java-api-member-dependencies.json`
+or `make -C tests java-api-member-dependencies`. The unified Java API dependency
+suite invokes this regression suite. The inventory baseline is now 8,990
+library source files.
+
+This layer does not yet prove inherited effective-member equivalence. The next
+qualification task is to compare each type's effective API against its
+superclasses and interfaces, including overrides, covariant returns, generic
+substitution, default interface methods, and visibility.
+
+
+### 0.3.24-dev — Visibility and constructor inheritance audit
+
+Added `lib/java/tools/java_api_visibility_constructor_audit.py` with a
+synthetic regression suite. The report distinguishes public, protected,
+package-private, and private members; computes inherited members subject to
+package/subclass access rules; and records unresolved superclass/interface
+references.
+
+Constructor behavior is modeled separately from member inheritance:
+constructors are never inherited, while accessible superclass constructors
+are listed as explicit `super(...)` invocation options. A class with no
+declared constructor receives a modeled implicit default constructor whose
+visibility follows the class declaration.
+
+Run `python3 tests/java_api_visibility_constructor_suite.py` or
+`make -C tests java-api-visibility-constructor`. The unified API dependency
+suite now includes this qualification layer. The library inventory baseline is
+8,991 files.
+
+This remains a conservative source recognizer. It does not yet establish full
+JLS access-control conformance for nested/private nestmate access, protected
+receiver-expression constraints, modules, generic substitution, or all
+syntactic forms.
+
+
+## 0.3.25-dev — Java source implementation depth
+
+The project now explicitly separates API representation from executable
+SLeeLa implementation. Generic `java.invoke` / `java.static` /
+`java.construct` command strings, metadata accessors, and constant-return
+bodies are not counted as Java behavior implementations.
+
+Added `tests/java_source_implementation_audit.py` and its synthetic suite.
+The audit inventories method-body shapes across `lib/java/**/*.sleela` and
+reports a JSON artifact suitable for prioritizing conversion work.
+
+Run:
+
+```text
+python3 tests/java_source_implementation_audit_suite.py
+python3 tests/java_source_implementation_audit.py --top 40
+make -C tests java-source-implementation-audit
+```
+
+This is the first measurement step toward independently implementing Java
+API behavior in SLeeLa. The audit has not been executed in this change, and
+its categories do not establish semantic correctness. The next implementation
+work should establish executable, tested foundations in `java.lang` before
+expanding into collections and higher-level packages.
+
+
+## 0.3.26-dev — First SLeeLa-native java.lang behavior
+
+The implementation layer now contains a first executable slice separate from
+the JDK API declaration envelopes:
+
+- `JavaObjectIdentity`: identity equality and stable identity-derived hash
+  over a runtime-provided heap identity/object handle pair.
+- `JavaStringValue`: immutable scalar-backed value operations, equality,
+  concatenation, non-negative repetition, and String-array joining.
+
+Smoke programs and runtime runners are wired through
+`make -C tests java-lang-native`. They are not yet executed in this change.
+The current implementation is a documented subset; it is not a claim of full
+`java.lang.Object` or `java.lang.String` compatibility. See
+`lib/java/README.md` for the unsupported semantics and VM prerequisites.
+
+
+## Java API dependency qualification
+
+The API counterpart layer now has separate type-graph, member-dependency, and visibility/constructor audits. These reports distinguish the existence of a type counterpart from the dependencies and access contracts of its members. They are structural evidence only and do not claim behavioral equivalence.
+
+## Java source implementation depth
+
+The source implementation audit identifies generic dispatch placeholders, empty bodies, constant-return placeholders, simple accessors, and substantive-looking bodies. This measurement helps prioritize the translation of Java source into executable SLeeLa implementations. Each implementation still requires behavioral tests and explicit provenance.
