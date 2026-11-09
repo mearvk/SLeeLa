@@ -146,11 +146,11 @@ When extending `/lib/java`, update **the source file, its mapping/documentation 
 
 ## SLeeLa-native String UTF-16 operations
 
-The legacy `JavaStringValue.sleela` adapter still exposes `length()` and
-`charAt(int)` through the host-authorized Native Drive scalar/UTF-8 ABI.
-That adapter accepts well-formed UTF-8 input and cannot itself preserve
-embedded NUL or isolated surrogate code units. It remains a compatibility
-facade, not the new VM-backed Java String object.
+The `JavaStringValue.sleela` facade now stores VM-owned `SL_UTF16` values
+and delegates String operations to compiler intrinsics. Its former Native
+Drive dependency is no longer used for String length, indexing, comparison,
+or hashing. Its `bind(moduleHandle, text)` signature is retained for source
+compatibility, while the supplied text is converted once from legacy UTF-8.
 
 ### VM-backed Java String value
 
@@ -228,12 +228,12 @@ class Example {
 
 The arguments are UTF-16 *code units*, not Unicode scalar values. The
 constructor therefore preserves embedded U+0000 and isolated surrogate
-values. At this stage the constructor is compile-time/literal-only: runtime
-code-unit arrays, instance methods such as `length()` and `charAt()`, and
-automatic lowering of every ordinary SLeeLa string literal to `SL_UTF16`
-remain separate compiler/runtime integration work. Existing `String`
-operations continue to use the legacy `SL_STR` representation unless a
-source intrinsic explicitly constructs an `SL_UTF16` value.
+values. It is compile-time/literal-only; runtime conversion of ordinary
+well-formed UTF-8 values is provided separately by `javaStringFromUtf8`.
+The general SLeeLa `String` type and its ordinary instance-method syntax
+still use the legacy `SL_STR` path. The Java library's `JavaStringValue`
+wrapper, however, now stores `SL_UTF16` values and implements its String
+operations through the explicit intrinsics below.
 
 
 ### Source-level Java String operations
