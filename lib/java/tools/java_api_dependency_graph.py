@@ -23,29 +23,16 @@ IMPORT_RE = re.compile(rf"(?m)^\s*import\s+(?P<static>static\s+)?(?P<name>{QNAME
 PACKAGE_RE = re.compile(rf"(?m)^\s*package\s+({QNAME})\s*;")
 FQ_RE = re.compile(rf"\b(?:{'|'.join(JAVA_ROOTS)})\.(?:{IDENT}\.)*{IDENT}(?:\.{IDENT})*\b")
 DECL_RE = re.compile(rf"\b(?:class|interface|enum|record)\s+({IDENT})")
-COMMENT_RE = re.compile(r'//[^\n]*|/\*.*?\*/|"(?:\\.|[^"\\])*"|\'(?:\\.|[^"\\])*\'', re.S)
+COMMENT_RE = re.compile(r'"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\'|//[^\n]*|/\*.*?\*/', re.S)
 
 def strip_comments(text: str) -> str:
-    # Preserve newlines so reported line numbers remain meaningful.
-    return COMMENT_RE.sub(lambda m: re.sub(r"[^\n]", " ", m.group(0)), text)
-
-def java_namespace(qname: str) -> bool:
-    return any(qname == root or qname.startswith(root + ".") for root in JAVA_ROOTS)
-
-def qname_from_path(path: Path, root: Path) -> str | None:
-    rel = path.relative_to(root).with_suffix("")
-    parts = list(rel.parts)
-    if parts and parts[0] == "early_access":
-        # early_access/jdk28/docs/api/<module>/<package>/<Type>
-        if len(parts) >= 7 and parts[1:4] == ["jdk28", "docs", "api"]:
-            parts = parts[5:]
-        else:
-            return None
-    qname = ".".join(parts)
-    return qname if java_namespace(qname) else None
-
-def line_of(text: str, offset: int) -> int:
-    return text.count("\n", 0, offset) + 1
+    # Keep quoted metadata strings: Java API type names are often recorded there.
+    def replace(match: re.Match[str]) -> str:
+        token = match.group(0)
+        if token.startswith(('"', "'")):
+            return token
+        return re.sub(r"[^\n]", " ", token)
+    return COMMENT_RE.sub(replace, text)
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
