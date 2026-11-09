@@ -37,7 +37,7 @@ class Example {
   // java.lang.DoesNotExist must not become a dependency
 }
 ''')
-    put(root, "Broken.sleela", '''#sleela 2.5
+    put(root, "lib/java/java/lang/Broken.sleela", '''#sleela 2.5
 import java.lang.MissingType;
 class Broken {}
 ''')
@@ -47,7 +47,7 @@ class Broken {}
     if p.returncode:
         raise SystemExit(p.stdout + p.stderr)
     graph = json.loads(out.read_text(encoding="utf-8"))
-    assert graph["summary"]["indexed_types"] == 4, graph["summary"]
+    assert graph["summary"]["indexed_types"] == 5, graph["summary"]
     assert graph["summary"]["duplicate_type_paths"] == 1, graph["summary"]
     assert graph["summary"]["wildcard_package_edges"] == 1, graph["summary"]
     assert any(x["reference"] == "java.lang.MissingType" for x in graph["unresolved"])
