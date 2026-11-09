@@ -1,43 +1,64 @@
-<< SLeeLa-native executable subset of java.lang.String.
-   UTF-16 indexing uses the host-authorized native UTF-8/UTF-16 primitive.
+<< VM-backed SLeeLa facade for java.lang.String.
+   The value field is an SL_UTF16 VM value from construction onward.
    charAt returns an integer containing one UTF-16 code unit because SLeeLa
    does not yet define Java's 16-bit char value type. >>
 #sleela 3.0
 material;
 
 class JavaStringValue {
-  String value = "";
+  String value = javaStringFromCodeUnits();
+  // Retained in bind(...) for source compatibility with the former
+  // Native Drive adapter. VM-backed String operations do not need a module.
   int nativeModule = 0;
 
-  JavaStringValue bind(int moduleHandle, String text) {
+  JavaStringValue fromUtf16(String text) {
     JavaStringValue result = new JavaStringValue();
-    result.nativeModule = moduleHandle;
     result.value = text;
     return result;
   }
 
+  JavaStringValue bind(int moduleHandle, String text) {
+    JavaStringValue result = new JavaStringValue();
+    result.nativeModule = moduleHandle;
+    result.value = javaStringFromUtf8(text);
+    return result;
+  }
+
   String toString() { return value; }
-  boolean isEmpty() { return value == ""; }
+  boolean isEmpty() { return javaStringLength(value) == 0; }
   boolean equals(JavaStringValue other) {
     if (other == null) { return false; }
-    return value == other.value;
+    return javaStringCompareTo(value, other.value) == 0;
   }
 
   JavaStringValue concat(JavaStringValue other) {
-    return bind(nativeModule, value + other.value);
+    return fromUtf16(javaStringConcat(value, other.value));
   }
 
-  int length() {
-    return nativeCall(nativeModule, "utf16_length", value);
+  int length() { return javaStringLength(value); }
+
+  // Returns one UTF-16 code unit in the integer range 0..65535.
+  // Supplementary characters occupy two independently addressable positions.
+  int charAt(int index) { return javaStringCharAt(value, index); }
+
+  int codePointAt(int index) { return javaStringCodePointAt(value, index); }
+  int codePointCount(int beginIndex, int endIndex) {
+    return javaStringCodePointCount(value, beginIndex, endIndex);
+  }
+  int offsetByCodePoints(int index, int codePointOffset) {
+    return javaStringOffsetByCodePoints(value, index, codePointOffset);
   }
 
-  // Returns a UTF-16 code unit in the integer range 0..65535.
-  // For supplementary characters, high and low surrogates are separate indices.
-  int charAt(int index) {
-    return nativeCall(nativeModule, "utf16_char_at", value, index);
+  JavaStringValue substring(int beginIndex, int endIndex) {
+    return fromUtf16(javaStringSubstring(value, beginIndex, endIndex));
   }
 
-  boolean supportsUtf16Indexing() { return nativeModule > 0; }
-  boolean supportsCodePointIteration() { return false; }
-  boolean supportsJavaHashCode() { return false; }
+  int hashCode() { return javaStringHashCode(value); }
+  int compareTo(JavaStringValue other) {
+    return javaStringCompareTo(value, other.value);
+  }
+
+  boolean supportsUtf16Indexing() { return true; }
+  boolean supportsCodePointIteration() { return true; }
+  boolean supportsJavaHashCode() { return true; }
 }
