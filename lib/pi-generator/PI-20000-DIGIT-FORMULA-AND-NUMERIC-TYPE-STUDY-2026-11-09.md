@@ -2,7 +2,7 @@
 
 **Date:** 2026-11-09  
 **Status:** Prototype study and review plan; SLeeLa timing values are drawn from the repository's existing measurements or clearly marked extrapolations.  
-**Target:** An interrogative/iterative 20,000-fractional-digit π calculation through the early `sleelactl` math-subject interface.
+**Target:** An iterative 20,000-fractional-digit π calculation through the early `sleelactl` math-subject interface, framed by the review question stated below.
 
 ## Descriptive overview
 
@@ -159,7 +159,7 @@ The result should report at minimum:
 - `pi-generator/PiGenerator.sleela` — Rabinowitz–Wagon spigot implementation.
 - `pi-generator/PiMachin.sleela` — Machin formula over the native big-integer kernel.
 - `pi-generator/PiChudnovsky.sleela` — Chudnovsky binary-splitting implementation.
-- `lib/pi-generator/ADVANTAGE-LIBRARY-VERIFICATION-2026-11-09.md` — ALV #395 verification record on the math-synthesis branch (6/6 demonstrations and 12,499 integrity items); this verifies the Advantage library workflow, not the 20,000-digit π workload.
+- [`lib/pi-generator/ADVANTAGE-LIBRARY-VERIFICATION-2026-11-09.md`](https://github.com/mearvk/SLeeLa/blob/ci/math-synthesis-smoke-benchmark/lib/pi-generator/ADVANTAGE-LIBRARY-VERIFICATION-2026-11-09.md) — ALV #395 verification record on the `ci/math-synthesis-smoke-benchmark` branch (6/6 demonstrations and 12,499 integrity items); this verifies the Advantage library workflow, not the 20,000-digit π workload.
 - `impl/subjects/math/math_native.cpp` and `impl/tests/subjects/math_values.sleela` — scalar math subject implementation and numerical assertions.
 
 ---
