@@ -24,4 +24,14 @@ if(BUILD_TESTING)
   add_executable(loader_test_cpp tests/test_cpp.cpp)
   target_link_libraries(loader_test_cpp PRIVATE sleela_native_loader_cpp)
   add_test(NAME loader_test_cpp COMMAND loader_test_cpp $<TARGET_FILE:loader_fixture>)
+
+  add_library(loader_fixture_bad_abi SHARED tests/fixture_bad_abi.c)
+  target_include_directories(loader_fixture_bad_abi PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+  add_library(loader_fixture_missing_entry SHARED tests/fixture_missing_entry.c)
+  target_include_directories(loader_fixture_missing_entry PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+  add_executable(loader_test_reject tests/test_reject.c)
+  target_link_libraries(loader_test_reject PRIVATE sleela_native_loader)
+  add_test(NAME loader_test_reject COMMAND loader_test_reject
+    $<TARGET_FILE:loader_fixture_bad_abi>
+    $<TARGET_FILE:loader_fixture_missing_entry>)
 endif()
