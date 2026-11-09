@@ -97,7 +97,7 @@ help:
 	@echo "SLeeLa connector targets:"
 	@echo "  all / build  Compile all Java connector sources"
 	@echo "  deps         Download the Jakarta Servlet API dependency"
-	@echo "  test         Run JDK bridge conformance + deployment checks"
+	@echo "  test         Run JDK bridge, SLJIP protocol, and deployment checks"
 	@echo "  conformance  Run the JDK bridge conformance test"
 	@echo "  protocol-test Compile and black-box test the SLJIP Java endpoint"
 	@echo "  protocol-codec-test Compile and test the native SLJIP frame codec"
