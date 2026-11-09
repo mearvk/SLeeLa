@@ -637,7 +637,7 @@ The generated binary is 16,777,244 bytes and is designed to remain below 20,000,
 
 ## XVIII. Recent Additions — Pi Constant, Modium/Registry Startup, sleelactl Math, and `@native`
 
-This section records features added in the 2026-11 work, newest groups first. All are committed to `master`.
+This section records features added during the 2026-11 work, newest groups first. The linked source files and their validation status are authoritative; changes under review are not described as merged until they reach `master`.
 
 ### The 100,000,000-digit Pi catalog constant
 
