@@ -31,7 +31,10 @@ typedef enum SLNativeStatus {
     SL_NATIVE_INVALID_ARGUMENT = 1,
     SL_NATIVE_LOAD_ERROR = 2,
     SL_NATIVE_ABI_MISMATCH = 3,
-    SL_NATIVE_ENTRY_NOT_FOUND = 4
+    SL_NATIVE_ENTRY_NOT_FOUND = 4,
+    SL_NATIVE_AUTHORIZATION_DENIED = 5,
+    SL_NATIVE_TABLE_FULL = 6,
+    SL_NATIVE_STALE_HANDLE = 7
 } SLNativeStatus;
 
 /* Plugins export these C-linkage functions; initialize module as {0}. */

@@ -86,6 +86,20 @@ A missing compiled product or failed build stops installation before deployment.
 - macOS: `./install/quick-safe-install-macos.sh`
 - Windows 10+: `install\\quick-safe-install.cmd` or `install\\quick-safe-install.ps1`
 
+## Native Drive installation
+
+The runtime staging steps include the Native Drive helpers
+`tools/sleela-native-drive.py` and `tools/sleela-native-service.py` alongside
+the SLeeLa control plane. Both scripts are included in the trusted SHA-256
+manifest and are copied into the installed runtime's `tools/` directory by
+the conventional, POSIX quick-safe, and Windows quick-safe installers.
+Python 3 is required to invoke Native Drive through `sleelactl`.
+
+After installation, use `sleelactl info native-drive` to confirm the registered
+tool and `sleelactl inspect native-drive service --help` for the service
+generator's options. Service installation, enabling, and starting remain
+explicit operator actions.
+
 ## Safety model
 
 - User-local mode never elevates privileges or changes the machine PATH.
