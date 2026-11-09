@@ -662,3 +662,61 @@ sleela aot --emit <file.sleela>    # emit C/C++ (stdout) for an in-subset progra
 ```
 
 `@native` is behaviour-neutral today: programs still check and run unchanged; the annotation only *requests* native treatment. This is Part 1 — it establishes the annotation surface and the honest subset gate; compiling the emitted C/C++ to a shared object and dispatching the VM to it (with an interpreter fallback) are later stages. Details, the supported subset, and exit codes: [`pi-generator/AT-NATIVE.md`](pi-generator/AT-NATIVE.md).
+
+
+## XIX. International README Editions
+
+SLeeLa provides country-specific README entry points for the 50 markets in its international edition. Each country has one file named `README.<CC>.md`; where multiple languages are relevant, they are grouped within that country's file.
+
+- [README.AE](README.AE.md)
+- [README.AT](README.AT.md)
+- [README.AU](README.AU.md)
+- [README.BE](README.BE.md)
+- [README.BR](README.BR.md)
+- [README.CA](README.CA.md)
+- [README.CH](README.CH.md)
+- [README.CL](README.CL.md)
+- [README.CN](README.CN.md)
+- [README.CO](README.CO.md)
+- [README.CZ](README.CZ.md)
+- [README.DE](README.DE.md)
+- [README.DK](README.DK.md)
+- [README.EE](README.EE.md)
+- [README.ES](README.ES.md)
+- [README.FI](README.FI.md)
+- [README.FR](README.FR.md)
+- [README.GB](README.GB.md)
+- [README.GR](README.GR.md)
+- [README.HK](README.HK.md)
+- [README.HU](README.HU.md)
+- [README.ID](README.ID.md)
+- [README.IE](README.IE.md)
+- [README.IL](README.IL.md)
+- [README.IN](README.IN.md)
+- [README.IS](README.IS.md)
+- [README.IT](README.IT.md)
+- [README.JP](README.JP.md)
+- [README.KR](README.KR.md)
+- [README.LU](README.LU.md)
+- [README.MX](README.MX.md)
+- [README.MY](README.MY.md)
+- [README.NL](README.NL.md)
+- [README.NO](README.NO.md)
+- [README.NZ](README.NZ.md)
+- [README.PH](README.PH.md)
+- [README.PL](README.PL.md)
+- [README.PT](README.PT.md)
+- [README.QA](README.QA.md)
+- [README.RU](README.RU.md)
+- [README.SA](README.SA.md)
+- [README.SE](README.SE.md)
+- [README.SG](README.SG.md)
+- [README.SI](README.SI.md)
+- [README.SK](README.SK.md)
+- [README.TH](README.TH.md)
+- [README.TR](README.TR.md)
+- [README.TW](README.TW.md)
+- [README.US](README.US.md)
+- [README.ZA](README.ZA.md)
+
+**Translation policy:** These files are initial localized country entry points. Their introductions and language headings are localized, while the complete technical reference remains in the canonical English [README.md](README.md). A country file must not be described as a complete translation until every section has been translated, technical identifiers and links have been checked, and the edition has received language review. Language coverage in this first pass is representative and is not a claim that every constitutionally recognized, regional, indigenous, or sign language has been fully translated.
