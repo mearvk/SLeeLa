@@ -198,7 +198,7 @@ it does not automatically restart the workload.
 | 4. Process piping | argv execution, stdin file, bounded capture, multi-stage pipe, timeout, exit propagation | Annotation parser/runtime policy and richer stream-routing semantics |
 | 5. systemd | Hardened unit rendering, explicit install/enable/start, status/restart/stop/disable, transactional failed-install recovery, one-level replacement rollback | Generated service manifests and integration tests against a real systemd host |
 | 6. VM dispatch | Appended open/call/close opcodes, scalar/String marshalling, host authorization, stale-handle checks, NOT_HANDLED and VM-composite interpreter fallback | Explicit composite object/array ownership ABI, output parity, concurrency stress tests |
-| 7. Conformance | Loader fixtures, versioned typed ABI, source compile fixture, opt-in VM dispatch/fallback smoke target, service recovery coverage | Run local test suites and complete compiler/VM/loader/process/systemd matrix, sanitizer and cross-ABI coverage |
+| 7. Conformance | Loader fixtures, versioned typed ABI, native-to-SLeeLa callback fixture, source compile fixture, opt-in VM dispatch/fallback/callback smoke target, service recovery coverage | Run local test suites and complete compiler/VM/loader/process/systemd matrix, sanitizer and cross-ABI coverage |
 
 ## Security invariants
 
@@ -220,9 +220,9 @@ test aggregate. It substitutes the built fixture's exact path into the
 SLeeLa source fixture, compiles that source to a persistent Core artifact,
 loads the artifact through `slvm_load_file`, installs a host-owned exact-path
 authorization callback, and executes the program. The source program invokes
-the plugin's `twice` method, calls the SLeeLa `Callback::receive` method from
-native code, exercises bytecode fallback for `fallback`, closes the module,
-and returns the combined result (105). The harness then reloads
+the plugin's `twice` method, calls the SLeeLa `Callback::receive` method
+synchronously from native code, exercises bytecode fallback for `fallback`,
+closes the module, and returns the combined result (105). The harness then reloads
 the same artifact with a deliberately mismatched allowlist and asserts that
 source-level `nativeOpen` fails closed before plugin execution.
 
