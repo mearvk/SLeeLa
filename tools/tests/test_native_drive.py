@@ -211,6 +211,14 @@ class NativeDriveTests(unittest.TestCase):
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("must run as an unprivileged account", result.stderr)
 
+    def test_nonpositive_timeout_and_output_limit_are_rejected(self):
+        for option, value in (("--timeout", "0"), ("--timeout", "nan"),
+                              ("--max-output-bytes", "0")):
+            result = subprocess.run([sys.executable, str(SCRIPT), "run", option, value, "--",
+                sys.executable, "-c", "pass"], text=True, capture_output=True)
+            self.assertEqual(result.returncode, 2)
+            self.assertIn("error:", result.stderr)
+
     def test_run_capture_enforces_combined_output_limit(self):
         result = subprocess.run([sys.executable, str(SCRIPT), "run", "--capture",
             "--max-output-bytes", "1024", "--", sys.executable, "-c",
