@@ -10,11 +10,11 @@ example daemon example.service Test daemon
 EOF
 cat >"$TMP/bin/id" <<'EOF'
 #!/bin/sh
-printf '1000\\n'
+printf '1000\n'
 EOF
 cat >"$TMP/bin/systemctl" <<'EOF'
 #!/bin/sh
-printf '%s\\n' "$*" >>"$SCTL_LOG"
+printf '%s\n' "$*" >>"$SCTL_LOG"
 EOF
 cat >"$TMP/bin/sudo" <<'EOF'
 #!/bin/sh
