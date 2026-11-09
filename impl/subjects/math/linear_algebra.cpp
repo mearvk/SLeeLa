@@ -246,7 +246,7 @@ slmath_status slmath_matrix_inverse(const double *a, size_t n, double *out,
 
 slmath_status slmath_matrix_determinant(const double *a, size_t n,
                                          double *out, double tolerance) {
-    if (!out) return SLMATH_INVALID_ARGUMENT;
+    if (!out || n==0) return SLMATH_INVALID_ARGUMENT;
     size_t count=0;
     if (!count_ok(n,n,&count)) return SLMATH_SIZE_OVERFLOW;
     if (!valid_range(a,count) || !std::isfinite(tolerance) || tolerance<0.0)
