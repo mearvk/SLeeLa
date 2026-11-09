@@ -188,3 +188,16 @@ Hyvä varmennusraportti sisältää tarkan commitin, käyttöjärjestelmän ja a
 Maakohtaiset README-tiedostot ovat paikallisia sisäänkäyntejä tekniseen dokumentaatioon. Ne eivät korvaa normatiivista kielimääritystä tai moduulien API-dokumentaatiota. Kun englanninkielinen lähde muuttuu, tarkista käännös uudelleen. Säilytä tunnisteet, komennot, polut ja koodiesimerkit muuttumattomina ja merkitse tarkistamaton sisältö avoimesti.
 
 **Laajennettu käännöstila:** Suomenkielinen opas käsittelee nyt myös kohteita ja profiileja, natiivin suoritusrajaa, resurssien omistajuutta, virheiden selvitystä, testiraportointia ja kansainvälisen dokumentaation ylläpitoa.
+
+
+## 17. Moduulirajapinnat, yhteensopivuus ja testaus
+
+Uuden API:n yhteydessä on kuvattava syötteet, tulosteet, virhetilanteet, tietojen omistajuus sekä mahdolliset sivuvaikutukset. Dokumentaatioesimerkkien tulee näyttää sekä tavallinen käyttö että virheellisten tai puuttuvien arvojen käsittely. Älä esitä takuuna toimintaa, jota toteutus ja testit eivät vahvista.
+
+Jaa testaus kääntäjän vaiheiden mukaan: lexing/parsing, semantic analysis, IR lowering, code generation, VM execution ja native integration. Säilytä jokaisesta regressiotapauksesta pienin toistettava syöte, odotettu tulos ja todellinen tulos. API-muutoksissa on kuvattava taaksepäinyhteensopivuus, migration steps ja vaikutukset olemassa oleviin esimerkkeihin.
+
+## 18. Lokalisointi, merkistöt ja luettavuus
+
+Tekniset tunnisteet, komennot, polut, syntaksi ja koodilohkot säilytetään samoina kaikissa kieliversioissa. Käännä selittävä teksti, älä lähdekoodissa käytettyjä tokeneita tai nimiä. Ilmoita kieli ja alueellinen konteksti selvästi; älä oleta, että sama sanasto sopii kaikkiin suomenkielisiin yhteisöihin.
+
+Tarkista jokaisen päivityksen jälkeen Markdown-linkit, otsikkotasot, koodilohkojen rajat ja esimerkit. Kun englanninkielinen lähdedokumentti muuttuu, vertaa vastaavia osioita ja päivitä käännös kokonaisuutena. Kielentarkistamaton tai teknisesti tarkistamaton sisältö on merkittävä sellaiseksi.
