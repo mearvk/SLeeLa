@@ -120,7 +120,7 @@ the host process and is not sandboxed.
 A plugin may export `sl_native_bind_host(const SLNativeHostAPI*)`. The loader
 passes a size-checked `SL_NATIVE_HOST_CALLBACK_ABI_VERSION` table after the
 host has authorized and opened the module. The plugin must copy the table and
-may call `invoke(context, function, argc, argv, result)` from a typed method.
+may call `invoke(context, function, argc, argv, result)` synchronously from a typed method. The plugin must not retain or invoke the table asynchronously.
 The host resolves an exact, unique compiled SLeeLa function name and executes
 it on a separate nested interpreter stack. Only the typed scalar/UTF-8 values
 cross the callback boundary; VM pointers and raw `SLValue` objects never do.
