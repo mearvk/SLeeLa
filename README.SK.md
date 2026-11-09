@@ -213,3 +213,18 @@ Toto slovenské vydanie je určené predovšetkým čitateľom slovenčiny. Netv
 - [Repozitár SLeeLa na GitHub](https://github.com/mearvk/SLeeLa)
 
 **Stav prekladu:** Slovenské vydanie bolo rozšírené na technický úvod pokrývajúci začiatok práce, zostavenie, inštaláciu, jazyk a runtime prostredie, natívnu integráciu, knižnice, bezpečnosť, vývojový proces a hlavné oblasti projektu. Zatiaľ nejde o riadkový preklad všetkých podrobností kanonického anglického README. Pred označením vydania za konečné sa odporúča technická kontrola a jazyková redakcia odborníkom so znalosťou slovenčiny.
+
+
+## XVI. Ciele, profily a hranice vykonávania
+
+SLeeLa oddeľuje zdrojový kód od cieľov zostavenia a vykonávania. Dokumentovaná rodina cieľov zahŕňa `SLVM`, `SLJVM` a `SLIR`; `NATIVE` je obmedzený cieľ podmienený podporou, preto nemožno predpokladať jeho dostupnosť na každej platforme. Profily `BASIC_COMPLETE` a `ADVANCED_TOTAL` označujú rozdielny rozsah. Pri každom zostavení overte skutočný cieľ, profil a podporu platformy.
+
+Referencia identifikuje súbor, modul alebo zdroj, ale sama osebe neposkytuje oprávnenie na jeho vykonanie. Pri používaní súborov, externých knižníc, native bindings alebo systémových zdrojov musia byť jasne určené hranice oprávnení a zodpovednosť za vykonanie. Opis v dokumentácii sám osebe nedokazuje bezpečnostnú záruku runtime; overte implementáciu a príslušné testy.
+
+## XVII. Životný cyklus zdrojov a ladenie
+
+Zdokumentujte vlastníctvo, životnosť a zodpovednosť za synchronizáciu zdrojov zdieľaných medzi funkciami alebo vláknami. Rozlišujte local variables, shared object state, VM handles a serializable data. VM-local handle nie je stabilný formát súboru ani sieťová správa. Používajte serializačné rozhranie definované modulom a testujte invalid, missing a boundary values.
+
+Pri ladení zaznamenajte commit, OS, architecture a toolchain. Najprv zostavte najmenší relevantný cieľ, uchovajte úplný chybový výstup, rozlišujte compiler errors od runtime errors a vytvorte minimálny reprodukovateľný príklad. Úspešné zostavenie samo osebe nedokazuje správne správanie runtime.
+
+Validačná správa má uvádzať exact commit, OS/architecture, compiler versions, úplné build/test commands, počty pass/fail/skip a známe obmedzenia. Preskočené alebo nespustené testy sa nesmú počítať ako úspešné.
