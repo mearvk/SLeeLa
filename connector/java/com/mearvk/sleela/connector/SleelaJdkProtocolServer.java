@@ -75,7 +75,7 @@ public final class SleelaJdkProtocolServer {
             try {
                 input.readFully(header);
             } catch (EOFException end) {
-                return;
+                break;
             }
             DataInputStream h = new DataInputStream(new ByteArrayInputStream(header));
             byte[] magic = new byte[4];
