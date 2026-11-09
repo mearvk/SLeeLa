@@ -477,6 +477,8 @@ slmath_status slmath_vm_dispatch(slmath_operation operation,
         return SLMATH_SIZE_OVERFLOW;
     if (aux && !count_ok(aux->rows,aux->cols,&aux_shape))
         return SLMATH_SIZE_OVERFLOW;
+    if (b && b->length < b_shape) return SLMATH_DIMENSION_MISMATCH;
+    if (aux && aux->length < aux_shape) return SLMATH_DIMENSION_MISMATCH;
     switch (operation) {
     case SLMATH_OP_VECTOR_ADD:
         if (!b || !b->data || a_shape != b_shape || out_shape < a_shape)
