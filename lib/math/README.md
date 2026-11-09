@@ -5,8 +5,9 @@ compiler-verified implementations spanning numeric types through advanced
 numerical methods. Every class carries the Metadata Class record (see
 `.kiro/steering/metadata-class-standard.md` and `SLEELA.syntax` §15).
 
-The package facade is `SLPackage.sleela`; a runnable tour is in
-`examples/MathDemo.sleela`.
+The package facade is `SLPackage.sleela`; the portable tour is in
+`examples/MathDemo.sleela`, and the native facade regression tour is in
+`examples/NativeMathEngineDemo.sleela`.
 
 ## Domains
 
