@@ -1,19 +1,83 @@
-# SLeeLa 3.0 — United Arab Emirates (AE)
+# SLeeLa 3.0 — الإمارات العربية المتحدة (AE)
 
 ## العربية
 
-SLeeLa لغة برمجة أنظمة أصلية تضم مُصرّفًا وبيئة تشغيل ومنظومة آلات افتراضية.
+SLeeLa لغة برمجة أنظمة أصلية تضم مُصرّفًا وبيئة تشغيل ومنظومة آلات افتراضية. تتكامل اللغة والمُصرّف والمكتبات وأدوات التطوير وعقود المنصات لبناء البرمجيات وتشغيلها.
 
-## Complete technical reference
+**The Now. The Ingredient.** لا تقتصر لغة البرمجة على قواعدها النحوية؛ فالمُصرّف وبيئة التشغيل والمكتبات والأدوات تشكّل معًا نظامًا برمجيًا قابلًا للاستخدام.
 
-SLeeLa is a native systems language, compiler, runtime, and virtual-machine ecosystem. This country edition is the localized entry point for the languages listed above. Technical identifiers, syntax, source code, commands, filenames, and API names remain unchanged.
+## I. ابدأ من هنا
 
-The canonical [README.md](README.md) contains the complete feature catalogue, language and runtime reference, build and installation instructions, API links, examples, and release notes. The English edition remains the normative technical source until each complete translation has been reviewed.
+- [بناء التنفيذ الأصلي](impl/README.md)
+- [دليل المستخدم للآلة الافتراضية وModium](virtual-machine/USER-GUIDE.md) — `sleela vm` و`sleela modium`
+- [بنية CPU في شيفرة SLeeLa](lib/cpu/CPU.md) — أكثر من 130 ملفًا لإعدادات CPU؛ راجع [إعدادات التوقيت](lib/cpu/TIMING.md).
+- [فهرس الوثائق](docs/README.md)
+- [وثائق API المُولّدة](docs/api/README.md) و[دليل API](api/README.md)
+- [دعم المنصات والتحقق](docs/PLATFORM-SUPPORT.md)
+- [سياسة الاختبار](markdown/TESTING.md)
 
-- [Canonical README](README.md)
-- [SLeeLa syntax specification](SLEELA.syntax)
-- [Documentation index](docs/README.md)
-- [Platform support](docs/PLATFORM-SUPPORT.md)
-- [Repository](https://github.com/mearvk/SLeeLa)
+## II. البناء والاختبار
 
-> **Translation status:** This file currently localizes the country introduction and identifies the language editions grouped here. The full technical body is not yet translated line by line.
+تشمل المتطلبات سلسلة أدوات C/C++ مثل GCC أو Clang، وGNU Make، وPython 3. وقد تحتاج المكونات الرسومية على Linux إلى حزم التطوير الخاصة بـ X11/Xrandr.
+
+نفّذ الأوامر التالية من المجلد الرئيسي للمستودع:
+
+```sh
+make
+make -C impl all
+bash ./test-suites/run-all.sh --all
+```
+
+نجاح بناء مكوّن واحد لا يعني أن جميع المكتبات أو المنصات جاهزة للإصدار. راجع وثائق البناء والمنصات لمعرفة متطلبات كل هدف.
+
+## III. التثبيت
+
+```sh
+sudo make install
+make install PREFIX="$HOME/.local"
+make install DESTDIR="$PWD/package-root"
+make install-check
+```
+
+بادئة التثبيت على مستوى النظام هي عادةً `/usr/local`. يتيح استخدام `PREFIX="$HOME/.local"` التثبيت ضمن مساحة المستخدم، ولا يتطلب عادةً صلاحيات المسؤول. راجع [دليل التثبيت](install/README.md) لمعرفة الخيارات والتفاصيل.
+
+## IV. اللغة وبيئة التشغيل
+
+تُعرّف القواعد النحوية المعتمدة في [`SLEELA.syntax`](SLEELA.syntax). تعتمد وثائق المستودع صياغة اللغة **3.0**. إصدار المُصرّف وإصدار صياغة لغة المصدر مفهومان مختلفان.
+
+تشمل المراجع التقنية حقول `@mix` المتجاورة، وعائلات الأعداد الصحيحة الموسعة، وعلامات مستندات Preonem، وSleelaDoc، وتوليد وثائق API، وأدوات Nordshrift. تبقى المعرّفات التقنية والأوامر وأسماء الملفات وواجهات API وأمثلة الشيفرة دون تغيير لتظل قابلة للاستخدام مباشرةً.
+
+## V. مبادئ الهندسة والتحقق
+
+تعطي SLeeLa الأولوية للأدلة، والعقود الواضحة بين المكونات، وقابلية النقل، والسلوك الآمن عند الإخفاق، والإصدارات القابلة لإعادة الإنتاج. يجب تقييم حالة التحقق لكل وحدة ومنصة على حدة. لا يجوز الإبلاغ عن الاختبارات التي تم تجاوزها على أنها ناجحة، كما أن نجاح بناء مكوّن واحد لا يُعد تحققًا كاملًا من الإصدار.
+
+تتضمن أدوات الحماية Sleelavirin مدقق SHA-256 محليًا، وموائم ClamAV اختياريًا، وبيان سلامة الملفات. لا يُعد الإصدار متحققًا منه إلا بعد اكتمال فحوص CI الخاصة بالتزام الإصدار ومراجعة الملفات الناتجة.
+
+## VI. المحررات والمساهمة
+
+توفر SLeeLa سمات وتكاملًا نحويًا لكل من **Vim** و**Emacs**، بالإضافة إلى أداة ألوان أصلية لـ C/C++. راجع [دليل تكامل المحررات](linux-editors/README.md).
+
+للمساهمة في المشروع:
+
+1. اقرأ فهرس الوثائق وسياسة الاختبار.
+2. قدّم تغييرات محددة النطاق وأرفق اختبارات للحالات الإيجابية والسلبية.
+3. شغّل الاختبارات ذات الصلة، ثم مجموعة الاختبارات الأوسع.
+4. اذكر نظام التشغيل وسلسلة الأدوات المستخدمة. لا تصف الاختبارات التي تم تجاوزها بأنها ناجحة.
+
+تتولى **MEARVK LLC** تطوير SLeeLa.
+
+## VII. موضوعات تقنية أخرى
+
+يتناول README الرئيسي أيضًا مكتبات Advantage وSleelaDoc وXML DOM؛ وأنواع الأعداد الصحيحة الأساسية؛ وبيئة تشغيل المحارف؛ وAutoCAD Creator™؛ وفهرس UTF-4088 التجريبي؛ وأدوات Pi وModium وRegistry و`sleelactl`؛ والمرحلة الأولية لمسار ترجمة C/C++ الأصلي الذي يفعّله الوسم `@native`.
+
+## المرجع التقني الكامل
+
+يحتوي [README.md المعتمد](README.md) على فهرس الميزات الكامل، ومرجع اللغة وبيئة التشغيل، وتعليمات البناء والتثبيت، وروابط API، والأمثلة، وملاحظات الإصدارات. توسّع هذه النسخة العربية الإرشادات العملية، لكنها ليست ترجمة سطرًا بسطر لجميع الأقسام التقنية. يظل README الإنجليزي المرجع التقني المعتمد إلى أن تكتمل الترجمة والمراجعة الفنية.
+
+- [README المعتمد](README.md)
+- [مواصفات صياغة SLeeLa](SLEELA.syntax)
+- [فهرس الوثائق](docs/README.md)
+- [دعم المنصات](docs/PLATFORM-SUPPORT.md)
+- [مستودع GitHub](https://github.com/mearvk/SLeeLa)
+
+**حالة الترجمة:** تمت ترجمة المقدمة، والبدء، والبناء، والتثبيت، ونظرة عامة على اللغة وبيئة التشغيل، ومبادئ الهندسة والتحقق، وإرشادات المساهمة. لا تزال ترجمة بقية الأقسام التقنية ومراجعتها بواسطة مختصين باللغة العربية مطلوبة.
