@@ -129,8 +129,11 @@ The VM runs callback bytecode on a separate nested interpreter stack while
 preserving the suspended caller stack as a GC root. Callbacks are accepted
 only when the VM has no active worker threads; callback bytecode also cannot
 spawn or join workers while the plugin call is active. Recursive native-module
-operations from callback bytecode are rejected with
-`SL_NATIVE_REENTRANT_CALL` rather than re-entering the module mutex. Modules
+operations from callback bytecode (`nativeOpen`, `nativeCall`, and
+`nativeClose`) are rejected with `SL_NATIVE_REENTRANT_CALL` rather than
+re-entering the module mutex. The public host-side module open/run/call/close
+APIs also reject same-VM reentry from an active plugin entrypoint before
+attempting to acquire that mutex. Modules
 without the optional binder remain compatible but cannot call back into
 SLeeLa. A callback failure is a handled plugin error, not a NOT_HANDLED
 fallback signal.
