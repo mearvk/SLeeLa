@@ -167,3 +167,24 @@ make install PREFIX="$HOME/.local"
 Koonti tarvitsee yleensä GCC:n tai Clangin ja GNU Maken; osa työkaluista käyttää Python 3:a. Katso [installation guide](install/README.md), [platform matrix](docs/PLATFORM-SUPPORT.md) ja [testing policy](markdown/TESTING.md). Testiraporttien on erotettava pass, fail ja skip. PASS koskee vain ilmoitettua tarkastuksen laajuutta ja ajankohtaa.
 
 **Päivitetty käännöstila:** Suomenkielinen opas kattaa nyt myös kääntäjän putken, tyypit, oliomallin, kirjastot, silmukoiden ajoituksen, native-integraation, koonnin, asennuksen ja testauksen. Se ei ole koko kanonisen englanninkielisen README:n täydellinen rivikohtainen käännös.
+
+
+## 14. Kohteet, profiilit ja natiivin suoritusraja
+
+SLeeLa erottaa lähdekoodin suoritus- ja käännöskohteista. Dokumentoituun kohdeperheeseen kuuluvat `SLVM`, `SLJVM` ja `SLIR`; `NATIVE` on rajattu ja ehdollinen kohde, eikä sitä pidä olettaa yleisesti saatavaksi kaikilla alustoilla. Profiilit `BASIC_COMPLETE` ja `ADVANCED_TOTAL` kuvaavat eri laajuuksia. Varmista aina kyseisen koonnin todellinen kohde, profiili ja alustatuki.
+
+Viite tunnistaa tiedoston, moduulin tai resurssin, mutta ei itsessään anna lupaa suorittaa sitä. Tämä on tärkeää, kun ohjelma käyttää tiedostoja, ulkoisia kirjastoja, native-sidoksia tai järjestelmäresursseja. Tarkista syötteet ja määritä selvästi, millä komponentilla on oikeus suorittaa toiminto. Dokumentaatioväite ei yksin todista runtime-tietoturvatakuuta ilman vastaavaa toteutus- tai testinäyttöä.
+
+## 15. Resurssien elinkaari ja virhetilanteet
+
+Dokumentoi funktioiden tai säikeiden välillä jaettujen resurssien omistajuus ja elinkaari. Erota paikalliset muuttujat, jaettu oliotila, VM-kahvat ja serialisoitava data toisistaan. VM-paikallinen kahva ei ole vakaa tiedostomuoto tai verkkoviesti. Käytä moduulin määrittelemää serialisointirajapintaa ja testaa virheelliset, puuttuvat ja raja-arvoiset syötteet.
+
+Vianmäärityksessä kirjaa commit, käyttöjärjestelmä, arkkitehtuuri ja työkaluketju. Aloita pienimmästä asiaankuuluvasta koonnista, tallenna koko virhetuloste ja erota kääntäjän virheet runtime-virheistä. Pyri tuottamaan pieni toistettava esimerkki. Onnistunut build ei yksin todista ohjelman oikeaa toimintaa.
+
+Hyvä varmennusraportti sisältää tarkan commitin, käyttöjärjestelmän ja arkkitehtuurin, kääntäjän versiot, täsmälliset build- ja testikomennot, pass/fail/skip-määrät sekä tunnetut rajoitukset. Ohitettuja tai suorittamattomia testejä ei saa laskea läpäistyiksi.
+
+## 16. Kansainvälisen dokumentaation ylläpito
+
+Maakohtaiset README-tiedostot ovat paikallisia sisäänkäyntejä tekniseen dokumentaatioon. Ne eivät korvaa normatiivista kielimääritystä tai moduulien API-dokumentaatiota. Kun englanninkielinen lähde muuttuu, tarkista käännös uudelleen. Säilytä tunnisteet, komennot, polut ja koodiesimerkit muuttumattomina ja merkitse tarkistamaton sisältö avoimesti.
+
+**Laajennettu käännöstila:** Suomenkielinen opas käsittelee nyt myös kohteita ja profiileja, natiivin suoritusrajaa, resurssien omistajuutta, virheiden selvitystä, testiraportointia ja kansainvälisen dokumentaation ylläpitoa.
