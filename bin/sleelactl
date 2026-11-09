@@ -472,6 +472,8 @@ ${B}Examples${R}
   $PROG available database          report the database data-source availability
   $PROG validate http-9.0           validate the HTTP/9.0 protocol spec
   $PROG build decompiler            build the decompiler CLI
+  $PROG inspect native-drive service --status --name worker
+  $PROG inspect native-drive service --rollback --name worker
 
 Verbs are gated by module nature (see '$PROG natures'); an unsupported verb is
 refused with the correct verb set — sleelactl never fakes an action a module
