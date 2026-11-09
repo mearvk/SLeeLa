@@ -18,8 +18,8 @@
 
 #define SLART_MAGIC "SLEELA-ART\x01"
 #define SLART_MAGIC_LEN 11
-/* Artifact format version 2 adds the struct-type layout table after the
- * function table. Version 1 artifacts (no structs) remain loadable. */
+/* Artifact format v2 adds struct layouts; v3 adds lossless UTF-16 constants
+ * and globals. Versions 1 and 2 remain loadable by the v3 runtime. */
 #define SLART_VERSION 3u
 
 static int wr(FILE* f, const void* p, size_t n) { return fwrite(p, 1, n, f) == n; }
