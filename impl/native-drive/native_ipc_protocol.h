@@ -21,7 +21,7 @@ static inline int sl_ipc_encode_request(const uint8_t*method,uint16_t method_len
  const SLNativeValue*argv,uint16_t argc,uint8_t*out,size_t cap,size_t*written){
  size_t off=0,n;uint16_t i;
  if(!method||!method_len||method_len>1024||(!argv&&argc)||!out||!written)return-1;
- if(cap<4u+(size_t)method_len||cap>SL_IPC_MAX_PAYLOAD)return-1;
+ if(cap<4u+(size_t)method_len)return-1;
  for(i=0;i<method_len;i++)if(method[i]==0)return-1;
  sl_ipc_put16(out,method_len);off=2;memcpy(out+off,method,method_len);off+=method_len;
  sl_ipc_put16(out+off,argc);off+=2;
