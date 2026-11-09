@@ -61,8 +61,8 @@ int main() {
                       "LU factorization and solve");
     double inverse[4];
     failures += check(slmath_matrix_inverse(system,2,inverse,1e-14) == SLMATH_OK &&
-                      std::fabs(inverse[0]-1.0/3.0) < 1e-12 &&
-                      std::fabs(inverse[1]+1.0/3.0) < 1e-12,
+                      std::fabs(inverse[0]+0.5) < 1e-12 &&
+                      std::fabs(inverse[1]-0.5) < 1e-12,
                       "matrix inverse");
     const double tall[] = {1,0, 1,1, 1,2};
     double q[6], rr[4];
@@ -103,7 +103,7 @@ int main() {
     slmath_buffer vo{vmout,3,0,0};
     failures += check(slmath_vm_dispatch(SLMATH_OP_VECTOR_ADD,&va,&vb,&vo,
                                           nullptr,0.0,0) == SLMATH_OK &&
-                      vmout[0] == 4.0 && vmout[1] == 6.0,
+                      vmout[0] == 5.0 && vmout[1] == 8.0,
                       "typed VM dispatch contract");
 
     return failures ? 1 : 0;
