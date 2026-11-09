@@ -21,6 +21,9 @@ IDENT = r"[A-Za-z_$][\w$]*"
 QNAME = rf"{IDENT}(?:\.{IDENT})+"
 IMPORT_RE = re.compile(rf"(?m)^\s*import\s+(?P<static>static\s+)?(?P<name>{QNAME})(?P<wild>\.\*)?\s*;")
 PACKAGE_RE = re.compile(rf"(?m)^\s*package\s+({QNAME})\s*;")
+MODULE_RE = re.compile(rf"\b(?:open\s+)?module\s+({QNAME})\s*\{{")
+REQUIRES_RE = re.compile(rf"\brequires\s+(?:transitive\s+|static\s+)*(?:{QNAME})\s*;")
+EXPORTS_RE = re.compile(rf"\bexports\s+({QNAME})(?:\s+to\s+[^;]+)?\s*;")
 FQ_RE = re.compile(rf"\b(?:{'|'.join(JAVA_ROOTS)})\.(?:{IDENT}\.)*{IDENT}(?:\.{IDENT})*\b")
 DECL_RE = re.compile(rf"\b(?:class|interface|enum|record)\s+({IDENT})")
 COMMENT_RE = re.compile(r'"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\'|//[^\n]*|/\*.*?\*/', re.S)
@@ -167,6 +170,30 @@ def main() -> int:
         transitive.append({"name": source, "dependencies": sorted(seen),
                            "dependency_count": len(seen)})
 
+    # Module/package descriptors are first-class graph metadata. They
+    # remain distinct from type edges because module names are not types.
+    modules = []
+    for descriptor in sorted(api_root.rglob("module-info.sleela")):
+        source = strip_comments(descriptor.read_text(encoding="utf-8", errors="replace"))
+        module_match = MODULE_RE.search(source)
+        if module_match:
+            modules.append({
+                "name": module_match.group(1),
+                "path": descriptor.relative_to(repo).as_posix(),
+                "requires": sorted(set(REQUIRES_RE.findall(source))),
+                "exports": sorted(set(EXPORTS_RE.findall(source))),
+            })
+    package_metadata = []
+    for descriptor in sorted(api_root.rglob("package-info.sleela")):
+        source = strip_comments(descriptor.read_text(encoding="utf-8", errors="replace"))
+        package_match = PACKAGE_RE.search(source)
+        if package_match:
+            package_metadata.append({
+                "name": package_match.group(1),
+                "path": descriptor.relative_to(repo).as_posix(),
+                "annotations": sorted(set(FQ_RE.findall(source))),
+            })
+
     # Duplicate counterpart paths are surfaced separately: multiple release
     # trees may be intentional, but ambiguity must never be hidden.
     duplicates = [{"name": name, "paths": paths} for name, paths in sorted(declarations.items()) if len(set(paths)) > 1]
@@ -190,6 +217,9 @@ def main() -> int:
         "edges": sorted(edges, key=lambda x: (x["from"], x["to"], x["kind"], x["line"])),
         "transitive_dependencies": transitive,
         "wildcard_dependencies": sorted(wildcard_edges, key=lambda x: (x["from"], x["package"], x["kind"], x["line"])),
+        "packages": [{"name": name, "types": sorted(set(types))} for name, types in sorted(package_index.items())],
+        "package_metadata": package_metadata,
+        "modules": modules,
         "unresolved": missing,
         "duplicates": duplicates,
     }
