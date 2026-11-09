@@ -469,7 +469,11 @@ the separately versioned `SLNativeValue` scalar/UTF-8 contract. Internal
 When a native method reports `SL_NATIVE_CALL_NOT_HANDLED`, or its arguments
 cannot be represented by the scalar ABI, the interpreter may dispatch a
 same-name, same-arity SLeeLa bytecode method. Plugin failures and ABI mismatches
-remain errors and do not trigger fallback.
+remain errors and do not trigger fallback. Plugins may optionally export
+`sl_native_bind_host` to receive a versioned callback table and invoke an exact,
+unique SLeeLa function from native code. Callback execution uses a nested VM
+stack, preserves suspended GC roots, and rejects recursive native-module API
+calls to avoid deadlocks.
 
 The host must install `slvm_set_native_authorizer` before execution. With no
 authorization callback, native module loading is denied. Native code runs in the
