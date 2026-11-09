@@ -26,6 +26,7 @@ int main(void) {
     FakeWorker workers[SL_MAX_IPC_WORKERS+1];
     int closed=0;
     int32_t handles[SL_MAX_IPC_WORKERS];
+    int32_t stale_handle;
     pthread_t thread;
     CloseArgs args;
     struct timespec pause={0,50000000};
@@ -39,10 +40,12 @@ int main(void) {
     slvm_ipc_worker_release(vm,handles[0]);
     CHECK(slvm_ipc_worker_close(vm,handles[0])==0,"valid handle closed");
     CHECK(workers[0].closed && closed==1,"close callback exactly once");
-    CHECK(slvm_ipc_worker_acquire(vm,handles[0])==NULL,"stale handle rejected after close");
+    stale_handle=handles[0];
+    CHECK(slvm_ipc_worker_acquire(vm,stale_handle)==NULL,"stale handle rejected after close");
     handles[0]=slvm_ipc_worker_register(vm,&workers[0],fake_close,&closed);
     CHECK(handles[0]>=0,"slot reused");
-    CHECK(handles[0]!=(int32_t)0,"generation-tagged handle");
+    CHECK(handles[0]!=stale_handle,"reused slot receives a new generation");
+    CHECK(slvm_ipc_worker_acquire(vm,stale_handle)==NULL,"old generation stays invalid after slot reuse");
     CHECK(slvm_ipc_worker_acquire(vm,handles[0])==&workers[0],"reused handle acquired");
     /* Hold a lease while close runs on another thread: callback must wait. */
     args.vm=vm; args.handle=handles[0];
