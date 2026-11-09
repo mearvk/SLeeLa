@@ -1,6 +1,6 @@
 # lib/math
 
-The SLeeLa standard-library mathematics package: **243 classes** with real,
+The SLeeLa standard-library mathematics package: **244 classes** with real,
 compiler-verified implementations spanning numeric types through advanced
 numerical methods. Every class carries the Metadata Class record (see
 `.kiro/steering/metadata-class-standard.md` and `SLEELA.syntax` §15).
@@ -60,3 +60,10 @@ The source-level `SLVector`, `SLMatrix`, and `SLComplex` classes remain the lang
 The language-facing types are extended with vector subtraction/normalization/cross product, matrix multiplication/transpose/determinant, and complex subtraction/division. The native C ABI and compiler built-ins now cover vector add/subtract/scale/dot/norm/normalize/cross3; matrix multiply/transpose/inverse; complex add/subtract/multiply/divide; thin QR; symmetric eigendecomposition; and radix-2 FFT. Additional low-level array and scalar kernels remain available through the C ABI.
 
 Native entry points are in impl/subjects/math/linear_algebra.h. The Core exposes slvm_math_dispatch_arrays to marshal SL_ARRAY handles to temporary numeric buffers while holding the array mutex, invoke the C ABI, and write results back. The helper does not retain VM memory. The current integration links the kernel into runtime executables and the reusable Core archive. The direct VM bytecode smoke test also serializes and reloads an artifact containing `OP_MATH_CALL`, so the append-only opcode is checked through the artifact validator and loader. Run `make -C impl test-linear-algebra test-linear-algebra-vm test-linear-algebra-bytecode` after building to exercise the C ABI, source-to-runtime path, and bytecode/artifact path. These targets have not yet been executed in this environment.
+
+
+## Unified native facade
+
+`SLNativeMathEngine.sleela` is the SLeeLa-facing facade for the native kernels. It groups vector, matrix, complex, QR, symmetric-eigen, and FFT operations behind one class while preserving the existing `SLVector`, `SLMatrix`, `SLComplex`, and `SLMathEngine` implementations as pure-SLeeLa/Core fallbacks. It requires `#sleela 3.0`. Arrays remain caller-owned; output arrays may be freshly allocated and are written only over the result shape, leaving any extra capacity unchanged.
+
+The native facade is an explicit acceleration API, not an implicit change to the semantics of existing math classes. This keeps older source programs and artifacts on their established Core implementation unless they opt into the native interface.
