@@ -108,9 +108,12 @@ OSLS_CORE_OBJ := $(BUILD)/osls_core.o
 OSLS_EXT_OBJ := $(BUILD)/osls_extended.o
 OSLS_EXT2_OBJ := $(BUILD)/osls_extended2.o
 OSLS_VM_OBJ := $(BUILD)/osls_vm_bridge.o
+NATIVE_LOADER_DIR := ../os-level-support/loader
+NATIVE_LOADER_OBJ := $(BUILD)/native_loader.o
+NATIVE_MODULE_TABLE_OBJ := $(BUILD)/native_module_table.o
 OSLS_VM_CAP_SMOKE := $(BUILD)/osls_vm_capability_smoke
 OSLS_VM_CAP_SMOKE_OBJ := $(BUILD)/osls_vm_capability_test.o
-OSLS_OBJS := $(OSLS_CORE_OBJ) $(OSLS_EXT_OBJ) $(OSLS_EXT2_OBJ) $(OSLS_VM_OBJ)
+OSLS_OBJS := $(OSLS_CORE_OBJ) $(OSLS_EXT_OBJ) $(OSLS_EXT2_OBJ) $(OSLS_VM_OBJ) $(NATIVE_LOADER_OBJ) $(NATIVE_MODULE_TABLE_OBJ)
 ifeq ($(PLATFORM),windows)
   OSLS_DEFS := -D_CRT_SECURE_NO_WARNINGS
 else
@@ -598,7 +601,7 @@ else
 $(BALLUM_BACKEND_OBJ): $(BALLUM_BACKEND_SRC) $(BALLUM_DIR)/include/sleela_ballum/ballum_manager.h | $(BUILD)
 	$(CC) $(CFLAGS) $(BALLUM_INC) $(BALLUM_BACKEND_DEF) -c $< -o $@
 endif
-$(BESTOF_OBJ): core/sleela_bestof.c core/sleela_bestof.h ../os-level-support/osls_vm_bridge.h | $(BUILD)
+$(BESTOF_OBJ): core/sleela_bestof.c core/sleela_bestof.h ../os-level-support/osls_vm_bridge.h ../os-level-support/loader/native_module_table.h ../os-level-support/loader/native_loader.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_bestof.c -o $@
 $(PATH_OBJ): core/sleela_path.c core/sleela_path.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_path.c -o $@
@@ -688,8 +691,12 @@ $(OSLS_EXT2_OBJ): $(OSLS_DIR)/osls_extended2.c $(OSLS_DIR)/osls.h $(OSLS_DIR)/os
 	$(CC) $(CFLAGS) $(OSLS_DEFS) -I$(OSLS_DIR) -c $< -o $@
 $(OSLS_VM_OBJ): $(OSLS_DIR)/osls_vm_bridge.c $(OSLS_DIR)/osls_vm_bridge.h $(OSLS_DIR)/osls.h | $(BUILD)
 	$(CC) $(CFLAGS) $(OSLS_DEFS) -I$(OSLS_DIR) -c $< -o $@
+$(NATIVE_LOADER_OBJ): $(NATIVE_LOADER_DIR)/native_loader.c $(NATIVE_LOADER_DIR)/native_loader.h | $(BUILD)
+	$(CC) $(CFLAGS) -I$(NATIVE_LOADER_DIR) -c $< -o $@
+$(NATIVE_MODULE_TABLE_OBJ): $(NATIVE_LOADER_DIR)/native_module_table.c $(NATIVE_LOADER_DIR)/native_module_table.h $(NATIVE_LOADER_DIR)/native_loader.h | $(BUILD)
+	$(CC) $(CFLAGS) -I$(NATIVE_LOADER_DIR) -c $< -o $@
 
-$(CORE_OBJ): $(CORE_SRC) core/sleela_core.c core/sleela_core.h ../runtime/garbage_collector.h core/sleela_thread.h core/pthread.h core/sleela_synchro.h core/sleela_munction.h core/sleela_bestof.h ../os-level-support/osls_vm_bridge.h | $(BUILD)
+$(CORE_OBJ): $(CORE_SRC) core/sleela_core.c core/sleela_core.h ../runtime/garbage_collector.h core/sleela_thread.h core/pthread.h core/sleela_synchro.h core/sleela_munction.h core/sleela_bestof.h ../os-level-support/osls_vm_bridge.h ../os-level-support/loader/native_module_table.h ../os-level-support/loader/native_loader.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c $(CORE_SRC) -o $@
 
 # The reusable Core archive contains the engine, OS abstractions, GC, and

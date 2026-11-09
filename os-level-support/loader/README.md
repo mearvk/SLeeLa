@@ -31,6 +31,25 @@ The loader checks the ABI version before exposing the entry point. The C API is
 in `native_loader.h` / `native_loader.c`; the move-only C++ wrapper is in
 `native_loader.hpp` / `native_loader.cpp`.
 
+## Runtime-owned handle table
+
+`native_module_table.h` / `native_module_table.c` add a bounded C runtime
+handle table over the loader:
+
+- At most `SL_NATIVE_TABLE_CAPACITY` (nine) modules are open at once.
+- The host must provide an authorization callback before any library is loaded.
+  A source path or module reference never authorizes execution by itself.
+- VM-facing handles are opaque 32-bit slot/generation values, not raw pointers.
+  Closing a module invalidates its handle; stale handles are rejected.
+- The table supports explicit open, run, close, and close-all operations.
+- The caller must serialize concurrent access to a table instance. This small
+  table is a runtime integration seam, not yet a SLeeLa bytecode opcode or
+  automatic interpreter/native dispatcher.
+
+The authorization callback should enforce the host's trusted roots, manifest or
+signature policy, and any deployment-specific module allowlist. Do not approve
+a path merely because it exists or is syntactically valid.
+
 ## Build and test
 
 From the repository root:
@@ -41,10 +60,11 @@ cmake --build build/os-level-support
 ctest --test-dir build/os-level-support --output-on-failure
 ```
 
-The tests exercise the C interface and C++ wrapper against a small fixture. On
-POSIX, CMake links the system dynamic-loader library as needed. On Windows,
-use a compiler/toolchain that produces the plugin DLL and exports both ABI
-symbols.
+The tests exercise the C interface and C++ wrapper against a small fixture,
+move-only ownership, ABI mismatch and missing-entry rejection, authorization
+denial, bounded-table exhaustion, and stale-handle rejection. On POSIX, CMake
+links the system dynamic-loader library as needed. On Windows, use a
+compiler/toolchain that produces the plugin DLL and exports both ABI symbols.
 
 ## Nine-unit plugin build
 

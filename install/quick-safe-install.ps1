@@ -54,6 +54,8 @@ $Stage = Join-Path ([System.IO.Path]::GetTempPath()) ("sleela-install-" + [guid]
 New-Item -ItemType Directory -Force -Path (Join-Path $Stage "lib"),(Join-Path $Stage "bin"),(Join-Path $Stage "config"),(Join-Path $Stage "tools"),(Join-Path $Stage "security") | Out-Null
 if (Test-Path (Join-Path $RepoRoot "lib")) { Copy-Item -Recurse -Force (Join-Path $RepoRoot "lib\\*") (Join-Path $Stage "lib") }
 Copy-Item -Force (Join-Path $RepoRoot "tools\\verify-before-execution.py") (Join-Path $Stage "tools")
+Copy-Item -Force (Join-Path $RepoRoot "tools\\sleela-native-drive.py") (Join-Path $Stage "tools")
+Copy-Item -Force (Join-Path $RepoRoot "tools\\sleela-native-service.py") (Join-Path $Stage "tools")
 Copy-Item -Force (Join-Path $RepoRoot "security\\sha256-manifest.json") (Join-Path $Stage "security")
 # Preserve the trusted manifest's relative source paths so the installed verifier
 # sees the complete source set that the manifest describes.

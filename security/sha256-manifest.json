@@ -263,11 +263,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "5f1241996097e4d5b73ec9ceb738df90f3c738ac81a1cce32a4261314d626cc5"
+      "sha256": "2de4d86dca325a868b05f262752527b59f82d6f7435f8072dbc7da9a6e50ea17"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "420153be038c2e6b6108434dd3aad445f9acb4344718e3a583119a50cd2fb5df"
+      "sha256": "aff097690348ea19b43288d21398914de450a6a8636c1f14dd53155c3cab71bd"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -49747,7 +49747,7 @@
     },
     {
       "path": "os-level-support/loader/native_loader.c",
-      "sha256": "b7b649ad2ebae42b65503c19d1d398f5168740f62074f41294d1962fd7472602"
+      "sha256": "5dea873de45061155094dc341036929d48cd9133bab6c53651119204b1e7c0b3"
     },
     {
       "path": "os-level-support/loader/native_loader.cpp",
@@ -49755,15 +49755,31 @@
     },
     {
       "path": "os-level-support/loader/native_loader.h",
-      "sha256": "784a64b851a5008e9ce1f0d61d23685408e7317ca203e4b1ed1f24c2cc4bf662"
+      "sha256": "af6debf1879e886596742e48c99e8889aef70d5db95ada72a42f7c7514c613e6"
     },
     {
       "path": "os-level-support/loader/native_loader.hpp",
       "sha256": "bd4b334a5a2c3d52d04dbade3551c2434f2ff59546bf69f44d5fa1258884984c"
     },
     {
+      "path": "os-level-support/loader/native_module_table.c",
+      "sha256": "423b79dea248534d729826763c130bb70dde257da99d4e8fe2cca2d8dfaf4442"
+    },
+    {
+      "path": "os-level-support/loader/native_module_table.h",
+      "sha256": "bd2255c22035b725bf52aae5ea6b667b3494838ecc96c1da882faf909549178b"
+    },
+    {
       "path": "os-level-support/loader/tests/fixture.c",
       "sha256": "6559dd4947b4fb24d5a8806168c710357d2d933db55f5e2db504fb53c2cb3e51"
+    },
+    {
+      "path": "os-level-support/loader/tests/fixture_bad_abi.c",
+      "sha256": "61c23f5b0e381dfbaa66fddcd635b8009647c972314abc638b81e277a75bb2fe"
+    },
+    {
+      "path": "os-level-support/loader/tests/fixture_missing_entry.c",
+      "sha256": "ab82ced852f613153bc25a8a73132a6311e854f0d8ba0114574ee05fe411a1f7"
     },
     {
       "path": "os-level-support/loader/tests/test_c.c",
@@ -49771,7 +49787,15 @@
     },
     {
       "path": "os-level-support/loader/tests/test_cpp.cpp",
-      "sha256": "8fdb1115fd08567c3d01f8f35bafa33e32f8f1c84141b8a9e52564a3f91f471d"
+      "sha256": "5a7d5a33ac58d3a5be24668ee8e6704249a4c377baecc07f70629613b0aa7cf2"
+    },
+    {
+      "path": "os-level-support/loader/tests/test_reject.c",
+      "sha256": "891060cbbbc6d388ff2f7fa571e24eb3b6bd78c1085548849bdd123a90a8df3c"
+    },
+    {
+      "path": "os-level-support/loader/tests/test_table.c",
+      "sha256": "ee08752f2796b3c012f627fe11a445c83543c9f12d7d178fd7d659e9930ecdca"
     },
     {
       "path": "os-level-support/osls.c",
@@ -49876,6 +49900,14 @@
     {
       "path": "runtime/security_supervisor.h",
       "sha256": "7512954269216c083e36eb3bdc7d68e6c343e3ef03d01e1957d471166ab01fa4"
+    },
+    {
+      "path": "tools/sleela-native-drive.py",
+      "sha256": "e9d073e2e3fa8485554c5f2a80dcaf4230780bc67e0c2abde881cf2c97d67b97"
+    },
+    {
+      "path": "tools/sleela-native-service.py",
+      "sha256": "708750edc7fe41ff484a4ecbe5dd5b47c93704724ab60c17a0895f97582bbfa0"
     },
     {
       "path": "wifi-common/include/sleela_wifi/wifi_manager.h",

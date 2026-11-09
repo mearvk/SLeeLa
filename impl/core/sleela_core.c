@@ -208,6 +208,14 @@ struct SLVM {
     pthread_mutex_t os_mtx;
     SLOSProcess os_proc[SL_MAX_OS_PROCESSES];
     int os_proc_init;
+
+    /* Trusted native modules are VM-owned bounded handles. The host must
+     * install an authorization callback before any module can be opened. */
+    pthread_mutex_t native_mtx;
+    SLNativeModuleTable native_modules;
+    SLNativeAuthorizePath native_authorizer;
+    void* native_authorizer_context;
+    int native_modules_init;
 };
 
 static void set_err(SLVM* vm, const char* msg) {
@@ -440,6 +448,57 @@ int slvm_set_osls_capabilities(SLVM* vm, uint64_t capabilities) {
     return 0;
 }
 
+static int slvm_native_authorize_bridge(const char* path, void* context) {
+    SLVM* vm = (SLVM*)context;
+    return vm && vm->native_authorizer
+        ? vm->native_authorizer(path, vm->native_authorizer_context) : 0;
+}
+
+int slvm_set_native_authorizer(SLVM* vm, SLNativeAuthorizePath authorize, void* context) {
+    if (!vm || !authorize) return -1;
+    pthread_mutex_lock(&vm->native_mtx);
+    if (vm->native_authorizer) {
+        pthread_mutex_unlock(&vm->native_mtx);
+        return -1; /* immutable after first installation */
+    }
+    vm->native_authorizer = authorize;
+    vm->native_authorizer_context = context;
+    pthread_mutex_unlock(&vm->native_mtx);
+    return 0;
+}
+
+SLNativeStatus slvm_native_module_open(SLVM* vm, const char* path, SLNativeHandle* out_handle) {
+    SLNativeStatus status;
+    if (!vm || !out_handle) return SL_NATIVE_INVALID_ARGUMENT;
+    *out_handle = SL_NATIVE_HANDLE_INVALID;
+    pthread_mutex_lock(&vm->native_mtx);
+    status = sl_native_table_open(&vm->native_modules, path, out_handle);
+    pthread_mutex_unlock(&vm->native_mtx);
+    return status;
+}
+
+SLNativeStatus slvm_native_module_run(SLVM* vm, SLNativeHandle handle,
+                                      int argc, const char* const argv[], int* out_result) {
+    SLNativeStatus status;
+    if (!vm) return SL_NATIVE_INVALID_ARGUMENT;
+    /* Serialize calls against close/free so code cannot be unloaded while it
+     * is executing. A plugin entry point must not re-enter this VM's native
+     * module lifecycle API. */
+    pthread_mutex_lock(&vm->native_mtx);
+    status = sl_native_table_run(&vm->native_modules, handle, argc, argv, out_result);
+    pthread_mutex_unlock(&vm->native_mtx);
+    return status;
+}
+
+SLNativeStatus slvm_native_module_close(SLVM* vm, SLNativeHandle handle) {
+    SLNativeStatus status;
+    if (!vm) return SL_NATIVE_INVALID_ARGUMENT;
+    pthread_mutex_lock(&vm->native_mtx);
+    status = sl_native_table_close(&vm->native_modules, handle);
+    pthread_mutex_unlock(&vm->native_mtx);
+    return status;
+}
+
 int slvm_memory_safe_mode(const SLVM* vm) {
     /* Sleela source never receives native pointers. Globals, locals, files,
      * sockets, threads, reaches, probes, and struct instances are VM-owned
@@ -456,6 +515,13 @@ SLVM* slvm_new(void) {
     vm->entry = -1;
     vm->last_result = slval_null();
     vm->osls_capabilities = OSLS_VM_CAP_HOST_READ;
+    pthread_mutex_init(&vm->native_mtx, NULL);
+    if (sl_native_table_init(&vm->native_modules, slvm_native_authorize_bridge, vm) != SL_NATIVE_OK) {
+        pthread_mutex_destroy(&vm->native_mtx);
+        free(vm);
+        return NULL;
+    }
+    vm->native_modules_init = 1;
     pthread_mutex_init(&vm->intern_mtx, NULL);
     pthread_mutex_init(&vm->global_mtx, NULL);
     pthread_mutex_init(&vm->print_mtx, NULL);
@@ -501,6 +567,13 @@ static void close_file_slot(SLFile* f) {
 void slvm_free(SLVM* vm) {
     if (!vm) return;
     slvm_joinall(vm);
+    if (vm->native_modules_init) {
+        pthread_mutex_lock(&vm->native_mtx);
+        (void)sl_native_table_close_all(&vm->native_modules);
+        pthread_mutex_unlock(&vm->native_mtx);
+        vm->native_modules_init = 0;
+    }
+    pthread_mutex_destroy(&vm->native_mtx);
     for (int i = 0; i < SL_MAX_SOCKETS; i++) {
         pthread_mutex_lock(&vm->sockets[i].mtx);
         if (vm->sockets[i].active) { slnet_close(vm->sockets[i].handle); vm->sockets[i].handle = SL_NET_INVALID; vm->sockets[i].active = 0; }
