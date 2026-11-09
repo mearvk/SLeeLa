@@ -349,6 +349,7 @@ _Static_assert(OP__COUNT == 166, "the extended ISA must contain 166 opcodes");
 #define SL_MAX_ARRAY_LEN 33554432 /* maximum elements in a single array (2^25)  */
 typedef enum { SLR_OK = 0, SLR_ERROR, SLR_HALT } SLResult;
 typedef struct SLVM SLVM;
+typedef int (*SLNativeAuthorizeCallback)(const char* function, void* context);
 typedef int (*SLAudioNativeRenderFn)(
     const char* output_path, uint32_t sample_rate,
     const char* const* input_paths, const double* start_seconds,
@@ -380,8 +381,12 @@ void slvm_set_audio_native_renderer(SLVM* vm, SLAudioNativeRenderFn fn, void* us
  * stack, and preserves the suspended caller stack as a GC root. The VM must
  * have no active workers; callback bytecode cannot re-enter native-module
  * operations or spawn/join VM workers.
+ * Callback invocation is denied by default; the host must install a separate
+ * immutable callback-name authorizer before a plugin can invoke SLeeLa code.
  * Do not call these APIs concurrently with slvm_free(). */
 int slvm_set_native_authorizer(SLVM* vm, SLNativeAuthorizePath authorize, void* context);
+/* Callback invocation is denied unless the host installs an immutable exact-name policy. */
+int slvm_set_native_callback_authorizer(SLVM* vm, SLNativeAuthorizeCallback authorize, void* context);
 SLNativeStatus slvm_native_module_open(SLVM* vm, const char* path, SLNativeHandle* out_handle);
 SLNativeStatus slvm_native_module_run(SLVM* vm, SLNativeHandle handle,
                                       int argc, const char* const argv[], int* out_result);
