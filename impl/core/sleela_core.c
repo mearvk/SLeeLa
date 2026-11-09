@@ -12,6 +12,7 @@
 #define _POSIX_C_SOURCE 200809L
 #endif
 #include "sleela_core.h"
+#include "../subjects/math/sleela_math_kernel_c.h"
 #include "sleela_utf16.h"
 #include "sleela_net.h"
 #include "sleela_io.h"
@@ -2628,6 +2629,45 @@ static SLResult run_thread(SLThread* t) {
                 TERR(message);
             }
             PUSH(slval_null());
+        } break;
+        case OP_MATH_CALL: {
+            int arity = sl_math_kernel_arity(in.a);
+            int base, unsupported = 0, fallback_ip;
+            SLValue method_value;
+            const char* method;
+            double args[3] = {0.0, 0.0, 0.0}, result = 0.0;
+            if (arity < 0 || arity > 3)
+                TERR("math call: invalid native math function id");
+            if (t->sp < arity + 2)
+                TERR("math call: expected fallback marker, method name, and numeric arguments");
+            base = t->sp - arity - 2;
+            method_value = t->stack[base + 1];
+            if (method_value.type != SL_STR)
+                TERR("math call: fallback method name must be a String");
+            method = slvm_str(vm, method_value.as.s);
+            if (strcmp(method, sl_math_kernel_method_name(in.a)) != 0)
+                TERR("math call: function id and fallback method name disagree");
+            for (int i = 0; i < arity; ++i) {
+                SLValue value = t->stack[base + 2 + i];
+                if (value.type == SL_DOUBLE) args[i] = value.as.d;
+                else if (value.type == SL_INT) args[i] = (double)value.as.i;
+                else if (value.type == SL_INT128) args[i] = (double)value.as.i128;
+                else { unsupported = 1; break; }
+            }
+            if (!unsupported &&
+                sl_math_kernel_call(in.a, args, (uint32_t)arity, &result) == 0) {
+                t->sp = base;
+                PUSH(slval_double(result));
+                break;
+            }
+            /* Non-scalar VM values remain VM-owned. Let the synthesized Core
+             * method handle them rather than coercing or crossing the C ABI. */
+            fallback_ip = native_bytecode_fallback(t, method, (uint32_t)arity, base, ip);
+            if (fallback_ip == 0)
+                TERR("math call: typed kernel declined arguments and no Core fallback exists");
+            if (fallback_ip < 0)
+                TERR("math call: Core fallback call depth or stack limit exceeded");
+            ip = fallback_ip - 1;
         } break;
         case OP_NATIVE_CALL: {
             if (native_callback_vm == vm)
