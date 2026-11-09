@@ -3,7 +3,7 @@
   "files": [
     {
       "path": ".github/workflows/native-drive.yml",
-      "sha256": "c8caa7f950777221c33662604d709398bcaf2bf054147fde8b4f9fd591eb091a"
+      "sha256": "eb6c6044945c586c5a4bd6a803c00155edd8e41eda60eaf8f582a9f0b5bc965f"
     },
     {
       "path": "ballum/include/sleela_ballum/ballum_effects.h",
@@ -658,6 +658,14 @@
       "sha256": "ae11bbaf0e2414d329bd0d0280843bc2bd5ff71959c52af4581e6512cdcbe11c"
     },
     {
+      "path": "impl/native-drive/native_ipc_client.c",
+      "sha256": "fd4eabedc35b3995b427ec6dfad576eb5b5e6dce838456c904fbfa377c6d1d1e"
+    },
+    {
+      "path": "impl/native-drive/native_ipc_client.h",
+      "sha256": "a0e5749bec827b23f4df8d13c3c260b82f835b58b5736ea70eec3f79c0f84a7b"
+    },
+    {
       "path": "impl/native-drive/native_ipc_protocol.h",
       "sha256": "c924e1ca6e5420681fd20626d8d40029153944a7f88d974af0e0a94e413e2515"
     },
@@ -888,6 +896,10 @@
     {
       "path": "impl/subjects/sociology/sociology.hpp",
       "sha256": "71adfd69656b098a62106c36ec2b3ac9fcc77eb2e59c7ed9f85e5a72dedbf111"
+    },
+    {
+      "path": "impl/tests/native_drive/native_ipc_client_smoke.c",
+      "sha256": "125451d90441030f8d5c0ba96f93681210de065b28feec509bc7f5eef3255538"
     },
     {
       "path": "impl/tests/native_drive/native_ipc_protocol_smoke.c",
