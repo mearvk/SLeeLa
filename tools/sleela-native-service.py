@@ -63,10 +63,60 @@ def render(args: argparse.Namespace) -> str:
     lines.extend(["", "[Install]", "WantedBy=default.target" if not args.system else "WantedBy=multi-user.target", ""])
     return "\n".join(lines)
 
+def _unit_paths(args: argparse.Namespace):
+    if not NAME.fullmatch(args.name):
+        raise ValueError("service name must contain only letters, digits, dot, underscore, @, or hyphen")
+    if args.system:
+        if os.name != "nt" and os.geteuid() != 0:
+            raise RuntimeError("system service lifecycle requires root; no implicit sudo is invoked")
+        directory = pathlib.Path("/etc/systemd/system")
+    else:
+        directory = pathlib.Path.home() / ".config/systemd/user"
+    target = directory / f"{args.name}.service"
+    return directory, target, target.with_name(target.name + ".sleela-backup")
+
+def _systemctl(args: argparse.Namespace, *command: str) -> int:
+    if sys.platform != "linux" or not shutil.which("systemctl"):
+        raise RuntimeError("systemd lifecycle is supported only on Linux hosts with systemctl")
+    scope = "--system" if args.system else "--user"
+    return subprocess.run(["systemctl", scope, *command], check=False).returncode
+
+def lifecycle(args: argparse.Namespace) -> int:
+    directory, target, backup = _unit_paths(args)
+    if args.status:
+        return _systemctl(args, "--no-pager", "status", f"{args.name}.service")
+    if args.restart:
+        return _systemctl(args, "restart", f"{args.name}.service")
+    if args.stop:
+        return _systemctl(args, "stop", f"{args.name}.service")
+    if args.disable:
+        return _systemctl(args, "disable", f"{args.name}.service")
+    if args.rollback:
+        if not backup.is_file():
+            raise RuntimeError(f"no rollback backup exists for {target}")
+        if not target.parent.is_dir():
+            raise RuntimeError(f"service unit directory does not exist: {target.parent}")
+        fd, temporary = tempfile.mkstemp(prefix=f".{args.name}.rollback.", dir=target.parent)
+        try:
+            with os.fdopen(fd, "wb") as stream, backup.open("rb") as source:
+                shutil.copyfileobj(source, stream)
+                stream.flush(); os.fsync(stream.fileno())
+            os.replace(temporary, target)
+        finally:
+            if os.path.exists(temporary): os.unlink(temporary)
+        rc = _systemctl(args, "daemon-reload")
+        if rc == 0:
+            backup.unlink()
+            print(f"restored previous unit {target}", file=sys.stderr)
+        else:
+            print(f"sleela-native-service: daemon-reload failed; rollback backup retained at {backup}", file=sys.stderr)
+        return rc
+    raise RuntimeError("no lifecycle action selected")
+
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--name", required=True, help="unit name without .service")
-    p.add_argument("--executable", required=True, help="absolute or resolvable executable path")
+    p.add_argument("--executable", help="absolute or resolvable executable path")
     p.add_argument("--working-directory", default=".")
     p.add_argument("--description", default="SLeeLa native workload")
     p.add_argument("--user", help="unprivileged account for a system unit")
@@ -77,7 +127,23 @@ def main() -> int:
     p.add_argument("--system", action="store_true", help="install into /etc/systemd/system (requires root and --user)")
     p.add_argument("--enable", action="store_true", help="daemon-reload and enable after installation")
     p.add_argument("--start", action="store_true", help="start after installation (requires --enable)")
+    actions = p.add_mutually_exclusive_group()
+    actions.add_argument("--status", action="store_true", help="query the unit status")
+    actions.add_argument("--restart", action="store_true", help="restart an installed unit")
+    actions.add_argument("--stop", action="store_true", help="stop an installed unit")
+    actions.add_argument("--disable", action="store_true", help="disable an installed unit")
+    actions.add_argument("--rollback", action="store_true", help="restore the previous unit saved by --replace")
     args = p.parse_args()
+    if any((args.status, args.restart, args.stop, args.disable, args.rollback)):
+        if any((args.install, args.replace, args.enable, args.start, args.output, args.executable, args.writable_path)):
+            p.error("lifecycle actions cannot be combined with unit rendering or installation options")
+        try:
+            return lifecycle(args)
+        except (OSError, ValueError, RuntimeError, subprocess.CalledProcessError) as exc:
+            print(f"sleela-native-service: {exc}", file=sys.stderr)
+            return 1
+    if not args.executable:
+        p.error("--executable is required when rendering or installing a unit")
     if args.system and not args.install:
         p.error("--system requires --install")
     if args.enable and not args.install:
@@ -104,8 +170,13 @@ def main() -> int:
             target_dir = pathlib.Path.home() / ".config/systemd/user"
         target_dir.mkdir(parents=True, exist_ok=True)
         target = target_dir / f"{args.name}.service"
+        backup = target.with_name(target.name + ".sleela-backup")
         if target.exists() and not args.replace:
             raise RuntimeError(f"unit already exists: {target}; pass --replace to replace it explicitly")
+        if target.exists() and args.replace:
+            if backup.exists():
+                raise RuntimeError(f"rollback backup already exists: {backup}; run --rollback before replacing again")
+            shutil.copy2(target, backup)
         fd, temp_name = tempfile.mkstemp(prefix=f".{args.name}.", dir=target_dir)
         try:
             with os.fdopen(fd, "w", encoding="utf-8") as stream:
