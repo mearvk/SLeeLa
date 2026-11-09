@@ -19,8 +19,8 @@ import java.util.jar.JarFile;
  * Allow-listed loader for raw compiled Java classes used by SLeeLa.
  *
  * Resolution is non-initializing by default. Explicit roots may be directories
- * or readable JAR files. Adding a root invalidates cached resolutions so a
- * class loaded before the root was added cannot shadow the new search space.
+ * or readable JAR files. Configure every root before the first resolution;
+ * roots freeze at first use to preserve class identity for live object handles.
  */
 public final class SleelaClassLoader implements AutoCloseable {
     public static final class ClassResolutionException extends Exception {
