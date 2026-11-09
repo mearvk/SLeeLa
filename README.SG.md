@@ -65,6 +65,44 @@ SLeeLa provides **Vim** and **Emacs** themes and syntax integration, plus a nati
 
 Contributions should be focused, include positive and negative tests, and state the operating system and toolchain used. Do not describe skipped checks as successful.
 
+
+## X. API contracts, testing and maintenance / API 契约、测试与维护 / Kontrak API, ujian dan penyelenggaraan / API ஒப்பந்தங்கள், சோதனை மற்றும் பராமரிப்பு
+
+### English
+
+Every public API should document accepted inputs, outputs, error conditions, memory ownership and side effects. Module documentation should state preconditions, postconditions and platform limitations. A symbol name or module reference does not itself authorize execution; authorization must be checked at the appropriate execution boundary.
+
+Test the compiler pipeline in layers: lexing, parsing, semantic analysis, IR lowering, code generation, VM execution and native integration. Regression tests should preserve a minimal reproducer, expected result and actual result. Include negative cases for malformed syntax, invalid types, missing resources and ABI mismatches. Never report skipped or unrun tests as passing.
+
+For reproducibility, record the Git commit, operating system, architecture, compiler version, toolchain and exact commands. A result on one platform does not establish support on another. Consult the [platform matrix](docs/PLATFORM-SUPPORT.md) and [testing policy](markdown/TESTING.md).
+
+### 简体中文
+
+每个公开 API 都应记录可接受的输入、输出、错误条件、内存所有权和副作用。模块文档应说明前置条件、后置条件及平台限制。符号名称或模块引用本身并不授予代码执行权限；必须在适当的执行边界检查授权。
+
+测试应分层覆盖 compiler pipeline：词法分析、语法分析、语义分析、IR lowering、代码生成、VM execution 和 native integration。回归测试应保留最小复现输入、预期结果和实际结果，并覆盖语法错误、类型错误、资源缺失和 ABI 不匹配等负面场景。跳过或未运行的测试不得报告为通过。
+
+为保证结果可复现，应记录 Git commit、操作系统、体系结构、compiler 版本、toolchain 和完整命令。一个平台上的结果不能证明其他平台也受支持。请参阅[平台支持矩阵](docs/PLATFORM-SUPPORT.md)和[测试政策](markdown/TESTING.md)。
+
+### Bahasa Melayu
+
+Setiap API awam perlu mendokumenkan input yang diterima, output, keadaan ralat, pemilikan memori dan kesan sampingan. Dokumentasi modul hendaklah menyatakan prasyarat, pascasyarat dan batasan platform. Nama simbol atau rujukan modul tidak memberikan kebenaran untuk melaksanakan kod; kebenaran mesti disahkan pada sempadan pelaksanaan yang sesuai.
+
+Uji compiler pipeline secara berperingkat: analisis leksikal, parsing, analisis semantik, IR lowering, penjanaan kod, pelaksanaan VM dan integrasi native. Ujian regresi perlu menyimpan input minimum yang menghasilkan semula masalah, hasil dijangka dan hasil sebenar. Sertakan kes negatif untuk sintaks rosak, jenis tidak sah, sumber tiada dan ketidakpadanan ABI. Ujian yang dilangkau atau tidak dijalankan tidak boleh dilaporkan sebagai lulus.
+
+Untuk kebolehulangan, rekodkan Git commit, sistem operasi, seni bina, versi compiler, toolchain dan arahan tepat. Keputusan pada satu platform tidak membuktikan sokongan pada platform lain. Rujuk [matriks sokongan platform](docs/PLATFORM-SUPPORT.md) dan [dasar ujian](markdown/TESTING.md).
+
+### தமிழ்
+
+ஒவ்வொரு public API-யும் ஏற்கப்படும் input, output, error conditions, memory ownership மற்றும் side effects ஆகியவற்றை ஆவணப்படுத்த வேண்டும். Module ஆவணம் preconditions, postconditions மற்றும் platform limitations-ஐத் தெளிவாகக் குறிப்பிட வேண்டும். Symbol பெயர் அல்லது module reference மட்டும் code execution-க்கு அனுமதி அளிக்காது; உரிய execution boundary-இல் authorization சரிபார்க்கப்பட வேண்டும்.
+
+Compiler pipeline-ஐ அடுக்குகளாகச் சோதிக்கவும்: lexical analysis, parsing, semantic analysis, IR lowering, code generation, VM execution மற்றும் native integration. Regression test-களில் குறைந்தபட்ச மறுஉருவாக்க input, எதிர்பார்க்கப்படும் முடிவு மற்றும் உண்மையான முடிவு இருக்க வேண்டும். தவறான syntax, invalid types, இல்லாத resources மற்றும் ABI mismatch ஆகிய negative cases-ஐச் சேர்க்கவும். தவிர்க்கப்பட்ட அல்லது இயக்கப்படாத tests வெற்றி எனக் குறிப்பிடப்படக்கூடாது.
+
+மீண்டும் உருவாக்கக்கூடிய முடிவுகளுக்காக Git commit, operating system, architecture, compiler version, toolchain மற்றும் துல்லியமான commands-ஐப் பதிவு செய்யவும். ஒரு platform-இல் கிடைத்த முடிவு மற்ற platform-களுக்கான ஆதாரமல்ல. [Platform support matrix](docs/PLATFORM-SUPPORT.md) மற்றும் [testing policy](markdown/TESTING.md)-ஐப் பார்க்கவும்.
+
+
+---
+
 ## Complete technical reference
 
 The [canonical README](README.md) contains the full feature catalogue, language and runtime reference, build and installation instructions, API links, examples, and release notes. This Singapore edition expands the country-language introductions and essential practical guidance; it is not yet a complete line-by-line translation of every technical section. The English README remains the normative source until full translations receive technical review.
