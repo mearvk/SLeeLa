@@ -15,10 +15,10 @@ def executable_path(path):
     return path.with_suffix(path.suffix + ".exe") if sys.platform == "win32" and not path.suffix else path
 
 def c_compiler():
-    return shutil.which("cc") or shutil.which("gcc") or shutil.which("clang")
+    return shutil.which("cc") or shutil.which("gcc") or shutil.which("clang") or (shutil.which("cl") if sys.platform == "win32" else None)
 
 def cpp_compiler():
-    return shutil.which("c++") or shutil.which("g++") or shutil.which("clang++")
+    return shutil.which("c++") or shutil.which("g++") or shutil.which("clang++") or (shutil.which("cl") if sys.platform == "win32" else None)
 
 class NativeDriveTests(unittest.TestCase):
     def test_c_and_cpp_language_detection(self):
