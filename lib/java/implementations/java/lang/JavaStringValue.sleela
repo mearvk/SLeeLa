@@ -1,0 +1,75 @@
+<< lib/java/implementations/java/lang/JavaStringValue.sleela
+   SLeeLa-native implementation of the executable subset of java.lang.String.
+   This is an immutable value wrapper: operations return new scalar String
+   values and never mutate the receiver. It intentionally does not claim
+   UTF-16 indexing, code-point iteration, locale-sensitive casing, regex,
+   normalization, or Java hashCode until the VM exposes the required primitives. >>
+#sleela 2.5
+material;
+
+class JavaStringValue {
+  String value = "";
+
+  < ---- construction / value ----------------------------------------- >
+  JavaStringValue of(String text) {
+    JavaStringValue result = new JavaStringValue();
+    result.value = text;
+    return result;
+  }
+
+  String toString() { return value; }
+  boolean isEmpty() { return value == ""; }
+  boolean equals(JavaStringValue other) {
+    if (other == null) { return false; }
+    return value == other.value;
+  }
+
+  < ---- Java String value operations expressible in the SLeeLa core --- >
+  JavaStringValue concat(JavaStringValue other) {
+    if (other == null) { return null; }
+    return of(value + other.value);
+  }
+
+  JavaStringValue concatText(String other) {
+    if (other == null) { return null; }
+    return of(value + other);
+  }
+
+  JavaStringValue repeatNonNegative(int count) {
+    String result = "";
+    int i = 0;
+    while (i < count) {
+      result = result + value;
+      i = i + 1;
+    }
+    return of(result);
+  }
+
+  < Java String.join-style operation over a supplied String array.
+    Null delimiter and null elements use Java's textual "null" convention.
+    A null array is outside this method's accepted input contract. >
+  JavaStringValue join(String[] parts, String delimiter) {
+    String separator = delimiter;
+    if (separator == null) { separator = "null"; }
+    String result = "";
+    int i = 0;
+    int count = arrayLength(parts);
+    while (i < count) {
+      if (i > 0) { result = result + separator; }
+      if (parts[i] == null) {
+        result = result + "null";
+      } else {
+        result = result + parts[i];
+      }
+      i = i + 1;
+    }
+    return of(result);
+  }
+
+  < ---- explicit scope markers --------------------------------------- >
+  String implementationName() { return "SLeeLa-native/java.lang.String-subset"; }
+  boolean supportsUtf16Indexing() { return false; }
+  boolean supportsCodePointIteration() { return false; }
+  boolean supportsJavaHashCode() { return false; }
+  boolean supportsRegexOperations() { return false; }
+}
