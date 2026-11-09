@@ -63,6 +63,14 @@ sleelactl run decompiler <binary>   # invoke the built decompiler
 sleelactl run math                  # exercise the native math subject (__NativeMath)
 sleelactl info math                 # how the math subject is reached (import math;)
 
+`sleelactl info math` also reads the declarative capability descriptor at
+`impl/subjects/math/capabilities.conf`. It reports the SLeeLa native facade,
+Core fallback classes, C ABI, VM opcode/ABI, and available vector, matrix,
+complex, spectral, and Fourier kernels. The control plane only describes these
+capabilities; the numerical implementations remain in the math library,
+compiler, Core bridge, and native subject. `sleelactl run math` continues to
+run the subject's reference demo rather than pretending to run every kernel.
+
 sleelactl info native-drive
 sleelactl build native-drive main.c helper.c -o build/app
 sleelactl build native-drive plugin.cpp --kind shared --require-sleela-abi -o build/plugin.so
