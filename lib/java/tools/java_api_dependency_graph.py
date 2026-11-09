@@ -94,6 +94,9 @@ def main() -> int:
         declared_package = package_match.group(1) if package_match else qname.rpartition(".")[0]
         imports = []
         local_edges = {}
+        enclosing_type = qname.rpartition(".")[0]
+        if enclosing_type in index and enclosing_type != qname:
+            local_edges[(enclosing_type, "nested-type-owner")] = 1
         for match in IMPORT_RE.finditer(source):
             name = match.group("name")
             is_static = bool(match.group("static"))
