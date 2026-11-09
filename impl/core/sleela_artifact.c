@@ -11,6 +11,7 @@
  * =========================================================================== */
 #define SLEELA_ARTIFACT_EMBED_CORE 1
 #include "sleela_core.c"
+#include "../subjects/math/sleela_math_kernel_c.h"
 
 #include <stdint.h>
 #include <stdio.h>
