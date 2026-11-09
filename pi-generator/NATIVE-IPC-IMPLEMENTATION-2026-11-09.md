@@ -33,7 +33,7 @@ test to the manifest, preserving 12,472 pre-existing entries and the fail-closed
 ## Verification and Pi benchmark boundary
 
 The latest three-OS run is
-[42700006500](https://github.com/mearvk/SLeeLa/actions/runs/42700006500) (in progress)
+[42700006500](https://github.com/mearvk/SLeeLa/actions/runs/42700006500) <strong>PASS</strong> on Linux, macOS, and Windows.
 and includes the new IPC files in the trusted manifest. In run
 [42699765554](https://github.com/mearvk/SLeeLa/actions/runs/42699765554),
 Linux and macOS passed manifest verification, Native Drive tests, IPC codec
