@@ -3,8 +3,8 @@
 This document describes the current `@native` AOT boundary and the Native Drive
 integration. `sleela aot` still finds annotated methods, verifies the supported
 offloadable subset, and emits C source. The new `tools/sleela-native-drive.py`
-can compile direct C/C++ inputs and can compile SLeeLa AOT output into a native
-executable. Unsupported SLeeLa constructs are still rejected; the existing
+can compile direct C/C++ inputs into executables or shared libraries and can
+compile SLeeLa AOT output into a native executable. Unsupported SLeeLa constructs are still rejected; the existing
 C/C++ frontend classes under `lib/cpu` are not full production parsers.
 
 *MEARVK LLC — 2026.*
@@ -95,9 +95,8 @@ See [`../impl/native-drive/README.md`](../impl/native-drive/README.md).
 - A full production C/C++ parser integrated into the SLeeLa frontend (the
   `lib/cpu/SLFrontendC` and `SLFrontendCpp` classes document limited lowering
   models, not complete language implementations).
-- Shared-library/plugin emission and automatic registration with the existing
-  native loader.
-- VM in-process dispatch to native symbols with interpreter fallback and
+- Automatic registration of emitted SLeeLa methods with the existing native
+  loader, plus VM in-process dispatch to native symbols with interpreter fallback and
   differential conformance checks.
 - Expanded AOT coverage for strings, arrays, object layouts, exceptions, and
   language-specific ABI details.
