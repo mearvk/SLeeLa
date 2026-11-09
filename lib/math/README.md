@@ -53,3 +53,10 @@ All implementations were validated with the source-built compiler
 ## Native kernel boundary
 
 The source-level `SLVector`, `SLMatrix`, and `SLComplex` classes remain the language-facing mathematical objects. The first native numerical-structure kernel is being introduced separately under `impl/subjects/math/linear_algebra.{h,cpp}`. Its current C ABI covers dense vector primitives and row-major matrix multiply/transpose/identity. This native kernel is an opt-in standalone component until compiler/VM dispatch is connected; the pure SLeeLa implementations remain the compatibility fallback.
+
+
+## Native numerical coverage
+
+The language-facing types are extended with vector subtraction/normalization/cross product, matrix multiplication/transpose/determinant, and complex subtraction/division. The native C ABI provides the accelerated kernels for vector/matrix operations, LU/QR, complex arithmetic, numerical-array primitives, symmetric eigen decomposition, and radix-2 FFT.
+
+Native entry points are in impl/subjects/math/linear_algebra.h. VM-facing code must pin heap-backed numeric buffers for the full dispatch call; the ABI does not retain VM memory. The current integration links the kernel into runtime executables and the reusable Core archive. The interpreter's heap-array marshalling/opcode hook remains a separate required step, with the pure SLeeLa methods serving as the source-level fallback.
