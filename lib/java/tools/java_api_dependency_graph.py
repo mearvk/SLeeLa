@@ -138,7 +138,7 @@ def main() -> int:
                 target = max(candidates, key=len)
                 if target != qname:
                     local_edges.setdefault((target, "qualified-reference"), line_of(source, match.start()))
-            elif java_namespace(ref):
+            elif java_namespace(ref) and ref not in package_index and ref != declared_package:
                 unresolved.append({"from": qname, "reference": ref, "kind": "qualified-reference", "line": line_of(source, match.start()), "source": rel})
 
         # Resolve simple names only when they are explicitly imported or are
