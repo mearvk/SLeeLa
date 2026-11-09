@@ -12,6 +12,7 @@
 #define _POSIX_C_SOURCE 200809L
 #endif
 #include "sleela_core.h"
+#include "../subjects/math/linear_algebra.h"
 #include "sleela_utf16.h"
 #include "sleela_net.h"
 #include "sleela_io.h"
@@ -1151,9 +1152,6 @@ static int array_valid_handle(SLVM* vm, int h) {
 /* Convert VM-owned scalar arrays to contiguous native double buffers. The
  * array mutex is held by the caller for the entire conversion/dispatch/writeback
  * sequence, so no VM array can be resized or mutated during the native call. */
-#include <math.h>
-#include "../subjects/math/linear_algebra.h"
-
 static int sl_math_array_to_double(SLVM *vm, int handle,
                                    double **data, size_t *length) {
     if (!array_valid_handle(vm, handle) || !data || !length) return SLMATH_INVALID_ARGUMENT;
@@ -1190,12 +1188,13 @@ int slvm_math_dispatch_arrays(SLVM* vm, int operation,
                               size_t aux_rows, size_t aux_cols,
                               double scalar, size_t flags,
                               double* scalar_result) {
-    if (!vm || !array_valid_handle(vm, a_handle)) return SLMATH_INVALID_ARGUMENT;
+    if (!vm) return SLMATH_INVALID_ARGUMENT;
     double *a_data=NULL,*b_data=NULL,*out_data=NULL,*aux_data=NULL;
     size_t a_len=0,b_len=0,out_len=0,aux_len=0;
     double scalar_out=0.0;
     int status=SLMATH_INVALID_ARGUMENT;
     pthread_mutex_lock(&vm->array_mtx);
+    if (!array_valid_handle(vm,a_handle)) { status=SLMATH_INVALID_ARGUMENT; goto done; }
     status=sl_math_array_to_double(vm,a_handle,&a_data,&a_len);
     if(status!=SLMATH_OK) goto done;
     if(b_handle>=0) {
