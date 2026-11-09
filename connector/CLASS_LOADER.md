@@ -22,11 +22,15 @@ by the java28 memory server.
 | **Allow-listed** | A class resolves only if its exact FQCN is allowed, or it is under an allowed package prefix. |
 | **Explicit roots** | `addRoot(dirOrJar)` layers raw `.class` directories and `.jar` files via a `URLClassLoader` over the bridge's own loader. |
 | **Non-initializing by default** | `resolve(name)` does **not** run static initializers; `resolve(name, true)` opts in. |
-| **Cached** | Successful resolutions are memoized (same `Class` instance returned). |
+| **Cached** | Successful resolutions are memoized (same `Class` instance returned); adding a new root invalidates the cache so old misses/hits cannot hide the updated search space. |
+| **Validated names** | Class and package names must be dotted Java identifier chains; malformed names fail before resolution. |
 | **Fail closed** | A disallowed / missing / unlinkable class throws `ClassResolutionException`; junk names throw `IllegalArgumentException`. Never an arbitrary load. |
 
 Thread-safe; `AutoCloseable` (closing releases any `URLClassLoader` opened for
-roots).
+roots and clears its resolution cache). A root must be a directory or a readable
+`.jar`; malformed archives are rejected when configured. Class lookup normalizes
+surrounding whitespace and uses the normalized name consistently for policy and
+cache checks.
 
 ## Usage
 
