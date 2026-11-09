@@ -120,3 +120,14 @@ make -C impl test-linear-algebra test-linear-algebra-vm test-linear-algebra-byte
 ```
 
 The test suite covers vector/matrix primitives, LU solve and inverse, QR orthogonality, complex division, strided arrays, symmetric eigenvalue invariants, FFT round-trip, and typed dispatch. It is deliberately not part of the default make test aggregate yet.
+
+
+## Unified SLeeLa math facade
+
+The general model has three layers:
+
+1. **SLeeLa mathematical objects** — `SLVector`, `SLMatrix`, `SLComplex`, `SLMathEngine`, and the wider `lib/math` domain classes define the language-facing semantics and portable Core fallback.
+2. **Core/VM bridge** — `OP_MATH_CALL` and `slvm_math_dispatch_arrays` validate VM-owned arrays, marshal temporary numeric buffers, dispatch typed operations, and write only the declared result shape back to caller-owned arrays.
+3. **Native numerical kernels** — the stable C ABI implements dense vector and matrix operations, complex arithmetic, LU/inverse, thin QR, symmetric eigendecomposition, and radix-2 FFT.
+
+`SLNativeMathEngine.sleela` is the explicit SLeeLa 3.0 facade for these native operations. Existing classes remain portable fallback implementations; native acceleration is opt-in and does not silently alter older source or artifact semantics. Newly allocated output arrays are valid destinations even when their initial elements are null. Extra output capacity is preserved rather than overwritten.
