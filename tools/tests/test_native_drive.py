@@ -238,6 +238,15 @@ class NativeDriveTests(unittest.TestCase):
         self.assertLessEqual(len(result.stdout) + len(result.stderr), 2048 + 256)
         self.assertIn(b"exceeded --max-output-bytes", result.stderr)
 
+    def test_three_stage_process_pipeline(self):
+        result = subprocess.run([sys.executable, str(SCRIPT), "pipe", "--timeout", "5", "--",
+            sys.executable, "-c", "print('sleela')", "::",
+            sys.executable, "-c", "import sys; print(sys.stdin.read().upper(), end='')", "::",
+            sys.executable, "-c", "import sys; print('['+sys.stdin.read().strip()+']')"],
+            text=True, capture_output=True, timeout=10)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stdout.strip(), "[SLEELA]")
+
     def test_process_pipeline(self):
         result = subprocess.run([sys.executable, str(SCRIPT), "pipe", "--timeout", "5", "--",
             sys.executable, "-c", "print('sleela-pipe')", "::",
