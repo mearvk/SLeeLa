@@ -30,6 +30,8 @@ def render(args: argparse.Namespace) -> str:
     if args.system:
         if not args.user:
             raise ValueError("--system requires an explicit --user account")
+        if args.user in {"root", "0"}:
+            raise ValueError("system native services must run as an unprivileged account, not root")
         if not re.fullmatch(r"[a-z_][a-z0-9_-]{0,31}", args.user):
             raise ValueError("invalid system service user name")
         lines.append(f"User={args.user}")
@@ -39,7 +41,10 @@ def render(args: argparse.Namespace) -> str:
         "Restart=on-failure",
         "RestartSec=3s",
         "NoNewPrivileges=yes",
+        "CapabilityBoundingSet=",
+        "AmbientCapabilities=",
         "PrivateTmp=yes",
+        "PrivateDevices=yes",
         "ProtectSystem=strict",
         "ProtectHome=read-only",
         "ProtectKernelTunables=yes",
