@@ -115,7 +115,9 @@ A plugin may optionally export `sl_native_bind_host(const SLNativeHostAPI*)`.
 The loader supplies a version-1, size-checked host table when the authorized
 module is opened. A plugin copies this table and may call `host_api.invoke`
 synchronously from its typed method to execute an exact, unique compiled SLeeLa
-function name such as `Callback::receive`. Plugins must not retain or invoke the
+function name such as `Callback::receive`. The host must separately install
+`slvm_set_native_callback_authorizer`; callback targets are denied by default
+and the host policy must explicitly approve each callable name. Plugins must not retain or invoke the
 table asynchronously. Callback arguments and results use only the
 same null/bool/int64/double/UTF-8 ABI; raw VM pointers and `SLValue` objects
 are never exposed.
