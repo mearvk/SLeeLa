@@ -199,3 +199,18 @@ Národní edice používají názvy `README.<CC>.md`. Jeden soubor země může 
 - [Repozitář GitHub](https://github.com/mearvk/SLeeLa)
 
 **Stav překladu:** Tato česká edice nyní rozšiřuje úvod, začátky, sestavení, instalaci, jazyk, funkce, architekturu, knihovny, bezpečnost, přispívání a hlavní technická témata. Stále je nutná odborná jazyková revize a následné porovnávání s každou změnou anglického README.
+
+
+## XVI. Cíle, profily a hranice spouštění
+
+SLeeLa odděluje zdrojový kód od cílů sestavení a spuštění. Dokumentovaná rodina cílů zahrnuje `SLVM`, `SLJVM` a `SLIR`; `NATIVE` je omezený cíl podmíněný konkrétní podporou a nelze předpokládat jeho dostupnost na všech platformách. Profily `BASIC_COMPLETE` a `ADVANCED_TOTAL` označují rozdílný rozsah. U každého sestavení ověřte skutečný cíl, profil a podporu platformy.
+
+Reference identifikuje soubor, modul nebo prostředek, ale sama o sobě neopravňuje k jeho spuštění. Pokud program používá soubory, externí knihovny, native bindings nebo systémové prostředky, musí být jasně určeny hranice oprávnění a odpovědnost za spuštění. Popis v dokumentaci sám o sobě nedokazuje bezpečnostní záruku runtime; ověřte implementaci a související testy.
+
+## XVII. Životní cyklus prostředků a ladění
+
+Dokumentujte vlastnictví, životnost a odpovědnost za synchronizaci prostředků sdílených mezi funkcemi nebo vlákny. Rozlišujte local variables, shared object state, VM handles a serializable data. VM-local handle není stabilní formát souboru ani síťová zpráva. Používejte serializační rozhraní definované modulem a testujte invalid, missing a boundary values.
+
+Při ladění zaznamenejte commit, OS, architecture a toolchain. Nejprve sestavte nejmenší relevantní cíl, uchovejte úplný chybový výstup, rozlišujte compiler errors od runtime errors a vytvořte minimální reprodukovatelný příklad. Úspěšné sestavení samo o sobě nedokazuje správné chování runtime.
+
+Validační zpráva má uvádět exact commit, OS/architecture, compiler versions, úplné build/test commands, počty pass/fail/skip a známá omezení. Přeskočené nebo nespouštěné testy se nesmějí počítat jako úspěšné.
