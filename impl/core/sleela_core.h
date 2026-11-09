@@ -410,6 +410,8 @@ int slvm_add_const_str(SLVM* vm, const char* s);
  * code units (including NUL and isolated surrogates) never cross as C strings. */
 SLValue slvm_java_string_new(SLVM* vm, const uint16_t* units, size_t length);
 int slvm_java_string_copy(SLVM* vm, SLValue value, SLJavaString* out);
+int slvm_java_string_root(SLVM* vm, SLValue value);
+int slvm_java_string_unroot(SLVM* vm, SLValue value);
 int slvm_java_string_length(SLVM* vm, SLValue value, int32_t* out_length);
 int slvm_java_string_char_at(SLVM* vm, SLValue value, int32_t index, uint16_t* out_unit);
 int slvm_java_string_code_point_at(SLVM* vm, SLValue value, int32_t index, int32_t* out_code_point);
