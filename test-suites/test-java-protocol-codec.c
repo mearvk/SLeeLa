@@ -32,7 +32,7 @@ int main(void) {
     SleelaJavaInteropFrame frame;
     size_t length = sleela_jlip_encode(bytes, sizeof(bytes), 0x12345678u,
                                        5u, payload, sizeof(payload));
-    assert(length == SLEELA_JLIP_HEADER_BYTES + sizeof(payload));
+    assert(length == SLEELA_SLJIP_HEADER_BYTES + sizeof(payload));
     assert(sleela_jlip_decode(bytes, length, &frame));
     assert(frame.request_id == 0x12345678u);
     assert(frame.opcode == 5u);
