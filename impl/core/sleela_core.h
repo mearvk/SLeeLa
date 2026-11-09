@@ -246,6 +246,12 @@ typedef enum {
      * (len(a)+1)/2 + 1 limbs), pushes the significant result-limb count. Used
      * for sqrt(10005) in the Chudnovsky constant. */
     OP_BIGISQRT,
+    /* Typed native method dispatch. Operand a is argc; stack layout is
+     * [native-module-handle, method-name String, arg0, ..., argN-1].
+     * Only null/bool/int64/double/UTF-8 cross the versioned native ABI.
+     * Unsupported VM-owned values stay in the interpreter and use a matching
+     * SLeeLa bytecode method as fallback. Appended to preserve existing opcodes. */
+    OP_NATIVE_CALL,
     /* Sentinel: one past the last real opcode. Artifact validation uses this so
      * every defined opcode is accepted and adding a new opcode above never
      * requires updating the validator's upper bound again. KEEP LAST. */
@@ -265,7 +271,8 @@ static_assert(OP_BIGDIVMOD == 159, "OP_BIGDIVMOD is append-only opcode 159");
 static_assert(OP_BIGSUB == 160, "OP_BIGSUB is append-only opcode 160");
 static_assert(OP_BIGDIV == 161, "OP_BIGDIV is append-only opcode 161");
 static_assert(OP_BIGISQRT == 162, "OP_BIGISQRT is append-only opcode 162");
-static_assert(OP__COUNT == 163, "the extended ISA must contain 163 opcodes");
+static_assert(OP_NATIVE_CALL == 163, "OP_NATIVE_CALL is append-only opcode 163");
+static_assert(OP__COUNT == 164, "the extended ISA must contain 164 opcodes");
 #else
 _Static_assert(OP_OS_PLATFORM == 103, "legacy OS opcode range must begin at 103");
 _Static_assert(OP_OS_PCLOSE == 123, "legacy OS opcode range must end at 123");
@@ -279,7 +286,8 @@ _Static_assert(OP_BIGDIVMOD == 159, "OP_BIGDIVMOD is append-only opcode 159");
 _Static_assert(OP_BIGSUB == 160, "OP_BIGSUB is append-only opcode 160");
 _Static_assert(OP_BIGDIV == 161, "OP_BIGDIV is append-only opcode 161");
 _Static_assert(OP_BIGISQRT == 162, "OP_BIGISQRT is append-only opcode 162");
-_Static_assert(OP__COUNT == 163, "the extended ISA must contain 163 opcodes");
+_Static_assert(OP_NATIVE_CALL == 163, "OP_NATIVE_CALL is append-only opcode 163");
+_Static_assert(OP__COUNT == 164, "the extended ISA must contain 164 opcodes");
 #endif
 /* GC-hint aggressiveness bands for OP_GC_HINT (operand a). */
 #define SL_GC_HINT_MAX  100   /* clamp ceiling for the 0..100 aggressiveness scale */
