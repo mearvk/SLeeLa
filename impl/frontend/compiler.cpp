@@ -472,6 +472,8 @@ private:
         if(s.finallyBlock)
             throw std::runtime_error("Semantic error: finally lowering is not yet supported by the VM exception milestone");
         const CatchClause& clause=s.catches.front();
+        if(ctx_->slotOf(clause.variable)>=0)
+            throw std::runtime_error("Semantic error: catch variable shadows an existing method local; use a distinct name in this exception milestone");
         if(clause.type!="Any")
             throw std::runtime_error("Semantic error: catch-all exception binding must use type Any until typed exception matching is implemented");
         const int catchSlot=ctx_->declare(clause.variable);
