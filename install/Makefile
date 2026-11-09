@@ -149,6 +149,8 @@ install-check:
 	@test -f quick-safe-install.ps1
 	@test -f quick-safe-install.cmd
 	@test -f install-runtime.py
+	@test -f ../tools/sleela-native-drive.py
+	@test -f ../tools/sleela-native-service.py
 	@test -f system-install.sh
 	@grep -q 'Required compiled product missing' quick-safe-install.sh
 	@grep -q 'System-wide' README.md
