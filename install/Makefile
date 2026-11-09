@@ -409,6 +409,7 @@ do-install:
 	install -m 755 "$(REPO_ROOT)/bin/sleelactl" "$(DESTDIR)$(BINDIR)/sleelactl"
 	install -d "$(RUNTIME_DIR)/bin/sleelactl.d"
 	install -m 644 "$(REPO_ROOT)/bin/sleelactl.d/registry.conf" "$(RUNTIME_DIR)/bin/sleelactl.d/registry.conf"
+	install -m 644 "$(REPO_ROOT)/bin/sleelactl.d/math-capabilities.conf" "$(RUNTIME_DIR)/bin/sleelactl.d/math-capabilities.conf"
 	@echo "Staging standard library (MODULES=$(MODULES); SERVERS=$(SERVERS); EXCLUDE=$(EFFECTIVE_EXCLUDE))"
 	python3 "$(REPO_ROOT)/install/install-runtime.py" stage-lib "$(REPO_ROOT)" "$(RUNTIME_DIR)/lib" "$(MODULES)" "$(EFFECTIVE_EXCLUDE)"
 	install -m 644 "$(REPO_ROOT)/tools/verify-before-execution.py" "$(RUNTIME_DIR)/tools/"
