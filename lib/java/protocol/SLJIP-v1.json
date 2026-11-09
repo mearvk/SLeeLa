@@ -48,6 +48,7 @@
   },
   "limits": {
     "max_parameters": 256,
-    "max_live_handles": 65536
+    "max_live_handles": 65536,
+    "max_exception_message_code_points": 2048
   }
 }
