@@ -2348,6 +2348,8 @@ static SLResult run_thread(SLThread* t) {
             for(int i=f->nargs;i<f->nlocals;i++){ PUSH(slval_null()); } ip=f->entry;
         } break;
         case OP_NATIVE_OPEN: {
+            if (native_callback_vm == vm)
+                TERR("native callback cannot recursively invoke native-module operations");
             SLValue path_value = POP();
             SLNativeHandle handle = SL_NATIVE_HANDLE_INVALID;
             SLNativeStatus status;
@@ -2362,6 +2364,8 @@ static SLResult run_thread(SLThread* t) {
             PUSH(slval_int((int64_t)handle));
         } break;
         case OP_NATIVE_CLOSE: {
+            if (native_callback_vm == vm)
+                TERR("native callback cannot recursively invoke native-module operations");
             SLValue handle_value = POP();
             SLNativeStatus status;
             if (handle_value.type != SL_INT || handle_value.as.i <= 0 ||
