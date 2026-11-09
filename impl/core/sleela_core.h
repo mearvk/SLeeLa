@@ -6,7 +6,7 @@
 
 /* Stable VM artifact/runtime ABI identifiers. */
 #define SLEELA_VM_ABI_MAJOR 1u
-#define SLEELA_VM_ABI_MINOR 6u
+#define SLEELA_VM_ABI_MINOR 7u
 #define SLEELA_ARTIFACT_FORMAT_VERSION 3u
 #include <stdint.h>
 #include "../../os-level-support/osls_vm_bridge.h"
@@ -277,6 +277,11 @@ typedef enum {
     OP_TRY_PUSH,
     OP_TRY_POP,
     OP_THROW,
+    /* Typed built-in math dispatch. Operand a is a stable SLMATHFunction ID;
+     * stack is [fallback marker, helper-name String, numeric args...]. If the
+     * kernel declines a VM-owned argument, dispatch falls back to the matching
+     * synthesized __NativeMath bytecode helper. */
+    OP_MATH_CALL,
     /* Sentinel: one past the last real opcode. Artifact validation uses this so
      * every defined opcode is accepted and adding a new opcode above never
      * requires updating the validator's upper bound again. KEEP LAST. */
@@ -305,7 +310,8 @@ static_assert(OP_JSTR_FROM_UTF8 == 175, "Java String UTF-8 conversion is append-
 static_assert(OP_TRY_PUSH == 176, "OP_TRY_PUSH is append-only opcode 176");
 static_assert(OP_TRY_POP == 177, "OP_TRY_POP is append-only opcode 177");
 static_assert(OP_THROW == 178, "OP_THROW is append-only opcode 178");
-static_assert(OP__COUNT == 179, "the extended ISA must contain 179 opcodes");
+static_assert(OP_MATH_CALL == 179, "OP_MATH_CALL is append-only opcode 179");
+static_assert(OP__COUNT == 180, "the extended ISA must contain 180 opcodes");
 #else
 _Static_assert(OP_OS_PLATFORM == 103, "legacy OS opcode range must begin at 103");
 _Static_assert(OP_OS_PCLOSE == 123, "legacy OS opcode range must end at 123");
@@ -328,7 +334,8 @@ _Static_assert(OP_JSTR_FROM_UTF8 == 175, "Java String UTF-8 conversion is append
 _Static_assert(OP_TRY_PUSH == 176, "OP_TRY_PUSH is append-only opcode 176");
 _Static_assert(OP_TRY_POP == 177, "OP_TRY_POP is append-only opcode 177");
 _Static_assert(OP_THROW == 178, "OP_THROW is append-only opcode 178");
-_Static_assert(OP__COUNT == 179, "the extended ISA must contain 179 opcodes");
+_Static_assert(OP_MATH_CALL == 179, "OP_MATH_CALL is append-only opcode 179");
+_Static_assert(OP__COUNT == 180, "the extended ISA must contain 180 opcodes");
 #endif
 /* GC-hint aggressiveness bands for OP_GC_HINT (operand a). */
 #define SL_GC_HINT_MAX  100   /* clamp ceiling for the 0..100 aggressiveness scale */

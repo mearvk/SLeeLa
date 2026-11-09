@@ -11,6 +11,7 @@
  * =========================================================================== */
 #define SLEELA_ARTIFACT_EMBED_CORE 1
 #include "sleela_core.c"
+#include "../subjects/math/sleela_math_kernel_c.h"
 
 #include <stdint.h>
 #include <stdio.h>
@@ -154,6 +155,9 @@ static int validate_loaded_vm(const SLVM* vm, char* error, size_t error_size) {
                 break;
             case OP_NATIVE_CALL:
                 if (in->a < 0 || in->a > STACK_MAX - 2) { abi_error(error,error_size,"native-call argument count outside operand-stack range"); return 0; }
+                break;
+            case OP_MATH_CALL:
+                if (in->a < 0 || in->a >= SL_MATH_FUNCTION_COUNT) { abi_error(error,error_size,"math function id outside native math table"); return 0; }
                 break;
             case OP_JMP: case OP_JMPF: case OP_TRY_PUSH:
                 if (in->a < 0 || in->a >= vm->codelen) { abi_error(error,error_size,"control-flow target outside code"); return 0; }

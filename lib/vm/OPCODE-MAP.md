@@ -198,6 +198,7 @@ This is the human-readable support map for the canonical source-defined SLeeLa I
 176 | `OP_TRY_PUSH` | Implemented | `impl/core/sleela_core.c`
 177 | `OP_TRY_POP` | Implemented | `impl/core/sleela_core.c`
 178 | `OP_THROW` | Implemented | `impl/core/sleela_core.c`
+179 | `OP_MATH_CALL` | Implemented | `impl/core/sleela_core.c` + `subjects/math/sleela_math_kernel_c.cpp`
 
 
 
