@@ -56,7 +56,9 @@ Class resolution is non-initializing. Constructors and method invocation are
 explicit execution requests. Only public constructors, methods, and fields are exposed. Field reads/writes must match static versus instance ownership.
 The endpoint's class/package allow-list is configured out-of-band through
 SLEELA_JAVA_ALLOW_CLASSES and SLEELA_JAVA_ALLOW_PACKAGES, as comma-separated
-binary names/prefixes. A request cannot grant itself permission.
+binary names/prefixes. Optional class-directory/JAR roots are supplied through
+SLEELA_JAVA_CLASS_PATHS using the platform path separator. A request cannot grant
+itself permission.
 
 ## Response payload
 
@@ -73,8 +75,10 @@ Handles are monotonically allocated per process session and invalidated on
 RELEASE or CLOSE. A handle is never a pointer and is never valid in another
 session. No request executes a shell command. No class initialization occurs
 during RESOLVE. Static initialization may occur only as a consequence of an
-explicit CONSTRUCT or INVOKE_STATIC request. Arguments are type-checked by
-reflection and incompatible conversions fail with a structured error.
+explicit CONSTRUCT, INVOKE_STATIC, GET_STATIC_FIELD, or SET_STATIC_FIELD request. Arguments are type-checked by
+reflection. I32 values may be range-checked and widened to byte, short, char,
+int, or long; F64 may be range-checked and narrowed to float or retained as
+double. Incompatible conversions fail with a structured error.
 
 ## Current integration boundary
 
