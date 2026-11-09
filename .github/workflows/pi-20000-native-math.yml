@@ -1,0 +1,98 @@
+name: Pi 20,000-digit native math benchmark
+
+on:
+  push:
+    branches: [pi-20000-sleelactl-native-math]
+  pull_request:
+    branches: [master, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pi-20000:
+    name: Linux — SLeeLa native math and Pi 20k
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Install build and reference dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential pkg-config python3 python3-pip libx11-dev libfreetype-dev libfontconfig1-dev
+          python3 -m pip install --break-system-packages mpmath
+
+      - name: Regenerate trusted source manifest
+        run: python3 tools/generate-sha256-manifest.py --root . --output security/sha256-manifest.json
+
+      - name: Build SLeeLa runtime
+        env:
+          SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
+        run: make -C impl clean all
+
+      - name: Run the registered native math subject through sleelactl
+        env:
+          SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
+        run: sh bin/sleelactl run math
+
+      - name: Generate 20,000 fractional digits with native big-integer math
+        env:
+          SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
+        run: |
+          rm -f pi-chudnovsky.txt
+          /usr/bin/time -v -o pi-generator/benchmark-time.txt \
+            timeout 30m impl/build/sleela run pi-generator/PiChudnovsky.sleela
+          test -s pi-chudnovsky.txt
+
+      - name: Verify every digit against an independent high-precision reference
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          from pathlib import Path
+          import mpmath
+
+          target = 20_000
+          output = Path("pi-chudnovsky.txt").read_text(encoding="ascii").strip()
+          mpmath.mp.dps = target + 80
+          expected = mpmath.nstr(mpmath.mp.pi, n=target + 1, strip_zeros=False)
+
+          if len(output) != target + 2:
+              raise SystemExit(f"FAIL: expected {target + 2} characters (3. plus {target} digits), got {len(output)}")
+          if not output.startswith("3."):
+              raise SystemExit("FAIL: output does not begin with 3.")
+          if output != expected:
+              mismatch = next((i for i, (a, b) in enumerate(zip(output, expected)) if a != b), min(len(output), len(expected)))
+              raise SystemExit(f"FAIL: digit mismatch at character offset {mismatch}; output length={len(output)}, reference length={len(expected)}")
+
+          digest = hashlib.sha256(output.encode("ascii")).hexdigest()
+          print(f"PASS: all {target:,} fractional digits match the independent mpmath reference")
+          print(f"characters={len(output)}")
+          print(f"sha256={digest}")
+          print(f"prefix={output[:52]}")
+          print(f"suffix={output[-52:]}")
+          Path("pi-generator/benchmark-verification.txt").write_text(
+              f"status=PASS\nfractional_digits={target}\ncharacters={len(output)}\nsha256={digest}\n",
+              encoding="utf-8"
+          )
+          PY
+
+      - name: Report elapsed time and peak resident memory
+        if: always()
+        run: |
+          if [ -f pi-generator/benchmark-time.txt ]; then
+            grep -E 'Elapsed (wall clock) time|Maximum resident set size' pi-generator/benchmark-time.txt || true
+          fi
+
+      - name: Preserve benchmark output and measurements
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sleela-pi-20000-benchmark
+          if-no-files-found: warn
+          path: |
+            pi-chudnovsky.txt
+            pi-generator/benchmark-time.txt
+            pi-generator/benchmark-verification.txt
