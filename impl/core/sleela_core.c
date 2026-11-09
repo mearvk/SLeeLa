@@ -670,7 +670,7 @@ static SLJavaStringInstance *java_string_get(SLVM *vm, SLValue value) {
     return instance;
 }
 SLValue slvm_java_string_new(SLVM *vm, const uint16_t *units, size_t length) {
-    if (!vm || (!units && length)) return slval_null();
+    if (!vm || (!units && length) || length > (SIZE_MAX - sizeof(SLJavaStringInstance)) / sizeof(uint16_t)) return slval_null();
     SLJavaStringInstance *instance = (SLJavaStringInstance *)calloc(1, sizeof(*instance));
     if (!instance) return slval_null();
     sljava_string_init_empty(&instance->value);
@@ -3282,7 +3282,7 @@ static SLResult run_thread(SLThread* t) {
                     gc_write_barrier(&vm->gc, array_gc_object(vm, av.as.h),
                         old.type==SL_STRUCT?struct_gc_object(vm,old.as.h):array_gc_object(vm,old.as.h),
                         val.type==SL_STRUCT?struct_gc_object(vm,val.as.h):array_gc_object(vm,val.as.h));
-                if (val.type == SL_STRUCT || val.type == SL_ARRAY) ai->has_refs = 1;
+                if (val.type == SL_STRUCT || val.type == SL_ARRAY || val.type == SL_UTF16) ai->has_refs = 1;
                 ai->elems[idxv.as.i]=val;
                 PUSH(val);
             } else {
