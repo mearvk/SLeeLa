@@ -202,3 +202,16 @@ Rekhoda i-commit, i-OS, i-architecture ne-toolchain. Qala ngethagethi encinane e
 Ingxelo yokuqinisekisa mayibonise i-commit echanekileyo, i-OS/architecture, iinguqulelo ze-compiler, imiyalelo epheleleyo yokwakha nokuvavanya, kunye namanani e-`pass`, `fail` ne-`skip`. Uvavanyo olutsityiweyo okanye olungazange luqhutywe alunakubalwa njengoluphumeleleyo.
 
 **Inqaku lokugubungela iilwimi:** La macandelo e-isiZulu nesiXhosa aqala ukunika umxholo wobugcisa ongaphezulu kweentshayelelo ezimfutshane. Afuna uphononongo lwabantu abathetha ezi lwimi njengolwimi lweenkobe nabanolwazi lobugcisa; akufanele kubhengezwe njengoguqulelo olupheleleyo lwezikhokelo zonke.
+
+
+## XIV. API-contracte, versoenbaarheid en toetsstrategie
+
+Wanneer 'n nuwe API bygevoeg word, dokumenteer die insette, uitsette, fouttoestande, data-eienaarskap en moontlike side effects. Voorbeelde behoort normale gebruik én die hantering van invalid of missing input te wys. Moenie gedrag as gewaarborg beskryf tensy die implementation en toepaslike tests dit bevestig nie.
+
+Verdeel toetse volgens die compiler pipeline: lexing/parsing, semantic analysis, IR lowering, code generation, VM execution en native integration. Bewaar vir elke regression case die kleinste reproduceerbare inset, die verwagte resultaat en die werklike resultaat. API-veranderinge moet backward compatibility, migration steps en gevolge vir bestaande examples beskryf.
+
+## XV. Lokalisering en meertalige instandhouding
+
+Hou technical identifiers, commands, paths, syntax en code blocks onveranderd oor taalweergawes heen. Vertaal verduidelikende teks, nie tokens of name wat in source code gebruik word nie. Onderskei Afrikaans, isiZulu en isiXhosa as afsonderlike taalweergawes; moenie aanvaar dat een vertaling die ander gemeenskappe verteenwoordig nie.
+
+Kontroleer Markdown links, opskrifvlakke, code fences en voorbeelde ná elke verandering. Wanneer canonical English documents verander, vergelyk die ooreenstemmende afdelings en werk die vertaling inhoudelik by. Inhoud wat nog nie deur moedertaalsprekers of tegniese beoordelaars nagegaan is nie, moet so gemerk word.
