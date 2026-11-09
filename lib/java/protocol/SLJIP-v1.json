@@ -1,0 +1,45 @@
+{
+  "protocol": "SLJIP",
+  "version": 1,
+  "byte_order": "big-endian",
+  "frame": {
+    "magic_ascii": "SLJV",
+    "header_bytes": 15,
+    "max_payload_bytes": 1048576,
+    "max_string_bytes": 262144,
+    "response_opcode_mask": 128
+  },
+  "opcodes": {
+    "PING": 1,
+    "RESOLVE": 2,
+    "CONSTRUCT": 3,
+    "INVOKE_INSTANCE": 4,
+    "INVOKE_STATIC": 5,
+    "RELEASE": 6,
+    "CLOSE": 7
+  },
+  "value_tags": {
+    "NULL": 0,
+    "FALSE": 1,
+    "TRUE": 2,
+    "I32": 3,
+    "I64": 4,
+    "F64": 5,
+    "UTF8": 6,
+    "HANDLE": 7
+  },
+  "response": {
+    "success_status": 0,
+    "error_status": 1,
+    "error_fields": ["exception_class_utf8", "safe_message_utf8"]
+  },
+  "allowlist_environment": {
+    "classes": "SLEELA_JAVA_ALLOW_CLASSES",
+    "packages": "SLEELA_JAVA_ALLOW_PACKAGES",
+    "separator": ","
+  },
+  "limits": {
+    "max_parameters": 256,
+    "max_live_handles": 65536
+  }
+}
