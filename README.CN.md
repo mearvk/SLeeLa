@@ -199,3 +199,26 @@ make creator
 - [GitHub 仓库](https://github.com/mearvk/SLeeLa)
 
 **翻译状态：** 本版本已扩展项目介绍、入门、构建、安装、语言、功能、架构、库、安全、贡献和主要技术主题。仍需专业语言审校，并与英文 README 的后续变更逐项核对。
+
+
+## 十六、编译目标、配置档案与执行边界
+
+SLeeLa 将源代码与 build/execution targets 区分开来。已记录的目标系列包括 `SLVM`、`SLJVM` 和 `SLIR`；`NATIVE` 是受限制且有条件的目标，不应假设所有平台均可使用。`BASIC_COMPLETE` 与 `ADVANCED_TOTAL` 表示不同的 profile scope。每次构建都应确认实际 target、profile 和平台支持情况。
+
+Reference 用于识别文件、模块或资源，本身并不授予执行权限。程序使用文件、外部库、native bindings 或系统资源时，必须明确权限边界和执行责任。文档中的功能描述不能单独证明 runtime security guarantee；应结合实现代码和相应测试进行判断。
+
+## 十七、资源生命周期、错误处理与调试
+
+对跨函数或线程共享的资源，应记录 ownership、lifetime 和 synchronization responsibilities。区分 local variables、shared object state、VM handles 与 serializable data。VM-local handle 不是稳定的文件格式或网络消息。使用模块定义的 serialization interface，并测试 invalid、missing 和 boundary values。
+
+调试时记录 commit、操作系统、架构和 toolchain。先构建最小相关 target，再运行相应测试；保留完整错误输出，区分 compiler errors 与 runtime errors，并尽可能建立最小可复现案例。Build 成功并不意味着 runtime behavior 已正确。
+
+验证报告应列出 exact commit、OS/architecture、compiler versions、完整 build/test commands、pass/fail/skip 数量及已知限制。Skipped 或未执行的 tests 不得计为 passed。
+
+## 十八、跨平台与国际文档维护
+
+不同操作系统的编译器、系统依赖、窗口后端、文件路径和安装权限可能不同。不要将 Linux 命令直接视为 Windows 或 macOS 的通用步骤。请结合 [platform support matrix](docs/PLATFORM-SUPPORT.md) 与 [installation guide](install/README.md)，记录实际测试的平台和工具链。
+
+Country-specific README 是不同地区用户的技术文档入口，不取代 normative language specification 或 module API documentation。英文源文档更新后，应逐项检查翻译是否过时。Technical identifiers、commands、paths 和 code examples 应保持不变；尚未完成语言或技术审校的内容应明确标注。
+
+**扩展翻译状态：** 简体中文指南现已增加 target/profile、执行权限边界、资源生命周期、调试与测试报告、跨平台安装注意事项及国际文档维护说明。
