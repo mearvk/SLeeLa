@@ -593,7 +593,8 @@ slmath_status slmath_vm_dispatch(slmath_operation operation,
         return slmath_symmetric_eigen(a->data,a->rows,out->data,aux->data,
                                       flags,scalar);
     case SLMATH_OP_FFT:
-        if (flags > 1 || a_shape == 0 || (a_shape % 2) != 0 ||
+        if (flags > 1) return SLMATH_INVALID_ARGUMENT;
+        if (a_shape == 0 || (a_shape % 2) != 0 ||
             out_shape < a_shape || a->length < a_shape)
             return SLMATH_DIMENSION_MISMATCH;
         if (out->data != a->data)
