@@ -132,3 +132,38 @@ SLeeLa on MEARVK LLC:n kehittämä.
 ## Käännöksen tila
 
 Tämä suomenkielinen maaeditio on laajennettu tekninen opas, joka kattaa projektin keskeiset käsitteet, rakentamisen, asennuksen, varmennuksen ja dokumentaatiopolut. Se ei vielä ole kanonisen englanninkielisen README-tiedoston täydellinen rivi riviltä tehty käännös. Ennen täydellisen käännöksen ja teknisen tarkastuksen valmistumista [README.md](README.md) on normatiivinen tekninen lähde.
+
+
+## 11. Kääntäjän rakenne ja suoritusmalli
+
+SLeeLa erottaa lähdekielen, kääntäjän frontendin, välimuodon, koodin generoinnin ja runtime-suorituksen. Kääntäjän julkaisuversio, syntaksiversio ja VM/ISA-versio ovat eri asioita. Ominaisuuden maininta määrittelyssä ei todista, että se olisi toteutettu kaikilla kohteilla.
+
+Tavallinen putki lukee UTF-8-`.sleela`-lähdetiedostoja, tekee leksikaalisen ja syntaktisen analyysin, tarkistaa symbolit ja tyypit, muuntaa rakenteisen välimuodon, tuottaa tulosteen tuetuille VM- tai välikohteille ja suorittaa tuloksen runtimessa. Normatiivinen kielioppi on [SLEELA.syntax](SLEELA.syntax); katso myös [source documentation](markdown/SOURCE.md) ja [compiler documentation](markdown/COMPILER.md).
+
+## 12. Tyypit, oliot ja kirjastot
+
+Dokumentoituun lähdetyyppien joukkoon kuuluvat `int`, `double`, `boolean`, `String`, `void`, ilmoitetut `struct`-tyypit ja tuetut reference-type signatures -muodot. `int`, `long` ja `int64` ovat etumerkillisiä 64-bittisiä kokonaislukuja. `int128` hyväksytään kokonaislukutyypiksi, mutta nykyinen dokumentoitu toteutus perustuu edelleen 64 bittiin.
+
+`struct` on nimetty koosterakenne. VM:n hallitsema struct handle ei ole raaka osoitin; sijoitus ja parametrien välitys jakavat saman instanssin, ja yhtäsuuruus perustuu identiteettiin. Käytä dokumentoituja `structPack(instance)`- ja `structUnpack(TypeName, json)`-toimintoja siirrettävään serialisointiin. Luokat sisältävät kenttiä ja metodeja; perintä, sisäkkäiset luokat ja generics ovat syntaksiversion rajaamia.
+
+Keskeisiä moduuleja ovat `lib/advantage` (mallipohjainen arviointi, matematiikka, integraatio, luokittelu ja reititettävä tuloste), `lib/xml` (XML DOM), `lib/text` (teksti- ja merkkijono-operaatiot), `lib/sleeladoc` (lähdedokumentaatio ja CLI), `lib/cpu`, `lib/xlt` (CPU-profiilit ja ajoitusviitteet) sekä `recursion/stanchion` (C/C++-rekursioprototyypit). Moduulin olemassaolo ei todista tuotantovalmiutta; tarkista testit ja alustarajoitukset.
+
+## 13. Silmukoiden ajoitus, native-integraatio ja testaus
+
+`@loopDelay` ja `@loopBudget` määrittävät silmukan viiveen tai kokonaisajan budjetin. Ne muunnetaan VM-käskyksi `OP_SLEEP` (ISA 157); sisäänrakennettu `sleep(ms)` käyttää samaa käskyä. Katso [SLEELA.syntax §32](SLEELA.syntax) ja [Loop Timing API](api/sleela/3.0/LOOP_TIMING_API.md).
+
+Repository sisältää C/C++-komponentteja ja rajatun native-koodin generointipolun. `@native` ja `sleela aot` eivät anna yleistä lupaa suorittaa mielivaltaista native-koodia. C/C++-rajapintojen on määriteltävä ABI, kutsukäytäntö, muistin omistajuus, tietojen asettelu, virheenkäsittely ja alustariippuvuudet.
+
+Tyypilliset komennot:
+
+```sh
+make
+make -C impl all
+bash ./test-suites/run-all.sh --all
+sudo make install
+make install PREFIX="$HOME/.local"
+```
+
+Koonti tarvitsee yleensä GCC:n tai Clangin ja GNU Maken; osa työkaluista käyttää Python 3:a. Katso [installation guide](install/README.md), [platform matrix](docs/PLATFORM-SUPPORT.md) ja [testing policy](markdown/TESTING.md). Testiraporttien on erotettava pass, fail ja skip. PASS koskee vain ilmoitettua tarkastuksen laajuutta ja ajankohtaa.
+
+**Päivitetty käännöstila:** Suomenkielinen opas kattaa nyt myös kääntäjän putken, tyypit, oliomallin, kirjastot, silmukoiden ajoituksen, native-integraation, koonnin, asennuksen ja testauksen. Se ei ole koko kanonisen englanninkielisen README:n täydellinen rivikohtainen käännös.
