@@ -97,6 +97,34 @@ class NativeDriveTests(unittest.TestCase):
             self.assertIn("ABI mismatch", result.stderr)
             self.assertFalse(out.exists())
 
+    def test_systemd_unit_generation_is_unprivileged_and_hardened(self):
+        generator = SCRIPT.parents[0] / "sleela-native-service.py"
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            exe = root / "worker"
+            exe.write_text("#!/bin/sh\\nexit 0\\n")
+            exe.chmod(0o755)
+            result = subprocess.run([sys.executable, str(generator), "--name", "sleela-worker",
+                "--executable", str(exe), "--working-directory", str(root)],
+                text=True, capture_output=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn("NoNewPrivileges=yes", result.stdout)
+            self.assertIn("ProtectSystem=strict", result.stdout)
+            self.assertIn("ExecStart=", result.stdout)
+            self.assertNotIn("systemctl", result.stdout)
+
+    def test_systemd_unit_rejects_unsafe_unit_names(self):
+        generator = SCRIPT.parents[0] / "sleela-native-service.py"
+        with tempfile.TemporaryDirectory() as tmp:
+            exe = pathlib.Path(tmp) / "worker"
+            exe.write_text("#!/bin/sh\\nexit 0\\n")
+            exe.chmod(0o755)
+            result = subprocess.run([sys.executable, str(generator), "--name", "../bad",
+                "--executable", str(exe), "--working-directory", tmp],
+                text=True, capture_output=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("service name", result.stderr)
+
     def test_process_pipeline(self):
         result = subprocess.run([sys.executable, str(SCRIPT), "pipe", "--timeout", "5", "--",
             sys.executable, "-c", "print('sleela-pipe')", "::",
