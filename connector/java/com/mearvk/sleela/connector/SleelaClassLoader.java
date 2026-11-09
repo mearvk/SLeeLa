@@ -38,6 +38,7 @@ public final class SleelaClassLoader implements AutoCloseable {
     private final ClassLoader parent;
     private final List<URL> roots = new ArrayList<>();
     private volatile URLClassLoader rootLoader;
+    private boolean resolutionStarted;
 
     public SleelaClassLoader() {
         this(SleelaClassLoader.class.getClassLoader());
@@ -80,6 +81,9 @@ public final class SleelaClassLoader implements AutoCloseable {
 
         URL url = root.toUri().toURL();
         synchronized (roots) {
+            if (resolutionStarted) {
+                throw new IOException("configure all Java class roots before the first class resolution");
+            }
             if (roots.contains(url)) {
                 return this;
             }
@@ -118,6 +122,7 @@ public final class SleelaClassLoader implements AutoCloseable {
             throw new ClassResolutionException("class not allow-listed: " + name);
         }
         synchronized (roots) {
+            resolutionStarted = true;
             Class<?> cached = cache.get(name);
             if (cached != null) {
                 if (initialize) {
@@ -172,6 +177,7 @@ public final class SleelaClassLoader implements AutoCloseable {
             rootLoader = null;
             roots.clear();
             cache.clear();
+            resolutionStarted = false;
             if (current != null) {
                 try {
                     current.close();
