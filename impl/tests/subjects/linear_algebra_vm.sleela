@@ -11,12 +11,19 @@ class LinearAlgebraVmSmoke {
         mathVectorAdd(a, b, sum, vectorLength);
         print("MATH_VECTOR_ADD");
         print(arrayGet(sum, 0)); print(arrayGet(sum, 1)); print(arrayGet(sum, 2));
+        if (arrayGet(sum, 0) != 5.0 || arrayGet(sum, 1) != 7.0 || arrayGet(sum, 2) != 9.0) { throw "vector add mismatch"; }
         print("MATH_OUTPUT_EXTRA_CAPACITY"); print(arrayGet(sum, 4));
-        print("MATH_VECTOR_DOT"); print(mathVectorDot(a, b, vectorLength));
-        print("MATH_VECTOR_NORM"); print(mathVectorNorm(a, vectorLength));
+        if (arrayGet(sum, 4) != 99.0) { throw "native math overwrote extra output capacity"; }
+        double dot = mathVectorDot(a, b, vectorLength);
+        print("MATH_VECTOR_DOT"); print(dot);
+        if (dot != 32.0) { throw "vector dot mismatch"; }
+        double vectorNorm = mathVectorNorm(a, vectorLength);
+        print("MATH_VECTOR_NORM"); print(vectorNorm);
+        if (vectorNorm < 3.7 || vectorNorm > 3.8) { throw "vector norm mismatch"; }
         let scaled = arrayNew(3);
         mathVectorScale(a, 2.0, scaled, vectorLength);
         print("MATH_VECTOR_SCALE"); print(arrayGet(scaled, 2));
+        if (arrayGet(scaled, 2) != 6.0) { throw "vector scale mismatch"; }
 
         let ma = arrayNew(4);
         let mb = arrayNew(4);
@@ -30,27 +37,36 @@ class LinearAlgebraVmSmoke {
         print("MATH_MATRIX_MULTIPLY");
         print(arrayGet(mc, 0)); print(arrayGet(mc, 1));
         print(arrayGet(mc, 2)); print(arrayGet(mc, 3));
+        if (arrayGet(mc, 0) != 19.0 || arrayGet(mc, 1) != 22.0 ||
+            arrayGet(mc, 2) != 43.0 || arrayGet(mc, 3) != 50.0) { throw "matrix multiply mismatch"; }
         let mt = arrayNew(4);
         mathMatrixTranspose(ma, mt, matrixOrder, matrixOrder);
         print("MATH_MATRIX_TRANSPOSE");
         print(arrayGet(mt, 0)); print(arrayGet(mt, 1));
         print(arrayGet(mt, 2)); print(arrayGet(mt, 3));
+        if (arrayGet(mt, 0) != 1.0 || arrayGet(mt, 1) != 3.0 ||
+            arrayGet(mt, 2) != 2.0 || arrayGet(mt, 3) != 4.0) { throw "matrix transpose mismatch"; }
         let diff = arrayNew(3);
         mathVectorSubtract(b, a, diff, vectorLength);
         print("MATH_VECTOR_SUBTRACT"); print(arrayGet(diff, 2));
+        if (arrayGet(diff, 0) != 3.0 || arrayGet(diff, 1) != 3.0 || arrayGet(diff, 2) != 3.0) { throw "vector subtract mismatch"; }
         let unit = arrayNew(3);
         mathVectorNormalize(a, unit, vectorLength);
         print("MATH_VECTOR_NORMALIZE"); print(arrayGet(unit, 0));
+        if (arrayGet(unit, 0) < 0.26 || arrayGet(unit, 0) > 0.28) { throw "vector normalize mismatch"; }
         let cross = arrayNew(3);
         mathVectorCross3(a, b, cross);
         print("MATH_VECTOR_CROSS3"); print(arrayGet(cross, 2));
+        if (arrayGet(cross, 0) != -3.0 || arrayGet(cross, 1) != 6.0 || arrayGet(cross, 2) != -3.0) { throw "vector cross mismatch"; }
 
         let inv = arrayNew(4);
         mathMatrixInverse(ma, inv, matrixOrder);
         print("MATH_MATRIX_INVERSE"); print(arrayGet(inv, 0));
+        if (arrayGet(inv, 0) < -2.001 || arrayGet(inv, 0) > -1.999) { throw "matrix inverse mismatch"; }
         let determinant = arrayNew(1);
         mathMatrixDeterminant(ma, determinant, matrixOrder);
         print("MATH_MATRIX_DETERMINANT"); print(arrayGet(determinant, 0));
+        if (arrayGet(determinant, 0) != -2.0) { throw "matrix determinant mismatch"; }
         let qrQ = arrayNew(6);
         let qrR = arrayNew(4);
         let tall = arrayNew(6);
@@ -60,6 +76,7 @@ class LinearAlgebraVmSmoke {
         let qrRows = 3; let qrCols = 2;
         mathMatrixQR(tall, qrQ, qrR, qrRows, qrCols);
         print("MATH_MATRIX_QR"); print(arrayGet(qrR, 0));
+        if (arrayGet(qrR, 0) <= 0.0) { throw "QR factorization mismatch"; }
         let eigenValues = arrayNew(2);
         let eigenVectors = arrayNew(4);
         let symmetric = arrayNew(4);
@@ -68,11 +85,17 @@ class LinearAlgebraVmSmoke {
         let eigenOrder = 2; let eigenSweeps = 32;
         mathSymmetricEigen(symmetric, eigenValues, eigenVectors, eigenOrder, eigenSweeps);
         print("MATH_SYMMETRIC_EIGEN"); print(arrayGet(eigenValues, 0));
+        double eigenSum = arrayGet(eigenValues, 0) + arrayGet(eigenValues, 1);
+        double eigenProduct = arrayGet(eigenValues, 0) * arrayGet(eigenValues, 1);
+        if (eigenSum < 3.999 || eigenSum > 4.001 ||
+            eigenProduct < 2.999 || eigenProduct > 3.001) { throw "symmetric eigen mismatch"; }
         let fftIn = arrayNew(8);
         let fftOut = arrayNew(8);
         arraySet(fftIn, 0, 1.0);
         let fftLength = 8; let fftInverse = 0; mathFFT(fftIn, fftOut, fftLength, fftInverse);
         print("MATH_FFT"); print(arrayGet(fftOut, 0));
+        if (arrayGet(fftOut, 0) != 1.0 || arrayGet(fftOut, 2) != 1.0 ||
+            arrayGet(fftOut, 4) != 1.0 || arrayGet(fftOut, 6) != 1.0) { throw "FFT impulse mismatch"; }
 
         let ca = arrayNew(2);
         let cb = arrayNew(2);
@@ -81,19 +104,27 @@ class LinearAlgebraVmSmoke {
         arraySet(cb, 0, 1.0); arraySet(cb, 1, -1.0);
         mathComplexAdd(ca, cb, cz);
         print("MATH_COMPLEX_ADD"); print(arrayGet(cz, 0));
+        if (arrayGet(cz, 0) != 4.0 || arrayGet(cz, 1) != 1.0) { throw "complex add mismatch"; }
         mathComplexSubtract(ca, cb, cz);
         print("MATH_COMPLEX_SUBTRACT"); print(arrayGet(cz, 1));
+        if (arrayGet(cz, 0) != 2.0 || arrayGet(cz, 1) != 3.0) { throw "complex subtract mismatch"; }
         mathComplexMultiply(ca, cb, cz);
         print("MATH_COMPLEX_MULTIPLY"); print(arrayGet(cz, 0));
+        if (arrayGet(cz, 0) != 5.0 || arrayGet(cz, 1) != -1.0) { throw "complex multiply mismatch"; }
         mathComplexDivide(ca, cb, cz);
         print("MATH_COMPLEX_DIVIDE"); print(arrayGet(cz, 1));
+        if (arrayGet(cz, 0) < 0.499 || arrayGet(cz, 0) > 0.501 ||
+            arrayGet(cz, 1) < 2.499 || arrayGet(cz, 1) > 2.501) { throw "complex divide mismatch"; }
         let cscalar = arrayNew(1);
         mathComplexAbs(ca, cscalar);
         print("MATH_COMPLEX_ABS"); print(arrayGet(cscalar, 0));
+        if (arrayGet(cscalar, 0) < 3.60 || arrayGet(cscalar, 0) > 3.61) { throw "complex magnitude mismatch"; }
         mathComplexPhase(ca, cscalar);
         print("MATH_COMPLEX_PHASE"); print(arrayGet(cscalar, 0));
+        if (arrayGet(cscalar, 0) < 0.58 || arrayGet(cscalar, 0) > 0.60) { throw "complex phase mismatch"; }
         mathComplexConjugate(ca, cz);
         print("MATH_COMPLEX_CONJUGATE"); print(arrayGet(cz, 1));
+        if (arrayGet(cz, 0) != 3.0 || arrayGet(cz, 1) != -2.0) { throw "complex conjugate mismatch"; }
 
         print("NATIVE_MATH_VM_SOURCE=PASS");
     }
