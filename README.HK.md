@@ -216,3 +216,16 @@ Debug 時記錄 commit、OS、architecture 和 toolchain。先 build 最小相�
 Country-specific README 是各地區使用者的文件入口，不取代 normative language specification 或 module API documentation。英文來源更新後，應逐項檢查翻譯是否過時。Technical identifiers、commands、paths 和 code examples 應保持原樣；未經語言或技術審校的內容須明確標示。
 
 **擴充翻譯狀態：** 香港繁體中文技術指南現亦涵蓋 target/profile、native execution boundary、resource ownership、debugging、test reporting 及國際文件維護。
+
+
+## 二十、模組 API、相容性與測試策略
+
+新增 API 時，應清楚記錄輸入、輸出、錯誤條件、資料 ownership，以及操作是否產生 side effects。文件範例應同時展示正常流程與 invalid/missing input 的處理方式。未經 implementation 和 tests 證實的行為，不應寫成保證。
+
+測試應按 compiler pipeline 分層：lexing/parsing、semantic analysis、IR lowering、code generation、VM execution 及 native integration。每個 regression case 都應保留最小可重現輸入、預期結果及實際結果。API 變更須說明 backward compatibility、migration steps，以及對既有 examples 的影響。
+
+## 二十一、在地化、編碼與可讀性
+
+技術 identifiers、commands、paths、syntax 和 code blocks 必須跨語言保持一致。翻譯說明文字，不要翻譯 source code 中使用的 token 或名稱。語言和地區用語應清楚標示，不應假設香港、台灣及其他繁體中文社群的用語完全相同。
+
+每次更新後檢查 Markdown links、標題層級、code fences 和範例。英文 canonical documents 更新時，應比對相關章節並同步翻譯，而非只修改簡介。未經語言或技術審校的內容應明確標示。
