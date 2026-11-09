@@ -125,7 +125,8 @@ slmath_status slmath_matrix_multiply(const double *a, size_t rows_a,
             }
         }
         for (size_t i = 0; i < oc; ++i) out[i] = staged[i];
-    } catch (const std::bad_alloc &) {
+    } catch (...) {
+        /* No C++ exception may cross the stable C ABI boundary. */
         return SLMATH_ALLOCATION_FAILURE;
     }
     return SLMATH_OK;
