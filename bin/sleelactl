@@ -97,7 +97,7 @@ die()  { err "$*"; exit 1; }
 runtime_file() {
   relative=$1
   for candidate in "$ROOT/$relative" "$ROOT/lib/sleela/$relative" "$SELF/../lib/sleela/$relative"; do
-    [ -f "$candidate" ] && { printf '%s\\n' "$candidate"; return 0; }
+    [ -f "$candidate" ] && { printf '%s\n' "$candidate"; return 0; }
   done
   return 1
 }
