@@ -1,0 +1,26 @@
+#sleela 2.5
+material;
+
+class JavaStringNativeSmoke {
+  void main() {
+    JavaStringValue text = new JavaStringValue();
+    JavaStringValue hello = text.of("Hello");
+    JavaStringValue world = text.of(" World");
+    JavaStringValue combined = hello.concat(world);
+    print("CONCAT=" + combined.toString());
+    print("EQUALS=" + (combined.equals(text.of("Hello World"))));
+    print("EMPTY=" + text.of("").isEmpty());
+    print("REPEAT=" + text.of("ab").repeatNonNegative(3).toString());
+
+    String[] words = new String[3];
+    words[0] = "red";
+    words[1] = "green";
+    words[2] = "blue";
+    print("JOIN=" + text.join(words, ", ").toString());
+
+    String[] empty = new String[0];
+    print("JOIN-EMPTY=" + text.join(empty, ",").toString());
+    print("NATIVE=" + hello.implementationName());
+    print("UTF16=" + hello.supportsUtf16Indexing());
+  }
+}
