@@ -471,6 +471,19 @@ void slvm_patch(SLVM* vm, int at, int32_t a);
 int slvm_here(SLVM* vm);
 void slvm_set_entry(SLVM* vm, int func_index);
 SLResult slvm_run(SLVM* vm);
+/* Native numerical bridge for VM-owned arrays. Handles are VM-local SL_ARRAY
+ * handles; numeric values are marshalled to temporary contiguous doubles while
+ * array_mtx is held. A negative optional handle means absent. Returns the
+ * slmath_status value; scalar_result is required for scalar-result operations. */
+int slvm_math_dispatch_arrays(SLVM* vm, int operation,
+                              int a_handle, int b_handle,
+                              int out_handle, int aux_handle,
+                              size_t a_rows, size_t a_cols,
+                              size_t b_rows, size_t b_cols,
+                              size_t out_rows, size_t out_cols,
+                              size_t aux_rows, size_t aux_cols,
+                              double scalar, size_t flags,
+                              double* scalar_result);
 SLValue slvm_result(SLVM* vm);
 /* Returns 1 and copies the last uncaught language exception payload when one
  * exists; returns 0 when the most recent run had no uncaught exception. */
