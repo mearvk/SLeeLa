@@ -1,14 +1,9 @@
 #!/usr/bin/env python3
-"""Synchronize JDK 28 Javadoc member declarations as non-executable metadata.
+"""Catalog JDK 28 Javadoc declarations as non-executable SLeeLa comments.
 
-The official Javadoc is the authority. This tool deliberately records member
-signatures as comments instead of synthesizing executable method bodies:
-placeholder returns (false/0/null) are not Java behavior and must never be
-mistaken for a working implementation.
-
-Use --check for a non-mutating drift audit. Use --index with a saved Javadoc
-index to make type discovery reproducible/offline; member pages are still
-fetched from the official Javadoc host.
+No placeholder method bodies are generated: false/0/null stubs are not Java
+behavior. --check audits drift without writing. --index accepts a saved
+allclasses-index.html; member pages are fetched from the official Javadoc host.
 """
 from __future__ import annotations
 
@@ -37,7 +32,7 @@ IGNORED_NAMES = {
 
 
 class SignatureParser(HTMLParser):
-    """Extract text only from Javadoc's div.member-signature elements."""
+    """Extract text only from Javadoc div.member-signature elements."""
 
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
@@ -57,7 +52,6 @@ class SignatureParser(HTMLParser):
             self.depth += 1
 
     def handle_startendtag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
-        # Self-closing tags never change nesting depth.
         return
 
     def handle_endtag(self, tag: str) -> None:
@@ -65,7 +59,7 @@ class SignatureParser(HTMLParser):
             return
         self.depth -= 1
         if self.depth == 0:
-            value = re.sub(r"\\s+", " ", "".join(self.parts)).strip()
+            value = re.sub(r"\s+", " ", "".join(self.parts)).strip()
             if value:
                 self.signatures.append(value)
             self.parts = []
@@ -77,7 +71,7 @@ class SignatureParser(HTMLParser):
 
 def fetch(url: str) -> str:
     request = urllib.request.Request(
-        url, headers={"User-Agent": "SLeeLa-JDK28-Signature-Catalog/3.0"}
+        url, headers={"User-Agent": "SLeeLa-JDK28-Signature-Catalog/3.1"}
     )
     with urllib.request.urlopen(request, timeout=60) as response:
         return response.read().decode("utf-8", errors="replace")
@@ -85,7 +79,8 @@ def fetch(url: str) -> str:
 
 def index_types(document: str) -> list[tuple[str, str]]:
     found: set[tuple[str, str]] = set()
-    for raw_href in re.findall(r'href=["\\']([^"\\']+\\.html(?:#[^"\\']*)?)["\\']', document):
+    pattern = r"""href=["']([^"']+\.html(?:#[^"']*)?)["']"""
+    for raw_href in re.findall(pattern, document):
         href = html.unescape(raw_href.split("#", 1)[0])
         parsed = urlparse(urljoin(INDEX_URL, href))
         parts = parsed.path.strip("/").split("/")
@@ -96,11 +91,9 @@ def index_types(document: str) -> list[tuple[str, str]]:
             part in {"doc-files", "index-files", "class-use"} for part in parts
         ):
             continue
-        package_parts = parts[1:-1]  # Drop the Javadoc module directory.
-        if not package_parts:
-            continue
-        qualified = ".".join(package_parts + [name])
-        found.add((qualified, href))
+        package_parts = parts[1:-1]  # Omit the Javadoc module directory.
+        if package_parts:
+            found.add((".".join(package_parts + [name]), href))
     return sorted(found)
 
 
@@ -108,22 +101,20 @@ def extract_signatures(page: str) -> list[str]:
     parser = SignatureParser()
     parser.feed(page)
     parser.close()
-    # Preserve distinct declarations in document order; do not strip generic
-    # parameters, annotations, throws clauses, or modifiers.
     result: list[str] = []
     seen: set[str] = set()
     for raw in parser.signatures:
-        signature = re.sub(r"\\s+", " ", html.unescape(raw)).strip()
+        signature = re.sub(r"\s+", " ", html.unescape(raw)).strip()
         if signature and signature not in seen:
             seen.add(signature)
             result.append(signature)
     return result
 
 
-def render(signatures: list[str], qualified: str) -> str:
+def render(signatures: list[str], href: str) -> str:
     lines = [
         BEGIN,
-        f"// Source: {urljoin(INDEX_URL, qualified.replace('.', '/') + '.html')}",
+        f"// Source: {urljoin(INDEX_URL, href)}",
         "// Declarations are documentary metadata, not executable SLeeLa methods.",
         "// Java behavior remains delegated to the configured Java runtime boundary.",
     ]
@@ -144,12 +135,9 @@ def replace_section(source: str, section: str) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--check", action="store_true",
-                        help="report drift without writing files")
-    parser.add_argument("--index", type=Path,
-                        help="use a saved allclasses-index.html for type discovery")
-    parser.add_argument("--limit", type=int,
-                        help="process at most N types (useful for controlled batches)")
+    parser.add_argument("--check", action="store_true", help="report drift without writing")
+    parser.add_argument("--index", type=Path, help="saved allclasses-index.html")
+    parser.add_argument("--limit", type=int, help="process at most N types")
     args = parser.parse_args()
     if args.limit is not None and args.limit < 1:
         parser.error("--limit must be at least 1")
@@ -163,8 +151,7 @@ def main() -> int:
         print(f"ERROR: cannot read JDK API index: {exc}", file=sys.stderr)
         return 1
 
-    checked = missing = changed = 0
-    failures = 0
+    checked = missing = changed = failures = 0
     for qualified, href in types:
         target = ROOT / (qualified.replace(".", "/") + ".sleela")
         if not target.is_file():
@@ -177,7 +164,7 @@ def main() -> int:
                 print(f"NO_DECLARED_SIGNATURES {qualified}")
                 continue
             source = target.read_text(encoding="utf-8")
-            updated = replace_section(source, render(signatures, qualified))
+            updated = replace_section(source, render(signatures, href))
             if updated != source:
                 changed += 1
                 if not args.check:
