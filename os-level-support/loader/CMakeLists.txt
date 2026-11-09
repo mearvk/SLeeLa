@@ -23,7 +23,7 @@ if(BUILD_TESTING)
 
   add_executable(loader_test_cpp tests/test_cpp.cpp)
   target_link_libraries(loader_test_cpp PRIVATE sleela_native_loader_cpp)
-  add_test(NAME loader_test_cpp COMMAND loader_test_cpp $<TARGET_FILE:loader_fixture>)
+  add_test(NAME loader_test_cpp COMMAND loader_test_cpp $<TARGET_FILE:loader_fixture_typed>)
 
   add_library(loader_fixture_bad_abi SHARED tests/fixture_bad_abi.c)
   target_include_directories(loader_fixture_bad_abi PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
