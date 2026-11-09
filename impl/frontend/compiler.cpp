@@ -978,21 +978,20 @@ private:
         int op=0, a=-1, b=-1, out=-1, aux=-1;
         const Expr* dimensionExpr[8]={nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,nullptr};
         int64_t dimensionValue[8]={0,0,0,0,0,0,0,0};
-        bool dimensionKnown[8]={false,false,false,false,false,false,false,false};
         const Expr* scalarExpr=nullptr;
         const Expr* flagsExpr=nullptr;
         double scalarDefault=0.0;
         int64_t flagsDefault=0;
         auto setConst=[&](size_t slot,int64_t value){
-            dimensionExpr[slot]=nullptr;dimensionValue[slot]=value;dimensionKnown[slot]=true;
+            dimensionExpr[slot]=nullptr;dimensionValue[slot]=value;
         };
         auto setDim=[&](size_t slot,size_t arg,const char* label)->int64_t {
             if(arg>=c.args.size()) throw std::runtime_error(std::string("Semantic error: missing ")+label);
             dimensionExpr[slot]=c.args[arg].get();
             auto lit=dynamic_cast<const IntLit*>(dimensionExpr[slot]);
-            if(!lit){dimensionKnown[slot]=false;dimensionValue[slot]=0;return -1;}
+            if(!lit){dimensionValue[slot]=0;return -1;}
             if(lit->value<0) throw std::runtime_error(std::string("Semantic error: ")+label+" must be nonnegative");
-            dimensionKnown[slot]=true;dimensionValue[slot]=lit->value;
+            dimensionValue[slot]=lit->value;
             return lit->value;
         };
         auto requireArgs=[&](size_t count){
