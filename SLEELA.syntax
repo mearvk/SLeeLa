@@ -2699,7 +2699,29 @@ exists, execution fails with a diagnostic. Stale handles, authorization
 failures, typed ABI mismatches, invalid plugin results, and plugin errors never
 fall back.
 
-### 36.4 Bytecode and compatibility
+### 36.4 Native-to-SLeeLa callback bridge
+
+A plugin may optionally export `sl_native_bind_host(const SLNativeHostAPI*)`.
+When a host-authorized module is opened, the loader passes a size-checked
+`SL_NATIVE_HOST_CALLBACK_ABI_VERSION` table. The plugin copies the table and
+may call its `invoke(context, function, argc, argv, result)` entry from a
+typed native method.
+
+The callback function name must exactly match one compiled SLeeLa function
+name and argument count. Names that are missing or ambiguous are rejected.
+Callback arguments and results use only the versioned scalar/UTF-8 value
+contract in section 36.2; raw VM pointers, object handles, and internal
+`SLValue` structures never cross the boundary.
+
+The VM executes callback bytecode on a separate nested interpreter stack and
+keeps the suspended native-calling stack visible to garbage collection.
+Recursive native-module operations from callback bytecode are rejected with
+`SL_NATIVE_REENTRANT_CALL`, preventing re-entry into the module lock and
+avoiding unload races. A callback failure is a handled plugin error and never
+triggers NOT_HANDLED interpreter fallback. The binder is optional; plugins
+without it remain loadable but cannot invoke SLeeLa callbacks.
+
+### 36.5 Bytecode and compatibility
 
 The append-only instruction set adds:
 
