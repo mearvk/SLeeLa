@@ -12,13 +12,14 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
 SIGNATURE_TOOL = REPO / "lib/java/tools/jdk28_signature_sync.py"
+SOURCE_SYNC_TOOL = REPO / "lib/java/tools/jdk28_sync.py"
 VALIDATOR = REPO / "lib/java/validate.py"
 
 
-def load_signature_tool():
-    spec = importlib.util.spec_from_file_location("jdk28_signature_sync", SIGNATURE_TOOL)
+def load_module(name: str, path: Path):
+    spec = importlib.util.spec_from_file_location(name, path)
     if spec is None or spec.loader is None:
-        raise RuntimeError("cannot load signature synchronizer")
+        raise RuntimeError(f"cannot load {name}")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
@@ -27,7 +28,7 @@ def load_signature_tool():
 class SignatureCatalogTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.tool = load_signature_tool()
+        cls.tool = load_module("jdk28_signature_sync", SIGNATURE_TOOL)
 
     def test_extracts_complete_nested_signatures_and_survives_void_tags(self):
         page = """
@@ -49,8 +50,17 @@ class SignatureCatalogTests(unittest.TestCase):
         index = '<a href="java.base/java/util/Map.Entry.html">Map.Entry</a>'
         self.assertEqual(
             self.tool.index_types(index),
-            [("java.util.Map.Entry", "java.base/java/util/Map.Entry.html")],
+            [("java.util.Map.Entry", "java.base/java/util/Map.Entry.html",
+              "java/util/Map.Entry.sleela")],
         )
+
+    def test_additive_generator_uses_same_nested_type_path(self):
+        module = load_module("jdk28_sync", SOURCE_SYNC_TOOL)
+        index = '<a href="java.base/java/util/Map.Entry.html">Map.Entry</a>'
+        types = module.extract_types(index)
+        self.assertEqual(types, [("java.util.Map.Entry", "java/util/Map.Entry.sleela")])
+        generated = module.envelope(*types[0])
+        self.assertIn("lib/java/java/util/Map.Entry.sleela", generated)
 
     def test_render_is_documentary_and_contains_no_fake_method_body(self):
         rendered = self.tool.render(["public int size()"], "java.base/java/util/List.html")
@@ -59,7 +69,7 @@ class SignatureCatalogTests(unittest.TestCase):
         self.assertIn("not executable SLeeLa methods", rendered)
 
     def test_replace_section_is_idempotent(self):
-        source = "class Example {\\n}\\n"
+        source = "class Example {\n}\n"
         section = self.tool.render(["public void run()"], "java.base/java/lang/Example.html")
         once = self.tool.replace_section(source, section)
         twice = self.tool.replace_section(once, section)
@@ -71,8 +81,8 @@ class InventoryValidatorTests(unittest.TestCase):
         lib = root / "lib/java"
         lib.mkdir(parents=True)
         controls = ["lib/java/MANIFEST.json", "lib/java/validate.py"]
-        (lib / "validate.py").write_text("# fixture\\n", encoding="utf-8")
-        (lib / "Api.sleela").write_text("#sleela 2.5\\n", encoding="utf-8")
+        (lib / "validate.py").write_text("# fixture\n", encoding="utf-8")
+        (lib / "Api.sleela").write_text("#sleela 2.5\n", encoding="utf-8")
         manifest = {
             "schema": "sleela-java-library-manifest-v1",
             "root": "/lib/java",
