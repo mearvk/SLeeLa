@@ -27,18 +27,26 @@ SL_NATIVE_EXPORT int sl_native_call(const char *method, uint32_t argc,
                                     const SLNativeValue *argv, SLNativeValue *out_result) {
     if (strcmp(method, "utf16_length") == 0) {
         const char *data; size_t length; int64_t units = 0;
-        if (argc != 1 || !utf8_argument(argc, argv, &data, &length) ||
-            sleela_utf8_utf16_length(data, length, &units) != 0) return SL_NATIVE_CALL_ERROR;
+        int rc;
+        if (argc != 1 || !utf8_argument(argc, argv, &data, &length))
+            return SL_NATIVE_CALL_INVALID_ARGUMENT;
+        rc = sleela_utf8_utf16_length(data, length, &units);
+        if (rc == -2) return SL_NATIVE_CALL_MALFORMED_TEXT;
+        if (rc != 0) return SL_NATIVE_CALL_INVALID_ARGUMENT;
         memset(out_result, 0, sizeof(*out_result));
         out_result->tag = SL_NATIVE_VALUE_I64; out_result->as.i64 = units;
         return SL_NATIVE_CALL_OK;
     }
     if (strcmp(method, "utf16_char_at") == 0) {
         const char *data; size_t length; uint16_t unit = 0;
+        int rc;
         if (argc != 2 || !utf8_argument(argc, argv, &data, &length) ||
-            argv[1].tag != SL_NATIVE_VALUE_I64 ||
-            sleela_utf8_utf16_char_at(data, length, argv[1].as.i64, &unit) != 0)
-            return SL_NATIVE_CALL_ERROR;
+            argv[1].tag != SL_NATIVE_VALUE_I64)
+            return SL_NATIVE_CALL_INVALID_ARGUMENT;
+        rc = sleela_utf8_utf16_char_at(data, length, argv[1].as.i64, &unit);
+        if (rc == -2) return SL_NATIVE_CALL_MALFORMED_TEXT;
+        if (rc == -1 || rc == -3) return SL_NATIVE_CALL_INDEX_OUT_OF_BOUNDS;
+        if (rc != 0) return SL_NATIVE_CALL_INVALID_ARGUMENT;
         memset(out_result, 0, sizeof(*out_result));
         out_result->tag = SL_NATIVE_VALUE_I64; out_result->as.i64 = (int64_t)unit;
         return SL_NATIVE_CALL_OK;
