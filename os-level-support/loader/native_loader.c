@@ -74,6 +74,7 @@ const char *sl_native_status_string(SLNativeStatus status) {
     case SL_NATIVE_TYPED_ENTRY_NOT_FOUND: return "native module does not export the typed-call entry";
     case SL_NATIVE_PLUGIN_ERROR: return "native plugin method returned an error or invalid value";
     case SL_NATIVE_METHOD_NOT_HANDLED: return "native plugin does not implement the requested method";
+    case SL_NATIVE_HOST_CALLBACK_NOT_FOUND: return "native plugin does not accept host callbacks";
     default: return "unknown native-loader status";
     }
 }
@@ -158,6 +159,20 @@ SLNativeStatus sl_native_call_module(SLNativeModule *module, const char *method,
     if (!value_valid(&result)) return SL_NATIVE_PLUGIN_ERROR;
     *out_result = result;
     return SL_NATIVE_OK;
+}
+
+SLNativeStatus sl_native_bind_host_api(SLNativeModule *module,
+                                       const SLNativeHostAPI *host_api) {
+    SLNativeBindHost bind_host;
+    void *symbol;
+    if (!module || !module->handle || !host_api ||
+        host_api->abi_version != SL_NATIVE_HOST_CALLBACK_ABI_VERSION ||
+        host_api->struct_size < sizeof(SLNativeHostAPI) || !host_api->invoke)
+        return SL_NATIVE_INVALID_ARGUMENT;
+    symbol = find_symbol(module->handle, "sl_native_bind_host");
+    if (!symbol) return SL_NATIVE_HOST_CALLBACK_NOT_FOUND;
+    memcpy(&bind_host, &symbol, sizeof(bind_host));
+    return bind_host(host_api) == 0 ? SL_NATIVE_OK : SL_NATIVE_PLUGIN_ERROR;
 }
 
 SLNativeStatus sl_native_close(SLNativeModule *module) {
