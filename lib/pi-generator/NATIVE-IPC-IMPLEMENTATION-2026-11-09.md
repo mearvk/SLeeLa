@@ -13,7 +13,8 @@ It deliberately does not expose VM arrays, structs, pointers, or raw handles.
 This work adds the first isolated-process wire-format slice:
 
 - `impl/native-drive/native_ipc_protocol.h`: 24-byte version-1 frame header,
-  explicit little-endian encoding, bounded payloads, and scalar value codec.
+  explicit little-endian encoding, bounded payloads, scalar values, and
+  request method/argument encoding.
 - `impl/tests/native_drive/native_ipc_protocol_smoke.c`: header, int64,
   binary64, UTF-8, invalid-boolean, and truncated-value checks.
 - `.github/workflows/native-drive.yml`: runs the codec smoke test on
