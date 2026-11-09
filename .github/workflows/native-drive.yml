@@ -1,0 +1,41 @@
+name: Native Drive
+
+on:
+  push:
+    branches: [main, master, feat/native-drive-integration]
+    paths:
+      - "tools/sleela-native-drive.py"
+      - "tools/sleela-native-service.py"
+      - "tools/tests/test_native_drive.py"
+      - "impl/native-drive/**"
+      - ".github/workflows/native-drive.yml"
+  pull_request:
+    paths:
+      - "tools/sleela-native-service.py"
+      - "tools/sleela-native-drive.py"
+      - "tools/tests/test_native_drive.py"
+      - "impl/native-drive/**"
+      - ".github/workflows/native-drive.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-drive:
+    name: Native Drive (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check sleelactl shell syntax
+        if: runner.os != 'Windows'
+        run: sh -n bin/sleelactl
+      - name: Run Native Drive tests
+        run: python -m unittest discover -s tools/tests -p "test_native_drive.py" -v
