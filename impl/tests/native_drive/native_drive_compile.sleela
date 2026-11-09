@@ -5,10 +5,11 @@ class NativeDriveCompile {
         return value * 3;
     }
 
-    void main() {
-        int module = nativeOpen("native-drive-test-module");
-        nativeCall(module, "twice", 21);
-        nativeCall(module, "fallback", 7);
+    static int main() {
+        int module = nativeOpen("@NATIVE_PLUGIN_PATH@");
+        int nativeResult = nativeCall(module, "twice", 21);
+        int fallbackResult = nativeCall(module, "fallback", 7);
         nativeClose(module);
+        return nativeResult + fallbackResult;
     }
 }
