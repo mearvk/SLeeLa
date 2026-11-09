@@ -10,6 +10,7 @@
 #define SLEELA_ARTIFACT_FORMAT_VERSION 2u
 #include <stdint.h>
 #include "../../os-level-support/osls_vm_bridge.h"
+#include "../../os-level-support/loader/native_module_table.h"
 #include <stddef.h>
 #include "../../runtime/garbage_collector.h"
 #ifdef __cplusplus
@@ -346,6 +347,14 @@ SLVM* slvm_new(void);
 /* True when Sleela source values use the bounded VM-owned memory/handle model. */
 int slvm_memory_safe_mode(const SLVM* vm);
 void slvm_set_audio_native_renderer(SLVM* vm, SLAudioNativeRenderFn fn, void* user);
+/* Native modules are host-authorized only. Without an installed authorization
+ * callback, every module open is denied. These APIs manage VM-owned opaque
+ * handles; they do not add a SLeeLa bytecode opcode or interpreter fallback. */
+int slvm_set_native_authorizer(SLVM* vm, SLNativeAuthorizePath authorize, void* context);
+SLNativeStatus slvm_native_module_open(SLVM* vm, const char* path, SLNativeHandle* out_handle);
+SLNativeStatus slvm_native_module_run(SLVM* vm, SLNativeHandle handle,
+                                      int argc, const char* const argv[], int* out_result);
+SLNativeStatus slvm_native_module_close(SLVM* vm, SLNativeHandle handle);
 /* Set the host capabilities available to OSLS bindings before execution.
  * The default is read-only host inspection; pass 0 to deny OSLS access. */
 int slvm_set_osls_capabilities(SLVM* vm, uint64_t capabilities);
