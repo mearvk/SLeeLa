@@ -1900,6 +1900,8 @@ void slvm_joinall(SLVM* vm) {
  * a TERR("stack underflow") before the corrupt result can be used. */
 #define POP() (t->sp > 0 ? t->stack[--t->sp] : (t->underflow = 1, slval_null()))
 
+static int native_utf8_valid(const uint8_t* s, uint32_t n);
+
 /* Convert only values represented by the versioned native ABI. VM-local
  * arrays/structs, 128-bit integers, and all opaque handles stay in the VM. */
 static int native_value_to_abi(SLVM* vm, SLValue source, SLNativeValue* target) {
@@ -1921,7 +1923,8 @@ static int native_value_to_abi(SLVM* vm, SLValue source, SLNativeValue* target) 
         case SL_STR: {
             const char* value = slvm_str(vm, source.as.s);
             size_t length = strlen(value);
-            if (length > UINT32_MAX) return 0;
+            if (length > SL_MAX_STRTEXT || length > UINT32_MAX ||
+                !native_utf8_valid((const uint8_t*)value, (uint32_t)length)) return 0;
             target->tag = SL_NATIVE_VALUE_UTF8;
             target->as.utf8.data = (const uint8_t*)value;
             target->as.utf8.length = (uint32_t)length;
