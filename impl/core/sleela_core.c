@@ -661,6 +661,7 @@ SLVM* slvm_new(void) {
 
 
 /* ---- Java String values: lossless UTF-16 objects managed by the VM GC ---- */
+static void gc_java_string_destroy(void *payload);
 static SLValue slval_utf16(int32_t handle) { SLValue v; v.type = SL_UTF16; v.as.h = handle; return v; }
 static SLJavaStringInstance *java_string_get(SLVM *vm, SLValue value) {
     if (!vm || value.type != SL_UTF16 || value.as.h < 0 || value.as.h >= SL_MAX_ARRAYS) return NULL;
