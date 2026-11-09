@@ -6,6 +6,7 @@ on:
       - '.github/workflows/native-drive.yml'
       - 'impl/native-drive/**'
       - 'impl/tests/native_drive/**'
+      - 'tools/tests/test_native_drive.py'
       - 'os-level-support/loader/native_loader.h'
       - 'security/sha256-manifest.json'
   workflow_dispatch:
