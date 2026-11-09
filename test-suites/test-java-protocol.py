@@ -11,7 +11,7 @@ import unittest
 MAGIC = b"SLJV"
 VERSION = 1
 MAX_FRAME = 1_048_576
-PING, RESOLVE, CONSTRUCT, INVOKE_INSTANCE, INVOKE_STATIC, RELEASE, CLOSE = range(1, 8)
+PING, RESOLVE, CONSTRUCT, INVOKE_INSTANCE, INVOKE_STATIC, RELEASE, CLOSE, GET_FIELD, GET_STATIC_FIELD, SET_FIELD, SET_STATIC_FIELD = range(1, 12)
 
 
 def u16(value: int) -> bytes:
@@ -85,7 +85,7 @@ class EndpointTests(unittest.TestCase):
     def setUp(self):
         env = os.environ.copy()
         env["SLEELA_JAVA_ALLOW_CLASSES"] = (
-            "java.lang.String,java.lang.Object,java.lang.Integer,java.util.ArrayList"
+            "java.lang.String,java.lang.Object,java.lang.Integer,java.util.ArrayList,com.mearvk.sleela.connector.SleelaJdkProtocolFixture"
         )
         self.proc = subprocess.Popen(
             ["java", "-cp", self.classes,
@@ -165,6 +165,33 @@ class EndpointTests(unittest.TestCase):
         self.assertEqual(self.error(
             INVOKE_INSTANCE, u64(handle) + string("toString") + types() + values()
         )[0], "java.io.IOException")
+
+    def test_public_instance_and_static_fields(self):
+        owner = "com.mearvk.sleela.connector.SleelaJdkProtocolFixture"
+        created = self.success(CONSTRUCT, string(owner) + types() + values())
+        handle = struct.unpack_from(">Q", created, 1)[0]
+        self.assertEqual(
+            self.success(GET_FIELD, u64(handle) + string("counter")),
+            b"\x03" + struct.pack(">i", 3),
+        )
+        self.assertEqual(
+            self.success(SET_FIELD, u64(handle) + string("counter") + b"\x03" + struct.pack(">i", 41)),
+            b"\x00",
+        )
+        self.assertEqual(
+            self.success(GET_FIELD, u64(handle) + string("counter")),
+            b"\x03" + struct.pack(">i", 41),
+        )
+        self.assertEqual(
+            self.success(SET_STATIC_FIELD, string(owner) + string("sharedCounter")
+                         + b"\x03" + struct.pack(">i", 99)),
+            b"\x00",
+        )
+        self.assertEqual(
+            self.success(GET_STATIC_FIELD, string(owner) + string("sharedCounter")),
+            b"\x03" + struct.pack(">i", 99),
+        )
+        self.assertEqual(self.success(RELEASE, u64(handle)), b"\x00")
 
     def test_allowlist_and_structured_java_exception(self):
         self.assertEqual(self.error(RESOLVE, string("java.lang.Runtime"))[0],
