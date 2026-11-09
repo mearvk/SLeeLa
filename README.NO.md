@@ -213,3 +213,18 @@ Norsk bokmål brukes i denne utgaven. Den er ikke ment å hevde at nynorsk, sami
 - [SLeeLa på GitHub](https://github.com/mearvk/SLeeLa)
 
 **Oversettelsesstatus:** Denne norske utgaven er utvidet til en teknisk introduksjon som dekker oppstart, bygging, installasjon, språk og kjøretidsmiljø, native integrasjon, biblioteker, sikkerhet, utviklingsarbeid og sentrale prosjektområder. Den er ikke en linje-for-linje-oversettelse av samtlige detaljer i den kanoniske engelske README-en. Teknisk kontroll og språklig gjennomgang av en norskspråklig fagperson anbefales før utgaven betegnes som endelig.
+
+
+## XVI. Mål, profiler og grenser for kjøring
+
+SLeeLa skiller kildekode fra bygge- og kjøringsmål. Den dokumenterte målfamilien omfatter `SLVM`, `SLJVM` og `SLIR`; `NATIVE` er et avgrenset mål med vilkår og må ikke antas å være tilgjengelig på alle plattformer. Profilene `BASIC_COMPLETE` og `ADVANCED_TOTAL` angir ulikt omfang. Kontroller faktisk mål, profil og plattformstøtte for hver bygging.
+
+En referanse identifiserer en fil, modul eller ressurs, men gir ikke i seg selv tillatelse til å kjøre den. Når et program bruker filer, eksterne biblioteker, native bindings eller systemressurser, må autorisasjonsgrensene og ansvaret for kjøringen defineres tydelig. En beskrivelse i dokumentasjonen er ikke alene bevis for en sikkerhetsgaranti i runtime; kontroller implementasjonen og relevante tester.
+
+## XVII. Ressurslivssyklus og feilsøking
+
+Dokumenter eierskap, levetid og synkroniseringsansvar for ressurser som deles mellom funksjoner eller tråder. Skill mellom local variables, shared object state, VM handles og serializable data. Et VM-local handle er ikke et stabilt filformat eller en nettverksmelding. Bruk modulens definerte serialiseringsgrensesnitt og test invalid, missing og boundary values.
+
+Ved feilsøking registrerer du commit, OS, architecture og toolchain. Bygg først det minste relevante målet, ta vare på hele feilutskriften, skill compiler errors fra runtime errors og lag et minimalt eksempel som kan gjenskapes. En vellykket bygging beviser ikke alene at runtime-oppførselen er korrekt.
+
+En verifikasjonsrapport bør oppgi exact commit, OS/architecture, compiler versions, fullstendige build/test commands, antall pass/fail/skip og kjente begrensninger. Tester som er hoppet over eller ikke kjørt, skal ikke regnes som bestått.
