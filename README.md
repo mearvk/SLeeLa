@@ -632,3 +632,33 @@ The generated binary is 16,777,244 bytes and is designed to remain below 20,000,
 # SLeeLa
 <p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
 <p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>
+
+---
+
+## XVIII. Recent Additions — Pi Constant, Modium/Registry Startup, sleelactl Math, and `@native`
+
+This section records features added in the 2026-11 work, newest groups first. All are committed to `master`.
+
+### The 100,000,000-digit Pi catalog constant
+
+The repository ships a verified **one-hundred-million-digit** value of π at [`pi-generator/pi.100000000.digits`](pi-generator/pi.100000000.digits) (a well-formed decimal, `3.14159…`), alongside a 57,344-digit value [`pi-generator/pi.57344.digits`](pi-generator/pi.57344.digits). Both are independently verified genuine π — see [`pi-generator/VERIFIED.md`](pi-generator/VERIFIED.md), which documents the checks (textbook prefix, the Feynman point at fractional position 762, the famous one-millionth digit, agreement with `lib/math/SLPiReference.sleela`, and a whole-file digit-frequency analysis) and a one-shot reproduction script.
+
+### Modium™ / Registry™ load the Pi constant at subsystem startup
+
+On the dedicated subsystem entry points — `sleela registry` and `sleela modium` (and the installer first run), **not** on every `sleela run` — the Modium and Registry subsystems load the large π catalog constant. On an interactive terminal they print a transient red `Loading Modium™` / `Loading Registry™` line that is then erased in place before normal output begins; the effect is strictly TTY-gated, so piped and test output stay byte-for-byte unchanged. The locator (not the bytes) is seeded as the registry `Math` key defaults `piReferenceLargePath` and `piReferenceLargeDigits`, in both the SLeeLa model ([`lib/registry/SLRegistry.sleela`](lib/registry/SLRegistry.sleela)) and the native seeder ([`registry/sleela_registry.c`](registry/sleela_registry.c)); `lib/math/SLPiReference.sleela` exposes `largePath()` / `largeDigits()`. The π constant is installed into the OS SLeeLa location (`<data>/pi/`) by **both** the standard `make` installer and the guided "beautiful" installer. Details: [`pi-generator/MODIUM-REGISTRY-PI-STARTUP.md`](pi-generator/MODIUM-REGISTRY-PI-STARTUP.md).
+
+### `sleelactl` — the beautiful installer and a native-backed `math` subject
+
+- The guided ("beautiful") installer now installs `sleelactl` (the SLeeLa control plane) and its module registry, matching the `make` installer. See [`bin/SLEELACTL.md`](bin/SLEELACTL.md).
+- `sleelactl` gained a new **`subject`** nature for the native C/C++ subject libraries compiled into the runtime, and registers the first one: **`math`**. `sleelactl run math` exercises the native `__NativeMath` backend (`impl/subjects/math/math_native.cpp`) end-to-end via the subject's reference demo; `sleelactl info math` explains how it is reached (`import math;`). The subject nature offers `run info` only — there is deliberately no `check` verb, because `sleela check` does not load the SHEET-registered native subjects.
+
+### `@native` and `sleela aot` — Part 1 of the SLeeLa → native C/C++ path
+
+A new **`@native`** method annotation requests ahead-of-time native compilation of a hot method. The new `sleela aot` command finds `@native` methods, verifies each is within a supported *offloadable subset*, and emits C/C++ — **failing closed** (refusing, with a precise reason) on any construct it cannot yet translate, so a half-translated method is never produced.
+
+```sh
+sleela aot --list <file.sleela>    # per-method verdict: ok / REFUSED (reason)
+sleela aot --emit <file.sleela>    # emit C/C++ (stdout) for an in-subset program
+```
+
+`@native` is behaviour-neutral today: programs still check and run unchanged; the annotation only *requests* native treatment. This is Part 1 — it establishes the annotation surface and the honest subset gate; compiling the emitted C/C++ to a shared object and dispatching the VM to it (with an interpreter fallback) are later stages. Details, the supported subset, and exit codes: [`pi-generator/AT-NATIVE.md`](pi-generator/AT-NATIVE.md).
