@@ -14,7 +14,8 @@ typedef enum slmath_status {
     SLMATH_DIMENSION_MISMATCH = 2,
     SLMATH_SIZE_OVERFLOW = 3,
     SLMATH_ALLOCATION_FAILURE = 4,
-    SLMATH_SINGULAR = 5
+    SLMATH_SINGULAR = 5,
+    SLMATH_NO_CONVERGENCE = 6
 } slmath_status;
 
 /*
@@ -91,6 +92,41 @@ slmath_status slmath_symmetric_eigen(const double *a, size_t n,
 
 /* In-place radix-2 FFT over interleaved complex values. Inverse is 0 or 1. */
 slmath_status slmath_fft(slmath_complex *values, size_t n, int inverse);
+
+
+/*
+ * VM-facing typed dispatch contract. The VM must validate and pin each backing
+ * array for the duration of the call; these descriptors never transfer
+ * ownership. Dimensions are explicit so the bridge can reject malformed
+ * object layouts before entering a numerical kernel.
+ */
+typedef struct slmath_buffer {
+    double *data;
+    size_t length;
+    size_t rows;
+    size_t cols;
+} slmath_buffer;
+
+typedef enum slmath_operation {
+    SLMATH_OP_VECTOR_ADD = 1,
+    SLMATH_OP_VECTOR_DOT = 2,
+    SLMATH_OP_VECTOR_NORM = 3,
+    SLMATH_OP_VECTOR_SCALE = 4,
+    SLMATH_OP_MATRIX_MULTIPLY = 10,
+    SLMATH_OP_MATRIX_TRANSPOSE = 11,
+    SLMATH_OP_MATRIX_INVERSE = 12,
+    SLMATH_OP_COMPLEX_MULTIPLY = 20,
+    SLMATH_OP_QR = 30,
+    SLMATH_OP_SYMMETRIC_EIGEN = 31,
+    SLMATH_OP_FFT = 40
+} slmath_operation;
+
+slmath_status slmath_vm_dispatch(slmath_operation operation,
+                                 const slmath_buffer *a,
+                                 const slmath_buffer *b,
+                                 slmath_buffer *out,
+                                 slmath_buffer *aux,
+                                 double scalar, size_t flags);
 
 #ifdef __cplusplus
 }
