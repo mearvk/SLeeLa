@@ -81,3 +81,113 @@ README utama turut membincangkan pustaka Advantage, SleelaDoc dan XML DOM; jenis
 - [Repositori GitHub](https://github.com/mearvk/SLeeLa)
 
 **Status terjemahan:** Pengenalan, panduan permulaan, binaan, pemasangan, bahasa/persekitaran masa jalan, prinsip kejuruteraan, pengesahan dan sumbangan telah dilokalkan. Terjemahan penuh semua bahagian teknikal masih perlu disiapkan dan disemak oleh penutur Bahasa Melayu yang mempunyai pengetahuan teknikal.
+
+
+## VIII. Seni bina bahasa dan saluran kompilasi
+
+SLeeLa memisahkan bahasa sumber, frontend pengkompil, representasi perantaraan, penjanaan kod dan runtime. Versi pengkompil, edisi sintaks dan versi VM/ISA ialah perkara yang berbeza. Kewujudan sesuatu ciri dalam spesifikasi tidak bermakna ciri itu telah disokong dan disahkan pada setiap sasaran.
+
+Aliran kerja lazim:
+
+1. **Sumber:** fail UTF-8 `.sleela` dengan pragma versi dan deklarasi.
+2. **Lexer dan parser:** menukarkan teks kepada token dan struktur sintaks.
+3. **Analisis semantik:** menyemak nama, simbol, jenis dan peraturan bahasa.
+4. **Representasi perantaraan:** bentuk program berstruktur untuk proses lowering seterusnya.
+5. **Penjanaan kod:** output bagi sasaran VM atau perantaraan yang disokong.
+6. **Runtime:** pelaksanaan program terkompil dengan mekanisme memori dan aliran kawalan yang tersedia.
+
+Rujukan normatif ialah [SLEELA.syntax](SLEELA.syntax). Untuk format sumber dan kitar hayat fail, lihat [dokumentasi sumber](markdown/SOURCE.md) dan [dokumentasi pengkompil](markdown/COMPILER.md).
+
+## IX. Jenis data dan model objek
+
+Kosa kata jenis sumber merangkumi `int`, `double`, `boolean`, `String`, `void`, jenis `struct` yang diisytiharkan dan tandatangan jenis rujukan yang disokong. Dalam model yang didokumenkan sekarang, `int`, `long` dan `int64` ialah integer bertanda 64-bit. `int128` diterima sebagai jenis integer tetapi belum patut dianggap sebagai aritmetik 128-bit penuh.
+
+`struct` ialah agregat bernama yang mengandungi medan. Pemegang struct yang diurus VM bukan penuding mentah. Tugasan dan penghantaran parameter berkongsi instans yang sama; kesamaan adalah berdasarkan identiti. Untuk pertukaran mudah alih, gunakan fungsi bersiri yang didokumenkan seperti `structPack(instance)` dan `structUnpack(TypeName, json)`; pemegang yang terikat kepada VM bukan nilai rangkaian mudah alih.
+
+Kelas mengandungi medan dan kaedah. Dalam model pelaksanaan semasa, medan ialah keadaan kelas yang dikongsi manakala pemboleh ubah setempat kaedah adalah khusus kepada thread. Pewarisan, kelas bersarang dan generik tertakluk pada pintu versi sintaks. Rujuk [International Language Reference](LANGUAGE.INTERNATIONAL.3.0.md).
+
+## X. Aliran kawalan dan pemasaan gelung
+
+Sintaks bahasa menyediakan pernyataan bersyarat, gelung, panggilan kaedah dan rekursi. Anotasi peringkat pernyataan `@loopDelay` dan `@loopBudget` menetapkan jeda atau belanjawan masa bagi gelung. Anotasi diletakkan sebelum gelung dan diturunkan kepada arahan VM `OP_SLEEP` (ISA 157). Fungsi terbina dalam `sleep(ms)` menggunakan arahan yang sama.
+
+```sleela
+@loopDelay(ms = 250)
+while (running) {
+    processNext();
+}
+```
+
+Contoh ini menunjukkan bentuk sintaks; pengecam dan kelas yang diperlukan mesti ditakrifkan dalam program sebenar. Lihat [SLEELA.syntax §32](SLEELA.syntax) dan [Loop Timing API](api/sleela/3.0/LOOP_TIMING_API.md).
+
+## XI. Pustaka standard dan modul
+
+Repository mengandungi modul dengan tahap kematangan yang berbeza:
+
+- `lib/advantage` — penilaian berlapis terhadap hasil berbanding model; meliputi matematik, ekonomi perdagangan dua hala, integrasi, penggredan dan output boleh hala. Perbincangan medan kepercayaan berasaskan fizik ialah analogi pemodelan, bukan dakwaan undang-undang fizik.
+- `lib/xml` — pepohon dokumen XML, elemen, teks, komen, CDATA, arahan pemprosesan, atribut, parser dan serializer.
+- `lib/text` — operasi teks dan rentetan berasaskan sel aksara seperti `charAt`, `substring`, `indexOf`, `reverse` dan pemformatan kedudukan.
+- `lib/sleeladoc` — pengekstrakan dokumentasi sumber dan halaman rujukan CLI. `sleela docs` menyenaraikan topik, pakej dan kelas; `sleela docs --generate [dir]` membina korpus teks setempat untuk kegunaan luar talian.
+- `lib/cpu` dan `lib/xlt` — profil CPU, komponen seni bina, format model dan rujukan pemasaan.
+- `recursion/stanchion` — prototaip rujukan C/C++ dan contoh corak rekursi.
+
+Kewujudan modul dalam katalog tidak membuktikan kesediaan produksi. Semak README modul, liputan ujian, had platform dan rekod pengesahan.
+
+## XII. Integrasi C/C++ dan sempadan native
+
+Repository SLeeLa mengandungi komponen C dan C++ serta laluan penjanaan kod native yang terhad. Penanda `@native` dan arahan `sleela aot` berkaitan pembangunan native; kedua-duanya bukan kebenaran umum untuk melaksanakan kod native sewenang-wenangnya.
+
+Integrasi C/C++ mesti menyatakan kontrak ABI, konvensyen panggilan, pemilikan memori, susun atur data, pengendalian ralat dan kebergantungan platform. Anggap kod native sebagai sempadan kepercayaan yang berasingan. Rujukan atau deklarasi hanya mengenal pasti sumber; ia tidak memberikan kebenaran pelaksanaan. Lihat [native implementation](impl/README.md), [platform matrix](docs/PLATFORM-SUPPORT.md) dan [comparison standards](comparison/README.md).
+
+## XIII. Bina, pasang dan sokongan platform
+
+Build native lazimnya memerlukan toolchain C/C++ seperti GCC atau Clang dan GNU Make. Sesetengah alat menggunakan Python 3. Komponen GUI Linux mungkin memerlukan pakej pembangunan X11 dan XRandR.
+
+```sh
+make
+make -C impl all
+bash ./test-suites/run-all.sh --all
+```
+
+Pemasangan seluruh sistem lazimnya:
+
+```sh
+sudo make install
+```
+
+Pemasangan untuk pengguna semasa sahaja:
+
+```sh
+make install PREFIX="$HOME/.local"
+```
+
+Baca [installation guide](install/README.md) dan [platform support matrix](docs/PLATFORM-SUPPORT.md) untuk prasyarat serta skrip khusus platform. Jangan anggap arahan atau kebergantungan yang sama terpakai secara seragam pada Linux, macOS dan Windows.
+
+## XIV. Keselamatan, integriti dan ujian
+
+Manifest hash dan alat pengesahan boleh membandingkan fail repository dengan kandungan yang dijangka. Keputusan PASS hanya meliputi skop dan masa pemeriksaan yang dinyatakan. Laporan ujian mesti membezakan pass, fail dan skip; ujian yang dilangkau atau tidak dijalankan tidak boleh dilaporkan sebagai lulus.
+
+Prinsip utama:
+
+- Rujukan mengenal pasti sumber; ia tidak memberikan kebenaran pelaksanaan.
+- Antara muka native mesti jelas dan terhad.
+- Dakwaan sokongan platform perlu disokong oleh build dan ujian sebenar.
+- Dokumentasi terjana mesti boleh dijejaki kepada sumber dan generator.
+- Pemeriksaan keselamatan perlu gagal secara selamat apabila data integriti wajib tiada.
+
+Lihat [testing policy](markdown/TESTING.md) dan [platform validation](docs/PLATFORM-SUPPORT.md).
+
+## XV. Dokumentasi, editor dan sumbangan
+
+Mulakan dengan [documentation index](docs/README.md), [generated API reference](docs/api/README.md), [API catalogue](api/README.md) dan [SleelaDoc](lib/sleeladoc/README.md). Untuk sumber editor Linux, lihat [linux-editors](linux-editors/README.md).
+
+Sebelum menyumbang, baca README modul, tetapkan skop perubahan, tambah ujian positif dan negatif, jalankan ujian berkaitan, rekod OS/toolchain/arahan/hasil sebenar dan kemas kini README serta dokumentasi API apabila tingkah laku awam berubah.
+
+## XVI. Bidang projek tambahan
+
+Model CPU dan perkakasan, GUI, rangkaian, pemprosesan teks, UTF-4088, alat π, Modium, Registry, `sleelactl` dan AutoCAD Creator™ ialah bidang projek yang berasingan. Tujuan, kebergantungan dan tahap kematangannya mungkin berbeza. Jangan label direktori eksperimen atau contoh sebagai ciri produksi stabil tanpa pengesahan yang didokumenkan. Saiz atau bilangan entri UTF-4088 tidak membuktikan keserasian Unicode penuh. Keserasian AutoCAD memerlukan matriks versi dan keputusan ujian yang jelas.
+
+## XVII. Penggunaan di Malaysia dan penyetempatan
+
+Edisi Malaysia ini menggunakan Bahasa Melayu sebagai bahasa utama. Istilah teknikal boleh dikekalkan dalam bahasa Inggeris apabila terjemahan akan mengaburkan nama API, konsep compiler atau arahan. Nama fail, command, identifier dan kod sumber hendaklah dikekalkan tepat. Sumbangan istilah tempatan digalakkan melalui glosari yang konsisten dan semakan penutur jati yang memahami bidang teknikal.
+
+**Status terjemahan:** Panduan Bahasa Melayu ini telah diperluas untuk merangkumi saluran kompilasi, model jenis dan objek, pemasaan gelung, pustaka, integrasi native, build/pemasangan, keselamatan, ujian dan aliran sumbangan. Ia belum merupakan terjemahan baris demi baris bagi keseluruhan README kanonik dan spesifikasi berkaitan.
