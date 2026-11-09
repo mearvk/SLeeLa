@@ -197,7 +197,12 @@ def main() -> int:
                 if os.path.exists(backup_tmp):
                     os.unlink(backup_tmp)
 
-        fd, temp_name = tempfile.mkstemp(prefix=f".{args.name}.", dir=target_dir)
+        try:
+            fd, temp_name = tempfile.mkstemp(prefix=f".{args.name}.", dir=target_dir)
+        except OSError:
+            if existed:
+                backup.unlink(missing_ok=True)
+            raise
         installed = False
         enabled = False
         started = False
@@ -260,7 +265,8 @@ def main() -> int:
                     + "; ".join(recovery_errors)
                     + (f"; preserve/review backup at {backup}" if backup.exists() else "")
                 ) from exc
-            raise RuntimeError(f"installation failed and previous state was restored: {exc}") from exc
+            recovery_state = "previous unit was restored" if existed else ("new unit was removed" if installed else "live unit was left unchanged")
+            raise RuntimeError(f"installation failed and {recovery_state}: {exc}") from exc
         finally:
             if os.path.exists(temp_name):
                 os.unlink(temp_name)
