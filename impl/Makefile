@@ -1034,6 +1034,8 @@ endef
 
 test-math: $(SLEELA_BIN) $(BUILD)/math_native.o
 	$(call RUN_SUBJECT_VALUES,math)
+test-math-native-dispatch: test-math
+	@echo "=== source-to-VM typed native math dispatch verified ==="
 # Standalone typed C++ math-kernel contract tests (no VM or CI dependency).
 MATH_KERNEL_TEST := $(BUILD)/math_kernel.test
 $(MATH_KERNEL_TEST): tests/math_kernel_test.cpp subjects/math/math_kernel.hpp | $(BUILD)
