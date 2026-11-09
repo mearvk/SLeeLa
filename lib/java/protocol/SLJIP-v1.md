@@ -54,6 +54,8 @@ A response uses the same request ID and opcode ORed with 0x80.
 
 Class resolution is non-initializing. Constructors and method invocation are
 explicit execution requests. Only public constructors, methods, and fields are exposed. Field reads/writes must match static versus instance ownership.
+All class roots must be configured before the first type resolution; roots are
+frozen at first use so a live object handle cannot change class-loader identity.
 The endpoint's class/package allow-list is configured out-of-band through
 SLEELA_JAVA_ALLOW_CLASSES and SLEELA_JAVA_ALLOW_PACKAGES, as comma-separated
 binary names/prefixes. Optional class-directory/JAR roots are supplied through
@@ -64,20 +66,20 @@ itself permission.
 
 First byte is status: 0 success, 1 failure. On success, the value format
 above is used (PING/CLOSE return tag 0). On failure, two strings follow:
-exception class name and safe message. Java stack traces are not sent over the
-protocol. The server continues after a request-level error; invalid frame
+exception class name and message limited to 2,048 Unicode code points. Java
+stack traces are not sent over the protocol. The server continues after a request-level error; invalid frame
 headers, unsupported versions, oversized frames, or malformed payloads close
 the session.
 
 ## Lifetime and security
 
-Handles are monotonically allocated per process session and invalidated on
-RELEASE or CLOSE. A handle is never a pointer and is never valid in another
+Handles are monotonically allocated per process session (maximum 65,536 live
+handles) and invalidated on RELEASE or CLOSE. A handle is never a pointer and is never valid in another
 session. No request executes a shell command. No class initialization occurs
 during RESOLVE. Static initialization may occur only as a consequence of an
 explicit CONSTRUCT, INVOKE_STATIC, GET_STATIC_FIELD, or SET_STATIC_FIELD request. Arguments are type-checked by
-reflection. I32 values may be range-checked and widened to byte, short, char,
-int, or long; F64 may be range-checked and narrowed to float or retained as
+reflection. I32 values may be range-checked and converted to byte, short, char,
+int, or long; F64 may be range-checked and converted to float or retained as
 double. Incompatible conversions fail with a structured error.
 
 ## Current integration boundary
