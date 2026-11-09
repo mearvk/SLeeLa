@@ -218,6 +218,18 @@ it does not automatically restart the workload.
 - Enforce capability policy in the runtime, not by trusting source annotations.
 - Keep system service installation, enabling, and starting explicit and separately auditable.
 
+- Treat VM destruction as a host-coordinated lifetime boundary. Native-module
+  open/run/call/close operations are serialized against one another and against
+  module unload by the VM's native-module mutex, but that mutex is not a
+  VM-wide lifetime reference count. The host must stop and join every external
+  thread that can call any VM API before calling `slvm_free()`; no API call may
+  race VM destruction. This is distinct from VM-owned worker threads, which
+  `slvm_free()` joins itself.
+- Do not interpret serialized native-module operations as proof that arbitrary
+  concurrent VM use is supported. In particular, callers must also coordinate
+  VM execution, configuration, and destruction according to the public API
+  contract.
+
 ## Tests
 
     python3 -m unittest discover -s tools/tests -p 'test_native_drive.py' -v
