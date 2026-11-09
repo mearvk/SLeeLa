@@ -1,6 +1,16 @@
 name: Native Drive
 
 on:
+  push:
+    paths:
+      - '.github/workflows/native-drive.yml'
+      - 'impl/native-drive/**'
+      - 'impl/tests/native_drive/**'
+      - 'tools/tests/test_native_drive.py'
+      - 'os-level-support/loader/native_loader.h'
+      - 'os-level-support/loader/tests/**'
+      - 'os-level-support/loader/CMakeLists.txt'
+      - 'security/sha256-manifest.json'
   workflow_dispatch:
 
 permissions:
@@ -42,6 +52,24 @@ jobs:
           if ($errors.Count -gt 0) { $errors | Format-List; exit 1 }
       - name: Run Native Drive tests
         run: python -m unittest discover -s tools/tests -p "test_native_drive.py" -v
+      - name: Compile and run Native IPC codec smoke test (POSIX)
+        if: runner.os != 'Windows'
+        run: |
+          mkdir -p build
+          cc -std=c11 -Wall -Wextra -Werror impl/tests/native_drive/native_ipc_protocol_smoke.c -o build/native-ipc-protocol-smoke
+          ./build/native-ipc-protocol-smoke
+      - name: Initialize MSVC environment
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+      - name: Compile and run Native IPC codec smoke test (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force build | Out-Null
+          cl /nologo /std:c11 /W4 impl/tests/native_drive/native_ipc_protocol_smoke.c /Febuild/native-ipc-protocol-smoke.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          .\build\native-ipc-protocol-smoke.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Configure native loader ABI tests
         run: cmake -S os-level-support -B build/native-loader -DBUILD_TESTING=ON
       - name: Build native loader ABI tests
