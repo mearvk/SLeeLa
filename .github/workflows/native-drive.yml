@@ -1,31 +1,6 @@
 name: Native Drive
 
 on:
-  push:
-    branches: [main, master, feat/native-drive-integration, feat/native-drive-completion, feat/native-drive-final]
-    paths:
-      - "tools/sleela-native-drive.py"
-      - "tools/generate-sha256-manifest.py"
-      - "install/Makefile"
-      - "install/quick-safe-install.sh"
-      - "install/quick-safe-install.ps1"
-      - "security/sha256-manifest.json"
-      - "tools/sleela-native-service.py"
-      - "tools/tests/test_native_drive.py"
-      - "impl/native-drive/**"
-      - ".github/workflows/native-drive.yml"
-  pull_request:
-    paths:
-      - "security/sha256-manifest.json"
-      - "install/quick-safe-install.ps1"
-      - "install/quick-safe-install.sh"
-      - "install/Makefile"
-      - "tools/generate-sha256-manifest.py"
-      - "tools/sleela-native-service.py"
-      - "tools/sleela-native-drive.py"
-      - "tools/tests/test_native_drive.py"
-      - "impl/native-drive/**"
-      - ".github/workflows/native-drive.yml"
   workflow_dispatch:
 
 permissions:
