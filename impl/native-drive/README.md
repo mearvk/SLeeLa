@@ -8,7 +8,7 @@ are complete production parsers.
 
 tools/sleela-native-drive.py provides:
 
-- Direct C and C++ source compilation through the host toolchain.
+- Direct C and C++ source compilation through the host toolchain, as either an executable or a shared library.
 - SLeeLa .sleela input through the existing sleela aot --emit contract,
   followed by a host C compiler.
 - Argument-vector process execution without an implicit shell.
@@ -24,6 +24,7 @@ Extra compiler arguments are passed as individual argv elements.
 
     python3 tools/sleela-native-drive.py build source.c -o build/source
     python3 tools/sleela-native-drive.py build source.cpp -o build/source
+    python3 tools/sleela-native-drive.py build plugin.c --kind shared -o build/plugin.so
     python3 tools/sleela-native-drive.py build hot.sleela --language sleela -o build/hot
 
     python3 tools/sleela-native-drive.py run --capture --timeout 10 -- build/source arg1
@@ -31,8 +32,13 @@ Extra compiler arguments are passed as individual argv elements.
 
 The SLeeLa route is constrained by sleela aot --emit. Methods outside its
 supported subset are rejected. The output must be a C translation unit.
-This tool does not add full C/C++ frontend parsing, VM in-process native
-dispatch, shared-library creation, or automatic systemd unit installation.
+Shared-library mode compiles a C/C++ translation unit into the platform shared
+library format (`.so`, `.dylib`, or `.dll`). A module intended for the existing
+SLeeLa loader must export `sl_native_abi_version` and `sl_native_run` with the
+contract in `os-level-support/loader/native_loader.h`; the loader performs ABI
+validation at load time. Native Drive does not itself load the library into the
+SLeeLa VM or add in-process native dispatch. It also does not add full C/C++
+frontend parsing or automatic systemd unit installation.
 
 ## Annotation and process contract
 
