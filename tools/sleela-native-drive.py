@@ -62,14 +62,27 @@ def build(args: argparse.Namespace) -> int:
                 compile_source.write_text(emitted.stdout, encoding="utf-8")
             staged = temp_dir / ("native-output.exe" if os.name == "nt" else "native-output")
             standard = "-std=c11" if cc_language == "c" else "-std=c++17"
-            command = [compiler, standard, "-O2", str(compile_source), "-o", str(staged), *args.compiler_arg]
+            command = [compiler, standard, "-O2", str(compile_source), "-o", str(staged)]
+            if os.name != "nt":
+                command.append("-lm")
+            command.extend(args.compiler_arg)
             result = _run_checked(command, args.timeout)
             if result.stdout: sys.stdout.write(result.stdout)
             if result.stderr: sys.stderr.write(result.stderr)
             if result.returncode: return EXIT_BUILD
             if not staged.is_file(): raise RuntimeError("compiler reported success but created no output")
-            shutil.copy2(staged, output)
-            if os.name != "nt": output.chmod(output.stat().st_mode | 0o111)
+            # Stage beside the destination so os.replace is atomic even when
+            # the system temporary directory is on another filesystem.
+            fd, adjacent_name = tempfile.mkstemp(prefix=f".{output.name}.", dir=output.parent)
+            os.close(fd)
+            try:
+                shutil.copy2(staged, adjacent_name)
+                if os.name != "nt":
+                    os.chmod(adjacent_name, os.stat(adjacent_name).st_mode | 0o111)
+                os.replace(adjacent_name, output)
+            finally:
+                if os.path.exists(adjacent_name):
+                    os.unlink(adjacent_name)
     except TimeoutError as exc:
         print(f"native-drive: {exc}", file=sys.stderr); return EXIT_TIMEOUT
     except (RuntimeError, OSError) as exc:
