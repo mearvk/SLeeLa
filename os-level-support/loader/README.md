@@ -124,6 +124,7 @@ may call `invoke(context, function, argc, argv, result)` synchronously from a ty
 The host resolves an exact, unique compiled SLeeLa function name and executes
 it on a separate nested interpreter stack. Only the typed scalar/UTF-8 values
 cross the callback boundary; VM pointers and raw `SLValue` objects never do.
+The embedding host must install `slvm_set_native_callback_authorizer` with an explicit function-name allowlist; callback invocation is denied by default. This policy is immutable after installation.
 
 The suspended interpreter stack remains a GC root during callback execution.
 Callbacks require a quiescent VM with no active worker threads, and callback
