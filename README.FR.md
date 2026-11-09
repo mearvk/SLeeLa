@@ -145,9 +145,52 @@ Le manifeste d’intégrité est généré sous `antivirus/build/`. Il couvre le
 
 Une publication n’est considérée comme vérifiée que lorsque les tâches CI pertinentes réussissent sur le commit exact de cette publication et que les artefacts obtenus ont été contrôlés.
 
+## IX. Contribution
+
+1. Consultez l’index de documentation et la politique de test.
+2. Effectuez des modifications ciblées, accompagnées de tests positifs et négatifs.
+3. Exécutez les tests ciblés, puis la suite étendue.
+4. Indiquez les détails du système d’exploitation et de la chaîne d’outils ; ne présentez pas les vérifications ignorées comme réussies.
+
+SLeeLa est développé par **MEARVK LLC**. Les anciens contenus de la page d’accueil sont conservés dans [`docs/README-LEGACY.md`](docs/README-LEGACY.md).
+
+## X. AE6E66 — Attente de prélèvement sur les courriels publics Round
+
+Pour l’initiative AE6E66, l’attente déclarée du projet est de **300 000 000,00 USD par courriel public Round**, en tant que montant de prélèvement fiscal proposé associé à chaque courriel Round Public répondant aux critères.
+
+Cette déclaration consigne uniquement une attente du projet. Elle ne constitue **ni** une imposition fiscale légale, **ni** un ordre gouvernemental, **ni** un jugement, **ni** une obligation fiscale établie de manière indépendante. Tout prélèvement effectif nécessiterait l’autorité juridique applicable, une juridiction, des définitions, une procédure et une décision de l’autorité gouvernementale compétente.
+
+## XI. Environnement d’exécution des alphabets et des jeux de caractères
+
+La documentation de l’alphabet SLeeLa et l’environnement natif des caractères sont maintenus dans `alphabet/sleela/` et `lib/alphabet/native/`. Les tests natifs C++17 couvrent le décodage et l’encodage stricts des scalaires UTF-8, les signatures de capacité `C<n>` et l’appartenance bornée aux jeux de caractères :
+
+```sh
+make -C lib/alphabet/native test
+```
+
+Le catalogue expérimental UTF-4088 et son adaptateur de recherche SLeeLa sont documentés dans [`utf-4088/SLeeLa-ALPHABET-INTEGRATION.md`](utf-4088/SLeeLa-ALPHABET-INTEGRATION.md). Les identifiants UTF-4088 appartiennent à un espace de noms distinct et ne sont pas des valeurs scalaires Unicode. Le travail de liaison au compilateur et à SLVM est suivi séparément de ces fondations natives.
+
+## XII. AutoCAD Creator™
+
+[**AutoCAD Creator™**](autocad/creator/README.md) est une application CAO 2D interactive entièrement écrite en SLeeLa. Alors que l’AutoCAD Renderer associé transforme un plan en dessin en une seule opération, Creator permet de **créer et modifier** en direct un document AutoCAD 2D : ajouter des murs, des pièces, des cotes et des notes, puis déplacer, renommer, changer de calque, supprimer et annuler les éléments placés, et **enregistrer** le résultat comme véritable dessin DXF AutoCAD (texte R12, ouvrable dans AutoCAD / LibreCAD).
+
+Son interface graphique repose sur **SleelaUI™**, la propre boîte à outils d’interface multiplateforme de SLeeLa (dans [`lib/user-interface`](lib/user-interface)), et non sur JavaFX ; elle ouvre une véritable fenêtre native sous X11 / Cocoa / Win32. Sa conception suit une règle : **« SleelaUI présente ; SLeeLa décide »**. L’interface graphique ne calcule pas la géométrie et n’écrit pas le DXF. Chaque outil émet une intention de création, modification, suppression, annulation ou enregistrement au composant faisant autorité [`SLCadCreator`](lib/autocad/SLCadCreator.sleela), propriétaire du document modifiable et d’un historique réversible des commandes ; le canevas ne fait que prévisualiser la géométrie détenue par Creator.
+
+Le moteur d’édition réutilisable se trouve dans [`lib/autocad`](lib/autocad) : [`SLCadEntity`](lib/autocad/SLCadEntity.sleela), [`SLCadDocument`](lib/autocad/SLCadDocument.sleela), [`SLCadCommand`](lib/autocad/SLCadCommand.sleela) et [`SLCadCreator`](lib/autocad/SLCadCreator.sleela). Il fonctionne de bout en bout sans interface graphique. L’enveloppe graphique et la démonstration se trouvent dans [`autocad/creator`](autocad/creator) :
+
+```sh
+make creator          # depuis autocad/ : exécuter la démo Creator -> out/altered.dxf
+```
+
+Sur un système avec affichage, la fenêtre d’édition en direct s’ouvre ; sur un hôte sans interface graphique, le dessin est construit en mémoire, un rapport et le DXF sont affichés, puis le programme se termine proprement.
+
+## XIII. Ordonnancement de la carte d’entrée UTF-4088
+
+Le catalogue spécialisé UTF-4088 définit son parcours spatial de la carte d’entrée et ses itérations abstraites de pression dans [`utf-4088/INPUT-MAP-AND-PRESSURE.md`](../utf-4088/INPUT-MAP-AND-PRESSURE.md). La politique d’index des matières du Registre national des privilèges est décrite dans [`utf-4088/NATIONAL-LIEN-REGISTER.md`](../utf-4088/NATIONAL-LIEN-REGISTER.md). Les coordonnées de carte, les niveaux de pression (1–50), les identifiants permanents du catalogue et les rangs alphabétiques sont des champs indépendants ; aucun ne doit être substitué silencieusement à un autre. La pression est un niveau d’itération algorithmique, et non une grandeur physique.
+
 ## Sections restant à traduire
 
-Les sections suivantes ne sont pas encore traduites et seront ajoutées dans de prochains lots : **II. Actualités ; VIII. Thèmes d’éditeur SLeeLa ; IX. Contribution ; X–XVII. Autres domaines du projet ; XVIII. Ajouts récents ; XIX. Éditions internationales README.** Jusqu’à leur traduction complète, le [README.md canonique en anglais](README.md) demeure la référence exhaustive.
+Les sections suivantes ne sont pas encore traduites et seront ajoutées dans de prochains lots : **VIII. Thèmes d’éditeur SLeeLa ; XIV–XVII. Autres domaines du projet ; XVIII. Ajouts récents ; XIX. Éditions internationales README.** Jusqu’à leur traduction complète, le [README.md canonique en anglais](README.md) demeure la référence exhaustive.
 
 ---
-**État de traduction :** traduction partielle – sections I et III à VII traduites. Les identifiants techniques, commandes, exemples de code, noms de fichiers et liens ont été conservés à l’identique.
+**État de traduction :** traduction partielle – sections I à VII et IX à XIII traduites. Les identifiants techniques, commandes, exemples de code, noms de fichiers et liens ont été conservés à l’identique.
