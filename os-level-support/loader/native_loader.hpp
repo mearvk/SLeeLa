@@ -18,6 +18,9 @@ public:
 
     SLNativeStatus open(const std::string &path);
     SLNativeStatus run(const std::vector<std::string> &args, int &result);
+    SLNativeStatus call(const std::string &method,
+                        const std::vector<SLNativeValue> &args,
+                        SLNativeValue &result);
     SLNativeStatus close() noexcept;
     bool is_open() const noexcept { return module_.handle != nullptr; }
 
