@@ -500,7 +500,9 @@ slmath_status slmath_vm_dispatch(slmath_operation operation,
             return SLMATH_DIMENSION_MISMATCH;
         return slmath_vector_scale(a->data,scalar,out->data,a_shape);
     case SLMATH_OP_VECTOR_SUBTRACT:
-        if (!b || !b->data || a_shape != b_shape || out_shape < a_shape)
+        if (!b || !b->data || a->cols != 1 || b->cols != 1 || out->cols != 1 ||
+            a->rows != b->rows || out->rows != a->rows ||
+            a_shape != b_shape || out_shape < a_shape)
             return SLMATH_DIMENSION_MISMATCH;
         return slmath_vector_subtract(a->data,b->data,out->data,a_shape);
     case SLMATH_OP_VECTOR_NORMALIZE:
