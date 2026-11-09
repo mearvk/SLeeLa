@@ -12,4 +12,7 @@ with tempfile.TemporaryDirectory() as td:
 graph = subprocess.run(["python3", str(ROOT/"tests"/"java_api_dependency_graph_suite.py")], capture_output=True, text=True)
 if graph.returncode:
     raise SystemExit(graph.stdout + graph.stderr)
+member = subprocess.run(["python3", str(ROOT/"tests"/"java_api_member_dependencies_suite.py")], capture_output=True, text=True)
+if member.returncode:
+    raise SystemExit(member.stdout + member.stderr)
 print("java-api-dependency-suite: PASS")
