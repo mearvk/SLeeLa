@@ -199,3 +199,18 @@ Landeudgaver bruger navnemønstret `README.<CC>.md`. En lande-fil kan indeholde 
 - [GitHub-repository](https://github.com/mearvk/SLeeLa)
 
 **Oversættelsesstatus:** Denne danske udgave er udvidet med introduktion, startvejledning, bygning, installation, sprog, funktioner, arkitektur, biblioteker, sikkerhed, bidrag og centrale tekniske emner. Faglig sproglig gennemgang og løbende sammenligning med ændringer i den engelske README mangler fortsat.
+
+
+## XVI. Mål, profiler og grænser for udførelse
+
+SLeeLa adskiller kildekode fra bygge- og udførelsesmål. Den dokumenterede målfamilie omfatter `SLVM`, `SLJVM` og `SLIR`; `NATIVE` er et afgrænset mål med betingelser og må ikke antages at være tilgængeligt på alle platforme. Profilerne `BASIC_COMPLETE` og `ADVANCED_TOTAL` angiver forskelligt omfang. Kontrollér det faktiske mål, profilen og platformsunderstøttelsen for hver build.
+
+En reference identificerer en fil, et modul eller en ressource, men giver ikke i sig selv tilladelse til at udføre den. Når et program bruger filer, eksterne biblioteker, native bindings eller systemressourcer, skal autorisationsgrænser og udførelsesansvar defineres tydeligt. En dokumentationsbeskrivelse er ikke alene bevis for en runtime-sikkerhedsgaranti; kontrollér implementeringen og relevante tests.
+
+## XVII. Ressourcers livscyklus og fejlfinding
+
+Dokumentér ejerskab, levetid og synkroniseringsansvar for ressourcer, der deles mellem funktioner eller tråde. Adskil local variables, shared object state, VM handles og serializable data. Et VM-local handle er ikke et stabilt filformat eller en netværksmeddelelse. Brug modulets definerede serialiseringsgrænseflade, og test invalid, missing og boundary values.
+
+Ved fejlfinding registreres commit, OS, architecture og toolchain. Byg først det mindste relevante mål, gem hele fejloutputtet, adskil compiler errors fra runtime errors, og opret et minimalt reproducerbart eksempel. En vellykket build beviser ikke i sig selv korrekt runtime-adfærd.
+
+En valideringsrapport bør angive exact commit, OS/architecture, compiler versions, fulde build/test commands, antal pass/fail/skip og kendte begrænsninger. Tests, der er sprunget over eller ikke kørt, må ikke tælles som bestået.
