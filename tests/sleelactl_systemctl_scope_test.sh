@@ -18,21 +18,26 @@ printf '%s\n' "$*" >>"$SCTL_LOG"
 EOF
 cat >"$TMP/bin/sudo" <<'EOF'
 #!/bin/sh
+printf 'called\\n' >>"$SUDO_LOG"
 exec "$@"
 EOF
 chmod +x "$TMP/bin/"*
 export SCTL_LOG="$TMP/systemctl.log"
+export SUDO_LOG="$TMP/sudo.log"
 export SLEELACTL_REGISTRY="$TMP/registry.conf"
 export PATH="$TMP/bin:$PATH"
 : >"$SCTL_LOG"
+: >"$SUDO_LOG"
 
 # User units must use the user manager and must not invoke sudo.
 SLEELACTL_SYSTEMCTL_SCOPE=user "$ROOT/bin/sleelactl" start example
 grep -Fx -- '--user start example.service' "$SCTL_LOG" >/dev/null
+[ ! -s "$SUDO_LOG" ]
 
 # Non-root system-unit control must explicitly pass through sudo/system scope.
 SLEELACTL_SYSTEMCTL_SCOPE=system "$ROOT/bin/sleelactl" enable example
 grep -Fx -- '--system enable example.service' "$SCTL_LOG" >/dev/null
+grep -Fx 'called' "$SUDO_LOG" >/dev/null
 
 # Invalid scope must fail closed and must not issue another systemctl command.
 before=$(wc -l <"$SCTL_LOG")
