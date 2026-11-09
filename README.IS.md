@@ -180,3 +180,16 @@ Góð sannprófunarskýrsla tilgreinir nákvæman commit, stýrikerfi og arkitek
 Landbundin README-skjöl eru aðgangsleið að skjölum fyrir tiltekin tungumál og svæði. Þau koma ekki í stað staðlaðrar málskipanar eða API-skjala eininga. Þegar enska frumskjalið breytist skal bera þýðinguna saman við nýja útgáfu, varðveita auðkenni, skipanir, slóðir og kóða óbreytt og merkja efni sem bíður yfirferðar.
 
 **Viðbót við þýðingarstöðu:** Íslenski leiðarvísirinn nær nú einnig yfir keyrslumarkmið og snið, heimildamörk, auðlindaeign, villuleit, prófunarskýrslur og viðhald alþjóðlegra skjala.
+
+
+## 17. Einingaprófanir, samningar og API-samhæfni
+
+Þegar nýtt API er kynnt skal lýsa inntaki, úttaki, villuskilyrðum, eignarhaldi gagna og því hvort aðgerðin hafi hliðaráhrif. Dæmi í skjölum ættu að sýna bæði venjulega notkun og meðhöndlun ógildra eða vantaðra gilda. Ekki lofa hegðun sem ekki er staðfest í útfærslu og prófunum.
+
+Skiptið prófunum eftir mörkum: lexing/parsing, merkingargreiningu, IR-lækkun, code generation, VM keyrslu og native tengingu. Fyrir hverja bilun skal varðveita minnsta endurtakanlega inntak, vænta niðurstöðu og raunverulega niðurstöðu. API-breytingar þurfa að skrá afturvirkni, migration leiðbeiningar og áhrif á dæmi.
+
+## 18. Staðfærsla, kóðun og læsileiki
+
+Tæknileg auðkenni, skipanir, slóðir og kóðablokkir skulu haldast óbreyttar milli tungumála. Þýðið skýringartexta en ekki táknmál eða heiti sem notuð eru í source code. Skráið tungumál og svæðisbundið samhengi skýrt; ekki gera ráð fyrir að sama orðalag eigi við á öllum Norðurlöndum.
+
+Prófið Markdown-hlekkja, fyrirsagnir, kóðablokkir og dæmi eftir hverja uppfærslu. Þegar ensk frumskjöl breytast skal bera saman kafla og uppfæra viðkomandi þýðingu, ekki aðeins inngang. Óyfirfarið efni skal merkt sem slíkt.
