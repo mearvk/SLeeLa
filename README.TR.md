@@ -189,3 +189,16 @@ Fonksiyonlar veya thread'ler arasında paylaşılan kaynakların sahipliğini, y
 Hata ayıklarken commit, OS, architecture ve toolchain bilgilerini kaydedin. Önce ilgili en küçük hedefi derleyin, tam hata çıktısını saklayın, compiler errors ile runtime errors ayrımını yapın ve yeniden üretilebilir en küçük örneği hazırlayın. Başarılı bir build tek başına runtime davranışının doğru olduğunu kanıtlamaz.
 
 Doğrulama raporu exact commit, OS/architecture, compiler versions, tam build/test commands, pass/fail/skip sayıları ve bilinen kısıtlamaları içermelidir. Atlanan veya çalıştırılmayan testler başarılı sayılmamalıdır.
+
+
+## XXI. Modül API sözleşmeleri, uyumluluk ve test stratejisi
+
+Yeni bir API eklenirken girdiler, çıktılar, hata koşulları, veri sahipliği ve olası side effects belgelenmelidir. Örnekler hem olağan kullanımı hem de invalid veya missing input durumlarının ele alınmasını göstermelidir. Implementation ve ilgili tests tarafından doğrulanmayan davranışlar garanti olarak sunulmamalıdır.
+
+Testleri compiler pipeline aşamalarına göre ayırın: lexing/parsing, semantic analysis, IR lowering, code generation, VM execution ve native integration. Her regression case için yeniden üretilebilen en küçük girdiyi, beklenen sonucu ve gerçek sonucu saklayın. API değişiklikleri backward compatibility, migration steps ve mevcut examples üzerindeki etkileri açıklamalıdır.
+
+## XXII. Yerelleştirme ve teknik tutarlılık
+
+Technical identifiers, commands, paths, syntax ve code blocks tüm dil sürümlerinde aynı kalmalıdır. Açıklayıcı metni çevirin; source code içinde kullanılan token veya adları çevirmeyin. Dil ve bölgesel kullanım açıkça belirtilmelidir.
+
+Her güncellemeden sonra Markdown links, başlık hiyerarşisi, code fences ve örnekleri kontrol edin. Canonical English documents değiştiğinde yalnızca giriş bölümünü değil, ilgili bölümlerin tamamını karşılaştırıp güncelleyin. Dil veya teknik incelemeden geçmemiş içerikleri açıkça işaretleyin.
