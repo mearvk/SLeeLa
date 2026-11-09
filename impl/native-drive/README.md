@@ -121,8 +121,9 @@ same null/bool/int64/double/UTF-8 ABI; raw VM pointers and `SLValue` objects
 are never exposed.
 
 The VM runs callback bytecode on a separate nested interpreter stack while
-preserving the suspended caller stack as a GC root. Callback bytecode cannot
-spawn or join VM workers while the plugin call is active. Recursive native-module
+preserving the suspended caller stack as a GC root. Callbacks are accepted
+only when the VM has no active worker threads; callback bytecode also cannot
+spawn or join workers while the plugin call is active. Recursive native-module
 operations from callback bytecode are rejected with
 `SL_NATIVE_REENTRANT_CALL` rather than re-entering the module mutex. Modules
 without the optional binder remain compatible but cannot call back into
