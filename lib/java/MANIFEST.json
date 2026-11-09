@@ -9,9 +9,10 @@
       "lib/java/README.md",
       "lib/java/MANIFEST.json",
       "lib/java/validate.py",
-      "lib/java/validate.sh"
+      "lib/java/validate.sh",
+      "lib/java/RUNTIME-INTEGRATION.md"
     ],
-    "count_command": "git ls-files --cached -- lib/java | grep -v -E '^(lib/java/README.md|lib/java/MANIFEST.json|lib/java/validate.py|lib/java/validate.sh)$' | wc -l",
+    "count_command": "git ls-files --cached -- lib/java | grep -v -E '^(lib/java/README.md|lib/java/MANIFEST.json|lib/java/validate.py|lib/java/validate.sh|lib/java/RUNTIME-INTEGRATION.md)$' | wc -l",
     "baseline_policy": "intentional library changes must not silently reduce the established 8,988-file baseline; metadata files are excluded from the library count"
   },
   "language_bridge": {
