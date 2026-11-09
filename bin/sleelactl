@@ -92,6 +92,16 @@ warn() { printf '  %s!%s %s\n' "$Y" "$R" "$*"; }
 err()  { printf '  %s✗%s %s\n' "$RD" "$R" "$*" >&2; }
 die()  { err "$*"; exit 1; }
 
+# Resolve helper scripts in both repository/quick-safe layouts (ROOT/tools)
+# and conventional installs (PREFIX/lib/sleela/tools).
+runtime_file() {
+  relative=$1
+  for candidate in "$ROOT/$relative" "$ROOT/lib/sleela/$relative" "$SELF/../lib/sleela/$relative"; do
+    [ -f "$candidate" ] && { printf '%s\\n' "$candidate"; return 0; }
+  done
+  return 1
+}
+
 # --- registry access ----------------------------------------------------------
 # Each lookup reads the plain-text registry; small enough to re-scan cheaply.
 reg_require() { [ -f "$REGISTRY" ] || die "module registry not found: $REGISTRY"; }
@@ -292,12 +302,11 @@ protocol_cmd() { # module verb [args]
 # =============================================================================
 tool_cmd() { # module verb [args]
   if [ "$1" = "native-drive" ]; then
-    script="$ROOT/$(handle_of "$1")"
-    [ -f "$script" ] || { warn "native-drive script not present: $script"; return 1; }
+    script=$(runtime_file "$(handle_of "$1")") || { warn "native-drive script not present in repository or installed runtime"; return 1; }
     command -v python3 >/dev/null 2>&1 || { warn "python3 is required for native-drive"; return 3; }
     verb="$2"
     case "$verb" in
-      info) okay "native-drive — $(summary_of "$1")"; info "location: ${script#$ROOT/}"; info "see: $ROOT/impl/native-drive/README.md" ;;
+      info) okay "native-drive — $(summary_of "$1")"; info "location: ${script#$ROOT/}"; if [ -f "$ROOT/impl/native-drive/README.md" ]; then info "see: $ROOT/impl/native-drive/README.md"; else info "documentation: impl/native-drive/README.md in the source repository"; fi ;;
       build) shift 2; python3 "$script" build "$@" ;;
       run)
         shift 2
@@ -307,7 +316,10 @@ tool_cmd() { # module verb [args]
         shift 2
         case "${1:-}" in
           xclass) shift; python3 "$script" xclass "$@" ;;
-          service) shift; python3 "$ROOT/tools/sleela-native-service.py" "$@" ;;
+          service)
+            shift
+            service_script=$(runtime_file "tools/sleela-native-service.py") || { warn "native service helper not present in installed runtime"; return 1; }
+            python3 "$service_script" "$@" ;;
           *) python3 "$script" --help ;;
         esac ;;
       *) die "native-drive verb '$verb' not understood" ;;
