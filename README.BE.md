@@ -1314,6 +1314,76 @@ SLeeLa biedt landspecifieke README-startpunten voor de 50 markten van de interna
 
 ---
 
+
+### Aanvullende Nederlandstalige technische gids
+
+#### 1. Bouwen en testen
+
+Het bestand `SLEELA.syntax` is de primaire referentie voor de taalgrammatica. Houd de versie van de compiler gescheiden van de versie van de taalspecificatie: dit zijn afzonderlijke versies, en niet elke compileruitgave hoeft alle beschreven taalfuncties te ondersteunen.
+
+Voer vanuit de hoofdmap van de repository de relevante bouw- en testopdrachten uit:
+
+```sh
+make
+make -C impl all
+bash ./test-suites/run-all.sh --all
+```
+
+Veelgebruikte aanvullende Make-doelen zijn:
+
+```sh
+make all
+make registry
+make tests
+make ballum
+make help
+make clean
+```
+
+Een geslaagde bouw van één onderdeel bewijst niet dat alle bibliotheken of platformen klaar zijn voor een release. Koppel testresultaten aan de Git-commit, het besturingssysteem en de gebruikte toolchain. Rapporteer overgeslagen of niet-uitgevoerde tests nooit als geslaagd.
+
+#### 2. Installatie en bestandspaden
+
+SLeeLa ondersteunt systeeminstallatie, installatie binnen het gebruikersaccount en staging voor pakketbouw:
+
+```sh
+sudo make install
+make install PREFIX="$HOME/.local"
+make install DESTDIR="$PWD/package-root"
+make install-check
+```
+
+Een systeeminstallatie gebruikt doorgaans paden zoals `/usr/local/bin`, `/usr/local/lib/sleela` en `/usr/local/share/sleela`. Met `PREFIX="$HOME/.local"` worden bestanden onder de gebruikersmap geplaatst; doorgaans is daarvoor geen `sudo` nodig. `DESTDIR` maakt een tijdelijke installatiestructuur voor pakketbouw en is geen rechtstreekse installatie op het hostsysteem.
+
+Volg de [installatiehandleiding](install/README.md) en de platformspecifieke instructies. Verwijder geen bestanden die niet door het installatieproces als beheerde bestanden zijn geregistreerd.
+
+#### 3. Compiler, runtime en uitvoeringsmodel
+
+SLeeLa omvat een compiler, runtime, virtuele machines, bibliotheken en documentatiehulpmiddelen. De repository bevat daarnaast native C- en C++-code en SLeeLa-modules. Wanneer code de grens tussen native code en de runtime overschrijdt, moet het ABI-contract van de betrokken component worden gevolgd.
+
+De gebruikelijke compilerketen bestaat uit lexicale analyse, parsing, semantische analyse, verlaging naar een intermediate representation, codegeneratie en uitvoering op de virtuele machine. Test elke fase afzonderlijk en test ook de grenzen tussen de fasen. Een parser-test alleen kan de correctheid van een volledig programma niet aantonen.
+
+#### 4. API-contracten en modulegrenzen
+
+Elke publieke API hoort haar invoer, uitvoer, mogelijke foutcondities, geheugenownership en neveneffecten te documenteren. Modulehandleidingen moeten precondities, postcondities en platformbeperkingen expliciet beschrijven.
+
+Een symboolnaam of moduleverwijzing verleent op zichzelf geen toestemming om code uit te voeren. Autorisatie en uitvoeringsgrenzen moeten op de daarvoor bestemde grens worden gecontroleerd. Bij ongeldige invoer, ontbrekende resources of niet-ondersteunde functionaliteit moet de bewerking veilig falen.
+
+#### 5. Regressietests en reproduceerbaarheid
+
+De testsuite hoort zowel positieve als negatieve gevallen te omvatten: geldige bronbestanden, parseerfouten, typefouten, fouten bij IR-lowering, codegeneratie en uitvoeringsresultaten. Voor native integratie moeten ook ABI-compatibiliteit, foutafhandeling en het vrijgeven van resources worden getest.
+
+Leg het besturingssysteem, de compilerversie, de toolversies en de Git-commit vast. Resultaten van herhaalde tests moeten vergelijkbaar zijn; overgeslagen tests moeten zichtbaar blijven in de rapportage. Raadpleeg het [testbeleid](markdown/TESTING.md) en de [platformondersteuningsmatrix](docs/PLATFORM-SUPPORT.md).
+
+#### 6. Nederlandse terminologie en onderhoud
+
+Behoud bestandsnamen, identifiers, opdrachten, paden, URL's, codevoorbeelden en API-namen exact. Vertaal de toelichting, niet de tekenreeksen die door de compiler of shell moeten worden herkend. Gebruik consistente termen voor compiler, runtime, virtuele machine, module en API. Wanneer een Nederlandse vakterm niet eenduidig is, vermeld dan bij het eerste gebruik ook de Engelse technische term.
+
+Vertaling is doorlopend onderhoud. Vergelijk deze editie met de canonieke README wanneer die verandert en werk de overeenkomstige onderdelen bij. Deze aanvullende gids maakt de Nederlandse editie inhoudelijk uitgebreider, maar vervangt geen volledige vertaling van alle bestaande secties of een taalkundige eindcontrole door een moedertaalspreker.
+
+
+---
+
 ## Taalstatus België
 
 De Duitse en Franse secties bevatten de volledige technische README-vertalingen. De Nederlandse sectie is opgenomen als werkversie en is nog niet volledig vertaald. Deze editie mag daarom niet als volledig drietalig worden aangeduid totdat de Nederlandse technische tekst is voltooid en nagekeken.
