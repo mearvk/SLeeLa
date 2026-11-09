@@ -37,6 +37,24 @@ def strip_comments(text: str) -> str:
         return re.sub(r"[^\n]", " ", token)
     return COMMENT_RE.sub(replace, text)
 
+def java_namespace(qname: str) -> bool:
+    return any(qname == root or qname.startswith(root + ".") for root in JAVA_ROOTS)
+
+def qname_from_path(path: Path, root: Path) -> str | None:
+    parts = list(path.relative_to(root).with_suffix("").parts)
+    if parts and parts[0] == "early_access":
+        # early_access/jdk28/docs/api/<module>/<package>/<Type>
+        if len(parts) < 7 or parts[1:4] != ["jdk28", "docs", "api"]:
+            return None
+        parts = parts[5:]
+    if not parts or parts[-1] in {"module-info", "package-info"}:
+        return None
+    qname = ".".join(parts)
+    return qname if java_namespace(qname) else None
+
+def line_of(source: str, offset: int) -> int:
+    return source.count("\n", 0, offset) + 1
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[3])
@@ -83,8 +101,14 @@ def main() -> int:
             # Static member imports depend on the declaring owner type.
             owner = name if is_static else name
             if wildcard:
-                wildcard_edges.append({"from": qname, "package": owner, "kind": "static-wildcard" if is_static else "package-wildcard", "line": line_of(source, match.start())})
-                imports.append({"name": owner + ".*", "kind": "static-wildcard" if is_static else "package-wildcard", "line": line_of(source, match.start())})
+                line = line_of(source, match.start())
+                wildcard_edges.append({"from": qname, "package": owner, "kind": "static-wildcard" if is_static else "package-wildcard", "line": line})
+                imports.append({"name": owner + ".*", "kind": "static-wildcard" if is_static else "package-wildcard", "line": line})
+                if is_static:
+                    if owner in index and owner != qname:
+                        local_edges[(owner, "static-wildcard-import")] = line
+                    elif owner not in index:
+                        unresolved.append({"from": qname, "reference": owner, "kind": "static-wildcard-import", "line": line, "source": rel})
                 continue
             target = owner
             if is_static:
@@ -139,6 +163,12 @@ def main() -> int:
                                    "kind": "ambiguous-wildcard-type", "line": 1,
                                    "source": rel, "candidates": wildcard_candidates})
 
+        # A nested Java type is owned by its enclosing type when that
+        # counterpart exists as a separate indexed source unit.
+        for (target, kind), line in list(local_edges.items()):
+            parent = target.rpartition(".")[0]
+            if parent in index and parent != qname:
+                local_edges.setdefault((parent, "nested-type-owner"), line)
         for (target, kind), line in sorted(local_edges.items()):
             edges.append({"from": qname, "to": target, "kind": kind, "line": line, "source": rel})
         nodes.append({
