@@ -2411,6 +2411,62 @@ static SLResult run_thread(SLThread* t) {
         }
         switch (in.op) {
         case OP_NOP: break;
+        case OP_TRY_PUSH: {
+            if (t->fp <= 0 || t->fp > FRAMES_MAX)
+                TERR("exception handler registration requires an active call frame");
+            if (in.a < 0 || in.a >= vm->codelen)
+                TERR("exception handler target outside code");
+            if (t->exception_handler_count >= EXCEPTION_HANDLERS_MAX)
+                TERR("exception handler stack limit exceeded");
+            SLExceptionHandler *handler =
+                &t->exception_handlers[t->exception_handler_count++];
+            handler->target_ip = in.a;
+            handler->stack_height = t->sp;
+            handler->frame_depth = t->fp;
+            handler->owner_frame = t->fp - 1;
+            handler->exception_value = slval_null();
+            handler->has_exception_value = 0;
+        } break;
+        case OP_TRY_POP: {
+            if (t->exception_handler_count <= 0)
+                TERR("exception handler stack underflow");
+            SLExceptionHandler *handler =
+                &t->exception_handlers[t->exception_handler_count - 1];
+            if (handler->owner_frame != t->fp - 1 ||
+                handler->frame_depth != t->fp)
+                TERR("exception handler removal crossed a call-frame boundary");
+            --t->exception_handler_count;
+        } break;
+        case OP_THROW: {
+            SLValue thrown = POP();
+            if (t->underflow) TERR("throw requires an exception value");
+            if (t->exception_handler_count <= 0) {
+                t->uncaught_exception = thrown;
+                t->has_uncaught_exception = 1;
+                TERR("uncaught language exception");
+            }
+            int handler_index = t->exception_handler_count - 1;
+            SLExceptionHandler handler = t->exception_handlers[handler_index];
+            if (handler.frame_depth < 1 || handler.frame_depth > t->fp ||
+                handler.owner_frame != handler.frame_depth - 1 ||
+                handler.stack_height < 0 || handler.stack_height > STACK_MAX ||
+                handler.target_ip < 0 || handler.target_ip >= vm->codelen ||
+                handler.owner_frame >= FRAMES_MAX) {
+                TERR("corrupt exception handler state");
+            }
+            /* Root the payload before truncating any stack slots. The dispatch
+             * path performs no allocation or safepoint between truncation and
+             * placing the value on the catch-entry operand stack. */
+            t->pending_exception = thrown;
+            t->has_pending_exception = 1;
+            t->exception_handler_count = handler_index; /* selected handler is consumed */
+            t->fp = handler.frame_depth;
+            t->sp = handler.stack_height;
+            PUSH(t->pending_exception);
+            t->pending_exception = slval_null();
+            t->has_pending_exception = 0;
+            ip = handler.target_ip;
+        } break;
         case OP_HALT: return SLR_HALT;
         case OP_GC_HINT: {
             /* Short-term GC cleanup requested by `x = gc N;` / `x = mem N;`.
@@ -2648,7 +2704,7 @@ static SLResult run_thread(SLThread* t) {
             PUSH(result_value);
         } break;
         case OP_RET: {
-            SLValue rv=(t->sp>t->frames[t->fp-1].base)?POP():slval_null(); SLFrame f=t->frames[--t->fp]; t->sp=f.base;
+            SLValue rv=(t->sp>t->frames[t->fp-1].base)?POP():slval_null(); SLFrame f=t->frames[--t->fp]; if (t->exception_handler_count > f.handler_base) t->exception_handler_count = f.handler_base; t->sp=f.base;
             if(f.ret_ip<0){t->result=rv; return SLR_OK;} PUSH(rv); ip=f.ret_ip;
         } break;
         case OP_PRINT: { SLValue v=POP(); pthread_mutex_lock(&vm->print_mtx); print_value(vm,v); printf("\n"); pthread_mutex_unlock(&vm->print_mtx); } break;
