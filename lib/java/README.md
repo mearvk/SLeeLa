@@ -296,3 +296,20 @@ make -C tests java-lang-native
 A successful run validates only the cases in those fixtures. The Java API
 counterpart files remain contracts until each operation has a native SLeeLa
 implementation and behavior-based qualification.
+
+
+## Java UTF-16 Runtime Primitive Foundation
+
+The native VM core now includes a strict, length-delimited UTF-8 to Java UTF-16
+primitive layer at `impl/core/sleela_utf16.h` and
+`impl/core/sleela_utf16.c`. It provides UTF-16 code-unit length and
+`charAt` extraction, including independent high- and low-surrogate access
+for supplementary Unicode scalar values. Malformed UTF-8, negative indices,
+and out-of-range indices fail explicitly.
+
+The focused native regression is `impl/core/sleela_utf16_smoke.c`, invoked by
+`make -C impl test-java-utf16`; the object is also included in the reusable
+`libslcore.a` archive. This is a native runtime primitive foundation, not yet
+a JavaStringValue-to-VM binding: the SLeeLa String adapter continues to report
+UTF-16 indexing as unsupported until the VM/native-call bridge can invoke these
+functions and translate their status codes into Java exception behavior.
