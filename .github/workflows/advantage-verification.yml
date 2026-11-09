@@ -49,6 +49,47 @@ jobs:
             build-essential g++ make python3 \
             libx11-dev libfontconfig1-dev libfreetype6-dev
 
+      - name: Generate review-only integrity manifest candidate
+        run: |
+          python3 tools/generate-sha256-manifest.py --root . --output "$RUNNER_TEMP/sha256-manifest.candidate.json"
+          python3 - "$RUNNER_TEMP/sha256-manifest.candidate.json" security/sha256-manifest.json <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          candidate = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          trusted = json.loads(Path(sys.argv[2]).read_text(encoding="utf-8"))
+          def entries(doc):
+              if isinstance(doc, dict):
+                  for key in ("files", "entries", "manifest"):
+                      if isinstance(doc.get(key), (dict, list)):
+                          return doc[key]
+              return doc
+          new = entries(candidate)
+          old = entries(trusted)
+          def as_map(value):
+              if isinstance(value, dict):
+                  return value
+              if isinstance(value, list):
+                  result = {}
+                  for item in value:
+                      if isinstance(item, dict):
+                          path = item.get("path") or item.get("file")
+                          if path:
+                              result[path] = item
+                  return result
+              return {}
+          new_map, old_map = as_map(new), as_map(old)
+          changed = sorted(path for path in new_map.keys() & old_map.keys()
+                           if new_map[path] != old_map[path])
+          added = sorted(new_map.keys() - old_map.keys())
+          removed = sorted(old_map.keys() - new_map.keys())
+          print(f"Review-only candidate: {len(new_map)} entries; "
+                f"{len(changed)} changed, {len(added)} added, {len(removed)} removed")
+          for path in changed + added + removed:
+              print(f"  {path}")
+          PY
+
       - name: Build the source-authoritative SLeeLa runtime
         run: |
           cd impl
@@ -160,19 +201,19 @@ jobs:
           {
             echo "# Advantage Library Verification"
             echo
-            echo "- Commit: `$GITHUB_SHA`"
-            echo "- Ref: `$GITHUB_REF`"
-            echo "- Runner: `$RUNNER_OS` / `$RUNNER_ARCH`"
-            echo "- Runtime build: source-built from `impl/`"
+            echo "- Commit: \`$GITHUB_SHA\`"
+            echo "- Ref: \`$GITHUB_REF\`"
+            echo "- Runner: \`$RUNNER_OS\` / \`$RUNNER_ARCH\`"
+            echo "- Runtime build: source-built from \`impl/\`"
             echo
             echo "The job is successful only when documentation checks, generated API checks, and all six runnable demonstrations pass."
             echo
             echo "## Demonstrations"
             for name in advantage-demo trade-math-demo physics-demo integration-demo grading-demo output-demo; do
               if [ -f "$RUNNER_TEMP/advantage-logs/$name.log" ] && grep -Fq "ALL CHECKS PASSED" "$RUNNER_TEMP/advantage-logs/$name.log"; then
-                echo "- PASS — `$name`"
+                echo "- PASS — \`$name\`"
               else
-                echo "- NOT VERIFIED — `$name`"
+                echo "- NOT VERIFIED — \`$name\`"
               fi
             done
           } | tee "$RUNNER_TEMP/ADVANTAGE.VERIFICATION.md" >> "$GITHUB_STEP_SUMMARY"
@@ -186,5 +227,6 @@ jobs:
             ${{ runner.temp }}/ADVANTAGE.VERIFICATION.md
             ${{ runner.temp }}/sleela-version.txt
             ${{ runner.temp }}/advantage-logs/
+            ${{ runner.temp }}/sha256-manifest.candidate.json
           if-no-files-found: warn
           retention-days: 30
