@@ -39,6 +39,13 @@ SLEELACTL_SYSTEMCTL_SCOPE=system "$ROOT/bin/sleelactl" enable example
 grep -Fx -- '--system enable example.service' "$SCTL_LOG" >/dev/null
 grep -Fx 'called' "$SUDO_LOG" >/dev/null
 
+# Root system-unit control must not invoke sudo.
+before_sudo=$(wc -l <"$SUDO_LOG")
+FAKE_UID=0 SLEELACTL_SYSTEMCTL_SCOPE=system "$ROOT/bin/sleelactl" restart example
+grep -Fx -- '--system restart example.service' "$SCTL_LOG" >/dev/null
+after_sudo=$(wc -l <"$SUDO_LOG")
+[ "$before_sudo" -eq "$after_sudo" ]
+
 # Invalid scope must fail closed and must not issue another systemctl command.
 before=$(wc -l <"$SCTL_LOG")
 if SLEELACTL_SYSTEMCTL_SCOPE=automatic "$ROOT/bin/sleelactl" start example 2>"$TMP/error.log"; then
