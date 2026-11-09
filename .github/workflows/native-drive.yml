@@ -54,6 +54,14 @@ jobs:
         run: |
           sh -n bin/sleelactl
           bash -n install/quick-safe-install.sh
+      - name: Check Windows installer syntax
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $tokens = $null
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path "install/quick-safe-install.ps1"), [ref]$tokens, [ref]$errors) | Out-Null
+          if ($errors.Count -gt 0) { $errors | Format-List; exit 1 }
       - name: Run Native Drive tests
         run: python -m unittest discover -s tools/tests -p "test_native_drive.py" -v
       - name: Configure native loader ABI tests
