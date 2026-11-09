@@ -281,8 +281,9 @@ typedef enum {
      * operand stack carries 14 values, pushed left-to-right:
      * aHandle,bHandle,outHandle,auxHandle,
      * aRows,aCols,bRows,bCols,outRows,outCols,auxRows,auxCols,scalar,flags.
-     * Optional array handles are -1. Scalar operations (dot/norm) omit outHandle
-     * and return a double; array operations return the output array handle.
+     * Optional array handles are -1. Scalar operations (dot/norm/determinant/
+     * complex magnitude/phase) omit outHandle and return a double; array
+     * operations return the output array handle.
      * Appended to preserve every existing artifact opcode number. */
     OP_MATH_CALL,
     /* Sentinel: one past the last real opcode. Artifact validation uses this so
