@@ -109,6 +109,24 @@ null, bool, int64, double, and UTF-8 String values; it never passes its internal
 a plugin. Returned strings are copied while the module-call lock is held and
 validated before entering the VM String store.
 
+### Native-to-SLeeLa callbacks
+
+A plugin may optionally export `sl_native_bind_host(const SLNativeHostAPI*)`.
+The loader supplies a version-1, size-checked host table when the authorized
+module is opened. A plugin copies this table and may call `host_api.invoke`
+from its typed method to execute an exact, unique compiled SLeeLa function
+name such as `Callback::receive`. Callback arguments and results use only the
+same null/bool/int64/double/UTF-8 ABI; raw VM pointers and `SLValue` objects
+are never exposed.
+
+The VM runs callback bytecode on a separate nested interpreter stack while
+preserving the suspended caller stack as a GC root. Recursive native-module
+operations from callback bytecode are rejected with
+`SL_NATIVE_REENTRANT_CALL` rather than re-entering the module mutex. Modules
+without the optional binder remain compatible but cannot call back into
+SLeeLa. A callback failure is a handled plugin error, not a NOT_HANDLED
+fallback signal.
+
 If a plugin reports `SL_NATIVE_CALL_NOT_HANDLED`, or an argument is not
 representable by the scalar ABI, the VM may fall back to a same-name,
 same-arity SLeeLa bytecode method using the original VM-owned values. Ambiguous
@@ -200,8 +218,9 @@ test aggregate. It substitutes the built fixture's exact path into the
 SLeeLa source fixture, compiles that source to a persistent Core artifact,
 loads the artifact through `slvm_load_file`, installs a host-owned exact-path
 authorization callback, and executes the program. The source program invokes
-the plugin's `twice` method, exercises bytecode fallback for `fallback`,
-closes the module, and returns the combined result. The harness then reloads
+the plugin's `twice` method, calls the SLeeLa `Callback::receive` method from
+native code, exercises bytecode fallback for `fallback`, closes the module,
+and returns the combined result (105). The harness then reloads
 the same artifact with a deliberately mismatched allowlist and asserts that
 source-level `nativeOpen` fails closed before plugin execution.
 
