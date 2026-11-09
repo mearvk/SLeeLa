@@ -151,7 +151,9 @@ SLNativeStatus sl_native_call_module(SLNativeModule *module, const char *method,
     memset(&result, 0, sizeof(result));
     result.tag = SL_NATIVE_VALUE_NULL;
     plugin_status = typed_call(method, argc, argv, &result);
-    if (plugin_status != 0) return SL_NATIVE_PLUGIN_ERROR;
+    if (plugin_status == SL_NATIVE_CALL_NOT_HANDLED)
+        return SL_NATIVE_TYPED_ENTRY_NOT_FOUND;
+    if (plugin_status != SL_NATIVE_CALL_OK) return SL_NATIVE_PLUGIN_ERROR;
     if (!value_valid(&result)) return SL_NATIVE_PLUGIN_ERROR;
     *out_result = result;
     return SL_NATIVE_OK;
