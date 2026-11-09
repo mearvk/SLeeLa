@@ -661,7 +661,7 @@ sleela aot --list <file.sleela>    # per-method verdict: ok / REFUSED (reason)
 sleela aot --emit <file.sleela>    # emit C/C++ (stdout) for an in-subset program
 ```
 
-`@native` remains a request for AOT treatment, with unsupported constructs rejected before emission. The new [Native Drive](impl/native-drive/README.md) adds direct C/C++ compilation, compilation of supported SLeeLa AOT output, shell-free process execution, stdin/stdout/stderr handling, and two-process piping. It is available through `sleelactl info native-drive`, `sleelactl build native-drive ...`, and `sleelactl run native-drive ...`. This does **not** yet provide a full C/C++ frontend, shared-library VM dispatch, or automatic systemd unit generation. Details and limitations: [`pi-generator/AT-NATIVE.md`](pi-generator/AT-NATIVE.md).
+`@native` remains a request for AOT treatment, with unsupported constructs rejected before emission. The new [Native Drive](impl/native-drive/README.md) adds direct C/C++ executable or shared-library compilation, compilation of supported SLeeLa AOT output, shell-free process execution, stdin/stdout/stderr handling, and two-process piping. It is available through `sleelactl info native-drive`, `sleelactl build native-drive ...`, and `sleelactl run native-drive ...`. This does **not** yet provide a full C/C++ frontend, shared-library VM dispatch, or automatic systemd unit generation. Details and limitations: [`pi-generator/AT-NATIVE.md`](pi-generator/AT-NATIVE.md).
 
 
 ## XIX. International README Editions
