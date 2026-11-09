@@ -50,5 +50,61 @@ int main() {
                       out[0] == 1 && out[4] == 1 && out[8] == 1 &&
                       out[1] == 0 && out[6] == 0,
                       "identity matrix");
+
+    const double system[] = {4, 3, 6, 3};
+    double lu[4], rhs[] = {10, 12}, solution[2];
+    size_t pivots[2];
+    failures += check(slmath_matrix_lu(system,2,lu,pivots,1e-14) == SLMATH_OK &&
+                      slmath_matrix_lu_solve(lu,pivots,2,rhs,solution) == SLMATH_OK &&
+                      std::fabs(solution[0]-1.0) < 1e-12 &&
+                      std::fabs(solution[1]-2.0) < 1e-12,
+                      "LU factorization and solve");
+    double inverse[4];
+    failures += check(slmath_matrix_inverse(system,2,inverse,1e-14) == SLMATH_OK &&
+                      std::fabs(inverse[0]-1.0/3.0) < 1e-12 &&
+                      std::fabs(inverse[1]+1.0/3.0) < 1e-12,
+                      "matrix inverse");
+    const double tall[] = {1,0, 1,1, 1,2};
+    double q[6], rr[4];
+    failures += check(slmath_matrix_qr(tall,3,2,q,rr,1e-14) == SLMATH_OK &&
+                      std::fabs(q[0]*q[0]+q[2]*q[2]+q[4]*q[4]-1.0) < 1e-12 &&
+                      std::fabs(q[0]*q[1]+q[2]*q[3]+q[4]*q[5]) < 1e-12,
+                      "thin QR factorization");
+    slmath_complex ca{3,2}, cb{1,-1}, cc{};
+    failures += check(slmath_complex_multiply(ca,cb).re == 5.0 &&
+                      slmath_complex_multiply(ca,cb).im == -1.0 &&
+                      slmath_complex_divide(ca,cb,&cc) == SLMATH_OK &&
+                      std::fabs(cc.re-0.5) < 1e-12 &&
+                      std::fabs(cc.im-2.5) < 1e-12,
+                      "complex arithmetic");
+    const double array_src[] = {0,1,2,3,4,5};
+    double sliced[3] = {};
+    failures += check(slmath_array_slice(array_src,6,1,3,2,sliced) == SLMATH_OK &&
+                      sliced[0] == 1 && sliced[1] == 3 && sliced[2] == 5,
+                      "strided numerical array slice");
+    const double symmetric[] = {2,1,1,2};
+    double eigenvalues[2], eigenvectors[4];
+    failures += check(slmath_symmetric_eigen(symmetric,2,eigenvalues,eigenvectors,
+                                              32,1e-13) == SLMATH_OK &&
+                      std::fabs(eigenvalues[0]+eigenvalues[1]-4.0) < 1e-10 &&
+                      std::fabs(eigenvalues[0]*eigenvalues[1]-3.0) < 1e-10,
+                      "symmetric Jacobi eigen decomposition");
+    slmath_complex spectrum[4] = {{1,0},{0,0},{0,0},{0,0}};
+    failures += check(slmath_fft(spectrum,4,0) == SLMATH_OK &&
+                      std::fabs(spectrum[0].re-1.0) < 1e-12 &&
+                      std::fabs(spectrum[1].re-1.0) < 1e-12 &&
+                      slmath_fft(spectrum,4,1) == SLMATH_OK &&
+                      std::fabs(spectrum[0].re-1.0) < 1e-12 &&
+                      std::fabs(spectrum[1].re) < 1e-12,
+                      "radix-2 FFT and inverse round-trip");
+    double vmout[3] = {};
+    slmath_buffer va{const_cast<double*>(b),3,0,0};
+    slmath_buffer vb{const_cast<double*>(a),3,0,0};
+    slmath_buffer vo{vmout,3,0,0};
+    failures += check(slmath_vm_dispatch(SLMATH_OP_VECTOR_ADD,&va,&vb,&vo,
+                                          nullptr,0.0,0) == SLMATH_OK &&
+                      vmout[0] == 4.0 && vmout[1] == 6.0,
+                      "typed VM dispatch contract");
+
     return failures ? 1 : 0;
 }
