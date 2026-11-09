@@ -105,3 +105,24 @@ value equality, concatenation, non-negative repetition, and array joining;
 UTF-16 indexing, code-point behavior, Java hashCode, regex, normalization,
 case mapping, and exception semantics remain unimplemented. Runtime suites
 were added but not executed in this change.
+
+
+## Java UTF-16 primitive foundation (0.3.27-dev)
+
+Added a strict native UTF-8-to-UTF-16 code-unit layer:
+
+- `impl/core/sleela_utf16.h` and `impl/core/sleela_utf16.c`
+- UTF-16 code-unit length, with supplementary code points counted as two units
+- `charAt`-style code-unit extraction, including high- and low-surrogate halves
+- strict rejection of overlong, truncated, surrogate-encoded, and out-of-range
+  UTF-8 sequences
+- explicit status codes for invalid arguments, malformed input, and bounds
+  failures
+- `impl/core/sleela_utf16_smoke.c`, wired to `make -C impl test-java-utf16`
+  and included in the reusable `libslcore.a` archive
+
+The primitive tests cover ASCII, a multibyte BMP character, a supplementary
+character, empty input, malformed UTF-8, negative indices, and bounds. They
+have been added but not executed in this change. The JavaStringValue adapter is
+not yet bound to these functions; it must continue to report UTF-16 indexing
+unsupported until a native-call path and Java exception mapping are qualified.
