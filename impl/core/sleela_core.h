@@ -367,10 +367,12 @@ void slvm_set_audio_native_renderer(SLVM* vm, SLAudioNativeRenderFn fn, void* us
 /* Native modules are host-authorized only. Without an installed authorization
  * callback, every module open is denied. The callback is immutable after its
  * first installation and must not re-enter this VM's native-module API. These
- * APIs manage VM-owned opaque handles. The optional typed-call API below
- * accepts only the stable scalar/UTF-8 SLNativeValue contract; it does not
- * expose SLValue, VM object handles, bytecode dispatch, or interpreter
- * fallback. Do not call these APIs concurrently with slvm_free(). */
+ * APIs manage VM-owned opaque handles. Typed calls accept only the versioned
+ * scalar/UTF-8 SLNativeValue contract; OP_NATIVE_CALL performs bytecode
+ * dispatch and may fall back to a same-name, same-arity SLeeLa method when a
+ * plugin reports NOT_HANDLED or arguments are VM-owned composites. Raw SLValue
+ * and VM object handles never cross the plugin boundary. Do not call these
+ * APIs concurrently with slvm_free(). */
 int slvm_set_native_authorizer(SLVM* vm, SLNativeAuthorizePath authorize, void* context);
 SLNativeStatus slvm_native_module_open(SLVM* vm, const char* path, SLNativeHandle* out_handle);
 SLNativeStatus slvm_native_module_run(SLVM* vm, SLNativeHandle handle,
