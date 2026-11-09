@@ -2,9 +2,8 @@
 
 **Implementation status:** The portable 24-byte frame codec and scalar-value
 codec are implemented in `native_ipc_protocol.h`; the focused C smoke test is
-`native_ipc_protocol_smoke.c`. The persistent worker, pipe supervisor,
-request-payload codec, canonical big-integer limb messages, and Pi integration
-remain in progress. This is not yet an end-to-end IPC claim.
+`native_ipc_protocol_smoke.c`. The request-payload codec and canonical big-integer limb codec are now implemented.
+The persistent worker, pipe supervisor, and Pi integration remain in progress. This is not yet an end-to-end IPC claim.
 
 ## Why a second boundary is needed
 
@@ -39,16 +38,17 @@ oversized payloads are rejected.
 
 ## Next payload contract
 
-A request payload will contain: uint16 method-name length, UTF-8 method bytes,
-uint16 argument count, then the encoded arguments. A successful response
+Implemented request payload: uint16 method-name length, method bytes, uint16
+argument count, then encoded scalar arguments. The language boundary remains
+responsible for UTF-8 validation of method names. A successful response
 contains one encoded value; an error response uses a stable status and an
 optional bounded UTF-8 diagnostic. Reject empty names, invalid UTF-8,
 duplicate outstanding request IDs, trailing bytes, and count/length mismatch.
 
-Pi-specific operations will use a dedicated limb representation:
+Implemented Pi limb representation:
 - base: 1,000,000,000;
 - limbs: unsigned 32-bit little-endian, least-significant limb first;
-- explicit limb count and sign;
+- explicit limb count and sign (positive=1, negative=2 on wire);
 - zero has one zero limb and positive sign;
 - no redundant high zero limbs;
 - declared count and byte length must agree and stay within configured limits.
@@ -91,8 +91,9 @@ the operation has performed side effects.
 ## Verification
 
 The codec smoke test checks header round-trip and field endianness, signed
-int64, binary64, UTF-8 span round-trip, invalid boolean rejection, and
-truncated-value rejection. It does not test a process transport. The existing
+int64, binary64, UTF-8 span round-trip, invalid boolean rejection, truncated
+values, request payload round-trip/trailing-byte rejection, and canonical limb
+round-trip plus rejection of non-canonical high zero limbs and out-of-range limbs. It does not test a process transport. The existing
 native-call smoke suite tests the in-process typed ABI, source dispatch,
 fallback, callbacks, authorization, and reentrancy; it does not prove IPC.
 
