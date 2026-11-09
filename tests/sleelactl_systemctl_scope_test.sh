@@ -10,7 +10,7 @@ example daemon example.service Test daemon
 EOF
 cat >"$TMP/bin/id" <<'EOF'
 #!/bin/sh
-printf '1000\n'
+printf '%s\n' "${FAKE_UID:-1000}"
 EOF
 cat >"$TMP/bin/systemctl" <<'EOF'
 #!/bin/sh
