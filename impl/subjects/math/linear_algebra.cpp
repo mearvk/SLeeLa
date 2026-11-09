@@ -159,4 +159,265 @@ slmath_status slmath_matrix_identity(double *out, size_t order) {
     return SLMATH_OK;
 }
 
+
+slmath_status slmath_matrix_lu(const double *a, size_t n, double *lu,
+                               size_t *pivots, double tolerance) {
+    size_t count = 0;
+    if (!count_ok(n, n, &count)) return SLMATH_SIZE_OVERFLOW;
+    if (!valid_range(a, count) || !valid_range(lu, count) ||
+        !pivots || !std::isfinite(tolerance) || tolerance < 0.0)
+        return SLMATH_INVALID_ARGUMENT;
+    for (size_t i = 0; i < count; ++i) lu[i] = a[i];
+    for (size_t i = 0; i < n; ++i) pivots[i] = i;
+    for (size_t k = 0; k < n; ++k) {
+        size_t pivot = k;
+        double largest = std::fabs(lu[k*n+k]);
+        for (size_t r = k + 1; r < n; ++r) {
+            const double v = std::fabs(lu[r*n+k]);
+            if (v > largest) { largest = v; pivot = r; }
+        }
+        if (!(largest > tolerance)) return SLMATH_SINGULAR;
+        if (pivot != k) {
+            for (size_t c = 0; c < n; ++c)
+                std::swap(lu[k*n+c], lu[pivot*n+c]);
+            std::swap(pivots[k], pivots[pivot]);
+        }
+        for (size_t r = k + 1; r < n; ++r) {
+            lu[r*n+k] /= lu[k*n+k];
+            for (size_t c = k + 1; c < n; ++c)
+                lu[r*n+c] -= lu[r*n+k] * lu[k*n+c];
+        }
+    }
+    return SLMATH_OK;
+}
+
+slmath_status slmath_matrix_lu_solve(const double *lu, const size_t *pivots,
+                                     size_t n, const double *b, double *x) {
+    size_t count = 0;
+    if (!count_ok(n, n, &count)) return SLMATH_SIZE_OVERFLOW;
+    if (!valid_range(lu, count) || !valid_range(b, n) ||
+        !valid_range(x, n) || !pivots) return SLMATH_INVALID_ARGUMENT;
+    std::vector<double> work;
+    try { work.resize(n); } catch (...) { return SLMATH_ALLOCATION_FAILURE; }
+    for (size_t i = 0; i < n; ++i) {
+        if (pivots[i] >= n) return SLMATH_INVALID_ARGUMENT;
+        work[i] = b[pivots[i]];
+    }
+    for (size_t i = 0; i < n; ++i)
+        for (size_t j = 0; j < i; ++j) work[i] -= lu[i*n+j] * work[j];
+    for (size_t ii = n; ii-- > 0;) {
+        for (size_t j = ii + 1; j < n; ++j)
+            work[ii] -= lu[ii*n+j] * work[j];
+        if (lu[ii*n+ii] == 0.0) return SLMATH_SINGULAR;
+        work[ii] /= lu[ii*n+ii];
+    }
+    for (size_t i = 0; i < n; ++i) x[i] = work[i];
+    return SLMATH_OK;
+}
+
+slmath_status slmath_matrix_inverse(const double *a, size_t n, double *out,
+                                    double tolerance) {
+    size_t count = 0;
+    if (!count_ok(n, n, &count)) return SLMATH_SIZE_OVERFLOW;
+    if (!valid_range(a, count) || !valid_range(out, count))
+        return SLMATH_INVALID_ARGUMENT;
+    std::vector<double> lu, rhs, solution, staged;
+    std::vector<size_t> pivots;
+    try {
+        lu.resize(count); rhs.resize(n); solution.resize(n);
+        staged.resize(count); pivots.resize(n);
+    } catch (...) { return SLMATH_ALLOCATION_FAILURE; }
+    slmath_status status = slmath_matrix_lu(a, n, lu.data(), pivots.data(), tolerance);
+    if (status != SLMATH_OK) return status;
+    for (size_t c = 0; c < n; ++c) {
+        std::fill(rhs.begin(), rhs.end(), 0.0);
+        rhs[c] = 1.0;
+        status = slmath_matrix_lu_solve(lu.data(), pivots.data(), n,
+                                        rhs.data(), solution.data());
+        if (status != SLMATH_OK) return status;
+        for (size_t r = 0; r < n; ++r) staged[r*n+c] = solution[r];
+    }
+    for (size_t i = 0; i < count; ++i) out[i] = staged[i];
+    return SLMATH_OK;
+}
+
+slmath_status slmath_matrix_qr(const double *a, size_t rows, size_t cols,
+                               double *q, double *r, double tolerance) {
+    size_t ac = 0, qc = 0, rc = 0;
+    if (rows < cols) return SLMATH_DIMENSION_MISMATCH;
+    if (!count_ok(rows, cols, &ac) || !count_ok(rows, cols, &qc) ||
+        !count_ok(cols, cols, &rc)) return SLMATH_SIZE_OVERFLOW;
+    if (!valid_range(a, ac) || !valid_range(q, qc) || !valid_range(r, rc) ||
+        !std::isfinite(tolerance) || tolerance < 0.0)
+        return SLMATH_INVALID_ARGUMENT;
+    std::vector<double> qwork, rwork, v;
+    try { qwork.resize(qc); rwork.assign(rc, 0.0); v.resize(rows); }
+    catch (...) { return SLMATH_ALLOCATION_FAILURE; }
+    for (size_t c = 0; c < cols; ++c) {
+        for (size_t i = 0; i < rows; ++i) v[i] = a[i*cols+c];
+        for (size_t j = 0; j < c; ++j) {
+            double projection = 0.0;
+            for (size_t i = 0; i < rows; ++i)
+                projection += qwork[i*cols+j] * v[i];
+            rwork[j*cols+c] = projection;
+            for (size_t i = 0; i < rows; ++i)
+                v[i] -= projection * qwork[i*cols+j];
+        }
+        double norm = 0.0;
+        for (size_t i = 0; i < rows; ++i) norm = std::hypot(norm, v[i]);
+        if (!(norm > tolerance)) return SLMATH_SINGULAR;
+        rwork[c*cols+c] = norm;
+        for (size_t i = 0; i < rows; ++i) qwork[i*cols+c] = v[i] / norm;
+    }
+    for (size_t i = 0; i < qc; ++i) q[i] = qwork[i];
+    for (size_t i = 0; i < rc; ++i) r[i] = rwork[i];
+    return SLMATH_OK;
+}
+
+slmath_complex slmath_complex_add(slmath_complex a, slmath_complex b) {
+    return {a.re+b.re, a.im+b.im};
+}
+slmath_complex slmath_complex_subtract(slmath_complex a, slmath_complex b) {
+    return {a.re-b.re, a.im-b.im};
+}
+slmath_complex slmath_complex_multiply(slmath_complex a, slmath_complex b) {
+    return {a.re*b.re-a.im*b.im, a.re*b.im+a.im*b.re};
+}
+slmath_status slmath_complex_divide(slmath_complex a, slmath_complex b,
+                                    slmath_complex *out) {
+    if (!out || (b.re == 0.0 && b.im == 0.0))
+        return SLMATH_INVALID_ARGUMENT;
+    /* Smith's scaled division avoids squaring large components. */
+    if (std::fabs(b.re) >= std::fabs(b.im)) {
+        const double ratio = b.im / b.re;
+        const double den = b.re + b.im * ratio;
+        out->re = (a.re + a.im * ratio) / den;
+        out->im = (a.im - a.re * ratio) / den;
+    } else {
+        const double ratio = b.re / b.im;
+        const double den = b.im + b.re * ratio;
+        out->re = (a.re * ratio + a.im) / den;
+        out->im = (a.im * ratio - a.re) / den;
+    }
+    return SLMATH_OK;
+}
+double slmath_complex_abs(slmath_complex z) { return std::hypot(z.re, z.im); }
+slmath_complex slmath_complex_conjugate(slmath_complex z) { return {z.re, -z.im}; }
+
+slmath_status slmath_array_copy(const double *src, double *dst, size_t n) {
+    if (!valid_range(src, n) || !valid_range(dst, n))
+        return SLMATH_INVALID_ARGUMENT;
+    if (src != dst) std::memmove(dst, src, n * sizeof(double));
+    return SLMATH_OK;
+}
+
+slmath_status slmath_array_slice(const double *src, size_t src_n,
+                                 size_t start, size_t count, size_t stride,
+                                 double *dst) {
+    if (!src || !dst || stride == 0 || start > src_n)
+        return SLMATH_INVALID_ARGUMENT;
+    if (count && (count - 1 > (std::numeric_limits<size_t>::max()-start)/stride ||
+                  start + (count-1)*stride >= src_n))
+        return SLMATH_INVALID_ARGUMENT;
+    if (!valid_range(src, src_n) || !valid_range(dst, count))
+        return SLMATH_INVALID_ARGUMENT;
+    for (size_t i = 0; i < count; ++i) dst[i] = src[start+i*stride];
+    return SLMATH_OK;
+}
+
+slmath_status slmath_array_binary(const double *a, const double *b,
+                                  double *out, size_t n, int operation) {
+    if (operation < 0 || operation > 3) return SLMATH_INVALID_ARGUMENT;
+    return vector_binary(a, b, out, n, [operation](double x, double y) {
+        switch (operation) {
+            case 0: return x+y;
+            case 1: return x-y;
+            case 2: return x*y;
+            default: return y == 0.0 ? std::numeric_limits<double>::quiet_NaN() : x/y;
+        }
+    });
+}
+
+slmath_status slmath_symmetric_eigen(const double *a, size_t n,
+                                     double *eigenvalues, double *eigenvectors,
+                                     size_t max_sweeps, double tolerance) {
+    size_t count = 0;
+    if (!count_ok(n, n, &count)) return SLMATH_SIZE_OVERFLOW;
+    if (!valid_range(a, count) || !valid_range(eigenvectors, count) ||
+        !valid_range(eigenvalues, n) || !std::isfinite(tolerance) || tolerance < 0.0)
+        return SLMATH_INVALID_ARGUMENT;
+    std::vector<double> m, v;
+    try { m.assign(a, a+count); v.assign(count, 0.0); }
+    catch (...) { return SLMATH_ALLOCATION_FAILURE; }
+    for (size_t i = 0; i < n; ++i) v[i*n+i] = 1.0;
+    for (size_t sweep = 0; sweep < max_sweeps; ++sweep) {
+        double largest = 0.0;
+        for (size_t p = 0; p < n; ++p)
+            for (size_t q = p+1; q < n; ++q)
+                largest = std::max(largest, std::fabs(m[p*n+q]));
+        if (largest <= tolerance) {
+            for (size_t i = 0; i < n; ++i) eigenvalues[i] = m[i*n+i];
+            for (size_t i = 0; i < count; ++i) eigenvectors[i] = v[i];
+            return SLMATH_OK;
+        }
+        for (size_t p = 0; p < n; ++p) for (size_t q = p+1; q < n; ++q) {
+            const double apq = m[p*n+q];
+            if (std::fabs(apq) <= tolerance) continue;
+            const double tau = (m[q*n+q]-m[p*n+p])/(2.0*apq);
+            const double t = (tau >= 0.0 ? 1.0 : -1.0) /
+                             (std::fabs(tau)+std::hypot(1.0,tau));
+            const double c = 1.0/std::hypot(1.0,t);
+            const double s = t*c;
+            const double app=m[p*n+p], aqq=m[q*n+q];
+            m[p*n+p]=app-t*apq; m[q*n+q]=aqq+t*apq;
+            m[p*n+q]=m[q*n+p]=0.0;
+            for (size_t k=0;k<n;++k) if(k!=p && k!=q) {
+                const double mkp=m[k*n+p], mkq=m[k*n+q];
+                m[k*n+p]=m[p*n+k]=c*mkp-s*mkq;
+                m[k*n+q]=m[q*n+k]=s*mkp+c*mkq;
+            }
+            for (size_t k=0;k<n;++k) {
+                const double vkp=v[k*n+p], vkq=v[k*n+q];
+                v[k*n+p]=c*vkp-s*vkq;
+                v[k*n+q]=s*vkp+c*vkq;
+            }
+        }
+    }
+    return SLMATH_SINGULAR; /* Did not converge within caller's sweep budget. */
+}
+
+slmath_status slmath_fft(slmath_complex *values, size_t n, int inverse) {
+    if (!values || n == 0 || (n & (n-1)) != 0 || (inverse != 0 && inverse != 1))
+        return SLMATH_INVALID_ARGUMENT;
+    if (n > std::numeric_limits<size_t>::max()/sizeof(slmath_complex))
+        return SLMATH_SIZE_OVERFLOW;
+    for (size_t i=1,j=0;i<n;++i) {
+        size_t bit=n>>1;
+        for (; j&bit; bit>>=1) j^=bit;
+        j^=bit;
+        if (i<j) std::swap(values[i],values[j]);
+    }
+    const double pi=3.1415926535897932384626433832795;
+    for (size_t len=2;len<=n;len<<=1) {
+        const double angle=(inverse?2.0:-2.0)*pi/static_cast<double>(len);
+        const slmath_complex root={std::cos(angle),std::sin(angle)};
+        for (size_t base=0;base<n;base+=len) {
+            slmath_complex w={1.0,0.0};
+            for (size_t j=0;j<len/2;++j) {
+                const slmath_complex even=values[base+j];
+                const slmath_complex odd=slmath_complex_multiply(values[base+j+len/2],w);
+                values[base+j]=slmath_complex_add(even,odd);
+                values[base+j+len/2]=slmath_complex_subtract(even,odd);
+                w=slmath_complex_multiply(w,root);
+            }
+        }
+        if (len > n/2) break; /* Prevent size_t shift overflow at the top stage. */
+    }
+    if (inverse) for(size_t i=0;i<n;++i) {
+        values[i].re/=static_cast<double>(n);
+        values[i].im/=static_cast<double>(n);
+    }
+    return SLMATH_OK;
+}
+
 } // extern "C"
