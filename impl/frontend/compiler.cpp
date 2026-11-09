@@ -962,7 +962,57 @@ private:
         return true;
     }
 
+    bool tryEmitMathBuiltin(const Call& c){
+        const std::string& n=c.callee;
+        int op=0;
+        size_t dims[8]={0,0,0,0,0,0,0,0};
+        int a=-1,b=-1,out=-1,aux=-1;
+        const Expr* scalarExpr=nullptr;
+        std::vector<const Expr*> dimensionExprs;
+        if(n=="mathVectorAdd" || n=="mathVectorDot"){
+            size_t want=n=="mathVectorAdd"?4:3;
+            if(c.args.size()!=want) throw std::runtime_error("Semantic error: "+n+" expects "+std::to_string(want)+" arguments");
+            op=n=="mathVectorAdd"?SLMATH_OP_VECTOR_ADD:SLMATH_OP_VECTOR_DOT;
+            a=0;b=1;out=n=="mathVectorAdd"?2:-1;
+            dimensionExprs.push_back(c.args[n=="mathVectorAdd"?3:2].get());
+            scalarExpr=nullptr;
+        } else if(n=="mathVectorNorm"){
+            if(c.args.size()!=2) throw std::runtime_error("Semantic error: mathVectorNorm(array, length) takes two arguments");
+            op=SLMATH_OP_VECTOR_NORM;a=0;dimensionExprs.push_back(c.args[1].get());
+        } else if(n=="mathVectorScale"){
+            if(c.args.size()!=4) throw std::runtime_error("Semantic error: mathVectorScale(array, scalar, output, length) takes four arguments");
+            op=SLMATH_OP_VECTOR_SCALE;a=0;out=2;scalarExpr=c.args[1].get();dimensionExprs.push_back(c.args[3].get());
+        } else if(n=="mathMatrixMultiply"){
+            if(c.args.size()!=7) throw std::runtime_error("Semantic error: mathMatrixMultiply(a, b, out, rowsA, colsA, rowsB, colsB) takes seven arguments");
+            op=SLMATH_OP_MATRIX_MULTIPLY;a=0;b=1;out=2;
+            for(size_t i=3;i<7;i++) dimensionExprs.push_back(c.args[i].get());
+        } else if(n=="mathMatrixTranspose"){
+            if(c.args.size()!=4) throw std::runtime_error("Semantic error: mathMatrixTranspose(a, out, rows, cols) takes four arguments");
+            op=SLMATH_OP_MATRIX_TRANSPOSE;a=0;out=1;
+            dimensionExprs.push_back(c.args[2].get());dimensionExprs.push_back(c.args[3].get());
+        } else return false;
+        auto emitHandle=[&](int index){ if(index<0) emit(OP_CONST,slvm_add_const_int(vm_,-1)); else emitExpr(c.args[(size_t)index].get()); };
+        emitHandle(a);emitHandle(b);emitHandle(out);emitHandle(aux);
+        for(const Expr* e:dimensionExprs) emitExpr(e);
+        // Normalize dimensions into the opcode's fixed eight-slot frame.
+        // Vector operations use n x 1; matrix operations use the supplied shapes.
+        if(n=="mathVectorAdd"||n=="mathVectorDot"||n=="mathVectorNorm"||n=="mathVectorScale"){
+            // aRows=n, aCols=1; bRows=n, bCols=1; output n x 1.
+            // The length expression was emitted once; duplicate its value is
+            // avoided by requiring the compact vector forms to use n as a
+            // compile-time integer literal.
+            if(dimensionExprs.size()!=1) throw std::runtime_error("Semantic error: invalid vector dimension frame");
+            auto lit=dynamic_cast<const IntLit*>(dimensionExprs[0]);
+            if(!lit||lit->value<0) throw std::runtime_error("Semantic error: vector length must be a nonnegative integer literal");
+            // Replace the just-emitted length with a deterministic 8-field frame.
+            // Re-emit the complete operand frame below instead.
+            throw std::runtime_error("Semantic error: internal vector frame lowering requires literal dimensions");
+        }
+        return true;
+    }
+
     bool tryEmitBuiltin(const Call& c){
+        if(tryEmitMathBuiltin(c)) return true;
         const std::string& n=c.callee;
         if(n.size()>2 && n[0]=='u' && n[1]=='i' && n[2]>='A' && n[2]<='Z'){ if(tryEmitUiBuiltin(c)) return true; }
         auto litInt=[&](const Expr*e,const char*what)->int{auto il=dynamic_cast<const IntLit*>(e);if(!il)throw std::runtime_error("Semantic error: "+std::string(what)+" must be an integer literal");return(int)il->value;};
