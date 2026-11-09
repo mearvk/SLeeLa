@@ -82,3 +82,17 @@ Where mathematics naturally has an object representation, Sleela should preserve
 ## Status
 
 The current runtime contains an executable native scalar mathematics subset. Physics and economics build on that executable math layer. Fourier/Laplace object transforms, richer algebraic objects, dimensional typing, and additional numerical kernels remain planned expansion areas.
+
+
+## Native Structures — Initial Kernel
+
+The first native linear-algebra C ABI is defined in `impl/subjects/math/linear_algebra.h` and implemented in `linear_algebra.cpp`. It currently provides:
+
+- N-dimensional vector addition, subtraction, scaling, dot product, stable Euclidean norm, and normalization;
+- 3D vector cross product;
+- row-major dense matrix multiplication, transpose, and identity construction;
+- explicit status codes for invalid arguments, dimension mismatch, size overflow, allocation failure, and singular-operation reservations.
+
+The ABI supports exact in-place vector operations and stages matrix results so matrix multiplication and transpose can safely write over their inputs. Partially overlapping vector ranges are outside the contract. The opt-in regression command is `make -C impl test-linear-algebra`.
+
+This is the native kernel foundation, not yet a claim of VM dispatch integration. The next integration step is to bind these operations to the existing SLeeLa vector/matrix language objects, preserving their current source-level APIs and validating dimensions and backing-array lengths at the VM boundary. Complex arithmetic, factorizations, spectral routines, and FFT remain subsequent work.
