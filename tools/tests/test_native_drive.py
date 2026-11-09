@@ -147,6 +147,19 @@ class NativeDriveTests(unittest.TestCase):
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("service name", result.stderr)
 
+    def test_system_unit_rejects_root_account(self):
+        if sys.platform == "win32": self.skipTest("systemd is Linux-specific")
+        with tempfile.TemporaryDirectory() as tmp:
+            exe = pathlib.Path(tmp) / "worker"
+            exe.write_text("#!/bin/sh\nexit 0\n")
+            exe.chmod(0o755)
+            result = subprocess.run([sys.executable, str(SERVICE), "--name", "root-worker",
+                "--executable", str(exe), "--working-directory", tmp,
+                "--system", "--install", "--user", "root"],
+                text=True, capture_output=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("must run as an unprivileged account", result.stderr)
+
     def test_process_pipeline(self):
         result = subprocess.run([sys.executable, str(SCRIPT), "pipe", "--timeout", "5", "--",
             sys.executable, "-c", "print('sleela-pipe')", "::",
