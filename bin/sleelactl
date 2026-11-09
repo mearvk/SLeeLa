@@ -271,6 +271,20 @@ protocol_cmd() { # module verb [args]
 # tool (compiler/decompiler/debugger): one-shot build-time tools.
 # =============================================================================
 tool_cmd() { # module verb [args]
+  if [ "$1" = "native-drive" ]; then
+    script="$ROOT/$(handle_of "$1")"
+    [ -f "$script" ] || { warn "native-drive script not present: $script"; return 1; }
+    command -v python3 >/dev/null 2>&1 || { warn "python3 is required for native-drive"; return 3; }
+    case "$2" in
+      info) okay "native-drive — $(summary_of "$1")"; info "location: ${script#$ROOT/}"; info "see: $ROOT/impl/native-drive/README.md" ;;
+      build|run|inspect)
+        shift 2
+        [ "$1" = "inspect" ] 2>/dev/null && set -- build --help "$@"
+        python3 "$script" "$2" "$@" ;;
+      *) die "native-drive verb '$2' not understood" ;;
+    esac
+    return $?
+  fi
   dir="$ROOT/$(handle_of "$1")"
   [ -d "$dir" ] || { warn "$1: directory not present in this install"; return 1; }
   case "$2" in
