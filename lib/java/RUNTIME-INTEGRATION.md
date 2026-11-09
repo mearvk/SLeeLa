@@ -57,13 +57,15 @@ The existing CLI forms are documented in runtime/JAVA-HOST-CAPABILITIES.md:
 ## SLJIP v1 implementation
 
 The protocol is specified in lib/java/protocol/SLJIP-v1.md and
-lib/java/protocol/SLJIP-v1.json. Its Java endpoint is
+lib/java/protocol/SLJIP-v1.json. Compiler integration requirements are tracked in
+impl/JAVA-INTEROP-LOWERING.md. Its Java endpoint is
 connector/java/com/mearvk/sleela/connector/SleelaJdkProtocolServer.java.
 
 Implemented operations:
 
 - PING and non-initializing RESOLVE.
 - CONSTRUCT, INVOKE_INSTANCE, and INVOKE_STATIC using public members.
+- GET_FIELD, GET_STATIC_FIELD, SET_FIELD, and SET_STATIC_FIELD for public fields.
 - RELEASE and CLOSE for opaque, monotonically allocated session handles.
 - Typed null, boolean, I32, I64, F64, UTF-8, and object-handle values.
 - Primitive argument range checks and explicit numeric conversion rules.
@@ -80,8 +82,8 @@ so a future native process provider can connect it to OS pipes without moving
 process management into the protocol parser. The codec is linked into sleela
 and sleelvac.
 
-Not yet implemented: field get/set, Java arrays, arbitrary collection conversion,
-SLeeLa VM-value marshalling, process/pipe ownership, and compiler/VM lowering.
+Not yet implemented: Java arrays, arbitrary collection conversion, SLeeLa VM-value
+marshalling, managed process/pipe ownership, and compiler/VM lowering.
 These are deliberately excluded from v1 rather than represented by incomplete
 opcodes.
 
@@ -121,9 +123,11 @@ From connector/:
     make protocol-test protocol-codec-test
 
 The endpoint test exercises allow-list denial, resolve, construction, static
-and instance invocation, handle release, stale-handle rejection, structured
-Java exceptions, and clean close. The native test exercises frame encoding,
-decoding, bounds, malformed headers, and callback exchange. These tests have
+and instance invocation, public instance/static field reads and writes, handle
+release, stale-handle rejection, structured Java exceptions, and clean close. The native test exercises frame encoding,
+decoding, bounds, malformed headers, and callback exchange. A Python orchestration
+runner at test-suites/java-interop-protocol.py supports Windows, Linux, and macOS
+when a JDK, Python, and C compiler are installed. These tests have
 not been run in this work session; they are committed for local execution.
 
 ## Cross-platform qualification
