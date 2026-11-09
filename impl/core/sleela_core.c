@@ -386,9 +386,11 @@ int slvm_ipc_worker_close(SLVM *vm, int32_t handle) {
     }
     vm->ipc_workers[slot].active = 0;
     vm->ipc_workers[slot].closing = 1;
-    ipc_worker_advance_generation(&vm->ipc_workers[slot].generation);
+    /* Keep the old generation until all leases release: release() must still
+     * recognize the closing handle or close would wait forever. */
     while (vm->ipc_workers[slot].leases != 0)
         pthread_cond_wait(&vm->ipc_worker_cond, &vm->ipc_worker_mtx);
+    ipc_worker_advance_generation(&vm->ipc_workers[slot].generation);
     worker = vm->ipc_workers[slot].worker;
     close_fn = vm->ipc_workers[slot].close_fn;
     context = vm->ipc_workers[slot].close_context;
