@@ -1,5 +1,6 @@
 #include "sleela_core.h"
 #include <stdio.h>
+#include <string.h>
 
 static int check_cross_frame_catch(void) {
     SLVM *vm = slvm_new();
