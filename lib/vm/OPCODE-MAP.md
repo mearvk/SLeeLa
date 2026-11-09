@@ -198,6 +198,9 @@ This is the human-readable support map for the canonical source-defined SLeeLa I
 176 | `OP_TRY_PUSH` | Implemented | `impl/core/sleela_core.c`
 177 | `OP_TRY_POP` | Implemented | `impl/core/sleela_core.c`
 178 | `OP_THROW` | Implemented | `impl/core/sleela_core.c`
+179 | `OP_IPC_OPEN` | Reserved; fail-closed pending process supervisor and VM worker table | `impl/core/sleela_core.c`
+180 | `OP_IPC_CALL` | Reserved; fail-closed pending process supervisor and VM worker table | `impl/core/sleela_core.c`
+181 | `OP_IPC_CLOSE` | Reserved; fail-closed pending process supervisor and VM worker table | `impl/core/sleela_core.c`
 
 
 
@@ -210,6 +213,16 @@ discipline as sockets and files. Source-side they are mirrored by the
 `lib/vm/SleelaVMSystemCallBridge.sleela`. Because every VM generation (SLVM/1
 through SLVM/11) shares this one ISA, the system-call surface is available to
 all of them, not just the base VM.
+
+## Native IPC worker opcode reservation
+
+Opcodes 179–181 are append-only ABI reservations: `OP_IPC_OPEN`,
+`OP_IPC_CALL`, and `OP_IPC_CLOSE`. Their numeric IDs are fixed and included
+in the native/source ISA equality check. Artifact validation checks their
+operand shapes. The interpreter currently rejects all three with an explicit
+fail-closed diagnostic; they do not launch a worker or create a live handle yet.
+Runtime execution becomes available only after the native process supervisor,
+host capability authorizer, and VM-owned worker-handle table are integrated.
 
 ## Runtime rule
 
