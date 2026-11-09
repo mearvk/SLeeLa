@@ -85,7 +85,7 @@ class EndpointTests(unittest.TestCase):
     def setUp(self):
         env = os.environ.copy()
         env["SLEELA_JAVA_ALLOW_CLASSES"] = (
-            "java.lang.String,java.lang.Object,java.util.ArrayList"
+            "java.lang.String,java.lang.Object,java.lang.Integer,java.util.ArrayList"
         )
         self.proc = subprocess.Popen(
             ["java", "-cp", self.classes,
@@ -170,9 +170,9 @@ class EndpointTests(unittest.TestCase):
         self.assertEqual(self.error(RESOLVE, string("java.lang.Runtime"))[0],
                          "java.lang.ClassNotFoundException")
         self.assertEqual(self.error(
-            INVOKE_STATIC, string("java.lang.String") + string("charAt")
-            + types("int") + values(1000)
-        )[0], "java.lang.StringIndexOutOfBoundsException")
+            INVOKE_STATIC, string("java.lang.Integer") + string("parseInt")
+            + types("java.lang.String") + values("not-an-integer")
+        )[0], "java.lang.NumberFormatException")
 
     def test_close_ends_session(self):
         self.assertEqual(self.success(CLOSE), b"\x00")
