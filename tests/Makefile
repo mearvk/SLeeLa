@@ -4,7 +4,7 @@ CXX ?= c++
 CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -pedantic
 LDLIBS ?= -lm
 
-.PHONY: all clean check ai-neural-nets-xor neural-nets-xor ai-character-recognition character-recognition-smoke character-recognition-cli jdk28-conformance jdk28-functional jdk28-signatures java-source-equivalence java-conversions java-flow java-exceptions java-api-dependencies java-constraints java-signature-comparison java-platform-qualification
+.PHONY: all clean check ai-neural-nets-xor neural-nets-xor ai-character-recognition character-recognition-smoke character-recognition-cli jdk28-conformance jdk28-functional jdk28-signatures java-source-equivalence java-conversions java-flow java-exceptions java-api-dependencies java-api-dependency-graph java-constraints java-signature-comparison java-platform-qualification
 
 all: memory reflection nordshrift runtime network-security neural-nets-xor character-recognition-smoke character-recognition-cli
 
@@ -80,6 +80,9 @@ java-exceptions:
 
 java-api-dependencies:
 	python3 java_api_dependency_suite.py
+
+java-api-dependency-graph:
+	python3 java_api_dependency_graph_suite.py
 
 java-constraints:
 	python3 java_constraints_suite.py
