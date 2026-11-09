@@ -191,3 +191,20 @@ Model CPU dan perkakasan, GUI, rangkaian, pemprosesan teks, UTF-4088, alat π, M
 Edisi Malaysia ini menggunakan Bahasa Melayu sebagai bahasa utama. Istilah teknikal boleh dikekalkan dalam bahasa Inggeris apabila terjemahan akan mengaburkan nama API, konsep compiler atau arahan. Nama fail, command, identifier dan kod sumber hendaklah dikekalkan tepat. Sumbangan istilah tempatan digalakkan melalui glosari yang konsisten dan semakan penutur jati yang memahami bidang teknikal.
 
 **Status terjemahan:** Panduan Bahasa Melayu ini telah diperluas untuk merangkumi saluran kompilasi, model jenis dan objek, pemasaan gelung, pustaka, integrasi native, build/pemasangan, keselamatan, ujian dan aliran sumbangan. Ia belum merupakan terjemahan baris demi baris bagi keseluruhan README kanonik dan spesifikasi berkaitan.
+
+
+## XVIII. Sasaran, profil dan sempadan pelaksanaan
+
+SLeeLa membezakan kod sumber daripada sasaran binaan dan pelaksanaan. Keluarga sasaran yang didokumenkan merangkumi `SLVM`, `SLJVM` dan `SLIR`; `NATIVE` ialah sasaran terhad dan bersyarat, bukan pilihan yang boleh dianggap tersedia pada semua platform. Profil `BASIC_COMPLETE` dan `ADVANCED_TOTAL` menunjukkan skop yang berbeza. Sahkan sasaran, profil dan sokongan platform sebenar bagi setiap binaan.
+
+Reference mengenal pasti fail, modul atau sumber; ia tidak memberikan kebenaran untuk melaksanakan sesuatu tindakan. Apabila program menggunakan fail, pustaka luaran, native bindings atau sumber sistem, sempadan kebenaran dan tanggungjawab pelaksanaan mesti ditentukan dengan jelas. Pernyataan dalam dokumentasi sahaja bukan bukti jaminan keselamatan runtime; semak pelaksanaan dan ujian berkaitan.
+
+## XIX. Kitar hayat sumber dan penyahpepijatan
+
+Dokumentasikan pemilikan, jangka hayat dan tanggungjawab penyegerakan bagi sumber yang dikongsi antara fungsi atau thread. Bezakan local variables, shared object state, VM handles dan serializable data. VM-local handle bukan format fail atau mesej rangkaian yang stabil. Gunakan serialization interface yang ditakrifkan oleh modul dan uji nilai invalid, missing serta boundary.
+
+Semasa debug, rekodkan commit, OS, architecture dan toolchain. Bina sasaran terkecil yang berkaitan dahulu, simpan output ralat penuh, bezakan compiler errors daripada runtime errors dan hasilkan contoh minimum yang boleh diulang. Build yang berjaya tidak dengan sendirinya membuktikan runtime behavior yang betul.
+
+Laporan pengesahan hendaklah menyatakan exact commit, OS/architecture, compiler versions, arahan build/test penuh, bilangan pass/fail/skip dan batasan yang diketahui. Ujian yang dilangkau atau tidak dijalankan tidak boleh dikira sebagai lulus.
+
+**Status terjemahan diperluas:** Panduan Bahasa Melayu kini turut merangkumi sasaran/profil, sempadan pelaksanaan, kitar hayat sumber, penyahpepijatan dan laporan pengesahan.
