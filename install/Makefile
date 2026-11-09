@@ -153,8 +153,15 @@ install-check:
 	@test -f ../tools/sleela-native-service.py
 	@test -f system-install.sh
 	@grep -q 'Required compiled product missing' quick-safe-install.sh
+	@grep -q 'sleela-native-drive.py' quick-safe-install.sh
+	@grep -q 'sleela-native-service.py' quick-safe-install.sh
+	@grep -q 'sleela-native-drive.py' quick-safe-install.ps1
+	@grep -q 'sleela-native-service.py' quick-safe-install.ps1
+	@grep -q 'sleela-native-drive.py' Makefile
+	@grep -q 'sleela-native-service.py' Makefile
+	@python3 -c 'import json; p="../security/sha256-manifest.json"; paths={x["path"] for x in json.load(open(p, encoding="utf-8"))["files"]}; required={"tools/sleela-native-drive.py","tools/sleela-native-service.py"}; missing=required-paths; assert not missing, "Native Drive manifest entries missing: "+", ".join(sorted(missing))'
 	@grep -q 'System-wide' README.md
-	@echo "Installer entry points and compiled-product installation checks present for Linux, macOS, and Windows 10+."
+	@echo "Installer entry points, Native Drive staging, trusted-manifest entries, and compiled-product checks present for Linux, macOS, and Windows 10+."
 
 # install: scope-aware entry point. Offers the SHA-256 manifest step, then
 # installs. A user-local prefix stays as the current user; a system prefix with
