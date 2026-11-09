@@ -7,6 +7,7 @@ int main(int argc, char **argv) {
     SLNativeModule module = {0};
     SLNativeValue args[2];
     SLNativeValue result;
+    int run_result = -1;
     assert(argc == 3);
     assert(sl_native_open(&module, argv[1]) == SL_NATIVE_OK);
 
@@ -27,7 +28,8 @@ int main(int argc, char **argv) {
     /* Existing ABI-v1 modules without the optional typed symbol remain valid. */
     assert(sl_native_open(&module, argv[2]) == SL_NATIVE_OK);
     assert(sl_native_call_module(&module, "sum", 2, args, &result) == SL_NATIVE_TYPED_ENTRY_NOT_FOUND);
-    assert(sl_native_run_module(&module, 0, NULL, (int *)&result.as.i64) == SL_NATIVE_OK);
+    assert(sl_native_run_module(&module, 0, NULL, &run_result) == SL_NATIVE_OK);
+    assert(run_result == 0);
     assert(sl_native_close(&module) == SL_NATIVE_OK);
     return 0;
 }
