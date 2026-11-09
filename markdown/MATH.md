@@ -104,7 +104,7 @@ The native kernel now also exposes:
 
 - **LU:** partial-pivoting factorization, triangular solve, and inverse.
 - **QR:** thin modified Gram-Schmidt factorization for tall/square matrices.
-- **Complex:** add, subtract, multiply, stable divide, magnitude, conjugate.
+- **Complex:** add, subtract, multiply, stable divide, magnitude, principal phase, conjugate.
 - **Arrays:** copy, strided slice, and elementwise arithmetic over caller-owned double buffers.
 - **Spectral:** symmetric real eigendecomposition using Jacobi rotations; eigenvectors are returned as columns and eigenvalues are unsorted.
 - **Fourier:** in-place radix-2 complex FFT with inverse normalization. Length must be a nonzero power of two.
