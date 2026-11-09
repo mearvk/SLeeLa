@@ -6,12 +6,12 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
+import java.nio.CharBuffer;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
@@ -93,12 +93,14 @@ public final class SleelaJdkProtocolServer {
             byte[] response;
             try {
                 response = dispatch(opcode, payload);
-            } catch (Throwable failure) {
+            } catch (Exception | LinkageError failure) {
                 response = errorPayload(failure);
             }
             writeFrame(output, requestId, opcode | 0x80, response);
-            if (opcode == CLOSE) return;
+            if (opcode == CLOSE) break;
         }
+        handles.clear();
+        SleelaJdkBridge.closeRuntime();
     }
 
     private byte[] dispatch(int opcode, byte[] payload) throws Exception {
@@ -254,7 +256,7 @@ public final class SleelaJdkProtocolServer {
         } else {
             if (handles.size() >= MAX_HANDLES) throw new IOException("Java object handle limit reached");
             long id = nextHandle.getAndIncrement();
-            if (id == 0) throw new IOException("Java object handle space exhausted");
+            if (id <= 0) throw new IOException("Java object handle space exhausted");
             handles.put(id, value);
             out.writeByte(7);
             out.writeLong(id);
@@ -277,10 +279,19 @@ public final class SleelaJdkProtocolServer {
     }
 
     private static void writeString(DataOutputStream out, String value) throws IOException {
-        byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
-        if (bytes.length > MAX_STRING) throw new IOException("SLJIP string exceeds limit");
-        out.writeInt(bytes.length);
-        out.write(bytes);
+        try {
+            ByteBuffer encoded = StandardCharsets.UTF_8.newEncoder()
+                    .onMalformedInput(CodingErrorAction.REPORT)
+                    .onUnmappableCharacter(CodingErrorAction.REPORT)
+                    .encode(CharBuffer.wrap(value));
+            if (encoded.remaining() > MAX_STRING) throw new IOException("SLJIP string exceeds limit");
+            byte[] bytes = new byte[encoded.remaining()];
+            encoded.get(bytes);
+            out.writeInt(bytes.length);
+            out.write(bytes);
+        } catch (CharacterCodingException invalid) {
+            throw new IOException("Java result contains malformed UTF-16", invalid);
+        }
     }
 
     private static void writeFrame(DataOutputStream out, long requestId, int opcode,
