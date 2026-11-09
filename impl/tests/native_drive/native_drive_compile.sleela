@@ -1,7 +1,7 @@
 #sleela 3.0
 
 class NativeDriveCompile {
-    int fallback(int value) {
+    static int fallback(int value) {
         return value * 3;
     }
 
