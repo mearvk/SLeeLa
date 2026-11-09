@@ -11,6 +11,7 @@ on:
       - ".github/workflows/native-drive.yml"
   pull_request:
     paths:
+      - "tools/sleela-native-service.py"
       - "tools/sleela-native-drive.py"
       - "tools/tests/test_native_drive.py"
       - "impl/native-drive/**"
