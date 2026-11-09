@@ -11,8 +11,9 @@ tools/sleela-native-drive.py provides:
 - Direct C and C++ compilation through the configured host compiler.
 - Multi-translation-unit C/C++ builds (all units in one invocation use one language).
 - Executable or shared-library output.
-- Optional shared-library ABI validation (sl_native_abi_version() == 1 and
-  sl_native_run present) before an artifact is published.
+- Optional shared-library export validation (both sl_native_abi_version and
+  sl_native_run symbols present) before an artifact is published. The loader
+  checks the ABI version value when a trusted module is actually opened.
 - SLeeLa @native AOT input through the existing sleela aot --emit contract,
   followed by a host C compiler. The current emitter covers the whole program
   when its C backend can translate it; it is not yet a method-only ABI emitter.
@@ -76,10 +77,10 @@ A shared library intended for the existing loader exports:
     int sl_native_run(int argc, const char *const argv[]);
 
 The ABI is declared in os-level-support/loader/native_loader.h. The optional
---require-sleela-abi switch checks the version and required symbols before
-publishing the shared library. Loading a native module executes code in the
-current process; ABI validation is not a sandbox, signature check, or trust
-decision. Only load modules from a trusted location after applying the host
+--require-sleela-abi switch checks for the required exported symbol names using
+nm/dumpbin without loading the library. The loader checks the actual ABI
+version at load time. Loading a native module executes code in the current
+process; ABI validation is not a sandbox, signature check, or trust decision. Only load modules from a trusted location after applying the host
 integrity policy.
 
 The Native Drive can build a conforming library, but it does not yet register
@@ -116,7 +117,7 @@ Example (render only; no host changes):
       --executable /opt/sleela/bin/worker \
       --working-directory /var/lib/sleela-worker
 
-Install as a user service only when intentionally requested:
+Install as a user service only when intentionally requested (an existing unit is never replaced unless --replace is supplied):
 
     python3 tools/sleela-native-service.py --install --enable \
       --name sleela-worker --executable /opt/sleela/bin/worker \
