@@ -137,6 +137,20 @@ ifneq ($(PLATFORM),windows)
 endif
 NATIVE_CALL_SOURCE := $(BUILD)/native_drive_compile_source.sleela
 NATIVE_CALL_ARTIFACT := $(BUILD)/native_drive_compile_artifact.sleela
+# Deterministic POSIX regression for a plugin call held in flight while a
+# second host thread requests close. Windows uses a separate thread/file API
+# implementation and is intentionally not advertised by this target yet.
+ifneq ($(PLATFORM),windows)
+  NATIVE_CONCURRENCY_SMOKE := $(BUILD)/native_concurrency_smoke
+  NATIVE_CONCURRENCY_SMOKE_OBJ := $(BUILD)/native_concurrency_smoke.o
+  ifeq ($(PLATFORM),macos)
+    NATIVE_CONCURRENCY_FIXTURE := $(BUILD)/native_concurrency_fixture.dylib
+    NATIVE_CONCURRENCY_FIXTURE_FLAGS := -dynamiclib
+  else
+    NATIVE_CONCURRENCY_FIXTURE := $(BUILD)/native_concurrency_fixture.so
+    NATIVE_CONCURRENCY_FIXTURE_FLAGS := -shared
+  endif
+endif
 OSLS_OBJS := $(OSLS_CORE_OBJ) $(OSLS_EXT_OBJ) $(OSLS_EXT2_OBJ) $(OSLS_VM_OBJ) $(NATIVE_LOADER_OBJ) $(NATIVE_MODULE_TABLE_OBJ)
 ifeq ($(PLATFORM),windows)
   OSLS_DEFS := -D_CRT_SECURE_NO_WARNINGS
@@ -763,6 +777,20 @@ $(NATIVE_CALL_ARTIFACT): $(NATIVE_CALL_SOURCE) $(SLEELA_BIN)
 	$(SLEELA_BIN) compile $(NATIVE_CALL_SOURCE) -o $@
 test-native-call: $(SLEELA_BIN) $(NATIVE_CALL_SMOKE) $(NATIVE_CALL_FIXTURE) $(NATIVE_CALL_ARTIFACT)
 	$(NATIVE_CALL_SMOKE) $(NATIVE_CALL_ARTIFACT) $(abspath $(NATIVE_CALL_FIXTURE))
+
+# This is an explicit opt-in local regression target, not part of the default
+# or CI test aggregate. It is POSIX-only until the fixture's synchronization
+# primitives have a Win32 implementation.
+ifneq ($(PLATFORM),windows)
+$(NATIVE_CONCURRENCY_FIXTURE): tests/native_drive/native_concurrency_fixture.c ../os-level-support/loader/native_loader.h | $(BUILD)
+	$(CC) $(CFLAGS) -fPIC -DSL_NATIVE_PLUGIN_BUILD $(NATIVE_CONCURRENCY_FIXTURE_FLAGS) -I../os-level-support/loader $< -o $@
+$(NATIVE_CONCURRENCY_SMOKE_OBJ): tests/native_drive/native_concurrency_smoke.c core/sleela_core.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c $< -o $@
+$(NATIVE_CONCURRENCY_SMOKE): $(NATIVE_CONCURRENCY_SMOKE_OBJ) $(SLCORE_LIB)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+test-native-concurrency: $(NATIVE_CONCURRENCY_SMOKE) $(NATIVE_CONCURRENCY_FIXTURE)
+	$(NATIVE_CONCURRENCY_SMOKE) $(abspath $(NATIVE_CONCURRENCY_FIXTURE))
+endif
 libslcore: $(SLCORE_LIB)
 	@echo "=== reusable Core engine archive: $(SLCORE_LIB) ==="
 $(CHEMISTRY_OBJ): subjects/chemistry/chemistry.cpp subjects/chemistry/chemistry.h | $(BUILD)
