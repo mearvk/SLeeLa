@@ -1,24 +1,87 @@
-# SLeeLa 3.0 — Israel (IL)
-
-> **International country edition.** This file groups the language editions selected for Israel in one country-specific README.
+# SLeeLa 3.0 — ישראל (IL)
 
 ## עברית
 
-SLeeLa היא שפת תכנות מערכתית מקורית הכוללת מהדר, סביבת ריצה ומערכת אקולוגית של מכונות וירטואליות. מהדורה זו מיועדת לקוראים בישראל.
+SLeeLa היא שפת תכנות מערכתית מקורית הכוללת מהדר, סביבת ריצה ומערכת אקולוגית של מכונות וירטואליות. השפה, המהדר, הספריות, כלי הפיתוח וחוזי הפלטפורמה פועלים יחד כדי לבנות ולהריץ תוכנה.
 
 ## العربية
 
-SLeeLa لغة برمجة أنظمة أصلية تضم مُصرّفًا وبيئة تشغيل ومنظومة آلات افتراضية. هذه النسخة موجهة للقراء الناطقين بالعربية.
+SLeeLa لغة برمجة أنظمة أصلية تضم مُصرّفًا وبيئة تشغيل ومنظومة آلات افتراضية. هذه النسخة מיועדת أيضًا לקוראים דוברי ערבית בישראל.
 
-## Documentación técnica completa / Complete technical documentation
+**The Now. The Ingredient.** שפת תכנות אינה רק תחביר. המהדר, סביבת הריצה, הספריות, הכלים וחוזי הפלטפורמה הם חלק ממערכת תוכנה שימושית.
 
-The canonical project README contains the complete technical reference, feature descriptions, build and installation instructions, API links, examples, and release notes. This country edition is an international-language entry point; technical identifiers, source code, commands, filenames, and API names remain unchanged.
+## I. תחילת העבודה
 
-- [Canonical SLeeLa README (English)](README.md)
-- [SLeeLa syntax specification](SLEELA.syntax)
-- [Documentation index](docs/README.md)
-- [Platform support](docs/PLATFORM-SUPPORT.md)
-- [Build and test instructions](#)
-- [GitHub repository](https://github.com/mearvk/SLeeLa)
+- [בניית המימוש המקורי](impl/README.md)
+- [מדריך למשתמש של המכונה הווירטואלית ו-Modium](virtual-machine/USER-GUIDE.md) — `sleela vm`, `sleela modium`
+- [ארכיטקטורת CPU בקוד המקור של SLeeLa](lib/cpu/CPU.md) — יותר מ-130 פרופילי CPU; ראו [הגדרות תזמון](lib/cpu/TIMING.md).
+- [אינדקס התיעוד](docs/README.md)
+- [תיעוד API שנוצר](docs/api/README.md) ו[קטלוג API](api/README.md)
+- [תמיכה בפלטפורמות ואימות](docs/PLATFORM-SUPPORT.md)
+- [מדיניות הבדיקות](markdown/TESTING.md)
 
-**Translation scope:** The language introductions above are localized. The complete, line-by-line translation of the canonical technical README is not yet included in this initial country edition; consult the English source for authoritative technical details. Technical translations should preserve the meaning of the source and be reviewed by fluent technical speakers before being treated as normative.
+## II. בנייה ובדיקות
+
+הדרישות כוללות toolchain של C/C++ כגון GCC או Clang, את GNU Make ואת Python 3. רכיבים גרפיים ב-Linux עשויים לדרוש גם חבילות פיתוח של X11/Xrandr.
+
+יש להריץ מתיקיית השורש של המאגר:
+
+```sh
+make
+make -C impl all
+bash ./test-suites/run-all.sh --all
+```
+
+הצלחה בבניית רכיב יחיד אינה מוכיחה שכל הספריות והפלטפורמות מוכנות להפצה. יש לעיין בתיעוד הבנייה והפלטפורמות לקבלת הדרישות של כל יעד.
+
+## III. התקנה
+
+```sh
+sudo make install
+make install PREFIX="$HOME/.local"
+make install DESTDIR="$PWD/package-root"
+make install-check
+```
+
+קידומת ההתקנה המערכתית היא בדרך כלל `/usr/local`. שימוש ב-`PREFIX="$HOME/.local"` מתקין בסביבת המשתמש ובדרך כלל אינו דורש הרשאות מנהל. לפרטים נוספים ראו את [מדריך ההתקנה](install/README.md).
+
+## IV. השפה וסביבת הריצה
+
+הדקדוק המחייב מוגדר ב-[`SLEELA.syntax`](SLEELA.syntax). תיעוד המאגר משתמש בתחביר **3.0**. גרסת המהדר וגרסת תחביר שפת המקור הן מושגים נפרדים.
+
+ההפניות הטכניות כוללות שדות רציפים של `@mix`, משפחות מורחבות של מספרים שלמים, סמני מסמכים של Preonem, את SleelaDoc, יצירת תיעוד API וכלי Nordshrift. מזהים טכניים, פקודות, שמות קבצים, שמות API ודוגמאות קוד נשארים ללא שינוי כדי לאפשר שימוש ישיר.
+
+## V. עקרונות הנדסיים ואימות
+
+SLeeLa מדגישה ראיות, חוזים מפורשים בין רכיבים, ניידות, התנהגות בטוחה בעת כשל ומהדורות שניתן לשחזר. יש להעריך אימות לפי מודול ופלטפורמה. אין לדווח על בדיקות שדולגו כאילו עברו; בנייה מוצלחת של רכיב אחד אינה אימות מלא של מהדורה.
+
+כלי ההגנה Sleelavirin כוללים מאמת SHA-256 מקומי, מתאם ClamAV אופציונלי ומניפסט שלמות. מהדורה תיחשב מאומתת רק לאחר השלמת בדיקות ה-CI עבור commit המהדורה ובדיקת התוצרים.
+
+## VI. עורכים ותרומות
+
+SLeeLa מספקת ערכות נושא ושילוב תחביר עבור **Vim** ו-**Emacs**, וכן כלי צבע מקורי ל-C/C++. ראו את [מדריך שילוב העורכים](linux-editors/README.md).
+
+הנחיות לתרומה:
+
+1. לקרוא את אינדקס התיעוד ואת מדיניות הבדיקות.
+2. להגיש שינויים ממוקדים ולצרף בדיקות חיוביות ושליליות.
+3. להריץ בדיקות רלוונטיות ולאחר מכן את מערך הבדיקות הרחב יותר.
+4. לציין את מערכת ההפעלה ואת שרשרת הכלים שבהן נעשה שימוש. אין לתאר בדיקות שדולגו כהצלחה.
+
+SLeeLa מפותחת על ידי **MEARVK LLC**.
+
+## VII. נושאים טכניים נוספים
+
+קובץ ה-README הראשי דן גם בספריות Advantage, SleelaDoc ו-XML DOM; בסוגי integer בסיסיים; בסביבת הריצה של תווים; ב-AutoCAD Creator™; בקטלוג UTF-4088 ניסיוני; בכלי Pi, Modium, Registry ו-`sleelactl`; ובשלב הראשוני של נתיב קומפילציית C/C++ מקורי שמופעל באמצעות הסמן `@native`.
+
+## המדריך הטכני המלא
+
+[README.md הקנוני](README.md) מכיל את קטלוג התכונות המלא, את מדריך השפה וסביבת הריצה, הוראות בנייה והתקנה, קישורי API, דוגמאות והערות גרסה. מהדורה זו מרחיבה את ההדרכה המעשית בעברית, אך עדיין אינה תרגום מלא שורה אחר שורה של כל החלקים הטכניים. README באנגלית נשאר המקור הטכני המחייב עד להשלמת התרגום והבדיקה המקצועית.
+
+- [README הקנוני](README.md)
+- [מפרט התחביר של SLeeLa](SLEELA.syntax)
+- [אינדקס התיעוד](docs/README.md)
+- [תמיכה בפלטפורמות](docs/PLATFORM-SUPPORT.md)
+- [מאגר GitHub](https://github.com/mearvk/SLeeLa)
+
+**סטטוס התרגום:** המבוא, תחילת העבודה, הבנייה, ההתקנה, סקירת השפה וסביבת הריצה, עקרונות ההנדסה, האימות והתרומה תורגמו. יתר החלקים הטכניים עדיין דורשים תרגום ובדיקה בידי דוברי עברית בעלי רקע טכני.
