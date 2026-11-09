@@ -151,10 +151,14 @@ The generator defaults to a user unit. Add `--system --user ACCOUNT` for an expl
 
 ## Regression test
 
-Run the focused scope-selection test from the repository root:
+Run the focused control-plane regressions from the repository root:
 
 ```sh
 sh tests/sleelactl_systemctl_scope_test.sh
+sh tests/sleelactl_math_capabilities_test.sh
 ```
 
-It stubs `systemctl`, `sudo`, and the caller UID; it does not start or modify a real service.
+The systemctl test stubs `systemctl`, `sudo`, and the caller UID; it does not
+start or modify a real service. The math capability test verifies that
+`sleelactl info math` reads the declarative descriptor without executing or
+reimplementing numerical operations.
