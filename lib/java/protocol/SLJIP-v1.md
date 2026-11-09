@@ -47,9 +47,13 @@ A response uses the same request ID and opcode ORed with 0x80.
 | 5 | INVOKE_STATIC | class name, member name, parameter type list, argument list |
 | 6 | RELEASE | handle u64 |
 | 7 | CLOSE | empty |
+| 8 | GET_FIELD | handle u64, member name |
+| 9 | GET_STATIC_FIELD | class name, member name |
+| 10 | SET_FIELD | handle u64, member name, value |
+| 11 | SET_STATIC_FIELD | class name, member name, value |
 
 Class resolution is non-initializing. Constructors and method invocation are
-explicit execution requests. Only public constructors and methods are exposed.
+explicit execution requests. Only public constructors, methods, and fields are exposed. Field reads/writes must match static versus instance ownership.
 The endpoint's class/package allow-list is configured out-of-band through
 SLEELA_JAVA_ALLOW_CLASSES and SLEELA_JAVA_ALLOW_PACKAGES, as comma-separated
 binary names/prefixes. A request cannot grant itself permission.
