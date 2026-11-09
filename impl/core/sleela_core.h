@@ -17,10 +17,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* SL_INT128 is appended LAST so the pre-existing tag numbers are unchanged
- * (bytecode/const-pool compatibility). It carries a true 128-bit signed value
- * in the i128 union member where the toolchain provides __int128 (GCC/Clang);
- * otherwise it degrades to the 64-bit path (see SLEELA_HAVE_INT128). */
+/* SL_INT128 and SL_UTF16 are append-only tags: SL_INT128 retains its
+ * historical numeric value and SL_UTF16 is appended after it, preserving all
+ * earlier bytecode/artifact value-tag numbers. SL_INT128 carries a true 128-bit
+ * signed value where the toolchain provides __int128 (GCC/Clang); otherwise it
+ * degrades to the 64-bit path (see SLEELA_HAVE_INT128). */
 typedef enum { SL_NULL = 0, SL_INT, SL_DOUBLE, SL_BOOL, SL_STR, SL_STRUCT, SL_ARRAY, SL_INT128, SL_UTF16 } SLType;
 #if defined(__SIZEOF_INT128__)
 #  define SLEELA_HAVE_INT128 1
