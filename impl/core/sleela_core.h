@@ -409,6 +409,7 @@ int slvm_add_const_str(SLVM* vm, const char* s);
 /* Lossless Java String runtime API. SL_UTF16 values are VM-local GC handles;
  * code units (including NUL and isolated surrogates) never cross as C strings. */
 SLValue slvm_java_string_new(SLVM* vm, const uint16_t* units, size_t length);
+int slvm_add_const_utf16(SLVM* vm, const uint16_t* units, size_t length);
 int slvm_java_string_copy(SLVM* vm, SLValue value, SLJavaString* out);
 int slvm_java_string_root(SLVM* vm, SLValue value);
 int slvm_java_string_unroot(SLVM* vm, SLValue value);
