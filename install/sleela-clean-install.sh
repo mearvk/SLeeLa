@@ -467,6 +467,10 @@ install_main() {
       mkdir -p "$STAGE_DIR/bin/sleelactl.d"
       install -m 644 "$REPO_ROOT/bin/sleelactl.d/registry.conf" "$STAGE_DIR/bin/sleelactl.d/registry.conf"
       item "sleelactl.d/registry.conf (module registry)"
+      if [ -f "$REPO_ROOT/bin/sleelactl.d/math-capabilities.conf" ]; then
+        install -m 644 "$REPO_ROOT/bin/sleelactl.d/math-capabilities.conf" "$STAGE_DIR/bin/sleelactl.d/math-capabilities.conf"
+        item "sleelactl.d/math-capabilities.conf (math capability descriptor)"
+      fi
     fi
   else
     warn "bin/sleelactl not found in source; the control plane will not be installed"
