@@ -2,7 +2,7 @@ name: Native Drive
 
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, feat/native-drive-integration]
     paths:
       - "tools/sleela-native-drive.py"
       - "tools/tests/test_native_drive.py"
