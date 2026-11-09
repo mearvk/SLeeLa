@@ -1171,6 +1171,16 @@ static int sl_math_array_to_double(SLVM *vm, int handle,
     return SLMATH_OK;
 }
 
+static int sl_math_array_output_buffer(SLVM *vm, int handle,
+                                          double **data, size_t *length) {
+    if (!array_valid_handle(vm, handle) || !data || !length)
+        return SLMATH_INVALID_ARGUMENT;
+    *length = (size_t)vm->arrays[handle].len;
+    *data = (double*)calloc((*length ? *length : 1), sizeof(double));
+    if (!*data) return SLMATH_ALLOCATION_FAILURE;
+    return SLMATH_OK;
+}
+
 static int sl_math_double_to_array(SLVM *vm, int handle,
                                    const double *data, size_t length) {
     if (!array_valid_handle(vm, handle) || !data) return SLMATH_INVALID_ARGUMENT;
@@ -1203,14 +1213,16 @@ int slvm_math_dispatch_arrays(SLVM* vm, int operation,
         if(status!=SLMATH_OK) goto done;
     }
     if(out_handle>=0) {
-        status=sl_math_array_to_double(vm,out_handle,&out_data,&out_len);
+        /* Output arrays are capacity-checked but not read: fresh arrayNew()
+         * elements are null until the native kernel writes numeric results. */
+        status=sl_math_array_output_buffer(vm,out_handle,&out_data,&out_len);
         if(status!=SLMATH_OK) goto done;
     } else {
         out_data=&scalar_out; out_len=1;
         if(!scalar_result) { status=SLMATH_INVALID_ARGUMENT; goto done; }
     }
     if(aux_handle>=0) {
-        status=sl_math_array_to_double(vm,aux_handle,&aux_data,&aux_len);
+        status=sl_math_array_output_buffer(vm,aux_handle,&aux_data,&aux_len);
         if(status!=SLMATH_OK) goto done;
     }
     {
