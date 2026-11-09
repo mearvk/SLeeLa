@@ -216,7 +216,15 @@ struct SLVM {
     SLNativeAuthorizePath native_authorizer;
     void* native_authorizer_context;
     int native_modules_init;
+    SLNativeHostAPI native_host_api;
+    SLThread* native_callback_caller; /* suspended OP_NATIVE_CALL stack, rooted during callback */
 };
+
+static int slvm_native_host_invoke(void* context, const char* function,
+                                   uint32_t argc, const SLNativeValue* argv,
+                                   SLNativeValue* out_result);
+
+static _Thread_local SLVM* native_callback_vm = NULL;
 
 static void set_err(SLVM* vm, const char* msg) {
     if (!vm) return;
@@ -473,6 +481,19 @@ SLNativeStatus slvm_native_module_open(SLVM* vm, const char* path, SLNativeHandl
     *out_handle = SL_NATIVE_HANDLE_INVALID;
     pthread_mutex_lock(&vm->native_mtx);
     status = sl_native_table_open(&vm->native_modules, path, out_handle);
+    if (status == SL_NATIVE_OK) {
+        SLNativeStatus bind_status = sl_native_table_bind_host(
+            &vm->native_modules, *out_handle, &vm->native_host_api);
+        /* Callback support is optional for legacy typed and run-only modules.
+         * A plugin that advertises the binder but rejects the host table fails
+         * closed and is unloaded rather than left partially initialized. */
+        if (bind_status != SL_NATIVE_OK &&
+            bind_status != SL_NATIVE_HOST_CALLBACK_NOT_FOUND) {
+            (void)sl_native_table_close(&vm->native_modules, *out_handle);
+            *out_handle = SL_NATIVE_HANDLE_INVALID;
+            status = bind_status;
+        }
+    }
     pthread_mutex_unlock(&vm->native_mtx);
     return status;
 }
@@ -481,6 +502,7 @@ SLNativeStatus slvm_native_module_run(SLVM* vm, SLNativeHandle handle,
                                       int argc, const char* const argv[], int* out_result) {
     SLNativeStatus status;
     if (!vm) return SL_NATIVE_INVALID_ARGUMENT;
+    if (native_callback_vm == vm) return SL_NATIVE_REENTRANT_CALL;
     /* Serialize calls against close/free so code cannot be unloaded while it
      * is executing. A plugin entry point must not re-enter this VM's native
      * module lifecycle API. */
@@ -495,6 +517,7 @@ SLNativeStatus slvm_native_module_call(SLVM* vm, SLNativeHandle handle,
                                        const SLNativeValue* argv, SLNativeValue* out_result) {
     SLNativeStatus status;
     if (!vm) return SL_NATIVE_INVALID_ARGUMENT;
+    if (native_callback_vm == vm) return SL_NATIVE_REENTRANT_CALL;
     /* The VM lock prevents close/unload during a typed call. Plugins must not
      * re-enter this VM's native-module API. Result UTF-8 spans are borrowed
      * from the plugin and must be copied before the next call or close. */
@@ -507,6 +530,7 @@ SLNativeStatus slvm_native_module_call(SLVM* vm, SLNativeHandle handle,
 SLNativeStatus slvm_native_module_close(SLVM* vm, SLNativeHandle handle) {
     SLNativeStatus status;
     if (!vm) return SL_NATIVE_INVALID_ARGUMENT;
+    if (native_callback_vm == vm) return SL_NATIVE_REENTRANT_CALL;
     pthread_mutex_lock(&vm->native_mtx);
     status = sl_native_table_close(&vm->native_modules, handle);
     pthread_mutex_unlock(&vm->native_mtx);
@@ -536,6 +560,10 @@ SLVM* slvm_new(void) {
         return NULL;
     }
     vm->native_modules_init = 1;
+    vm->native_host_api.abi_version = SL_NATIVE_HOST_CALLBACK_ABI_VERSION;
+    vm->native_host_api.struct_size = (uint32_t)sizeof(vm->native_host_api);
+    vm->native_host_api.context = vm;
+    vm->native_host_api.invoke = slvm_native_host_invoke;
     pthread_mutex_init(&vm->intern_mtx, NULL);
     pthread_mutex_init(&vm->global_mtx, NULL);
     pthread_mutex_init(&vm->print_mtx, NULL);
