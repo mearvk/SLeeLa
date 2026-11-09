@@ -13,6 +13,9 @@ extern "C" {
 #define SLEELA_JLIP_MAX_FRAME_BYTES 1048576u
 #define SLEELA_JLIP_RESPONSE_MASK 0x80u
 
+typedef int (*SleelaJlipReadExact)(void *context, uint8_t *buffer, size_t length);
+typedef int (*SleelaJlipWriteExact)(void *context, const uint8_t *buffer, size_t length);
+
 typedef struct {
     uint32_t request_id;
     uint8_t opcode;
@@ -29,6 +32,15 @@ int sleela_jlip_decode(const uint8_t *bytes, size_t length,
 size_t sleela_jlip_encode(uint8_t *out, size_t capacity,
                           uint32_t request_id, uint8_t opcode,
                           const uint8_t *payload, uint32_t payload_length);
+
+/* One request/response exchange over caller-owned binary streams. Callbacks
+   must transfer exactly the requested byte count or return nonzero. Returns
+   1 on a matching response, 0 on protocol/transport failure. */
+int sleela_jlip_exchange(SleelaJlipReadExact read_exact,
+                         SleelaJlipWriteExact write_exact, void *context,
+                         const uint8_t *request, size_t request_length,
+                         uint8_t *response, size_t response_capacity,
+                         size_t *response_length);
 
 #ifdef __cplusplus
 }
