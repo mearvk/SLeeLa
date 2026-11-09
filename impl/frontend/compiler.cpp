@@ -378,7 +378,7 @@ private:
         if(auto sw=dynamic_cast<const SwitchStmt*>(s)){emitSwitch(*sw);return;}
         if(auto sy=dynamic_cast<const SynchronizedStmt*>(s)){emitSynchronized(*sy);return;}
         if(auto tr=dynamic_cast<const TryStmt*>(s)){emitTry(*tr);return;}
-        if(auto t=dynamic_cast<const ThrowStmt*>(s)){emitExpr(t->value.get());emit(OP_POP);return;}
+        if(auto t=dynamic_cast<const ThrowStmt*>(s)){emitExpr(t->value.get());emit(OP_THROW);return;}
         if(auto a=dynamic_cast<const AssertStmt*>(s)){emitExpr(a->cond.get());emit(OP_POP);return;}
         if(auto y=dynamic_cast<const YieldStmt*>(s)){emitExpr(y->value.get());emit(OP_POP);return;}
         if(dynamic_cast<const BreakStmt*>(s)){emitBreak();return;}
@@ -462,7 +462,40 @@ private:
     void emitDo(const DoStmt& s){emitSpillStart(s.spill);loops_.push_back({});int top=here();emitLoopDelay(s.loopSleepMs);emitStmt(s.body.get());int contTarget=here();for(int c:loops_.back().continues)patch(c,contTarget);emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emit(OP_JMP,top);patch(jf,here());for(int b:loops_.back().breaks)patch(b,here());loops_.pop_back();}
     void emitFor(const ForStmt& s){emitSpillStart(s.spill);loops_.push_back({});if(s.init)emitStmt(s.init.get());int top=here();std::vector<int> exits;if(s.cond){emitExpr(s.cond.get());exits.push_back(emit(OP_JMPF,0));}if(s.threadStable){emitExpr(s.threadStable.get());exits.push_back(emit(OP_JMPF,0));}if(s.heapHealthy){emitExpr(s.heapHealthy.get());exits.push_back(emit(OP_JMPF,0));}emitLoopDelay(s.loopSleepMs);emitStmt(s.body.get());int contTarget=here();for(int c:loops_.back().continues)patch(c,contTarget);if(s.update)emitStmt(s.update.get());emit(OP_JMP,top);int end=here();for(int j:exits)patch(j,end);for(int b:loops_.back().breaks)patch(b,end);loops_.pop_back();}
     void emitSynchronized(const SynchronizedStmt& s){emitExpr(s.monitor.get());emit(OP_POP);emitBlock(*s.body);}
-    void emitTry(const TryStmt& s){emitBlock(*s.body);if(s.finallyBlock)emitBlock(*s.finallyBlock);}
+    void emitTry(const TryStmt& s){
+        // First source-level exception milestone: one catch-all clause whose
+        // binding is Any. The VM currently dispatches catch-all handlers only;
+        // accepting a narrower declared type here would silently promise typed
+        // matching that the runtime does not implement.
+        if(s.catches.size()!=1)
+            throw std::runtime_error("Semantic error: this exception milestone supports exactly one catch clause");
+        if(s.finallyBlock)
+            throw std::runtime_error("Semantic error: finally lowering is not yet supported by the VM exception milestone");
+        const CatchClause& clause=s.catches.front();
+        if(clause.type!="Any")
+            throw std::runtime_error("Semantic error: catch-all exception binding must use type Any until typed exception matching is implemented");
+        const int catchSlot=ctx_->declare(clause.variable);
+        const auto priorType=varType_.find(clause.variable);
+        const bool hadPriorType=priorType!=varType_.end();
+        const std::string savedType=hadPriorType?priorType->second:std::string();
+        varType_[clause.variable]="Any";
+
+        const int push=emit(OP_TRY_PUSH,0);
+        emitBlock(*s.body);
+        emit(OP_TRY_POP);
+        const int skipHandler=emit(OP_JMP,0);
+        patch(push,here());
+
+        // OP_THROW restores the operand stack and pushes the thrown value for
+        // the selected handler. Store it immediately so it is rooted in a
+        // normal local slot before the catch body can allocate or call out.
+        emit(OP_STOREL,catchSlot);
+        emitBlock(*clause.body);
+        patch(skipHandler,here());
+
+        if(hadPriorType) varType_[clause.variable]=savedType;
+        else varType_.erase(clause.variable);
+    }
     void emitSwitch(const SwitchStmt& s){
         // Lower a switch to a dispatch chain: evaluate the selector once into a
         // temp local, test each label with ==, and jump to the matching case
