@@ -141,7 +141,7 @@ These paths are architectural test targets; a particular binding must not claim 
 
 The library's source envelopes describe Java API types; they do not, by themselves, implement Java method execution. The repository currently has an external-JVM host path for Java source, runnable JARs, and compiled class folders. The Java connector also provides allow-listed reflective construction and invocation through SleelaJdkBridge and SleelaClassLoader. These are distinct integration layers: the external host is a child process, and the Java-side reflection helper is not yet a SLeeLa VM invocation opcode. Neither should be described as JNI or an embedded JVM.
 
-Direct construction and method invocation from SLeeLa expressions, Java object-handle marshalling, and structured Java exception propagation still require an end-to-end typed protocol and compiler/VM integration. In particular, descriptive strings such as java.invoke: are not invocation opcodes. See RUNTIME-INTEGRATION.md for the capability matrix, safety rules, and implementation sequence.
+The SLJIP v1 endpoint now implements Java-side construction, method invocation, public field access, opaque object handles, and structured exception responses. The native C codec is linked into the native tools and exposes a callback-based exchange API. However, the SLeeLa compiler/VM does not yet lower source expressions to these operations, and the native runtime does not yet own the endpoint process pipes. Descriptive strings such as java.invoke: are not invocation opcodes. See protocol/SLJIP-v1.md, RUNTIME-INTEGRATION.md, and impl/JAVA-INTEROP-LOWERING.md for the current boundaries.
 
 ## JDK Signature Catalog
 
@@ -157,6 +157,7 @@ The Java endpoint and native frame codec have independent focused test runners:
 
 - `bash test-suites/java-interop-protocol-endpoint.sh`
 - `bash test-suites/java-interop-protocol-codec.sh`
+- `python3 test-suites/java-interop-protocol.py` (cross-platform orchestration; runs both suites)
 - `make -C connector protocol-test protocol-codec-test`
 
 The native codec is linked into both native tool binaries. The callback-driven exchange API is ready for a process/pipe provider. Compiler/VM lowering is still a separate required integration step: no SLeeLa source expression is yet claimed to execute these protocol operations.
