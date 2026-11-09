@@ -279,7 +279,13 @@ tool_cmd() { # module verb [args]
     case "$verb" in
       info) okay "native-drive — $(summary_of "$1")"; info "location: ${script#$ROOT/}"; info "see: $ROOT/impl/native-drive/README.md" ;;
       build|run) shift 2; python3 "$script" "$verb" "$@" ;;
-      inspect) python3 "$script" --help ;;
+      inspect)
+        shift 2
+        case "${1:-}" in
+          xclass) shift; python3 "$script" xclass "$@" ;;
+          service) shift; python3 "$ROOT/tools/sleela-native-service.py" "$@" ;;
+          *) python3 "$script" --help ;;
+        esac ;;
       *) die "native-drive verb '$verb' not understood" ;;
     esac
     return $?
