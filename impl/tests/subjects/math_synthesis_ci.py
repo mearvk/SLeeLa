@@ -21,7 +21,7 @@ def main():
         print(subject.stdout, end=""); print(subject.stderr, file=sys.stderr)
         raise SystemExit("sleelactl run math failed")
     source = MATH_TEST.read_text(encoding="utf-8")
-    marker = re.search(r"EXPECTED_PASS=(\\d+)", source)
+    marker = re.search(r"EXPECTED_PASS=(\d+)", source)
     if not marker:
         raise SystemExit("math_values.sleela has no EXPECTED_PASS marker")
     expected = int(marker.group(1))
@@ -36,7 +36,7 @@ def main():
         failures = [x for x in result.stdout.splitlines() if x.startswith("FAIL ")]
         passes = [x for x in result.stdout.splitlines() if x.startswith("PASS ")]
         if failures:
-            raise SystemExit("Math accuracy failures:\\n" + "\\n".join(failures))
+            raise SystemExit("Math accuracy failures:\n" + "\n".join(failures))
         if len(passes) != expected:
             raise SystemExit(f"Expected {expected} assertions, got {len(passes)} on run {index + 1}")
         durations.append(elapsed); pass_counts.append(len(passes))
@@ -77,7 +77,7 @@ def main():
         "a SLeeLa program imports math, and numerical assertions pass. Timing is retained per repetition.",
         ""
     ]
-    REPORT.write_text("\\n".join(lines), encoding="utf-8")
+    REPORT.write_text("\n".join(lines), encoding="utf-8")
     print(f"Math synthesis CI: PASS ({total}/{total} assertions)")
     print(f"Mean {mean * 1000:.3f} ms; median {median * 1000:.3f} ms")
     return 0
