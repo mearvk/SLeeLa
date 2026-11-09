@@ -1,26 +1,28 @@
-#sleela 2.5
-material;
-
+#sleela 3.0
 class JavaStringNativeSmoke {
-  void main() {
-    JavaStringValue text = new JavaStringValue();
-    JavaStringValue hello = text.of("Hello");
-    JavaStringValue world = text.of(" World");
+  static void main() {
+    JavaStringValue factory = new JavaStringValue();
+    JavaStringValue hello = factory.bind(0, "Hello");
+    JavaStringValue world = factory.bind(0, " World");
     JavaStringValue combined = hello.concat(world);
-    print("CONCAT=" + combined.toString());
-    print("EQUALS=" + (combined.equals(text.of("Hello World"))));
-    print("EMPTY=" + text.of("").isEmpty());
-    print("REPEAT=" + text.of("ab").repeatNonNegative(3).toString());
+    print("JAVA-STRING-VM=PASS");
+    print(combined.length());
+    print(combined.charAt(1));
+    print(combined.codePointAt(6));
+    JavaStringValue prefix = combined.substring(0, 5);
+    print(prefix.length());
+    print(prefix.equals(hello));
+    print(combined.compareTo(combined));
+    print(combined.hashCode());
+    print(hello.isEmpty());
+    print(hello.supportsUtf16Indexing());
+    print(hello.supportsCodePointIteration());
+    print(hello.supportsJavaHashCode());
 
-    String[] words = new String[3];
-    words[0] = "red";
-    words[1] = "green";
-    words[2] = "blue";
-    print("JOIN=" + text.join(words, ", ").toString());
-
-    String[] empty = new String[0];
-    print("JOIN-EMPTY=" + text.join(empty, ",").toString());
-    print("NATIVE=" + hello.implementationName());
-    print("UTF16=" + hello.supportsUtf16Indexing());
+    JavaStringValue exact = factory.fromUtf16(
+      javaStringFromCodeUnits(0x0041, 0x0000, 0xD800));
+    print(exact.length());
+    print(exact.charAt(1));
+    print(exact.charAt(2));
   }
 }
