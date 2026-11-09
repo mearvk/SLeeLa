@@ -100,7 +100,7 @@ class SLMatrix {
       int row = k + 1;
       while (row < n) {
         if (absolute(scratch[row * n + k]) >
-            abs(scratch[pivot * n + k])) { pivot = row; }
+            absolute(scratch[pivot * n + k])) { pivot = row; }
         row = row + 1;
       }
       if (scratch[pivot * n + k] == 0.0) { return 0.0; }
