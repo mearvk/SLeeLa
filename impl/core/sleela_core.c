@@ -686,6 +686,14 @@ SLValue slvm_java_string_new(SLVM *vm, const uint16_t *units, size_t length) {
     pthread_mutex_unlock(&vm->java_string_mtx);
     return slval_utf16(handle);
 }
+int slvm_java_string_root(SLVM *vm, SLValue value) {
+    SLJavaStringInstance *instance = java_string_get(vm, value);
+    return instance && gc_add_root(&vm->gc, instance->gc_object) ? 0 : -1;
+}
+int slvm_java_string_unroot(SLVM *vm, SLValue value) {
+    SLJavaStringInstance *instance = java_string_get(vm, value);
+    return instance && gc_remove_root(&vm->gc, instance->gc_object) ? 0 : -1;
+}
 int slvm_java_string_copy(SLVM *vm, SLValue value, SLJavaString *out) {
     SLJavaStringInstance *instance = java_string_get(vm, value);
     return instance ? sljava_string_clone(out, &instance->value) : SL_JAVA_STRING_INVALID_ARGUMENT;
