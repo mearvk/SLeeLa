@@ -44,6 +44,9 @@ class LinearAlgebraVmSmoke {
         let inv = arrayNew(4);
         mathMatrixInverse(ma, inv, 2);
         print("MATH_MATRIX_INVERSE"); print(arrayGet(inv, 0));
+        let determinant = arrayNew(1);
+        mathMatrixDeterminant(ma, determinant, 2);
+        print("MATH_MATRIX_DETERMINANT"); print(arrayGet(determinant, 0));
         let qrQ = arrayNew(6);
         let qrR = arrayNew(4);
         let tall = arrayNew(6);
@@ -78,6 +81,13 @@ class LinearAlgebraVmSmoke {
         print("MATH_COMPLEX_MULTIPLY"); print(arrayGet(cz, 0));
         mathComplexDivide(ca, cb, cz);
         print("MATH_COMPLEX_DIVIDE"); print(arrayGet(cz, 1));
+        let cscalar = arrayNew(1);
+        mathComplexAbs(ca, cscalar);
+        print("MATH_COMPLEX_ABS"); print(arrayGet(cscalar, 0));
+        mathComplexPhase(ca, cscalar);
+        print("MATH_COMPLEX_PHASE"); print(arrayGet(cscalar, 0));
+        mathComplexConjugate(ca, cz);
+        print("MATH_COMPLEX_CONJUGATE"); print(arrayGet(cz, 1));
 
         print("NATIVE_MATH_VM_SOURCE=PASS");
     }
