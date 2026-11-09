@@ -75,36 +75,51 @@ the gaps the later stages will close; refusing them now keeps Part 1 honest.
 
 ## Native Drive integration
 
-The new Native Drive accepts direct `.c`, `.cc`, `.cpp`, and `.cxx` source and
-compiles it through the configured host compiler. For `.sleela`, it invokes
-`sleela aot --emit` and compiles the emitted C translation unit. It also provides
-shell-free process execution, optional stdin-file input, stdout/stderr capture,
-and a two-process stdout-to-stdin pipeline with timeouts. The `sleelactl`
-registry exposes it as `native-drive`:
+The Native Drive accepts one or more `.c`, `.cc`, `.cpp`, and `.cxx` translation
+units and compiles them through Clang/GCC or MSVC where available. It can emit
+an executable or shared library; `--require-sleela-abi` inspects for the required
+export names without loading/executing the library. The existing native loader
+checks the actual ABI version when an explicitly trusted module is opened.
+For `.sleela`, it invokes `sleela aot --emit` and compiles the emitted C
+translation unit. The emitter remains whole-program, not per-method. The tool
+also provides shell-free argv process execution, stdin-file input, captured
+stdout/stderr, two-process stdout-to-stdin piping, and timeouts. XClass operations
+are delegated to the existing production XClass loader. A separate
+`sleela-native-service.py` renders hardened systemd unit files; installation,
+enabling, and starting are separate explicit actions. `sleelactl` exposes the
+Native Drive as a tool:
 
 ```sh
 sleelactl info native-drive
 sleelactl build native-drive source.cpp -o build/source
 sleelactl run native-drive --capture -- build/source
+sleelactl inspect native-drive xclass --mode info Example.xclass
+sleelactl inspect native-drive service --name worker --executable /opt/worker --working-directory /var/lib/worker
 ```
 
 See [`../impl/native-drive/README.md`](../impl/native-drive/README.md).
 
 ## What is NOT here yet
 
-- A full production C/C++ parser integrated into the SLeeLa frontend (the
-  `lib/cpu/SLFrontendC` and `SLFrontendCpp` classes document limited lowering
-  models, not complete language implementations).
-- Automatic registration of emitted SLeeLa methods with the existing native
-  loader, plus VM in-process dispatch to native symbols with interpreter fallback and
+- A native C/C++ parser that lowers full language grammars into SLeeLa SLIR.
+  Direct C/C++ builds use the system compiler; the `lib/cpu/SLFrontendC` and
+  `SLFrontendCpp` classes remain limited lowering models.
+- Per-method SLeeLa native entry-point emission and a typed calling convention.
+- Automatic registration of SLeeLa methods with the existing native loader,
+  plus VM in-process dispatch to native symbols with interpreter fallback and
   differential conformance checks.
 - Expanded AOT coverage for strings, arrays, object layouts, exceptions, and
   language-specific ABI details.
-- Declarative process annotations wired to a validated process capability
-  policy, plus generated systemd unit lifecycle integration.
+- Declarative process annotations wired into the parser and runtime capability
+  enforcement. `impl/native-drive/annotations.schema.json` is currently a
+  versioned metadata contract, not an implemented annotation feature.
+- systemd status/rollback and service lifecycle integration inside `sleelactl`;
+  the current unit generator is an explicit standalone install/enable/start tool.
 
-The process CLI is an explicit host-process tool, not a sandbox. Do not run
-untrusted native code under elevated privileges.
+The process CLI is an explicit host-process tool, not a sandbox. ABI symbol
+inspection is not an ABI-version check or trust decision; the loader performs
+version validation at load time, and native constructors may execute during
+loading. Do not run untrusted native code under elevated privileges.
 
 ## Verify
 
