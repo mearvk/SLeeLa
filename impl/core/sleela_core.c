@@ -189,6 +189,8 @@ struct SLVM {
     int cur_func;
     int entry;
     SLValue last_result;
+    SLValue last_exception;
+    int has_last_exception;
     char err[256];
     uint64_t osls_capabilities;
 
@@ -1027,6 +1029,7 @@ static void gc_mark_vm_roots(GarbageCollector *gc, void *context) {
     for (int i = 0; i < vm->nconst; ++i) gc_mark_value(vm, gc, vm->consts[i]);
     pthread_mutex_unlock(&vm->global_mtx);
     gc_mark_value(vm, gc, vm->last_result);
+    if (vm->has_last_exception) gc_mark_value(vm, gc, vm->last_exception);
     for (int i = 0; i < SL_MAX_LOCKS; ++i) {
         pthread_mutex_lock(&vm->mailbox[i].mtx);
         if (vm->mailbox[i].has) gc_mark_value(vm, gc, vm->mailbox[i].value);
@@ -3983,8 +3986,8 @@ static SLResult run_thread(SLThread* t) {
 
 SLResult slvm_run(SLVM* vm) {
     if (!vm || vm->entry < 0 || vm->entry >= vm->nfunc) { if(vm) set_err(vm,"no entry function set"); return SLR_ERROR; }
-    vm->err[0]=0; SLThread* t=(SLThread*)calloc(1,sizeof(SLThread)); if(!t){set_err(vm,"out of memory");return SLR_ERROR;}
-    t->vm=vm;t->entry_func=vm->entry;t->result=slval_null(); SLResult r=run_thread(t); vm->last_result=t->result; free(t); slvm_joinall(vm); return r;
+    vm->err[0]=0; vm->has_last_exception=0; vm->last_exception=slval_null(); SLThread* t=(SLThread*)calloc(1,sizeof(SLThread)); if(!t){set_err(vm,"out of memory");return SLR_ERROR;}
+    t->vm=vm;t->entry_func=vm->entry;t->result=slval_null(); SLResult r=run_thread(t); vm->last_result=t->result; if(t->has_uncaught_exception){vm->last_exception=t->uncaught_exception;vm->has_last_exception=1;} free(t); slvm_joinall(vm); return r;
 }
 
 SLResult slcore_exchange(SLVM* vm, SLExchangeOp op, SLExchangeArg* arg) {
