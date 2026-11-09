@@ -46,8 +46,6 @@ jobs:
         env:
           SLEELA_SHA256_MANIFEST: /tmp/sleela-ci-manifest.json
           SLEELA_SHEET: ${{ github.workspace }}/SHEET.sheet
-          GITHUB_SHA: ${{ github.sha }}
-          GITHUB_RUN_ID: ${{ github.run_id }}
           MATH_BENCH_REPEATS: '7'
         run: python3 impl/tests/subjects/math_synthesis_ci.py
       - name: Commit measured Markdown report on master
