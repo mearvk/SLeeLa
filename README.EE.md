@@ -199,3 +199,18 @@ Riigiväljaanded kasutavad nimekuju `README.<CC>.md`. Ühes riigifailis võib ol
 - [GitHubi hoidla](https://github.com/mearvk/SLeeLa)
 
 **Tõlke olek:** Eesti väljaanne sisaldab nüüd laiendatud sissejuhatust, alustamist, ehitamist, paigaldamist, keelt, funktsioone, arhitektuuri, teeke, turvalisust, kaastööd ja peamisi tehnilisi teemasid. Vajalik on erialane keeleline ülevaatus ning võrdlus iga ingliskeelse README muudatusega.
+
+
+## XVI. Eesmärgid, profiilid ja käivitamise piirid
+
+SLeeLa eristab lähtekoodi ehituse ja käivituse sihtidest. Dokumenteeritud sihtide hulka kuuluvad `SLVM`, `SLJVM` ja `SLIR`; `NATIVE` on piiratud ja tingimuslik siht ning seda ei tohi eeldada kõigil platvormidel kättesaadavaks. Profiilid `BASIC_COMPLETE` ja `ADVANCED_TOTAL` tähistavad erinevat ulatust. Kontrollige iga ehituse tegelikku sihti, profiili ja platvormituge.
+
+Viide tuvastab faili, mooduli või ressursi, kuid ei anna iseenesest õigust seda käivitada. Failide, väliste teekide, native bindings-liideste või süsteemiressursside kasutamisel tuleb selgelt määrata volituste piirid ja käivitamise eest vastutav komponent. Dokumentatsioonikirjeldus üksi ei tõenda runtime-turvagarantiid; kontrollige teostust ja asjakohaseid teste.
+
+## XVII. Ressursi elutsükkel ja silumine
+
+Dokumenteerige funktsioonide või lõimede vahel jagatud ressursside omanik, eluiga ja sünkroonimise vastutus. Eristage local variables, shared object state, VM handles ja serializable data. VM-local handle ei ole stabiilne failivorming ega võrgusõnum. Kasutage mooduli määratletud serialiseerimisliidest ning testige invalid, missing ja boundary values.
+
+Silumisel märkige commit, OS, architecture ja toolchain. Ehitage esmalt väikseim asjakohane siht, säilitage täielik veaväljund, eristage compiler errors ja runtime errors ning koostage minimaalne korratav näide. Edukas ehitus ei tõenda iseenesest runtime-käitumise õigsust.
+
+Valideerimisaruandes tuleb esitada exact commit, OS/architecture, compiler versions, täielikud build/test commands, pass/fail/skip arvud ja teadaolevad piirangud. Vahele jäetud või käivitamata teste ei tohi lugeda läbituks.
