@@ -19,6 +19,10 @@ class MathValues {
         check("sqrt2", math.sqrt(2.0), 1.4142135623730951, 0.000001);
         check("sqrt_144", math.sqrt(144.0), 12.0, 0.000001);
         check("pow_2_10", math.pow(2.0, 10.0), 1024.0, 0.00001);
+        // Negative bases and large magnitudes distinguish the typed native kernel
+        // from the earlier exp(y * log(x)) / direct-square Core approximations.
+        check("pow_negative_odd", math.pow(-2.0, 3.0), -8.0, 0.000001);
+        check("pow_negative_even", math.pow(-2.0, 4.0), 16.0, 0.000001);
         check("exp_0", math.exp(0.0), 1.0, 0.000001);
         check("exp_1", math.exp(1.0), 2.718281828459045, 0.00001);
         check("log_e", math.log(2.718281828459045), 1.0, 0.00001);
@@ -31,7 +35,9 @@ class MathValues {
         check("clamp_hi", math.clamp(15.0, 0.0, 10.0), 10.0, 0.0);
         check("clamp_lo", math.clamp(-5.0, 0.0, 10.0), 0.0, 0.0);
         check("hypot_3_4", math.hypot(3.0, 4.0), 5.0, 0.000001);
+        check("hypot_large", math.hypot(1.0e308, 1.0e308), 1.4142135623730951e308, 1.0e302);
         check("fmod", math.fmod(7.5, 2.0), 1.5, 0.000001);
+        check("fmod_negative", math.fmod(-7.5, 2.0), -1.5, 0.000001);
         check("pi", math.pi(), 3.141592653589793, 0.00001);
         // log with range reduction (accurate for large arguments)
         check("log_1000", math.log(1000.0), 6.907755278982137, 0.0001);
@@ -45,6 +51,6 @@ class MathValues {
         check("ceil_neg", math.ceil(-3.7), -3.0, 0.0);
         check("trunc_pos", math.trunc(3.7), 3.0, 0.0);
         check("trunc_neg", math.trunc(-3.7), -3.0, 0.0);
-        // EXPECTED_PASS=27
+        // EXPECTED_PASS=31
     }
 }
