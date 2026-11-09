@@ -87,10 +87,17 @@ version at load time. Loading a native module executes code in the current
 process; ABI validation is not a sandbox, signature check, or trust decision. Only load modules from a trusted location after applying the host
 integrity policy.
 
-The Native Drive can build a conforming library, but it does not yet register
-SLeeLa source methods with the loader or dispatch VM bytecode into plugin
-symbols. The current sl_native_run ABI is a module entry point, not a typed
-per-method calling convention.
+The loader now also supports an optional typed `sl_native_call` entry point
+for named methods. Its version-1 value contract covers null, boolean, signed
+64-bit integer, 64-bit double, and length-delimited UTF-8 values. The VM host API
+can invoke this typed entry through its authorized, generation-checked module
+handle. Legacy run-only plugins remain compatible.
+
+This is not yet compiler-generated per-method registration or bytecode
+dispatch. The VM does not automatically marshal its internal `SLValue` into
+the plugin ABI, and VM-owned strings, arrays, structs, closures, and object
+handles are not exposed across the boundary. Interpreter fallback, output
+parity, and concurrent-call stress coverage remain future work.
 
 ## Process policy and annotations
 
@@ -149,11 +156,11 @@ it does not automatically restart the workload.
 | Workstream | Current result | Still required |
 |---|---|---|
 | 1. C/C++ frontends | Production system compiler integration, multi-unit builds | Native SLeeLa frontend adapters and SLIR conformance, not a replacement C++ compiler |
-| 2. SLeeLa/XClass translation | Existing @native AOT + XClass loader delegated | Per-method native emission, typed entry ABI, XClass method-body fidelity where encoded |
-| 3. Native build/link/load | Executable/shared builds and optional ABI validation | Runtime-owned plugin registry, signature/integrity policy, VM-visible typed symbols |
+| 2. SLeeLa/XClass translation | Existing @native AOT + XClass loader delegated; optional typed scalar/string entry ABI | Compiler-generated per-method emission/registration, XClass method-body fidelity where encoded |
+| 3. Native build/link/load | Executable/shared builds, ABI validation, optional typed method entry and VM-owned authorized handle registry | Signature/integrity policy and compiler-generated method metadata |
 | 4. Process piping | argv execution, stdin file, bounded capture, multi-stage pipe, timeout, exit propagation | Annotation parser/runtime policy and richer stream-routing semantics |
 | 5. systemd | Hardened unit rendering, explicit install/enable/start, status/restart/stop/disable, transactional failed-install recovery, one-level replacement rollback | Generated service manifests and integration tests against a real systemd host |
-| 6. VM dispatch | VM-owned nine-slot module table, generation-checked opaque handles, host authorization callback, open/run/close API, close-on-VM-destruction | SLeeLa bytecode dispatch, typed object/value ABI, interpreter fallback, output parity and concurrency stress tests |
+| 6. VM dispatch | VM-owned nine-slot module table, authorization, generation-checked handles, host open/run/typed-call/close API, close-on-VM-destruction | Bytecode dispatch, SLValue marshalling, composite object/array ABI, interpreter fallback, output parity and concurrency stress tests |
 | 7. Conformance | C/C++ loader tests, ABI mismatch/missing-entry rejection, C++ move ownership, authorization denial, table-full/stale-handle tests, service failure recovery tests | Run the local test suites and complete compiler/VM/loader/process/systemd matrix, sanitizer and cross-ABI coverage |
 
 ## Security invariants
