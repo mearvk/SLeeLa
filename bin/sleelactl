@@ -193,6 +193,10 @@ sctl() {
     system)
       if [ "$(id -u)" -eq 0 ]; then
         systemctl --system "$@"
+      elif [ "${1:-}" = "--no-pager" ] && [ "${2:-}" = "status" ]; then
+        # systemctl status is read-only and normally available to unprivileged
+        # callers; do not require sudo merely to inspect a system unit.
+        systemctl --system "$@"
       else
         command -v sudo >/dev/null 2>&1 || { err "sudo is required for system-unit control; use SLEELACTL_SYSTEMCTL_SCOPE=user for user units."; return 3; }
         sudo systemctl --system "$@"
