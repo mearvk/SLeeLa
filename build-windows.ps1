@@ -104,7 +104,7 @@ finally {
 $SleelaExe = Join-Path $BuildDir "sleela.exe"
 $SleelavcExe = Join-Path $BuildDir "sleelvac.exe"
 $NordshriftExe = Join-Path $BuildDir "nordshrift.exe"
-$MissingProducts = @($SleelaExe, $SleelavcExe, $NordshriftExe | Where-Object { -not (Test-Path $_ -PathType Leaf) })
+$MissingProducts = @(@($SleelaExe, $SleelavcExe, $NordshriftExe) | Where-Object { -not (Test-Path $_ -PathType Leaf) })
 if ($MissingProducts.Count -gt 0) {
     throw "Build did not produce every required Windows product in $BuildDir. Missing: $($MissingProducts -join ', ')"
 }
