@@ -2641,6 +2641,8 @@ static SLResult run_thread(SLThread* t) {
             if (t->sp < arity + 2)
                 TERR("math call: expected fallback marker, method name, and numeric arguments");
             base = t->sp - arity - 2;
+            if (t->stack[base].type != SL_NULL)
+                TERR("math call: fallback marker must be null");
             method_value = t->stack[base + 1];
             if (method_value.type != SL_STR)
                 TERR("math call: fallback method name must be a String");
