@@ -201,6 +201,7 @@ def main() -> int:
         installed = False
         enabled = False
         started = False
+        scope = ["--system"] if args.system else ["--user"]
         try:
             with os.fdopen(fd, "w", encoding="utf-8") as stream:
                 stream.write(unit)
@@ -209,7 +210,6 @@ def main() -> int:
             os.replace(temp_name, target)
             installed = True
 
-            scope = ["--system"] if args.system else ["--user"]
             subprocess.run(["systemctl", *scope, "daemon-reload"], check=True)
             if args.enable:
                 subprocess.run(["systemctl", *scope, "enable", f"{args.name}.service"], check=True)
@@ -252,6 +252,8 @@ def main() -> int:
                         backup.unlink(missing_ok=True)
                 except (OSError, subprocess.CalledProcessError) as recovery_exc:
                     recovery_errors.append(f"restore/reload: {recovery_exc}")
+            if not installed and existed:
+                backup.unlink(missing_ok=True)
             if recovery_errors:
                 raise RuntimeError(
                     f"installation failed ({exc}); automatic recovery was incomplete: "
