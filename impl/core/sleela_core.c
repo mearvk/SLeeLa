@@ -2048,12 +2048,20 @@ static int slvm_native_host_invoke(void* context, const char* function,
     SLThread* nested;
     int function_index = -1;
     size_t name_length;
+    int active_workers;
     SLResult run_status;
     SLVM* previous_callback_vm;
     if (!vm || !function || !*function || !out_result ||
         (argc && !argv) || argc > STACK_MAX - 1 ||
         native_callback_vm == vm || native_plugin_call_vm != vm)
         return 0;
+    pthread_mutex_lock(&vm->thr_mtx);
+    active_workers = vm->nthreads;
+    pthread_mutex_unlock(&vm->thr_mtx);
+    if (active_workers != 0) {
+        set_err(vm, "native callback requires a quiescent VM with no active worker threads");
+        return 0;
+    }
     name_length = strlen(function);
     if (name_length > 255u) return 0;
     for (int i = 0; i < vm->nfunc; ++i) {
