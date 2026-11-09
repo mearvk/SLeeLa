@@ -327,6 +327,8 @@ public final class SleelaJdkProtocolServer {
                 && ((InvocationTargetException) failure).getCause() != null) {
             cause = ((InvocationTargetException) failure).getCause();
         }
+        if (cause instanceof VirtualMachineError) throw (VirtualMachineError) cause;
+        if (cause instanceof ThreadDeath) throw (ThreadDeath) cause;
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(bytes);
         out.writeByte(1);
