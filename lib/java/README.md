@@ -13,7 +13,7 @@ The `/lib/java` library family defines the SLeeLa boundary for Java interoperabi
 
 ## Native Library Inventory
 
-The current repository inventory contains **8,988 files under `/lib/java`**. This count is validated from the Git index by the repository CI rather than being treated as an unverified documentation number.
+The current repository inventory contains **8,990 files under `/lib/java`**. This count is validated from the Git index by the repository CI rather than being treated as an unverified documentation number.
 
 The collection is a native SLeeLa source surface for Java-facing language and framework concepts. It is intended to give the SLeeLa Compiler, Loader, SST, and Nordshrift a stable source-level vocabulary for Java packages, classes, procedures, interfaces, runtime concepts, and interoperability boundaries.
 
@@ -32,12 +32,12 @@ python3 lib/java/validate.py
 The validator checks:
 
 - the `/lib/java` directory exists;
-- the Git-indexed library-file count exactly equals the manifest count (8,988 at this revision);
+- the Git-indexed library-file count exactly equals the manifest count (8,990 at this revision);
 - every declared control file is tracked and excluded from the library count;
 - manifest schema, root, bridge, source-role, execution-boundary, and mapping metadata are valid; and
 - missing or additional tracked files cause a validation failure until the manifest is deliberately updated.
 
-When library source files are intentionally added or removed, update inventory.count in the same change. Documentation and validator control files are explicitly listed in inventory.control_files and excluded. The validator uses exact equality: both unexpected growth and unexpected shrinkage fail.
+When library source files are intentionally added or removed, update inventory.count in the same change. Documentation and validator control files are explicitly listed in inventory.control_files and excluded. The validator uses exact equality: both unexpected growth and unexpected shrinkage fail. The current count includes the new protocol specification and machine-readable schema.
 
 ## Java-to-SLeeLa Mapping
 
@@ -54,7 +54,7 @@ A Java-facing source unit should identify, where applicable:
 5. **Loader visibility** — how the Compiler and Loader discover the symbol.
 6. **Compatibility surface** — the Java/JDK version or API family represented.
 
-This makes the Java relationship traceable instead of leaving the 8,988-file collection as an opaque directory.
+This makes the Java relationship traceable instead of leaving the 8,990-file collection as an opaque directory.
 
 ## JDK 28 Framework Bindings
 
@@ -148,6 +148,18 @@ Direct construction and method invocation from SLeeLa expressions, Java object-h
 The JDK 28 signature synchronizer records official Javadoc member declarations as comments inside a generated catalog section. It does not generate executable method bodies or placeholder return values. This keeps API metadata useful without suggesting that a stub returning false, zero, or null is a conforming Java implementation.
 
 Use tools/jdk28_signature_sync.py --check to audit drift, or --limit N for a controlled batch. Run the focused regression tests with python3 test-suites/java-library-integrity.py from the repository root.
+
+## Typed Java Invocation Protocol
+
+The first versioned transport contract is documented in [protocol/SLJIP-v1.md](protocol/SLJIP-v1.md), with a machine-readable description in [protocol/SLJIP-v1.json](protocol/SLJIP-v1.json). The Java helper endpoint is `SleelaJdkProtocolServer`; the native C frame codec is `runtime/java_interop_protocol.c`. The protocol supports bounded frames, typed primitive/string values, allow-listed class resolution, construction, public instance/static invocation, opaque per-session object handles, release, and structured exception responses.
+
+The Java endpoint and native frame codec have independent focused test runners:
+
+- `bash test-suites/java-interop-protocol-endpoint.sh`
+- `bash test-suites/java-interop-protocol-codec.sh`
+- `make -C connector protocol-test protocol-codec-test`
+
+The native codec is linked into both native tool binaries. The callback-driven exchange API is ready for a process/pipe provider. Compiler/VM lowering is still a separate required integration step: no SLeeLa source expression is yet claimed to execute these protocol operations.
 
 ## Expansion
 
