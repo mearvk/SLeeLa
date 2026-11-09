@@ -10,5 +10,6 @@ mkdir -p "$TMP/classes"
 javac --release 17 -Xlint:all -d "$TMP/classes" \
   "$ROOT/connector/java/com/mearvk/sleela/connector/SleelaClassLoader.java" \
   "$ROOT/connector/java/com/mearvk/sleela/connector/SleelaJdkBridge.java" \
-  "$ROOT/connector/java/com/mearvk/sleela/connector/SleelaJdkProtocolServer.java"
+  "$ROOT/connector/java/com/mearvk/sleela/connector/SleelaJdkProtocolServer.java" \
+  "$ROOT/connector/java/com/mearvk/sleela/connector/SleelaJdkProtocolFixture.java"
 python3 "$ROOT/test-suites/test-java-protocol.py" "$TMP/classes"
