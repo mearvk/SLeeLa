@@ -969,6 +969,7 @@ private:
         int op=0, a=-1, b=-1, out=-1, aux=-1;
         size_t ar=0, ac=0, br=0, bc=0, orows=0, ocols=0;
         const Expr* scalarExpr=nullptr;
+        size_t flagsValue=0;
         auto literalDimension=[&](size_t index,const char* label)->size_t {
             auto lit=dynamic_cast<const IntLit*>(c.args[index].get());
             if(!lit || lit->value<0 || (uint64_t)lit->value>(uint64_t)SIZE_MAX)
@@ -1010,6 +1011,33 @@ private:
             else if(n=="mathComplexMultiply") op=SLMATH_OP_COMPLEX_MULTIPLY;
             else op=SLMATH_OP_COMPLEX_DIVIDE;
             a=0;b=1;out=2;ar=2;ac=1;br=2;bc=1;orows=2;ocols=1;
+        } else if(n=="mathMatrixInverse"){
+            if(c.args.size()!=3) throw std::runtime_error("Semantic error: mathMatrixInverse(a, out, order) takes three arguments");
+            op=SLMATH_OP_MATRIX_INVERSE;a=0;out=1;
+            ar=literalDimension(2,"matrix order");ac=ar;orows=ar;ocols=ar;
+            scalarExpr=nullptr;
+        } else if(n=="mathMatrixQR"){
+            if(c.args.size()!=5) throw std::runtime_error("Semantic error: mathMatrixQR(a, q, r, rows, cols) takes five arguments");
+            op=SLMATH_OP_QR;a=0;out=1;aux=2;
+            ar=literalDimension(3,"matrix rows");ac=literalDimension(4,"matrix columns");
+            if(ar<ac) throw std::runtime_error("Semantic error: QR requires rows >= columns");
+            orows=ar;ocols=ac;
+            br=ac;bc=ac;
+        } else if(n=="mathSymmetricEigen"){
+            if(c.args.size()!=5) throw std::runtime_error("Semantic error: mathSymmetricEigen(a, values, vectors, order, maxSweeps) takes five arguments");
+            op=SLMATH_OP_SYMMETRIC_EIGEN;a=0;out=1;aux=2;
+            ar=literalDimension(3,"matrix order");ac=ar;
+            orows=1;ocols=ar;br=ar;bc=ar;
+            flagsValue=literalDimension(4,"maximum Jacobi sweeps");
+        } else if(n=="mathFFT"){
+            if(c.args.size()!=4) throw std::runtime_error("Semantic error: mathFFT(input, output, complexLength, inverse) takes four arguments");
+            op=SLMATH_OP_FFT;a=0;out=1;
+            const size_t n=literalDimension(2,"FFT complex length");
+            if(n==0 || (n&(n-1))!=0 || n>SIZE_MAX/2) throw std::runtime_error("Semantic error: FFT length must be a nonzero power of two");
+            ar=n*2;ac=1;orows=ar;ocols=1;
+            auto inverse=dynamic_cast<const IntLit*>(c.args[3].get());
+            if(!inverse || (inverse->value!=0 && inverse->value!=1)) throw std::runtime_error("Semantic error: FFT inverse flag must be integer literal 0 or 1");
+            flagsValue=(size_t)inverse->value;
         } else if(n=="mathMatrixMultiply"){
             if(c.args.size()!=7) throw std::runtime_error("Semantic error: mathMatrixMultiply(a, b, out, rowsA, colsA, rowsB, colsB) takes seven arguments");
             op=SLMATH_OP_MATRIX_MULTIPLY;a=0;b=1;out=2;
@@ -1029,11 +1057,11 @@ private:
             else emitExpr(c.args[(size_t)index].get());
         };
         emitHandle(a);emitHandle(b);emitHandle(out);emitHandle(aux);
-        const size_t frame[8]={ar,ac,br,bc,orows,ocols,0,0};
+        const size_t frame[8]={ar,ac,br,bc,orows,ocols,aux>=0?br:0,aux>=0?bc:0};
         for(size_t value:frame) emit(OP_CONST,slvm_add_const_int(vm_,(int64_t)value));
         if(scalarExpr) emitExpr(scalarExpr);
         else emit(OP_CONST,slvm_add_const_double(vm_,0.0));
-        emit(OP_CONST,slvm_add_const_int(vm_,0));
+        emit(OP_CONST,slvm_add_const_int(vm_,(int64_t)flagsValue));
         emit(OP_MATH_CALL,op);
         return true;
     }
