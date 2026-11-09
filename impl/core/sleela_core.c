@@ -243,6 +243,23 @@ struct SLVM {
     SLOSProcess os_proc[SL_MAX_OS_PROCESSES];
     int os_proc_init;
 
+    /* Native IPC workers are opaque VM-owned resources. The table never
+     * launches a process or grants capability; only an authorized host adapter
+     * may register an already-created worker. Handles include generations. */
+    pthread_mutex_t ipc_worker_mtx;
+    pthread_cond_t ipc_worker_cond;
+    struct {
+        void *worker;
+        void (*close_fn)(void *worker, void *context);
+        void *close_context;
+        uint32_t generation;
+        uint32_t leases;
+        int active;
+        int closing;
+    } ipc_workers[SL_MAX_IPC_WORKERS];
+    int ipc_workers_init;
+    int ipc_workers_shutdown;
+
     /* Trusted native modules are VM-owned bounded handles. The host must
      * install an authorization callback before any module can be opened. */
     pthread_mutex_t native_mtx;
@@ -267,6 +284,130 @@ static int slvm_native_host_invoke(void* context, const char* function,
 #endif
 static SL_NATIVE_THREAD_LOCAL SLVM* native_callback_vm = NULL;
 static SL_NATIVE_THREAD_LOCAL SLVM* native_plugin_call_vm = NULL;
+
+/* ---- Native IPC VM-owned worker handles -------------------------------
+ * Handle encoding: low 6 bits select one of 64 slots; high 25 bits are a
+ * nonzero generation. A close invalidates the generation before the slot can
+ * be reused, so stale bytecode values cannot alias a later worker. */
+#define SL_IPC_WORKER_SLOT_BITS 6u
+#define SL_IPC_WORKER_SLOT_MASK ((1u << SL_IPC_WORKER_SLOT_BITS) - 1u)
+#define SL_IPC_WORKER_GEN_MAX ((uint32_t)0x01ffffffu)
+
+static int ipc_worker_decode(int32_t handle, uint32_t *slot, uint32_t *generation) {
+    uint32_t raw;
+    if (handle < 0 || !slot || !generation) return -1;
+    raw = (uint32_t)handle;
+    *slot = raw & SL_IPC_WORKER_SLOT_MASK;
+    *generation = raw >> SL_IPC_WORKER_SLOT_BITS;
+    return (*generation != 0 && *slot < SL_MAX_IPC_WORKERS) ? 0 : -1;
+}
+
+static void ipc_worker_advance_generation(uint32_t *generation) {
+    *generation = (*generation >= SL_IPC_WORKER_GEN_MAX) ? 1u : *generation + 1u;
+}
+
+static void ipc_worker_close_all(SLVM *vm) {
+    uint32_t i;
+    if (!vm || !vm->ipc_workers_init) return;
+    pthread_mutex_lock(&vm->ipc_worker_mtx);
+    vm->ipc_workers_shutdown = 1; /* callbacks cannot repopulate a dying VM */
+    pthread_mutex_unlock(&vm->ipc_worker_mtx);
+    for (i = 0; i < SL_MAX_IPC_WORKERS; ++i) {
+        int32_t handle = -1;
+        pthread_mutex_lock(&vm->ipc_worker_mtx);
+        if (vm->ipc_workers[i].active) {
+            handle = (int32_t)((vm->ipc_workers[i].generation << SL_IPC_WORKER_SLOT_BITS) | i);
+        }
+        pthread_mutex_unlock(&vm->ipc_worker_mtx);
+        if (handle >= 0) (void)slvm_ipc_worker_close(vm, handle);
+    }
+}
+
+int32_t slvm_ipc_worker_register(SLVM *vm, void *worker,
+                                 void (*close_fn)(void *, void *), void *context) {
+    uint32_t i;
+    if (!vm || !worker || !close_fn || !vm->ipc_workers_init) return -1;
+    pthread_mutex_lock(&vm->ipc_worker_mtx);
+    if (vm->ipc_workers_shutdown) { pthread_mutex_unlock(&vm->ipc_worker_mtx); return -1; }
+    for (i = 0; i < SL_MAX_IPC_WORKERS; ++i) {
+        if (!vm->ipc_workers[i].active && !vm->ipc_workers[i].closing &&
+            vm->ipc_workers[i].leases == 0 && vm->ipc_workers[i].worker == NULL) {
+            if (vm->ipc_workers[i].generation == 0) vm->ipc_workers[i].generation = 1;
+            vm->ipc_workers[i].worker = worker;
+            vm->ipc_workers[i].close_fn = close_fn;
+            vm->ipc_workers[i].close_context = context;
+            vm->ipc_workers[i].active = 1;
+            {
+                int32_t handle = (int32_t)((vm->ipc_workers[i].generation << SL_IPC_WORKER_SLOT_BITS) | i);
+                pthread_mutex_unlock(&vm->ipc_worker_mtx);
+                return handle;
+            }
+        }
+    }
+    pthread_mutex_unlock(&vm->ipc_worker_mtx);
+    return -1; /* bounded table exhausted; caller retains ownership */
+}
+
+void *slvm_ipc_worker_acquire(SLVM *vm, int32_t handle) {
+    uint32_t slot, generation;
+    void *worker = NULL;
+    if (!vm || !vm->ipc_workers_init ||
+        ipc_worker_decode(handle, &slot, &generation) != 0) return NULL;
+    pthread_mutex_lock(&vm->ipc_worker_mtx);
+    if (!vm->ipc_workers_shutdown && vm->ipc_workers[slot].active && !vm->ipc_workers[slot].closing &&
+        vm->ipc_workers[slot].generation == generation && vm->ipc_workers[slot].worker) {
+        ++vm->ipc_workers[slot].leases;
+        worker = vm->ipc_workers[slot].worker;
+    }
+    pthread_mutex_unlock(&vm->ipc_worker_mtx);
+    return worker;
+}
+
+void slvm_ipc_worker_release(SLVM *vm, int32_t handle) {
+    uint32_t slot, generation;
+    if (!vm || !vm->ipc_workers_init ||
+        ipc_worker_decode(handle, &slot, &generation) != 0) return;
+    pthread_mutex_lock(&vm->ipc_worker_mtx);
+    if (vm->ipc_workers[slot].generation == generation &&
+        vm->ipc_workers[slot].leases != 0) {
+        --vm->ipc_workers[slot].leases;
+        if (vm->ipc_workers[slot].leases == 0) pthread_cond_broadcast(&vm->ipc_worker_cond);
+    }
+    pthread_mutex_unlock(&vm->ipc_worker_mtx);
+}
+
+int slvm_ipc_worker_close(SLVM *vm, int32_t handle) {
+    uint32_t slot, generation;
+    void *worker;
+    void (*close_fn)(void *, void *);
+    void *context;
+    if (!vm || !vm->ipc_workers_init ||
+        ipc_worker_decode(handle, &slot, &generation) != 0) return -1;
+    pthread_mutex_lock(&vm->ipc_worker_mtx);
+    if (!vm->ipc_workers[slot].active || vm->ipc_workers[slot].closing ||
+        vm->ipc_workers[slot].generation != generation || !vm->ipc_workers[slot].worker) {
+        pthread_mutex_unlock(&vm->ipc_worker_mtx);
+        return -1;
+    }
+    vm->ipc_workers[slot].active = 0;
+    vm->ipc_workers[slot].closing = 1;
+    /* Keep the old generation until all leases release: release() must still
+     * recognize the closing handle or close would wait forever. */
+    while (vm->ipc_workers[slot].leases != 0)
+        pthread_cond_wait(&vm->ipc_worker_cond, &vm->ipc_worker_mtx);
+    ipc_worker_advance_generation(&vm->ipc_workers[slot].generation);
+    worker = vm->ipc_workers[slot].worker;
+    close_fn = vm->ipc_workers[slot].close_fn;
+    context = vm->ipc_workers[slot].close_context;
+    vm->ipc_workers[slot].worker = NULL;
+    vm->ipc_workers[slot].close_fn = NULL;
+    vm->ipc_workers[slot].close_context = NULL;
+    vm->ipc_workers[slot].closing = 0;
+    pthread_cond_broadcast(&vm->ipc_worker_cond);
+    pthread_mutex_unlock(&vm->ipc_worker_mtx);
+    close_fn(worker, context);
+    return 0;
+}
 
 static void set_err(SLVM* vm, const char* msg) {
     if (!vm) return;
@@ -669,6 +810,10 @@ SLVM* slvm_new(void) {
     pthread_mutex_init(&vm->idea_canvas_mtx, NULL);
     pthread_mutex_init(&vm->audio_mtx, NULL);
     pthread_mutex_init(&vm->os_mtx, NULL);
+    pthread_mutex_init(&vm->ipc_worker_mtx, NULL);
+    pthread_cond_init(&vm->ipc_worker_cond, NULL);
+    vm->ipc_workers_init = 1;
+    for (int i = 0; i < SL_MAX_IPC_WORKERS; ++i) vm->ipc_workers[i].generation = 1;
     for (int i = 0; i < SL_MAX_OS_PROCESSES; i++) vm->os_proc[i] = SLOS_INVALID_PROCESS;
     vm->os_proc_init = 1;
     gc_init(&vm->gc, 1024u * 1024u);
@@ -822,6 +967,10 @@ void slvm_free(SLVM* vm) {
         if (vm->idea_canvas[i]) { sl_idea_canvas_destroy(vm->idea_canvas[i]); vm->idea_canvas[i] = NULL; }
     }
     pthread_mutex_destroy(&vm->idea_canvas_mtx);
+    /* Close all remaining IPC workers before destroying their table. */
+    ipc_worker_close_all(vm);
+    pthread_cond_destroy(&vm->ipc_worker_cond);
+    pthread_mutex_destroy(&vm->ipc_worker_mtx);
     /* Release any still-live spawned child processes (reap without blocking). */
     for (int i = 0; i < SL_MAX_OS_PROCESSES; i++) {
         if (vm->os_proc[i] != SLOS_INVALID_PROCESS) { slos_release(vm->os_proc[i]); vm->os_proc[i] = SLOS_INVALID_PROCESS; }

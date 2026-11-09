@@ -351,6 +351,7 @@ _Static_assert(OP__COUNT == 182, "the extended ISA must contain 182 opcodes");
 /* GC-hint aggressiveness bands for OP_GC_HINT (operand a). */
 #define SL_GC_HINT_MAX  100   /* clamp ceiling for the 0..100 aggressiveness scale */
 #define SL_GC_HINT_FULL 100   /* at this level the hint requests a full collection */
+#define SL_MAX_IPC_WORKERS 64   /* live native IPC workers per VM */
 #define SL_MAX_OS_PROCESSES 64    /* live spawned child processes per VM        */
 /* Synchro stat selectors for OP_SYN_STAT (operand a). */
 #define SL_SYN_STAT_SENT 0
@@ -412,6 +413,15 @@ typedef enum { SLX_RESET = 0, SLX_ADD_CONST, SLX_DECLARE_GLOBAL, SLX_BEGIN_FUNC,
  * i0 = field count; out receives the type index. */
 typedef struct { SLValue value; const char* name; const char* const* names; int32_t op; int32_t a; int32_t i0; int32_t i1; int32_t i2; int32_t out; } SLExchangeArg;
 SLVM* slvm_new(void);
+/* Register an already-authorized opaque worker with VM-local ownership.
+ * Registration does not launch or authorize a worker. The close callback is
+ * invoked exactly once after all acquired leases have been released. */
+int32_t slvm_ipc_worker_register(SLVM* vm, void* worker,
+                                 void (*close_fn)(void*, void*), void* context);
+void* slvm_ipc_worker_acquire(SLVM* vm, int32_t handle);
+void slvm_ipc_worker_release(SLVM* vm, int32_t handle);
+int slvm_ipc_worker_close(SLVM* vm, int32_t handle);
+
 /* True when Sleela source values use the bounded VM-owned memory/handle model. */
 int slvm_memory_safe_mode(const SLVM* vm);
 void slvm_set_audio_native_renderer(SLVM* vm, SLAudioNativeRenderFn fn, void* user);
