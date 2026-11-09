@@ -7,6 +7,8 @@ import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.nio.ByteBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.CodingErrorAction;
@@ -29,7 +31,8 @@ public final class SleelaJdkProtocolServer {
     private static final int MAX_PARAMETERS = 256;
     private static final int MAX_HANDLES = 65_536;
     private static final int PING = 1, RESOLVE = 2, CONSTRUCT = 3,
-            INVOKE_INSTANCE = 4, INVOKE_STATIC = 5, RELEASE = 6, CLOSE = 7;
+            INVOKE_INSTANCE = 4, INVOKE_STATIC = 5, RELEASE = 6, CLOSE = 7,
+            GET_FIELD = 8, GET_STATIC_FIELD = 9, SET_FIELD = 10, SET_STATIC_FIELD = 11;
 
     private final Map<Long, Object> handles = new HashMap<>();
     private final AtomicLong nextHandle = new AtomicLong(1);
@@ -139,6 +142,44 @@ public final class SleelaJdkProtocolServer {
                 result = SleelaJdkBridge.invokeStatic(name, member, types, values);
                 break;
             }
+            case GET_FIELD: {
+                Object receiver = requireHandle(in.readLong());
+                String fieldName = readMemberName(in);
+                Field field = receiver.getClass().getField(fieldName);
+                if (Modifier.isStatic(field.getModifiers()))
+                    throw new IllegalArgumentException("instance field read cannot target a static field");
+                result = field.get(receiver);
+                break;
+            }
+            case GET_STATIC_FIELD: {
+                Class<?> owner = SleelaJdkBridge.type(readString(in));
+                String fieldName = readMemberName(in);
+                Field field = owner.getField(fieldName);
+                if (!Modifier.isStatic(field.getModifiers()))
+                    throw new IllegalArgumentException("static field read requires a static field");
+                result = field.get(null);
+                break;
+            }
+            case SET_FIELD: {
+                Object receiver = requireHandle(in.readLong());
+                String fieldName = readMemberName(in);
+                Field field = receiver.getClass().getField(fieldName);
+                if (Modifier.isStatic(field.getModifiers()))
+                    throw new IllegalArgumentException("instance field write cannot target a static field");
+                field.set(receiver, coercePrimitive(readValue(in), field.getType()));
+                result = null;
+                break;
+            }
+            case SET_STATIC_FIELD: {
+                Class<?> owner = SleelaJdkBridge.type(readString(in));
+                String fieldName = readMemberName(in);
+                Field field = owner.getField(fieldName);
+                if (!Modifier.isStatic(field.getModifiers()))
+                    throw new IllegalArgumentException("static field write requires a static field");
+                field.set(null, coercePrimitive(readValue(in), field.getType()));
+                result = null;
+                break;
+            }
             case RELEASE: {
                 long handle = in.readLong();
                 if (handles.remove(handle) == null) {
@@ -156,6 +197,13 @@ public final class SleelaJdkProtocolServer {
         }
         if (in.available() != 0) throw new IOException("trailing bytes in SLJIP request payload");
         return successPayload(result);
+    }
+
+    private static String readMemberName(DataInputStream in) throws IOException {
+        String name = readString(in);
+        if (!name.matches("[A-Za-z_$][A-Za-z0-9_$]*"))
+            throw new IOException("invalid Java member name");
+        return name;
     }
 
     private Class<?>[] readTypes(DataInputStream in) throws Exception {
