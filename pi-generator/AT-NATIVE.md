@@ -80,7 +80,12 @@ units and compiles them through Clang/GCC or MSVC where available. It can emit
 an executable or shared library; `--require-sleela-abi` inspects for the required
 export names without loading/executing the library. The existing native loader
 checks the actual ABI version when an explicitly trusted module is opened.
-For `.sleela`, it invokes `sleela aot --emit` and compiles the emitted C
+The authoritative VM now owns a bounded nine-slot module table with
+generation-checked opaque handles. Hosts must install a one-time authorization
+callback before any module can open; without it, all loads are denied. The host
+API exposes `slvm_native_module_open/run/close`, and VM destruction closes
+remaining modules. This is a host-facing lifecycle API, not a bytecode opcode:
+SLeeLa methods are not yet dispatched into native symbols. For `.sleela`, it invokes `sleela aot --emit` and compiles the emitted C
 translation unit. The emitter remains whole-program, not per-method. The tool
 also provides shell-free argv process execution, stdin-file input, captured
 stdout/stderr, two-process stdout-to-stdin piping, and timeouts. XClass operations
@@ -105,16 +110,18 @@ See [`../impl/native-drive/README.md`](../impl/native-drive/README.md).
   Direct C/C++ builds use the system compiler; the `lib/cpu/SLFrontendC` and
   `SLFrontendCpp` classes remain limited lowering models.
 - Per-method SLeeLa native entry-point emission and a typed calling convention.
-- Automatic registration of SLeeLa methods with the existing native loader,
-  plus VM in-process dispatch to native symbols with interpreter fallback and
-  differential conformance checks.
+- Automatic registration of SLeeLa methods with the native loader, bytecode
+  dispatch into native symbols, a typed SLeeLa value/object ABI, interpreter
+  fallback, and differential conformance checks. The VM currently exposes only
+  the host-facing authorized module lifecycle API.
 - Expanded AOT coverage for strings, arrays, object layouts, exceptions, and
   language-specific ABI details.
 - Declarative process annotations wired into the parser and runtime capability
   enforcement. `impl/native-drive/annotations.schema.json` is currently a
   versioned metadata contract, not an implemented annotation feature.
-- systemd status/rollback and service lifecycle integration inside `sleelactl`;
-  the current unit generator is an explicit standalone install/enable/start tool.
+- Windows Service Control Manager and macOS launchd service backends. Linux
+  systemd rendering, install, enable, start, status, restart, stop, disable, and
+  explicit one-level rollback are available through `sleelactl` delegation.
 
 The process CLI is an explicit host-process tool, not a sandbox. ABI symbol
 inspection is not an ABI-version check or trust decision; the loader performs
