@@ -175,8 +175,8 @@ The source compiler now lowers a single `catch (Any name)` clause to
 `OP_TRY_PUSH`, `OP_TRY_POP`, and a handler prologue that stores the thrown
 value in the catch local. Explicit `throw expression;` now emits `OP_THROW`.
 The compiler rejects multiple catch clauses, narrower declared catch types,
-catch-variable collisions with existing method locals, and any `finally`
-block. This is deliberately narrower than Java: matching is catch-all only,
+catch-variable collisions with existing method locals, `break`/`continue` that
+would leave the protected try region, and any `finally` block. This is deliberately narrower than Java: matching is catch-all only,
 and the catch variable holds the original arbitrary tagged `SLValue`.
 
 Typed exception classes and ordered matching, rethrow syntax/identity
