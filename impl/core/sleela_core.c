@@ -138,6 +138,13 @@ typedef struct {
  * struct, it is reached only by a VM-local handle. `elems` is heap-allocated
  * and grows geometrically; `len` is the logical length, `cap` the allocation. */
 typedef struct {
+    SLJavaString value;
+    int handle;
+    SLVM *gc_context;
+    SLGCObject *gc_object;
+} SLJavaStringInstance;
+
+typedef struct {
     int active;
     int len;
     int cap;
@@ -189,6 +196,8 @@ struct SLVM {
     pthread_mutex_t array_mtx;
     SLArrayInstance* arrays;     /* SL_MAX_ARRAYS instances, lazily allocated   */
     int narray_live;
+    pthread_mutex_t java_string_mtx;
+    SLJavaStringInstance* java_strings[SL_MAX_ARRAYS];
 
     pthread_mutex_t audio_mtx;
     GarbageCollector gc;
@@ -341,6 +350,10 @@ int slvm_add_const_double(SLVM* vm, double v) { return add_const(vm, slval_doubl
 int slvm_add_const_bool(SLVM* vm, int v) { return add_const(vm, slval_bool(v)); }
 int slvm_add_const_str(SLVM* vm, const char* s) {
     SLValue v; v.type = SL_STR; v.as.s = intern(vm, s); return add_const(vm, v);
+}
+int slvm_add_const_utf16(SLVM* vm, const uint16_t* units, size_t length) {
+    SLValue value = slvm_java_string_new(vm, units, length);
+    return value.type == SL_UTF16 ? add_const(vm, value) : -1;
 }
 
 int slvm_declare_global(SLVM* vm, const char* name) {
@@ -618,6 +631,7 @@ SLVM* slvm_new(void) {
     pthread_mutex_init(&vm->file_mtx, NULL);
     pthread_mutex_init(&vm->struct_mtx, NULL);
     pthread_mutex_init(&vm->array_mtx, NULL);
+    pthread_mutex_init(&vm->java_string_mtx, NULL);
     pthread_mutex_init(&vm->thr_mtx, NULL);
     pthread_mutex_init(&vm->synchro_mtx, NULL);
     pthread_mutex_init(&vm->munction_mtx, NULL);
@@ -649,6 +663,75 @@ SLVM* slvm_new(void) {
     return vm;
 }
 
+
+/* ---- Java String values: lossless UTF-16 objects managed by the VM GC ---- */
+static void gc_java_string_destroy(void *payload);
+static SLValue slval_utf16(int32_t handle) { SLValue v; v.type = SL_UTF16; v.as.h = handle; return v; }
+static SLJavaStringInstance *java_string_get(SLVM *vm, SLValue value) {
+    if (!vm || value.type != SL_UTF16 || value.as.h < 0 || value.as.h >= SL_MAX_ARRAYS) return NULL;
+    pthread_mutex_lock(&vm->java_string_mtx);
+    SLJavaStringInstance *instance = vm->java_strings[value.as.h];
+    pthread_mutex_unlock(&vm->java_string_mtx);
+    return instance;
+}
+SLValue slvm_java_string_new(SLVM *vm, const uint16_t *units, size_t length) {
+    if (!vm || (!units && length) || length > (SIZE_MAX - sizeof(SLJavaStringInstance)) / sizeof(uint16_t)) return slval_null();
+    SLJavaStringInstance *instance = (SLJavaStringInstance *)calloc(1, sizeof(*instance));
+    if (!instance) return slval_null();
+    sljava_string_init_empty(&instance->value);
+    if (sljava_string_from_utf16(&instance->value, units, length) != SL_JAVA_STRING_OK) { free(instance); return slval_null(); }
+    pthread_mutex_lock(&vm->java_string_mtx);
+    int handle = -1;
+    for (int i = 0; i < SL_MAX_ARRAYS; ++i) if (!vm->java_strings[i]) { handle = i; break; }
+    if (handle < 0) { pthread_mutex_unlock(&vm->java_string_mtx); sljava_string_destroy(&instance->value); free(instance); return slval_null(); }
+    instance->handle = handle; instance->gc_context = vm;
+    instance->gc_object = gc_allocate_external(&vm->gc, instance, sizeof(*instance) + length * sizeof(uint16_t), NULL, gc_java_string_destroy, vm);
+    if (!instance->gc_object) { pthread_mutex_unlock(&vm->java_string_mtx); sljava_string_destroy(&instance->value); free(instance); return slval_null(); }
+    vm->java_strings[handle] = instance;
+    pthread_mutex_unlock(&vm->java_string_mtx);
+    return slval_utf16(handle);
+}
+int slvm_java_string_root(SLVM *vm, SLValue value) {
+    SLJavaStringInstance *instance = java_string_get(vm, value);
+    return instance && gc_add_root(&vm->gc, instance->gc_object) ? 0 : -1;
+}
+int slvm_java_string_unroot(SLVM *vm, SLValue value) {
+    SLJavaStringInstance *instance = java_string_get(vm, value);
+    return instance && gc_remove_root(&vm->gc, instance->gc_object) ? 0 : -1;
+}
+int slvm_java_string_copy(SLVM *vm, SLValue value, SLJavaString *out) {
+    SLJavaStringInstance *instance = java_string_get(vm, value);
+    return instance ? sljava_string_clone(out, &instance->value) : SL_JAVA_STRING_INVALID_ARGUMENT;
+}
+#define SLJAVA_DELEGATE(name, args, callargs) \
+int slvm_java_string_##name args { SLJavaStringInstance *instance = java_string_get(vm, value); \
+    return instance ? sljava_string_##name callargs : SL_JAVA_STRING_INVALID_ARGUMENT; }
+SLJAVA_DELEGATE(length, (SLVM *vm, SLValue value, int32_t *out_length), (&instance->value, out_length))
+SLJAVA_DELEGATE(char_at, (SLVM *vm, SLValue value, int32_t index, uint16_t *out_unit), (&instance->value, index, out_unit))
+SLJAVA_DELEGATE(code_point_at, (SLVM *vm, SLValue value, int32_t index, int32_t *out_code_point), (&instance->value, index, out_code_point))
+SLJAVA_DELEGATE(code_point_count, (SLVM *vm, SLValue value, int32_t begin_index, int32_t end_index, int32_t *out_count), (&instance->value, begin_index, end_index, out_count))
+SLJAVA_DELEGATE(offset_by_code_points, (SLVM *vm, SLValue value, int32_t index, int32_t offset, int32_t *out_index), (&instance->value, index, offset, out_index))
+SLJAVA_DELEGATE(hash_code, (SLVM *vm, SLValue value, int32_t *out_hash), (&instance->value, out_hash))
+#undef SLJAVA_DELEGATE
+SLValue slvm_java_string_substring(SLVM *vm, SLValue value, int32_t begin_index, int32_t end_index) {
+    SLJavaStringInstance *instance = java_string_get(vm, value); SLJavaString result; sljava_string_init_empty(&result);
+    if (!instance || sljava_string_substring(&result, &instance->value, begin_index, end_index) != SL_JAVA_STRING_OK) return slval_null();
+    SLValue out = slvm_java_string_new(vm, result.units, result.length); sljava_string_destroy(&result); return out;
+}
+SLValue slvm_java_string_concat(SLVM *vm, SLValue left, SLValue right) {
+    SLJavaStringInstance *a = java_string_get(vm, left), *b = java_string_get(vm, right); SLJavaString result; sljava_string_init_empty(&result);
+    if (!a || !b || sljava_string_concat(&result, &a->value, &b->value) != SL_JAVA_STRING_OK) return slval_null();
+    SLValue out = slvm_java_string_new(vm, result.units, result.length); sljava_string_destroy(&result); return out;
+}
+int slvm_java_string_equals(SLVM *vm, SLValue left, SLValue right, int *out_equal) {
+    SLJavaStringInstance *a = java_string_get(vm, left), *b = java_string_get(vm, right);
+    return a && b ? sljava_string_equals(&a->value, &b->value, out_equal) : SL_JAVA_STRING_INVALID_ARGUMENT;
+}
+int slvm_java_string_compare_to(SLVM *vm, SLValue left, SLValue right, int32_t *out_order) {
+    SLJavaStringInstance *a = java_string_get(vm, left), *b = java_string_get(vm, right);
+    return a && b ? sljava_string_compare_to(&a->value, &b->value, out_order) : SL_JAVA_STRING_INVALID_ARGUMENT;
+}
+
 static void close_file_slot(SLFile* f) {
     if (f->active) { slio_close(f->fd); f->fd = SLIO_INVALID_HANDLE; f->active = 0; f->peer = -1; }
 }
@@ -672,6 +755,7 @@ void slvm_free(SLVM* vm) {
     pthread_mutex_destroy(&vm->sock_mtx);
     gc_collect_with_roots(&vm->gc, NULL, NULL, 0);
     gc_free(&vm->gc);
+    pthread_mutex_destroy(&vm->java_string_mtx);
     pthread_mutex_destroy(&vm->audio_mtx);
     slnet_shutdown();
     for (int i = 0; i < SL_MAX_FILES; i++) {
@@ -867,6 +951,8 @@ static SLGCObject *gc_object_for_value(SLVM *vm, SLValue v) {
         return struct_gc_object(vm, v.as.h);
     if (v.type == SL_ARRAY && array_valid_handle(vm, v.as.h))
         return array_gc_object(vm, v.as.h);
+    if (v.type == SL_UTF16 && v.as.h >= 0 && v.as.h < SL_MAX_ARRAYS && vm->java_strings[v.as.h])
+        return vm->java_strings[v.as.h]->gc_object;
     return NULL;
 }
 
@@ -878,7 +964,7 @@ static void gc_trace_struct(SLGCObject *object, void *context) {
     SLStructInstance *si = object ? (SLStructInstance *)object->payload : NULL;
     if (!vm || !si || !si->active) return;
     for (int i = 0; i < SL_MAX_STRUCT_FIELDS; ++i)
-        if (si->fields[i].type == SL_STRUCT || si->fields[i].type == SL_ARRAY)
+        if (si->fields[i].type == SL_STRUCT || si->fields[i].type == SL_ARRAY || si->fields[i].type == SL_UTF16)
             gc_mark_value(vm, &vm->gc, si->fields[i]);
 }
 
@@ -890,7 +976,7 @@ static void gc_trace_array(SLGCObject *object, void *context) {
      * This is what keeps marking a large primitive int[]/double[] O(1). */
     if (!ai->has_refs) return;
     for (int i = 0; i < ai->len; ++i)
-        if (ai->elems && (ai->elems[i].type == SL_STRUCT || ai->elems[i].type == SL_ARRAY))
+        if (ai->elems && (ai->elems[i].type == SL_STRUCT || ai->elems[i].type == SL_ARRAY || ai->elems[i].type == SL_UTF16))
             gc_mark_value(vm, &vm->gc, ai->elems[i]);
 }
 
@@ -905,6 +991,7 @@ static void gc_mark_vm_roots(GarbageCollector *gc, void *context) {
     if (!vm) return;
     pthread_mutex_lock(&vm->global_mtx);
     for (int i = 0; i < vm->nglobal; ++i) gc_mark_value(vm, gc, vm->globals[i]);
+    for (int i = 0; i < vm->nconst; ++i) gc_mark_value(vm, gc, vm->consts[i]);
     pthread_mutex_unlock(&vm->global_mtx);
     gc_mark_value(vm, gc, vm->last_result);
     for (int i = 0; i < SL_MAX_LOCKS; ++i) {
@@ -919,6 +1006,18 @@ static void gc_mark_vm_roots(GarbageCollector *gc, void *context) {
         for (int j = 0; j < roots->suspended->sp; ++j)
             gc_mark_value(vm, gc, roots->suspended->stack[j]);
     }
+}
+static void gc_java_string_destroy(void *payload) {
+    SLJavaStringInstance *instance = (SLJavaStringInstance *)payload;
+    if (!instance) return;
+    SLVM *vm = (SLVM *)instance->gc_context;
+    if (vm && instance->handle >= 0 && instance->handle < SL_MAX_ARRAYS) {
+        pthread_mutex_lock(&vm->java_string_mtx);
+        if (vm->java_strings[instance->handle] == instance) vm->java_strings[instance->handle] = NULL;
+        pthread_mutex_unlock(&vm->java_string_mtx);
+    }
+    sljava_string_destroy(&instance->value);
+    free(instance);
 }
 static void gc_struct_destroy(void *payload) {
     SLStructInstance *si = (SLStructInstance *)payload;
@@ -1045,7 +1144,7 @@ static int array_push(SLVM* vm, int h, SLValue val) {
         }
         ai->elems = ne; ai->cap = ncap;
     }
-    if (val.type == SL_STRUCT || val.type == SL_ARRAY) ai->has_refs = 1;
+    if (val.type == SL_STRUCT || val.type == SL_ARRAY || val.type == SL_UTF16) ai->has_refs = 1;
     ai->elems[ai->len++] = val;
     int len = ai->len;
     pthread_mutex_unlock(&vm->array_mtx);
@@ -1126,6 +1225,7 @@ static void value_to_text(SLVM* vm, SLValue v, char* buf, size_t cap) {
         case SL_DOUBLE: snprintf(buf, cap, "%g", v.as.d); break;
         case SL_BOOL:   snprintf(buf, cap, "%s", v.as.b ? "true" : "false"); break;
         case SL_STR:    snprintf(buf, cap, "%s", slvm_str(vm, v.as.s)); break;
+        case SL_UTF16: { SLJavaStringInstance *js = java_string_get(vm, v); snprintf(buf, cap, "[JavaString UTF-16 length=%zu]", js ? js->value.length : 0u); } break;
         case SL_STRUCT: {
             const char* tn = (vm->structs && struct_valid_handle(vm, v.as.h))
                 ? vm->struct_types[vm->structs[v.as.h].type].name : "struct";
@@ -1153,6 +1253,26 @@ static void value_to_text(SLVM* vm, SLValue v, char* buf, size_t cap) {
     }
 }
 
+static void print_java_string(SLVM *vm, SLValue value) {
+    SLJavaStringInstance *instance = java_string_get(vm, value);
+    if (!instance) { fputs("[invalid Java String]", stdout); return; }
+    for (size_t i = 0; i < instance->value.length; ++i) {
+        uint32_t cp = instance->value.units[i];
+        if (cp >= 0xd800u && cp <= 0xdbffu && i + 1 < instance->value.length) {
+            uint32_t low = instance->value.units[i + 1];
+            if (low >= 0xdc00u && low <= 0xdfffu) {
+                cp = 0x10000u + ((cp - 0xd800u) << 10) + (low - 0xdc00u);
+                ++i;
+            } else cp = 0xfffdu;
+        } else if (cp >= 0xd800u && cp <= 0xdfffu) cp = 0xfffdu;
+        unsigned char out[4]; size_t n;
+        if (cp <= 0x7fu) { out[0]=(unsigned char)cp; n=1; }
+        else if (cp <= 0x7ffu) { out[0]=(unsigned char)(0xc0u|(cp>>6)); out[1]=(unsigned char)(0x80u|(cp&0x3fu)); n=2; }
+        else if (cp <= 0xffffu) { out[0]=(unsigned char)(0xe0u|(cp>>12)); out[1]=(unsigned char)(0x80u|((cp>>6)&0x3fu)); out[2]=(unsigned char)(0x80u|(cp&0x3fu)); n=3; }
+        else { out[0]=(unsigned char)(0xf0u|(cp>>18)); out[1]=(unsigned char)(0x80u|((cp>>12)&0x3fu)); out[2]=(unsigned char)(0x80u|((cp>>6)&0x3fu)); out[3]=(unsigned char)(0x80u|(cp&0x3fu)); n=4; }
+        (void)fwrite(out, 1, n, stdout);
+    }
+}
 static void print_value(SLVM* vm, SLValue v) {
     /* A printed String may be a large generated document; size the buffer from
      * SL_MAX_STRTEXT (heap-allocated) so output is not truncated. */
@@ -1160,6 +1280,7 @@ static void print_value(SLVM* vm, SLValue v) {
         printf("%s", slvm_str(vm, v.as.s));
         return;
     }
+    if (v.type == SL_UTF16) { print_java_string(vm, v); return; }
     char buf[1024];
     value_to_text(vm, v, buf, sizeof(buf));
     printf("%s", buf);
@@ -2307,7 +2428,12 @@ static SLResult run_thread(SLThread* t) {
         case OP_STOREL: { SLFrame* f=&t->frames[t->fp-1]; int s=f->base+in.a; if(s<0||s>=STACK_MAX) TERR("local slot out of range"); t->stack[s]=POP(); } break;
         case OP_ADD: {
             SLValue b=POP(), a=POP();
-            if (a.type==SL_STR || b.type==SL_STR) {
+            if (a.type==SL_UTF16 || b.type==SL_UTF16) {
+                if (a.type != SL_UTF16 || b.type != SL_UTF16) TERR("Java String concatenation requires two UTF-16 String values");
+                SLValue joined = slvm_java_string_concat(vm, a, b);
+                if (joined.type != SL_UTF16) TERR("Java String concatenation failed");
+                PUSH(joined);
+            } else if (a.type==SL_STR || b.type==SL_STR) {
                 /* Strings may be built up incrementally into large documents
                  * (generated HTML/CSS, DXF, JSON). Size the concat buffers from
                  * SL_MAX_STRTEXT so string assembly is not silently truncated.
@@ -2329,12 +2455,12 @@ static SLResult run_thread(SLThread* t) {
         case OP_DIV: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)){ if(as_i128(b)==0) TERR("integer divide by zero"); PUSH(slval_int128(as_i128(a)/as_i128(b))); } else if(both_int(a,b)){if(!b.as.i) TERR("integer divide by zero"); PUSH(slval_int(a.as.i/b.as.i));} else PUSH(slval_double(as_num(a)/as_num(b))); } break;
         case OP_MOD: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)){ if(as_i128(b)==0) TERR("integer modulo by zero"); PUSH(slval_int128(as_i128(a)%as_i128(b))); } else if(both_int(a,b)){ if(!b.as.i) TERR("integer modulo by zero"); PUSH(slval_int(a.as.i%b.as.i)); } else { double db=as_num(b); if(db==0.0) TERR("modulo by zero"); PUSH(slval_double(fmod(as_num(a),db))); } } break;
         case OP_NEG: { SLValue a=POP(); if(a.type==SL_INT128) PUSH(slval_int128(-a.as.i128)); else if(a.type==SL_INT) PUSH(slval_int(-a.as.i)); else PUSH(slval_double(-as_num(a))); } break;
-        case OP_EQ: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_NULL||b.type==SL_NULL) e=(a.type==SL_NULL&&b.type==SL_NULL); else if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s==b.as.s); else if(any_i128(a,b)&&both_any_int(a,b)) e=(as_i128(a)==as_i128(b)); else e=(as_num(a)==as_num(b)); PUSH(slval_bool(e)); } break;
-        case OP_NE: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_NULL||b.type==SL_NULL) e=!(a.type==SL_NULL&&b.type==SL_NULL); else if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=!(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=!(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s!=b.as.s); else if(any_i128(a,b)&&both_any_int(a,b)) e=(as_i128(a)!=as_i128(b)); else e=(as_num(a)!=as_num(b)); PUSH(slval_bool(e)); } break;
-        case OP_LT: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)<as_i128(b))); else PUSH(slval_bool(as_num(a)<as_num(b))); } break;
-        case OP_LE: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)<=as_i128(b))); else PUSH(slval_bool(as_num(a)<=as_num(b))); } break;
-        case OP_GT: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)>as_i128(b))); else PUSH(slval_bool(as_num(a)>as_num(b))); } break;
-        case OP_GE: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)>=as_i128(b))); else PUSH(slval_bool(as_num(a)>=as_num(b))); } break;
+        case OP_EQ: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_UTF16||b.type==SL_UTF16) { if(a.type!=SL_UTF16||b.type!=SL_UTF16) e=0; else if(slvm_java_string_equals(vm,a,b,&e)!=SL_JAVA_STRING_OK) TERR("invalid Java String value"); } else if(a.type==SL_NULL||b.type==SL_NULL) e=(a.type==SL_NULL&&b.type==SL_NULL); else if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s==b.as.s); else if(any_i128(a,b)&&both_any_int(a,b)) e=(as_i128(a)==as_i128(b)); else e=(as_num(a)==as_num(b)); PUSH(slval_bool(e)); } break;
+        case OP_NE: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_UTF16||b.type==SL_UTF16) { if(a.type!=SL_UTF16||b.type!=SL_UTF16) e=1; else if(slvm_java_string_equals(vm,a,b,&e)!=SL_JAVA_STRING_OK) TERR("invalid Java String value"); else e=!e; } else if(a.type==SL_NULL||b.type==SL_NULL) e=!(a.type==SL_NULL&&b.type==SL_NULL); else if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=!(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=!(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s!=b.as.s); else if(any_i128(a,b)&&both_any_int(a,b)) e=(as_i128(a)!=as_i128(b)); else e=(as_num(a)!=as_num(b)); PUSH(slval_bool(e)); } break;
+        case OP_LT: { SLValue b=POP(),a=POP(); if(a.type==SL_UTF16||b.type==SL_UTF16) { int32_t order; if(a.type!=SL_UTF16||b.type!=SL_UTF16||slvm_java_string_compare_to(vm,a,b,&order)!=SL_JAVA_STRING_OK) TERR("invalid Java String comparison"); PUSH(slval_bool(order<0)); } else if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)<as_i128(b))); else PUSH(slval_bool(as_num(a)<as_num(b))); } break;
+        case OP_LE: { SLValue b=POP(),a=POP(); if(a.type==SL_UTF16||b.type==SL_UTF16) { int32_t order; if(a.type!=SL_UTF16||b.type!=SL_UTF16||slvm_java_string_compare_to(vm,a,b,&order)!=SL_JAVA_STRING_OK) TERR("invalid Java String comparison"); PUSH(slval_bool(order<=0)); } else if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)<=as_i128(b))); else PUSH(slval_bool(as_num(a)<=as_num(b))); } break;
+        case OP_GT: { SLValue b=POP(),a=POP(); if(a.type==SL_UTF16||b.type==SL_UTF16) { int32_t order; if(a.type!=SL_UTF16||b.type!=SL_UTF16||slvm_java_string_compare_to(vm,a,b,&order)!=SL_JAVA_STRING_OK) TERR("invalid Java String comparison"); PUSH(slval_bool(order>0)); } else if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)>as_i128(b))); else PUSH(slval_bool(as_num(a)>as_num(b))); } break;
+        case OP_GE: { SLValue b=POP(),a=POP(); if(a.type==SL_UTF16||b.type==SL_UTF16) { int32_t order; if(a.type!=SL_UTF16||b.type!=SL_UTF16||slvm_java_string_compare_to(vm,a,b,&order)!=SL_JAVA_STRING_OK) TERR("invalid Java String comparison"); PUSH(slval_bool(order>=0)); } else if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)>=as_i128(b))); else PUSH(slval_bool(as_num(a)>=as_num(b))); } break;
         case OP_AND: { SLValue b=POP(),a=POP(); PUSH(slval_bool(is_truthy(a)&&is_truthy(b))); } break;
         case OP_OR: { SLValue b=POP(),a=POP(); PUSH(slval_bool(is_truthy(a)||is_truthy(b))); } break;
         case OP_NOT: { SLValue a=POP(); PUSH(slval_bool(!is_truthy(a))); } break;
@@ -3188,7 +3314,7 @@ static SLResult run_thread(SLThread* t) {
                     gc_write_barrier(&vm->gc, array_gc_object(vm, av.as.h),
                         old.type==SL_STRUCT?struct_gc_object(vm,old.as.h):array_gc_object(vm,old.as.h),
                         val.type==SL_STRUCT?struct_gc_object(vm,val.as.h):array_gc_object(vm,val.as.h));
-                if (val.type == SL_STRUCT || val.type == SL_ARRAY) ai->has_refs = 1;
+                if (val.type == SL_STRUCT || val.type == SL_ARRAY || val.type == SL_UTF16) ai->has_refs = 1;
                 ai->elems[idxv.as.i]=val;
                 PUSH(val);
             } else {
