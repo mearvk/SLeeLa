@@ -1,6 +1,12 @@
 name: Native Drive
 
 on:
+  push:
+    paths:
+      - '.github/workflows/native-drive.yml'
+      - 'impl/native-drive/**'
+      - 'impl/tests/native_drive/**'
+      - 'os-level-support/loader/native_loader.h'
   workflow_dispatch:
 
 permissions:
