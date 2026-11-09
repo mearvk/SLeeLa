@@ -350,13 +350,17 @@ void slvm_set_audio_native_renderer(SLVM* vm, SLAudioNativeRenderFn fn, void* us
 /* Native modules are host-authorized only. Without an installed authorization
  * callback, every module open is denied. The callback is immutable after its
  * first installation and must not re-enter this VM's native-module API. These
- * APIs manage VM-owned opaque handles; they do not add a bytecode opcode,
- * typed SLeeLa value ABI, or interpreter fallback. Do not call these APIs
- * concurrently with slvm_free(). */
+ * APIs manage VM-owned opaque handles. The optional typed-call API below
+ * accepts only the stable scalar/UTF-8 SLNativeValue contract; it does not
+ * expose SLValue, VM object handles, bytecode dispatch, or interpreter
+ * fallback. Do not call these APIs concurrently with slvm_free(). */
 int slvm_set_native_authorizer(SLVM* vm, SLNativeAuthorizePath authorize, void* context);
 SLNativeStatus slvm_native_module_open(SLVM* vm, const char* path, SLNativeHandle* out_handle);
 SLNativeStatus slvm_native_module_run(SLVM* vm, SLNativeHandle handle,
                                       int argc, const char* const argv[], int* out_result);
+SLNativeStatus slvm_native_module_call(SLVM* vm, SLNativeHandle handle,
+                                       const char* method, uint32_t argc,
+                                       const SLNativeValue* argv, SLNativeValue* out_result);
 SLNativeStatus slvm_native_module_close(SLVM* vm, SLNativeHandle handle);
 /* Set the host capabilities available to OSLS bindings before execution.
  * The default is read-only host inspection; pass 0 to deny OSLS access. */
