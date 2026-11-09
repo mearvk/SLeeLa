@@ -236,6 +236,36 @@ Les domaines documentés comprennent Advantage, XML DOM, Text/String, SleelaDoc,
 
 Cette présentation française est un complément d'accès pour les lecteurs luxembourgeois francophones. Elle ne constitue pas encore une traduction intégrale, section par section, du README anglais. Consultez le [README canonique](README.md) pour les détails techniques normatifs.
 
+
+## Lëtzebuergesch — Ergänzende technesch Referenz
+
+### 1. API-Kontrakter a Moduler
+
+All ëffentlech API soll dokumentéieren, wéi eng Inputen akzeptéiert ginn, wéi eng Outputen zeréckkommen, wéi eng Feeler méiglech sinn, wien d'Erënnerung besëtzt a wéi eng Säitewierkungen optrieden. D'Dokumentatioun vun engem Modul soll Virbedingungen, Nokonditiounen a Plattformlimite kloer beschreiwen.
+
+E Symbolnumm oder eng Modulreferenz ass keng Erlaabnis, fir Code auszeféieren. D'Autorisatioun muss un der richteger Ausféierungsgrenz kontrolléiert ginn. Bei ongültegen Inputen, feelende Ressourcen oder net ënnerstëtzte Funktioune soll d'Operatioun sécher ofbriechen an eng diagnostizéierbar Fehlermeldung liwweren.
+
+### 2. Compiler-Pipeline an Teststrategie
+
+D'Tests solle sech op d'Etappe vun der Compiler-Pipeline verdeelen: lexikalesch Analyse, Parsing, semantesch Analyse, IR-Lowering, Codegeneratioun, VM-Ausféierung an native Integratioun. Test all Etapp separat an och d'Iwwergäng tëscht den Etappen.
+
+E Regressionstest soll de klengste reproduzéierbare Input, dat erwaart Resultat an dat tatsächlecht Resultat enthalen. Negativ Fäll solle Syntax- a Typfeeler, feelend Inputen, Ressourcefeeler an ABI-Inkompatibilitéit ofdecken. Tests, déi iwwerspronge goufen oder net ausgefouert goufen, däerfen net als erfollegräich gemellt ginn.
+
+### 3. Kompatibilitéit a Migratioun
+
+Wann eng ëffentlech API, e Dateiformat oder d'Verhale vum Compiler geännert gëtt, dokumentéiert d'Auswierkungen op d'Backward Compatibility. Gitt Migratiounsschrëtt an Beispiller virun an no der Ännerung un. Erkläert, ob d'Ännerung Quellcode, kompiléiert Artefakter oder Runtime-Konfiguratiounen betrëfft.
+
+Fir e Build- oder Testresultat reproduzéierbar ze maachen, notéiert de Git-Commit, de Betribssystem, d'Architektur, d'Compiler-Versioun, d'Toolchain an déi genee Kommandoen. E Resultat op enger Plattform ass kee Beweis fir eng aner Plattform. Kuckt d'[Plattformmatrix](docs/PLATFORM-SUPPORT.md) an d'[Testpolitik](markdown/TESTING.md).
+
+### 4. Lokaliséierung an Ënnerhalt
+
+Dateinimm, Identifikatoren, Kommandoen, Weeër, URLen, Syntax an Codebeispiller mussen onverännert bleiwen. Iwwersat gëtt den Erklärungstext, net d'Tokens, déi de Compiler oder d'Shell erkennen muss. Benotzt konsequent Begrëffer fir Compiler, Runtime, virtuell Maschinn, Modul an API; wann e Lëtzebuergesche Fachbegrëff net eendeiteg ass, kann den engleschen Term bei der éischter Ernimmung dobäistoen.
+
+Wann d'kanonesch englesch README aktualiséiert gëtt, vergläicht déi entspriechend Kapitelen a passt dës Editioun un. Kontrolléiert Markdown-Linken, Iwwerschrëften a Code-Fences. Dës Ergänzung mécht d'lëtzebuergesch technesch Aféierung méi ëmfaassend, ass awer keng komplett Iwwersetzung vun all Kapitel a brauch nach eng fachlech a sproochlech Schlussrevisioun.
+
+
+---
+
 ## Deutsch — Technische Einführung
 
 SLeeLa ist eine native Systemprogrammiersprache mit eigenem Compiler, eigener Laufzeitumgebung und einem Ökosystem virtueller Maschinen. Das Repository umfasst außerdem Bibliotheken, Entwicklungswerkzeuge, Dokumentation und Build-Prozesse.
