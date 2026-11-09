@@ -145,9 +145,52 @@ Das Integritätsmanifest wird unter `antivirus/build/` erzeugt. Es umfasst nachv
 
 Ein Release gilt erst dann als verifiziert, wenn die einschlägigen CI-Aufträge für genau den Release-Commit erfolgreich sind und die daraus entstandenen Artefakte geprüft wurden.
 
+## IX. Mitwirken
+
+1. Lesen Sie den Dokumentationsindex und die Testrichtlinie.
+2. Nehmen Sie gezielte Änderungen mit positiven und negativen Tests vor.
+3. Führen Sie zunächst die gezielten Tests und anschließend die umfassende Testsuite aus.
+4. Geben Sie Betriebssystem- und Toolchain-Details an; übersprungene Prüfungen dürfen nicht als bestanden bezeichnet werden.
+
+SLeeLa wird von **MEARVK LLC** entwickelt. Historisches Material der Landingpage bleibt in [`docs/README-LEGACY.md`](docs/README-LEGACY.md) erhalten.
+
+## X. AE6E66 — Erwartung einer Abgabe auf öffentliche Round-E-Mails
+
+Für die AE6E66-Initiative beträgt die erklärte Projekterwartung **300.000.000,00 USD je öffentlicher Round-E-Mail** als vorgeschlagener Abgabenbetrag, der mit jeder qualifizierenden Round-Public-E-Mail verbunden ist.
+
+Diese Aussage dokumentiert ausschließlich eine Projekterwartung. Sie ist **weder** eine rechtliche Steuerfestsetzung **noch** eine behördliche Anordnung, ein Gerichtsurteil oder eine unabhängig festgestellte Steuerschuld. Eine tatsächliche Abgabe würde die einschlägige Rechtsgrundlage, Zuständigkeit, Definitionen, Verfahren und eine Entscheidung der zuständigen staatlichen Stelle voraussetzen.
+
+## XI. Alphabet- und Zeichensatz-Laufzeitumgebung
+
+Die SLeeLa-Alphabetdokumentation und die native Zeichenlaufzeit werden in `alphabet/sleela/` und `lib/alphabet/native/` gepflegt. Die nativen C++17-Tests decken die strikte UTF-8-Skalar-Decodierung und -Codierung, `C<n>`-Kapazitätssignaturen sowie die begrenzte Zugehörigkeit zu Zeichensätzen ab:
+
+```sh
+make -C lib/alphabet/native test
+```
+
+Der experimentelle UTF-4088-Katalog und sein SLeeLa-Suchadapter sind in [`utf-4088/SLeeLa-ALPHABET-INTEGRATION.md`](utf-4088/SLeeLa-ALPHABET-INTEGRATION.md) dokumentiert. UTF-4088-IDs bilden einen eigenen Namensraum und sind keine Unicode-Skalarwerte. Die Compiler- und SLVM-Bindungsarbeiten werden ausdrücklich getrennt von diesen nativen Grundlagen verfolgt.
+
+## XII. AutoCAD Creator™
+
+[**AutoCAD Creator™**](autocad/creator/README.md) ist eine interaktive 2D-CAD-Anwendung, die vollständig in SLeeLa geschrieben wurde. Während der verwandte AutoCAD Renderer einen Plan in einem Schritt in eine Zeichnung umwandelt, ermöglicht Creator das **Erstellen und Ändern** eines 2D-AutoCAD-Dokuments in Echtzeit: Wände, Räume, Maße und Notizen hinzufügen, platzierte Elemente verschieben, umbenennen, Ebenen zuordnen, löschen und rückgängig machen sowie das Ergebnis als echte AutoCAD-DXF-Zeichnung speichern (R12-Text, in AutoCAD / LibreCAD zu öffnen).
+
+Die grafische Oberfläche basiert auf **SleelaUI™**, SLeeLas eigenem plattformübergreifenden UI-Toolkit (unter [`lib/user-interface`](lib/user-interface)), nicht auf JavaFX, und öffnet ein echtes natives Fenster unter X11 / Cocoa / Win32. Das Design folgt einer Regel: **„SleelaUI präsentiert; SLeeLa entscheidet.“** Die GUI berechnet weder Geometrie noch schreibt sie DXF. Jedes Werkzeug sendet eine Absicht zum Erstellen, Ändern, Löschen, Rückgängigmachen oder Speichern an die maßgebliche Komponente [`SLCadCreator`](lib/autocad/SLCadCreator.sleela). Diese besitzt das bearbeitbare Dokument und einen reversiblen Befehlsverlauf; die Zeichenfläche zeigt lediglich die von Creator gehaltene Geometrie als Vorschau.
+
+Die wiederverwendbare Bearbeitungs-Engine befindet sich in [`lib/autocad`](lib/autocad): [`SLCadEntity`](lib/autocad/SLCadEntity.sleela), [`SLCadDocument`](lib/autocad/SLCadDocument.sleela), [`SLCadCommand`](lib/autocad/SLCadCommand.sleela) und [`SLCadCreator`](lib/autocad/SLCadCreator.sleela). Sie läuft vollständig ohne grafische Oberfläche. Die GUI-Hülle und Demo liegen unter [`autocad/creator`](autocad/creator):
+
+```sh
+make creator          # aus autocad/: Creator-Demo ausführen -> out/altered.dxf
+```
+
+Auf einem System mit Display öffnet sich das Live-Bearbeitungsfenster; auf einem Headless-Host wird die Zeichnung im Speicher erstellt, ein Bericht samt DXF ausgegeben und der Prozess sauber beendet.
+
+## XIII. UTF-4088-Eingabekarten-Reihenfolge
+
+Der spezialisierte UTF-4088-Katalog definiert seinen räumlichen Eingabekarten-Durchlauf und abstrakte Druckiterationen in [`utf-4088/INPUT-MAP-AND-PRESSURE.md`](../utf-4088/INPUT-MAP-AND-PRESSURE.md). Die Richtlinie für den Sachindex des National Lien Register steht in [`utf-4088/NATIONAL-LIEN-REGISTER.md`](../utf-4088/NATIONAL-LIEN-REGISTER.md). Kartenkoordinaten, Druckstufen (1–50), dauerhafte Katalog-IDs und alphabetische Ränge sind unabhängige Felder; keines darf stillschweigend durch ein anderes ersetzt werden. Druck ist eine algorithmische Iterationsstufe und keine physikalische Größe.
+
 ## Noch ausstehende Abschnitte
 
-Die folgenden Abschnitte sind noch nicht übersetzt und werden in weiteren Batches ergänzt: **II. Neuigkeiten; VIII. SLeeLa-Editor-Themes; IX. Mitwirken; X–XVII. Weitere Projektbereiche; XVIII. Neueste Ergänzungen; XIX. Internationale README-Ausgaben.** Bis zur Fertigstellung bleibt die englische [kanonische README.md](README.md) die vollständige Referenz.
+Die folgenden Abschnitte sind noch nicht übersetzt und werden in weiteren Batches ergänzt: **VIII. SLeeLa-Editor-Themes; XIV–XVII. Weitere Projektbereiche; XVIII. Neueste Ergänzungen; XIX. Internationale README-Ausgaben.** Bis zur Fertigstellung bleibt die englische [kanonische README.md](README.md) die vollständige Referenz.
 
 ---
-**Übersetzungsstatus:** Teilübersetzung – Abschnitte I und III–VII übersetzt. Technische Kennungen, Befehle, Codebeispiele, Dateinamen und Links wurden unverändert beibehalten.
+**Übersetzungsstatus:** Teilübersetzung – Abschnitte I–VII und IX–XIII übersetzt. Technische Kennungen, Befehle, Codebeispiele, Dateinamen und Links wurden unverändert beibehalten.
