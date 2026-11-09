@@ -43,7 +43,7 @@ class GenericBox<T extends Number & Comparable<T>> implements Iterable<T> {
     assert graph["summary"]["indexed_types"] == 8, graph["summary"]
     edges = graph["edges"]
     assert any(e["member"] == "values" and e["role"] == "field-type" and e["to"] == "java.util.List" for e in edges), edges
-    assert any(e["member"] == "convert" and e["role"] == "return" and e["to"] == "java.lang.Number" for e in edges), edges
+    assert any(e["member"] == "convert" and e["role"] == "generic-bound" and e["to"] == "java.lang.Number" for e in edges), edges
     assert any(e["member"] == "convert" and e["role"] == "parameter" and e["to"] == "java.util.List" for e in edges), edges
     assert any(e["member"] == "convert" and e["role"] == "throws" and e["to"] == "java.io.IOException" for e in edges), edges
     assert any(e["member"] == "GenericBox" and e["role"] == "generic-bound" and e["to"] == "java.lang.Comparable" for e in edges), edges
