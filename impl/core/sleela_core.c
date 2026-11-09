@@ -351,6 +351,10 @@ int slvm_add_const_bool(SLVM* vm, int v) { return add_const(vm, slval_bool(v)); 
 int slvm_add_const_str(SLVM* vm, const char* s) {
     SLValue v; v.type = SL_STR; v.as.s = intern(vm, s); return add_const(vm, v);
 }
+int slvm_add_const_utf16(SLVM* vm, const uint16_t* units, size_t length) {
+    SLValue value = slvm_java_string_new(vm, units, length);
+    return value.type == SL_UTF16 ? add_const(vm, value) : -1;
+}
 
 int slvm_declare_global(SLVM* vm, const char* name) {
     for (int i = 0; i < vm->nglobal; i++)
@@ -2403,7 +2407,12 @@ static SLResult run_thread(SLThread* t) {
         case OP_STOREL: { SLFrame* f=&t->frames[t->fp-1]; int s=f->base+in.a; if(s<0||s>=STACK_MAX) TERR("local slot out of range"); t->stack[s]=POP(); } break;
         case OP_ADD: {
             SLValue b=POP(), a=POP();
-            if (a.type==SL_STR || b.type==SL_STR) {
+            if (a.type==SL_UTF16 || b.type==SL_UTF16) {
+                if (a.type != SL_UTF16 || b.type != SL_UTF16) TERR("Java String concatenation requires two UTF-16 String values");
+                SLValue joined = slvm_java_string_concat(vm, a, b);
+                if (joined.type != SL_UTF16) TERR("Java String concatenation failed");
+                PUSH(joined);
+            } else if (a.type==SL_STR || b.type==SL_STR) {
                 /* Strings may be built up incrementally into large documents
                  * (generated HTML/CSS, DXF, JSON). Size the concat buffers from
                  * SL_MAX_STRTEXT so string assembly is not silently truncated.
@@ -2425,8 +2434,8 @@ static SLResult run_thread(SLThread* t) {
         case OP_DIV: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)){ if(as_i128(b)==0) TERR("integer divide by zero"); PUSH(slval_int128(as_i128(a)/as_i128(b))); } else if(both_int(a,b)){if(!b.as.i) TERR("integer divide by zero"); PUSH(slval_int(a.as.i/b.as.i));} else PUSH(slval_double(as_num(a)/as_num(b))); } break;
         case OP_MOD: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)){ if(as_i128(b)==0) TERR("integer modulo by zero"); PUSH(slval_int128(as_i128(a)%as_i128(b))); } else if(both_int(a,b)){ if(!b.as.i) TERR("integer modulo by zero"); PUSH(slval_int(a.as.i%b.as.i)); } else { double db=as_num(b); if(db==0.0) TERR("modulo by zero"); PUSH(slval_double(fmod(as_num(a),db))); } } break;
         case OP_NEG: { SLValue a=POP(); if(a.type==SL_INT128) PUSH(slval_int128(-a.as.i128)); else if(a.type==SL_INT) PUSH(slval_int(-a.as.i)); else PUSH(slval_double(-as_num(a))); } break;
-        case OP_EQ: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_NULL||b.type==SL_NULL) e=(a.type==SL_NULL&&b.type==SL_NULL); else if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s==b.as.s); else if(any_i128(a,b)&&both_any_int(a,b)) e=(as_i128(a)==as_i128(b)); else e=(as_num(a)==as_num(b)); PUSH(slval_bool(e)); } break;
-        case OP_NE: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_NULL||b.type==SL_NULL) e=!(a.type==SL_NULL&&b.type==SL_NULL); else if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=!(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=!(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s!=b.as.s); else if(any_i128(a,b)&&both_any_int(a,b)) e=(as_i128(a)!=as_i128(b)); else e=(as_num(a)!=as_num(b)); PUSH(slval_bool(e)); } break;
+        case OP_EQ: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_UTF16||b.type==SL_UTF16) { if(a.type!=SL_UTF16||b.type!=SL_UTF16) e=0; else if(slvm_java_string_equals(vm,a,b,&e)!=SL_JAVA_STRING_OK) TERR("invalid Java String value"); } else if(a.type==SL_NULL||b.type==SL_NULL) e=(a.type==SL_NULL&&b.type==SL_NULL); else if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s==b.as.s); else if(any_i128(a,b)&&both_any_int(a,b)) e=(as_i128(a)==as_i128(b)); else e=(as_num(a)==as_num(b)); PUSH(slval_bool(e)); } break;
+        case OP_NE: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_UTF16||b.type==SL_UTF16) { if(a.type!=SL_UTF16||b.type!=SL_UTF16) e=1; else if(slvm_java_string_equals(vm,a,b,&e)!=SL_JAVA_STRING_OK) TERR("invalid Java String value"); else e=!e; } else if(a.type==SL_NULL||b.type==SL_NULL) e=!(a.type==SL_NULL&&b.type==SL_NULL); else if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=!(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=!(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s!=b.as.s); else if(any_i128(a,b)&&both_any_int(a,b)) e=(as_i128(a)!=as_i128(b)); else e=(as_num(a)!=as_num(b)); PUSH(slval_bool(e)); } break;
         case OP_LT: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)<as_i128(b))); else PUSH(slval_bool(as_num(a)<as_num(b))); } break;
         case OP_LE: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)<=as_i128(b))); else PUSH(slval_bool(as_num(a)<=as_num(b))); } break;
         case OP_GT: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)>as_i128(b))); else PUSH(slval_bool(as_num(a)>as_num(b))); } break;
