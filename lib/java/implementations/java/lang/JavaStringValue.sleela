@@ -32,6 +32,7 @@ class JavaStringValue {
   }
 
   JavaStringValue concat(JavaStringValue other) {
+    if (other == null) { return this; }
     return fromUtf16(javaStringConcat(value, other.value));
   }
 
@@ -53,12 +54,86 @@ class JavaStringValue {
     return fromUtf16(javaStringSubstring(value, beginIndex, endIndex));
   }
 
+  // Java String prefix/suffix/search operations. All offsets and results are
+  // UTF-16 code-unit indices, matching Java String rather than code-point
+  // indexing. Empty search strings follow the Java String contract.
+  boolean startsWith(JavaStringValue prefix) {
+    if (prefix == null) { return false; }
+    int n = prefix.length();
+    if (n > length()) { return false; }
+    int i = 0;
+    while (i < n) {
+      if (charAt(i) != prefix.charAt(i)) { return false; }
+      i = i + 1;
+    }
+    return true;
+  }
+
+  boolean endsWith(JavaStringValue suffix) {
+    if (suffix == null) { return false; }
+    int n = suffix.length();
+    int ownLength = length();
+    if (n > ownLength) { return false; }
+    int i = 0;
+    while (i < n) {
+      if (charAt(ownLength - n + i) != suffix.charAt(i)) { return false; }
+      i = i + 1;
+    }
+    return true;
+  }
+
+  boolean contains(JavaStringValue sequence) {
+    return indexOf(sequence) >= 0;
+  }
+
+  int indexOf(JavaStringValue sequence) {
+    if (sequence == null) { return -1; }
+    int needleLength = sequence.length();
+    int ownLength = length();
+    if (needleLength == 0) { return 0; }
+    if (needleLength > ownLength) { return -1; }
+    int start = 0;
+    while (start <= ownLength - needleLength) {
+      int j = 0;
+      boolean matched = true;
+      while (j < needleLength && matched) {
+        if (charAt(start + j) != sequence.charAt(j)) { matched = false; }
+        j = j + 1;
+      }
+      if (matched) { return start; }
+      start = start + 1;
+    }
+    return -1;
+  }
+
+  int lastIndexOf(JavaStringValue sequence) {
+    if (sequence == null) { return -1; }
+    int needleLength = sequence.length();
+    int ownLength = length();
+    if (needleLength == 0) { return ownLength; }
+    if (needleLength > ownLength) { return -1; }
+    int start = ownLength - needleLength;
+    while (start >= 0) {
+      int j = 0;
+      boolean matched = true;
+      while (j < needleLength && matched) {
+        if (charAt(start + j) != sequence.charAt(j)) { matched = false; }
+        j = j + 1;
+      }
+      if (matched) { return start; }
+      start = start - 1;
+    }
+    return -1;
+  }
+
   int hashCode() { return javaStringHashCode(value); }
   int compareTo(JavaStringValue other) {
+    if (other == null) { return 1; }
     return javaStringCompareTo(value, other.value);
   }
 
   boolean supportsUtf16Indexing() { return true; }
   boolean supportsCodePointIteration() { return true; }
   boolean supportsJavaHashCode() { return true; }
+  boolean supportsPrefixSuffixSearch() { return true; }
 }
