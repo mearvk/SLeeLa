@@ -242,6 +242,18 @@ The run-style entrypoint reports the plugin's observed refusal through its
 integer result, while the typed-call entrypoint must return
 `SL_NATIVE_PLUGIN_ERROR`. Both cases close the module and free the VM.
 
+A further reentrancy regression constructs a small VM program through the public
+core bytecode-building API. Its source-level `nativeCall` enters the fixture,
+which invokes `Callback::receive_nested(value, module)`; that callback attempts
+a second `nativeCall` while callback execution is active. The VM must reject
+the nested operation with
+`native callback cannot recursively invoke native-module operations`. The
+fixture converts the rejected callback into an integer sentinel so the harness
+can assert the exact VM diagnostic without masking it with an outer plugin
+error. This case is deliberately a direct bytecode/API test rather than a
+compiler-produced source artifact; the existing positive callback path remains
+covered by the compiler-produced artifact.
+
 The Native Drive GitHub Actions workflow is `workflow_dispatch`-only; no
 workflow is automatically started by pushes. This end-to-end target has been
 added but is not claimed as run until explicitly executed.
