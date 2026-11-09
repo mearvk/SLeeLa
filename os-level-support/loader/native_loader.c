@@ -75,6 +75,7 @@ const char *sl_native_status_string(SLNativeStatus status) {
     case SL_NATIVE_PLUGIN_ERROR: return "native plugin method returned an error or invalid value";
     case SL_NATIVE_METHOD_NOT_HANDLED: return "native plugin does not implement the requested method";
     case SL_NATIVE_HOST_CALLBACK_NOT_FOUND: return "native plugin does not accept host callbacks";
+    case SL_NATIVE_REENTRANT_CALL: return "native-module API re-entry from a host callback is not allowed";
     default: return "unknown native-loader status";
     }
 }
