@@ -22,10 +22,11 @@ extern "C" {
 typedef int (*SLNativeEntry)(int argc, const char *const argv[]);
 typedef uint32_t (*SLNativeAbiVersion)(void);
 
-/* Stable, pointer-width-independent scalar/string value contract. String
- * pointers are borrowed UTF-8 byte spans; they are never NUL-terminated by
- * contract and may contain embedded NUL bytes. Composite VM objects and raw
- * VM handles are deliberately not representable in this first ABI version. */
+/* Stable tagged scalar/string value contract. Scalar fields use fixed-width
+ * integer types; F64 uses the platform's 8-byte C double. String pointers are
+ * borrowed UTF-8 byte spans, never NUL-terminated by contract, and may contain
+ * embedded NUL bytes. Composite VM objects and raw VM handles are deliberately
+ * not representable in this first ABI version. */
 typedef enum SLNativeValueTag {
     SL_NATIVE_VALUE_NULL = 0,
     SL_NATIVE_VALUE_BOOL = 1,
