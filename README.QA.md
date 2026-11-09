@@ -193,3 +193,16 @@ make install PREFIX="$HOME/.local"
 أثناء تصحيح الأخطاء، سجّل commit وOS وarchitecture وtoolchain. ابدأ ببناء أصغر هدف ذي صلة، واحتفظ بمخرجات الخطأ كاملة، وميّز بين compiler errors وruntime errors، وأنشئ مثالاً صغيراً قابلاً لإعادة الإنتاج. نجاح البناء وحده لا يثبت صحة سلوك runtime.
 
 ينبغي أن يتضمن تقرير التحقق exact commit وOS/architecture وcompiler versions وأوامر build/test كاملة وأعداد pass/fail/skip والقيود المعروفة. لا يجوز احتساب الاختبارات المتروكة أو غير المنفذة على أنها ناجحة.
+
+
+## XIX. عقود واجهات الوحدات والتوافق واستراتيجية الاختبار
+
+عند إضافة API جديد، وثّق المدخلات والمخرجات وشروط الخطأ وملكية البيانات وأي side effects. يجب أن تعرض الأمثلة الاستخدام المعتاد ومعالجة invalid أو missing input. لا تقدّم سلوكاً بوصفه مضموناً ما لم تؤكده implementation والاختبارات ذات الصلة.
+
+قسّم الاختبارات حسب مراحل compiler pipeline: lexing/parsing وsemantic analysis وIR lowering وcode generation وVM execution وnative integration. احتفظ لكل regression case بأصغر مدخل قابل لإعادة الإنتاج، والنتيجة المتوقعة والفعلية. وينبغي أن توضّح تغييرات API مدى backward compatibility وخطوات migration وتأثيرها في examples القائمة.
+
+## XX. توحيد المصطلحات وصيانة الترجمة
+
+حافظ على technical identifiers وcommands وpaths وsyntax وcode blocks دون تغيير بين الإصدارات اللغوية. ترجم الشرح، لا الرموز والأسماء المستخدمة في source code. راعِ اتساق المصطلحات العربية، مع تجنب افتراض أن التعبير المحلي في قطر مناسب بالضرورة لكل البلدان العربية.
+
+بعد كل تحديث، افحص Markdown links وتسلسل العناوين وcode fences والأمثلة. عند تعديل canonical English documents، قارن الأقسام المقابلة وحدّث الترجمة كاملة. يجب تمييز المحتوى الذي لم يخضع لمراجعة لغوية أو تقنية.
