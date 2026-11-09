@@ -97,7 +97,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          if git diff --quiet -- security/sha256-manifest.json; then
+          if cmp -s "$RUNNER_TEMP/sha256-manifest.candidate.json" security/sha256-manifest.json; then
             echo "updated=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
