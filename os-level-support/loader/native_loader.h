@@ -59,7 +59,11 @@ typedef enum SLNativeCallStatus {
     /* The module does not implement this method; the VM may use bytecode fallback. */
     SL_NATIVE_CALL_NOT_HANDLED = 1,
     /* A handled method failed; this must never trigger interpreter fallback. */
-    SL_NATIVE_CALL_ERROR = 2
+    SL_NATIVE_CALL_ERROR = 2,
+    /* Appended typed failures preserve the Java String boundary's error class. */
+    SL_NATIVE_CALL_INDEX_OUT_OF_BOUNDS = 3,
+    SL_NATIVE_CALL_MALFORMED_TEXT = 4,
+    SL_NATIVE_CALL_INVALID_ARGUMENT = 5
 } SLNativeCallStatus;
 
 typedef int (*SLNativeTypedCall)(const char *method,
@@ -102,7 +106,11 @@ typedef enum SLNativeStatus {
     SL_NATIVE_PLUGIN_ERROR = 9,
     SL_NATIVE_METHOD_NOT_HANDLED = 10,
     SL_NATIVE_HOST_CALLBACK_NOT_FOUND = 11,
-    SL_NATIVE_REENTRANT_CALL = 12
+    SL_NATIVE_REENTRANT_CALL = 12,
+    /* Appended statuses; existing native-loader status numbers remain stable. */
+    SL_NATIVE_JAVA_INDEX_OUT_OF_BOUNDS = 13,
+    SL_NATIVE_JAVA_MALFORMED_TEXT = 14,
+    SL_NATIVE_JAVA_INVALID_ARGUMENT = 15
 } SLNativeStatus;
 
 /* Plugins export these C-linkage functions; initialize module as {0}. */

@@ -76,6 +76,9 @@ const char *sl_native_status_string(SLNativeStatus status) {
     case SL_NATIVE_METHOD_NOT_HANDLED: return "native plugin does not implement the requested method";
     case SL_NATIVE_HOST_CALLBACK_NOT_FOUND: return "native plugin does not accept host callbacks";
     case SL_NATIVE_REENTRANT_CALL: return "native-module API re-entry from a host callback is not allowed";
+    case SL_NATIVE_JAVA_INDEX_OUT_OF_BOUNDS: return "java.lang.StringIndexOutOfBoundsException";
+    case SL_NATIVE_JAVA_MALFORMED_TEXT: return "java.lang.IllegalArgumentException: malformed UTF-8 at the SLeeLa String boundary";
+    case SL_NATIVE_JAVA_INVALID_ARGUMENT: return "java.lang.IllegalArgumentException: invalid String operation arguments";
     default: return "unknown native-loader status";
     }
 }
@@ -156,6 +159,12 @@ SLNativeStatus sl_native_call_module(SLNativeModule *module, const char *method,
     plugin_status = typed_call(method, argc, argv, &result);
     if (plugin_status == SL_NATIVE_CALL_NOT_HANDLED)
         return SL_NATIVE_METHOD_NOT_HANDLED;
+    if (plugin_status == SL_NATIVE_CALL_INDEX_OUT_OF_BOUNDS)
+        return SL_NATIVE_JAVA_INDEX_OUT_OF_BOUNDS;
+    if (plugin_status == SL_NATIVE_CALL_MALFORMED_TEXT)
+        return SL_NATIVE_JAVA_MALFORMED_TEXT;
+    if (plugin_status == SL_NATIVE_CALL_INVALID_ARGUMENT)
+        return SL_NATIVE_JAVA_INVALID_ARGUMENT;
     if (plugin_status != SL_NATIVE_CALL_OK) return SL_NATIVE_PLUGIN_ERROR;
     if (!value_valid(&result)) return SL_NATIVE_PLUGIN_ERROR;
     *out_result = result;
