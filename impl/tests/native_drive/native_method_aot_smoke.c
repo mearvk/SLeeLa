@@ -9,8 +9,9 @@ static int authorize_exact_path(const char *path, void *context) {
 
 int main(int argc, char **argv) {
     SLVM *vm = NULL;
+    SLVM *fallback_vm = NULL;
     SLNativeHandle handle = SL_NATIVE_HANDLE_INVALID;
-    SLValue result;
+    SLValue result, fallback_result;
     uint32_t flags = 0, abi = 0;
     uint64_t identity = 0;
     const char *signature = NULL;
@@ -20,6 +21,15 @@ int main(int argc, char **argv) {
         fprintf(stderr, "usage: native_method_aot_smoke <artifact> <plugin>\n");
         return 2;
     }
+    /* First execute the same artifact without a native binding. OP_CALL must
+     * retain its bytecode path when no plugin method is bound. */
+    fallback_vm = slvm_load_file(argv[1]);
+    if (!fallback_vm || slvm_run(fallback_vm) != SLR_OK) goto done;
+    fallback_result = slvm_result(fallback_vm);
+    if (fallback_result.type != SL_INT || fallback_result.as.i != 42) goto done;
+    slvm_free(fallback_vm);
+    fallback_vm = NULL;
+
     vm = slvm_load_file(argv[1]);
     if (!vm) goto done;
     if (slvm_get_func_native_metadata(vm, 0, &flags, &abi,
@@ -52,11 +62,12 @@ done:
         for (int i = 0; i < 4; ++i) if (bound[i]) (void)slvm_unbind_native_method(vm, i);
         (void)slvm_native_module_close(vm, handle);
     }
+    if (fallback_vm) slvm_free(fallback_vm);
     if (vm) slvm_free(vm);
     if (!ok) {
         fprintf(stderr, "generated @native plugin load/bind/ordinary-call dispatch failed\n");
         return 1;
     }
-    puts("generated @native plugin: PASS (int64, double, bool, UTF-8, ordinary OP_CALL, authorized binding)");
+    puts("generated @native plugin: PASS (bytecode fallback, int64, double, bool, UTF-8, ordinary OP_CALL, authorized binding)");
     return 0;
 }
