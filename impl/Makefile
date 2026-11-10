@@ -884,7 +884,7 @@ int main(int argc, char **argv) {
     const char *signature = NULL;
     int bound = 0, ok = 0;
     if (argc != 3) {
-        fprintf(stderr, "usage: native_method_not_handled_smoke <artifact> <plugin>\\n");
+        fprintf(stderr, "usage: native_method_not_handled_smoke <artifact> <plugin>\n");
         return 2;
     }
     vm = slvm_load_file(argv[1]);
@@ -918,7 +918,7 @@ done:
     }
     if (vm) slvm_free(vm);
     if (!ok) {
-        fprintf(stderr, "NOT_HANDLED did not execute bytecode fallback exactly once per call\\n");
+        fprintf(stderr, "NOT_HANDLED did not execute bytecode fallback exactly once per call\n");
         return 1;
     }
     puts("native @native NOT_HANDLED fallback: PASS (two calls, exactly one bytecode execution each)");
@@ -929,7 +929,7 @@ $(NATIVE_METHOD_NOT_HANDLED_SMOKE_C): | $(BUILD)
 	$(file >$@,$(NATIVE_METHOD_NOT_HANDLED_SMOKE_C_CONTENT))
 	@:
 $(NATIVE_METHOD_NOT_HANDLED_SMOKE): $(NATIVE_METHOD_NOT_HANDLED_SMOKE_C) $(SLCORE_LIB)
-	$(CC) $(CFLAGS) -Icore $< $(SLCORE_LIB) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) -Icore $< $(SLCORE_LIB) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
 test-native-method-aot: $(SLEELA_BIN) $(NATIVE_METHOD_AOT_SMOKE) $(NATIVE_METHOD_AOT_PLUGIN) $(NATIVE_METHOD_AOT_ARTIFACT) $(NATIVE_METHOD_AOT_SEMANTIC_REJECT_SOURCE) $(NATIVE_METHOD_AOT_LIBRARY_SOURCE) $(NATIVE_METHOD_NOT_HANDLED_SMOKE) $(NATIVE_METHOD_NOT_HANDLED_ARTIFACT)
 	$(NATIVE_METHOD_AOT_SMOKE) $(NATIVE_METHOD_AOT_ARTIFACT) $(abspath $(NATIVE_METHOD_AOT_PLUGIN))
 	$(NATIVE_METHOD_NOT_HANDLED_SMOKE) $(NATIVE_METHOD_NOT_HANDLED_ARTIFACT) $(abspath $(NATIVE_METHOD_AOT_PLUGIN))
