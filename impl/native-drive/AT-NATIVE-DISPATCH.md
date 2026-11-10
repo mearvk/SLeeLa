@@ -1,6 +1,6 @@
 # Automatic VM dispatch for `@native` methods
 
-**Status: Phases 1, 3, and 4 implemented on branch `feat/native-method-metadata-dispatch-2026-11-09`; generated per-method AOT export emission remains pending.**
+**Status: Per-method ABI-v1 C source emission is implemented on branch `feat/native-method-aot-emitter-2026-11-10`; local compile/load conformance remains pending.**
 
 The compiler now persists method-level `@native` identity in artifact format
 v4. The VM records annotation/static-or-instance flags, the method ABI version,
@@ -27,10 +27,11 @@ binding exists and the arguments fit the scalar/UTF-8 ABI; NOT_HANDLED and
 unsupported VM-owned arguments retain the original bytecode path. Plugin,
 stale-handle, and ABI failures remain errors.
 
-The focused opt-in test now verifies unbound bytecode behavior and an ordinary
-source-level call reaching an authorized plugin export. Generated per-method
-AOT export emission and broader platform/concurrency conformance remain
-pending; no CI workflow is required or invoked.
+The focused opt-in test verifies unbound bytecode behavior and ordinary
+source-level calls reaching an authorized plugin export. The new AOT emitter
+generates per-method C entry points, but a generated-plugin build/load test and
+broader platform/concurrency conformance remain outstanding. No CI workflow is
+required or invoked.
 
 This document specifies the missing connection between the source-level
 `@native` annotation and the existing VM native-module dispatcher. It does not
@@ -41,9 +42,9 @@ claim that annotated methods are automatically compiled, loaded, or dispatched.
 SLeeLa currently has two relevant but separate paths:
 
 1. **Source AOT request:** `@native` is parsed on a method and inspected by
-   `sleela aot --list/--emit`. The current emitter is whole-program C output,
-   not a stable per-method plugin ABI. It does not install a native method
-   binding in the VM.
+   `sleela aot --list/--emit`. The `--emit` mode now produces standalone
+   per-method C plugin source with exact canonical-signature dispatch. It does
+   not compile, load, authorize, or bind the plugin in the VM.
 2. **Explicit native module calls:** syntax 3.0 `nativeOpen`,
    `nativeCall`, and `nativeClose` lower to append-only VM opcodes. The host
    authorizes module paths; the typed ABI transports null, bool, int64, double,
@@ -61,7 +62,7 @@ For an annotated method such as:
 ```sleela
 class MathEngine {
     @native
-    int sum(int a, int b) {
+    static int sum(int a, int b) {
         return a + b;
     }
 }
@@ -137,8 +138,10 @@ argument shape is outside the negotiated ABI before native execution begins.
 ## 4. ABI and ownership rules
 
 - Version the method ABI separately from the legacy `sl_native_run` ABI.
-- Initially support only null, bool, signed 64-bit integer, double, and
-  length-delimited UTF-8 strings.
+- The existing typed module ABI transports null, bool, signed 64-bit integer,
+  double, and length-delimited UTF-8 strings. The generated method emitter's
+  initial source subset uses int64, double, bool, String, and void returns; it
+  does not yet expose null-typed method parameters.
 - Do not pass `SLValue`, VM pointers, array handles, struct handles, closures,
   or object pointers across the native boundary.
 - A native result string must be validated and copied before the plugin lock is
@@ -155,11 +158,24 @@ argument shape is outside the negotiated ABI before native execution begins.
 1. **Artifact metadata — implemented:** version-4 metadata is append-only,
    validated, and preserved through save/load; versions 1-3 remain
    interpreted-only.
-2. **Per-method code generation — pending:** emit independently addressable
-   native entry points with the versioned typed ABI. The current whole-program
-   AOT emitter must not be treated as a method plugin. ABI v1 currently uses
-   the canonical signature as the export key; the test fixture demonstrates
-   the contract, not a production source-to-plugin generator.
+2. **Per-method code generation — source emitter implemented:** `sleela aot --emit`
+   emits a standalone C plugin with one independently addressable method body
+   per annotated static method. The plugin exports the typed ABI v1 loader
+   symbols and dispatches exact canonical signature strings. Supported parameter
+   and return types are `int`, `double`, `boolean`, and length-delimited
+   `String`; void returns are represented as NULL. String values can pass
+   through parameters, locals, assignments, and returns. String literals and
+   string operators are excluded. Division/remainder, method-to-method calls,
+   print side effects, objects, arrays, and instance methods are also refused.
+   The generated source is not compiled or loaded automatically; the host must
+   compile it, authorize its resulting library, and bind it explicitly.
+   The opt-in target `make -C impl test-native-method-aot` generates and builds
+   the shared plugin, compiles a matching SLeeLa artifact, then loads the
+   plugin through the host authorizer and exercises ordinary `OP_CALL` for
+   int64, double, boolean, and UTF-8 methods. Before building after these
+   trusted-source changes, regenerate the repository integrity manifest with
+   `python3 tools/generate-sha256-manifest.py --root . --output security/sha256-manifest.json`.
+   The target is outside CI and has not yet been run in this environment.
 3. **Host binding API — implemented:** `slvm_bind_native_method()` accepts
    only annotated static methods and a module handle already opened through
    the host's authorization policy. `slvm_unbind_native_method()` is required
@@ -185,6 +201,8 @@ argument shape is outside the negotiated ABI before native execution begins.
 - A VM-owned array/struct argument is never passed to the plugin and uses the
   bytecode body.
 - A native plugin error is reported and is not hidden by bytecode fallback.
+- `sleela aot --emit` produces a C plugin that compiles and exposes each
+  annotated static method under its exact artifact signature.
 - A denied module path cannot be made executable by adding `@native`.
 - Artifact save/load preserves method identities and rejects unsupported
   metadata versions.
@@ -194,10 +212,12 @@ argument shape is outside the negotiated ABI before native execution begins.
 ## 7. Current conclusion
 
 The existing `OP_NATIVE_CALL` path is a foundation to reuse, not the missing
-feature itself. Automatic `@native` dispatch requires compiler-emitted
-per-method metadata, per-method native code generation, and an explicit
-host-owned binding table before the ordinary `OP_CALL` path can safely select
-native code. Until those pieces are implemented and tested, `@native` remains
-an AOT request and normal SLeeLa bytecode remains authoritative.
+feature itself. Versioned method metadata, per-method native C source emission,
+host-owned authorized binding, and ordinary `OP_CALL` dispatch are now present.
+The source emitter and generated C compilation target are implemented, but the
+target has not yet been run and generated-plugin load/dispatch conformance is
+still outstanding. Until those checks pass, normal SLeeLa bytecode remains the
+verified baseline and native code must be explicitly compiled, authorized, and
+bound by the host.
 
 *MEARVK LLC — 2026.*

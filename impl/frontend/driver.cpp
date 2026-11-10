@@ -22,6 +22,7 @@
 #include "../xclass/xclass_loader.h"
 #include "../langin/langin.h"
 #include "../nordshrift/sleela_emit.h"
+#include "../nordshrift/native_method_emit.h"
 #include "http_server_cli.h"
 #include "../core/sleela_audio_bridge.h"
 #include "common_rails_banner.hpp"
@@ -327,7 +328,7 @@ static fs::path rootFromManifest(const fs::path&manifest){
         return candidate;
     return fs::path();
 }
-static int verifyBeforeExecution(const fs::path&cwd){
+static int verifyBeforeExecution(const fs::path&cwd, bool quiet=false){
     // Resolve the SLeeLa root first so a configured installation works even
     // when the caller is a separate client project and has no local verifier.
     fs::path root=findRepoRoot(cwd);
@@ -351,7 +352,7 @@ static int verifyBeforeExecution(const fs::path&cwd){
             const char* home=std::getenv("SLEELA_HOME");
             bool homePinned = home && *home;
             if(!homePinned && manifestRoot!=root){
-                std::cout<<"[security] anchoring verification to the manifest's own root: "
+                (quiet ? std::cerr : std::cout)<<"[security] anchoring verification to the manifest's own root: "
                          <<manifestRoot.string()<<"\n";
                 root=manifestRoot;
             }
@@ -376,7 +377,8 @@ static int verifyBeforeExecution(const fs::path&cwd){
 #else
     std::string cmd="python3 "+shellQuote(tool.string())+" --manifest "+shellQuote(manifest.string())+" --root "+shellQuote(root.string());
 #endif
-    std::cout<<"[security] SHA-256 verification required before build/execution/diagnostics\n";
+    if(quiet) cmd += " 1>&2";
+    else std::cout<<"[security] SHA-256 verification required before build/execution/diagnostics\n";
     return runCommand(cmd);
 }
 static const char* defenderRepo(){
@@ -2205,39 +2207,41 @@ static int runFile(const std::string&path){
 }
 // `sleela nordshrift [--emit] [--target=sleela|java|c] <file.sleela>`  (SLeeLa -> Nordshrift)
 // `sleela nordshrift --roundtrip <file.sleela>`  (SLeeLa -> Nordshrift(Sleela) -> re-parse -> run + verify)
-/* ---- `sleela aot` : ahead-of-time native (C/C++) emission for @native -------
- * Part 1 of the SLeeLa->native path: find methods marked with the @native
- * annotation and emit C/C++ for them -- but ONLY when every such method is
- * within the currently supported "offloadable subset" (scalars, control flow,
- * local calls). It FAILS CLOSED: if a @native method uses anything the emitter
- * cannot yet translate (objects/new, arrays, strings beyond buffers, imports,
- * threads, the ::: offload operator, the standard library), `sleela aot`
- * refuses with a precise reason and emits nothing, so a half-translated method
- * can never be produced. The actual compile+link and VM dispatch are later
- * stages; this command establishes the @native surface and the honest subset
- * gate. No native binary is produced yet -- `--emit` prints the C/C++ a later
- * stage would compile. */
+/* ---- `sleela aot` : independently addressable native method emission -------
+ * Emits a standalone typed-ABI C plugin, one C entry body per supported
+ * annotated static method. Eligibility is deliberately fail-closed: no
+ * instance receiver, VM objects, arrays, closures, raw pointers, method calls,
+ * string literals/operations, or print side effects cross this first ABI.
+ * The command emits source only; the host separately compiles, authorizes,
+ * opens, and binds the resulting plugin. */
 static bool methodHasNative(const sleela::Method& m){
-    for(const auto& a:m.java.annotations) if(a.name=="native") return true;
+    for(const auto& a:m.java.annotations) if(a.name=="native" && a.marker) return true;
     return false;
 }
 /* Walk a @native method body and report the FIRST construct outside the
- * supported subset, or empty string if the whole method is translatable.
- * Mirrors exactly what the CGen emitter (impl/nordshrift/sleela_emit.cpp)
- * can translate today: scalar literals/vars, unary/binary ops, free calls,
- * and the Block/VarDecl/Assign/Expr/Print/Return/If/While/For statements. */
+ * independently emitted ABI-v1 subset. This intentionally excludes calls,
+ * print side effects, string literals/operators, division/remainder, VM
+ * composites, and loop timing/spill annotations. The emitter performs a
+ * second typed validation pass before writing any C source. */
+static bool nativeAbiType(const std::string& t, bool result);
 static std::string nativeUnsupportedReason(const sleela::Expr* e);
 static std::string nativeUnsupportedReason(const sleela::Stmt* s);
 static std::string nativeUnsupportedReason(const sleela::Expr* e){
     using namespace sleela;
     if(!e) return "";
     if(dynamic_cast<const IntLit*>(e)||dynamic_cast<const DoubleLit*>(e)||
-       dynamic_cast<const BoolLit*>(e)||dynamic_cast<const NullLit*>(e)||
-       dynamic_cast<const VarExpr*>(e)) return "";
+       dynamic_cast<const BoolLit*>(e)||dynamic_cast<const VarExpr*>(e)) return "";
+    if(dynamic_cast<const NullLit*>(e)) return "null is not representable in native ABI v1";
     if(dynamic_cast<const StrLit*>(e)) return "String literals are not in the @native subset yet";
-    if(auto u=dynamic_cast<const Unary*>(e)) return nativeUnsupportedReason(u->operand.get());
+    if(auto u=dynamic_cast<const Unary*>(e)){
+        if(u->op!="-" && u->op!="+" && u->op!="!") return "unsupported unary operator '"+u->op+"'";
+        return nativeUnsupportedReason(u->operand.get());
+    }
     if(auto b=dynamic_cast<const Binary*>(e)){
-        if(b->op==":::") return "the ::: structural-offload operator is not in the @native subset yet";
+        static const char* ops[]={"+","-","*","/","%","==","!=","<","<=",">",">=","&&","||"};
+        bool supported=false; for(const char* op:ops) if(b->op==op) supported=true;
+        if(!supported) return "unsupported binary operator '"+b->op+"'";
+        if(b->op=="/" || b->op=="%") return "division and remainder are not yet supported by native ABI v1";
         std::string l=nativeUnsupportedReason(b->lhs.get()); if(!l.empty())return l;
         return nativeUnsupportedReason(b->rhs.get());
     }
@@ -2250,10 +2254,7 @@ static std::string nativeUnsupportedReason(const sleela::Expr* e){
         r=nativeUnsupportedReason(cnd->thenE.get()); if(!r.empty())return r;
         return nativeUnsupportedReason(cnd->elseE.get());
     }
-    if(auto c=dynamic_cast<const Call*>(e)){
-        for(const auto& a:c->args){std::string r=nativeUnsupportedReason(a.get()); if(!r.empty())return r;}
-        return "";
-    }
+    if(dynamic_cast<const Call*>(e)) return "calls to other methods are not yet supported in an independently emitted method";
     if(dynamic_cast<const MethodCall*>(e)) return "qualified/instance calls (receiver.method(...)) are not in the @native subset yet";
     if(dynamic_cast<const NewExpr*>(e)) return "object construction ('new') is not in the @native subset yet";
     if(dynamic_cast<const ArrayAccess*>(e)) return "array indexing is not in the @native subset yet";
@@ -2263,23 +2264,29 @@ static std::string nativeUnsupportedReason(const sleela::Stmt* s){
     using namespace sleela;
     if(!s) return "";
     if(auto b=dynamic_cast<const Block*>(s)){for(const auto&st:b->stmts){std::string r=nativeUnsupportedReason(st.get()); if(!r.empty())return r;}return "";}
-    if(auto v=dynamic_cast<const VarDecl*>(s)) return nativeUnsupportedReason(v->init.get());
+    if(auto v=dynamic_cast<const VarDecl*>(s)){
+        if(!nativeAbiType(v->type,false)) return "unsupported local type '"+v->type+"'";
+        return nativeUnsupportedReason(v->init.get());
+    }
     if(auto a=dynamic_cast<const Assign*>(s)){std::string r=nativeUnsupportedReason(a->value.get()); if(!r.empty())return r; return "";}
     if(auto e=dynamic_cast<const ExprStmt*>(s)) return nativeUnsupportedReason(e->expr.get());
-    if(auto p=dynamic_cast<const PrintStmt*>(s)) return nativeUnsupportedReason(p->expr.get());
+    if(dynamic_cast<const PrintStmt*>(s)) return "print side effects are not supported in independently emitted native methods";
     if(auto r=dynamic_cast<const ReturnStmt*>(s)) return nativeUnsupportedReason(r->value.get());
     if(auto i=dynamic_cast<const IfStmt*>(s)){std::string r=nativeUnsupportedReason(i->cond.get()); if(!r.empty())return r; r=nativeUnsupportedReason(i->thenS.get()); if(!r.empty())return r; return nativeUnsupportedReason(i->elseS.get());}
-    if(auto w=dynamic_cast<const WhileStmt*>(s)){std::string r=nativeUnsupportedReason(w->cond.get()); if(!r.empty())return r; return nativeUnsupportedReason(w->body.get());}
-    if(auto f=dynamic_cast<const ForStmt*>(s)){std::string r=nativeUnsupportedReason(f->init.get()); if(!r.empty())return r; r=nativeUnsupportedReason(f->cond.get()); if(!r.empty())return r; r=nativeUnsupportedReason(f->update.get()); if(!r.empty())return r; return nativeUnsupportedReason(f->body.get());}
+    if(auto w=dynamic_cast<const WhileStmt*>(s)){if(w->loopSleepMs>0 || w->spill.hasSpill)return "loop timing/spill annotations are not supported by native ABI v1";std::string r=nativeUnsupportedReason(w->cond.get()); if(!r.empty())return r; return nativeUnsupportedReason(w->body.get());}
+    if(auto f=dynamic_cast<const ForStmt*>(s)){if(f->loopSleepMs>0 || f->spill.hasSpill || f->threadStable || f->heapHealthy)return "loop timing/spill/stability annotations are not supported by native ABI v1";std::string r=nativeUnsupportedReason(f->init.get()); if(!r.empty())return r; r=nativeUnsupportedReason(f->cond.get()); if(!r.empty())return r; r=nativeUnsupportedReason(f->update.get()); if(!r.empty())return r; return nativeUnsupportedReason(f->body.get());}
     return "a statement form outside the @native subset was used";
 }
+static bool nativeAbiType(const std::string& t, bool result){
+    return t=="int" || t=="double" || t=="boolean" || t=="String" || (result && t=="void");
+}
 static void aotUsage(){
-    std::cerr<<"sleela aot — ahead-of-time native (C/C++) emission for @native methods\n"
-               "  sleela aot --list <file.sleela>    list the @native methods found\n"
-               "  sleela aot --emit <file.sleela>    emit C/C++ for them (fails closed on unsupported constructs)\n"
+    std::cerr<<"sleela aot — per-method native plugin source generation for @native methods\n"
+               "  sleela aot --list <file.sleela>    list @native methods and eligibility\n"
+               "  sleela aot --emit <file.sleela>    emit standalone typed-ABI C plugin source\n"
                "  sleela aot <file.sleela>           same as --list\n"
-               "\nPart 1: establishes the @native surface and the honest offloadable-subset gate.\n"
-               "No native binary is produced yet; compile+link and VM dispatch are later stages.\n";
+               "\nABI v1: static methods; int, double, boolean, and length-delimited String values.\n"
+               "Compile the emitted C source as a trusted shared library with native_loader.h on the include path.\n";
 }
 static int aotCmd(int argc,char**argv){
     enum{LIST,EMIT}mode=LIST; std::string file;
@@ -2291,7 +2298,7 @@ static int aotCmd(int argc,char**argv){
         else file=a;
     }
     if(file.empty()){std::cerr<<"sleela aot: need a <file.sleela>\n";aotUsage();return 2;}
-    if(verifyBeforeExecution(fs::current_path()))return 1;
+    if(verifyBeforeExecution(fs::current_path(), mode==EMIT))return 1;
     std::string src;sleela::Program prog;sleela::VersionResolution ver;
     if(!parseSource(file,src,prog,ver))return 1;
     // Collect @native methods and their fail-closed subset verdict.
@@ -2300,7 +2307,11 @@ static int aotCmd(int argc,char**argv){
     for(const auto& c:prog.classes){
         for(const auto& m:c.methods){
             if(!methodHasNative(m)) continue;
-            std::string reason=nativeUnsupportedReason(m.body.get());
+            std::string reason;
+            if(!m.isStatic) reason="instance methods are excluded until a receiver ABI is defined";
+            if(reason.empty() && !nativeAbiType(m.retType,true)) reason="unsupported native return type '"+m.retType+"'";
+            for(const auto& p:m.params) if(reason.empty() && !nativeAbiType(p.type,false)) reason="unsupported native parameter type '"+p.type+"'";
+            if(reason.empty()) reason=nativeUnsupportedReason(m.body.get());
             found.push_back({c.name,m.name,reason});
         }
     }
@@ -2320,28 +2331,16 @@ static int aotCmd(int argc,char**argv){
                    "refusing to emit (fail-closed). Remove @native or keep the method within the subset.\n";
         return 1;
     }
-    if(mode==LIST){std::cout<<"sleela aot: all "<<found.size()<<" @native method(s) are translatable; use --emit to produce C/C++.\n";return 0;}
-    // EMIT: all @native methods are in-subset. Try the C emitter. NOTE: the
-    // current CGen (impl/nordshrift/sleela_emit.cpp) emits the WHOLE program,
-    // including main()/other methods that may use constructs (new, method
-    // calls, strings) outside the subset -- so a whole-program emit can still
-    // fail even when every @native method is translatable. That is expected in
-    // Part 1: the per-@native-method emitter and the compile+link step are
-    // later stages. We attempt the emit and, if the whole-program CGen cannot
-    // render the surrounding code, say so honestly without claiming success.
     std::string cform;
-    try{cform=nordshrift::emitProgram(prog,nordshrift::TargetLang::C,"");}
+    try{cform=nordshrift::emitNativeMethods(prog);}
     catch(const std::exception&ex){
-        std::cerr<<"sleela aot: the "<<found.size()<<" @native method(s) are in-subset, but the "
-                   "whole-program C emitter could not render the surrounding code yet:\n"
-                   "  "<<ex.what()<<"\n"
-                   "sleela aot: Part 1 verifies @native eligibility; per-method emission and "
-                   "compile/link are later stages. No C/C++ written.\n";
-        return 2;   // distinct from the fail-closed subset rejection (1)
+        std::cerr<<"sleela aot: per-method native emission refused: "<<ex.what()<<"\n";
+        return mode==LIST ? 1 : 2;
     }
+    if(mode==LIST){std::cout<<"sleela aot: all "<<found.size()<<" @native method(s) are translatable; use --emit to produce standalone typed-ABI C plugin source.\n";return 0;}
     std::cout<<cform;
-    std::cerr<<"sleela aot: emitted C/C++ (whole-program) covering "<<found.size()
-             <<" @native method(s). (Part 1: not yet compiled/linked; that is a later stage.)\n";
+    std::cerr<<"sleela aot: emitted "<<found.size()
+             <<" independently addressable native method(s) using typed ABI v1.0.\n";
     return 0;
 }
 static int nordshriftCmd(int argc,char**argv){
