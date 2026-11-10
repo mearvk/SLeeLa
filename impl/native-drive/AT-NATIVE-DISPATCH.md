@@ -152,20 +152,27 @@ argument shape is outside the negotiated ABI before native execution begins.
 
 ## 5. Implementation sequence
 
-1. **Artifact metadata:** add a versioned, append-only representation of
-   annotated function identities; validate it on load and preserve it on
-   save/load round trips.
-2. **Per-method code generation:** emit independently addressable native
-   entry points with the versioned typed ABI. Do not use the current
-   whole-program executable output as if it were a method plugin.
-3. **Host binding API:** bind method identities to already-authorized native
-   module handles. The API must not load modules or authorize paths by itself.
-4. **VM ordinary-call fast path:** route only annotated functions through the
-   binding table; preserve normal bytecode entry points as fallback.
-5. **Conformance:** compare native and interpreted return values, errors, and
-   observable behavior; test NOT_HANDLED, missing binding, unsupported
-   composites, stale handles, ABI mismatch, authorization denial, plugin
-   failure, close/call races, and artifact compatibility.
+1. **Artifact metadata — implemented:** version-4 metadata is append-only,
+   validated, and preserved through save/load; versions 1-3 remain
+   interpreted-only.
+2. **Per-method code generation — pending:** emit independently addressable
+   native entry points with the versioned typed ABI. The current whole-program
+   AOT emitter must not be treated as a method plugin. ABI v1 currently uses
+   the canonical signature as the export key; the test fixture demonstrates
+   the contract, not a production source-to-plugin generator.
+3. **Host binding API — implemented:** `slvm_bind_native_method()` accepts
+   only annotated static methods and a module handle already opened through
+   the host's authorization policy. `slvm_unbind_native_method()` is required
+   before a bound module can be closed. Binding never loads or authorizes a
+   path.
+4. **VM ordinary-call fast path — implemented:** `OP_CALL` tries the bound
+   native entry for scalar/UTF-8 arguments, copies results while the module
+   lock is held, and preserves bytecode fallback for missing bindings,
+   unsupported values, and NOT_HANDLED. Native failures do not fall back.
+5. **Conformance — initial tests added:** the focused target checks native
+   ordinary-call dispatch, unbound bytecode execution, module-close protection,
+   metadata round trips, digest corruption, and v3 compatibility. Cross-platform
+   execution, race stress, and the remaining failure matrix still need to run.
 
 ## 6. Acceptance tests
 
@@ -173,6 +180,7 @@ argument shape is outside the negotiated ABI before native execution begins.
 - An annotated method with no host binding executes its bytecode body.
 - An authorized, correctly bound native implementation is reached through an
   ordinary SLeeLa method call without an explicit source `nativeCall`.
+- An unbound annotated method executes its bytecode body.
 - NOT_HANDLED executes the bytecode body exactly once.
 - A VM-owned array/struct argument is never passed to the plugin and uses the
   bytecode body.
