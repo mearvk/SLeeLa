@@ -2240,6 +2240,7 @@ static std::string nativeUnsupportedReason(const sleela::Expr* e){
         static const char* ops[]={"+","-","*","/","%","==","!=","<","<=",">",">=","&&","||"};
         bool supported=false; for(const char* op:ops) if(b->op==op) supported=true;
         if(!supported) return "unsupported binary operator '"+b->op+"'";
+        if(b->op=="/" || b->op=="%") return "division and remainder are not yet supported by native ABI v1";
         std::string l=nativeUnsupportedReason(b->lhs.get()); if(!l.empty())return l;
         return nativeUnsupportedReason(b->rhs.get());
     }
