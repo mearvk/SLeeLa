@@ -42,9 +42,9 @@ claim that annotated methods are automatically compiled, loaded, or dispatched.
 SLeeLa currently has two relevant but separate paths:
 
 1. **Source AOT request:** `@native` is parsed on a method and inspected by
-   `sleela aot --list/--emit`. The current emitter is whole-program C output,
-   not a stable per-method plugin ABI. It does not install a native method
-   binding in the VM.
+   `sleela aot --list/--emit`. The `--emit` mode now produces standalone
+   per-method C plugin source with exact canonical-signature dispatch. It does
+   not compile, load, authorize, or bind the plugin in the VM.
 2. **Explicit native module calls:** syntax 3.0 `nativeOpen`,
    `nativeCall`, and `nativeClose` lower to append-only VM opcodes. The host
    authorizes module paths; the typed ABI transports null, bool, int64, double,
@@ -163,7 +163,8 @@ argument shape is outside the negotiated ABI before native execution begins.
    parameter/return types are `int`, `double`, `boolean`, and length-delimited
    `String`; void returns are represented as NULL. String values may be passed
    through parameters, locals, assignments, and returns without reinterpretation;
-   string literals and string operators remain excluded. Method-to-method calls,
+   string literals and string operators remain excluded. Division/remainder are
+   also refused until their zero/overflow behavior matches the VM. Method-to-method calls,
    string literals/operations, print side effects, objects, arrays, and
    instance methods are refused. The generated source is not compiled or loaded
    automatically; a host must compile it, authorize its resulting library, and
