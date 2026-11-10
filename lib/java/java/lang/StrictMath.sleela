@@ -421,6 +421,28 @@ class StrictMath {
     if (v > INT_MAX || v < INT_MIN) { throw new ArithmeticException("integer overflow"); }
     return (int) v;
   }
+  long addExactLong(long x, long y) {
+    int128 r = x;
+    r = r + y;
+    if (r > 9223372036854775807 || r < -9223372036854775807 - 1) { throw new ArithmeticException("long overflow"); }
+    return (long) r;
+  }
+  long subtractExactLong(long x, long y) {
+    int128 r = x;
+    r = r - y;
+    if (r > 9223372036854775807 || r < -9223372036854775807 - 1) { throw new ArithmeticException("long overflow"); }
+    return (long) r;
+  }
+  long multiplyExactLong(long x, long y) {
+    int128 r = x;
+    r = r * y;
+    if (r > 9223372036854775807 || r < -9223372036854775807 - 1) { throw new ArithmeticException("long overflow"); }
+    return (long) r;
+  }
+  long negateExactLong(long a) {
+    if (a == -9223372036854775807 - 1) { throw new ArithmeticException("long overflow"); }
+    return 0 - a;
+  }
   double fma(double a, double b, double c) { return a * b + c; }
   double scalb(double d, int scaleFactor) {
     double r = d;

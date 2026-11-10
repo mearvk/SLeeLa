@@ -31991,7 +31991,7 @@
     },
     {
       "path": "lib/java/java/lang/Math.sleela",
-      "sha256": "6d3b39c977f554cca3632540450fe5fc570edde24dc1045c1e3a56738bcc5695"
+      "sha256": "adcd66fd696f9820c14dc35df2cd75ef42bdfec3443b2f2b49fbcf366f63b2e5"
     },
     {
       "path": "lib/java/java/lang/Module.sleela",
@@ -32191,7 +32191,7 @@
     },
     {
       "path": "lib/java/java/lang/StrictMath.sleela",
-      "sha256": "389a49ade05fb706f5b5309ba79bdcbd5e154144e53b8d7beb79b1233c55a717"
+      "sha256": "773c12421fb41ba702151657ba9a72fda136bd263cf78077ebc506824b75c30a"
     },
     {
       "path": "lib/java/java/lang/String.sleela",
@@ -36703,15 +36703,15 @@
     },
     {
       "path": "lib/java/java/time/DayOfWeek.sleela",
-      "sha256": "567d50d4aa07b2c8d5c3f85662262d99ba93612e6ae12f8263f6ec06340bf5f2"
+      "sha256": "080815f8ad109029ae04183ca42d4f5b226faccbf469cac84f80949a6430ab89"
     },
     {
       "path": "lib/java/java/time/Duration.sleela",
-      "sha256": "0578d072263318d31aff1a302f98775a627d9641eb95381ffd961d494fa4b376"
+      "sha256": "fa177e9255dd9bb3adfd5a2924cff0eb58b8602403a40c692acea89539fa9d2a"
     },
     {
       "path": "lib/java/java/time/Instant.sleela",
-      "sha256": "de70fdf3c300849c387a8d433a964a9594a76ab590362e47a3d35da9c7eed08e"
+      "sha256": "a82c2dcfc1d012a029ecdc795ff25a58df0e54a933f773ab9417a6081e768adf"
     },
     {
       "path": "lib/java/java/time/InstantSource.sleela",
@@ -36719,23 +36719,23 @@
     },
     {
       "path": "lib/java/java/time/LocalDate.sleela",
-      "sha256": "d03174b0eacacc4e6228ec1e67647534867f6a2c13842a4ed919018bf547df12"
+      "sha256": "b80ca8cb5db269031f1c9cb1134a2814c458734b859f57ba6355d81552f4df94"
     },
     {
       "path": "lib/java/java/time/LocalDateTime.sleela",
-      "sha256": "14430b76c7bd07971afc69270ec1606a27e6435f735d09964feef6b3f6fbbc8d"
+      "sha256": "0ccf3ae80cb14ceb83e42f4dc08f0b94273fda33d2fcc625adbf330a772ba696"
     },
     {
       "path": "lib/java/java/time/LocalTime.sleela",
-      "sha256": "418148fb8644ec25b7d1a1ff1a8d79ae61aa1aa39dd6b3ead2e580e4ec4e633f"
+      "sha256": "0d0fff63a923b5c86751844b5324364fde42b06f131cc3a17a85986e291e4b2e"
     },
     {
       "path": "lib/java/java/time/Month.sleela",
-      "sha256": "3cefa8a21160ecda13f40ca3db57487149686e553db93d72004bfdd53735e72e"
+      "sha256": "aa671ded3e730ab72dbb1161a28fd82a139424e33f94c7665de3624921c6cc07"
     },
     {
       "path": "lib/java/java/time/MonthDay.sleela",
-      "sha256": "444438114827e246b4e0855b5260f4bf510b146bfaeb304be9b3c4606bba4999"
+      "sha256": "2a88d022c2470f8aafb01e81bc0d9a37c86a8c2c43c03f6e6f31566531ed34c6"
     },
     {
       "path": "lib/java/java/time/OffsetDateTime.sleela",
@@ -36747,7 +36747,7 @@
     },
     {
       "path": "lib/java/java/time/Period.sleela",
-      "sha256": "c28aa413d5ef06673194e24565f68c6423a2515139eed8c69c766b1294923f29"
+      "sha256": "ecab3f1c4aa3d76332420bd067a4e23448d43c4199b4c9f2eb189845409c7a38"
     },
     {
       "path": "lib/java/java/time/Ser.sleela",
@@ -36755,11 +36755,11 @@
     },
     {
       "path": "lib/java/java/time/Year.sleela",
-      "sha256": "4310d38b84fd7cab0556ded384295ace3cacd1d93c7ec2b458fc47ee9a652354"
+      "sha256": "56e918bb97511e1981d6824d7e1251ac107d84a0fb4af9a285f449432fcd9d25"
     },
     {
       "path": "lib/java/java/time/YearMonth.sleela",
-      "sha256": "bdac8eca89f05890e7944bf7691f955a8a7721e34323382753c2bd57d192764d"
+      "sha256": "4f3f8b1860d8ff28c3e6c52b987220a001c87cd9f264d67a7febb47f2bb0553e"
     },
     {
       "path": "lib/java/java/time/ZoneId.sleela",

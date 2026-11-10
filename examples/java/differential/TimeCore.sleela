@@ -1,0 +1,72 @@
+<< examples/java/differential/TimeCore.sleela
+   SLeeLa side of the TimeCore differential test.
+   Definition: Prints, line for line, the same results as TimeCore.java for the
+   java.time core (LocalDate, LocalTime, LocalDateTime, Duration, Period,
+   Instant, Year, YearMonth, MonthDay, DayOfWeek, Month). >>
+#sleela 3.0
+material;
+import java.java.time;
+class TimeCore {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class differential test. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-10";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-10";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+  String getMetaVersion() { return metaVersion; }
+  int getMetaId() { return metaId; }
+  String getAuthor() { return metaAuthor; }
+
+  void main() {
+    LocalDate d = new LocalDate(2024, 2, 29);
+    print(d.toString() + " " + d.getDayOfWeek().toString() + " " + d.getDayOfYear() + " " + d.toEpochDay() + " " + d.lengthOfMonth() + " " + d.isLeapYear() + " " + d.hashCode());
+    print(d.plusYears(1).toString() + " " + d.plusMonths(12).toString() + " " + d.plusDays(400).toString() + " " + d.minusMonths(1).toString() + " " + d.plusWeeks(-10).toString() + " " + d.withDayOfYear(1).toString());
+    long[] es = new long[6];
+    es[0] = 0; es[1] = -1; es[2] = 19000; es[3] = -719528; es[4] = 2932896; es[5] = -100000000;
+    int k = 0;
+    while (k < 6) {
+      LocalDate x = d.ofEpochDay(es[k]);
+      print("" + es[k] + " " + x.toString() + " " + x.toEpochDay() + " " + x.getDayOfWeek().toString() + " " + x.hashCode());
+      k = k + 1;
+    }
+    print(new LocalDate(-44, 3, 15).toString() + " " + new LocalDate(12345, 1, 1).toString() + " " + new LocalDate(5, 6, 7).toString() + " " + d.ofYearDay(2023, 365).toString());
+    Period hp = new Period(0, 0, 0);
+    print(d.parse("1999-12-31").plusDays(1).toString() + " " + new LocalDate(2023, 1, 31).until(new LocalDate(2024, 3, 1)).toString() + " " + hp.between(new LocalDate(2024, 5, 20), new LocalDate(2023, 2, 10)).toString());
+    try { new LocalDate(2023, 2, 29); } catch (Any e1) { Throwable t1 = (Throwable) e1; print(t1.getMessage()); }
+    try { new LocalDate(2023, 4, 31); } catch (Any e2) { Throwable t2 = (Throwable) e2; print(t2.getMessage()); }
+    try { new LocalDate(2023, 13, 1); } catch (Any e3) { Throwable t3 = (Throwable) e3; print(t3.getMessage()); }
+    print("" + d.compareTo(new LocalDate(2024, 3, 1)) + " " + d.isBefore(new LocalDate(2024, 3, 1)) + " " + d.equals(d.parse("2024-02-29")));
+    LocalTime t = new LocalTime(23, 59, 30, 500000000);
+    print(t.toString() + " " + t.plusSeconds(45).toString() + " " + t.plusHours(-25).toString() + " " + t.plusNanos(1).toString() + " " + t.minusMinutes(1500).toString() + " " + new LocalTime(7, 0, 0, 0).toString() + " " + new LocalTime(7, 5, 3, 120000).toString() + " " + t.hashCode());
+    print(t.parse("10:15:30.123456789").toString() + " " + t.ofSecondOfDay(3661).toString() + " " + t.toNanoOfDay() + " " + t.toSecondOfDay());
+    LocalDateTime dt = new LocalDateTime(new LocalDate(2024, 12, 31), new LocalTime(23, 59, 59, 999999999));
+    print(dt.toString() + " " + dt.plusNanos(1).toString() + " " + dt.plusHours(-48).toString() + " " + dt.minusSeconds(86401).toString() + " " + dt.toEpochSecond(0) + " " + dt.hashCode());
+    print(dt.ofEpochSecond(1700000000, 5, 7200).toString() + " " + dt.parse("2007-12-03T10:15:30").toString() + " " + dt.getDayOfWeek().toString() + " " + dt.getMonth().toString());
+    Duration du = new Duration(-90061, 5000000);
+    print(du.toString() + " " + du.ofMillis(1500).toString() + " " + du.ofHours(25).plusMinutes(1).toString() + " " + du.ofNanos(-1).toString() + " " + du.ofSeconds(0).toString() + " " + du.ofDays(2).toString() + " " + du.ofSecondsAdjusted(59, 999999999).toString());
+    print("" + du.toMillis() + " " + du.toNanos() + " " + du.toHours() + " " + du.toMinutesPart() + " " + du.toSecondsPart() + " " + du.getSeconds() + " " + du.getNano() + " " + du.hashCode());
+    print(du.multipliedBy(3).toString() + " " + du.dividedBy(7).toString() + " " + du.negated().toString() + " " + du.abs().toString() + " " + du.parse("PT8H6M12.345S").toString() + " " + du.parse("P2DT3H4M").toString() + " " + du.parse("-PT-6H+3M").toString());
+    print(du.between(new LocalTime(10, 0, 0, 0), new LocalTime(8, 30, 0, 0)).toString() + " " + du.between(dt.of(2024, 1, 1, 0, 0, 0, 0), dt).toString() + " " + du.compareTo(du.ofSeconds(0)));
+    Period p = new Period(1, 14, -3);
+    print(p.toString() + " " + p.normalized().toString() + " " + p.toTotalMonths() + " " + p.negated().toString() + " " + p.multipliedBy(2).toString() + " " + p.hashCode() + " " + p.ofDays(0).toString() + " " + p.parse("P2Y3W").toString() + " " + p.ofWeeks(3).toString());
+    Instant i = new Instant(1700000000, 123000000);
+    print(i.toString() + " " + i.ofEpochMilli(-1).toString() + " " + i.ofEpochSecond(0).toString() + " " + i.plusMillis(877).toString() + " " + i.toEpochMilli() + " " + i.ofEpochSecondAdjusted(-1, 1).toEpochMilli() + " " + i.hashCode() + " " + i.parse("2007-12-03T10:15:30.00Z").toString());
+    print(i.ofEpochSecond(253402300800).toString() + " " + i.ofEpochSecondAdjusted(0, 1500).toString() + " " + du.between(i.ofEpochSecond(0), i).toString());
+    Year y = new Year(2100);
+    print(y.toString() + " " + y.isLeap() + " " + y.length() + " " + y.atDay(60).toString() + " " + new Year(2000).atDay(366).toString() + " " + y.atMonth(2).atEndOfMonth().toString());
+    YearMonth ym = new YearMonth(2024, 11);
+    print(ym.toString() + " " + ym.plusMonths(3).toString() + " " + ym.minusMonths(23).toString() + " " + ym.lengthOfMonth() + " " + ym.atDay(5).toString() + " " + ym.hashCode() + " " + ym.parse("0999-01").toString());
+    MonthDay md = new MonthDay(2, 29);
+    print(md.toString() + " " + md.isValidYear(2023) + " " + md.atYear(2023).toString() + " " + md.atYear(2024).toString() + " " + md.hashCode() + " " + md.parse("--12-03").compareTo(md));
+    DayOfWeek dow = new DayOfWeek(null, -1);
+    Month mo = new Month(null, -1);
+    print(dow.valueOf("MONDAY").plus(-1).toString() + " " + dow.of(3).toString() + " " + dow.valueOf("SUNDAY").getValue() + " " + mo.of(2).length(true) + " " + mo.valueOf("MARCH").firstDayOfYear(true) + " " + mo.valueOf("NOVEMBER").firstMonthOfQuarter().toString() + " " + mo.valueOf("JANUARY").minus(13).toString());
+  }
+}

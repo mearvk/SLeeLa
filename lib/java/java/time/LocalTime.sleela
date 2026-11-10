@@ -4,13 +4,14 @@
    Java behavior is supplied through the SLeeLa Java conformance boundary. >>
 #sleela 3.0
 material;
+import java.java.time;
 
 class LocalTime {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
      or catalog can read and (where appropriate) override this record.
      Values are faithful to the subject's real origin where publicly known. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 5592;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-10-16";
@@ -53,6 +54,246 @@ class LocalTime {
   String construct() { return "java.construct:" + javaType; }
   String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
   String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+
+  < ---- BEGIN java implementation ---- >
+  < ---- java.time.LocalTime members (procedural implementation in SLeeLa) ---- >
+  << A time of day without date or zone, to nanosecond precision. The
+     constructor is the validating LocalTime.of(hour, minute, second,
+     nanoOfSecond); arithmetic wraps around midnight as in Java. >>
+  int hour;
+  int minute;
+  int second;
+  int nano;
+  LocalTime(int hour, int minute, int second, int nanoOfSecond) {
+    checkField("HourOfDay", hour, 0, 23);
+    checkField("MinuteOfHour", minute, 0, 59);
+    checkField("SecondOfMinute", second, 0, 59);
+    checkField("NanoOfSecond", nanoOfSecond, 0, 999999999);
+    this.hour = hour;
+    this.minute = minute;
+    this.second = second;
+    this.nano = nanoOfSecond;
+  }
+  LocalTime of(int hour, int minute, int second, int nanoOfSecond) { return new LocalTime(hour, minute, second, nanoOfSecond); }
+  LocalTime ofSecondOfDay(long secondOfDay) {
+    checkField("SecondOfDay", secondOfDay, 0, 86399);
+    return new LocalTime((int) (secondOfDay / 3600), (int) ((secondOfDay / 60) % 60), (int) (secondOfDay % 60), 0);
+  }
+  LocalTime ofNanoOfDay(long nanoOfDay) {
+    checkField("NanoOfDay", nanoOfDay, 0, 86399999999999);
+    long s = nanoOfDay / 1000000000;
+    return new LocalTime((int) (s / 3600), (int) ((s / 60) % 60), (int) (s % 60), (int) (nanoOfDay % 1000000000));
+  }
+  LocalTime parse(String text) {
+    parseBegin(text);
+    long nod = parseTimeNanos();
+    parseEnd();
+    return ofNanoOfDay(nod);
+  }
+  int getHour() { return this.hour; }
+  int getMinute() { return this.minute; }
+  int getSecond() { return this.second; }
+  int getNano() { return this.nano; }
+  int toSecondOfDay() { return this.hour * 3600 + this.minute * 60 + this.second; }
+  long toNanoOfDay() {
+    long s = toSecondOfDay();
+    return s * 1000000000 + this.nano;
+  }
+  LocalTime plusNanos(long nanosToAdd) {
+    if (nanosToAdd == 0) { return this; }
+    long nofd = toNanoOfDay();
+    long nn = floorMod(nanosToAdd % 86400000000000 + nofd + 86400000000000, 86400000000000);
+    return ofNanoOfDay(nn);
+  }
+  LocalTime plusSeconds(long secondsToAdd) {
+    if (secondsToAdd == 0) { return this; }
+    long sofd = toSecondOfDay();
+    long ns = floorMod(secondsToAdd % 86400 + sofd + 86400, 86400);
+    return new LocalTime((int) (ns / 3600), (int) ((ns / 60) % 60), (int) (ns % 60), this.nano);
+  }
+  LocalTime plusMinutes(long minutesToAdd) {
+    if (minutesToAdd == 0) { return this; }
+    long mofd = this.hour * 60 + this.minute;
+    long nm = floorMod(minutesToAdd % 1440 + mofd + 1440, 1440);
+    return new LocalTime((int) (nm / 60), (int) (nm % 60), this.second, this.nano);
+  }
+  LocalTime plusHours(long hoursToAdd) {
+    if (hoursToAdd == 0) { return this; }
+    long nh = floorMod(hoursToAdd % 24 + this.hour + 24, 24);
+    return new LocalTime((int) nh, this.minute, this.second, this.nano);
+  }
+  LocalTime minusHours(long n) { return plusHours(0 - (n % 24)); }
+  LocalTime minusMinutes(long n) { return plusMinutes(0 - (n % 1440)); }
+  LocalTime minusSeconds(long n) { return plusSeconds(0 - (n % 86400)); }
+  LocalTime minusNanos(long n) { return plusNanos(0 - (n % 86400000000000)); }
+  LocalTime withHour(int h) { return new LocalTime(h, this.minute, this.second, this.nano); }
+  LocalTime withMinute(int m) { return new LocalTime(this.hour, m, this.second, this.nano); }
+  LocalTime withSecond(int s) { return new LocalTime(this.hour, this.minute, s, this.nano); }
+  LocalTime withNano(int n) { return new LocalTime(this.hour, this.minute, this.second, n); }
+  LocalDateTime atDate(LocalDate date) { return new LocalDateTime(date, this); }
+  int compareTo(LocalTime other) {
+    long a = toNanoOfDay();
+    long b = other.toNanoOfDay();
+    if (a < b) { return -1; }
+    if (a > b) { return 1; }
+    return 0;
+  }
+  boolean isAfter(LocalTime other) { return compareTo(other) > 0; }
+  boolean isBefore(LocalTime other) { return compareTo(other) < 0; }
+  boolean equals(Any obj) {
+    if (obj instanceof LocalTime) { LocalTime o = (LocalTime) obj; return compareTo(o) == 0; }
+    return false;
+  }
+  int hashCode() { Long l = new Long(toNanoOfDay()); return l.hashCode(); }
+  String toString() {
+    String s = pad(this.hour, 2) + ":" + pad(this.minute, 2);
+    if (this.second > 0 || this.nano > 0) {
+      s = s + ":" + pad(this.second, 2);
+      if (this.nano > 0) { s = s + nanoText(this.nano); }
+    }
+    return s;
+  }
+
+  < shared java.time helpers >
+  long floorDiv(long x, long y) {
+    long q = x / y;
+    if ((x % y != 0) && ((x < 0) != (y < 0))) { q = q - 1; }
+    return q;
+  }
+  long floorMod(long x, long y) { return x - floorDiv(x, y) * y; }
+  int wrap32(long v) {
+    long m = v % 4294967296;
+    if (m < 0) { m = m + 4294967296; }
+    if (m > 2147483647) { m = m - 4294967296; }
+    return (int) m;
+  }
+  << Bitwise xor of two 32-bit two-complement ints. >>
+  int xorInt(int a, int b) {
+    long x = a;
+    long y = b;
+    if (x < 0) { x = x + 4294967296; }
+    if (y < 0) { y = y + 4294967296; }
+    long r = 0;
+    long bit = 1;
+    int k = 0;
+    while (k < 32) {
+      if ((x % 2) != (y % 2)) { r = r + bit; }
+      x = x / 2; y = y / 2; bit = bit * 2; k = k + 1;
+    }
+    return wrap32(r);
+  }
+  String pad(long v, int width) {
+    String s = "" + v;
+    int n = javaStringLength(javaStringFromUtf8(s));
+    while (n < width) { s = "0" + s; n = n + 1; }
+    return s;
+  }
+  boolean leap(long y) { return (y % 4 == 0) && ((y % 100 != 0) || (y % 400 == 0)); }
+  int monthLength(int m, boolean isLeap) {
+    if (m == 2) { if (isLeap) { return 29; } return 28; }
+    if (m == 4 || m == 6 || m == 9 || m == 11) { return 30; }
+    return 31;
+  }
+  void checkField(String field, long value, long lo, long hi) {
+    if (value < lo || value > hi) {
+      throw new DateTimeException("Invalid value for " + field + " (valid values " + lo + " - " + hi + "): " + value);
+    }
+  }
+  String monthName(int m) {
+    if (m == 1) { return "JANUARY"; } if (m == 2) { return "FEBRUARY"; } if (m == 3) { return "MARCH"; }
+    if (m == 4) { return "APRIL"; } if (m == 5) { return "MAY"; } if (m == 6) { return "JUNE"; }
+    if (m == 7) { return "JULY"; } if (m == 8) { return "AUGUST"; } if (m == 9) { return "SEPTEMBER"; }
+    if (m == 10) { return "OCTOBER"; } if (m == 11) { return "NOVEMBER"; }
+    return "DECEMBER";
+  }
+  << Year rendering of ISO-8601 local dates: four digits zero padded, a sign
+     for negative years, and a leading + beyond 9999. >>
+  String yearText(long y) {
+    long a = y;
+    if (a < 0) { a = 0 - a; }
+    if (a < 1000) {
+      if (y < 0) { return "-" + pad(a, 4); }
+      return pad(a, 4);
+    }
+    if (y > 9999) { return "+" + y; }
+    return "" + y;
+  }
+  << Nano-of-second suffix in the Java style: 3, 6 or 9 digits, as needed. >>
+  String nanoText(long nano) {
+    if (nano % 1000000 == 0) { return "." + pad(nano / 1000000, 3); }
+    if (nano % 1000 == 0) { return "." + pad(nano / 1000, 6); }
+    return "." + pad(nano, 9);
+  }
+  < parse helpers over a Java UTF-16 copy of the text >
+  String parseText;
+  String parseUnits;
+  int parsePos;
+  int parseLen;
+  void parseBegin(String text) {
+    if (text == null) { throw new NullPointerException("text"); }
+    this.parseText = text;
+    this.parseUnits = javaStringFromUtf8(text);
+    this.parsePos = 0;
+    this.parseLen = javaStringLength(this.parseUnits);
+  }
+  DateTimeParseException parseError() {
+    return new DateTimeParseException("Text '" + this.parseText + "' could not be parsed at index " + this.parsePos, this.parseText, this.parsePos);
+  }
+  int peekUnit() {
+    if (this.parsePos >= this.parseLen) { return -1; }
+    return javaStringCharAt(this.parseUnits, this.parsePos);
+  }
+  void expectUnit(int c) {
+    if (peekUnit() != c) { throw parseError(); }
+    this.parsePos = this.parsePos + 1;
+  }
+  long digits(int minCount, int maxCount) {
+    long v = 0;
+    int n = 0;
+    while (n < maxCount && peekUnit() >= 48 && peekUnit() <= 57) {
+      v = v * 10 + (peekUnit() - 48);
+      this.parsePos = this.parsePos + 1;
+      n = n + 1;
+    }
+    if (n < minCount) { throw parseError(); }
+    return v;
+  }
+  void parseEnd() { if (this.parsePos != this.parseLen) { throw parseError(); } }
+  long parseYear() {
+    int c = peekUnit();
+    if (c == 43 || c == 45) {
+      this.parsePos = this.parsePos + 1;
+      long y = digits(4, 10);
+      if (c == 45) { return 0 - y; }
+      return y;
+    }
+    return digits(4, 4);
+  }
+  << time part HH:mm[:ss[.fraction]] as nano-of-day >>
+  long parseTimeNanos() {
+    long h = digits(2, 2);
+    expectUnit(58);
+    long mi = digits(2, 2);
+    long s = 0;
+    long nano = 0;
+    if (peekUnit() == 58) {
+      this.parsePos = this.parsePos + 1;
+      s = digits(2, 2);
+      if (peekUnit() == 46) {
+        this.parsePos = this.parsePos + 1;
+        int start = this.parsePos;
+        long f = digits(1, 9);
+        int n = this.parsePos - start;
+        while (n < 9) { f = f * 10; n = n + 1; }
+        nano = f;
+      }
+    }
+    checkField("HourOfDay", h, 0, 23);
+    checkField("MinuteOfHour", mi, 0, 59);
+    checkField("SecondOfMinute", s, 0, 59);
+    return ((h * 60 + mi) * 60 + s) * 1000000000 + nano;
+  }
+  < ---- END java implementation ---- >
 
   < ---- BEGIN java declarations (generated by tools/jdk_api_declare.py) ---- >
   < constants and static fields (values reflected from the JDK) >

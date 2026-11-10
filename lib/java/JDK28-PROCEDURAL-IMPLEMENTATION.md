@@ -19,8 +19,8 @@ constants). Two numbers are reported:
 
 - **Covered.** Members that exist in SLeeLa with their Java meaning. This
   includes the API-declared part below plus hand-implemented behavior.
-  Currently **39.2%**.
-- **Behavior.** Only hand-written method bodies. Currently **3.6%**.
+  Currently **39.9%**.
+- **Behavior.** Only hand-written method bodies. Currently **4.3%**.
 
 ### API-declared part (`tools/jdk_api_declare.py`)
 
@@ -59,7 +59,9 @@ API, with no behavior to invent. They are generated into a
 
 | Concurrency, checksums, bits | 17 | `java.util.concurrent.atomic`: `AtomicInteger`, `AtomicLong`, `AtomicBoolean`, `AtomicReference`, the three atomic arrays, `LongAdder`, `DoubleAdder`. All use VM lock 31, which is reserved for atomics. `Int`/`Long`/`DoubleSummaryStatistics`, including Java's Kahan summation and `%f` output. `java.util.zip` `CRC32`, `CRC32C`, `Adler32`. `java.util.BitSet`, including the Java long-word layout for `hashCode`, `toLongArray` and `valueOf`. `java.lang.StackTraceElement`. |
 
-That is 339 implemented types with about 1,560 constructors and methods,
+| `java.time` core | 11 | `LocalDate`, `LocalTime`, `LocalDateTime`, `Instant`, `Duration`, `Period`, `Year`, `YearMonth`, `MonthDay`, and the `DayOfWeek`/`Month` behavior. Uses the java.time epoch-day algorithm over 400-year cycles, month arithmetic, carrying between date and time, ISO `toString`/`parse`, Java `hashCode`s, and 128-bit `Duration` multiply/divide. `Math`/`StrictMath` gain `add`/`subtract`/`multiply`/`negateExactLong`. |
+
+That is 350 implemented types with about 1,560 constructors and methods,
 roughly 9,800 lines of SLeeLa.
 
 ## Conformance

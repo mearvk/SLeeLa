@@ -13,7 +13,7 @@ The `/lib/java` library family defines the SLeeLa boundary for Java interoperabi
 
 ## Native Library Inventory
 
-The current repository inventory contains **10,242 files under `/lib/java`**. This count is validated from the Git index by the repository CI rather than being treated as an unverified documentation number.
+The current repository inventory contains **10,244 files under `/lib/java`**. This count is validated from the Git index by the repository CI rather than being treated as an unverified documentation number.
 
 The collection is a native SLeeLa source surface for Java-facing language and framework concepts. It is intended to give the SLeeLa Compiler, Loader, SST, and Nordshrift a stable source-level vocabulary for Java packages, classes, procedures, interfaces, runtime concepts, and interoperability boundaries.
 
@@ -32,7 +32,7 @@ python3 lib/java/validate.py
 The validator checks:
 
 - the `/lib/java` directory exists;
-- the Git-indexed file count matches the recorded **10,242-file** baseline;
+- the Git-indexed file count matches the recorded **10,244-file** baseline;
 - manifest schema and root metadata are present;
 - the expected Java interoperability boundary is documented;
 - required source-role metadata is present; and
@@ -56,8 +56,8 @@ methods):
 In addition, every one of the **4,801 public JDK types** now has a file. Each
 carries its API-declared part, generated from the reflected JDK API:
 constants with their real values, fields, abstract methods, and complete
-enums and records. Together that covers **39.2% of the 51,554 public members**
-(3.6% is hand-implemented behavior), measured in [COVERAGE.md](COVERAGE.md).
+enums and records. Together that covers **39.9% of the 51,554 public members**
+(4.3% is hand-implemented behavior), measured in [COVERAGE.md](COVERAGE.md).
 
 Conventions, the deferred keyword/semantics list, and regeneration steps are
 in [JDK28-PROCEDURAL-IMPLEMENTATION.md](JDK28-PROCEDURAL-IMPLEMENTATION.md).
@@ -79,7 +79,7 @@ A Java-facing source unit should identify, where applicable:
 5. **Loader visibility** — how the Compiler and Loader discover the symbol.
 6. **Compatibility surface** — the Java/JDK version or API family represented.
 
-This makes the Java relationship traceable instead of leaving the 10,242-file collection as an opaque directory.
+This makes the Java relationship traceable instead of leaving the 10,244-file collection as an opaque directory.
 
 ## JDK 28 Framework Bindings
 
