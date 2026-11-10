@@ -201,7 +201,7 @@ static int check_ordinary_native_dispatch(const char *artifact, const char *plug
     if (slvm_native_module_close(vm, handle) == SL_NATIVE_OK) goto done;
     if (slvm_run(vm) != SLR_OK) goto done;
     result = slvm_result(vm);
-    if (result.type != SL_INT || result.as.i != 142) goto done;
+    if (result.type != SL_INT || result.as.i != 143) goto done;
     if (slvm_unbind_native_method(vm, 0) != 0) goto done;
     if (slvm_native_module_close(vm, handle) != SL_NATIVE_OK) goto done;
     handle = SL_NATIVE_HANDLE_INVALID;
@@ -222,7 +222,7 @@ static int check_interpreted_fallback(const char *artifact) {
     if (!vm) return 0;
     if (slvm_run(vm) == SLR_OK) {
         result = slvm_result(vm);
-        ok = result.type == SL_INT && result.as.i == 42;
+        ok = result.type == SL_INT && result.as.i == 43;
     }
     slvm_free(vm);
     return ok;
@@ -242,6 +242,9 @@ static int check_compiler_artifact(const char *path) {
         strcmp(signature, "MathEngine::sum|static|argc=2|3:int3:int|return=3:int|abi=1.0") == 0)
         ok = 1;
     if (ok && slvm_get_func_native_metadata(vm, 1, &flags, &abi,
+                                            &identity, &signature) != 1)
+        ok = 0;
+    if (ok && slvm_get_func_native_metadata(vm, 2, &flags, &abi,
                                             &identity, &signature) != 0)
         ok = 0;
     slvm_free(vm);
