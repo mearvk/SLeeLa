@@ -2,10 +2,6 @@
   "algorithm": "sha256",
   "files": [
     {
-      "path": ".github/workflows/native-drive.yml",
-      "sha256": "ebe81d6e399664dbdae57ce6575c469406f499670570579ff2574958dc1c5e0f"
-    },
-    {
       "path": "SHEET.sheet",
       "sha256": "ad7abf87d8012a2bc41a85f5e6ef5eea526d1e818c15e053f0f79d3352dc5adf"
     },
@@ -174,10 +170,6 @@
       "sha256": "1712a4904acdb60a076a16d4b67130fdaf44c937c9e544c1304a96458b24af89"
     },
     {
-      "path": "impl/Makefile",
-      "sha256": "80d2c18232d34384e7dde6fb0c38fd2485985e50456e53e40b6d317a5c1db79e"
-    },
-    {
       "path": "impl/catalog/sheet_catalog.cpp",
       "sha256": "edc44715753f2fb15b1a436978d501c14e41d49956b0f459a0aae1ffaf21525f"
     },
@@ -308,6 +300,30 @@
     {
       "path": "impl/core/sleela_io.h",
       "sha256": "f45b91e67db62ff925db59915a1fd610c29338eb50b414de7e2d4491500e455e"
+    },
+    {
+      "path": "impl/core/sleela_java_string.c",
+      "sha256": "186e53374448773f74710c4a385b4af0c69bb7a01640e3cee9d7b2df31146be1"
+    },
+    {
+      "path": "impl/core/sleela_java_string.h",
+      "sha256": "174dca67d9625721083f70b7fca56dad1e8800de4359d32ba8938c6bbd768dfe"
+    },
+    {
+      "path": "impl/core/sleela_java_string_codec.c",
+      "sha256": "dda098760dbb1be17178989e91762445442276e5b9458efb96020a4b5147ddb8"
+    },
+    {
+      "path": "impl/core/sleela_java_string_codec.h",
+      "sha256": "f81ae08007b9c99d10ee53a497d564a4c7621f268ca7b7aba8283523c228aea3"
+    },
+    {
+      "path": "impl/core/sleela_java_string_smoke.c",
+      "sha256": "ce44819bedb2125888635cbac07ebcca6980c9b3c17e83d3ff67ac7222586137"
+    },
+    {
+      "path": "impl/core/sleela_java_string_vm_smoke.c",
+      "sha256": "2d4e3125c713374f620d2b2a30f0f7e44f0d0b09513a6a67ab981fa788a81d27"
     },
     {
       "path": "impl/core/sleela_library.c",
@@ -464,6 +480,18 @@
     {
       "path": "impl/core/sleela_ui_vm.h",
       "sha256": "945c76130d356cdfbb45f53f315d4808c85f289b12d79cc40f38c41536eb9b3a"
+    },
+    {
+      "path": "impl/core/sleela_utf16.c",
+      "sha256": "96131fbd8eddc52fa75c47f80a482e3c614b955d1c87f5013caab1b0ac7c5257"
+    },
+    {
+      "path": "impl/core/sleela_utf16.h",
+      "sha256": "64e3c71b487ebece0d73e9b90ce1acfd43f2653408dba46a9c6c4e801cbd898e"
+    },
+    {
+      "path": "impl/core/sleela_utf16_smoke.c",
+      "sha256": "294b8e087c62a7ad3b3fd6d3e2b238a723c8141b66818cf993bf0c39d91c43a5"
     },
     {
       "path": "impl/core/socket_smoke.c",
@@ -664,22 +692,6 @@
     {
       "path": "impl/frontend/wikigen.h",
       "sha256": "ae11bbaf0e2414d329bd0d0280843bc2bd5ff71959c52af4581e6512cdcbe11c"
-    },
-    {
-      "path": "impl/native-drive/IPC-PROTOCOL.md",
-      "sha256": "751d1b45b1c8e17aa8b229cf2b06d7e2a34c887c73921b2a3fa75256a1c4aa97"
-    },
-    {
-      "path": "impl/native-drive/native_ipc_client.c",
-      "sha256": "fd4eabedc35b3995b427ec6dfad576eb5b5e6dce838456c904fbfa377c6d1d1e"
-    },
-    {
-      "path": "impl/native-drive/native_ipc_client.h",
-      "sha256": "a0e5749bec827b23f4df8d13c3c260b82f835b58b5736ea70eec3f79c0f84a7b"
-    },
-    {
-      "path": "impl/native-drive/native_ipc_protocol.h",
-      "sha256": "c924e1ca6e5420681fd20626d8d40029153944a7f88d974af0e0a94e413e2515"
     },
     {
       "path": "impl/nordshrift/complete/class_bindings.cpp",
@@ -908,18 +920,6 @@
     {
       "path": "impl/subjects/sociology/sociology_native.cpp",
       "sha256": "91997b48f3dfb1d8cfb11f24bd4c6bd526ab1fb17644e5fa7240fe3f4742a316"
-    },
-    {
-      "path": "impl/tests/native_drive/native_ipc_client_smoke.c",
-      "sha256": "125451d90441030f8d5c0ba96f93681210de065b28feec509bc7f5eef3255538"
-    },
-    {
-      "path": "impl/tests/native_drive/native_ipc_handle_smoke.c",
-      "sha256": "b9dcec620f27751a4b7022208f6919481f61ed37853d9798a5b27d1213082e18"
-    },
-    {
-      "path": "impl/tests/native_drive/native_ipc_protocol_smoke.c",
-      "sha256": "c9a7f3a552e9e0c09fe98a25b23220876def256189beba6e202ba9074f75df72"
     },
     {
       "path": "impl/xclass/xclass_loader.cpp",
@@ -27686,6 +27686,14 @@
       "sha256": "1548c432eecaf6686af2c8a82d64f1fbf9fcf6e06b11e33bd0a9bf8a307ff753"
     },
     {
+      "path": "lib/java/implementations/java/lang/JavaObjectIdentity.sleela",
+      "sha256": "dc3854daa33ccc1b041e76d6cf0d84060f969b327817ffcb5e0aa844787383c9"
+    },
+    {
+      "path": "lib/java/implementations/java/lang/JavaStringValue.sleela",
+      "sha256": "56272bfcb167a74a1b5c92a74810b518a3621bd28e06c4f4c3c886eac7b89fa1"
+    },
+    {
       "path": "lib/java/java/awt/AWTError.sleela",
       "sha256": "3f01ff7ab7ee5934dceb6b53ed671fc7665a1da9ffae7131e40d132f1c0dcfaa"
     },
@@ -49818,6 +49826,10 @@
       "sha256": "ab82ced852f613153bc25a8a73132a6311e854f0d8ba0114574ee05fe411a1f7"
     },
     {
+      "path": "os-level-support/loader/tests/fixture_typed.c",
+      "sha256": "a61f81e8f97f60471e76a3e3cf6bd8492ab9a4684f29bf257f0955f06bde5b14"
+    },
+    {
       "path": "os-level-support/loader/tests/test_c.c",
       "sha256": "88b4be8647cabbfae54995b992605cf0e4b97bd22bd7a12bf4140ecb85df3d78"
     },
@@ -49832,6 +49844,10 @@
     {
       "path": "os-level-support/loader/tests/test_table.c",
       "sha256": "ee08752f2796b3c012f627fe11a445c83543c9f12d7d178fd7d659e9930ecdca"
+    },
+    {
+      "path": "os-level-support/loader/tests/test_typed.c",
+      "sha256": "e9bdfdefa2de171528f2a1a3f73bd4200bbdf45cce7c5c817e8e2be2911974b1"
     },
     {
       "path": "os-level-support/osls.c",
@@ -49938,20 +49954,12 @@
       "sha256": "7512954269216c083e36eb3bdc7d68e6c343e3ef03d01e1957d471166ab01fa4"
     },
     {
-      "path": "tools/sleela-ipc-worker.py",
-      "sha256": "021db4defc1e2c1e8819f1f968cf007e76b34e40f055cb1d4a1e07e2f24307c5"
-    },
-    {
       "path": "tools/sleela-native-drive.py",
       "sha256": "e9d073e2e3fa8485554c5f2a80dcaf4230780bc67e0c2abde881cf2c97d67b97"
     },
     {
       "path": "tools/sleela-native-service.py",
       "sha256": "708750edc7fe41ff484a4ecbe5dd5b47c93704724ab60c17a0895f97582bbfa0"
-    },
-    {
-      "path": "tools/tests/test_sleela_ipc_worker.py",
-      "sha256": "70797c322e06e18d6652da5c80c6464c039e44b808f934cac75b9dd4107273b6"
     },
     {
       "path": "wifi-common/include/sleela_wifi/wifi_manager.h",
