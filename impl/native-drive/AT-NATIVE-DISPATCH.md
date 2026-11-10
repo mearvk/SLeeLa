@@ -177,9 +177,14 @@ argument shape is outside the negotiated ABI before native execution begins.
    the shared plugin, compiles a matching SLeeLa artifact, then loads the
    plugin through the host authorizer and exercises ordinary `OP_CALL` for
    int64, double, boolean, and UTF-8 methods, including bytecode fallback
-   before native binding. It also rejects semantically invalid logical,
-   conditional, negation, and loop/if conditions, while accepting a valid
-   library-only source with no `main`. The committed SHA-256 manifest is
+   before native binding. A second artifact binds an annotated method whose
+   canonical signature is absent from that plugin, forcing the plugin to return
+   `SL_NATIVE_CALL_NOT_HANDLED`; its bytecode body increments a persistent
+   counter on each call, and the smoke harness requires the two-call result
+   `12` (rather than `24` if fallback executes twice per call). It also rejects
+   semantically invalid logical, conditional, negation, and loop/if conditions,
+   while accepting a valid library-only source with no `main`. The committed
+   SHA-256 manifest is
    refreshed for the implementation; run `make -C impl check-manifest` to
    verify a local checkout before building. The target is outside CI and has
    not yet been run in this environment.
@@ -193,9 +198,12 @@ argument shape is outside the negotiated ABI before native execution begins.
    lock is held, and preserves bytecode fallback for missing bindings,
    unsupported values, and NOT_HANDLED. Native failures do not fall back.
 5. **Conformance — initial tests added:** the focused target checks native
-   ordinary-call dispatch, unbound bytecode execution, module-close protection,
-   metadata round trips, digest corruption, and v3 compatibility. Cross-platform
-   execution, race stress, and the remaining failure matrix still need to run.
+   ordinary-call dispatch, unbound bytecode execution, explicit
+   `SL_NATIVE_CALL_NOT_HANDLED` fallback exactly once per call, module-close
+   protection, metadata round trips, digest corruption, and v3 compatibility.
+   The NOT_HANDLED test uses two calls to a stateful bytecode body so duplicate
+   fallback is observable. Cross-platform execution, race stress, and the
+   remaining failure matrix still need to run.
 
 ## 6. Acceptance tests
 
@@ -204,7 +212,9 @@ argument shape is outside the negotiated ABI before native execution begins.
 - An authorized, correctly bound native implementation is reached through an
   ordinary SLeeLa method call without an explicit source `nativeCall`.
 - An unbound annotated method executes its bytecode body.
-- NOT_HANDLED executes the bytecode body exactly once.
+- NOT_HANDLED executes the bytecode body exactly once; the opt-in smoke test
+  calls a stateful annotated method twice and checks the exact counter-derived
+  result.
 - A VM-owned array/struct argument is never passed to the plugin and uses the
   bytecode body.
 - A native plugin error is reported and is not hidden by bytecode fallback.
