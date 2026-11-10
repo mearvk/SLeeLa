@@ -1,6 +1,24 @@
 # Automatic VM dispatch for `@native` methods
 
-**Status: design and implementation boundary — not yet implemented.**
+**Status: Phase 1 implemented on branch `feat/native-method-metadata-dispatch-2026-11-09`; later phases remain pending.**
+
+The compiler now persists method-level `@native` identity in artifact format
+v4. The VM records annotation/static-or-instance flags, the method ABI version,
+a canonical signature, and a deterministic FNV-1a-64 signature identity.
+Version 1-3 artifacts remain loadable with all native metadata disabled.
+The metadata is descriptive only: it does not load, authorize, bind, or invoke
+native code.
+
+The public metadata registration/readback API is
+`slvm_set_func_native_metadata()` / `slvm_get_func_native_metadata()`.
+The local regression target is `make -C impl test-native-method-metadata`;
+it checks compiler-emitted static method metadata, v4 save/load,
+ordinary-function zero metadata, digest corruption rejection, and v3
+interpreted-only compatibility. No CI workflow is needed or
+invoked for this test.
+
+Per-method native code generation, authorized host binding, ordinary-call
+dispatch, and their conformance tests are not implemented by this phase.
 
 This document specifies the missing connection between the source-level
 `@native` annotation and the existing VM native-module dispatcher. It does not

@@ -337,6 +337,22 @@ private:
         else if(auto sw=dynamic_cast<const SwitchStmt*>(s)){n++;/* selector temp */for(const auto& c:sw->cases)for(const auto& st:c.statements)countInStmt(st.get(),n);}
     }
     int here(){return slvm_here(vm_);} int emit(SLOp op,int a=0){return slvm_emit(vm_,op,a);} void patch(int at,int target){slvm_patch(vm_,at,target);}
+    bool hasNativeAnnotation(const Method& method) const {
+        for (const auto& annotation : method.java.annotations)
+            if (annotation.name == "native" && annotation.marker) return true;
+        return false;
+    }
+    std::string nativeMethodSignature(const std::string& key, const Method& method) const {
+        std::string signature = key;
+        signature += method.isStatic ? "|static|argc=" : "|instance|argc=";
+        signature += std::to_string(method.params.size()) + "|";
+        for (const auto& parameter : method.params) {
+            signature += std::to_string(parameter.type.size()) + ":" + parameter.type;
+        }
+        signature += "|return=" + std::to_string(method.retType.size()) + ":" + method.retType;
+        signature += "|abi=1.0";
+        return signature;
+    }
     void emitMethod(MethodInfo& mi){
         const Method& m=*mi.method; const std::string key=methodKeyByPtr_.at(&m); currentClass_=methodOwner_.at(key);
         MethodCtx ctx; if(!m.isStatic)ctx.declare("this"); for(const auto& p:m.params)ctx.declare(p.name);
@@ -344,7 +360,16 @@ private:
         for(const auto& p:m.params) varType_[p.name]=p.type;
         if(!m.isStatic)varType_["this"]=currentClass_;
         const std::string savedRet=currentRetType_; currentRetType_=m.retType;
-        slvm_begin_func(vm_,key.c_str(),(int)m.params.size()+(m.isStatic?0:1),mi.nlocals); ctx_=&ctx;
+        const int functionIndex=slvm_begin_func(vm_,key.c_str(),(int)m.params.size()+(m.isStatic?0:1),mi.nlocals);
+        if(hasNativeAnnotation(m)){
+            const uint32_t flags=SL_NATIVE_METHOD_FLAG_ANNOTATED |
+                (m.isStatic?SL_NATIVE_METHOD_FLAG_STATIC:SL_NATIVE_METHOD_FLAG_INSTANCE);
+            const std::string signature=nativeMethodSignature(key,m);
+            if(slvm_set_func_native_metadata(vm_,functionIndex,flags,
+                    SL_NATIVE_METHOD_ABI_VERSION,signature.c_str())!=0)
+                throw std::runtime_error("Compiler error: could not register unique @native method identity for '"+key+"'");
+        }
+        ctx_=&ctx;
         // Initialise static fields before main runs. These compile to VM
         // globals; their initialisers must execute regardless of which class
         // declares them, so a static read from a non-entry class (e.g. a

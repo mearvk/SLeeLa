@@ -1,0 +1,11 @@
+#sleela 3.0
+class MathEngine {
+    @native
+    static int sum(int left, int right) {
+        return left + right;
+    }
+
+    static int main() {
+        return sum(20, 22);
+    }
+}

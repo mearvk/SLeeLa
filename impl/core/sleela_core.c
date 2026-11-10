@@ -51,7 +51,16 @@
 #define FRAMES_MAX 1024
 
 typedef struct { uint8_t op; int32_t a; } SLInstr;
-typedef struct { char* name; int32_t entry; int32_t nargs; int32_t nlocals; } SLFunc;
+typedef struct {
+    char* name;
+    int32_t entry;
+    int32_t nargs;
+    int32_t nlocals;
+    uint32_t native_flags;
+    uint32_t native_abi_version;
+    uint64_t native_signature_id;
+    char* native_signature;
+} SLFunc;
 #define EXCEPTION_HANDLERS_MAX 1024
 
 typedef struct {
@@ -613,8 +622,88 @@ int slvm_begin_func(SLVM* vm, const char* name, int nargs, int nlocals) {
     vm->funcs[idx].entry = vm->codelen;
     vm->funcs[idx].nargs = nargs;
     vm->funcs[idx].nlocals = nlocals;
+    vm->funcs[idx].native_flags = 0;
+    vm->funcs[idx].native_abi_version = 0;
+    vm->funcs[idx].native_signature_id = 0;
+    vm->funcs[idx].native_signature = NULL;
     vm->cur_func = idx;
     return idx;
+}
+
+/* FNV-1a 64-bit over the canonical UTF-8 method signature. This digest is an
+ * identity/checksum, not a security boundary; module authorization remains a
+ * separate host responsibility. */
+static uint64_t native_method_signature_hash(const char* signature) {
+    const unsigned char* p = (const unsigned char*)signature;
+    uint64_t hash = UINT64_C(14695981039346656037);
+    while (*p) { hash ^= (uint64_t)*p++; hash *= UINT64_C(1099511628211); }
+    return hash;
+}
+
+int slvm_set_func_native_metadata(SLVM* vm, int function_index,
+                                  uint32_t flags, uint32_t abi_version,
+                                  const char* signature) {
+    SLFunc* fn;
+    char* copy;
+    uint64_t identity;
+    size_t length;
+    if (!vm || function_index < 0 || function_index >= vm->nfunc ||
+        !signature || !*signature) return -1;
+    length = strlen(signature);
+    if (length > 4096u || (flags & ~SL_NATIVE_METHOD_FLAGS_MASK) != 0 ||
+        !(flags & SL_NATIVE_METHOD_FLAG_ANNOTATED) ||
+        !!(flags & SL_NATIVE_METHOD_FLAG_STATIC) ==
+            !!(flags & SL_NATIVE_METHOD_FLAG_INSTANCE) ||
+        abi_version != SL_NATIVE_METHOD_ABI_VERSION) return -1;
+    fn = &vm->funcs[function_index];
+    if (fn->native_flags || fn->native_signature) return -1;
+    identity = native_method_signature_hash(signature);
+    for (int i = 0; i < vm->nfunc; ++i) {
+        const SLFunc* other = &vm->funcs[i];
+        if (i != function_index && other->native_signature &&
+            other->native_signature_id == identity) return -1;
+    }
+    copy = strdup(signature);
+    if (!copy) return -1;
+    fn->native_flags = flags;
+    fn->native_abi_version = abi_version;
+    fn->native_signature_id = identity;
+    fn->native_signature = copy;
+    return 0;
+}
+
+int slvm_get_func_native_metadata(const SLVM* vm, int function_index,
+                                  uint32_t* flags_out, uint32_t* abi_version_out,
+                                  uint64_t* signature_id_out,
+                                  const char** signature_out) {
+    const SLFunc* fn;
+    if (!vm || function_index < 0 || function_index >= vm->nfunc) return -1;
+    fn = &vm->funcs[function_index];
+    if (flags_out) *flags_out = fn->native_flags;
+    if (abi_version_out) *abi_version_out = fn->native_abi_version;
+    if (signature_id_out) *signature_id_out = fn->native_signature_id;
+    if (signature_out) *signature_out = fn->native_signature;
+    return fn->native_flags ? 1 : 0;
+}
+
+static int native_method_metadata_valid(const SLFunc* fn) {
+    uint32_t flags;
+    if (!fn) return 0;
+    flags = fn->native_flags;
+    if (flags == 0)
+        return fn->native_abi_version == 0 &&
+               fn->native_signature_id == 0 &&
+               fn->native_signature == NULL;
+    if ((flags & ~SL_NATIVE_METHOD_FLAGS_MASK) != 0 ||
+        !(flags & SL_NATIVE_METHOD_FLAG_ANNOTATED) ||
+        !!(flags & SL_NATIVE_METHOD_FLAG_STATIC) ==
+            !!(flags & SL_NATIVE_METHOD_FLAG_INSTANCE) ||
+        fn->native_abi_version != SL_NATIVE_METHOD_ABI_VERSION ||
+        !fn->native_signature || !fn->native_signature[0] ||
+        strlen(fn->native_signature) > 4096u)
+        return 0;
+    return fn->native_signature_id ==
+           native_method_signature_hash(fn->native_signature);
 }
 void slvm_end_func(SLVM* vm) { vm->cur_func = -1; }
 int slvm_emit(SLVM* vm, SLOp op, int32_t a) {
@@ -1002,7 +1091,7 @@ void slvm_free(SLVM* vm) {
     free(vm->strs); free(vm->globals);
     for (int i = 0; i < vm->nglobal; i++) free(vm->gnames[i]);
     free(vm->gnames);
-    for (int i = 0; i < vm->nfunc; i++) free(vm->funcs[i].name);
+    for (int i = 0; i < vm->nfunc; i++) { free(vm->funcs[i].name); free(vm->funcs[i].native_signature); }
     free(vm->funcs); free(vm);
 }
 
@@ -4153,7 +4242,7 @@ SLResult slvm_run(SLVM* vm) {
 SLResult slcore_exchange(SLVM* vm, SLExchangeOp op, SLExchangeArg* arg) {
     if(!vm||!arg) return SLR_ERROR;
     switch(op){
-    case SLX_RESET: vm->codelen=vm->nconst=vm->nglobal=vm->nfunc=0;vm->cur_func=-1;vm->entry=-1;vm->err[0]=0;return SLR_OK;
+    case SLX_RESET: for(int i=0;i<vm->nfunc;i++){free(vm->funcs[i].name);free(vm->funcs[i].native_signature);} vm->codelen=vm->nconst=vm->nglobal=vm->nfunc=0;vm->cur_func=-1;vm->entry=-1;vm->err[0]=0;return SLR_OK;
     case SLX_ADD_CONST: arg->out=add_const(vm,arg->value);return SLR_OK;
     case SLX_DECLARE_GLOBAL: arg->out=slvm_declare_global(vm,arg->name);return SLR_OK;
     case SLX_DECLARE_STRUCT: arg->out=slvm_declare_struct(vm,arg->name,arg->names,arg->i0);return SLR_OK;
