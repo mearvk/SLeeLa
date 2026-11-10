@@ -170,9 +170,11 @@ argument shape is outside the negotiated ABI before native execution begins.
    The generated source is not compiled or loaded automatically; the host must
    compile it, authorize its resulting library, and bind it explicitly.
    The opt-in target `make -C impl test-native-method-aot` generates the fixture
-   source and compiles its C translation unit. It is outside CI and has not yet
-   been run in this environment. Generated-plugin loading and VM dispatch
-   conformance remain outstanding.
+   source and compiles its C translation unit. Before building after these
+   trusted-source changes, regenerate the repository integrity manifest with
+   `python3 tools/generate-sha256-manifest.py --root . --output security/sha256-manifest.json`.
+   The test target is outside CI and has not yet been run in this environment.
+   Generated-plugin loading and VM dispatch conformance remain outstanding.
 3. **Host binding API — implemented:** `slvm_bind_native_method()` accepts
    only annotated static methods and a module handle already opened through
    the host's authorization policy. `slvm_unbind_native_method()` is required
