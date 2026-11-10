@@ -2206,18 +2206,13 @@ static int runFile(const std::string&path){
 }
 // `sleela nordshrift [--emit] [--target=sleela|java|c] <file.sleela>`  (SLeeLa -> Nordshrift)
 // `sleela nordshrift --roundtrip <file.sleela>`  (SLeeLa -> Nordshrift(Sleela) -> re-parse -> run + verify)
-/* ---- `sleela aot` : ahead-of-time native (C/C++) emission for @native -------
- * Part 1 of the SLeeLa->native path: find methods marked with the @native
- * annotation and emit C/C++ for them -- but ONLY when every such method is
- * within the currently supported "offloadable subset" (scalars, control flow,
- * local calls). It FAILS CLOSED: if a @native method uses anything the emitter
- * cannot yet translate (objects/new, arrays, strings beyond buffers, imports,
- * threads, the ::: offload operator, the standard library), `sleela aot`
- * refuses with a precise reason and emits nothing, so a half-translated method
- * can never be produced. The actual compile+link and VM dispatch are later
- * stages; this command establishes the @native surface and the honest subset
- * gate. No native binary is produced yet -- `--emit` prints the C/C++ a later
- * stage would compile. */
+/* ---- `sleela aot` : independently addressable native method emission -------
+ * Emits a standalone typed-ABI C plugin, one C entry body per supported
+ * annotated static method. Eligibility is deliberately fail-closed: no
+ * instance receiver, VM objects, arrays, closures, raw pointers, method calls,
+ * string literals/operations, or print side effects cross this first ABI.
+ * The command emits source only; the host separately compiles, authorizes,
+ * opens, and binds the resulting plugin. */
 static bool methodHasNative(const sleela::Method& m){
     for(const auto& a:m.java.annotations) if(a.name=="native" && a.marker) return true;
     return false;
@@ -2276,8 +2271,8 @@ static std::string nativeUnsupportedReason(const sleela::Stmt* s){
     if(dynamic_cast<const PrintStmt*>(s)) return "print side effects are not supported in independently emitted native methods";
     if(auto r=dynamic_cast<const ReturnStmt*>(s)) return nativeUnsupportedReason(r->value.get());
     if(auto i=dynamic_cast<const IfStmt*>(s)){std::string r=nativeUnsupportedReason(i->cond.get()); if(!r.empty())return r; r=nativeUnsupportedReason(i->thenS.get()); if(!r.empty())return r; return nativeUnsupportedReason(i->elseS.get());}
-    if(auto w=dynamic_cast<const WhileStmt*>(s)){std::string r=nativeUnsupportedReason(w->cond.get()); if(!r.empty())return r; return nativeUnsupportedReason(w->body.get());}
-    if(auto f=dynamic_cast<const ForStmt*>(s)){std::string r=nativeUnsupportedReason(f->init.get()); if(!r.empty())return r; r=nativeUnsupportedReason(f->cond.get()); if(!r.empty())return r; r=nativeUnsupportedReason(f->update.get()); if(!r.empty())return r; return nativeUnsupportedReason(f->body.get());}
+    if(auto w=dynamic_cast<const WhileStmt*>(s)){if(w->loopSleepMs>0)return "loop timing annotations are not supported by native ABI v1";std::string r=nativeUnsupportedReason(w->cond.get()); if(!r.empty())return r; return nativeUnsupportedReason(w->body.get());}
+    if(auto f=dynamic_cast<const ForStmt*>(s)){if(f->loopSleepMs>0)return "loop timing annotations are not supported by native ABI v1";std::string r=nativeUnsupportedReason(f->init.get()); if(!r.empty())return r; r=nativeUnsupportedReason(f->cond.get()); if(!r.empty())return r; r=nativeUnsupportedReason(f->update.get()); if(!r.empty())return r; return nativeUnsupportedReason(f->body.get());}
     return "a statement form outside the @native subset was used";
 }
 static bool nativeAbiType(const std::string& t, bool result){
