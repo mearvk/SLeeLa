@@ -176,10 +176,13 @@ argument shape is outside the negotiated ABI before native execution begins.
    The opt-in target `make -C impl test-native-method-aot` generates and builds
    the shared plugin, compiles a matching SLeeLa artifact, then loads the
    plugin through the host authorizer and exercises ordinary `OP_CALL` for
-   int64, double, boolean, and UTF-8 methods. Before building after these
-   trusted-source changes, regenerate the repository integrity manifest with
-   `python3 tools/generate-sha256-manifest.py --root . --output security/sha256-manifest.json`.
-   The target is outside CI and has not yet been run in this environment.
+   int64, double, boolean, and UTF-8 methods, including bytecode fallback
+   before native binding. It also rejects semantically invalid logical,
+   conditional, negation, and loop/if conditions, while accepting a valid
+   library-only source with no `main`. The committed SHA-256 manifest is
+   refreshed for the implementation; run `make -C impl check-manifest` to
+   verify a local checkout before building. The target is outside CI and has
+   not yet been run in this environment.
 3. **Host binding API — implemented:** `slvm_bind_native_method()` accepts
    only annotated static methods and a module handle already opened through
    the host's authorization policy. `slvm_unbind_native_method()` is required
