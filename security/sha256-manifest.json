@@ -235,7 +235,7 @@
     },
     {
       "path": "impl/core/sleela_artifact.c",
-      "sha256": "7a5b6a1e15664609f365704d29062d23ca379ebac2d5a3de6af61274249a63ca"
+      "sha256": "8eaf21b5438fa79ef8143aa096e4a4184e65a70e106a89cf9492920086ee0bf5"
     },
     {
       "path": "impl/core/sleela_audio_bridge.cpp",
@@ -263,11 +263,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "88109e74f35f8a43c8bd9314ed00a33a4b810ff25fbda2046cce4110aefc9f5d"
+      "sha256": "63a62181364dd91925fba7d2d4f3acdca099aa31780e4222e2848ab553f7b9af"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "529a12e3b0e90ea61233e32dc947fdae8ec3f492752aa060771b312310084452"
+      "sha256": "dddb4b9ebbbf87db6c75ae21662d4c75e122cb775368613f07be48350f367152"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -431,7 +431,7 @@
     },
     {
       "path": "impl/core/sleela_synchro.c",
-      "sha256": "4ab4796be06d1cb5dacd4915e524a00d98a8df9241f67f3a92c0cc578ba9eb53"
+      "sha256": "4ccd9ffe9022d3fc33d10db20f64a33c16f21965edda4c66a741c2ebb4e41097"
     },
     {
       "path": "impl/core/sleela_synchro.h",
@@ -551,7 +551,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "90ec29a1f11bfe4addb63e4910d42a437878a591009c44de3145b690725ecd12"
+      "sha256": "afb372c8b4dc072bb70c41e90f7eba56f61dfd604bc59c6178946d999c171f59"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -567,7 +567,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "4587cc2ad94d9a04cf1704188d221977aec0819cfa005e64875db73d2e0dd917"
+      "sha256": "e91383f05459620daa27d2bd4a0490d2621b0a337c3e608ffa05fe5d1d0bd991"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -736,6 +736,14 @@
     {
       "path": "impl/nordshrift/lowering.h",
       "sha256": "0c50698fd7cd5f34e12d784287da452d0751cdd3e3f6f98727ca9512b51d28b1"
+    },
+    {
+      "path": "impl/nordshrift/native_method_emit.cpp",
+      "sha256": "48294ec92931e430b3eb52aab6d2d212bd3553c031c9f86ffffaae27ad1237ff"
+    },
+    {
+      "path": "impl/nordshrift/native_method_emit.h",
+      "sha256": "b787ee0f735a66fadcb34974d8357b655155333e0d74017209c259b4030af915"
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
