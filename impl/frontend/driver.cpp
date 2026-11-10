@@ -2227,6 +2227,7 @@ static bool methodHasNative(const sleela::Method& m){
  * Mirrors exactly what the CGen emitter (impl/nordshrift/sleela_emit.cpp)
  * can translate today: scalar literals/vars, unary/binary ops, free calls,
  * and the Block/VarDecl/Assign/Expr/Print/Return/If/While/For statements. */
+static bool nativeAbiType(const std::string& t, bool result);
 static std::string nativeUnsupportedReason(const sleela::Expr* e);
 static std::string nativeUnsupportedReason(const sleela::Stmt* s);
 static std::string nativeUnsupportedReason(const sleela::Expr* e){
