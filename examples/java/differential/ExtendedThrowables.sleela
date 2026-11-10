@@ -1,0 +1,46 @@
+<< examples/java/differential/ExtendedThrowables.sleela
+   SLeeLa side of the ExtendedThrowables differential test.
+   Definition: Prints, line for line, the same results as
+   ExtendedThrowables.java for exceptions outside java.* (javax.crypto,
+   javax.naming, javax.print, javax.xml.stream). >>
+#sleela 3.0
+material;
+class ExtendedThrowables {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class differential test. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-10";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-10";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+  String getMetaVersion() { return metaVersion; }
+  int getMetaId() { return metaId; }
+  String getAuthor() { return metaAuthor; }
+
+  void main() {
+    BadPaddingException bp = new BadPaddingException("pad");
+    print(bp.toString() + " | " + bp.getMessage() + " | " + (bp instanceof GeneralSecurityException) + " " + (bp instanceof Exception) + " " + (bp instanceof RuntimeException));
+    AEADBadTagException tag = new AEADBadTagException("tag mismatch");
+    print(tag.toString() + " | " + (tag instanceof BadPaddingException));
+    NamingException ne = new NamingException("lookup failed");
+    print(ne.getMessage() + " | " + (ne instanceof Exception));
+    NameNotFoundException nnf = new NameNotFoundException("jdbc/x");
+    print(nnf.getMessage() + " | " + (nnf instanceof NamingException));
+    PrintException pe = new PrintException("no printer");
+    print(pe.toString() + " | " + (pe.getCause() == null));
+    XMLStreamException xe = new XMLStreamException("bad xml");
+    print(xe.getMessage() + " | " + (xe instanceof Exception));
+    NoSuchPaddingException np = new NoSuchPaddingException("PKCS9");
+    print(np.toString() + " | " + (np instanceof GeneralSecurityException));
+    IllegalBlockSizeException ib = new IllegalBlockSizeException("16");
+    ib.initCause((Throwable) new IOException("io"));
+    Throwable c = ib.getCause();
+    print(ib.toString() + " | " + c.toString());
+  }
+}

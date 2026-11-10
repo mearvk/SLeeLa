@@ -56,8 +56,8 @@ methods):
 In addition, every one of the **4,801 public JDK types** now has a file. Each
 carries its API-declared part, generated from the reflected JDK API:
 constants with their real values, fields, abstract methods, and complete
-enums and records. Together that covers **39.9% of the 51,554 public members**
-(4.3% is hand-implemented behavior), measured in [COVERAGE.md](COVERAGE.md).
+enums and records. Together that covers **40.7% of the 51,554 public members**
+(5.2% is hand-implemented behavior), measured in [COVERAGE.md](COVERAGE.md).
 
 Conventions, the deferred keyword/semantics list, and regeneration steps are
 in [JDK28-PROCEDURAL-IMPLEMENTATION.md](JDK28-PROCEDURAL-IMPLEMENTATION.md).

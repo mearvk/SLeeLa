@@ -746,6 +746,160 @@ def members_for(key: str, name: str) -> str:
 CLASS_RE = re.compile(r"^class (\w+)(?: extends \w+)? \{$", re.M)
 
 
+DECL_MARK = "  < ---- BEGIN java declarations"
+
+
+def place_block(src: str, block: str) -> str:
+    """Insert block ahead of the generated declarations (or the final brace)."""
+    if DECL_MARK in src:
+        i = src.index(DECL_MARK)
+        return src[:i].rstrip("\n") + "\n\n" + block + "\n" + src[i:]
+    b = src.rstrip()
+    return b[:-1].rstrip("\n") + "\n\n" + block + "}\n"
+
+
+# ---------------------------------------------------------------------------
+# Throwables outside java.* (javax.*, jdk.*, com.sun.*, org.*), driven by the
+# reflected API in lib/java/api/jdk-api.jsonl: the real superclass, a
+# constructor with the documented parameter list, and the inherited state
+# initialized from the java.* ancestors above.
+# ---------------------------------------------------------------------------
+LIB_JAVA = ROOT.parent
+API_PATH = LIB_JAVA / "api" / "jdk-api.jsonl"
+PRIM = {"int": "int", "short": "int", "byte": "int", "char": "int", "long": "long",
+        "float": "double", "double": "double", "boolean": "boolean", "java.lang.String": "String"}
+
+
+def api_types():
+    import json
+    return {json.loads(l)["name"]: json.loads(l) for l in API_PATH.read_text(encoding="utf-8").splitlines() if l.strip()}
+
+
+def is_throwable(name, types):
+    n = name
+    for _ in range(40):
+        if n == "java.lang.Throwable":
+            return True
+        t = types.get(n)
+        if t is None or "super" not in t:
+            return False
+        n = t["super"]
+    return False
+
+
+def sl_param(t):
+    if t in PRIM:
+        return PRIM[t]
+    if t.endswith("[]"):
+        return "Any"
+    return "Any"
+
+
+def simple_index():
+    """simple name -> list of lib/java-relative dirs that define it (non-docs)."""
+    idx = {}
+    for f in LIB_JAVA.parent.rglob("*.sleela"):
+        if "/docs/api/" in str(f):
+            continue
+        idx.setdefault(f.stem, []).append(f.parent)
+    return idx
+
+
+def api_member_block(t, types, cls):
+    """Member text for one API-driven throwable."""
+    chain = []
+    n = t["super"]
+    while n and n != "java.lang.Throwable":
+        chain.append(n)
+        n = types[n].get("super")
+    inits = [INIT["lang/Throwable"]]
+    for anc in reversed(chain):
+        if anc.startswith("java."):
+            k = anc[len("java."):].replace(".", "/")
+            if k in INIT:
+                inits.append(INIT[k])
+    init = " ".join(inits)
+    init = re.sub(r"(^|; )(\w+) = ", lambda mo: mo.group(1) + "this." + mo.group(2) + " = ", init)
+    ctors = [m[2] for m in t["methods"] if m[0] == "<init>"]
+    choice = None
+    for want in (["java.lang.String"], [], ["java.lang.Throwable"]):
+        if want in ctors:
+            choice = want
+            break
+    if choice is None and ctors:
+        choice = ctors[0]
+    if choice is None:
+        choice = ["java.lang.String"]
+    params, body = [], []
+    msg_set = False
+    for i, p in enumerate(choice):
+        nm = f"p{i}"
+        params.append(f"{sl_param(p)} {nm}")
+        if p == "java.lang.String" and not msg_set:
+            body.append(f"this.detailMessage = {nm};")
+            msg_set = True
+        elif p == "java.lang.Throwable" or (p.endswith("Exception") or p.endswith("Error")) and p in types:
+            body.append(f"this.cause = (Throwable) {nm}; this.causeInitialized = true;")
+            if not msg_set:
+                body.append(f"if ({nm} != null) {{ Throwable c{i} = (Throwable) {nm}; this.detailMessage = c{i}.toString(); }}")
+    return (f"\n  << Constructor {t['name']}({', '.join(x.rsplit('.', 1)[-1] for x in choice)}); the\n"
+            f"     inherited Throwable state is initialized first (see the java.* ancestors). >>\n"
+            f"  {cls}({', '.join(params)}) {{ {init} {' '.join(body)} }}\n")
+
+
+def transform_api(path, t, types, idx):
+    src = path.read_text(encoding="utf-8")
+    mo = CLASS_RE.search(src)
+    if not mo:
+        return None
+    cls = mo.group(1)
+    parent = types[t["super"]]
+    pkg = t["binary"].rsplit(".", 1)[0]
+    psimple = parent["binary"].rsplit(".", 1)[1]
+    ppkg = parent["binary"].rsplit(".", 1)[0]
+    header = f"class {cls} extends {psimple} {{"
+    src = src[:mo.start()] + header + src[mo.end():]
+    src = re.sub(re.escape(BEGIN) + r".*?" + re.escape(END) + r"\n", "", src, flags=re.S)
+    block = BEGIN + "\n" + api_member_block(t, types, cls) + END + "\n"
+    src = place_block(src, block)
+    src = re.sub(r"^#sleela \d+\.\d+$", "#sleela 3.0", src, count=1, flags=re.M)
+    src = src.replace("SLeeLa Java SE/JDK 28 source envelope.", "SLeeLa Java SE/JDK 28 source implementation.", 1)
+    src = src.replace('String metaVersion = "1.0.0";', 'String metaVersion = "1.1.0";', 1)
+    # Select the package of an ambiguous superclass (and of this unit).
+    for need_pkg, simple in ((ppkg, psimple), (pkg, cls)):
+        if len(idx.get(simple, [])) > 1:
+            imp = "import java." + need_pkg + ";"
+            if imp not in src:
+                src = src.replace("material;\n", f"material;\n{imp}\n", 1)
+    return src
+
+
+def api_throwables(check: bool) -> int:
+    types = api_types()
+    idx = simple_index()
+    changed = 0
+    count = 0
+    for t in types.values():
+        if t["name"].startswith("java.") or "$" in t["binary"] or t["name"] == "java.lang.Throwable":
+            continue
+        if not is_throwable(t["name"], types):
+            continue
+        pkg = t["binary"].rsplit(".", 1)[0]
+        path = LIB_JAVA.joinpath(*pkg.split("."), t["binary"].rsplit(".", 1)[1] + ".sleela")
+        if not path.is_file():
+            continue
+        new = transform_api(path, t, types, idx)
+        if new is None:
+            continue
+        count += 1
+        if new != path.read_text(encoding="utf-8"):
+            changed += 1
+            if not check:
+                path.write_text(new, encoding="utf-8")
+    print(f"throwables (API-driven, outside java.*): {count} classes, {changed} {'would change' if check else 'updated'}")
+    return changed
+
+
 def transform(path: Path, key: str) -> str:
     src = path.read_text(encoding="utf-8")
     name = path.stem
@@ -765,7 +919,7 @@ def transform(path: Path, key: str) -> str:
     members = re.sub(r"^(  " + name + r"\([^)]*\) \{)", lambda mo: mo.group(1) + " " + init, members, flags=re.M)
     members = re.sub(r"^  (String|Throwable|Exception|SQLException) (\w+);$", r"  \1 \2 = null;", members, flags=re.M)
     block = BEGIN + "\n" + members + END + "\n"
-    src = body[:-1].rstrip("\n") + "\n\n" + block + "}\n"
+    src = place_block(body + "\n", block)
     # Implemented units are syntax 3.0 (real throw / UTF-16 string operations).
     src = re.sub(r"^#sleela \d+\.\d+$", "#sleela 3.0", src, count=1, flags=re.M)
     src = src.replace("SLeeLa Java SE/JDK 28 source envelope.", "SLeeLa Java SE/JDK 28 source implementation.", 1)
@@ -796,6 +950,7 @@ def main() -> int:
                 path.write_text(new, encoding="utf-8")
     verb = "would change" if args.check else "updated"
     print(f"throwables: {len(keys)} classes, {changed} {verb}")
+    changed += api_throwables(args.check)
     return 1 if (args.check and changed) else 0
 
 

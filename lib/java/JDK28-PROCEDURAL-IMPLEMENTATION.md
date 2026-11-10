@@ -19,8 +19,8 @@ constants). Two numbers are reported:
 
 - **Covered.** Members that exist in SLeeLa with their Java meaning. This
   includes the API-declared part below plus hand-implemented behavior.
-  Currently **39.9%**.
-- **Behavior.** Only hand-written method bodies. Currently **4.3%**.
+  Currently **40.7%**.
+- **Behavior.** Only hand-written method bodies. Currently **5.2%**.
 
 ### API-declared part (`tools/jdk_api_declare.py`)
 
@@ -61,7 +61,9 @@ API, with no behavior to invent. They are generated into a
 
 | `java.time` core | 11 | `LocalDate`, `LocalTime`, `LocalDateTime`, `Instant`, `Duration`, `Period`, `Year`, `YearMonth`, `MonthDay`, and the `DayOfWeek`/`Month` behavior. Uses the java.time epoch-day algorithm over 400-year cycles, month arithmetic, carrying between date and time, ISO `toString`/`parse`, Java `hashCode`s, and 128-bit `Duration` multiply/divide. `Math`/`StrictMath` gain `add`/`subtract`/`multiply`/`negateExactLong`. |
 
-That is 350 implemented types with about 1,560 constructors and methods,
+| Throwables outside `java.*` | 208 | Every public `javax.*`, `jdk.*`, `com.sun.*` and `org.*` exception and error, generated from the reflected API (`jdk28_implement_throwables.py`, API-driven pass). Each gets its real superclass, its documented constructor, inherited state initialized from the `java.*` ancestors, and package imports where a superclass name is ambiguous. |
+
+That is 558 implemented types with about 1,560 constructors and methods,
 roughly 9,800 lines of SLeeLa.
 
 ## Conformance
