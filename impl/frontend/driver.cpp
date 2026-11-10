@@ -2219,7 +2219,7 @@ static int runFile(const std::string&path){
  * gate. No native binary is produced yet -- `--emit` prints the C/C++ a later
  * stage would compile. */
 static bool methodHasNative(const sleela::Method& m){
-    for(const auto& a:m.java.annotations) if(a.name=="native") return true;
+    for(const auto& a:m.java.annotations) if(a.name=="native" && a.marker) return true;
     return false;
 }
 /* Walk a @native method body and report the FIRST construct outside the
@@ -2236,9 +2236,14 @@ static std::string nativeUnsupportedReason(const sleela::Expr* e){
        dynamic_cast<const BoolLit*>(e)||dynamic_cast<const VarExpr*>(e)) return "";
     if(dynamic_cast<const NullLit*>(e)) return "null is not representable in native ABI v1";
     if(dynamic_cast<const StrLit*>(e)) return "String literals are not in the @native subset yet";
-    if(auto u=dynamic_cast<const Unary*>(e)) return nativeUnsupportedReason(u->operand.get());
+    if(auto u=dynamic_cast<const Unary*>(e)){
+        if(u->op!="-" && u->op!="+" && u->op!="!") return "unsupported unary operator '"+u->op+"'";
+        return nativeUnsupportedReason(u->operand.get());
+    }
     if(auto b=dynamic_cast<const Binary*>(e)){
-        if(b->op==":::") return "the ::: structural-offload operator is not in the @native subset yet";
+        static const char* ops[]={"+","-","*","/","%","==","!=","<","<=",">",">=","&&","||"};
+        bool supported=false; for(const char* op:ops) if(b->op==op) supported=true;
+        if(!supported) return "unsupported binary operator '"+b->op+"'";
         std::string l=nativeUnsupportedReason(b->lhs.get()); if(!l.empty())return l;
         return nativeUnsupportedReason(b->rhs.get());
     }
@@ -2261,7 +2266,10 @@ static std::string nativeUnsupportedReason(const sleela::Stmt* s){
     using namespace sleela;
     if(!s) return "";
     if(auto b=dynamic_cast<const Block*>(s)){for(const auto&st:b->stmts){std::string r=nativeUnsupportedReason(st.get()); if(!r.empty())return r;}return "";}
-    if(auto v=dynamic_cast<const VarDecl*>(s)) return nativeUnsupportedReason(v->init.get());
+    if(auto v=dynamic_cast<const VarDecl*>(s)){
+        if(!nativeAbiType(v->type,false)) return "unsupported local type '"+v->type+"'";
+        return nativeUnsupportedReason(v->init.get());
+    }
     if(auto a=dynamic_cast<const Assign*>(s)){std::string r=nativeUnsupportedReason(a->value.get()); if(!r.empty())return r; return "";}
     if(auto e=dynamic_cast<const ExprStmt*>(s)) return nativeUnsupportedReason(e->expr.get());
     if(dynamic_cast<const PrintStmt*>(s)) return "print side effects are not supported in independently emitted native methods";
