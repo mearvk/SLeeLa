@@ -2,7 +2,7 @@
    SLeeLa Java 28 source envelope.
    Definition: SLeeLa source declaration for the Java type java.lang.StrictMath.
    Java behavior is supplied through the SLeeLa Java conformance boundary. >>
-#sleela 2.5
+#sleela 3.0
 material;
 
 class StrictMath {
@@ -10,7 +10,7 @@ class StrictMath {
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
      or catalog can read and (where appropriate) override this record.
      Values are faithful to the subject's real origin where publicly known. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 8644;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-10-16";
@@ -53,4 +53,381 @@ class StrictMath {
   String construct() { return "java.construct:" + javaType; }
   String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
   String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+
+  < ---- BEGIN java implementation ---- >
+  < ---- java.lang.StrictMath members (procedural implementation in SLeeLa) ---- >
+  << Instance-method rendering of the java.lang.StrictMath static members, sharing
+     the java.lang.Math algorithms (one deterministic, platform-independent
+     pure-SLeeLa evaluation, which is the StrictMath contract). Java static
+     dispatch (StrictMath.abs(x)) is a later semantics pass; call as m.abs(x) on a
+     StrictMath instance. All algorithms are pure SLeeLa (no native math builtin
+     exists): range reduction plus convergent series, accurate to roughly 1e-15
+     relative for ordinary arguments. NaN and infinities follow IEEE 754.
+     Overloads are renamed by operand type (absInt, maxLong, ...) because the
+     compiler resolves calls by name only. The *Exact methods throw a real
+     java.lang.ArithmeticException in a #sleela 3.0 program (catch it with
+     catch (Any e) until typed catch matching lands). >>
+  static final double E = 2.718281828459045;
+  static final double PI = 3.141592653589793;
+  static final double TAU = 6.283185307179586;
+  static final double LN2 = 0.6931471805599453;
+  static final double LN10 = 2.302585092994046;
+  static final double HALF_PI = 1.5707963267948966;
+  static final int INT_MAX = 2147483647;
+  static final int INT_MIN = -2147483648;
+  static final long LONG_MAX = 9223372036854775807;
+  static final long LONG_MIN = -9223372036854775807 - 1;
+
+  double pi() { return PI; }
+  double e() { return E; }
+  double posInf() { double z = 0.0; return 1.0 / z; }
+  double negInf() { double z = 0.0; return -1.0 / z; }
+  double nan() { double z = 0.0; return z / z; }
+  boolean isNaN(double a) { return a != a; }
+  boolean isInfinite(double a) { return a > 1.7976931348623157e308 || a < -1.7976931348623157e308; }
+  boolean isFinite(double a) { return a == a && !isInfinite(a); }
+
+  < abs / max / min / signum / copySign / clamp >
+  double abs(double a) { if (a != a) { return a; } if (a < 0.0) { return 0.0 - a; } return a; }
+  int absInt(int a) { if (a < 0) { return 0 - a; } return a; }
+  long absLong(long a) { if (a < 0) { return 0 - a; } return a; }
+  double max(double a, double b) { if (a != a) { return a; } if (b != b) { return b; } if (a > b) { return a; } return b; }
+  double min(double a, double b) { if (a != a) { return a; } if (b != b) { return b; } if (a < b) { return a; } return b; }
+  int maxInt(int a, int b) { if (a > b) { return a; } return b; }
+  int minInt(int a, int b) { if (a < b) { return a; } return b; }
+  long maxLong(long a, long b) { if (a > b) { return a; } return b; }
+  long minLong(long a, long b) { if (a < b) { return a; } return b; }
+  double signum(double d) { if (d != d) { return d; } if (d > 0.0) { return 1.0; } if (d < 0.0) { return -1.0; } return d; }
+  double copySign(double magnitude, double sign) {
+    double m = abs(magnitude);
+    if (sign < 0.0) { return 0.0 - m; }
+    return m;
+  }
+  double clamp(double value, double lo, double hi) {
+    if (lo != lo || hi != hi || lo > hi) { return nan(); }
+    if (value < lo) { return lo; }
+    if (value > hi) { return hi; }
+    return value;
+  }
+  int clampInt(long value, int lo, int hi) {
+    if (value < lo) { return lo; }
+    if (value > hi) { return hi; }
+    return (int) value;
+  }
+
+  < floor / ceil / rint / round >
+  double floor(double a) {
+    if (a != a || isInfinite(a)) { return a; }
+    if (a >= 4503599627370496.0 || a <= -4503599627370496.0) { return a; }
+    long n = (long) a;
+    double d = n;
+    if (d > a) { return d - 1.0; }
+    return d;
+  }
+  double ceil(double a) {
+    if (a != a || isInfinite(a)) { return a; }
+    if (a >= 4503599627370496.0 || a <= -4503599627370496.0) { return a; }
+    long n = (long) a;
+    double d = n;
+    if (d < a) { return d + 1.0; }
+    return d;
+  }
+  double rint(double a) {
+    if (a != a || isInfinite(a)) { return a; }
+    double f = floor(a);
+    double diff = a - f;
+    if (diff < 0.5) { return f; }
+    if (diff > 0.5) { return f + 1.0; }
+    double half = f / 2.0;
+    if (half == floor(half)) { return f; }
+    return f + 1.0;
+  }
+  long round(double a) {
+    if (a != a) { return 0; }
+    if (a >= 9.223372036854776e18) { return LONG_MAX; }
+    if (a <= -9.223372036854776e18) { return LONG_MIN; }
+    double f = floor(a + 0.5);
+    return (long) f;
+  }
+  int roundFloat(double a) {
+    if (a != a) { return 0; }
+    if (a >= 2147483647.0) { return INT_MAX; }
+    if (a <= -2147483648.0) { return INT_MIN; }
+    return (int) floor(a + 0.5);
+  }
+
+  < sqrt / cbrt / hypot >
+  double sqrt(double x) {
+    if (x != x || x < 0.0) { return nan(); }
+    if (x == 0.0 || isInfinite(x)) { return x; }
+    double g = x;
+    if (x > 1.0) { g = x / 2.0 + 0.5; }
+    int i = 0;
+    while (i < 200) {
+      double ng = 0.5 * (g + x / g);
+      if (ng == g) { return g; }
+      g = ng;
+      i = i + 1;
+    }
+    return g;
+  }
+  double cbrt(double x) {
+    if (x != x || x == 0.0 || isInfinite(x)) { return x; }
+    double a = abs(x);
+    double g = a;
+    if (a > 1.0) { g = a / 3.0 + 0.7; }
+    int i = 0;
+    while (i < 200) {
+      double ng = (2.0 * g + a / (g * g)) / 3.0;
+      if (ng == g) { break; }
+      g = ng;
+      i = i + 1;
+    }
+    if (x < 0.0) { return 0.0 - g; }
+    return g;
+  }
+  double hypot(double x, double y) {
+    if (isInfinite(x) || isInfinite(y)) { return posInf(); }
+    if (x != x || y != y) { return nan(); }
+    double a = abs(x);
+    double b = abs(y);
+    double big = max(a, b);
+    if (big == 0.0) { return 0.0; }
+    double sm = min(a, b) / big;
+    return big * sqrt(1.0 + sm * sm);
+  }
+
+  < exp family >
+  double exp(double x) {
+    if (x != x) { return x; }
+    if (x > 709.782712893384) { return posInf(); }
+    if (x < -745.2) { return 0.0; }
+    double kd = rint(x / LN2);
+    double r = x - kd * LN2;
+    double term = 1.0;
+    double sum = 1.0;
+    int n = 1;
+    while (n < 40) {
+      term = term * r / n;
+      sum = sum + term;
+      if (abs(term) < 1.0e-18) { break; }
+      n = n + 1;
+    }
+    int k = (int) kd;
+    while (k > 0) { sum = sum * 2.0; k = k - 1; }
+    while (k < 0) { sum = sum * 0.5; k = k + 1; }
+    return sum;
+  }
+  double expm1(double x) {
+    if (abs(x) < 1.0e-5) { return x + x * x / 2.0 + x * x * x / 6.0; }
+    return exp(x) - 1.0;
+  }
+  double sinh(double x) {
+    if (x != x || isInfinite(x)) { return x; }
+    if (abs(x) < 1.0e-5) { return x + x * x * x / 6.0; }
+    return (exp(x) - exp(0.0 - x)) / 2.0;
+  }
+  double cosh(double x) {
+    if (x != x) { return x; }
+    if (isInfinite(x)) { return posInf(); }
+    return (exp(x) + exp(0.0 - x)) / 2.0;
+  }
+  double tanh(double x) {
+    if (x != x) { return x; }
+    if (x > 20.0) { return 1.0; }
+    if (x < -20.0) { return -1.0; }
+    if (abs(x) < 1.0e-5) { return x - x * x * x / 3.0; }
+    double e2 = exp(2.0 * x);
+    return (e2 - 1.0) / (e2 + 1.0);
+  }
+
+  < log family >
+  double log(double x) {
+    if (x != x || x < 0.0) { return nan(); }
+    if (x == 0.0) { return negInf(); }
+    if (isInfinite(x)) { return x; }
+    int e = 0;
+    double m = x;
+    while (m >= 1.5) { m = m * 0.5; e = e + 1; }
+    while (m < 0.75) { m = m * 2.0; e = e - 1; }
+    double t = (m - 1.0) / (m + 1.0);
+    double t2 = t * t;
+    double term = t;
+    double sum = 0.0;
+    int n = 1;
+    while (n < 80) {
+      sum = sum + term / n;
+      term = term * t2;
+      if (abs(term) < 1.0e-20) { break; }
+      n = n + 2;
+    }
+    return 2.0 * sum + e * LN2;
+  }
+  double log10(double x) { return log(x) / LN10; }
+  double log1p(double x) {
+    if (abs(x) < 1.0e-5) { return x - x * x / 2.0 + x * x * x / 3.0; }
+    return log(1.0 + x);
+  }
+
+  < pow >
+  double powInt(double a, long n) {
+    long e = n;
+    boolean neg = false;
+    if (e < 0) { neg = true; e = 0 - e; }
+    double result = 1.0;
+    double base = a;
+    while (e > 0) {
+      if (e % 2 == 1) { result = result * base; }
+      base = base * base;
+      e = e / 2;
+    }
+    if (neg) { return 1.0 / result; }
+    return result;
+  }
+  double pow(double a, double b) {
+    if (b == 0.0) { return 1.0; }
+    if (b != b || a != a) { return nan(); }
+    if (a == 1.0) { return 1.0; }
+    if (isInfinite(b)) {
+      double aa = abs(a);
+      if (aa == 1.0) { return nan(); }
+      if ((aa > 1.0) == (b > 0.0)) { return posInf(); }
+      return 0.0;
+    }
+    double fb = floor(b);
+    boolean isInt = (fb == b);
+    if (isInt && abs(b) < 1.0e9) { return powInt(a, (long) b); }
+    if (a == 0.0) { if (b > 0.0) { return 0.0; } return posInf(); }
+    if (a < 0.0) { return nan(); }
+    if (isInfinite(a)) { if (b > 0.0) { return a; } return 0.0; }
+    return exp(b * log(a));
+  }
+
+  < trigonometry >
+  double reduce(double x) {
+    double k = floor(x / TAU + 0.5);
+    return x - k * TAU;
+  }
+  double sin(double x) {
+    if (x != x || isInfinite(x)) { return nan(); }
+    double r = reduce(x);
+    if (r > HALF_PI) { r = PI - r; }
+    if (r < -HALF_PI) { r = 0.0 - PI - r; }
+    double r2 = r * r;
+    double term = r;
+    double sum = r;
+    int n = 1;
+    while (n < 40) {
+      term = 0.0 - term * r2 / ((2 * n) * (2 * n + 1));
+      sum = sum + term;
+      if (abs(term) < 1.0e-18) { break; }
+      n = n + 1;
+    }
+    return sum;
+  }
+  double cos(double x) {
+    if (x != x || isInfinite(x)) { return nan(); }
+    return sin(x + HALF_PI);
+  }
+  double tan(double x) {
+    if (x != x || isInfinite(x)) { return nan(); }
+    return sin(x) / cos(x);
+  }
+  double atan(double x) {
+    if (x != x) { return x; }
+    if (x == 0.0) { return x; }
+    boolean neg = x < 0.0;
+    double a = abs(x);
+    boolean inv = a > 1.0;
+    if (inv) { a = 1.0 / a; }
+    a = a / (1.0 + sqrt(1.0 + a * a));
+    a = a / (1.0 + sqrt(1.0 + a * a));
+    double a2 = a * a;
+    double term = a;
+    double sum = a;
+    int n = 1;
+    while (n < 60) {
+      term = 0.0 - term * a2;
+      sum = sum + term / (2 * n + 1);
+      if (abs(term) < 1.0e-20) { break; }
+      n = n + 1;
+    }
+    double r = 4.0 * sum;
+    if (inv) { r = HALF_PI - r; }
+    if (neg) { return 0.0 - r; }
+    return r;
+  }
+  double atan2(double y, double x) {
+    if (x != x || y != y) { return nan(); }
+    if (x > 0.0) { return atan(y / x); }
+    if (x < 0.0) {
+      if (y >= 0.0) { return atan(y / x) + PI; }
+      return atan(y / x) - PI;
+    }
+    if (y > 0.0) { return HALF_PI; }
+    if (y < 0.0) { return 0.0 - HALF_PI; }
+    return 0.0;
+  }
+  double asin(double x) {
+    if (x != x || x > 1.0 || x < -1.0) { return nan(); }
+    if (x == 1.0) { return HALF_PI; }
+    if (x == -1.0) { return 0.0 - HALF_PI; }
+    return atan(x / sqrt(1.0 - x * x));
+  }
+  double acos(double x) {
+    if (x != x || x > 1.0 || x < -1.0) { return nan(); }
+    return HALF_PI - asin(x);
+  }
+  double toRadians(double deg) { return deg / 180.0 * PI; }
+  double toDegrees(double rad) { return rad * 180.0 / PI; }
+
+  < integer division and exact arithmetic >
+  long floorDiv(long x, long y) {
+    long q = x / y;
+    if ((x % y != 0) && ((x < 0) != (y < 0))) { q = q - 1; }
+    return q;
+  }
+  long floorMod(long x, long y) {
+    long m = x % y;
+    if (m != 0 && ((m < 0) != (y < 0))) { m = m + y; }
+    return m;
+  }
+  long ceilDiv(long x, long y) {
+    long q = x / y;
+    if ((x % y != 0) && ((x < 0) == (y < 0))) { q = q + 1; }
+    return q;
+  }
+  long ceilMod(long x, long y) { return x - ceilDiv(x, y) * y; }
+  int addExactInt(int x, int y) {
+    long r = x + y;
+    if (r > INT_MAX || r < INT_MIN) { throw new ArithmeticException("integer overflow"); }
+    return (int) r;
+  }
+  int subtractExactInt(int x, int y) {
+    long r = x - y;
+    if (r > INT_MAX || r < INT_MIN) { throw new ArithmeticException("integer overflow"); }
+    return (int) r;
+  }
+  int multiplyExactInt(int x, int y) {
+    long r = x * y;
+    if (r > INT_MAX || r < INT_MIN) { throw new ArithmeticException("integer overflow"); }
+    return (int) r;
+  }
+  int negateExactInt(int a) {
+    if (a == INT_MIN) { throw new ArithmeticException("integer overflow"); }
+    return 0 - a;
+  }
+  int toIntExact(long v) {
+    if (v > INT_MAX || v < INT_MIN) { throw new ArithmeticException("integer overflow"); }
+    return (int) v;
+  }
+  double fma(double a, double b, double c) { return a * b + c; }
+  double scalb(double d, int scaleFactor) {
+    double r = d;
+    int k = scaleFactor;
+    while (k > 0) { r = r * 2.0; k = k - 1; }
+    while (k < 0) { r = r * 0.5; k = k + 1; }
+    return r;
+  }
+  < ---- END java implementation ---- >
 }

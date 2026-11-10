@@ -1,0 +1,53 @@
+<< examples/java/JavaLangDoubleRoundTrip.sleela
+   SLeeLa Java SE/JDK 28 conformance program.
+   Definition: Exercises the SLeeLa implementation of Double.toString / parseDouble round trip over 1348 values
+   under lib/java and prints one FAIL line per mismatch, then a summary line.
+   Expected values are the outputs of the Java SE 28 API for the same calls. >>
+#sleela 3.0
+material;
+class JavaLangDoubleRoundTrip {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class conformance program. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-10";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-10";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  int getMetaId() { return metaId; }
+  String getAuthor() { return metaAuthor; }
+  String getDate() { return metaDate; }
+  String getCopyright() { return metaCopyright; }
+  String getTrademark() { return metaTrademark; }
+  String getCorporation() { return metaCorporation; }
+  String getOrigin() { return metaOrigin; }
+  String getBirthDate() { return metaBirthDate; }
+  int getScienceRating() { return metaScienceRating; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+
+
+  void main() {
+    Double D = new Double(0.0);
+    int bad = 0;
+    int n = 0;
+    double x = 1.0e-300;
+    while (x < 1.0e300) {
+      double y = x * 1.2345678901234567;
+      String s = D.toStringOf(y);
+      double back = D.parseDouble(s);
+      if (back != y) { bad = bad + 1; if (bad < 5) { print("MISS " + s); } }
+      String s2 = D.toStringOf(0.0 - y / 3.0);
+      if (D.parseDouble(s2) != 0.0 - y / 3.0) { bad = bad + 1; if (bad < 5) { print("MISS " + s2); } }
+      x = x * 7.77;
+      n = n + 2;
+    }
+    print("checked=" + n + " misses=" + bad);
+  }
+}

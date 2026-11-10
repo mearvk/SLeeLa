@@ -1,0 +1,94 @@
+<< examples/java/JavaLangFloatingConformance.sleela
+   SLeeLa Java SE/JDK 28 conformance program.
+   Definition: Exercises the SLeeLa implementation of java.lang.Double and Float formatting, parsing and bit views
+   under lib/java and prints one FAIL line per mismatch, then a summary line.
+   Expected values are the outputs of the Java SE 28 API for the same calls. >>
+#sleela 3.0
+material;
+class JavaLangFloatingConformance {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class conformance program. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-10";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-10";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  int getMetaId() { return metaId; }
+  String getAuthor() { return metaAuthor; }
+  String getDate() { return metaDate; }
+  String getCopyright() { return metaCopyright; }
+  String getTrademark() { return metaTrademark; }
+  String getCorporation() { return metaCorporation; }
+  String getOrigin() { return metaOrigin; }
+  String getBirthDate() { return metaBirthDate; }
+  int getScienceRating() { return metaScienceRating; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+
+
+  int bad = 0;
+  void eq(String name, String got, String want) {
+    if (got != want) { bad = bad + 1; print("FAIL " + name + " got=[" + got + "] want=[" + want + "]"); }
+  }
+  void main() {
+    Double D = new Double(0.0);
+    eq("1", D.toStringOf(1.0), "1.0");
+    eq("100", D.toStringOf(100.0), "100.0");
+    eq("0.1", D.toStringOf(0.1), "0.1");
+    eq("0.1+0.2", D.toStringOf(0.1 + 0.2), "0.30000000000000004");
+    eq("1/3", D.toStringOf(1.0 / 3.0), "0.3333333333333333");
+    eq("2/3", D.toStringOf(2.0 / 3.0), "0.6666666666666666");
+    eq("1e7", D.toStringOf(10000000.0), "1.0E7");
+    eq("1234567.0", D.toStringOf(1234567.0), "1234567.0");
+    eq("0.001", D.toStringOf(0.001), "0.001");
+    eq("1e-4", D.toStringOf(0.0001), "1.0E-4");
+    eq("1e20", D.toStringOf(1.0e20), "1.0E20");
+    eq("1e100", D.toStringOf(1.0e100), "1.0E100");
+    eq("max", D.toStringOf(D.maxValue()), "1.7976931348623157E308");
+    eq("minv", D.toStringOf(D.minValue()), "4.9E-324");
+    eq("pi", D.toStringOf(3.141592653589793), "3.141592653589793");
+    eq("-2.5", D.toStringOf(-2.5), "-2.5");
+    eq("neg0", D.toStringOf(-1.0 / D.positiveInfinity()), "-0.0");
+    eq("nan", D.toStringOf(D.naN()), "NaN");
+    eq("inf", D.toStringOf(D.negativeInfinity()), "-Infinity");
+    eq("123456789.123", D.toStringOf(123456789.123), "1.23456789123E8");
+    eq("6.02e23", D.toStringOf(6.02e23), "6.02E23");
+    eq("parse", D.toStringOf(D.parseDouble("  -12.5e3 ")), "-12500.0");
+    eq("parse2", D.toStringOf(D.parseDouble("1e-10")), "1.0E-10");
+    eq("parse3", D.toStringOf(D.parseDouble(".5")), "0.5");
+    eq("parse4", D.toStringOf(D.parseDouble("2.5d")), "2.5");
+    eq("parseInf", D.toStringOf(D.parseDouble("-Infinity")), "-Infinity");
+    eq("bits1", "" + D.doubleToLongBits(1.0), "4607182418800017408");
+    eq("bits-2", "" + D.doubleToLongBits(-2.0), "-4611686018427387904");
+    eq("bitsMin", "" + D.doubleToLongBits(D.minValue()), "1");
+    eq("bitsNaN", "" + D.doubleToLongBits(D.naN()), "9221120237041090560");
+    eq("frombits", D.toStringOf(D.longBitsToDouble(4614253070214989087)), "3.14");
+    eq("hash", "" + new Double(1.5).hashCode(), "1073217536");
+    eq("cmp0", "" + D.compare(0.0, -1.0 / D.positiveInfinity()), "1");
+    eq("cmpNaN", "" + D.compare(D.naN(), D.positiveInfinity()), "1");
+    eq("hex", D.toHexString(1.0) + " " + D.toHexString(-0.5) + " " + D.toHexString(3.0), "0x1.0p0 -0x1.0p-1 0x1.8p1");
+    eq("intValue", "" + new Double(-3.9).intValue() + "," + new Double(1.0e20).intValue(), "-3,2147483647");
+    eq("equalsNaN", "" + new Double(D.naN()).equals(new Double(D.naN())), "true");
+    boolean nfe = false;
+    try { D.parseDouble("1.2.3"); } catch (Any e) { nfe = e instanceof NumberFormatException; }
+    if (!nfe) { bad = bad + 1; print("FAIL nfe"); }
+    Float F = new Float(0.0);
+    eq("f0.1", F.toStringOf(0.1), "0.1");
+    eq("f1/3", F.toStringOf(1.0 / 3.0), "0.33333334");
+    eq("fval", D.toStringOf(new Float(0.1).doubleValue()), "0.10000000149011612");
+    eq("fmax", F.toStringOf(F.maxValue()), "3.4028235E38");
+    eq("fmin", F.toStringOf(F.minValue()), "1.4E-45");
+    eq("fbits", "" + F.floatToIntBits(1.0) + "," + F.floatToIntBits(-2.5), "1065353216,-1071644672");
+    eq("ffrom", F.toStringOf(F.intBitsToFloat(1078523331)), "3.14");
+    eq("f16M", F.toStringOf(16777217.0), "1.6777216E7");
+    eq("fparse", F.toStringOf(F.parseFloat("3.4028236E38")), "Infinity");
+    print("failures=" + bad);
+  }
+}

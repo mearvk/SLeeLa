@@ -1,0 +1,94 @@
+<< examples/java/JavaLangMathConformance.sleela
+   SLeeLa Java SE/JDK 28 conformance program.
+   Definition: Exercises the SLeeLa implementation of java.lang.Math against IEEE reference values
+   under lib/java and prints one FAIL line per mismatch, then a summary line.
+   Expected values are the outputs of the Java SE 28 API for the same calls. >>
+#sleela 3.0
+material;
+#sleela 2.5
+material;
+class JavaLangMathConformance {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class conformance program. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-10";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-10";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  int getMetaId() { return metaId; }
+  String getAuthor() { return metaAuthor; }
+  String getDate() { return metaDate; }
+  String getCopyright() { return metaCopyright; }
+  String getTrademark() { return metaTrademark; }
+  String getCorporation() { return metaCorporation; }
+  String getOrigin() { return metaOrigin; }
+  String getBirthDate() { return metaBirthDate; }
+  int getScienceRating() { return metaScienceRating; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+
+
+  int bad = 0;
+  void near(String name, double got, double want) {
+    double d = got - want;
+    if (d < 0.0) { d = 0.0 - d; }
+    double scale = want;
+    if (scale < 0.0) { scale = 0.0 - scale; }
+    if (scale < 1.0) { scale = 1.0; }
+    if (d / scale > 1.0e-12) { bad = bad + 1; print("FAIL " + name + " got=" + got + " want=" + want); }
+  }
+  void main() {
+    Math m = new Math();
+    near("sqrt2", m.sqrt(2.0), 1.4142135623730951);
+    near("cbrt-27", m.cbrt(-27.0), -3.0);
+    near("hypot", m.hypot(3.0, 4.0), 5.0);
+    near("exp1", m.exp(1.0), 2.718281828459045);
+    near("exp-10", m.exp(-10.0), 4.5399929762484854e-05);
+    near("exp100", m.exp(100.0), 2.6881171418161356e+43);
+    near("log2", m.log(2.0), 0.6931471805599453);
+    near("log1e-5", m.log(1.0e-5), -11.512925464970229);
+    near("log10(1000)", m.log10(1000.0), 3.0);
+    near("pow", m.pow(2.0, 10.0), 1024.0);
+    near("pow.5", m.pow(2.0, 0.5), 1.4142135623730951);
+    near("pow-neg", m.pow(2.0, -2.0), 0.25);
+    near("sin1", m.sin(1.0), 0.8414709848078965);
+    near("cos1", m.cos(1.0), 0.5403023058681398);
+    near("tan1", m.tan(1.0), 1.5574077246549023);
+    near("sin100", m.sin(100.0), -0.5063656411097588);
+    near("cos-7", m.cos(-7.0), 0.7539022543433046);
+    near("atan1", m.atan(1.0), 0.7853981633974483);
+    near("atan-.3", m.atan(-0.3), -0.2914567944778671);
+    near("atan10", m.atan(10.0), 1.4711276743037347);
+    near("atan2", m.atan2(-1.0, -1.0), -2.356194490192345);
+    near("asin.5", m.asin(0.5), 0.5235987755982989);
+    near("acos.5", m.acos(0.5), 1.0471975511965979);
+    near("sinh1", m.sinh(1.0), 1.1752011936438014);
+    near("cosh1", m.cosh(1.0), 1.5430806348152437);
+    near("tanh.5", m.tanh(0.5), 0.46211715726000974);
+    near("floor-2.5", m.floor(-2.5), -3.0);
+    near("ceil-2.5", m.ceil(-2.5), -2.0);
+    near("rint2.5", m.rint(2.5), 2.0);
+    near("rint3.5", m.rint(3.5), 4.0);
+    near("round2.5", m.round(2.5), 3.0);
+    near("round-2.5", m.round(-2.5), -2.0);
+    near("floorDiv", m.floorDiv(-7, 2), -4.0);
+    near("floorMod", m.floorMod(-7, 3), 2.0);
+    near("ceilDiv", m.ceilDiv(7, 2), 4.0);
+    near("expm1", m.expm1(1.0e-9), 1.0000000005e-09);
+    near("log1p", m.log1p(1.0e-9), 9.999999995e-10);
+    near("deg", m.toDegrees(m.pi()), 180.0);
+    near("addExact", m.addExactInt(2000000000, 100000000), 2100000000.0);
+    if (!m.isNaN(m.sqrt(-1.0)) || m.pow(0.0, -1.0) != m.posInf() || m.log(0.0) != m.negInf()) { bad = bad + 1; print("FAIL IEEE special values"); }
+    boolean caught = false;
+    try { m.addExactInt(2147483647, 1); } catch (Any ex) { caught = ex instanceof ArithmeticException; }
+    if (!caught) { bad = bad + 1; print("FAIL addExactInt overflow did not throw ArithmeticException"); }
+    print("failures=" + bad);
+  }
+}

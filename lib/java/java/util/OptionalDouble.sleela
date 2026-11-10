@@ -2,15 +2,16 @@
    SLeeLa Java 28 source envelope.
    Definition: SLeeLa source declaration for the Java type java.util.OptionalDouble.
    Java behavior is supplied through the SLeeLa Java conformance boundary. >>
-#sleela 2.5
+#sleela 3.0
 material;
+import java.java.util;
 
 class OptionalDouble {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
      or catalog can read and (where appropriate) override this record.
      Values are faithful to the subject's real origin where publicly known. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 6776;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-10-16";
@@ -53,4 +54,39 @@ class OptionalDouble {
   String construct() { return "java.construct:" + javaType; }
   String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
   String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+
+  < ---- BEGIN java implementation ---- >
+  < ---- java.util.OptionalDouble members (procedural implementation in SLeeLa) ---- >
+  << A container that may hold one double value. Factories are instance methods
+     (new OptionalDouble(false, 0).of(5)); the constructor takes presence and value. >>
+  boolean present;
+  double value;
+  OptionalDouble(boolean isPresent, double v) { this.present = isPresent; this.value = v; }
+
+  OptionalDouble empty() { return new OptionalDouble(false, 0.0); }
+  OptionalDouble of(double v) { return new OptionalDouble(true, v); }
+  boolean isPresent() { return present; }
+  boolean isEmpty() { return !present; }
+  double getAsDouble() {
+    if (!present) { throw new NoSuchElementException("No value present"); }
+    return value;
+  }
+  double orElseThrow() { return getAsDouble(); }
+  double orElse(double other) {
+    if (present) { return value; }
+    return other;
+  }
+  String toString() {
+    if (!present) { return "OptionalDouble.empty"; }
+    return "OptionalDouble[" + value + "]";
+  }
+  boolean equals(Any obj) {
+    if (obj instanceof OptionalDouble) {
+      OptionalDouble o = (OptionalDouble) obj;
+      if (!present && !o.present) { return true; }
+      return present == o.present && value == o.value;
+    }
+    return false;
+  }
+  < ---- END java implementation ---- >
 }

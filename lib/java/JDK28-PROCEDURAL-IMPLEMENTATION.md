@@ -1,0 +1,135 @@
+# JDK 28 procedural implementation in SLeeLa
+
+**Premise.** `/lib/java` covers the Java procedural language in SLeeLa. Each
+Java type under `lib/java/java/` gets the fields, constructors, methods, return
+values and imports of the JDK 28 API (Java SE 28, Java 25+ for reference),
+written in SLeeLa and running on the SLeeLa VM. It does not call into a JVM.
+This first phase builds the **body of the work**. Java keywords and semantics
+the compiler cannot express yet were worked around and are listed in
+[Deferred keywords and semantics](#deferred-keywords-and-semantics). The next
+phase addresses them.
+
+## Status (2026-11-10)
+
+| Area | Types | What is implemented |
+|---|---|---|
+| `java.lang.Throwable` hierarchy | 290 (every `java.*` exception and error) | The real JDK 28 superclass of each type via `extends` (resolved inheritance). Throwable state: detail message, cause, `initCause`, suppressed list, stack-trace slot, `toString`, `printStackTrace`. Each type has its documented constructor. Class-specific state is included, for example `ParseException.getErrorOffset`, `URISyntaxException`/`InvalidPathException` input/reason/index, `PatternSyntaxException` caret message, `FileSystemException` file/other/reason, `SQLException` SQLState/error code/next-exception chain, the `java.util` format-exception messages, and charset exceptions. |
+| `java.lang.Math`, `StrictMath` | 2 | Constants, plus abs/min/max/signum/copySign/clamp, floor/ceil/rint/round, sqrt/cbrt/hypot, exp/expm1/log/log10/log1p/pow, trig, inverse trig and hyperbolics, toRadians/toDegrees, floorDiv/floorMod/ceilDiv/ceilMod, `*Exact` (throws `ArithmeticException`), fma, scalb. All pure SLeeLa, with relative error around 1e-15. |
+| `Integer`, `Long`, `Short`, `Byte` | 4 | MIN/MAX/SIZE/BYTES, two's-complement wrapping, parse/valueOf/decode (throwing `NumberFormatException` with the Java messages), toString in any radix, hex/octal/binary/unsigned strings, compare/compareUnsigned, divide/remainderUnsigned, bitCount, leading/trailing zeros, highest/lowestOneBit, rotate, reverse, reverseBytes, hashCode, equals, compareTo, Number views. |
+| `Double`, `Float` | 2 | Exact IEEE 754 bit views (`doubleToLongBits`, `longBitsToDouble`, `floatToIntBits`, `intBitsToFloat`). `toString` uses the Java layout with shortest round-trip digits, computed with double-double arithmetic. `parseDouble`/`parseFloat` round to nearest. `toHexString`, compare (with -0.0/NaN order), hashCode, min/max, Number views. Float is exact binary32 through `fround`. |
+| `Character`, `Boolean` | 2 | Surrogates and code points, toChars, isWhitespace/isSpaceChar/isISOControl (exact). Letter/digit/case predicates and simple case maps are table-driven from Unicode 14.0 data for the covered blocks. digit/forDigit/getNumericValue. Boolean.parseBoolean and the logical helpers. |
+| `java.util` collections | 14 | `ArrayList`, `LinkedList`, `ArrayDeque`, `Vector`, `Stack`, `HashMap`, `LinkedHashMap`, `HashSet`, `LinkedHashSet`, `TreeMap`, `TreeSet`, `PriorityQueue`, `Iterator`, `KeyValueHolder` (Map.Entry). Covers the List/Deque/Queue/SequencedCollection API, the Map API with navigation (floor/ceiling/higher/lower, head/tail/sub maps), set algebra (addAll/retainAll/removeAll/containsAll), and Java `hashCode`/`equals`/`toString` formulas. |
+| `java.util` utilities | 7 | `Arrays` (int/double/Object sort, binarySearch, fill, copyOf/copyOfRange, equals, hashCode, toString, mismatch, asList). `Collections` (sort, reverse, swap, fill, rotate, shuffle, max, min, frequency, disjoint, binarySearch, indexOfSubList, nCopies, empty and singleton factories). `Objects`. `Optional`, `OptionalInt`, `OptionalLong`, `OptionalDouble`. `Random`, the Java 48-bit LCG bit for bit. |
+
+That is 322 implemented types with about 1,560 constructors and methods,
+roughly 9,800 lines of SLeeLa.
+
+## Conformance
+
+[`examples/java/`](../../examples/java/README.md) holds eight conformance
+programs. They compare against values the Java SE API returns for the same
+calls (for example `new Random(42).nextInt() == -1170105035`,
+`Double.toString(0.1 + 0.2) == "0.30000000000000004"`,
+`"Hello".hashCode() == 69609650`). There is also a 1,348-value
+`Double.toString`/`parseDouble` round trip. Run them all:
+
+```sh
+examples/java/run-conformance.sh
+```
+
+All eight pass with the source-built compiler (`impl/build/sleela`). Programs
+must declare `#sleela 3.0`, because real `throw` and Java UTF-16 String
+operations are gated at 3.0.
+
+## Conventions used in this phase
+
+1. **Static members are instance methods.** SLeeLa does not yet resolve
+   `Math.abs(x)` or `Integer.MAX_VALUE` across classes. Create an instance and
+   call through it: `new Math().abs(x)`, `new Integer(0).parseInteger("42")`,
+   `new Integer(0).maxValue()`. `static final` constants are still declared,
+   so the Java names are in the source.
+2. **Overloads get a role or type suffix.** Calls resolve by name only:
+   - Math: `absInt`, `absLong`, `maxLong`.
+   - Integer: `toStringOf(int)` versus `toString()`, `toStringRadix`, `parseIntegerRadix`.
+   - Collections: `addAt(int, E)`, `removeObject(Object)`, `addAllAt`.
+   - Arrays: `sortDoubles` and `sortObjects`.
+   - Random: `nextIntBound(bound)`.
+   - Map: `replaceValue(k, old, new)` and `removeMapping(k, v)`.
+
+   The plain name is always the most common Java form.
+3. **Generics are erased to `Any`.** Collections hold `Any`. Read a value back
+   with a checked cast: `(int) list.get(0)`, `(Box) map.get("k")`.
+4. **Primitive mapping.** The VM integer is 64-bit, and `byte`, `short`,
+   `char` and `float` do not exist. `int` results are wrapped to 32 bits
+   wherever Java would overflow. byte/short/char are carried as `int` in
+   range. float is carried as a `double` rounded to binary32.
+5. **Value semantics.** Element and key equality is SLeeLa `==`: strings and
+   numbers compare by value, objects by identity. Hashing matches the Java
+   `hashCode` for numbers, booleans and Strings. Natural ordering compares
+   numbers numerically and anything else by Java `String.compareTo` of its
+   text.
+6. **Upcasts are explicit.** Write `t.initCause((Throwable) ioe)`. Implicit
+   subtype assignment is not implemented yet.
+7. **Selecting the package.** Some simple names also exist elsewhere in
+   `/lib`: `Character`, `Vector`, `List`, `Map`, `CertificateException`, ….
+   A program that uses them adds `import java.java.lang;` and/or
+   `import java.java.util;`. The `java.util` units carry
+   `import java.java.util;` themselves.
+
+## Deferred keywords and semantics
+
+Each of these is a compiler or VM change. Each workaround above maps to one
+item here. When an item lands, its workaround can be removed by editing the
+generators in [`tools/implementation/`](tools/implementation/) and
+[`tools/jdk28_implement_throwables.py`](tools/jdk28_implement_throwables.py)
+and re-running them.
+
+1. **Static member access across classes.** `Math.abs(x)`, `Integer.MAX_VALUE`.
+2. **Overload resolution** by parameter types, and more than one constructor per class.
+3. **Virtual dispatch.** An override is not reached through a base-typed
+   receiver or an implicit-`this` call. That is why exceptions compose their
+   message into `detailMessage` at construction instead of overriding
+   `getMessage()`, and why a user `equals`/`compareTo` is not consulted by
+   the collections.
+4. **Base-class field initializers do not run for subclass instances.** Every
+   generated constructor first initializes the inherited state.
+5. **`super(...)` constructor calls are not lowered.**
+6. **Implicit subtype assignability** (`Throwable t = ioe;`).
+7. **Typed `catch` and multiple catch clauses.** Only `catch (Any e)` exists
+   today, and `finally` is not lowered.
+8. **The String bridge.** Literals are legacy UTF-8 strings. `javaString*`
+   values are Java UTF-16 strings. There is no UTF-16-to-legacy conversion,
+   and `+` cannot mix the two. `java.lang.String`, `StringBuilder` and
+   `Character.toString` of non-ASCII therefore wait for one VM operation.
+   UTF-16 handles are also capped at 4,096 live strings and are reclaimed
+   only by a collection, so the collections issue a periodic `gc` hint.
+9. **New `int[]`/`boolean[]` elements read as `null`**, not 0/false. The
+   implementation clears them explicitly.
+10. **`byte`, `short`, `char`, `float` primitives**, `L`/`f` literal suffixes,
+    and the bitwise operators `& | ^ ~ << >> >>>`. Bit operations are
+    implemented arithmetically.
+11. **Lambdas and functional interfaces.** `Comparator`, `Function`,
+    `Consumer`, … So comparator sorting, `compute`/`merge`, `forEach` and
+    streams are not provided yet.
+12. **Live collection views.** `keySet`, `values`, `entrySet` and `subList`
+    return snapshots.
+13. **Multi-file `run` resolves library units per file** and duplicates
+    them. Use a single main file and let the loader pull in `/lib` units.
+
+## Regenerating
+
+```sh
+python3 lib/java/tools/jdk28_implement_throwables.py      # 290 Throwable types
+cd lib/java/tools/implementation
+python3 gen_integral.py     # Integer Long Short Byte
+python3 gen_floating.py     # Double Float
+python3 gen_character.py    # Character (Unicode tables from Python unicodedata)
+python3 gen_collections.py  # java.util collections
+python3 gen_util2.py        # Arrays Collections Optional* Random
+```
+
+The generators are idempotent. `Math`, `StrictMath`, `Boolean` and `Objects`
+are maintained directly in their `.sleela` files, between the
+`BEGIN/END java implementation` markers. After any change, regenerate
+`security/sha256-manifest.json`
+(`python3 tools/generate-sha256-manifest.py --root . --output security/sha256-manifest.json`).

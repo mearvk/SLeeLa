@@ -1,18 +1,18 @@
 << lib/java/java/lang/Integer.sleela
-   SLeeLa Java SE/JDK 28 source envelope.
+   SLeeLa Java SE/JDK 28 source implementation.
    Definition: Native SLeeLa source declaration for the Java type java.lang.Integer.
    
    The Java class name is retained exactly. The SLeeLa declaration is the source
    contract; Java behavior is supplied only through the conformance boundary. >>
-#sleela 2.5
+#sleela 3.0
 material;
 
-class Integer {
+class Integer extends Number {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
      or catalog can read and (where appropriate) override this record.
      Values are faithful to the subject's real origin where publicly known. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 4799;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-10-16";
@@ -55,4 +55,290 @@ class Integer {
   String construct() { return "java.construct:" + javaType; }
   String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
   String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+
+  < ---- BEGIN java implementation ---- >
+  < ---- java.lang.Integer members (procedural implementation in SLeeLa) ---- >
+  << The boxed int value plus the java.lang.Integer static API rendered as
+     instance methods (call as new Integer(0).parseInteger("42")). The VM integer
+     is 64-bit, so every 32-bit result is wrapped two-complement style with
+     wrap(), exactly as Java arithmetic overflows. Parsing reads the text as a
+     Java UTF-16 String (javaStringFromUtf8), so pass an ordinary SLeeLa String.
+     Overloads are suffixed (toStringOf, toStringRadix, parseIntegerRadix, ...)
+     because calls resolve by name only. The VM has no byte/short/float/char
+     primitive, so those Java types are carried as int (or double for float),
+     always held inside the Java range. >>
+  static final int MIN_VALUE = -2147483648;
+  static final int MAX_VALUE = 2147483647;
+  static final int SIZE = 32;
+  static final int BYTES = 4;
+
+  int value;
+  Integer(int v) { value = wrap(v); }
+
+  int minValue() { return MIN_VALUE; }
+  int maxValue() { return MAX_VALUE; }
+  << Reduce any 64-bit value to the 32-bit two-complement range. >>
+  int wrap(long v) {
+    long m = v % 4294967296;
+    if (m < 0) { m = m + 4294967296; }
+    if (m > 2147483647) { m = m - 4294967296; }
+    return (int) m;
+  }
+
+  < instance accessors (java.lang.Number) >
+  int byteValue() { return (int) wrapBits(value, 8); }
+  int shortValue() { return (int) wrapBits(value, 16); }
+  int intValue() { return (int) wrapBits(value, 32); }
+  long longValue() { return value; }
+  double doubleValue() { double d = value; return d; }
+  double floatValue() { double d = value; return d; }
+  long wrapBits(long v, int nbits) {
+    if (nbits >= 64) { return v; }
+    long mod = 1;
+    int i = 0;
+    while (i < nbits) { mod = mod * 2; i = i + 1; }
+    long half = mod / 2;
+    long m = v % mod;
+    if (m < 0) { m = m + mod; }
+    if (m >= half) { m = m - mod; }
+    return m;
+  }
+  String toString() { return toStringOf(value); }
+  int hashCode() { return hashCodeOf(value); }
+  boolean equals(Any obj) {
+    if (obj instanceof Integer) {
+      Integer o = (Integer) obj;
+      return o.value == value;
+    }
+    return false;
+  }
+  int compareTo(Integer another) { return compare(value, another.value); }
+
+  < static API >
+  int compare(int x, int y) {
+    if (x < y) { return -1; }
+    if (x == y) { return 0; }
+    return 1;
+  }
+  int signum(int i) {
+    if (i > 0) { return 1; }
+    if (i < 0) { return -1; }
+    return 0;
+  }
+  int sum(int a, int b) { return wrap(a + b); }
+  int max(int a, int b) { if (a >= b) { return a; } return b; }
+  int min(int a, int b) { if (a <= b) { return a; } return b; }
+  Integer valueOf(int i) { return new Integer(i); }
+  Integer valueOfString(String s) { return new Integer(parseInteger(s)); }
+  int hashCodeOf(int v) { return (int) v; }
+
+  String toStringOf(int i) { return toStringRadix(i, 10); }
+  String toStringRadix(int i, int radix) {
+    int r = radix;
+    if (r < 2 || r > 36) { r = 10; }
+    if (i == 0) { return "0"; }
+    boolean neg = i < 0;
+    String out = "";
+    int v = i;
+    while (v != 0) {
+      int q = v / r;
+      int d = v - q * r;
+      if (d < 0) { d = 0 - d; }
+      out = digitChar((int) d) + out;
+      v = q;
+    }
+    if (neg) { return "-" + out; }
+    return out;
+  }
+  << The unsigned 32-bit value of i as a long (Integer.toUnsignedLong). >>
+  long toUnsignedLong(int i) {
+    long v = i;
+    if (v < 0) { v = v + 4294967296; }
+    return v;
+  }
+  String toUnsignedStringRadix(int i, int radix) {
+    long v = toUnsignedLong(i);
+    int r = radix;
+    if (r < 2 || r > 36) { r = 10; }
+    if (v == 0) { return "0"; }
+    String out = "";
+    while (v > 0) { out = digitChar((int) (v % r)) + out; v = v / r; }
+    return out;
+  }
+  String toUnsignedString(int i) { return toUnsignedStringRadix(i, 10); }
+  String toHexString(int i) { return toUnsignedStringRadix(i, 16); }
+  String toOctalString(int i) { return toUnsignedStringRadix(i, 8); }
+  String toBinaryString(int i) { return toUnsignedStringRadix(i, 2); }
+  int compareUnsigned(int x, int y) { return compare(wrap(x + MIN_VALUE), wrap(y + MIN_VALUE)); }
+  int divideUnsigned(int dividend, int divisor) { return wrap(toUnsignedLong(dividend) / toUnsignedLong(divisor)); }
+  int remainderUnsigned(int dividend, int divisor) { return wrap(toUnsignedLong(dividend) % toUnsignedLong(divisor)); }
+  int parseUnsignedInt(String s) { return wrap(parseUnsignedLongValue(s, 10, 4294967295)); }
+
+  < bit twiddling over the unsigned 32-bit pattern >
+  int bitCount(int i) {
+    long v = toUnsignedLong(i);
+    int n = 0;
+    while (v > 0) { n = n + (int) (v % 2); v = v / 2; }
+    return n;
+  }
+  int numberOfLeadingZeros(int i) {
+    long v = toUnsignedLong(i);
+    int n = 32;
+    while (v > 0) { v = v / 2; n = n - 1; }
+    return n;
+  }
+  int numberOfTrailingZeros(int i) {
+    long v = toUnsignedLong(i);
+    if (v == 0) { return 32; }
+    int n = 0;
+    while (v % 2 == 0) { v = v / 2; n = n + 1; }
+    return n;
+  }
+  int highestOneBit(int i) {
+    long v = toUnsignedLong(i);
+    if (v == 0) { return 0; }
+    long b = 1;
+    while (b * 2 <= v) { b = b * 2; }
+    return wrap(b);
+  }
+  int lowestOneBit(int i) {
+    long v = toUnsignedLong(i);
+    if (v == 0) { return 0; }
+    long b = 1;
+    while (v % 2 == 0) { v = v / 2; b = b * 2; }
+    return wrap(b);
+  }
+  int rotateLeft(int i, int distance) {
+    int d = distance % 32;
+    if (d < 0) { d = d + 32; }
+    long v = toUnsignedLong(i);
+    int k = 0;
+    while (k < d) {
+      long top = v / 2147483648;
+      v = (v % 2147483648) * 2 + top;
+      k = k + 1;
+    }
+    return wrap(v);
+  }
+  int rotateRight(int i, int distance) { return rotateLeft(i, 32 - (distance % 32)); }
+  int reverse(int i) {
+    long v = toUnsignedLong(i);
+    long r = 0;
+    int k = 0;
+    while (k < 32) { r = r * 2 + v % 2; v = v / 2; k = k + 1; }
+    return wrap(r);
+  }
+  int reverseBytes(int i) {
+    long v = toUnsignedLong(i);
+    long r = 0;
+    int k = 0;
+    while (k < 4) { r = r * 256 + v % 256; v = v / 256; k = k + 1; }
+    return wrap(r);
+  }
+
+  int parseInteger(String s) { return parseIntegerRadix(s, 10); }
+  int parseIntegerRadix(String s, int radix) {
+    if (s == null) { throw new NumberFormatException("Cannot parse null string: null"); }
+    if (radix < 2 || radix > 36) { throw new NumberFormatException("radix " + radix + " out of range"); }
+    String u = javaStringFromUtf8(s);
+    int n = javaStringLength(u);
+    if (n == 0) { throw new NumberFormatException("For input string: \"\"" ); }
+    int i = 0;
+    boolean neg = false;
+    int first = javaStringCharAt(u, 0);
+    if (first == 45 || first == 43) {
+      neg = first == 45;
+      i = 1;
+      if (n == 1) { throw forInputString(s, radix); }
+    }
+    int limit = 0 - MAX_VALUE;
+    if (neg) { limit = MIN_VALUE; }
+    int multmin = limit / radix;
+    int result = 0;
+    while (i < n) {
+      int d = digitOf(javaStringCharAt(u, i), radix);
+      if (d < 0 || result < multmin) { throw forInputString(s, radix); }
+      result = result * radix;
+      if (result < limit + d) { throw forInputString(s, radix); }
+      result = result - d;
+      i = i + 1;
+    }
+    if (neg) { return result; }
+    return 0 - result;
+  }
+  Integer decode(String nm) {
+    String u = javaStringFromUtf8(nm);
+    int n = javaStringLength(u);
+    if (n == 0) { throw new NumberFormatException("Zero length string"); }
+    int i = 0;
+    boolean neg = false;
+    int c0 = javaStringCharAt(u, 0);
+    if (c0 == 45 || c0 == 43) { neg = c0 == 45; i = 1; }
+    int radix = 10;
+    if (i + 1 < n && javaStringCharAt(u, i) == 48 && (javaStringCharAt(u, i + 1) == 120 || javaStringCharAt(u, i + 1) == 88)) { radix = 16; i = i + 2; }
+    else { if (i < n && javaStringCharAt(u, i) == 35) { radix = 16; i = i + 1; }
+    else { if (i + 1 < n && javaStringCharAt(u, i) == 48) { radix = 8; i = i + 1; } } }
+    int mag = 0;
+    if (i >= n) { throw forInputString(nm, radix); }
+    while (i < n) {
+      int d = digitOf(javaStringCharAt(u, i), radix);
+      if (d < 0) { throw forInputString(nm, radix); }
+      mag = mag * radix - d;
+      i = i + 1;
+    }
+    if (neg) { return new Integer(mag); }
+    if (mag == MIN_VALUE) { throw forInputString(nm, radix); }
+    return new Integer(0 - mag);
+  }
+  << Parse an unsigned magnitude no larger than max (used by parseUnsignedInt). >>
+  long parseUnsignedLongValue(String s, int radix, long max) {
+    String u = javaStringFromUtf8(s);
+    int n = javaStringLength(u);
+    if (n == 0) { throw forInputString(s, radix); }
+    int i = 0;
+    if (javaStringCharAt(u, 0) == 43) { i = 1; }
+    if (javaStringCharAt(u, 0) == 45) {
+      throw new NumberFormatException("Illegal leading minus sign on unsigned string " + s + ".");
+    }
+    long r = 0;
+    while (i < n) {
+      int d = digitOf(javaStringCharAt(u, i), radix);
+      if (d < 0) { throw forInputString(s, radix); }
+      r = r * radix + d;
+      if (r > max) {
+        throw new NumberFormatException("String value " + s + " exceeds range of unsigned int.");
+      }
+      i = i + 1;
+    }
+    return r;
+  }
+
+  << Digit value of UTF-16 code unit c in the given radix, or -1. >>
+  int digitOf(int c, int radix) {
+    int d = -1;
+    if (c >= 48 && c <= 57) { d = c - 48; }
+    if (c >= 97 && c <= 122) { d = c - 87; }
+    if (c >= 65 && c <= 90) { d = c - 55; }
+    if (d >= radix) { return -1; }
+    return d;
+  }
+  << A single digit character for value d (0..35), lower case as in Java. >>
+  String digitChar(int d) {
+    if (d < 10) { return "" + d; }
+    if (d == 10) { return "a"; } if (d == 11) { return "b"; } if (d == 12) { return "c"; }
+    if (d == 13) { return "d"; } if (d == 14) { return "e"; } if (d == 15) { return "f"; }
+    if (d == 16) { return "g"; } if (d == 17) { return "h"; } if (d == 18) { return "i"; }
+    if (d == 19) { return "j"; } if (d == 20) { return "k"; } if (d == 21) { return "l"; }
+    if (d == 22) { return "m"; } if (d == 23) { return "n"; } if (d == 24) { return "o"; }
+    if (d == 25) { return "p"; } if (d == 26) { return "q"; } if (d == 27) { return "r"; }
+    if (d == 28) { return "s"; } if (d == 29) { return "t"; } if (d == 30) { return "u"; }
+    if (d == 31) { return "v"; } if (d == 32) { return "w"; } if (d == 33) { return "x"; }
+    if (d == 34) { return "y"; }
+    return "z";
+  }
+  NumberFormatException forInputString(String s, int radix) {
+    if (radix == 10) { return new NumberFormatException("For input string: \"" + s + "\""); }
+    return new NumberFormatException("For input string: \"" + s + "\" under radix " + radix);
+  }
+  < ---- END java implementation ---- >
 }

@@ -1,10 +1,10 @@
 << lib/java/java/lang/Boolean.sleela
-   SLeeLa Java SE/JDK 28 source envelope.
+   SLeeLa Java SE/JDK 28 source implementation.
    Definition: Native SLeeLa source declaration for the Java type java.lang.Boolean.
    
    The Java class name is retained exactly. The SLeeLa declaration is the source
    contract; Java behavior is supplied only through the conformance boundary. >>
-#sleela 2.5
+#sleela 3.0
 material;
 
 class Boolean {
@@ -12,7 +12,7 @@ class Boolean {
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
      or catalog can read and (where appropriate) override this record.
      Values are faithful to the subject's real origin where publicly known. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 1876;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-10-16";
@@ -55,4 +55,50 @@ class Boolean {
   String construct() { return "java.construct:" + javaType; }
   String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
   String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+
+  < ---- BEGIN java implementation ---- >
+  < ---- java.lang.Boolean members (procedural implementation in SLeeLa) ---- >
+  << The boxed boolean plus the java.lang.Boolean static API as instance
+     methods (call as new Boolean(false).parseBoolean("TRUE")). parseBoolean
+     is the Java rule: true exactly when the text equals "true" ignoring
+     ASCII case. Overloads are suffixed because calls resolve by name only. >>
+  boolean value;
+  Boolean(boolean v) { value = v; }
+
+  boolean booleanValue() { return value; }
+  Boolean trueValue() { return new Boolean(true); }
+  Boolean falseValue() { return new Boolean(false); }
+  boolean parseBoolean(String s) {
+    if (s == null) { return false; }
+    String u = javaStringFromUtf8(s);
+    if (javaStringLength(u) != 4) { return false; }
+    int c0 = javaStringCharAt(u, 0);
+    int c1 = javaStringCharAt(u, 1);
+    int c2 = javaStringCharAt(u, 2);
+    int c3 = javaStringCharAt(u, 3);
+    return (c0 == 116 || c0 == 84) && (c1 == 114 || c1 == 82) && (c2 == 117 || c2 == 85) && (c3 == 101 || c3 == 69);
+  }
+  Boolean valueOf(boolean b) { return new Boolean(b); }
+  Boolean valueOfString(String s) { return new Boolean(parseBoolean(s)); }
+  String toString() { return toStringOf(value); }
+  String toStringOf(boolean b) { if (b) { return "true"; } return "false"; }
+  int hashCode() { return hashCodeOf(value); }
+  int hashCodeOf(boolean b) { if (b) { return 1231; } return 1237; }
+  boolean equals(Any obj) {
+    if (obj instanceof Boolean) {
+      Boolean o = (Boolean) obj;
+      return o.value == value;
+    }
+    return false;
+  }
+  int compareTo(Boolean b) { return compare(value, b.value); }
+  int compare(boolean x, boolean y) {
+    if (x == y) { return 0; }
+    if (x) { return 1; }
+    return -1;
+  }
+  boolean logicalAnd(boolean a, boolean b) { return a && b; }
+  boolean logicalOr(boolean a, boolean b) { return a || b; }
+  boolean logicalXor(boolean a, boolean b) { return a != b; }
+  < ---- END java implementation ---- >
 }

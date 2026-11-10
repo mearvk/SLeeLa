@@ -13,7 +13,7 @@ The `/lib/java` library family defines the SLeeLa boundary for Java interoperabi
 
 ## Native Library Inventory
 
-The current repository inventory contains **8,993 files under `/lib/java`**. This count is validated from the Git index by the repository CI rather than being treated as an unverified documentation number.
+The current repository inventory contains **9,000 files under `/lib/java`**. This count is validated from the Git index by the repository CI rather than being treated as an unverified documentation number.
 
 The collection is a native SLeeLa source surface for Java-facing language and framework concepts. It is intended to give the SLeeLa Compiler, Loader, SST, and Nordshrift a stable source-level vocabulary for Java packages, classes, procedures, interfaces, runtime concepts, and interoperability boundaries.
 
@@ -32,13 +32,31 @@ python3 lib/java/validate.py
 The validator checks:
 
 - the `/lib/java` directory exists;
-- the Git-indexed file count matches the recorded **8,993-file** baseline;
+- the Git-indexed file count matches the recorded **9,000-file** baseline;
 - manifest schema and root metadata are present;
 - the expected Java interoperability boundary is documented;
 - required source-role metadata is present; and
 - the inventory has not silently fallen below its established baseline.
 
 When files are intentionally added or removed, the baseline and manifest must be updated in the same change. CI therefore makes library growth an explicit engineering event rather than allowing the documented count to drift.
+
+## Procedural Implementation (JDK 28)
+
+`/lib/java` covers the Java procedural language in SLeeLa. Java types get
+their JDK 28 fields, constructors, methods, return values and imports
+written in SLeeLa, running on the SLeeLa VM.
+
+As of 2026-11-10, **322 types are implemented** (about 1,560 constructors and
+methods):
+
+- the whole `java.*` Throwable hierarchy (290 types, with the real `extends` chain);
+- `java.lang`: `Math`, `StrictMath`, `Integer`, `Long`, `Short`, `Byte`, `Double`, `Float`, `Character`, `Boolean`;
+- `java.util` collections and utilities: `ArrayList`, `LinkedList`, `ArrayDeque`, `Vector`, `Stack`, `HashMap`, `LinkedHashMap`, `HashSet`, `LinkedHashSet`, `TreeMap`, `TreeSet`, `PriorityQueue`, `Iterator`, `Arrays`, `Collections`, `Objects`, `Optional*`, `Random`.
+
+Conventions, the deferred keyword/semantics list, and regeneration steps are
+in [JDK28-PROCEDURAL-IMPLEMENTATION.md](JDK28-PROCEDURAL-IMPLEMENTATION.md).
+The conformance programs are in [`examples/java`](../../examples/java/README.md).
+The remaining types are still envelopes.
 
 ## Java-to-SLeeLa Mapping
 
@@ -55,7 +73,7 @@ A Java-facing source unit should identify, where applicable:
 5. **Loader visibility** — how the Compiler and Loader discover the symbol.
 6. **Compatibility surface** — the Java/JDK version or API family represented.
 
-This makes the Java relationship traceable instead of leaving the 8,993-file collection as an opaque directory.
+This makes the Java relationship traceable instead of leaving the 9,000-file collection as an opaque directory.
 
 ## JDK 28 Framework Bindings
 

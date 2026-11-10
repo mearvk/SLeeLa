@@ -2,15 +2,16 @@
    SLeeLa Java 28 source envelope.
    Definition: SLeeLa source declaration for the Java type java.util.KeyValueHolder.
    Java behavior is supplied through the SLeeLa Java conformance boundary. >>
-#sleela 2.5
+#sleela 3.0
 material;
+import java.java.util;
 
 class KeyValueHolder {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
      or catalog can read and (where appropriate) override this record.
      Values are faithful to the subject's real origin where publicly known. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 5351;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-10-16";
@@ -53,4 +54,30 @@ class KeyValueHolder {
   String construct() { return "java.construct:" + javaType; }
   String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
   String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+
+  < ---- BEGIN java implementation ---- >
+  < ---- java.util.KeyValueHolder members (procedural implementation in SLeeLa) ---- >
+  << The immutable Map.Entry returned by Map.entry and by the maps of this
+     package (entrySet, firstEntry, ...). setValue is unsupported, as in Java. >>
+  Any key;
+  Any value;
+  KeyValueHolder(Any k, Any v) { this.key = k; this.value = v; }
+  Any getKey() { return this.key; }
+  Any getValue() { return this.value; }
+  Any setValue(Any v) { throw new UnsupportedOperationException("not supported"); }
+  String toString() {
+    String ks = "null";
+    String vs = "null";
+    if (this.key != null) { ks = "" + this.key; }
+    if (this.value != null) { vs = "" + this.value; }
+    return ks + "=" + vs;
+  }
+  boolean equals(Any o) {
+    if (o instanceof KeyValueHolder) {
+      KeyValueHolder e = (KeyValueHolder) o;
+      return e.getKey() == this.key && e.getValue() == this.value;
+    }
+    return false;
+  }
+  < ---- END java implementation ---- >
 }

@@ -1,18 +1,19 @@
 << lib/java/java/util/Optional.sleela
-   SLeeLa Java SE/JDK 28 source envelope.
+   SLeeLa Java SE/JDK 28 source implementation.
    Definition: Native SLeeLa source declaration for the Java type java.util.Optional.
    
    The Java class name is retained exactly. The SLeeLa declaration is the source
    contract; Java behavior is supplied only through the conformance boundary. >>
-#sleela 2.5
+#sleela 3.0
 material;
+import java.java.util;
 
 class Optional {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
      or catalog can read and (where appropriate) override this record.
      Values are faithful to the subject's real origin where publicly known. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 6772;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-10-16";
@@ -55,4 +56,48 @@ class Optional {
   String construct() { return "java.construct:" + javaType; }
   String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
   String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+
+  < ---- BEGIN java implementation ---- >
+  < ---- java.util.Optional members (procedural implementation in SLeeLa) ---- >
+  << A container that may hold one non-null value. The static factories are
+     instance methods (new Optional(null).of(x)); the constructor argument is
+     the held value (null = empty). Functional methods (map, filter,
+     ifPresent ...) wait for lambda dispatch. >>
+  Any value;
+  Optional(Any v) { this.value = v; }
+
+  Optional empty() { return new Optional(null); }
+  Optional of(Any v) {
+    if (v == null) { throw new NullPointerException(null); }
+    return new Optional(v);
+  }
+  Optional ofNullable(Any v) { return new Optional(v); }
+  boolean isPresent() { return this.value != null; }
+  boolean isEmpty() { return this.value == null; }
+  Any get() {
+    if (this.value == null) { throw new NoSuchElementException("No value present"); }
+    return this.value;
+  }
+  Any orElseThrow() { return get(); }
+  Any orElse(Any other) {
+    if (this.value != null) { return this.value; }
+    return other;
+  }
+  String toString() {
+    if (this.value == null) { return "Optional.empty"; }
+    return "Optional[" + this.value + "]";
+  }
+  boolean equals(Any obj) {
+    if (obj instanceof Optional) {
+      Optional o = (Optional) obj;
+      return o.value == this.value;
+    }
+    return false;
+  }
+  int hashCode() {
+    if (this.value == null) { return 0; }
+    Objects O = new Objects();
+    return O.hashCode(this.value);
+  }
+  < ---- END java implementation ---- >
 }

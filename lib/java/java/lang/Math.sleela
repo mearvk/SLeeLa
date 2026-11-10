@@ -1,10 +1,10 @@
 << lib/java/java/lang/Math.sleela
-   SLeeLa Java SE/JDK 28 source envelope.
+   SLeeLa Java SE/JDK 28 source implementation.
    Definition: Native SLeeLa source declaration for the Java type java.lang.Math.
    
    The Java class name is retained exactly. The SLeeLa declaration is the source
    contract; Java behavior is supplied only through the conformance boundary. >>
-#sleela 2.5
+#sleela 3.0
 material;
 
 class Math {
@@ -12,7 +12,7 @@ class Math {
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
      or catalog can read and (where appropriate) override this record.
      Values are faithful to the subject's real origin where publicly known. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 5822;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-10-16";
@@ -56,6 +56,7 @@ class Math {
   String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
   String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
 
+  < ---- BEGIN java implementation ---- >
   < ---- java.lang.Math members (procedural implementation in SLeeLa) ---- >
   << Instance-method rendering of the java.lang.Math static members. Java static
      dispatch (Math.abs(x)) is a later semantics pass; call as m.abs(x) on a
@@ -63,9 +64,9 @@ class Math {
      exists): range reduction plus convergent series, accurate to roughly 1e-15
      relative for ordinary arguments. NaN and infinities follow IEEE 754.
      Overloads are renamed by operand type (absInt, maxLong, ...) because the
-     compiler resolves calls by name only. The *Exact methods state the Java
-     contract with throw; the compiler currently treats throw as a no-op, so
-     until exception semantics land they return the wrapped value. >>
+     compiler resolves calls by name only. The *Exact methods throw a real
+     java.lang.ArithmeticException in a #sleela 3.0 program (catch it with
+     catch (Any e) until typed catch matching lands). >>
   static final double E = 2.718281828459045;
   static final double PI = 3.141592653589793;
   static final double TAU = 6.283185307179586;
@@ -428,4 +429,5 @@ class Math {
     while (k < 0) { r = r * 0.5; k = k + 1; }
     return r;
   }
+  < ---- END java implementation ---- >
 }
