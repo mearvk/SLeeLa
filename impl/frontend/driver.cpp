@@ -2310,14 +2310,14 @@ static int aotCmd(int argc,char**argv){
         if(!loadReferencedLibraryUnits(src,prog))return 1;
         sleela::SemanticResult sem=sleela::analyzeSemantics(prog,ver.declared,false);
         for(const auto&w:sem.warnings)
-            std::cerr<<"sleela aot: "<<file<<": warning: "<<w<<"\\n";
+            std::cerr<<"sleela aot: "<<file<<": warning: "<<w<<"\n";
         if(!sem.ok()){
             for(const auto&e:sem.errors)
-                std::cerr<<"sleela aot: "<<file<<": error: "<<e<<"\\n";
+                std::cerr<<"sleela aot: "<<file<<": error: "<<e<<"\n";
             return 1;
         }
     }catch(const std::exception&ex){
-        std::cerr<<"sleela aot: "<<file<<": semantic analysis failed: "<<ex.what()<<"\\n";
+        std::cerr<<"sleela aot: "<<file<<": semantic analysis failed: "<<ex.what()<<"\n";
         return 1;
     }
     // Collect @native methods and their fail-closed subset verdict.
