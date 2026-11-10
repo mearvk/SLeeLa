@@ -825,17 +825,37 @@ $(NATIVE_METHOD_METADATA_ARTIFACT): tests/native_drive/native_method_metadata_co
 test-native-method-metadata: $(NATIVE_METHOD_METADATA_SMOKE) $(NATIVE_METHOD_METADATA_ARTIFACT) $(NATIVE_CALL_FIXTURE)
 	@$(NATIVE_METHOD_METADATA_SMOKE) $(NATIVE_METHOD_METADATA_ARTIFACT) $(abspath $(NATIVE_CALL_FIXTURE))
 
-# Compile the standalone C translation unit emitted for @native static methods.
+# End-to-end test for generated per-method typed-ABI plugins.
 NATIVE_METHOD_AOT_SOURCE := tests/native_drive/native_method_aot_compile.sleela
 NATIVE_METHOD_AOT_C := $(BUILD)/native_method_aot.generated.c
-NATIVE_METHOD_AOT_OBJ := $(BUILD)/native_method_aot.generated.o
+NATIVE_METHOD_AOT_ARTIFACT := $(BUILD)/native_method_aot.artifact.sleela
+NATIVE_METHOD_AOT_SMOKE := $(BUILD)/native_method_aot_smoke$(EXE)
+NATIVE_METHOD_AOT_SMOKE_OBJ := $(BUILD)/native_method_aot_smoke.o
+ifeq ($(PLATFORM),macos)
+  NATIVE_METHOD_AOT_PLUGIN := $(BUILD)/native_method_aot.generated.dylib
+  NATIVE_METHOD_AOT_PLUGIN_FLAGS := -dynamiclib
+else ifeq ($(PLATFORM),windows)
+  NATIVE_METHOD_AOT_PLUGIN := $(BUILD)/native_method_aot.generated.dll
+  NATIVE_METHOD_AOT_PLUGIN_FLAGS := -shared
+else
+  NATIVE_METHOD_AOT_PLUGIN := $(BUILD)/native_method_aot.generated.so
+  NATIVE_METHOD_AOT_PLUGIN_FLAGS := -shared
+endif
+ifneq ($(PLATFORM),windows)
+  NATIVE_METHOD_AOT_PLUGIN_CFLAGS := -fPIC
+endif
 $(NATIVE_METHOD_AOT_C): $(NATIVE_METHOD_AOT_SOURCE) $(SLEELA_BIN) | $(BUILD)
-	@cd $(CURDIR)/.. && export SLEELA_SHA256_MANIFEST=${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; $(CURDIR)/$(SLEELA_BIN) aot --emit impl/$(NATIVE_METHOD_AOT_SOURCE) > $(CURDIR)/$@
-$(NATIVE_METHOD_AOT_OBJ): $(NATIVE_METHOD_AOT_C)
-	$(CC) $(CFLAGS) -DSL_NATIVE_PLUGIN_BUILD -I../os-level-support/loader -c $< -o $@
-test-native-method-aot: $(NATIVE_METHOD_AOT_OBJ)
-	@echo "=== per-method @native AOT source generation and C compilation: PASS ==="
-
+	@cd $(CURDIR)/.. && export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; $(CURDIR)/$(SLEELA_BIN) aot --emit impl/$(NATIVE_METHOD_AOT_SOURCE) > $(CURDIR)/$@
+$(NATIVE_METHOD_AOT_PLUGIN): $(NATIVE_METHOD_AOT_C) ../os-level-support/loader/native_loader.h
+	$(CC) $(CFLAGS) $(NATIVE_METHOD_AOT_PLUGIN_CFLAGS) -DSL_NATIVE_PLUGIN_BUILD $(NATIVE_METHOD_AOT_PLUGIN_FLAGS) -I../os-level-support/loader $< -o $@
+$(NATIVE_METHOD_AOT_ARTIFACT): $(NATIVE_METHOD_AOT_SOURCE) $(SLEELA_BIN) | $(BUILD)
+	$(SLEELA_BIN) compile $< -o $@
+$(NATIVE_METHOD_AOT_SMOKE_OBJ): tests/native_drive/native_method_aot_smoke.c core/sleela_core.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c $< -o $@
+$(NATIVE_METHOD_AOT_SMOKE): $(NATIVE_METHOD_AOT_SMOKE_OBJ) $(SLCORE_LIB)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+test-native-method-aot: $(SLEELA_BIN) $(NATIVE_METHOD_AOT_SMOKE) $(NATIVE_METHOD_AOT_PLUGIN) $(NATIVE_METHOD_AOT_ARTIFACT)
+	$(NATIVE_METHOD_AOT_SMOKE) $(NATIVE_METHOD_AOT_ARTIFACT) $(abspath $(NATIVE_METHOD_AOT_PLUGIN))
 # Explicit opt-in regression target; it remains outside default and CI aggregates.
 $(NATIVE_CONCURRENCY_FIXTURE): $(NATIVE_CONCURRENCY_FIXTURE_SOURCE) ../os-level-support/loader/native_loader.h | $(BUILD)
 	$(CC) $(CFLAGS) $(NATIVE_CONCURRENCY_FIXTURE_CFLAGS) -DSL_NATIVE_PLUGIN_BUILD $(NATIVE_CONCURRENCY_FIXTURE_FLAGS) -I../os-level-support/loader $< -o $@
