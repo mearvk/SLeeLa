@@ -1,0 +1,35 @@
+<< SLIdeLanguageBar — active language and project mode selector. >>
+#sleela 2.5
+material;
+class SLIdeLanguageBar {
+  static final int LANG_SLEELA=0;
+  static final int LANG_C=1;
+  static final int LANG_CPP=2;
+  static final int LANG_JAVA=3;
+  SLBox row;
+  SLButton[] buttons;
+  String[] labels;
+  int active;
+  int pending;
+  void createIn(SLWidget parent) {
+    row=new SLBox(); row.horizontal(parent,2); row.setExpand(false,false);
+    buttons=new SLButton[4]; labels=new String[4];
+    labels[0]="SLeeLa"; labels[1]="C"; labels[2]="C++"; labels[3]="Java";
+    for(int i=0;i<4;i=i+1) {
+      buttons[i]=new SLButton(); buttons[i].createIn(row,labels[i]);
+      buttons[i].setSizeRequest(68,28);
+    }
+    active=LANG_SLEELA; pending=-1; buttons[active].setSuggested(true);
+  }
+  int poll() {
+    for(int i=0;i<4;i=i+1) if(buttons[i].clicked()) {
+      active=i; pending=i;
+      for(int j=0;j<4;j=j+1) buttons[j].setSuggested(j==active);
+      return i;
+    }
+    return -1;
+  }
+  int takeLanguage() { int v=pending; pending=-1; return v; }
+  int selectedLanguage() { return active; }
+  String languageName() { return labels[active]; }
+}
