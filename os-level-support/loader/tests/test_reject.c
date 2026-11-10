@@ -1,4 +1,5 @@
 #include "../native_loader.h"
+#include <stddef.h>
 #include <assert.h>
 
 int main(int argc, char **argv) {

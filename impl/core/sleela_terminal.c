@@ -182,23 +182,38 @@ int slterminal_resize(SLTerminalHandle terminal, unsigned cols, unsigned rows) {
     return SUCCEEDED(hr) ? 0 : (int)hr;
 }
 
+static void drain_terminal_output(HANDLE output_read) {
+    char buffer[4096];
+    DWORD available = 0;
+    DWORD received = 0;
+
+    if (!output_read) return;
+    for (;;) {
+        if (!PeekNamedPipe(output_read, NULL, 0, NULL, &available, NULL))
+            break;
+        if (available == 0) break;
+        {
+            DWORD request = available > sizeof(buffer)
+                ? (DWORD)sizeof(buffer) : available;
+            if (!ReadFile(output_read, buffer, request, &received, NULL) ||
+                received == 0)
+                break;
+        }
+    }
+}
+
 int slterminal_close(SLTerminalHandle terminal) {
     SLWinTerminal* t = as_terminal(terminal);
     DWORD wait_result;
     int rc = 0;
     if (!t) return EINVAL;
 
-    /* Close the input writer first so the child observes EOF. Keep the
-     * output reader open while ConPTY shuts down: ClosePseudoConsole may need
-     * to drain final console output, and closing the read end first can stall
-     * teardown inside the ConPTY shutdown path. */
+    /* Closing the input writer lets finite commands finish. Reap the child
+     * before closing the pseudoconsole: ClosePseudoConsole can wait for the
+     * attached process, so calling it first can deadlock the host teardown. */
     if (t->input_write && !CloseHandle(t->input_write)) rc = (int)GetLastError();
     t->input_write = NULL;
 
-    if (t->console) ClosePseudoConsole(t->console);
-    t->console = NULL;
-
-    /* Reap the child only after disconnecting the pseudoconsole. */
     wait_result = WaitForSingleObject(t->process, 3000);
     if (wait_result == WAIT_TIMEOUT) {
         if (!TerminateProcess(t->process, ERROR_PROCESS_ABORTED)) {
@@ -210,6 +225,13 @@ int slterminal_close(SLTerminalHandle terminal) {
     if (wait_result != WAIT_OBJECT_0 && rc == 0) {
         rc = wait_result == WAIT_FAILED ? (int)GetLastError() : ERROR_TIMEOUT;
     }
+
+    /* The child is now stopped, so no more output can be produced. Drain
+     * bytes already buffered in the ConPTY pipe before releasing HPCON. */
+    drain_terminal_output(t->output_read);
+
+    if (t->console) ClosePseudoConsole(t->console);
+    t->console = NULL;
 
     if (t->output_read && !CloseHandle(t->output_read) && rc == 0)
         rc = (int)GetLastError();
