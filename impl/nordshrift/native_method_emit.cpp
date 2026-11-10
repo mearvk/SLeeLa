@@ -92,7 +92,7 @@ class MethodBodyEmitter {
         if (auto x=dynamic_cast<const AssignmentExpr*>(e)) {
             auto v=dynamic_cast<const VarExpr*>(x->target.get());
             if (!v || x->op != "=") throw std::runtime_error("native emitter supports only simple local assignment expressions");
-            out << "(" << cVar(v->name) << " = "; expr(x->value.get()); out << ")"; return;
+            (void)typeOf(e); out << "(" << cVar(v->name) << " = "; expr(x->value.get()); out << ")"; return;
         }
         throw std::runtime_error("native emitter encountered an unsupported expression");
     }
@@ -146,9 +146,7 @@ public:
         depth=1;
         if (m.body) for (const auto& s:m.body->stmts) stmt(s.get());
         ind();
-        if (m.retType == "void") out << "return;\n";
-        else if (m.retType == "String") out << "return (SLNativeString){0}; /* unreachable fallback */\n";
-        else out << "return (" << cType(m.retType) << ")0; /* unreachable fallback */\n";
+        if (m.retType == "void" && (m.body->stmts.empty() || !dynamic_cast<const ReturnStmt*>(m.body->stmts.back().get()))) out << "return;\n";
         out << "}\n\n";
         return out.str();
     }
