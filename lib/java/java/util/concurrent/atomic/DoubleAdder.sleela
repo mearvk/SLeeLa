@@ -2,15 +2,15 @@
    SLeeLa Java 28 source envelope.
    Definition: SLeeLa source declaration for the Java type java.util.concurrent.atomic.DoubleAdder.
    Java behavior is supplied through the SLeeLa Java conformance boundary. >>
-#sleela 2.5
+#sleela 3.0
 material;
 
-class DoubleAdder {
+class DoubleAdder extends Number {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
      or catalog can read and (where appropriate) override this record.
      Values are faithful to the subject's real origin where publicly known. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 3357;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-10-16";
@@ -53,4 +53,28 @@ class DoubleAdder {
   String construct() { return "java.construct:" + javaType; }
   String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
   String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+
+  < ---- BEGIN java implementation ---- >
+  < ---- java.util.concurrent.atomic.DoubleAdder members (procedural implementation in SLeeLa) ---- >
+  << A sum maintained atomically under VM lock 31. Java spreads the sum
+     over cells to reduce contention; a single locked cell has the same
+     observable results. >>
+  double total;
+  DoubleAdder() { this.total = 0.0; }
+  void add(double x) { lock(31); this.total = this.total + x; unlock(31); }
+  double sum() { return this.total; }
+  void reset() { lock(31); this.total = 0.0; unlock(31); }
+  double sumThenReset() {
+    lock(31);
+    double s = this.total;
+    this.total = 0.0;
+    unlock(31);
+    return s;
+  }
+  String toString() { Double d = new Double(sum()); return d.toString(); }
+  long longValue() { return (long) sum(); }
+  int intValue() { Double d = new Double(sum()); return d.intValue(); }
+  double doubleValue() { double d = sum(); return d; }
+  double floatValue() { Float f = new Float(doubleValue()); return f.doubleValue(); }
+  < ---- END java implementation ---- >
 }

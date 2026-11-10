@@ -2,7 +2,7 @@
    SLeeLa Java 28 source envelope.
    Definition: SLeeLa source declaration for the Java type java.util.DoubleSummaryStatistics.
    Java behavior is supplied through the SLeeLa Java conformance boundary. >>
-#sleela 2.5
+#sleela 3.0
 material;
 
 class DoubleSummaryStatistics {
@@ -10,7 +10,7 @@ class DoubleSummaryStatistics {
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
      or catalog can read and (where appropriate) override this record.
      Values are faithful to the subject's real origin where publicly known. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 3374;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-10-16";
@@ -53,4 +53,84 @@ class DoubleSummaryStatistics {
   String construct() { return "java.construct:" + javaType; }
   String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
   String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+
+  < ---- BEGIN java implementation ---- >
+  < ---- java.util.DoubleSummaryStatistics members (procedural implementation in SLeeLa) ---- >
+  << count, sum, min, max and average of the accepted doubles. The sum uses
+     the same Kahan compensated summation as Java (plus the simple sum for the
+     infinite/NaN case), so getSum and getAverage match Java bit for bit. >>
+  long count;
+  double sum;
+  double sumCompensation;
+  double simpleSum;
+  double min;
+  double max;
+  DoubleSummaryStatistics() {
+    Double D = new Double(0.0);
+    this.count = 0;
+    this.sum = 0.0;
+    this.sumCompensation = 0.0;
+    this.simpleSum = 0.0;
+    this.min = D.positiveInfinity();
+    this.max = D.negativeInfinity();
+  }
+  void sumWithCompensation(double value) {
+    double tmp = value - this.sumCompensation;
+    double velvel = this.sum + tmp;
+    this.sumCompensation = (velvel - this.sum) - tmp;
+    this.sum = velvel;
+  }
+  void accept(double value) {
+    Math M = new Math();
+    this.count = this.count + 1;
+    this.simpleSum = this.simpleSum + value;
+    sumWithCompensation(value);
+    this.min = M.min(this.min, value);
+    this.max = M.max(this.max, value);
+  }
+  void combine(DoubleSummaryStatistics other) {
+    Math M = new Math();
+    this.count = this.count + other.count;
+    this.simpleSum = this.simpleSum + other.simpleSum;
+    sumWithCompensation(other.sum);
+    sumWithCompensation(0.0 - other.sumCompensation);
+    this.min = M.min(this.min, other.min);
+    this.max = M.max(this.max, other.max);
+  }
+  long getCount() { return this.count; }
+  double getSum() {
+    Double D = new Double(0.0);
+    double tmp = this.sum - this.sumCompensation;
+    if (tmp != tmp && D.isInfinite(this.simpleSum)) { return this.simpleSum; }
+    return tmp;
+  }
+  double getMin() { return this.min; }
+  double getMax() { return this.max; }
+  double getAverage() {
+    if (this.count == 0) { return 0.0; }
+    double c = this.count;
+    return getSum() / c;
+  }
+  String toString() {
+    return "DoubleSummaryStatistics{count=" + this.count + ", sum=" + fixed6(getSum()) + ", min=" + fixed6(this.min) + ", average=" + fixed6(getAverage()) + ", max=" + fixed6(this.max) + "}";
+  }
+  << Java %f: fixed notation with six decimals, rounded half-up on the
+     exact binary value (via the Double decimal machinery). >>
+  String fixed6(double d) {
+    Double D = new Double(0.0);
+    if (d != d) { return "NaN"; }
+    if (D.isInfinite(d)) { if (d > 0.0) { return "Infinity"; } return "-Infinity"; }
+    String sign = "";
+    double a = d;
+    if (a < 0.0 || D.isNegativeZero(a)) { sign = "-"; a = 0.0 - a; }
+    if (a >= 1.0e12) { return sign + D.toStringOf(a); }
+    long m = D.scaledRound(a, 6);
+    long ip = m / 1000000;
+    long fp = m % 1000000;
+    String fs = "" + fp;
+    while (fs != "" && lengthOf(fs) < 6) { fs = "0" + fs; }
+    return sign + ip + "." + fs;
+  }
+  int lengthOf(String s) { return javaStringLength(javaStringFromUtf8(s)); }
+  < ---- END java implementation ---- >
 }

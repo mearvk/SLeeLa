@@ -1,0 +1,129 @@
+<< examples/java/differential/ConcurrentZipBits.sleela
+   SLeeLa side of the ConcurrentZipBits differential test.
+   Definition: Prints, line for line, the same results as ConcurrentZipBits.java
+   for java.util.concurrent.atomic, the summary statistics, java.util.zip
+   checksums, java.util.BitSet and java.lang.StackTraceElement. >>
+#sleela 3.0
+material;
+import java.java.util;
+class ConcurrentZipBits {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class differential test. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-10";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-10";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+  String getMetaVersion() { return metaVersion; }
+  int getMetaId() { return metaId; }
+  String getAuthor() { return metaAuthor; }
+
+  String longs(long[] a) {
+    String sb = "[";
+    int i = 0;
+    while (i < arrayLength(a)) { if (i > 0) { sb = sb + ", "; } sb = sb + a[i]; i = i + 1; }
+    return sb + "]";
+  }
+  String ints(int[] a) {
+    String sb = "[";
+    int i = 0;
+    while (i < arrayLength(a)) { if (i > 0) { sb = sb + ", "; } sb = sb + a[i]; i = i + 1; }
+    return sb + "]";
+  }
+  void main() {
+    Double D = new Double(0.0);
+    AtomicInteger ai = new AtomicInteger(2147483646);
+    print("" + ai.incrementAndGet() + " " + ai.incrementAndGet() + " " + ai.getAndAdd(5) + " " + ai.get());
+    print("" + ai.compareAndSet(-2147483643, 7) + " " + ai.compareAndSet(1, 2) + " " + ai.compareAndExchange(7, 9) + " " + ai.toString());
+    AtomicLong al = new AtomicLong(40);
+    print("" + al.addAndGet(2) + " " + al.getAndSet(-1) + " " + al.decrementAndGet() + " " + al.intValue() + " " + D.toStringOf(al.doubleValue()));
+    AtomicBoolean ab = new AtomicBoolean(false);
+    print("" + ab.compareAndSet(false, true) + " " + ab.get() + " " + ab.getAndSet(false) + " " + ab.toString());
+    AtomicReference ar = new AtomicReference("a");
+    print("" + ar.compareAndSet("a", "b") + " " + ar.get() + " " + ar.getAndSet(null) + " " + ar.toString());
+    AtomicIntegerArray aia = new AtomicIntegerArray(3);
+    aia.set(1, 5);
+    aia.addAndGet(2, 7);
+    aia.getAndIncrement(0);
+    print(aia.toString() + " " + aia.length() + " " + aia.compareAndSet(1, 5, 6) + " " + aia.get(1));
+    try { aia.get(3); } catch (Any e) { Throwable t = (Throwable) e; print(t.toString()); }
+    AtomicLongArray ala = new AtomicLongArray(2);
+    ala.set(0, 9000000000);
+    print(ala.toString() + " " + ala.incrementAndGet(0));
+    AtomicReferenceArray ara = new AtomicReferenceArray(2);
+    ara.set(0, "x");
+    print(ara.toString());
+    LongAdder la = new LongAdder();
+    la.add(10);
+    la.increment();
+    la.decrement();
+    la.add(-3);
+    print("" + la.sum() + " " + la.toString() + " " + la.sumThenReset() + " " + la.sum());
+    DoubleAdder da = new DoubleAdder();
+    da.add(0.1);
+    da.add(0.2);
+    print(D.toStringOf(da.sum()) + " " + da.toString());
+    IntSummaryStatistics is = new IntSummaryStatistics();
+    print(is.toString());
+    is.accept(3);
+    is.accept(-7);
+    is.accept(10);
+    print(is.toString() + " " + D.toStringOf(is.getAverage()));
+    LongSummaryStatistics ls = new LongSummaryStatistics();
+    ls.accept(5000000000);
+    ls.accept(1);
+    print(ls.toString());
+    DoubleSummaryStatistics ds = new DoubleSummaryStatistics();
+    int k = 0;
+    while (k < 10) { ds.accept(0.1); k = k + 1; }
+    ds.accept(-2.5);
+    print(D.toStringOf(ds.getSum()) + " " + D.toStringOf(ds.getAverage()) + " " + ds.toString());
+    int[] b = new int[9];
+    int j = 0;
+    while (j < 9) { b[j] = 49 + j; j = j + 1; }
+    CRC32 c = new CRC32();
+    c.updateBytes(b, 0, 9);
+    CRC32C cc = new CRC32C();
+    cc.updateBytes(b, 0, 9);
+    Adler32 ad = new Adler32();
+    ad.updateBytes(b, 0, 9);
+    print("" + c.getValue() + " " + cc.getValue() + " " + ad.getValue());
+    c.reset();
+    c.update(255);
+    c.update(-1);
+    print("" + c.getValue());
+    BitSet bs = new BitSet(10);
+    bs.set(1);
+    bs.set(3);
+    bs.set(64);
+    bs.setRange(100, 103);
+    bs.clear(101);
+    print(bs.toString() + " " + bs.cardinality() + " " + bs.length() + " " + bs.size() + " " + bs.nextSetBit(4) + " " + bs.nextClearBit(1) + " " + bs.previousSetBit(99));
+    print("" + bs.hashCode() + " " + longs(bs.toLongArray()) + " " + ints(bs.toByteArray()));
+    BitSet other = new BitSet(0);
+    other.set(3);
+    other.set(5);
+    BitSet x = bs.clone();
+    x.and(other);
+    BitSet y = bs.clone();
+    y.xor(other);
+    long[] w = new long[2];
+    w[0] = -1;
+    w[1] = 5;
+    BitSet fromWords = bs.valueOf(w);
+    print(x.toString() + " " + y.toString() + " " + bs.intersects(other) + " " + bs.getRange(1, 4).toString() + " " + fromWords.cardinality());
+    BitSet neg = new BitSet(0);
+    neg.set(63);
+    print("" + neg.hashCode() + " " + longs(neg.toLongArray()));
+    StackTraceElement st = new StackTraceElement("com.example.Main", "run", "Main.java", 42);
+    StackTraceElement nat = new StackTraceElement("java.lang.Thread", "sleep0", null, -2);
+    print(st.toString() + " " + nat.toString() + " " + new StackTraceElement("A", "b", "A.java", -1).toString() + " " + new StackTraceElement("A", "b", null, 3).toString());
+    print("" + st.hashCode() + " " + st.equals(new StackTraceElement("com.example.Main", "run", "Main.java", 42)) + " " + nat.isNativeMethod());
+  }
+}

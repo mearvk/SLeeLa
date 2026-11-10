@@ -43,9 +43,16 @@ def apply_file(bf):
     header = f"class {name} extends {ext} {{" if ext else f"class {name} {{"
     src = src[:mo.start()] + header + src[mo.end():]
     src = re.sub(re.escape(BEGIN) + r".*?" + re.escape(END) + r"\n", "", src, flags=re.S)
-    b = src.rstrip()
-    assert b.endswith("}")
-    src = b[:-1].rstrip("\n") + "\n\n" + BEGIN + "\n" + body + END + "\n}\n"
+    block = BEGIN + "\n" + body + END + "\n"
+    decl = "  < ---- BEGIN java declarations"
+    if decl in src:
+        # keep the hand-written implementation ahead of the generated declarations
+        i = src.index(decl)
+        src = src[:i].rstrip("\n") + "\n\n" + block + src[i:]
+    else:
+        b = src.rstrip()
+        assert b.endswith("}")
+        src = b[:-1].rstrip("\n") + "\n\n" + block + "}\n"
     src = re.sub(r"^#sleela \d+\.\d+$", "#sleela 3.0", src, count=1, flags=re.M)
     src = src.replace("SLeeLa Java SE/JDK 28 source envelope.", "SLeeLa Java SE/JDK 28 source implementation.", 1)
     src = src.replace('String metaVersion = "1.0.0";', 'String metaVersion = "1.1.0";', 1)

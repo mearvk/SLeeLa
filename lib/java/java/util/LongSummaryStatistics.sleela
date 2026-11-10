@@ -2,7 +2,7 @@
    SLeeLa Java 28 source envelope.
    Definition: SLeeLa source declaration for the Java type java.util.LongSummaryStatistics.
    Java behavior is supplied through the SLeeLa Java conformance boundary. >>
-#sleela 2.5
+#sleela 3.0
 material;
 
 class LongSummaryStatistics {
@@ -10,7 +10,7 @@ class LongSummaryStatistics {
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
      or catalog can read and (where appropriate) override this record.
      Values are faithful to the subject's real origin where publicly known. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 5680;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-10-16";
@@ -53,4 +53,64 @@ class LongSummaryStatistics {
   String construct() { return "java.construct:" + javaType; }
   String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
   String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+
+  < ---- BEGIN java implementation ---- >
+  < ---- java.util.LongSummaryStatistics members (procedural implementation in SLeeLa) ---- >
+  << count, sum, min, max and average of the accepted values, with the Java
+     empty-state values (min = MAX_VALUE, max = MIN_VALUE, average 0.0) and the
+     Java toString layout. >>
+  long count;
+  long sum;
+  long min;
+  long max;
+  LongSummaryStatistics() {
+    this.count = 0;
+    this.sum = 0;
+    this.min = 9223372036854775807;
+    this.max = -9223372036854775807 - 1;
+  }
+  void accept(long value) {
+    this.count = this.count + 1;
+    this.sum = this.sum + value;
+    if (value < this.min) { this.min = value; }
+    if (value > this.max) { this.max = value; }
+  }
+  void combine(LongSummaryStatistics other) {
+    this.count = this.count + other.getCount();
+    this.sum = this.sum + other.getSum();
+    if (other.getMin() < this.min) { this.min = other.getMin(); }
+    if (other.getMax() > this.max) { this.max = other.getMax(); }
+  }
+  long getCount() { return this.count; }
+  long getSum() { return this.sum; }
+  long getMin() { return this.min; }
+  long getMax() { return this.max; }
+  double getAverage() {
+    if (this.count == 0) { return 0.0; }
+    double s = this.sum;
+    double c = this.count;
+    return s / c;
+  }
+  String toString() {
+    return "LongSummaryStatistics{count=" + this.count + ", sum=" + this.sum + ", min=" + this.min + ", average=" + fixed6(getAverage()) + ", max=" + this.max + "}";
+  }
+  << Java %f: fixed notation with six decimals, rounded half-up on the
+     exact binary value (via the Double decimal machinery). >>
+  String fixed6(double d) {
+    Double D = new Double(0.0);
+    if (d != d) { return "NaN"; }
+    if (D.isInfinite(d)) { if (d > 0.0) { return "Infinity"; } return "-Infinity"; }
+    String sign = "";
+    double a = d;
+    if (a < 0.0 || D.isNegativeZero(a)) { sign = "-"; a = 0.0 - a; }
+    if (a >= 1.0e12) { return sign + D.toStringOf(a); }
+    long m = D.scaledRound(a, 6);
+    long ip = m / 1000000;
+    long fp = m % 1000000;
+    String fs = "" + fp;
+    while (fs != "" && lengthOf(fs) < 6) { fs = "0" + fs; }
+    return sign + ip + "." + fs;
+  }
+  int lengthOf(String s) { return javaStringLength(javaStringFromUtf8(s)); }
+  < ---- END java implementation ---- >
 }

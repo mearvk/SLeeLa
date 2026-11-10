@@ -19,8 +19,8 @@ constants). Two numbers are reported:
 
 - **Covered.** Members that exist in SLeeLa with their Java meaning. This
   includes the API-declared part below plus hand-implemented behavior.
-  Currently **38.6%**.
-- **Behavior.** Only hand-written method bodies. Currently **3.0%**.
+  Currently **39.2%**.
+- **Behavior.** Only hand-written method bodies. Currently **3.6%**.
 
 ### API-declared part (`tools/jdk_api_declare.py`)
 
@@ -57,10 +57,26 @@ API, with no behavior to invent. They are generated into a
 | `java.util` collections | 14 | `ArrayList`, `LinkedList`, `ArrayDeque`, `Vector`, `Stack`, `HashMap`, `LinkedHashMap`, `HashSet`, `LinkedHashSet`, `TreeMap`, `TreeSet`, `PriorityQueue`, `Iterator`, `KeyValueHolder` (Map.Entry). Covers the List/Deque/Queue/SequencedCollection API, the Map API with navigation (floor/ceiling/higher/lower, head/tail/sub maps), set algebra (addAll/retainAll/removeAll/containsAll), and Java `hashCode`/`equals`/`toString` formulas. |
 | `java.util` utilities | 7 | `Arrays` (int/double/Object sort, binarySearch, fill, copyOf/copyOfRange, equals, hashCode, toString, mismatch, asList). `Collections` (sort, reverse, swap, fill, rotate, shuffle, max, min, frequency, disjoint, binarySearch, indexOfSubList, nCopies, empty and singleton factories). `Objects`. `Optional`, `OptionalInt`, `OptionalLong`, `OptionalDouble`. `Random`, the Java 48-bit LCG bit for bit. |
 
-That is 322 implemented types with about 1,560 constructors and methods,
+| Concurrency, checksums, bits | 17 | `java.util.concurrent.atomic`: `AtomicInteger`, `AtomicLong`, `AtomicBoolean`, `AtomicReference`, the three atomic arrays, `LongAdder`, `DoubleAdder`. All use VM lock 31, which is reserved for atomics. `Int`/`Long`/`DoubleSummaryStatistics`, including Java's Kahan summation and `%f` output. `java.util.zip` `CRC32`, `CRC32C`, `Adler32`. `java.util.BitSet`, including the Java long-word layout for `hashCode`, `toLongArray` and `valueOf`. `java.lang.StackTraceElement`. |
+
+That is 339 implemented types with about 1,560 constructors and methods,
 roughly 9,800 lines of SLeeLa.
 
 ## Conformance
+
+### Differential tests (real JDK vs SLeeLa)
+
+[`examples/java/differential/`](../../examples/java/differential/) holds
+pairs of `<Name>.java` and `<Name>.sleela` that make the same calls and print
+the same lines. `run-differential.sh` compiles and runs the Java side on a
+real JDK, runs the SLeeLa side on the VM, and requires identical output.
+Nothing is transcribed by hand; the expected values come from Java itself.
+
+```sh
+examples/java/differential/run-differential.sh
+```
+
+### Self-checking programs
 
 [`examples/java/`](../../examples/java/README.md) holds eight conformance
 programs. They compare against values the Java SE API returns for the same

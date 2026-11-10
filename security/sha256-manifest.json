@@ -32175,7 +32175,7 @@
     },
     {
       "path": "lib/java/java/lang/StackTraceElement.sleela",
-      "sha256": "e9c7a1ce0b1127b0018da4e03788523320e1a0061cf693a272340327e8a12ac2"
+      "sha256": "7fdb4c8483143db78e470b525cb15ac249006a4818bdb2e18da6c2a14a5e2ee5"
     },
     {
       "path": "lib/java/java/lang/StackWalker.Option.sleela",
@@ -37095,7 +37095,7 @@
     },
     {
       "path": "lib/java/java/util/BitSet.sleela",
-      "sha256": "2119a517958ad3858a66059c9ff385f80025eb0987a2f11f9863acd6c8887231"
+      "sha256": "3a71049623fc870051405cad97581aef579a043cb465066ad7c23d49f2e842fb"
     },
     {
       "path": "lib/java/java/util/Calendar.Builder.sleela",
@@ -37147,7 +37147,7 @@
     },
     {
       "path": "lib/java/java/util/DoubleSummaryStatistics.sleela",
-      "sha256": "c73ea9cc11a2aaf4f8af7dcf1488626d3e96a7b40a58265bece8554d3705a8ba"
+      "sha256": "2de40fe74b81a0d523463998ad5349d577593f8ab8977db49130da8668246348"
     },
     {
       "path": "lib/java/java/util/DualPivotQuicksort.sleela",
@@ -37275,7 +37275,7 @@
     },
     {
       "path": "lib/java/java/util/IntSummaryStatistics.sleela",
-      "sha256": "1b1ed7588c6081b8365704510fef0e95ff6bb5401a01bca7433abd164a549009"
+      "sha256": "fc8a2cd06f2475afaa435988bb86ce6b809d9371a7c32aa91d8724e038897d69"
     },
     {
       "path": "lib/java/java/util/InvalidPropertiesFormatException.sleela",
@@ -37355,7 +37355,7 @@
     },
     {
       "path": "lib/java/java/util/LongSummaryStatistics.sleela",
-      "sha256": "3eff1f54803d539fe09ef0d63064eb014418df3d5292ca8a50ce495680556d85"
+      "sha256": "b953dcb07371c8a3c4d40508907481155ed4d6eed735521c5c9eb59535f0671c"
     },
     {
       "path": "lib/java/java/util/Map.Entry.sleela",
@@ -37987,15 +37987,15 @@
     },
     {
       "path": "lib/java/java/util/concurrent/atomic/AtomicBoolean.sleela",
-      "sha256": "5a1dc72eb6f508b4c0294effc7ba98375e0daf82c9b688e3255451a3bb373d37"
+      "sha256": "f59dd2bcd634d59c312a8d12137995a76070762a5c9fb46e279b75999005fb05"
     },
     {
       "path": "lib/java/java/util/concurrent/atomic/AtomicInteger.sleela",
-      "sha256": "2d1f026aca491040f3241965612ac61f3df34848fd199eb293a67b1058e718e4"
+      "sha256": "77e802264ebaa8b085f68d36bc36c8dc088e02bbdfad34542d4547240c403b40"
     },
     {
       "path": "lib/java/java/util/concurrent/atomic/AtomicIntegerArray.sleela",
-      "sha256": "f01063e872ff565efaa69d411f1c7454e9169049eac2422aa4c00264e2fa8080"
+      "sha256": "4bd0c583a0edb0395a3a82bdaddb95a7a3db1de1efa906f0505ebfba28337a82"
     },
     {
       "path": "lib/java/java/util/concurrent/atomic/AtomicIntegerFieldUpdater.sleela",
@@ -38003,11 +38003,11 @@
     },
     {
       "path": "lib/java/java/util/concurrent/atomic/AtomicLong.sleela",
-      "sha256": "0735db818847d2aaab5edab1ba995ce5515bb23f5be34fad96456bd8ed7c2103"
+      "sha256": "8698a7a3cfd359fe246f21d344685cef006d8f54b2b808e77641028c6e6d052c"
     },
     {
       "path": "lib/java/java/util/concurrent/atomic/AtomicLongArray.sleela",
-      "sha256": "4222b6366c2930726966545fb5d7b754d8a8833577d9e4e4573ef58609701d20"
+      "sha256": "86e7107085472850e7ab16266babe46ee94f54c67d8042e4e93a24d027cf185c"
     },
     {
       "path": "lib/java/java/util/concurrent/atomic/AtomicLongFieldUpdater.sleela",
@@ -38019,11 +38019,11 @@
     },
     {
       "path": "lib/java/java/util/concurrent/atomic/AtomicReference.sleela",
-      "sha256": "77fa43e90bb2767237931910c9ee4b8c63740f79db205e621c229b5d82312a61"
+      "sha256": "54bab64a1b28159f6df6902d5a0947f479e223c1c03c62d05744c87c58bac77f"
     },
     {
       "path": "lib/java/java/util/concurrent/atomic/AtomicReferenceArray.sleela",
-      "sha256": "2cba9e0147607bec34f2f66f3d986b54035e9e8a2eacd9f238a72262fab3a98d"
+      "sha256": "385e50264f94873baa8d2a4e40516e1aa01ac36577a985f0d77746067678a4c8"
     },
     {
       "path": "lib/java/java/util/concurrent/atomic/AtomicReferenceFieldUpdater.sleela",
@@ -38039,7 +38039,7 @@
     },
     {
       "path": "lib/java/java/util/concurrent/atomic/DoubleAdder.sleela",
-      "sha256": "09423420e56836a10da1d8c4b750cf18679fc6a765d78291dab1ca083af575fe"
+      "sha256": "f6e934a92c87d08909e565c4e222bbad1e9b624f9f6e509f91741cd98f4ec66c"
     },
     {
       "path": "lib/java/java/util/concurrent/atomic/LongAccumulator.sleela",
@@ -38047,7 +38047,7 @@
     },
     {
       "path": "lib/java/java/util/concurrent/atomic/LongAdder.sleela",
-      "sha256": "27b78da7d9ae377edefe477b360e98282935f2a34146d87fad12bc717386cfe4"
+      "sha256": "a4dbbdacaa2405fd0303a9b23c612bdff419a18b634f771317614b6bfe10860a"
     },
     {
       "path": "lib/java/java/util/concurrent/atomic/Striped64.sleela",
@@ -38739,15 +38739,15 @@
     },
     {
       "path": "lib/java/java/util/zip/Adler32.sleela",
-      "sha256": "9435ab275bc06a771e3245a9d7becd0b6aece615447e306034f25f3c43b3d660"
+      "sha256": "d97753e8b8cb31a54e71bd5d4ea7c96fd4e4ee7b73398427117f3a13ac744ba3"
     },
     {
       "path": "lib/java/java/util/zip/CRC32.sleela",
-      "sha256": "7427f8925e4a29c96bb3f3f429a46c9d09d37991f5b826d7ffc828916acb1be3"
+      "sha256": "a2b606a97857060fac02471f2c7e4152b1a8add953c6cf0934c34d5a53ee955b"
     },
     {
       "path": "lib/java/java/util/zip/CRC32C.sleela",
-      "sha256": "38473548d9762911bbb3fdd27329b2815b2564181cf436497499d1abcb8f320a"
+      "sha256": "e3cc676493a40d3282cf2563b6cf007446df5e8d97a30c075f0f7f98cf4592c4"
     },
     {
       "path": "lib/java/java/util/zip/CheckedInputStream.sleela",

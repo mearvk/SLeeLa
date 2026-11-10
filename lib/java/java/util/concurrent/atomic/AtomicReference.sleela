@@ -2,7 +2,7 @@
    SLeeLa Java 28 source envelope.
    Definition: SLeeLa source declaration for the Java type java.util.concurrent.atomic.AtomicReference.
    Java behavior is supplied through the SLeeLa Java conformance boundary. >>
-#sleela 2.5
+#sleela 3.0
 material;
 
 class AtomicReference {
@@ -10,7 +10,7 @@ class AtomicReference {
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
      or catalog can read and (where appropriate) override this record.
      Values are faithful to the subject's real origin where publicly known. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 1476;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-10-16";
@@ -53,4 +53,56 @@ class AtomicReference {
   String construct() { return "java.construct:" + javaType; }
   String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
   String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+
+  < ---- BEGIN java implementation ---- >
+  < ---- java.util.concurrent.atomic.AtomicReference members (procedural implementation in SLeeLa) ---- >
+  << A Any value updated atomically: every read-modify-write runs under VM
+     lock 31 (reserved for java.util.concurrent.atomic), so updates from
+     spawned threads never interleave. The plain / opaque / acquire / release
+     access modes are all sequentially consistent here, which satisfies each
+     of their Java contracts. compareAndSet compares with == (value equality
+     for numbers, identity for objects). The functional update methods wait
+     for lambda dispatch. >>
+  Any value;
+  AtomicReference(Any initialValue) { this.value = initialValue; }
+
+  Any get() { return this.value; }
+  void set(Any newValue) { lock(31); this.value = newValue; unlock(31); }
+  void lazySet(Any newValue) { set(newValue); }
+  Any getPlain() { return this.value; }
+  void setPlain(Any newValue) { this.value = newValue; }
+  Any getOpaque() { return get(); }
+  void setOpaque(Any newValue) { set(newValue); }
+  Any getAcquire() { return get(); }
+  void setRelease(Any newValue) { set(newValue); }
+  Any getAndSet(Any newValue) {
+    lock(31);
+    Any old = this.value;
+    this.value = newValue;
+    unlock(31);
+    return old;
+  }
+  boolean compareAndSet(Any expectedValue, Any newValue) {
+    lock(31);
+    boolean hit = this.value == expectedValue;
+    if (hit) { this.value = newValue; }
+    unlock(31);
+    return hit;
+  }
+  boolean weakCompareAndSet(Any expectedValue, Any newValue) { return compareAndSet(expectedValue, newValue); }
+  boolean weakCompareAndSetPlain(Any expectedValue, Any newValue) { return compareAndSet(expectedValue, newValue); }
+  boolean weakCompareAndSetVolatile(Any expectedValue, Any newValue) { return compareAndSet(expectedValue, newValue); }
+  boolean weakCompareAndSetAcquire(Any expectedValue, Any newValue) { return compareAndSet(expectedValue, newValue); }
+  boolean weakCompareAndSetRelease(Any expectedValue, Any newValue) { return compareAndSet(expectedValue, newValue); }
+  Any compareAndExchange(Any expectedValue, Any newValue) {
+    lock(31);
+    Any witness = this.value;
+    if (witness == expectedValue) { this.value = newValue; }
+    unlock(31);
+    return witness;
+  }
+  Any compareAndExchangeAcquire(Any expectedValue, Any newValue) { return compareAndExchange(expectedValue, newValue); }
+  Any compareAndExchangeRelease(Any expectedValue, Any newValue) { return compareAndExchange(expectedValue, newValue); }
+  String toString() { Any v = get(); if (v == null) { return "null"; } return "" + v; }
+  < ---- END java implementation ---- >
 }

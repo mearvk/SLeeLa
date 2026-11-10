@@ -2,7 +2,7 @@
    SLeeLa Java 28 source envelope.
    Definition: SLeeLa source declaration for the Java type java.util.concurrent.atomic.AtomicIntegerArray.
    Java behavior is supplied through the SLeeLa Java conformance boundary. >>
-#sleela 2.5
+#sleela 3.0
 material;
 
 class AtomicIntegerArray {
@@ -10,7 +10,7 @@ class AtomicIntegerArray {
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
      or catalog can read and (where appropriate) override this record.
      Values are faithful to the subject's real origin where publicly known. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 1462;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-10-16";
@@ -53,4 +53,102 @@ class AtomicIntegerArray {
   String construct() { return "java.construct:" + javaType; }
   String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
   String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+
+  < ---- BEGIN java implementation ---- >
+  < ---- java.util.concurrent.atomic.AtomicIntegerArray members (procedural implementation in SLeeLa) ---- >
+  << A int array whose elements are updated atomically under VM lock 31
+     (reserved for java.util.concurrent.atomic). The constructor takes the
+     length (Java AtomicIntegerArray(int length)); every element starts at 0. >>
+  int[] array;
+  AtomicIntegerArray(int length) {
+    this.array = new int[length];
+    int i = 0;
+    while (i < length) { this.array[i] = 0; i = i + 1; }
+  }
+  void check(int i) {
+    if (i < 0 || i >= arrayLength(this.array)) {
+      throw new ArrayIndexOutOfBoundsException("Index " + i + " out of bounds for length " + arrayLength(this.array));
+    }
+  }
+  int length() { return arrayLength(this.array); }
+  int get(int i) { check(i); return this.array[i]; }
+  void set(int i, int newValue) { check(i); lock(31); this.array[i] = newValue; unlock(31); }
+  void lazySet(int i, int newValue) { set(i, newValue); }
+  int getPlain(int i) { return get(i); }
+  void setPlain(int i, int newValue) { set(i, newValue); }
+  int getOpaque(int i) { return get(i); }
+  void setOpaque(int i, int newValue) { set(i, newValue); }
+  int getAcquire(int i) { return get(i); }
+  void setRelease(int i, int newValue) { set(i, newValue); }
+  int getAndSet(int i, int newValue) {
+    check(i);
+    lock(31);
+    int old = this.array[i];
+    this.array[i] = newValue;
+    unlock(31);
+    return old;
+  }
+  boolean compareAndSet(int i, int expectedValue, int newValue) {
+    check(i);
+    lock(31);
+    boolean hit = this.array[i] == expectedValue;
+    if (hit) { this.array[i] = newValue; }
+    unlock(31);
+    return hit;
+  }
+  boolean weakCompareAndSet(int i, int expectedValue, int newValue) { return compareAndSet(i, expectedValue, newValue); }
+  boolean weakCompareAndSetPlain(int i, int expectedValue, int newValue) { return compareAndSet(i, expectedValue, newValue); }
+  boolean weakCompareAndSetVolatile(int i, int expectedValue, int newValue) { return compareAndSet(i, expectedValue, newValue); }
+  boolean weakCompareAndSetAcquire(int i, int expectedValue, int newValue) { return compareAndSet(i, expectedValue, newValue); }
+  boolean weakCompareAndSetRelease(int i, int expectedValue, int newValue) { return compareAndSet(i, expectedValue, newValue); }
+  int compareAndExchange(int i, int expectedValue, int newValue) {
+    check(i);
+    lock(31);
+    int witness = this.array[i];
+    if (witness == expectedValue) { this.array[i] = newValue; }
+    unlock(31);
+    return witness;
+  }
+  int compareAndExchangeAcquire(int i, int expectedValue, int newValue) { return compareAndExchange(i, expectedValue, newValue); }
+  int compareAndExchangeRelease(int i, int expectedValue, int newValue) { return compareAndExchange(i, expectedValue, newValue); }
+
+  int getAndIncrement(int i) { return getAndAdd(i, 1); }
+  int getAndDecrement(int i) { return getAndAdd(i, -1); }
+  int getAndAdd(int i, int delta) {
+    check(i);
+    lock(31);
+    int old = this.array[i];
+    this.array[i] = wrap32(old + delta);
+    unlock(31);
+    return old;
+  }
+  int incrementAndGet(int i) { return addAndGet(i, 1); }
+  int decrementAndGet(int i) { return addAndGet(i, -1); }
+  int addAndGet(int i, int delta) {
+    check(i);
+    lock(31);
+    int now = wrap32(this.array[i] + delta);
+    this.array[i] = now;
+    unlock(31);
+    return now;
+  }
+  String toString() {
+    int n = arrayLength(this.array);
+    if (n == 0) { return "[]"; }
+    String sb = "[";
+    int i = 0;
+    while (i < n) {
+      if (i > 0) { sb = sb + ", "; }
+      sb = sb + "" + this.array[i];
+      i = i + 1;
+    }
+    return sb + "]";
+  }
+  int wrap32(long v) {
+    long m = v % 4294967296;
+    if (m < 0) { m = m + 4294967296; }
+    if (m > 2147483647) { m = m - 4294967296; }
+    return (int) m;
+  }
+  < ---- END java implementation ---- >
 }

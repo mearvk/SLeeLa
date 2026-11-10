@@ -2,7 +2,7 @@
    SLeeLa Java 28 source envelope.
    Definition: SLeeLa source declaration for the Java type java.lang.StackTraceElement.
    Java behavior is supplied through the SLeeLa Java conformance boundary. >>
-#sleela 2.5
+#sleela 3.0
 material;
 
 class StackTraceElement {
@@ -10,7 +10,7 @@ class StackTraceElement {
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
      or catalog can read and (where appropriate) override this record.
      Values are faithful to the subject's real origin where publicly known. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 8532;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-10-16";
@@ -53,4 +53,71 @@ class StackTraceElement {
   String construct() { return "java.construct:" + javaType; }
   String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
   String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+
+  < ---- BEGIN java implementation ---- >
+  < ---- java.lang.StackTraceElement members (procedural implementation in SLeeLa) ---- >
+  << One frame of a stack trace with the Java accessors, toString layout and
+     hashCode formula. The constructor is the Java 4-argument form
+     (declaringClass, methodName, fileName, lineNumber); a line number of -2
+     marks a native method. Module and class-loader names are null. >>
+  String declaringClass;
+  String methodName;
+  String fileName;
+  int lineNumber;
+  StackTraceElement(String declaringClass, String methodName, String fileName, int lineNumber) {
+    if (declaringClass == null) { throw new NullPointerException("Declaring class is null"); }
+    if (methodName == null) { throw new NullPointerException("Method name is null"); }
+    this.declaringClass = declaringClass;
+    this.methodName = methodName;
+    this.fileName = fileName;
+    this.lineNumber = lineNumber;
+  }
+  String getClassName() { return this.declaringClass; }
+  String getMethodName() { return this.methodName; }
+  String getFileName() { return this.fileName; }
+  int getLineNumber() { return this.lineNumber; }
+  String getModuleName() { return null; }
+  String getModuleVersion() { return null; }
+  String getClassLoaderName() { return null; }
+  boolean isNativeMethod() { return this.lineNumber == -2; }
+  String toString() {
+    String where = "";
+    if (isNativeMethod()) { where = "Native Method"; }
+    else {
+      if (this.fileName == null) { where = "Unknown Source"; }
+      else {
+        if (this.lineNumber >= 0) { where = this.fileName + ":" + this.lineNumber; }
+        else { where = this.fileName; }
+      }
+    }
+    return this.declaringClass + "." + this.methodName + "(" + where + ")";
+  }
+  boolean equals(Any obj) {
+    if (obj instanceof StackTraceElement) {
+      StackTraceElement e = (StackTraceElement) obj;
+      return e.getClassName() == this.declaringClass && e.getMethodName() == this.methodName && e.getFileName() == this.fileName && e.getLineNumber() == this.lineNumber;
+    }
+    return false;
+  }
+  int strHash(String s) {
+    if (s == null) { return 0; }
+    return javaStringHashCode(javaStringFromUtf8(s));
+  }
+  int hashCode() {
+    long r = 31 * strHash(this.declaringClass) + strHash(this.methodName);
+    r = wrap32(r);
+    r = wrap32(31 * r);
+    r = wrap32(31 * r);
+    r = wrap32(31 * r);
+    r = wrap32(31 * r + strHash(this.fileName));
+    r = wrap32(31 * r + this.lineNumber);
+    return (int) r;
+  }
+  int wrap32(long v) {
+    long m = v % 4294967296;
+    if (m < 0) { m = m + 4294967296; }
+    if (m > 2147483647) { m = m - 4294967296; }
+    return (int) m;
+  }
+  < ---- END java implementation ---- >
 }
