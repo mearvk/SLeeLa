@@ -5,6 +5,21 @@ class NativeAotFixture {
         return left + right;
     }
 
+    @native
+    static double scale(double value) {
+        return value * 2.0;
+    }
+
+    @native
+    static boolean positive(int value) {
+        return value > 0;
+    }
+
+    @native
+    static String echo(String value) {
+        return value;
+    }
+
     static int main() {
         return sum(20, 22);
     }
