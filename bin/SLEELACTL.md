@@ -305,6 +305,170 @@ that demo builds and runs with the current `sleela` binary. Do not add a
 registry row merely because an import name is reserved or a native source file
 exists; the registry handle must identify a runnable reference demo.
 
+
+## Program and module lifecycle: load, combine, change, unload, stop
+
+There are three distinct lifecycle layers. Choose the command that matches the
+thing being controlled; these operations are not interchangeable.
+
+| Goal | Native subject program | Handler registry | Long-running daemon |
+| --- | --- | --- | --- |
+| Load | Add `import <subject>;` to the program, then run it | `sleelactl load <registry> <id>` | `sleelactl start <daemon>` |
+| Load several | Import several subjects in one source file | Load each handler id separately | Start each daemon separately |
+| Change | Edit imports/calls and rerun; rebuild runtime if native implementation changed | Load/unload the required handler ids | Use `restart` or `reload` where supported |
+| Unload | End the program; subject code is part of the runtime, not dynamically unloaded | `sleelactl unload <registry> <id>` | `sleelactl stop <daemon>` |
+| Inspect | `sleelactl info <subject>`; run the program to exercise it | `sleelactl status/list <registry>` | `sleelactl status <daemon>` |
+| Stop | Ctrl-C in foreground, or terminate the owning process | Stop the program using the registry; handler operations are process-local | `sleelactl stop <daemon>` |
+
+### 1. Load and run one native subject
+
+A subject is selected at source level. The import is compiled/lowered by the
+SLeeLa frontend and its native implementation is already part of the runtime.
+
+```sh
+sleelactl list subject
+sleelactl info math
+sleelactl run math
+```
+
+The final command runs the registered Math reference program. For a program of
+your own, put `import math;` near the top of the `.sleela` source, use
+qualified calls such as `math.sqrt(144.0)`, and run that source:
+
+```sh
+sleela run ./my-math-program.sleela
+```
+
+At this revision, Math is the only subject with a `sleelactl` registry row and
+reference-demo handle. The other catalogue subjects are imported from SLeeLa
+source, but `sleelactl run physics` (for example) is not registered yet.
+
+### 2. Multi-load: combine subjects in one program
+
+“Multi-load” for native subjects means importing multiple subject namespaces
+into the same SLeeLa program. It does not mean issuing a multi-module
+`sleelactl load` command. For example, a source file can declare:
+
+```sleela
+#sleela 2.5
+import math;
+import physics;
+import economics;
+import astrophysics;
+
+// Calls are qualified by their imported namespace.
+math.sqrt(144.0);
+physics.force(12.0, 9.8);
+economics.future_value(1000.0, 0.05, 3.0);
+astrophysics.redshift(656.3, 650.0);
+```
+
+Run the combined program once:
+
+```sh
+sleela run ./combined-subjects.sleela
+```
+
+Add or remove import declarations and their calls to change the set of
+subjects used by the program. Follow each subject's API and parameter
+conventions in the catalogue above. Importing a subject does not start a
+background service; it makes that subject's compiled API available to the
+program.
+
+### 3. Change or replace a loaded subject set
+
+For native subjects, change the source file:
+1. Add, remove, or edit the relevant `import <name>;` declarations.
+2. Update qualified calls to match the APIs listed in the catalogue.
+3. Run the source again with `sleela run <file.sleela>`.
+
+If only the SLeeLa source changed, rerun the program; no native library
+hot-swap is involved. If a native C/C++ subject implementation or its runtime
+integration changed, rebuild the runtime before running the program:
+
+```sh
+make -C impl build/sleela
+sleela run ./combined-subjects.sleela
+```
+
+There is no subject-level `change`, `reload`, or hot-replacement verb in
+`sleelactl` today. A source edit affects the next run, not a program that is
+already executing.
+
+### 4. Unload and stop native subject programs
+
+Native subject APIs currently have no independent `unload` command. They are
+linked into the runtime process. To release them, stop the program that owns
+that runtime:
+- Foreground run: press `Ctrl-C` in the terminal.
+- Background run: stop the process using its recorded PID or the process
+  supervisor that launched it; do not guess a PID.
+- When the process exits, its runtime and subject state are released by normal
+  process teardown.
+
+Do not use `sleelactl unload math` or `sleelactl stop math`: both are invalid
+for a `subject`. The subject nature deliberately exposes only `run` and
+`info`.
+
+### 5. Registry load/unload is a different operation
+
+For codec, compression, and video registries, `load` and `unload` refer to
+handler IDs managed by a package Controller. For example:
+
+```sh
+sleelactl list registry
+sleelactl load codecs 2
+sleelactl status codecs
+sleelactl unload codecs 2
+```
+
+These commands drive the package's reference Controller pipeline. The current
+dispatcher runs that pipeline as a SLeeLa program; it does not maintain a
+persistent, globally loaded handler between separate CLI invocations. The
+pipeline exercises the Controller's load/canProcess/decode/unload flow within
+its own process. For durable or application-specific handler state, the
+Controller must be owned by the running SLeeLa application.
+
+### 6. Stop, restart, and status for daemons
+
+Only daemon-nature modules are long-running services controlled by systemd.
+For example:
+
+```sh
+sleelactl status server-edition
+sleelactl stop server-edition
+sleelactl start server-edition
+sleelactl restart server-edition
+sleelactl status server-edition
+```
+
+System-scope units may require sudo; user-scope units can be selected with
+`SLEELACTL_SYSTEMCTL_SCOPE=user`. Use `sleelactl help server-edition` to
+confirm the legal verbs for a particular registered module.
+
+### 7. Quick reference and important limits
+
+```sh
+sleelactl list subject             # registered native subjects
+sleelactl info math                # subject import/API entry point
+sleelactl run math                 # run Math reference demo
+sleelactl list registry            # registered handler registries
+sleelactl load codecs 2            # exercise handler load flow
+sleelactl unload codecs 2          # exercise handler unload flow
+sleelactl status server-edition    # inspect daemon
+sleelactl stop server-edition      # stop daemon
+```
+
+Current limitations:
+- Native subjects are compiled into the runtime; no dynamic subject loader,
+  per-subject unload, or live hot-swap is exposed.
+- Only `math` is currently registered as a `sleelactl` subject target.
+- Registry load/unload is currently exercised through a reference pipeline;
+  separate CLI calls do not share a persistent Controller instance.
+- `stop` is a daemon verb, not a generic way to stop arbitrary SLeeLa
+  programs. Stop a standalone program through its terminal or process
+  supervisor.
+
 ## systemd scope and honest degradation
 
 Daemon units use the **system** manager by default. Root invokes `systemctl --system` directly; an unprivileged caller uses `sudo systemctl --system` and therefore needs sudo authorization. For a unit installed in the caller's user manager, set `SLEELACTL_SYSTEMCTL_SCOPE=user`; this invokes `systemctl --user` and never sudo. The registry's daemon handles must match the selected manager's unit scope.
