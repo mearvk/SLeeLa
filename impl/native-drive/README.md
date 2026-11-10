@@ -109,6 +109,15 @@ null, bool, int64, double, and UTF-8 String values; it never passes its internal
 a plugin. Returned strings are copied while the module-call lock is held and
 validated before entering the VM String store.
 
+This explicit `nativeCall` route is not yet automatic dispatch for ordinary
+calls to methods annotated `@native`. The annotation currently requests AOT
+handling, while the AOT emitter still produces whole-program C output rather
+than independently addressable method entry points. Automatic dispatch needs
+compiler-emitted method identities, a per-method ABI, and an explicit host-owned
+binding table before the VM can safely select native code for an ordinary
+method call. The required contract and staged implementation plan are in
+[`AT-NATIVE-DISPATCH.md`](AT-NATIVE-DISPATCH.md).
+
 ### Native-to-SLeeLa callbacks
 
 A plugin may optionally export `sl_native_bind_host(const SLNativeHostAPI*)`.
