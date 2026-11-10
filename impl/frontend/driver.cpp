@@ -328,7 +328,7 @@ static fs::path rootFromManifest(const fs::path&manifest){
         return candidate;
     return fs::path();
 }
-static int verifyBeforeExecution(const fs::path&cwd){
+static int verifyBeforeExecution(const fs::path&cwd, bool quiet=false){
     // Resolve the SLeeLa root first so a configured installation works even
     // when the caller is a separate client project and has no local verifier.
     fs::path root=findRepoRoot(cwd);
@@ -352,7 +352,7 @@ static int verifyBeforeExecution(const fs::path&cwd){
             const char* home=std::getenv("SLEELA_HOME");
             bool homePinned = home && *home;
             if(!homePinned && manifestRoot!=root){
-                std::cout<<"[security] anchoring verification to the manifest's own root: "
+                (quiet ? std::cerr : std::cout)<<"[security] anchoring verification to the manifest's own root: "
                          <<manifestRoot.string()<<"\n";
                 root=manifestRoot;
             }
@@ -377,7 +377,8 @@ static int verifyBeforeExecution(const fs::path&cwd){
 #else
     std::string cmd="python3 "+shellQuote(tool.string())+" --manifest "+shellQuote(manifest.string())+" --root "+shellQuote(root.string());
 #endif
-    std::cout<<"[security] SHA-256 verification required before build/execution/diagnostics\n";
+    if(quiet) cmd += " 1>&2";
+    else std::cout<<"[security] SHA-256 verification required before build/execution/diagnostics\n";
     return runCommand(cmd);
 }
 static const char* defenderRepo(){
@@ -2297,7 +2298,7 @@ static int aotCmd(int argc,char**argv){
         else file=a;
     }
     if(file.empty()){std::cerr<<"sleela aot: need a <file.sleela>\n";aotUsage();return 2;}
-    if(verifyBeforeExecution(fs::current_path()))return 1;
+    if(verifyBeforeExecution(fs::current_path(), mode==EMIT))return 1;
     std::string src;sleela::Program prog;sleela::VersionResolution ver;
     if(!parseSource(file,src,prog,ver))return 1;
     // Collect @native methods and their fail-closed subset verdict.
