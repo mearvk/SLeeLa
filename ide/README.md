@@ -2,66 +2,72 @@
 
 <img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela/sleela-logo-004.jpg" alt="SLeeLa">
 
+# SLeeLa IDE
 
+Version: 0.4.0-dev
 
+The primary IDE direction is a **native SLeeLa desktop application**, authored
+in SLeeLa on SleelaUI. It is designed for SLeeLa, C, C++, and Java projects
+without embedding the IntelliJ Platform or requiring a JetBrains installation.
 
+## Native application
 
+The GUI and workbench composition live in:
 
-# SLeeLa IDE Integration
+- `lib/ide-workbench/SLIdeWorkbenchUI.sleela` — native desktop shell and event loop.
+- `lib/ide-workbench/SLIdeMenuBar.sleela` — File, Edit, View, Navigate, Code,
+  Run, Tools, and Help menu groups.
+- `lib/ide-workbench/SLIdeToolbar.sleela` — New, Open, Save, Build, Run, Debug,
+  and Stop actions.
+- `lib/ide-workbench/SLIdeLanguageBar.sleela` — SLeeLa, C, C++, and Java selector.
+- `lib/user-interface/SLTextView.sleela` — native multi-line code editor.
+- `lib/ide-workbench/SLIdeEditor.sleela`, `SLIdeTabGroup.sleela`,
+  `SLIdeProjectTree.sleela`, and `SLIdeDiagnosticsPanel.sleela` — editor,
+  tabs, project model, and diagnostics.
 
-Version: 0.2.0-dev
-
-The /ide tree is the SLeeLa integration layer for an IntelliJ Platform-based IDE. It keeps the SLeeLa language implementation authoritative in the existing compiler while defining a reusable IDE architecture for SLeeLa, C, C++, and Java.
-
-## Goals
-- provide an IntelliJ Platform plugin host for SLeeLa;
-- keep language analysis tied to the real SLeeLa compiler;
-- expose C, C++, and Java as interoperability and project-language examples;
-- share project, build, run, diagnostics, navigation, and debugger contracts.
-
-## Layout
-```
-/ide
-  /sleela-intellij   IntelliJ Platform plugin project
-  /language          Language and PSI contract
-  /analysis          Semantic/indexing contract
-  /project           Project/module model
-  /build             Check/build/run/test integration
-  /debugger          Debug adapter integration
-  /c                 C integration example
-  /cpp               C++ integration example
-  /java              Java integration example
-  /sleela             SLeeLa integration example
-  /tests              IDE conformance fixtures
-```
+The shell uses the existing SLeeLa GUI / SleelaUI native bridge. No foreign
+widget toolkit is introduced.
 
 ## Language roles
-| Language | Role |
+
+| Language | Native IDE integration |
 |---|---|
-| SLeeLa | First-class native language integration |
-| C | Native ABI and C-header interoperability example |
-| C++ | Native implementation/debugging example |
-| Java | JVM/tooling and IntelliJ language integration example |
+| SLeeLa | First-class language, compiler and runtime integration |
+| C | C toolchain discovery, source/header navigation and native build integration |
+| C++ | C++ toolchain discovery, source/header navigation and native build integration |
+| Java | JDK discovery, compile/run and JVM debugging integration |
 
-The examples do not replace the authoritative implementations of those languages. They define how an SLeeLa project can recognize, navigate, build, run, and debug mixed-language source.
+Toolchains are discovered on the host and activated on demand. The base IDE
+does not bundle complete C/C++/Java toolchains.
 
-## IntelliJ Platform
-The plugin project uses IntelliJ Platform Gradle Plugin 2.x. The SDK documentation identifies 2.x as the active line; current target combinations must use the Java runtime required by that target platform.
+## Optional IntelliJ interoperability
 
-## First usable milestone
-1. Open a SLeeLa project.
-2. Recognize SLeeLa, C, C++, and Java files.
-3. Load C/C++ toolchain metadata and compile_commands.json when present.
-4. Parse SLeeLa through the repository compiler bridge.
-5. Provide syntax highlighting and PSI-backed navigation.
-6. Surface compiler diagnostics.
-7. Invoke check, build, run, and test.
-8. Connect debugger actions to the existing /debugger subsystem.
+`ide/sleela-intellij` remains an optional plugin project for users who already
+run an IntelliJ Platform IDE. It is not the native SLeeLa IDE and is not a
+dependency of the native application. Likewise, `/jetbrains` contains
+source-acquisition helpers and research notes, not a requirement to download
+the IntelliJ source tree.
+
+## Footprint objective
+
+Keep the native IDE's installed footprint substantially below the cited 6.2 GB
+JetBrains installation by reusing SLeeLa's existing GUI, compiler, and runtime,
+and by discovering external toolchains instead of bundling them. Actual
+installer size will be measured after packaging; no size claim is made before
+that measurement.
+
+## First milestone
+
+The first native GUI milestone now has the main window, project explorer,
+editor notebook, menu groups, toolbar actions, language selector, and status
+surface. File dialogs, real filesystem enumeration, compiler process execution,
+language intelligence, and debugger process control remain service integrations
+to complete and verify.
+
+Run the current GUI walkthrough:
+
+```sh
+impl/build/sleela run lib/ide-workbench/ide-workbench-gui-demo.sleela
+```
 
 **Max Rupplin — MEARVK LLC — 2026**
-
----
-
-# SLeeLa
-<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
-<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>
