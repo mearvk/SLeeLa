@@ -1,0 +1,7 @@
+#sleela 3.0
+class NativeAotLibrary {
+    @native
+    static int add(int left, int right) {
+        return left + right;
+    }
+}

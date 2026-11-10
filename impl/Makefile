@@ -827,6 +827,8 @@ test-native-method-metadata: $(NATIVE_METHOD_METADATA_SMOKE) $(NATIVE_METHOD_MET
 
 # End-to-end test for generated per-method typed-ABI plugins.
 NATIVE_METHOD_AOT_SOURCE := tests/native_drive/native_method_aot_compile.sleela
+NATIVE_METHOD_AOT_SEMANTIC_REJECT_SOURCE := tests/native_drive/native_method_aot_semantic_reject.sleela
+NATIVE_METHOD_AOT_LIBRARY_SOURCE := tests/native_drive/native_method_aot_library.sleela
 NATIVE_METHOD_AOT_C := $(BUILD)/native_method_aot.generated.c
 NATIVE_METHOD_AOT_ARTIFACT := $(BUILD)/native_method_aot.artifact.sleela
 NATIVE_METHOD_AOT_SMOKE := $(BUILD)/native_method_aot_smoke$(EXE)
@@ -854,8 +856,10 @@ $(NATIVE_METHOD_AOT_SMOKE_OBJ): tests/native_drive/native_method_aot_smoke.c cor
 	$(CC) $(CFLAGS) -Icore -c $< -o $@
 $(NATIVE_METHOD_AOT_SMOKE): $(NATIVE_METHOD_AOT_SMOKE_OBJ) $(SLCORE_LIB)
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
-test-native-method-aot: $(SLEELA_BIN) $(NATIVE_METHOD_AOT_SMOKE) $(NATIVE_METHOD_AOT_PLUGIN) $(NATIVE_METHOD_AOT_ARTIFACT)
+test-native-method-aot: $(SLEELA_BIN) $(NATIVE_METHOD_AOT_SMOKE) $(NATIVE_METHOD_AOT_PLUGIN) $(NATIVE_METHOD_AOT_ARTIFACT) $(NATIVE_METHOD_AOT_SEMANTIC_REJECT_SOURCE) $(NATIVE_METHOD_AOT_LIBRARY_SOURCE)
 	$(NATIVE_METHOD_AOT_SMOKE) $(NATIVE_METHOD_AOT_ARTIFACT) $(abspath $(NATIVE_METHOD_AOT_PLUGIN))
+	@cd $(CURDIR)/.. && export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; log="$(CURDIR)/$(BUILD)/native_method_aot_semantic_reject.log"; if $(CURDIR)/$(SLEELA_BIN) aot --list impl/$(NATIVE_METHOD_AOT_SEMANTIC_REJECT_SOURCE) > "$log" 2>&1; then echo "native-method-aot: semantic-invalid source was incorrectly accepted" >&2; cat "$log" >&2; exit 1; fi; grep -q "must be bool" "$log" || { echo "native-method-aot: rejection did not come from semantic boolean-condition validation" >&2; cat "$log" >&2; exit 1; }; echo "native-method-aot: semantic-invalid source correctly refused"
+	@cd $(CURDIR)/.. && export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; log="$(CURDIR)/$(BUILD)/native_method_aot_library.log"; $(CURDIR)/$(SLEELA_BIN) aot --list impl/$(NATIVE_METHOD_AOT_LIBRARY_SOURCE) > "$$log" 2>&1 || { cat "$$log" >&2; exit 1; }; grep -q "all 1 @native method(s) are translatable" "$$log" || { echo "native-method-aot: library unit without main was not accepted" >&2; cat "$$log" >&2; exit 1; }; echo "native-method-aot: library unit without main correctly accepted"
 # Explicit opt-in regression target; it remains outside default and CI aggregates.
 $(NATIVE_CONCURRENCY_FIXTURE): $(NATIVE_CONCURRENCY_FIXTURE_SOURCE) ../os-level-support/loader/native_loader.h | $(BUILD)
 	$(CC) $(CFLAGS) $(NATIVE_CONCURRENCY_FIXTURE_CFLAGS) -DSL_NATIVE_PLUGIN_BUILD $(NATIVE_CONCURRENCY_FIXTURE_FLAGS) -I../os-level-support/loader $< -o $@
