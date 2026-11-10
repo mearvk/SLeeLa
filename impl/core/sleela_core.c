@@ -60,6 +60,7 @@ typedef struct {
     uint32_t native_abi_version;
     uint64_t native_signature_id;
     char* native_signature;
+    SLNativeHandle native_handle; /* runtime-only, explicitly host-bound */
 } SLFunc;
 #define EXCEPTION_HANDLERS_MAX 1024
 
@@ -626,6 +627,7 @@ int slvm_begin_func(SLVM* vm, const char* name, int nargs, int nlocals) {
     vm->funcs[idx].native_abi_version = 0;
     vm->funcs[idx].native_signature_id = 0;
     vm->funcs[idx].native_signature = NULL;
+    vm->funcs[idx].native_handle = SL_NATIVE_HANDLE_INVALID;
     vm->cur_func = idx;
     return idx;
 }
@@ -852,9 +854,54 @@ SLNativeStatus slvm_native_module_close(SLVM* vm, SLNativeHandle handle) {
     if (!vm) return SL_NATIVE_INVALID_ARGUMENT;
     if (native_callback_vm == vm || native_plugin_call_vm == vm) return SL_NATIVE_REENTRANT_CALL;
     pthread_mutex_lock(&vm->native_mtx);
+    for (int i = 0; i < vm->nfunc; ++i) {
+        if (vm->funcs[i].native_handle == handle) {
+            pthread_mutex_unlock(&vm->native_mtx);
+            return SL_NATIVE_INVALID_ARGUMENT; /* unbind methods before unloading */
+        }
+    }
     status = sl_native_table_close(&vm->native_modules, handle);
     pthread_mutex_unlock(&vm->native_mtx);
     return status;
+}
+
+/* Bind only a compiler-annotated static method to a module that the host has
+ * already opened through its authorization callback. The plugin export name
+ * is the exact canonical signature stored in the artifact. */
+int slvm_bind_native_method(SLVM* vm, int function_index, SLNativeHandle handle) {
+    SLFunc* fn;
+    int valid;
+    if (!vm || function_index < 0 || function_index >= vm->nfunc ||
+        handle == SL_NATIVE_HANDLE_INVALID ||
+        native_callback_vm == vm || native_plugin_call_vm == vm) return -1;
+    pthread_mutex_lock(&vm->native_mtx);
+    fn = &vm->funcs[function_index];
+    valid = (fn->native_flags & (SL_NATIVE_METHOD_FLAG_ANNOTATED |
+                                SL_NATIVE_METHOD_FLAG_STATIC)) ==
+            (SL_NATIVE_METHOD_FLAG_ANNOTATED | SL_NATIVE_METHOD_FLAG_STATIC) &&
+            !(fn->native_flags & SL_NATIVE_METHOD_FLAG_INSTANCE) &&
+            fn->native_abi_version == SL_NATIVE_METHOD_ABI_VERSION &&
+            fn->native_signature && fn->native_handle == SL_NATIVE_HANDLE_INVALID &&
+            sl_native_table_is_valid(&vm->native_modules, handle);
+    if (valid) fn->native_handle = handle;
+    pthread_mutex_unlock(&vm->native_mtx);
+    return valid ? 0 : -1;
+}
+
+/* Unbinding is explicit so a host can close/unload the module safely. */
+int slvm_unbind_native_method(SLVM* vm, int function_index) {
+    SLFunc* fn;
+    if (!vm || function_index < 0 || function_index >= vm->nfunc ||
+        native_callback_vm == vm || native_plugin_call_vm == vm) return -1;
+    pthread_mutex_lock(&vm->native_mtx);
+    fn = &vm->funcs[function_index];
+    if (fn->native_handle == SL_NATIVE_HANDLE_INVALID) {
+        pthread_mutex_unlock(&vm->native_mtx);
+        return -1;
+    }
+    fn->native_handle = SL_NATIVE_HANDLE_INVALID;
+    pthread_mutex_unlock(&vm->native_mtx);
+    return 0;
 }
 
 int slvm_memory_safe_mode(const SLVM* vm) {
@@ -2837,8 +2884,70 @@ static SLResult run_thread(SLThread* t) {
         case OP_JMPF: { SLValue c=POP(); if(!is_truthy(c)) ip=in.a; } break;
         case OP_CALL: {
             int cfi=in.a; if(cfi<0||cfi>=vm->nfunc) TERR("call to unknown function");
-            SLFunc* f=&vm->funcs[cfi]; if(t->fp>=FRAMES_MAX) TERR("call depth exceeded");
-            int base=t->sp-f->nargs; if(base<0) TERR("call: not enough arguments on stack");
+            SLFunc* f=&vm->funcs[cfi];
+            int base=t->sp-f->nargs;
+            if(base<0) TERR("call: not enough arguments on stack");
+            /* Automatic @native dispatch is static-only in ABI v1. The normal
+             * bytecode frame remains the fallback for absent bindings,
+             * unsupported VM-owned values, and explicit NOT_HANDLED. */
+            if ((f->native_flags & (SL_NATIVE_METHOD_FLAG_ANNOTATED |
+                                    SL_NATIVE_METHOD_FLAG_STATIC)) ==
+                (SL_NATIVE_METHOD_FLAG_ANNOTATED | SL_NATIVE_METHOD_FLAG_STATIC) &&
+                f->native_handle != SL_NATIVE_HANDLE_INVALID) {
+                SLNativeValue* argv = NULL;
+                SLNativeValue native_result;
+                SLValue result_value = slval_null();
+                SLNativeStatus status = SL_NATIVE_OK;
+                int unsupported = 0;
+                if (f->nargs > 0) {
+                    argv = (SLNativeValue*)calloc((size_t)f->nargs, sizeof(*argv));
+                    if (!argv) TERR("native method: out of memory preparing arguments");
+                }
+                for (int i = 0; i < f->nargs; ++i) {
+                    if (!native_value_to_abi(vm, t->stack[base + i], &argv[i])) {
+                        unsupported = 1;
+                        break;
+                    }
+                }
+                if (!unsupported) {
+                    memset(&native_result, 0, sizeof(native_result));
+                    native_result.tag = SL_NATIVE_VALUE_NULL;
+                    pthread_mutex_lock(&vm->native_mtx);
+                    if (!sl_native_table_is_valid(&vm->native_modules, f->native_handle)) {
+                        status = SL_NATIVE_STALE_HANDLE;
+                    } else {
+                        status = slvm_native_bind_module_host_locked(vm, f->native_handle);
+                        if (status == SL_NATIVE_OK) {
+                            SLVM* previous_plugin_vm = native_plugin_call_vm;
+                            native_plugin_call_vm = vm;
+                            vm->native_callback_caller = t;
+                            status = sl_native_table_call(&vm->native_modules,
+                                f->native_handle, f->native_signature,
+                                (uint32_t)f->nargs, argv, &native_result);
+                            vm->native_callback_caller = NULL;
+                            native_plugin_call_vm = previous_plugin_vm;
+                        }
+                    }
+                    if (status == SL_NATIVE_OK &&
+                        !native_value_from_abi(vm, &native_result, &result_value))
+                        status = SL_NATIVE_PLUGIN_ERROR;
+                    pthread_mutex_unlock(&vm->native_mtx);
+                }
+                free(argv);
+                if (!unsupported && status == SL_NATIVE_OK) {
+                    t->sp = base;
+                    PUSH(result_value);
+                    break;
+                }
+                if (!unsupported && status != SL_NATIVE_TYPED_ENTRY_NOT_FOUND &&
+                    status != SL_NATIVE_METHOD_NOT_HANDLED) {
+                    char message[256];
+                    snprintf(message, sizeof(message), "native method '%s' failed: %s",
+                             f->native_signature, sl_native_status_string(status));
+                    TERR(message);
+                }
+            }
+            if(t->fp>=FRAMES_MAX) TERR("call depth exceeded");
             SLFrame* nf=&t->frames[t->fp++]; nf->ret_ip=ip; nf->base=base; nf->nargs=f->nargs; nf->handler_base=t->exception_handler_count;
             for(int i=f->nargs;i<f->nlocals;i++){ PUSH(slval_null()); } ip=f->entry;
         } break;
