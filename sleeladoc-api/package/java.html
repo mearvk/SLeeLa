@@ -5901,7 +5901,7 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="adler32">Adler32 <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/zip/Adler32.sleela)</span></h2>
+<h2 class="section" data-u="adler32">Adler32 <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/zip/Adler32.sleela)</span></h2>
 <div data-u="adler32 adler32">
 <h3 id="Adler32">Adler32 <span class="pill">class</span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.zip.Adler32. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
@@ -5909,6 +5909,8 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.zip.Adler32&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>a</code></td><td><span class="sig">long a</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>b</code></td><td><span class="sig">long b</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -5917,6 +5919,11 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>update</code></td><td><span class="sig">void update(int x)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>updateBytes</code></td><td><span class="sig">void updateBytes(int[] buf, int off, int len)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>updateAll</code></td><td><span class="sig">void updateAll(int[] buf)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getValue</code></td><td><span class="sig">long getValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>reset</code></td><td><span class="sig">void reset()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="aeadbadtagexception">AEADBadTagException <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/javax/crypto/AEADBadTagException.sleela)</span></h2>
@@ -10523,7 +10530,7 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="atomicboolean">AtomicBoolean <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/atomic/AtomicBoolean.sleela)</span></h2>
+<h2 class="section" data-u="atomicboolean">AtomicBoolean <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/atomic/AtomicBoolean.sleela)</span></h2>
 <div data-u="atomicboolean atomicboolean">
 <h3 id="AtomicBoolean">AtomicBoolean <span class="pill">class</span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.concurrent.atomic.AtomicBoolean. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
@@ -10531,6 +10538,7 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.concurrent.atomic.AtomicBoolean&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>value</code></td><td><span class="sig">boolean value</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -10539,6 +10547,26 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>get</code></td><td><span class="sig">boolean get()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>set</code></td><td><span class="sig">void set(boolean newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lazySet</code></td><td><span class="sig">void lazySet(boolean newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getPlain</code></td><td><span class="sig">boolean getPlain()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setPlain</code></td><td><span class="sig">void setPlain(boolean newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getOpaque</code></td><td><span class="sig">boolean getOpaque()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setOpaque</code></td><td><span class="sig">void setOpaque(boolean newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAcquire</code></td><td><span class="sig">boolean getAcquire()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setRelease</code></td><td><span class="sig">void setRelease(boolean newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAndSet</code></td><td><span class="sig">boolean getAndSet(boolean newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndSet</code></td><td><span class="sig">boolean compareAndSet(boolean expectedValue, boolean newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSet</code></td><td><span class="sig">boolean weakCompareAndSet(boolean expectedValue, boolean newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetPlain</code></td><td><span class="sig">boolean weakCompareAndSetPlain(boolean expectedValue, boolean newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetVolatile</code></td><td><span class="sig">boolean weakCompareAndSetVolatile(boolean expectedValue, boolean newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetAcquire</code></td><td><span class="sig">boolean weakCompareAndSetAcquire(boolean expectedValue, boolean newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetRelease</code></td><td><span class="sig">boolean weakCompareAndSetRelease(boolean expectedValue, boolean newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndExchange</code></td><td><span class="sig">boolean compareAndExchange(boolean expectedValue, boolean newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndExchangeAcquire</code></td><td><span class="sig">boolean compareAndExchangeAcquire(boolean expectedValue, boolean newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndExchangeRelease</code></td><td><span class="sig">boolean compareAndExchangeRelease(boolean expectedValue, boolean newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="atomicinteger">AtomicInteger <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/atomic/AtomicInteger.sleela)</span></h2>
@@ -10559,14 +10587,15 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="atomicinteger">AtomicInteger <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/atomic/AtomicInteger.sleela)</span></h2>
+<h2 class="section" data-u="atomicinteger">AtomicInteger <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/atomic/AtomicInteger.sleela)</span></h2>
 <div data-u="atomicinteger atomicinteger">
-<h3 id="AtomicInteger">AtomicInteger <span class="pill">class</span></h3>
+<h3 id="AtomicInteger">AtomicInteger <span class="pill">class</span> <span class="muted">extends <code>Number</code></span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.concurrent.atomic.AtomicInteger. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.concurrent.atomic.AtomicInteger&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>value</code></td><td><span class="sig">int value</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -10575,6 +10604,39 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>get</code></td><td><span class="sig">int get()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>set</code></td><td><span class="sig">void set(int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lazySet</code></td><td><span class="sig">void lazySet(int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getPlain</code></td><td><span class="sig">int getPlain()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setPlain</code></td><td><span class="sig">void setPlain(int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getOpaque</code></td><td><span class="sig">int getOpaque()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setOpaque</code></td><td><span class="sig">void setOpaque(int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAcquire</code></td><td><span class="sig">int getAcquire()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setRelease</code></td><td><span class="sig">void setRelease(int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAndSet</code></td><td><span class="sig">int getAndSet(int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndSet</code></td><td><span class="sig">boolean compareAndSet(int expectedValue, int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSet</code></td><td><span class="sig">boolean weakCompareAndSet(int expectedValue, int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetPlain</code></td><td><span class="sig">boolean weakCompareAndSetPlain(int expectedValue, int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetVolatile</code></td><td><span class="sig">boolean weakCompareAndSetVolatile(int expectedValue, int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetAcquire</code></td><td><span class="sig">boolean weakCompareAndSetAcquire(int expectedValue, int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetRelease</code></td><td><span class="sig">boolean weakCompareAndSetRelease(int expectedValue, int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndExchange</code></td><td><span class="sig">int compareAndExchange(int expectedValue, int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndExchangeAcquire</code></td><td><span class="sig">int compareAndExchangeAcquire(int expectedValue, int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndExchangeRelease</code></td><td><span class="sig">int compareAndExchangeRelease(int expectedValue, int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAndIncrement</code></td><td><span class="sig">int getAndIncrement()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAndDecrement</code></td><td><span class="sig">int getAndDecrement()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAndAdd</code></td><td><span class="sig">int getAndAdd(int delta)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>incrementAndGet</code></td><td><span class="sig">int incrementAndGet()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>decrementAndGet</code></td><td><span class="sig">int decrementAndGet()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addAndGet</code></td><td><span class="sig">int addAndGet(int delta)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>intValue</code></td><td><span class="sig">int intValue()</span></td><td class="desc">java.lang.Number views</td></tr>
+<tr><td><code>longValue</code></td><td><span class="sig">long longValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>doubleValue</code></td><td><span class="sig">double doubleValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>floatValue</code></td><td><span class="sig">double floatValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>byteValue</code></td><td><span class="sig">int byteValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>shortValue</code></td><td><span class="sig">int shortValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrap32</code></td><td><span class="sig">int wrap32(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="atomicintegerarray">AtomicIntegerArray <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/atomic/AtomicIntegerArray.sleela)</span></h2>
@@ -10595,7 +10657,7 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="atomicintegerarray">AtomicIntegerArray <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/atomic/AtomicIntegerArray.sleela)</span></h2>
+<h2 class="section" data-u="atomicintegerarray">AtomicIntegerArray <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/atomic/AtomicIntegerArray.sleela)</span></h2>
 <div data-u="atomicintegerarray atomicintegerarray">
 <h3 id="AtomicIntegerArray">AtomicIntegerArray <span class="pill">class</span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.concurrent.atomic.AtomicIntegerArray. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
@@ -10603,6 +10665,7 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.concurrent.atomic.AtomicIntegerArray&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>array</code></td><td><span class="sig">int[] array</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -10611,6 +10674,35 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>check</code></td><td><span class="sig">void check(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>length</code></td><td><span class="sig">int length()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>get</code></td><td><span class="sig">int get(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>set</code></td><td><span class="sig">void set(int i, int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lazySet</code></td><td><span class="sig">void lazySet(int i, int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getPlain</code></td><td><span class="sig">int getPlain(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setPlain</code></td><td><span class="sig">void setPlain(int i, int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getOpaque</code></td><td><span class="sig">int getOpaque(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setOpaque</code></td><td><span class="sig">void setOpaque(int i, int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAcquire</code></td><td><span class="sig">int getAcquire(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setRelease</code></td><td><span class="sig">void setRelease(int i, int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAndSet</code></td><td><span class="sig">int getAndSet(int i, int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndSet</code></td><td><span class="sig">boolean compareAndSet(int i, int expectedValue, int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSet</code></td><td><span class="sig">boolean weakCompareAndSet(int i, int expectedValue, int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetPlain</code></td><td><span class="sig">boolean weakCompareAndSetPlain(int i, int expectedValue, int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetVolatile</code></td><td><span class="sig">boolean weakCompareAndSetVolatile(int i, int expectedValue, int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetAcquire</code></td><td><span class="sig">boolean weakCompareAndSetAcquire(int i, int expectedValue, int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetRelease</code></td><td><span class="sig">boolean weakCompareAndSetRelease(int i, int expectedValue, int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndExchange</code></td><td><span class="sig">int compareAndExchange(int i, int expectedValue, int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndExchangeAcquire</code></td><td><span class="sig">int compareAndExchangeAcquire(int i, int expectedValue, int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndExchangeRelease</code></td><td><span class="sig">int compareAndExchangeRelease(int i, int expectedValue, int newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAndIncrement</code></td><td><span class="sig">int getAndIncrement(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAndDecrement</code></td><td><span class="sig">int getAndDecrement(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAndAdd</code></td><td><span class="sig">int getAndAdd(int i, int delta)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>incrementAndGet</code></td><td><span class="sig">int incrementAndGet(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>decrementAndGet</code></td><td><span class="sig">int decrementAndGet(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addAndGet</code></td><td><span class="sig">int addAndGet(int i, int delta)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrap32</code></td><td><span class="sig">int wrap32(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="atomicintegerfieldupdater">AtomicIntegerFieldUpdater <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/atomic/AtomicIntegerFieldUpdater.sleela)</span></h2>
@@ -10672,14 +10764,15 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="atomiclong">AtomicLong <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/atomic/AtomicLong.sleela)</span></h2>
+<h2 class="section" data-u="atomiclong">AtomicLong <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/atomic/AtomicLong.sleela)</span></h2>
 <div data-u="atomiclong atomiclong">
-<h3 id="AtomicLong">AtomicLong <span class="pill">class</span></h3>
+<h3 id="AtomicLong">AtomicLong <span class="pill">class</span> <span class="muted">extends <code>Number</code></span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.concurrent.atomic.AtomicLong. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.concurrent.atomic.AtomicLong&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>value</code></td><td><span class="sig">long value</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -10688,6 +10781,39 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>get</code></td><td><span class="sig">long get()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>set</code></td><td><span class="sig">void set(long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lazySet</code></td><td><span class="sig">void lazySet(long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getPlain</code></td><td><span class="sig">long getPlain()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setPlain</code></td><td><span class="sig">void setPlain(long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getOpaque</code></td><td><span class="sig">long getOpaque()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setOpaque</code></td><td><span class="sig">void setOpaque(long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAcquire</code></td><td><span class="sig">long getAcquire()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setRelease</code></td><td><span class="sig">void setRelease(long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAndSet</code></td><td><span class="sig">long getAndSet(long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndSet</code></td><td><span class="sig">boolean compareAndSet(long expectedValue, long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSet</code></td><td><span class="sig">boolean weakCompareAndSet(long expectedValue, long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetPlain</code></td><td><span class="sig">boolean weakCompareAndSetPlain(long expectedValue, long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetVolatile</code></td><td><span class="sig">boolean weakCompareAndSetVolatile(long expectedValue, long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetAcquire</code></td><td><span class="sig">boolean weakCompareAndSetAcquire(long expectedValue, long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetRelease</code></td><td><span class="sig">boolean weakCompareAndSetRelease(long expectedValue, long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndExchange</code></td><td><span class="sig">long compareAndExchange(long expectedValue, long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndExchangeAcquire</code></td><td><span class="sig">long compareAndExchangeAcquire(long expectedValue, long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndExchangeRelease</code></td><td><span class="sig">long compareAndExchangeRelease(long expectedValue, long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAndIncrement</code></td><td><span class="sig">long getAndIncrement()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAndDecrement</code></td><td><span class="sig">long getAndDecrement()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAndAdd</code></td><td><span class="sig">long getAndAdd(long delta)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>incrementAndGet</code></td><td><span class="sig">long incrementAndGet()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>decrementAndGet</code></td><td><span class="sig">long decrementAndGet()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addAndGet</code></td><td><span class="sig">long addAndGet(long delta)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>intValue</code></td><td><span class="sig">int intValue()</span></td><td class="desc">java.lang.Number views</td></tr>
+<tr><td><code>longValue</code></td><td><span class="sig">long longValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>doubleValue</code></td><td><span class="sig">double doubleValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>floatValue</code></td><td><span class="sig">double floatValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>byteValue</code></td><td><span class="sig">int byteValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>shortValue</code></td><td><span class="sig">int shortValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrap32</code></td><td><span class="sig">int wrap32(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="atomiclongarray">AtomicLongArray <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/atomic/AtomicLongArray.sleela)</span></h2>
@@ -10708,7 +10834,7 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="atomiclongarray">AtomicLongArray <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/atomic/AtomicLongArray.sleela)</span></h2>
+<h2 class="section" data-u="atomiclongarray">AtomicLongArray <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/atomic/AtomicLongArray.sleela)</span></h2>
 <div data-u="atomiclongarray atomiclongarray">
 <h3 id="AtomicLongArray">AtomicLongArray <span class="pill">class</span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.concurrent.atomic.AtomicLongArray. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
@@ -10716,6 +10842,7 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.concurrent.atomic.AtomicLongArray&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>array</code></td><td><span class="sig">long[] array</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -10724,6 +10851,35 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>check</code></td><td><span class="sig">void check(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>length</code></td><td><span class="sig">int length()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>get</code></td><td><span class="sig">long get(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>set</code></td><td><span class="sig">void set(int i, long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lazySet</code></td><td><span class="sig">void lazySet(int i, long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getPlain</code></td><td><span class="sig">long getPlain(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setPlain</code></td><td><span class="sig">void setPlain(int i, long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getOpaque</code></td><td><span class="sig">long getOpaque(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setOpaque</code></td><td><span class="sig">void setOpaque(int i, long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAcquire</code></td><td><span class="sig">long getAcquire(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setRelease</code></td><td><span class="sig">void setRelease(int i, long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAndSet</code></td><td><span class="sig">long getAndSet(int i, long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndSet</code></td><td><span class="sig">boolean compareAndSet(int i, long expectedValue, long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSet</code></td><td><span class="sig">boolean weakCompareAndSet(int i, long expectedValue, long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetPlain</code></td><td><span class="sig">boolean weakCompareAndSetPlain(int i, long expectedValue, long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetVolatile</code></td><td><span class="sig">boolean weakCompareAndSetVolatile(int i, long expectedValue, long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetAcquire</code></td><td><span class="sig">boolean weakCompareAndSetAcquire(int i, long expectedValue, long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetRelease</code></td><td><span class="sig">boolean weakCompareAndSetRelease(int i, long expectedValue, long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndExchange</code></td><td><span class="sig">long compareAndExchange(int i, long expectedValue, long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndExchangeAcquire</code></td><td><span class="sig">long compareAndExchangeAcquire(int i, long expectedValue, long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndExchangeRelease</code></td><td><span class="sig">long compareAndExchangeRelease(int i, long expectedValue, long newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAndIncrement</code></td><td><span class="sig">long getAndIncrement(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAndDecrement</code></td><td><span class="sig">long getAndDecrement(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAndAdd</code></td><td><span class="sig">long getAndAdd(int i, long delta)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>incrementAndGet</code></td><td><span class="sig">long incrementAndGet(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>decrementAndGet</code></td><td><span class="sig">long decrementAndGet(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addAndGet</code></td><td><span class="sig">long addAndGet(int i, long delta)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrap32</code></td><td><span class="sig">int wrap32(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="atomiclongfieldupdater">AtomicLongFieldUpdater <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/atomic/AtomicLongFieldUpdater.sleela)</span></h2>
@@ -10857,7 +11013,7 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="atomicreference">AtomicReference <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/atomic/AtomicReference.sleela)</span></h2>
+<h2 class="section" data-u="atomicreference">AtomicReference <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/atomic/AtomicReference.sleela)</span></h2>
 <div data-u="atomicreference atomicreference">
 <h3 id="AtomicReference">AtomicReference <span class="pill">class</span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.concurrent.atomic.AtomicReference. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
@@ -10865,6 +11021,7 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.concurrent.atomic.AtomicReference&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>value</code></td><td><span class="sig">Any value</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -10873,6 +11030,26 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>get</code></td><td><span class="sig">Any get()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>set</code></td><td><span class="sig">void set(Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lazySet</code></td><td><span class="sig">void lazySet(Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getPlain</code></td><td><span class="sig">Any getPlain()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setPlain</code></td><td><span class="sig">void setPlain(Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getOpaque</code></td><td><span class="sig">Any getOpaque()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setOpaque</code></td><td><span class="sig">void setOpaque(Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAcquire</code></td><td><span class="sig">Any getAcquire()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setRelease</code></td><td><span class="sig">void setRelease(Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAndSet</code></td><td><span class="sig">Any getAndSet(Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndSet</code></td><td><span class="sig">boolean compareAndSet(Any expectedValue, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSet</code></td><td><span class="sig">boolean weakCompareAndSet(Any expectedValue, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetPlain</code></td><td><span class="sig">boolean weakCompareAndSetPlain(Any expectedValue, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetVolatile</code></td><td><span class="sig">boolean weakCompareAndSetVolatile(Any expectedValue, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetAcquire</code></td><td><span class="sig">boolean weakCompareAndSetAcquire(Any expectedValue, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetRelease</code></td><td><span class="sig">boolean weakCompareAndSetRelease(Any expectedValue, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndExchange</code></td><td><span class="sig">Any compareAndExchange(Any expectedValue, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndExchangeAcquire</code></td><td><span class="sig">Any compareAndExchangeAcquire(Any expectedValue, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndExchangeRelease</code></td><td><span class="sig">Any compareAndExchangeRelease(Any expectedValue, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="atomicreferencearray">AtomicReferenceArray <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/atomic/AtomicReferenceArray.sleela)</span></h2>
@@ -10893,7 +11070,7 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="atomicreferencearray">AtomicReferenceArray <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/atomic/AtomicReferenceArray.sleela)</span></h2>
+<h2 class="section" data-u="atomicreferencearray">AtomicReferenceArray <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/atomic/AtomicReferenceArray.sleela)</span></h2>
 <div data-u="atomicreferencearray atomicreferencearray">
 <h3 id="AtomicReferenceArray">AtomicReferenceArray <span class="pill">class</span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.concurrent.atomic.AtomicReferenceArray. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
@@ -10901,6 +11078,7 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.concurrent.atomic.AtomicReferenceArray&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>array</code></td><td><span class="sig">Any[] array</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -10909,6 +11087,29 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>check</code></td><td><span class="sig">void check(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>length</code></td><td><span class="sig">int length()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>get</code></td><td><span class="sig">Any get(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>set</code></td><td><span class="sig">void set(int i, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lazySet</code></td><td><span class="sig">void lazySet(int i, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getPlain</code></td><td><span class="sig">Any getPlain(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setPlain</code></td><td><span class="sig">void setPlain(int i, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getOpaque</code></td><td><span class="sig">Any getOpaque(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setOpaque</code></td><td><span class="sig">void setOpaque(int i, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAcquire</code></td><td><span class="sig">Any getAcquire(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setRelease</code></td><td><span class="sig">void setRelease(int i, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAndSet</code></td><td><span class="sig">Any getAndSet(int i, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndSet</code></td><td><span class="sig">boolean compareAndSet(int i, Any expectedValue, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSet</code></td><td><span class="sig">boolean weakCompareAndSet(int i, Any expectedValue, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetPlain</code></td><td><span class="sig">boolean weakCompareAndSetPlain(int i, Any expectedValue, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetVolatile</code></td><td><span class="sig">boolean weakCompareAndSetVolatile(int i, Any expectedValue, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetAcquire</code></td><td><span class="sig">boolean weakCompareAndSetAcquire(int i, Any expectedValue, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCompareAndSetRelease</code></td><td><span class="sig">boolean weakCompareAndSetRelease(int i, Any expectedValue, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndExchange</code></td><td><span class="sig">Any compareAndExchange(int i, Any expectedValue, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndExchangeAcquire</code></td><td><span class="sig">Any compareAndExchangeAcquire(int i, Any expectedValue, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareAndExchangeRelease</code></td><td><span class="sig">Any compareAndExchangeRelease(int i, Any expectedValue, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>textOf</code></td><td><span class="sig">String textOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="atomicreferencefieldupdater">AtomicReferenceFieldUpdater <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/atomic/AtomicReferenceFieldUpdater.sleela)</span></h2>
@@ -21376,7 +21577,7 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="bitset">BitSet <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/BitSet.sleela)</span></h2>
+<h2 class="section" data-u="bitset">BitSet <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/BitSet.sleela)</span></h2>
 <div data-u="bitset bitset">
 <h3 id="BitSet">BitSet <span class="pill">class</span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.BitSet. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
@@ -21384,6 +21585,11 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.BitSet&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bits</code></td><td><span class="sig">boolean[] bits</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wordsInUse</code></td><td><span class="sig">int wordsInUse</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mulHi</code></td><td><span class="sig">long mulHi</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mulLo</code></td><td><span class="sig">long mulLo</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nib</code></td><td><span class="sig">int[] nib</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -21392,6 +21598,45 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>newBits</code></td><td><span class="sig">boolean[] newBits(int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ensure</code></td><td><span class="sig">void ensure(int bitIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkIndex</code></td><td><span class="sig">void checkIndex(int bitIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkRange</code></td><td><span class="sig">void checkRange(int fromIndex, int toIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>set</code></td><td><span class="sig">void set(int bitIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setTo</code></td><td><span class="sig">void setTo(int bitIndex, boolean value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setRange</code></td><td><span class="sig">void setRange(int fromIndex, int toIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setRangeTo</code></td><td><span class="sig">void setRangeTo(int fromIndex, int toIndex, boolean value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clear</code></td><td><span class="sig">void clear(int bitIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clearRange</code></td><td><span class="sig">void clearRange(int fromIndex, int toIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clearAll</code></td><td><span class="sig">void clearAll()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>get</code></td><td><span class="sig">boolean get(int bitIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getRange</code></td><td><span class="sig">BitSet getRange(int fromIndex, int toIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>flip</code></td><td><span class="sig">void flip(int bitIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>flipRange</code></td><td><span class="sig">void flipRange(int fromIndex, int toIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>length</code></td><td><span class="sig">int length()</span></td><td class="desc">Index of the highest set bit plus one.</td></tr>
+<tr><td><code>size</code></td><td><span class="sig">int size()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isEmpty</code></td><td><span class="sig">boolean isEmpty()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cardinality</code></td><td><span class="sig">int cardinality()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nextSetBit</code></td><td><span class="sig">int nextSetBit(int fromIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nextClearBit</code></td><td><span class="sig">int nextClearBit(int fromIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>previousSetBit</code></td><td><span class="sig">int previousSetBit(int fromIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>previousClearBit</code></td><td><span class="sig">int previousClearBit(int fromIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>and</code></td><td><span class="sig">void and(BitSet set)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>or</code></td><td><span class="sig">void or(BitSet set)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>xor</code></td><td><span class="sig">void xor(BitSet set)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>andNot</code></td><td><span class="sig">void andNot(BitSet set)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>intersects</code></td><td><span class="sig">boolean intersects(BitSet set)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>word</code></td><td><span class="sig">long word(int w)</span></td><td class="desc">The 64-bit word w of the Java long[] layout (bit i of word w is bit 64w+i).</td></tr>
+<tr><td><code>toLongArray</code></td><td><span class="sig">long[] toLongArray()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>valueOf</code></td><td><span class="sig">BitSet valueOf(long[] longs)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toByteArray</code></td><td><span class="sig">int[] toByteArray()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashCode</code></td><td><span class="sig">int hashCode()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mul64</code></td><td><span class="sig">void mul64(long v, int k)</span></td><td class="desc">The low 64 bits of v * k (k small, positive) as unsigned 32-bit halves.</td></tr>
+<tr><td><code>equals</code></td><td><span class="sig">boolean equals(Any obj)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clone</code></td><td><span class="sig">BitSet clone()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>initNibbles</code></td><td><span class="sig">void initNibbles()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>xor32</code></td><td><span class="sig">long xor32(long a, long b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="bitsieve">BitSieve <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/math/BitSieve.sleela)</span></h2>
@@ -42213,7 +42458,7 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="crc32">CRC32 <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/zip/CRC32.sleela)</span></h2>
+<h2 class="section" data-u="crc32">CRC32 <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/zip/CRC32.sleela)</span></h2>
 <div data-u="crc32 crc32">
 <h3 id="CRC32">CRC32 <span class="pill">class</span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.zip.CRC32. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
@@ -42221,6 +42466,9 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.zip.CRC32&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>crc</code></td><td><span class="sig">long crc</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>table</code></td><td><span class="sig">long[] table</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nib</code></td><td><span class="sig">int[] nib</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -42229,6 +42477,13 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>update</code></td><td><span class="sig">void update(int b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>updateBytes</code></td><td><span class="sig">void updateBytes(int[] b, int off, int len)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>updateAll</code></td><td><span class="sig">void updateAll(int[] b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getValue</code></td><td><span class="sig">long getValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>reset</code></td><td><span class="sig">void reset()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>initNibbles</code></td><td><span class="sig">void initNibbles()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>xor32</code></td><td><span class="sig">long xor32(long a, long b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="crc32c">CRC32C <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/zip/CRC32C.sleela)</span></h2>
@@ -42249,7 +42504,7 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="crc32c">CRC32C <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/zip/CRC32C.sleela)</span></h2>
+<h2 class="section" data-u="crc32c">CRC32C <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/zip/CRC32C.sleela)</span></h2>
 <div data-u="crc32c crc32c">
 <h3 id="CRC32C">CRC32C <span class="pill">class</span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.zip.CRC32C. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
@@ -42257,6 +42512,9 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.zip.CRC32C&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>crc</code></td><td><span class="sig">long crc</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>table</code></td><td><span class="sig">long[] table</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nib</code></td><td><span class="sig">int[] nib</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -42265,6 +42523,13 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>update</code></td><td><span class="sig">void update(int b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>updateBytes</code></td><td><span class="sig">void updateBytes(int[] b, int off, int len)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>updateAll</code></td><td><span class="sig">void updateAll(int[] b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getValue</code></td><td><span class="sig">long getValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>reset</code></td><td><span class="sig">void reset()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>initNibbles</code></td><td><span class="sig">void initNibbles()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>xor32</code></td><td><span class="sig">long xor32(long a, long b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="credentialexception">CredentialException <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/javax/security/auth/login/CredentialException.sleela)</span></h2>
@@ -55833,14 +56098,15 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="doubleadder">DoubleAdder <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/atomic/DoubleAdder.sleela)</span></h2>
+<h2 class="section" data-u="doubleadder">DoubleAdder <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/atomic/DoubleAdder.sleela)</span></h2>
 <div data-u="doubleadder doubleadder">
-<h3 id="DoubleAdder">DoubleAdder <span class="pill">class</span></h3>
+<h3 id="DoubleAdder">DoubleAdder <span class="pill">class</span> <span class="muted">extends <code>Number</code></span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.concurrent.atomic.DoubleAdder. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.concurrent.atomic.DoubleAdder&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>total</code></td><td><span class="sig">double total</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -55849,6 +56115,15 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>add</code></td><td><span class="sig">void add(double x)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sum</code></td><td><span class="sig">double sum()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>reset</code></td><td><span class="sig">void reset()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sumThenReset</code></td><td><span class="sig">double sumThenReset()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>longValue</code></td><td><span class="sig">long longValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>intValue</code></td><td><span class="sig">int intValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>doubleValue</code></td><td><span class="sig">double doubleValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>floatValue</code></td><td><span class="sig">double floatValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="doublebinaryoperator">DoubleBinaryOperator <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/function/DoubleBinaryOperator.sleela)</span></h2>
@@ -56263,7 +56538,7 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="doublesummarystatistics">DoubleSummaryStatistics <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/DoubleSummaryStatistics.sleela)</span></h2>
+<h2 class="section" data-u="doublesummarystatistics">DoubleSummaryStatistics <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/DoubleSummaryStatistics.sleela)</span></h2>
 <div data-u="doublesummarystatistics doublesummarystatistics">
 <h3 id="DoubleSummaryStatistics">DoubleSummaryStatistics <span class="pill">class</span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.DoubleSummaryStatistics. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
@@ -56271,6 +56546,12 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.DoubleSummaryStatistics&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>count</code></td><td><span class="sig">long count</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sum</code></td><td><span class="sig">double sum</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sumCompensation</code></td><td><span class="sig">double sumCompensation</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>simpleSum</code></td><td><span class="sig">double simpleSum</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>min</code></td><td><span class="sig">double min</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>max</code></td><td><span class="sig">double max</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -56279,6 +56560,17 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sumWithCompensation</code></td><td><span class="sig">void sumWithCompensation(double value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>accept</code></td><td><span class="sig">void accept(double value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>combine</code></td><td><span class="sig">void combine(DoubleSummaryStatistics other)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getCount</code></td><td><span class="sig">long getCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getSum</code></td><td><span class="sig">double getSum()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getMin</code></td><td><span class="sig">double getMin()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getMax</code></td><td><span class="sig">double getMax()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAverage</code></td><td><span class="sig">double getAverage()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fixed6</code></td><td><span class="sig">String fixed6(double d)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lengthOf</code></td><td><span class="sig">int lengthOf(String s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="doublesupplier">DoubleSupplier <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/function/DoubleSupplier.sleela)</span></h2>
@@ -90604,7 +90896,7 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="intsummarystatistics">IntSummaryStatistics <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/IntSummaryStatistics.sleela)</span></h2>
+<h2 class="section" data-u="intsummarystatistics">IntSummaryStatistics <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/IntSummaryStatistics.sleela)</span></h2>
 <div data-u="intsummarystatistics intsummarystatistics">
 <h3 id="IntSummaryStatistics">IntSummaryStatistics <span class="pill">class</span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.IntSummaryStatistics. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
@@ -90612,6 +90904,10 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.IntSummaryStatistics&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>count</code></td><td><span class="sig">long count</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sum</code></td><td><span class="sig">long sum</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>min</code></td><td><span class="sig">int min</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>max</code></td><td><span class="sig">int max</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -90620,6 +90916,16 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>accept</code></td><td><span class="sig">void accept(int value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>combine</code></td><td><span class="sig">void combine(IntSummaryStatistics other)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getCount</code></td><td><span class="sig">long getCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getSum</code></td><td><span class="sig">long getSum()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getMin</code></td><td><span class="sig">int getMin()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getMax</code></td><td><span class="sig">int getMax()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAverage</code></td><td><span class="sig">double getAverage()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fixed6</code></td><td><span class="sig">String fixed6(double d)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lengthOf</code></td><td><span class="sig">int lengthOf(String s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="intsupplier">IntSupplier <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/function/IntSupplier.sleela)</span></h2>
@@ -109462,14 +109768,15 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="longadder">LongAdder <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/atomic/LongAdder.sleela)</span></h2>
+<h2 class="section" data-u="longadder">LongAdder <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/atomic/LongAdder.sleela)</span></h2>
 <div data-u="longadder longadder">
-<h3 id="LongAdder">LongAdder <span class="pill">class</span></h3>
+<h3 id="LongAdder">LongAdder <span class="pill">class</span> <span class="muted">extends <code>Number</code></span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.concurrent.atomic.LongAdder. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.concurrent.atomic.LongAdder&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>total</code></td><td><span class="sig">long total</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -109478,6 +109785,17 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>add</code></td><td><span class="sig">void add(long x)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>increment</code></td><td><span class="sig">void increment()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>decrement</code></td><td><span class="sig">void decrement()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sum</code></td><td><span class="sig">long sum()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>reset</code></td><td><span class="sig">void reset()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sumThenReset</code></td><td><span class="sig">long sumThenReset()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>longValue</code></td><td><span class="sig">long longValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>intValue</code></td><td><span class="sig">int intValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>doubleValue</code></td><td><span class="sig">double doubleValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>floatValue</code></td><td><span class="sig">double floatValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="longbinaryoperator">LongBinaryOperator <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/function/LongBinaryOperator.sleela)</span></h2>
@@ -109893,7 +110211,7 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="longsummarystatistics">LongSummaryStatistics <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/LongSummaryStatistics.sleela)</span></h2>
+<h2 class="section" data-u="longsummarystatistics">LongSummaryStatistics <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/LongSummaryStatistics.sleela)</span></h2>
 <div data-u="longsummarystatistics longsummarystatistics">
 <h3 id="LongSummaryStatistics">LongSummaryStatistics <span class="pill">class</span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.LongSummaryStatistics. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
@@ -109901,6 +110219,10 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.LongSummaryStatistics&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>count</code></td><td><span class="sig">long count</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sum</code></td><td><span class="sig">long sum</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>min</code></td><td><span class="sig">long min</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>max</code></td><td><span class="sig">long max</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -109909,6 +110231,16 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>accept</code></td><td><span class="sig">void accept(long value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>combine</code></td><td><span class="sig">void combine(LongSummaryStatistics other)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getCount</code></td><td><span class="sig">long getCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getSum</code></td><td><span class="sig">long getSum()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getMin</code></td><td><span class="sig">long getMin()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getMax</code></td><td><span class="sig">long getMax()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAverage</code></td><td><span class="sig">double getAverage()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fixed6</code></td><td><span class="sig">String fixed6(double d)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lengthOf</code></td><td><span class="sig">int lengthOf(String s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="longsupplier">LongSupplier <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/function/LongSupplier.sleela)</span></h2>
@@ -171786,7 +172118,7 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="stacktraceelement">StackTraceElement <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/lang/StackTraceElement.sleela)</span></h2>
+<h2 class="section" data-u="stacktraceelement">StackTraceElement <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/lang/StackTraceElement.sleela)</span></h2>
 <div data-u="stacktraceelement stacktraceelement">
 <h3 id="StackTraceElement">StackTraceElement <span class="pill">class</span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.lang.StackTraceElement. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
@@ -171794,6 +172126,10 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.lang.StackTraceElement&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>declaringClass</code></td><td><span class="sig">String declaringClass</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>methodName</code></td><td><span class="sig">String methodName</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fileName</code></td><td><span class="sig">String fileName</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lineNumber</code></td><td><span class="sig">int lineNumber</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -171802,6 +172138,19 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getClassName</code></td><td><span class="sig">String getClassName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getMethodName</code></td><td><span class="sig">String getMethodName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getFileName</code></td><td><span class="sig">String getFileName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getLineNumber</code></td><td><span class="sig">int getLineNumber()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getModuleName</code></td><td><span class="sig">String getModuleName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getModuleVersion</code></td><td><span class="sig">String getModuleVersion()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getClassLoaderName</code></td><td><span class="sig">String getClassLoaderName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isNativeMethod</code></td><td><span class="sig">boolean isNativeMethod()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>equals</code></td><td><span class="sig">boolean equals(Any obj)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>strHash</code></td><td><span class="sig">int strHash(String s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashCode</code></td><td><span class="sig">int hashCode()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrap32</code></td><td><span class="sig">int wrap32(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="stackwalker">StackWalker <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/lang/StackWalker.sleela)</span></h2>
@@ -205165,7 +205514,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-10 22:59 UTC.
+<code>/lib</code> tree on 2026-11-10 23:04 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
