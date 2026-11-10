@@ -1,6 +1,6 @@
 # Automatic VM dispatch for `@native` methods
 
-**Status: Phase 1 implemented on branch `feat/native-method-metadata-dispatch-2026-11-09`; later phases remain pending.**
+**Status: Phases 1, 3, and 4 implemented on branch `feat/native-method-metadata-dispatch-2026-11-09`; generated per-method AOT export emission remains pending.**
 
 The compiler now persists method-level `@native` identity in artifact format
 v4. The VM records annotation/static-or-instance flags, the method ABI version,
@@ -17,8 +17,20 @@ ordinary-function zero metadata, digest corruption rejection, and v3
 interpreted-only compatibility. No CI workflow is needed or
 invoked for this test.
 
-Per-method native code generation, authorized host binding, ordinary-call
-dispatch, and their conformance tests are not implemented by this phase.
+Authorized host binding and ordinary-call dispatch now use the explicit APIs
+`slvm_bind_native_method()` and `slvm_unbind_native_method()`. A binding is
+accepted only for an annotated static method and an already-open, authorized
+module handle. The plugin export key is the exact canonical signature stored
+in artifact metadata. Bound modules cannot be closed until all method bindings
+are removed. The ordinary `OP_CALL` path invokes that export only when a
+binding exists and the arguments fit the scalar/UTF-8 ABI; NOT_HANDLED and
+unsupported VM-owned arguments retain the original bytecode path. Plugin,
+stale-handle, and ABI failures remain errors.
+
+The focused opt-in test now verifies unbound bytecode behavior and an ordinary
+source-level call reaching an authorized plugin export. Generated per-method
+AOT export emission and broader platform/concurrency conformance remain
+pending; no CI workflow is required or invoked.
 
 This document specifies the missing connection between the source-level
 `@native` annotation and the existing VM native-module dispatcher. It does not
