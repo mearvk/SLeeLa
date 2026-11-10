@@ -2301,6 +2301,25 @@ static int aotCmd(int argc,char**argv){
     if(verifyBeforeExecution(fs::current_path(), mode==EMIT))return 1;
     std::string src;sleela::Program prog;sleela::VersionResolution ver;
     if(!parseSource(file,src,prog,ver))return 1;
+    // AOT is a code-generation path, not a semantic-analysis bypass. Load the
+    // same referenced library units as check/compile, then run the normal
+    // analyzer without requiring an executable entry point (AOT inputs may be
+    // library units). Keep this before subset reporting/emission so invalid
+    // source can never be advertised as eligible or translated.
+    try{
+        if(!loadReferencedLibraryUnits(src,prog))return 1;
+        sleela::SemanticResult sem=sleela::analyzeSemantics(prog,ver.declared,false);
+        for(const auto&w:sem.warnings)
+            std::cerr<<"sleela aot: "<<file<<": warning: "<<w<<"\\n";
+        if(!sem.ok()){
+            for(const auto&e:sem.errors)
+                std::cerr<<"sleela aot: "<<file<<": error: "<<e<<"\\n";
+            return 1;
+        }
+    }catch(const std::exception&ex){
+        std::cerr<<"sleela aot: "<<file<<": semantic analysis failed: "<<ex.what()<<"\\n";
+        return 1;
+    }
     // Collect @native methods and their fail-closed subset verdict.
     struct NM{std::string cls,name,reason;};
     std::vector<NM> found;
