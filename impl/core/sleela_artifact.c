@@ -19,8 +19,9 @@
 #define SLART_MAGIC "SLEELA-ART\x01"
 #define SLART_MAGIC_LEN 11
 /* Artifact format v2 adds struct layouts; v3 adds lossless UTF-16 constants
- * and globals. Versions 1 and 2 remain loadable by the v3 runtime. */
-#define SLART_VERSION 3u
+ * and globals; v4 adds validated per-function @native method identity.
+ * Versions 1-3 remain loadable, with native metadata disabled. */
+#define SLART_VERSION 4u
 
 static int wr(FILE* f, const void* p, size_t n) { return fwrite(p, 1, n, f) == n; }
 static int rd(FILE* f, void* p, size_t n) { return fread(p, 1, n, f) == n; }
@@ -138,6 +139,17 @@ static int validate_loaded_vm(const SLVM* vm, char* error, size_t error_size) {
          * declared 1025..STACK_MAX locals -- a file that runs fine straight from
          * source but failed to load once compiled to a Core artifact. */
         if (fn->nargs < 0 || fn->nlocals < fn->nargs || fn->nlocals > STACK_MAX) { abi_error(error,error_size,"function local count exceeds operand-stack limit"); return 0; }
+        if (!native_method_metadata_valid(fn)) { abi_error(error,error_size,"invalid native method metadata"); return 0; }
+        if (fn->native_flags) {
+            for (int j = 0; j < i; ++j) {
+                const SLFunc* prior = &vm->funcs[j];
+                if (prior->native_flags &&
+                    prior->native_signature_id == fn->native_signature_id) {
+                    abi_error(error,error_size,"duplicate native method signature identity");
+                    return 0;
+                }
+            }
+        }
     }
     for (int i=0;i<vm->codelen;i++) {
         const SLInstr* in=&vm->code[i];
@@ -239,6 +251,10 @@ int slvm_save_file(SLVM* vm, const char* path) {
         ok = ok && wr_i32(f, vm->funcs[i].entry);
         ok = ok && wr_i32(f, vm->funcs[i].nargs);
         ok = ok && wr_i32(f, vm->funcs[i].nlocals);
+        if (ok) ok = wr_u32(f, vm->funcs[i].native_flags);
+        if (ok) ok = wr_u32(f, vm->funcs[i].native_abi_version);
+        if (ok) ok = wr_u64(f, vm->funcs[i].native_signature_id);
+        if (ok) ok = wr_string(f, vm->funcs[i].native_signature ? vm->funcs[i].native_signature : "");
     }
     for (int i = 0; ok && i < vm->nstruct_types; ++i) {
         ok = wr_string(f, vm->struct_types[i].name);
@@ -264,7 +280,7 @@ SLVM* slvm_load_file(const char* path) {
 
     if (!rd(f, magic, sizeof(magic)) || memcmp(magic, SLART_MAGIC, sizeof(magic)) != 0 ||
         !rd_u32(f, &version) || !rd_u32(f, &endian) ||
-        (version != 1u && version != 2u && version != SLART_VERSION) ||
+        (version < 1u || version > SLART_VERSION) ||
         endian != 0x01020304u || !rd_u32(f, &codelen) || !rd_u32(f, &nconst) ||
         !rd_u32(f, &nstr) || !rd_u32(f, &nglobal) || !rd_u32(f, &nfunc) ||
         (version >= 2u && !rd_u32(f, &nstruct)) ||
@@ -311,6 +327,21 @@ SLVM* slvm_load_file(const char* path) {
             if (ok) ok = rd_i32(f, &vm->funcs[i].entry);
             if (ok) ok = rd_i32(f, &vm->funcs[i].nargs);
             if (ok) ok = rd_i32(f, &vm->funcs[i].nlocals);
+            if (ok && version >= 4u) {
+                char* signature = NULL;
+                ok = rd_u32(f, &vm->funcs[i].native_flags) &&
+                     rd_u32(f, &vm->funcs[i].native_abi_version) &&
+                     rd_u64(f, &vm->funcs[i].native_signature_id);
+                if (ok) {
+                    signature = rd_string(f);
+                    ok = signature != NULL;
+                }
+                if (ok && signature[0]) vm->funcs[i].native_signature = signature;
+                else free(signature);
+            }
+            /* v1-v3 artifacts are deliberately interpreted-only. calloc left
+             * every native metadata field zeroed; no annotation sidecar or
+             * inferred source name can authorize native execution. */
         }
         for (uint32_t i = 0; ok && i < nstruct; ++i) {
             SLStructType* st = &vm->struct_types[i];

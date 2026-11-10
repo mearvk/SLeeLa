@@ -7,7 +7,12 @@
 /* Stable VM artifact/runtime ABI identifiers. */
 #define SLEELA_VM_ABI_MAJOR 1u
 #define SLEELA_VM_ABI_MINOR 6u
-#define SLEELA_ARTIFACT_FORMAT_VERSION 3u
+#define SLEELA_ARTIFACT_FORMAT_VERSION 4u
+#define SL_NATIVE_METHOD_ABI_VERSION 0x00010000u
+#define SL_NATIVE_METHOD_FLAG_ANNOTATED 0x00000001u
+#define SL_NATIVE_METHOD_FLAG_STATIC 0x00000002u
+#define SL_NATIVE_METHOD_FLAG_INSTANCE 0x00000004u
+#define SL_NATIVE_METHOD_FLAGS_MASK (SL_NATIVE_METHOD_FLAG_ANNOTATED | SL_NATIVE_METHOD_FLAG_STATIC | SL_NATIVE_METHOD_FLAG_INSTANCE)
 #include <stdint.h>
 #include "../../os-level-support/osls_vm_bridge.h"
 #include "../../os-level-support/loader/native_module_table.h"
@@ -458,6 +463,13 @@ SLNativeStatus slvm_native_module_call(SLVM* vm, SLNativeHandle handle,
                                        const char* method, uint32_t argc,
                                        const SLNativeValue* argv, SLNativeValue* out_result);
 SLNativeStatus slvm_native_module_close(SLVM* vm, SLNativeHandle handle);
+/* Bind/unbind an annotated static function to an already-authorized module.
+ * The native export is selected by the exact canonical signature in metadata.
+ * These calls do not load modules or grant authorization. Call only while the
+ * VM is quiescent (not concurrently with slvm_run, slvm_free, or other binding
+ * changes). Bound modules cannot be closed until every method is unbound. */
+int slvm_bind_native_method(SLVM* vm, int function_index, SLNativeHandle handle);
+int slvm_unbind_native_method(SLVM* vm, int function_index);
 /* Set the host capabilities available to OSLS bindings before execution.
  * The default is read-only host inspection; pass 0 to deny OSLS access. */
 int slvm_set_osls_capabilities(SLVM* vm, uint64_t capabilities);
@@ -492,6 +504,19 @@ int slvm_declare_global(SLVM* vm, const char* name);
 int slvm_declare_struct(SLVM* vm, const char* name, const char* const* field_names, int nfields);
 int slvm_set_struct_parent(SLVM* vm, int type_index, int parent_type_index);
 int slvm_begin_func(SLVM* vm, const char* name, int nargs, int nlocals);
+/* Persist descriptive @native method identity on a compiled function. This
+ * never authorizes or loads a module. signature is canonical UTF-8 text;
+ * identity is a deterministic 64-bit digest computed by the VM. */
+int slvm_set_func_native_metadata(SLVM* vm, int function_index,
+                                  uint32_t flags, uint32_t abi_version,
+                                  const char* signature);
+/* Returns 1 for annotated metadata, 0 for an unannotated/legacy function,
+ * and -1 for invalid arguments or function index. signature_out is borrowed
+ * read-only storage owned by the VM. */
+int slvm_get_func_native_metadata(const SLVM* vm, int function_index,
+                                  uint32_t* flags_out, uint32_t* abi_version_out,
+                                  uint64_t* signature_id_out,
+                                  const char** signature_out);
 void slvm_end_func(SLVM* vm);
 int slvm_emit(SLVM* vm, SLOp op, int32_t a);
 int slvm_emit0(SLVM* vm, SLOp op);

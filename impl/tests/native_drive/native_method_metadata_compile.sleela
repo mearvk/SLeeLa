@@ -1,0 +1,16 @@
+#sleela 3.0
+class MathEngine {
+    @native
+    static int sum(int left, int right) {
+        return left + right;
+    }
+
+    @native
+    static int fallback(int value) {
+        return value + 1;
+    }
+
+    static int main() {
+        return fallback(sum(20, 22));
+    }
+}

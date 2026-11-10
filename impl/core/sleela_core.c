@@ -51,7 +51,17 @@
 #define FRAMES_MAX 1024
 
 typedef struct { uint8_t op; int32_t a; } SLInstr;
-typedef struct { char* name; int32_t entry; int32_t nargs; int32_t nlocals; } SLFunc;
+typedef struct {
+    char* name;
+    int32_t entry;
+    int32_t nargs;
+    int32_t nlocals;
+    uint32_t native_flags;
+    uint32_t native_abi_version;
+    uint64_t native_signature_id;
+    char* native_signature;
+    SLNativeHandle native_handle; /* runtime-only, explicitly host-bound */
+} SLFunc;
 #define EXCEPTION_HANDLERS_MAX 1024
 
 typedef struct {
@@ -613,8 +623,89 @@ int slvm_begin_func(SLVM* vm, const char* name, int nargs, int nlocals) {
     vm->funcs[idx].entry = vm->codelen;
     vm->funcs[idx].nargs = nargs;
     vm->funcs[idx].nlocals = nlocals;
+    vm->funcs[idx].native_flags = 0;
+    vm->funcs[idx].native_abi_version = 0;
+    vm->funcs[idx].native_signature_id = 0;
+    vm->funcs[idx].native_signature = NULL;
+    vm->funcs[idx].native_handle = SL_NATIVE_HANDLE_INVALID;
     vm->cur_func = idx;
     return idx;
+}
+
+/* FNV-1a 64-bit over the canonical UTF-8 method signature. This digest is an
+ * identity/checksum, not a security boundary; module authorization remains a
+ * separate host responsibility. */
+static uint64_t native_method_signature_hash(const char* signature) {
+    const unsigned char* p = (const unsigned char*)signature;
+    uint64_t hash = UINT64_C(14695981039346656037);
+    while (*p) { hash ^= (uint64_t)*p++; hash *= UINT64_C(1099511628211); }
+    return hash;
+}
+
+int slvm_set_func_native_metadata(SLVM* vm, int function_index,
+                                  uint32_t flags, uint32_t abi_version,
+                                  const char* signature) {
+    SLFunc* fn;
+    char* copy;
+    uint64_t identity;
+    size_t length;
+    if (!vm || function_index < 0 || function_index >= vm->nfunc ||
+        !signature || !*signature) return -1;
+    length = strlen(signature);
+    if (length > 4096u || (flags & ~SL_NATIVE_METHOD_FLAGS_MASK) != 0 ||
+        !(flags & SL_NATIVE_METHOD_FLAG_ANNOTATED) ||
+        !!(flags & SL_NATIVE_METHOD_FLAG_STATIC) ==
+            !!(flags & SL_NATIVE_METHOD_FLAG_INSTANCE) ||
+        abi_version != SL_NATIVE_METHOD_ABI_VERSION) return -1;
+    fn = &vm->funcs[function_index];
+    if (fn->native_flags || fn->native_signature) return -1;
+    identity = native_method_signature_hash(signature);
+    for (int i = 0; i < vm->nfunc; ++i) {
+        const SLFunc* other = &vm->funcs[i];
+        if (i != function_index && other->native_signature &&
+            other->native_signature_id == identity) return -1;
+    }
+    copy = strdup(signature);
+    if (!copy) return -1;
+    fn->native_flags = flags;
+    fn->native_abi_version = abi_version;
+    fn->native_signature_id = identity;
+    fn->native_signature = copy;
+    return 0;
+}
+
+int slvm_get_func_native_metadata(const SLVM* vm, int function_index,
+                                  uint32_t* flags_out, uint32_t* abi_version_out,
+                                  uint64_t* signature_id_out,
+                                  const char** signature_out) {
+    const SLFunc* fn;
+    if (!vm || function_index < 0 || function_index >= vm->nfunc) return -1;
+    fn = &vm->funcs[function_index];
+    if (flags_out) *flags_out = fn->native_flags;
+    if (abi_version_out) *abi_version_out = fn->native_abi_version;
+    if (signature_id_out) *signature_id_out = fn->native_signature_id;
+    if (signature_out) *signature_out = fn->native_signature;
+    return fn->native_flags ? 1 : 0;
+}
+
+static int native_method_metadata_valid(const SLFunc* fn) {
+    uint32_t flags;
+    if (!fn) return 0;
+    flags = fn->native_flags;
+    if (flags == 0)
+        return fn->native_abi_version == 0 &&
+               fn->native_signature_id == 0 &&
+               fn->native_signature == NULL;
+    if ((flags & ~SL_NATIVE_METHOD_FLAGS_MASK) != 0 ||
+        !(flags & SL_NATIVE_METHOD_FLAG_ANNOTATED) ||
+        !!(flags & SL_NATIVE_METHOD_FLAG_STATIC) ==
+            !!(flags & SL_NATIVE_METHOD_FLAG_INSTANCE) ||
+        fn->native_abi_version != SL_NATIVE_METHOD_ABI_VERSION ||
+        !fn->native_signature || !fn->native_signature[0] ||
+        strlen(fn->native_signature) > 4096u)
+        return 0;
+    return fn->native_signature_id ==
+           native_method_signature_hash(fn->native_signature);
 }
 void slvm_end_func(SLVM* vm) { vm->cur_func = -1; }
 int slvm_emit(SLVM* vm, SLOp op, int32_t a) {
@@ -763,9 +854,55 @@ SLNativeStatus slvm_native_module_close(SLVM* vm, SLNativeHandle handle) {
     if (!vm) return SL_NATIVE_INVALID_ARGUMENT;
     if (native_callback_vm == vm || native_plugin_call_vm == vm) return SL_NATIVE_REENTRANT_CALL;
     pthread_mutex_lock(&vm->native_mtx);
+    for (int i = 0; i < vm->nfunc; ++i) {
+        if (vm->funcs[i].native_handle == handle) {
+            pthread_mutex_unlock(&vm->native_mtx);
+            return SL_NATIVE_INVALID_ARGUMENT; /* unbind methods before unloading */
+        }
+    }
     status = sl_native_table_close(&vm->native_modules, handle);
     pthread_mutex_unlock(&vm->native_mtx);
     return status;
+}
+
+/* Bind only a compiler-annotated static method to a module that the host has
+ * already opened through its authorization callback. The plugin export name
+ * is the exact canonical signature stored in the artifact. */
+int slvm_bind_native_method(SLVM* vm, int function_index, SLNativeHandle handle) {
+    SLFunc* fn;
+    int valid;
+    if (!vm || function_index < 0 || function_index >= vm->nfunc ||
+        handle == SL_NATIVE_HANDLE_INVALID ||
+        native_callback_vm == vm || native_plugin_call_vm == vm) return -1;
+    pthread_mutex_lock(&vm->native_mtx);
+    fn = &vm->funcs[function_index];
+    valid = (fn->native_flags & (SL_NATIVE_METHOD_FLAG_ANNOTATED |
+                                SL_NATIVE_METHOD_FLAG_STATIC)) ==
+            (SL_NATIVE_METHOD_FLAG_ANNOTATED | SL_NATIVE_METHOD_FLAG_STATIC) &&
+            !(fn->native_flags & SL_NATIVE_METHOD_FLAG_INSTANCE) &&
+            fn->native_abi_version == SL_NATIVE_METHOD_ABI_VERSION &&
+            native_method_metadata_valid(fn) &&
+            fn->native_handle == SL_NATIVE_HANDLE_INVALID &&
+            sl_native_table_is_valid(&vm->native_modules, handle);
+    if (valid) fn->native_handle = handle;
+    pthread_mutex_unlock(&vm->native_mtx);
+    return valid ? 0 : -1;
+}
+
+/* Unbinding is explicit so a host can close/unload the module safely. */
+int slvm_unbind_native_method(SLVM* vm, int function_index) {
+    SLFunc* fn;
+    if (!vm || function_index < 0 || function_index >= vm->nfunc ||
+        native_callback_vm == vm || native_plugin_call_vm == vm) return -1;
+    pthread_mutex_lock(&vm->native_mtx);
+    fn = &vm->funcs[function_index];
+    if (fn->native_handle == SL_NATIVE_HANDLE_INVALID) {
+        pthread_mutex_unlock(&vm->native_mtx);
+        return -1;
+    }
+    fn->native_handle = SL_NATIVE_HANDLE_INVALID;
+    pthread_mutex_unlock(&vm->native_mtx);
+    return 0;
 }
 
 int slvm_memory_safe_mode(const SLVM* vm) {
@@ -1002,7 +1139,7 @@ void slvm_free(SLVM* vm) {
     free(vm->strs); free(vm->globals);
     for (int i = 0; i < vm->nglobal; i++) free(vm->gnames[i]);
     free(vm->gnames);
-    for (int i = 0; i < vm->nfunc; i++) free(vm->funcs[i].name);
+    for (int i = 0; i < vm->nfunc; i++) { free(vm->funcs[i].name); free(vm->funcs[i].native_signature); }
     free(vm->funcs); free(vm);
 }
 
@@ -2748,8 +2885,70 @@ static SLResult run_thread(SLThread* t) {
         case OP_JMPF: { SLValue c=POP(); if(!is_truthy(c)) ip=in.a; } break;
         case OP_CALL: {
             int cfi=in.a; if(cfi<0||cfi>=vm->nfunc) TERR("call to unknown function");
-            SLFunc* f=&vm->funcs[cfi]; if(t->fp>=FRAMES_MAX) TERR("call depth exceeded");
-            int base=t->sp-f->nargs; if(base<0) TERR("call: not enough arguments on stack");
+            SLFunc* f=&vm->funcs[cfi];
+            if(t->fp>=FRAMES_MAX) TERR("call depth exceeded");
+            int base=t->sp-f->nargs;
+            if(base<0) TERR("call: not enough arguments on stack");
+            /* Automatic @native dispatch is static-only in ABI v1. The normal
+             * bytecode frame remains the fallback for absent bindings,
+             * unsupported VM-owned values, and explicit NOT_HANDLED. */
+            if ((f->native_flags & (SL_NATIVE_METHOD_FLAG_ANNOTATED |
+                                    SL_NATIVE_METHOD_FLAG_STATIC)) ==
+                (SL_NATIVE_METHOD_FLAG_ANNOTATED | SL_NATIVE_METHOD_FLAG_STATIC) &&
+                f->native_handle != SL_NATIVE_HANDLE_INVALID) {
+                SLNativeValue* argv = NULL;
+                SLNativeValue native_result;
+                SLValue result_value = slval_null();
+                SLNativeStatus status = SL_NATIVE_OK;
+                int unsupported = 0;
+                if (f->nargs > 0) {
+                    argv = (SLNativeValue*)calloc((size_t)f->nargs, sizeof(*argv));
+                    if (!argv) TERR("native method: out of memory preparing arguments");
+                }
+                for (int i = 0; i < f->nargs; ++i) {
+                    if (!native_value_to_abi(vm, t->stack[base + i], &argv[i])) {
+                        unsupported = 1;
+                        break;
+                    }
+                }
+                if (!unsupported) {
+                    memset(&native_result, 0, sizeof(native_result));
+                    native_result.tag = SL_NATIVE_VALUE_NULL;
+                    pthread_mutex_lock(&vm->native_mtx);
+                    if (!sl_native_table_is_valid(&vm->native_modules, f->native_handle)) {
+                        status = SL_NATIVE_STALE_HANDLE;
+                    } else {
+                        status = slvm_native_bind_module_host_locked(vm, f->native_handle);
+                        if (status == SL_NATIVE_OK) {
+                            SLVM* previous_plugin_vm = native_plugin_call_vm;
+                            native_plugin_call_vm = vm;
+                            vm->native_callback_caller = t;
+                            status = sl_native_table_call(&vm->native_modules,
+                                f->native_handle, f->native_signature,
+                                (uint32_t)f->nargs, argv, &native_result);
+                            vm->native_callback_caller = NULL;
+                            native_plugin_call_vm = previous_plugin_vm;
+                        }
+                    }
+                    if (status == SL_NATIVE_OK &&
+                        !native_value_from_abi(vm, &native_result, &result_value))
+                        status = SL_NATIVE_PLUGIN_ERROR;
+                    pthread_mutex_unlock(&vm->native_mtx);
+                }
+                free(argv);
+                if (!unsupported && status == SL_NATIVE_OK) {
+                    t->sp = base;
+                    PUSH(result_value);
+                    break;
+                }
+                if (!unsupported && status != SL_NATIVE_TYPED_ENTRY_NOT_FOUND &&
+                    status != SL_NATIVE_METHOD_NOT_HANDLED) {
+                    char message[256];
+                    snprintf(message, sizeof(message), "native method '%s' failed: %s",
+                             f->native_signature, sl_native_status_string(status));
+                    TERR(message);
+                }
+            }
             SLFrame* nf=&t->frames[t->fp++]; nf->ret_ip=ip; nf->base=base; nf->nargs=f->nargs; nf->handler_base=t->exception_handler_count;
             for(int i=f->nargs;i<f->nlocals;i++){ PUSH(slval_null()); } ip=f->entry;
         } break;
@@ -4153,7 +4352,7 @@ SLResult slvm_run(SLVM* vm) {
 SLResult slcore_exchange(SLVM* vm, SLExchangeOp op, SLExchangeArg* arg) {
     if(!vm||!arg) return SLR_ERROR;
     switch(op){
-    case SLX_RESET: vm->codelen=vm->nconst=vm->nglobal=vm->nfunc=0;vm->cur_func=-1;vm->entry=-1;vm->err[0]=0;return SLR_OK;
+    case SLX_RESET: for(int i=0;i<vm->nfunc;i++){free(vm->funcs[i].name);free(vm->funcs[i].native_signature);} vm->codelen=vm->nconst=vm->nglobal=vm->nfunc=0;vm->cur_func=-1;vm->entry=-1;vm->err[0]=0;return SLR_OK;
     case SLX_ADD_CONST: arg->out=add_const(vm,arg->value);return SLR_OK;
     case SLX_DECLARE_GLOBAL: arg->out=slvm_declare_global(vm,arg->name);return SLR_OK;
     case SLX_DECLARE_STRUCT: arg->out=slvm_declare_struct(vm,arg->name,arg->names,arg->i0);return SLR_OK;

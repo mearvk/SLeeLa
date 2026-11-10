@@ -37,6 +37,17 @@ static int utf8_argument(uint32_t argc, const SLNativeValue *argv,
 }
 SL_NATIVE_EXPORT int sl_native_call(const char *method, uint32_t argc,
                                     const SLNativeValue *argv, SLNativeValue *out_result) {
+    /* Canonical compiler identity for MathEngine.sum(int,int)->int. The
+     * deliberate +100 distinguishes native dispatch from bytecode fallback. */
+    if (strcmp(method, "MathEngine::sum|static|argc=2|3:int3:int|return=3:int|abi=1.0") == 0) {
+        if (argc != 2 || !argv ||
+            argv[0].tag != SL_NATIVE_VALUE_I64 ||
+            argv[1].tag != SL_NATIVE_VALUE_I64) return SL_NATIVE_CALL_INVALID_ARGUMENT;
+        memset(out_result, 0, sizeof(*out_result));
+        out_result->tag = SL_NATIVE_VALUE_I64;
+        out_result->as.i64 = argv[0].as.i64 + argv[1].as.i64 + 100;
+        return SL_NATIVE_CALL_OK;
+    }
     if (strcmp(method, "utf16_length") == 0) {
         const char *data; size_t length; int64_t units = 0;
         int rc;
