@@ -38,10 +38,11 @@ static int check_composite_fallback(const char *artifact, const char *plugin) {
         strcmp(signature, "NativeBoundaryFixture::pointTotal|static|argc=1|5:Point|return=3:int|abi=1.0") != 0)
         goto done;
     if (!bind_plugin(vm, plugin, &handle) ||
-        slvm_bind_native_method(vm, 0, handle) != 0 ||
-        slvm_bind_native_method(vm, 1, handle) != 0)
+        slvm_bind_native_method(vm, 0, handle) != 0)
         goto done;
-    bound[0] = bound[1] = 1;
+    bound[0] = 1;
+    if (slvm_bind_native_method(vm, 1, handle) != 0) goto done;
+    bound[1] = 1;
     if (slvm_run(vm) != SLR_OK) goto done;
     result = slvm_result(vm);
     /* 10+20 + 5+7 = 42. The plugin returns 9001 if either composite
