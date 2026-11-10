@@ -21,6 +21,10 @@ class NativeAotFixture {
     }
 
     static int main() {
-        return sum(20, 22);
+        echo("native");
+        if (positive(sum(20, 22)) && scale(1.0) > 0.0) {
+            return sum(20, 22);
+        }
+        return 0;
     }
 }
