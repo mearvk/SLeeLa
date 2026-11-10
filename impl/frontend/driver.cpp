@@ -2331,13 +2331,13 @@ static int aotCmd(int argc,char**argv){
                    "refusing to emit (fail-closed). Remove @native or keep the method within the subset.\n";
         return 1;
     }
-    if(mode==LIST){std::cout<<"sleela aot: all "<<found.size()<<" @native method(s) are translatable; use --emit to produce C/C++.\n";return 0;}
     std::string cform;
     try{cform=nordshrift::emitNativeMethods(prog);}
     catch(const std::exception&ex){
         std::cerr<<"sleela aot: per-method native emission refused: "<<ex.what()<<"\n";
-        return 2;
+        return mode==LIST ? 1 : 2;
     }
+    if(mode==LIST){std::cout<<"sleela aot: all "<<found.size()<<" @native method(s) are translatable; use --emit to produce standalone typed-ABI C plugin source.\n";return 0;}
     std::cout<<cform;
     std::cerr<<"sleela aot: emitted "<<found.size()
              <<" independently addressable native method(s) using typed ABI v1.0.\n";
