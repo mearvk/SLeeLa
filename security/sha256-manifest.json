@@ -235,7 +235,7 @@
     },
     {
       "path": "impl/core/sleela_artifact.c",
-      "sha256": "8eaf21b5438fa79ef8143aa096e4a4184e65a70e106a89cf9492920086ee0bf5"
+      "sha256": "34668a9d7b2e1bb065e2e834a5cb6e0c2670ff04ab44326792cd12334773b733"
     },
     {
       "path": "impl/core/sleela_audio_bridge.cpp",
@@ -263,11 +263,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "63a62181364dd91925fba7d2d4f3acdca099aa31780e4222e2848ab553f7b9af"
+      "sha256": "8f44d090355514967f87d39364b35acd549badcb33bdaa6bc85452b45332f7d2"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "dddb4b9ebbbf87db6c75ae21662d4c75e122cb775368613f07be48350f367152"
+      "sha256": "4065dd0f5732755298fcb1d0ddcd9aaedddf06a730a969f5c6b51b6ae48a88c6"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -431,7 +431,7 @@
     },
     {
       "path": "impl/core/sleela_synchro.c",
-      "sha256": "4ccd9ffe9022d3fc33d10db20f64a33c16f21965edda4c66a741c2ebb4e41097"
+      "sha256": "d9d6339b7925e64cc6da101a7d6831ee616dfed5bc2b5b03484f3ef97bf5bd8c"
     },
     {
       "path": "impl/core/sleela_synchro.h",
@@ -447,7 +447,7 @@
     },
     {
       "path": "impl/core/sleela_terminal.c",
-      "sha256": "95bc53ff4f7ce7ee134c33fca911c9a5034feeb2f38abacca6fe859710197f89"
+      "sha256": "ddf3c9ac6678d8c706dcb760ea36c06fd7d55abde410fbb0e181b68b57fa74a2"
     },
     {
       "path": "impl/core/sleela_terminal.h",
@@ -551,7 +551,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "afb372c8b4dc072bb70c41e90f7eba56f61dfd604bc59c6178946d999c171f59"
+      "sha256": "5f59ec5466a7f30f67915d88b68124d5eb38b63655c329c15081fcf5f1d45d35"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -739,11 +739,11 @@
     },
     {
       "path": "impl/nordshrift/native_method_emit.cpp",
-      "sha256": "48294ec92931e430b3eb52aab6d2d212bd3553c031c9f86ffffaae27ad1237ff"
+      "sha256": "dd812deede0a73edd88fd6a677574c129c8e3303418936682fe0c834a79366a5"
     },
     {
       "path": "impl/nordshrift/native_method_emit.h",
-      "sha256": "b787ee0f735a66fadcb34974d8357b655155333e0d74017209c259b4030af915"
+      "sha256": "8a162bd12e8b0c1b9b947029b7ccef373ffe82bb25b8a8aa02974d7e7594812c"
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
@@ -8630,6 +8630,14 @@
       "sha256": "3ebec5d6dee89772156802046fa9ea3f25467a373f09397586241f72bf330826"
     },
     {
+      "path": "lib/ide-workbench/SLIdeLanguageBar.sleela",
+      "sha256": "bab228f95d8cf8502e0363c04f1301f38e8a83bc9373a0b558dca3674c6b2e82"
+    },
+    {
+      "path": "lib/ide-workbench/SLIdeMenuBar.sleela",
+      "sha256": "82e7954e5f35d01e9b1f9bd65d2936e6b5cfd04070a751b336384ad61ac07196"
+    },
+    {
       "path": "lib/ide-workbench/SLIdeProjectTree.sleela",
       "sha256": "1446eee988532012640f984d1d669c0ddfcef09cb711c66babd522addaf53d38"
     },
@@ -8638,12 +8646,16 @@
       "sha256": "f8aaa6f433f9906139bc18a61b76eda41d5d83e54e3ffffb98a1cddadc76d0d4"
     },
     {
+      "path": "lib/ide-workbench/SLIdeToolbar.sleela",
+      "sha256": "7a1b41e446b3340b12bf86b549d1fcea4d50352254a3c1838561e788fc07a0d8"
+    },
+    {
       "path": "lib/ide-workbench/SLIdeWorkbench.sleela",
       "sha256": "4c40d3eb4f3948fd1d8618d19f28e7d00891d61555adcb982f770ec0d4069fb2"
     },
     {
       "path": "lib/ide-workbench/SLIdeWorkbenchUI.sleela",
-      "sha256": "360a91fb03fc7966e67558cd133b471eecf2dc9ca33156c59123b6f6436d7613"
+      "sha256": "001bc963c805fe481ebe20de67effa352845ffcfb77f2bd499d114f66cecfd5d"
     },
     {
       "path": "lib/ide-workbench/SLPackage.sleela",
@@ -29951,7 +29963,7 @@
     },
     {
       "path": "lib/java/java/lang/ArithmeticException.sleela",
-      "sha256": "b49a90b894fc0991692fe8e34a27a24efe05acfb77f401ca55f98acd866a47ac"
+      "sha256": "2198e5642151edb938fb3e56726fda6084a3a8032b08d94a949abad0a2c54d8d"
     },
     {
       "path": "lib/java/java/lang/ArrayIndexOutOfBoundsException.sleela",
@@ -30199,7 +30211,7 @@
     },
     {
       "path": "lib/java/java/lang/Math.sleela",
-      "sha256": "9d5e0704ee06cc2e9e85ebadc88a62a09452ce26f74aa7909220528905d2b76f"
+      "sha256": "ff42daf1219cb0a64368d0e68d688c618fda8bc97e85751215abf5171bac25cd"
     },
     {
       "path": "lib/java/java/lang/Module.sleela",

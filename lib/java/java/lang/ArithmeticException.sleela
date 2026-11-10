@@ -53,4 +53,13 @@ class ArithmeticException {
   String construct() { return "java.construct:" + javaType; }
   String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
   String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+
+  < ---- java.lang.ArithmeticException members ---- >
+  String message = "";
+  ArithmeticException(String s) { message = s; }
+  String getMessage() { return message; }
+  String toString() {
+    if (message == "") { return javaType; }
+    return javaType + ": " + message;
+  }
 }
