@@ -391,7 +391,7 @@ else
 endif
 NS_SRC := nordshrift/sst_lexer.cpp nordshrift/sst_parser.cpp \
           nordshrift/source_resolve.cpp nordshrift/lowering.cpp nordshrift/sleela_emit.cpp \
-          nordshrift/object_compat.cpp nordshrift/subject_model.cpp nordshrift/input_object.cpp \
+          nordshrift/native_method_emit.cpp nordshrift/object_compat.cpp nordshrift/subject_model.cpp nordshrift/input_object.cpp \
           nordshrift/component_manifest.cpp nordshrift/ledger_emit.cpp \
           nordshrift/nordshrift.cpp
 NS_OBJ := $(patsubst nordshrift/%.cpp,$(BUILD)/ns_%.o,$(NS_SRC))
@@ -401,7 +401,7 @@ NS_OBJ += $(LEDGER_CORE_OBJ)
 # The subset of Nordshrift the `sleela` binary links for its `nordshrift`
 # round-trip subcommand: only the emitter (transpile a Sleela Program to a
 # target). It deliberately EXCLUDES nordshrift.cpp (which has its own main()).
-NS_EMIT_OBJ := $(BUILD)/ns_sleela_emit.o $(BUILD)/ns_lowering.o
+NS_EMIT_OBJ := $(BUILD)/ns_sleela_emit.o $(BUILD)/ns_native_method_emit.o $(BUILD)/ns_lowering.o
 # Preferred-router policy (used by the native HTTP servers the `sleela` binary
 # links). Lives under ../preferred-routers.
 PREFERRED_ROUTER_OBJ := $(BUILD)/preferred_router.o
