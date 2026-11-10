@@ -167,8 +167,12 @@ argument shape is outside the negotiated ABI before native execution begins.
    through parameters, locals, assignments, and returns. String literals and
    string operators are excluded. Division/remainder, method-to-method calls,
    print side effects, objects, arrays, and instance methods are also refused.
-   The generated source is not compiled or loaded automatically; the host must
-   compile it, authorize its resulting library, and bind it explicitly.
+   The AOT command runs the normal semantic analyzer (without requiring an
+   executable entry point) before eligibility reporting or emission. It also
+   loads referenced library units, so imports and cross-unit type errors are
+   checked consistently with the normal compiler path. The generated source is
+   not compiled or loaded automatically; the host must compile it, authorize
+   its resulting library, and bind it explicitly.
    The opt-in target `make -C impl test-native-method-aot` generates and builds
    the shared plugin, compiles a matching SLeeLa artifact, then loads the
    plugin through the host authorizer and exercises ordinary `OP_CALL` for
