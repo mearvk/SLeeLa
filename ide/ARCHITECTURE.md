@@ -1,25 +1,50 @@
 # SLeeLa IDE Architecture
 
 ## Principle
-The IDE is a client of SLeeLa compiler and runtime contracts. It must not create a second, incompatible definition of the language.
 
-## Pipeline
+The primary SLeeLa IDE is a native desktop application authored in SLeeLa on
+SleelaUI. It is a client of the SLeeLa compiler/runtime contracts and must not
+create a second, incompatible definition of the language.
+
+The IntelliJ Platform plugin is optional interoperability for users who already
+have that platform installed. It is not the native application's runtime,
+distribution, or build dependency.
+
+## Native application pipeline
+
 ```
-Editor -> IntelliJ Lexer / Parser / PSI -> SLeeLa semantic bridge
-       -> Compiler diagnostics / symbol model -> Build and Run bridge
-       -> Runtime -> Debugger / DAP bridge
+SLeeLa UI / Workbench
+  -> Project tree + document tabs + SLTextView editor
+  -> language profile (SLeeLa / C / C++ / Java)
+  -> compiler and toolchain services
+  -> diagnostics / build output
+  -> run / debugger adapters
 ```
 
-## Layers
-1. **Platform** — editor, project services, indexing, actions, inspections, refactoring, tests, debugger extension points.
-2. **Language** — token, AST, PSI, references, type and diagnostic contracts.
-3. **Semantic bridge** — maps IDE positions to impl/frontend lexer, parser, AST and semantic analysis.
-4. **Project model** — SLeeLa, C, C++, Java sources, generated roots, dependencies, native/JVM tools and tests.
-5. **Execution** — invokes repository-supported commands rather than reproducing compiler behavior in Kotlin.
-6. **Debugging** — maps IntelliJ actions to the existing SLeeLa debugger model and, where appropriate, DAP.
+## Native layers
+
+1. **Presentation** — SleelaUI window, menus, toolbar, project explorer,
+   editor notebook, language selector, diagnostics, and status.
+2. **Document model** — open documents, dirty state, tabs, project files, and
+   editor buffers.
+3. **Language** — SLeeLa compiler bridge; host-discovered C/C++ toolchains; JDK
+   discovery and Java execution.
+4. **Build and execution** — invokes installed tools and repository-supported
+   commands; does not reimplement compiler behavior in the UI.
+5. **Debugging** — connects to the SLeeLa debugger and appropriate native/JVM
+   debugger adapters.
+6. **Desktop bridge** — SLeeLa's native GUI ABI for Linux, Windows, and macOS.
+
+## Optional IntelliJ integration
+
+`ide/sleela-intellij` remains a separately built plugin. It may reuse the
+language and project contracts, but the native application must not require
+IntelliJ, Kotlin IDE infrastructure, or the JetBrains source tree.
 
 ## Non-goals
+
 - replacing the SLeeLa compiler;
 - inventing a second SLeeLa grammar;
-- claiming C/C++/Java language support beyond the host IDE/tooling;
-- hiding compiler or runtime failures behind IDE success states.
+- bundling entire C, C++, and Java toolchains in the base IDE;
+- hiding compiler or runtime failures behind IDE success states;
+- requiring a multi-gigabyte third-party IDE installation to edit SLeeLa.
