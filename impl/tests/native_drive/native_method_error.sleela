@@ -1,0 +1,11 @@
+#sleela 3.0
+class NativeErrorFixture {
+    @native
+    static int fail(int value) {
+        return value + 1;
+    }
+
+    static int main() {
+        return fail(16);
+    }
+}
