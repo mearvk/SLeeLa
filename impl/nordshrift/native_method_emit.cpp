@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <map>
 #include <sstream>
+#include <set>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -186,10 +187,14 @@ static void validateMethod(const ClassDecl& cls, const Method& m) {
 
 std::string emitNativeMethods(const sleela::Program& program) {
     std::vector<NativeMethod> methods;
+    std::set<std::string> identities;
     for (const auto& cls:program.classes) for (const auto& method:cls.methods) {
         if (!markedNative(method)) continue;
         validateMethod(cls,method);
-        methods.push_back({&cls,&method,signature(cls,method),"sleela_native_method_"+std::to_string(methods.size())});
+        std::string identity=signature(cls,method);
+        if (!identities.insert(identity).second)
+            throw std::runtime_error("duplicate canonical @native method identity: "+identity);
+        methods.push_back({&cls,&method,identity,"sleela_native_method_"+std::to_string(methods.size())});
     }
     if (methods.empty()) throw std::runtime_error("no @native methods to emit");
     std::ostringstream out;
