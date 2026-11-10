@@ -195,20 +195,23 @@ static int check_ordinary_native_dispatch(const char *artifact, const char *plug
     if (!vm) return 0;
     if (slvm_set_native_authorizer(vm, authorize_exact_path, (void *)plugin) != 0 ||
         slvm_native_module_open(vm, plugin, &handle) != SL_NATIVE_OK ||
-        slvm_bind_native_method(vm, 0, handle) != 0)
+        slvm_bind_native_method(vm, 0, handle) != 0 ||
+        slvm_bind_native_method(vm, 1, handle) != 0)
         goto done;
     /* A bound module cannot be unloaded while any method points at it. */
     if (slvm_native_module_close(vm, handle) == SL_NATIVE_OK) goto done;
     if (slvm_run(vm) != SLR_OK) goto done;
     result = slvm_result(vm);
     if (result.type != SL_INT || result.as.i != 143) goto done;
-    if (slvm_unbind_native_method(vm, 0) != 0) goto done;
+    if (slvm_unbind_native_method(vm, 0) != 0 ||
+        slvm_unbind_native_method(vm, 1) != 0) goto done;
     if (slvm_native_module_close(vm, handle) != SL_NATIVE_OK) goto done;
     handle = SL_NATIVE_HANDLE_INVALID;
     ok = 1;
 done:
     if (handle != SL_NATIVE_HANDLE_INVALID) {
         (void)slvm_unbind_native_method(vm, 0);
+        (void)slvm_unbind_native_method(vm, 1);
         (void)slvm_native_module_close(vm, handle);
     }
     slvm_free(vm);
