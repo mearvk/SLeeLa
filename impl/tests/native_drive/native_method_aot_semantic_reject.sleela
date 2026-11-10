@@ -1,0 +1,14 @@
+#sleela 3.0
+class NativeAotSemanticReject {
+    @native
+    static boolean invalidReturn(int value) {
+        return value;
+    }
+
+    static int main() {
+        if (1) {
+            return 1;
+        }
+        return 0;
+    }
+}
