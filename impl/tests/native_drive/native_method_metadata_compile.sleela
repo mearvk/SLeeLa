@@ -5,7 +5,12 @@ class MathEngine {
         return left + right;
     }
 
+    @native
+    static int fallback(int value) {
+        return value + 1;
+    }
+
     static int main() {
-        return sum(20, 22);
+        return fallback(sum(20, 22));
     }
 }
