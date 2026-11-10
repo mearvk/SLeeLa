@@ -67,8 +67,29 @@ class MethodBodyEmitter {
         if (dynamic_cast<const DoubleLit*>(e)) return "double";
         if (dynamic_cast<const BoolLit*>(e)) return "boolean";
         if (auto v=dynamic_cast<const VarExpr*>(e)) { auto i=types.find(v->name); if(i==types.end()) throw std::runtime_error("unknown native local '"+v->name+"'"); return i->second; }
-        if (auto u=dynamic_cast<const Unary*>(e)) { std::string t=typeOf(u->operand.get()); if(t=="String") throw std::runtime_error("String values do not support unary operators in ABI v1"); return u->op=="!"?"boolean":t; }
-        if (auto b=dynamic_cast<const Binary*>(e)) { std::string a=typeOf(b->lhs.get()), z=typeOf(b->rhs.get()); if(a=="String"||z=="String") throw std::runtime_error("String arithmetic/comparison is outside native ABI v1"); if(b->op=="=="||b->op=="!="||b->op=="<"||b->op=="<="||b->op==">"||b->op==">="||b->op=="&&"||b->op=="||") return "boolean"; return (a=="double"||z=="double")?"double":"int"; }
+        if (auto u=dynamic_cast<const Unary*>(e)) {
+            std::string t=typeOf(u->operand.get());
+            if(u->op=="!") { if(t=="String") throw std::runtime_error("String values do not support logical negation in ABI v1"); return "boolean"; }
+            if((u->op=="-"||u->op=="+") && (t=="int"||t=="double")) return t;
+            throw std::runtime_error("invalid native unary operand/operator");
+        }
+        if (auto b=dynamic_cast<const Binary*>(e)) {
+            std::string a=typeOf(b->lhs.get()), z=typeOf(b->rhs.get());
+            if(a=="String"||z=="String") throw std::runtime_error("String arithmetic/comparison is outside native ABI v1");
+            if(b->op=="&&"||b->op=="||") return "boolean";
+            if(b->op=="=="||b->op=="!="||b->op=="<"||b->op=="<="||b->op==">"||b->op==">=") {
+                bool numericA=(a=="int"||a=="double"), numericZ=(z=="int"||z=="double");
+                if(a!=z && !(numericA&&numericZ)) throw std::runtime_error("incompatible native comparison operands");
+                return "boolean";
+            }
+            if(b->op=="+"||b->op=="-"||b->op=="*") {
+                if((a!="int"&&a!="double")||(z!="int"&&z!="double"))
+                    throw std::runtime_error("native arithmetic requires numeric operands");
+                return (a=="double"||z=="double")?"double":"int";
+            }
+            if(b->op=="/"||b->op=="%") throw std::runtime_error("division and remainder are excluded until native error semantics match the VM");
+            throw std::runtime_error("unsupported native binary operator");
+        }
         if (auto c=dynamic_cast<const ConditionalExpr*>(e)) { if(typeOf(c->cond.get())=="String") throw std::runtime_error("String condition is not supported"); std::string a=typeOf(c->thenE.get()),z=typeOf(c->elseE.get()); if(a!=z) throw std::runtime_error("native conditional branches must have the same type"); return a; }
         if (auto a=dynamic_cast<const AssignmentExpr*>(e)) { auto v=dynamic_cast<const VarExpr*>(a->target.get()); if(!v||a->op!="=") throw std::runtime_error("unsupported native assignment expression"); std::string t=typeOf(v),z=typeOf(a->value.get()); if(t!=z) throw std::runtime_error("native assignment type mismatch"); return t; }
         throw std::runtime_error("unsupported native expression type");
