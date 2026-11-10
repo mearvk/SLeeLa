@@ -1,5 +1,7 @@
 # SLeeLa /lib Library Index
 
+> Revision 0.81 completes the **`java`** package type inventory against the reflected public JDK API (OpenJDK 25.0.2; JDK 28 envelope format): 1,235 previously missing public types gain source units (every one of the 4,801 public types now has a file), and every type carries a generated `java declarations` block (constants with real values, fields, abstract methods, complete enums and records) from `lib/java/tools/jdk_api_declare.py`. Measured coverage is in `lib/java/COVERAGE.md`. Counts also absorb five units of earlier drift.
+
 > Revision 0.80 adds a `medium-results/` folder to the **`advantage`** package (`lib/advantage/medium-results/`) demonstrating the connect medium + network subject connecting, controlling, and executing trades over open exchange in the USA. Four self-validating examples, one per theme: `business-exchange` (a US small business runs the full connect -> control -> execute -> record loop), `trade-exchange` (cross-venue commodity routing with a settlement fee), `economics-exchange` (joint-surplus maximization + Nash split via the math subject, settled in integer cents), and `youthfulness-exchange` (a guardrailed first trade: buyer-favored price + a hard spend cap turning an over-cap spend into a safe non-retryable decline). Each spine connects a national clock + venue, scouts and negotiates, and settles + records; every live operation defers to a host adapter (code 9). Four new source units.
 
 > Revision 0.79 adds a `connect/` subject subfolder to the **`advantage`** package (`lib/advantage/connect/`): the in-between connectivity MEDIUM that links Advantage SLeeLa programs to external systems, with one uniform status-code + fault-record convention (exception handling for every class of perform). Shared backbone: `SLConnectStatus` (the universal integer outcome vocabulary OK..NATIVE_ADAPTER_REQUIRED..INTERNAL, with transient-vs-permanent classification) and `SLConnectFault` (a structured fault record: code, subsystem, operation, message, retryable, attempts). Four connectors, each modelling lifecycle in the VM and deferring the live operation to a documented host adapter: `SLSqlConnector` (MySQL/databases, native slsql_*), `SLClockConnector` (national clocks / NTP, native slntp_*, cites RFC 5905), `SLNetConnector` (network connectivity, native slnet_*), and `SLMoneyConnector` (money sources -- banks, cards, wallets -- native slbank_*, integer cents, keystore-alias only, declines non-retryable). A runnable `connect-demo` validates all four. No secrets live in SLeeLa; no live database/clock/socket/bank is dialed from inside the VM. The medium also carries `SLTechInstallerII` -- a credentialed Tech Installer II authority (Max Rupplin / MEARVK LLC, North Carolina, 2026 and forward, governed by N.C.G.S. Chapter 57D) authorized to install the actual Use of the Advantage(TM) System onto install sets or settings, ceteris paribus (idempotent, licence-gated, changing only the declared target) -- with a runnable `installer-demo`. Nine new source units.
@@ -29,11 +31,11 @@
 > Revision 0.67 adds two AI-facing SLeeLa standard-library packages. **`neural-nets`** (`lib/neural-nets/`) mirrors the native C ABI v1 with `SLNeuralNetworkConfig`, `SLNeuralNetwork`, and a package facade; it exposes the validated network configuration and lifecycle contract while inference/training remain explicit native-adapter operations. **`character-recognition`** (`lib/character-recognition/`) mirrors the native C11 glyph-recognition API with `SLCharacterRecognition`, `SLCharacterResult`, and a package facade; normalization and recognition remain native-adapter operations. Both packages document their exact native boundaries and limitations. The authoritative C/C++ implementations remain under `artificial-intelligence/`; these SLeeLa packages do not duplicate kernels or claim native execution without an adapter.
 
 
-**Revision:** 0.80  
+**Revision:** 0.81  
 **Packages:** 117  
-**SLeeLa source units:** 11990  
+**SLeeLa source units:** 13230  
 **Module-facade symbols:** 84  
-**Total symbol records:** 12074  
+**Total symbol records:** 13314  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.66 brings three big-number improvements that make a 10,000,000-digit

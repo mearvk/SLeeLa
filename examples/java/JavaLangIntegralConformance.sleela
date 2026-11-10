@@ -39,10 +39,10 @@ class JavaLangIntegralConformance {
   }
   void main() {
     Integer I = new Integer(0);
-    eq("parse", "" + I.parseInteger("-2147483648"), "-2147483648");
-    eq("parse+", "" + I.parseInteger("+123"), "123");
-    eq("radix", "" + I.parseIntegerRadix("ff", 16), "255");
-    eq("radixNeg", "" + I.parseIntegerRadix("-1010", 2), "-10");
+    eq("parse", "" + I.parseInt("-2147483648"), "-2147483648");
+    eq("parse+", "" + I.parseInt("+123"), "123");
+    eq("radix", "" + I.parseIntRadix("ff", 16), "255");
+    eq("radixNeg", "" + I.parseIntRadix("-1010", 2), "-10");
     eq("wrap", "" + I.sum(2147483647, 1), "-2147483648");
     eq("hex", I.toHexString(-1), "ffffffff");
     eq("hex255", I.toHexString(255), "ff");
@@ -67,10 +67,10 @@ class JavaLangIntegralConformance {
     eq("cmp", "" + a.compareTo(new Integer(7)), "1");
     eq("byteValue", "" + new Integer(300).byteValue(), "44");
     boolean nfe = false;
-    try { I.parseInteger("2147483648"); } catch (Any e) { nfe = e instanceof NumberFormatException; NumberFormatException x = (NumberFormatException) e; eq("nfeMsg", x.getMessage(), "For input string: \"2147483648\""); }
+    try { I.parseInt("2147483648"); } catch (Any e) { nfe = e instanceof NumberFormatException; NumberFormatException x = (NumberFormatException) e; eq("nfeMsg", x.getMessage(), "For input string: \"2147483648\""); }
     if (!nfe) { bad = bad + 1; print("FAIL overflow parse"); }
     boolean nfe2 = false;
-    try { I.parseInteger("12a"); } catch (Any e2) { nfe2 = e2 instanceof NumberFormatException; }
+    try { I.parseInt("12a"); } catch (Any e2) { nfe2 = e2 instanceof NumberFormatException; }
     if (!nfe2) { bad = bad + 1; print("FAIL bad digit"); }
     Long L = new Long(0);
     eq("lparse", "" + L.parseLong("-9223372036854775808"), "-9223372036854775808");

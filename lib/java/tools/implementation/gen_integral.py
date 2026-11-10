@@ -46,16 +46,17 @@ COMMON_PARSE = '''
 
 
 def body(name, prim, bits, lo, hi):
+    pname = "Int" if name == "Integer" else name
     T = "long" if bits == 64 else "int"
     unsigned_mod = {8: "256", 16: "65536", 32: "4294967296"}.get(bits)
     out = []
     out.append(f'''  < ---- java.lang.{name} members (procedural implementation in SLeeLa) ---- >
   << The boxed {prim} value plus the java.lang.{name} static API rendered as
-     instance methods (call as new {name}(0).parse{name}("42")). The VM integer
+     instance methods (call as new {name}(0).parse{pname}("42")). The VM integer
      is 64-bit, so every {bits}-bit result is wrapped two-complement style with
      wrap(), exactly as Java arithmetic overflows. Parsing reads the text as a
      Java UTF-16 String (javaStringFromUtf8), so pass an ordinary SLeeLa String.
-     Overloads are suffixed (toStringOf, toStringRadix, parse{name}Radix, ...)
+     Overloads are suffixed (toStringOf, toStringRadix, parse{pname}Radix, ...)
      because calls resolve by name only. The VM has no byte/short/float/char
      primitive, so those Java types are carried as int (or double for float),
      always held inside the Java range. >>
@@ -128,7 +129,7 @@ def body(name, prim, bits, lo, hi):
   {T} max({T} a, {T} b) {{ if (a >= b) {{ return a; }} return b; }}
   {T} min({T} a, {T} b) {{ if (a <= b) {{ return a; }} return b; }}
   {name} valueOf({T} i) {{ return new {name}(i); }}
-  {name} valueOfString(String s) {{ return new {name}(parse{name}(s)); }}
+  {name} valueOfString(String s) {{ return new {name}(parse{pname}(s)); }}
 ''')
     if bits == 64:
         out.append('''  int hashCodeOf(long v) {
@@ -327,8 +328,8 @@ def body(name, prim, bits, lo, hi):
 ''')
     # parsing
     out.append(f'''
-  {T} parse{name}(String s) {{ return parse{name}Radix(s, 10); }}
-  {T} parse{name}Radix(String s, int radix) {{
+  {T} parse{pname}(String s) {{ return parse{pname}Radix(s, 10); }}
+  {T} parse{pname}Radix(String s, int radix) {{
     if (s == null) {{ throw new NumberFormatException("Cannot parse null string: null"); }}
     if (radix < 2 || radix > 36) {{ throw new NumberFormatException("radix " + radix + " out of range"); }}
     String u = javaStringFromUtf8(s);
