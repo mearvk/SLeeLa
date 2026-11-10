@@ -465,7 +465,9 @@ SLNativeStatus slvm_native_module_call(SLVM* vm, SLNativeHandle handle,
 SLNativeStatus slvm_native_module_close(SLVM* vm, SLNativeHandle handle);
 /* Bind/unbind an annotated static function to an already-authorized module.
  * The native export is selected by the exact canonical signature in metadata.
- * These calls do not load modules or grant authorization. */
+ * These calls do not load modules or grant authorization. Call only while the
+ * VM is quiescent (not concurrently with slvm_run, slvm_free, or other binding
+ * changes). Bound modules cannot be closed until every method is unbound. */
 int slvm_bind_native_method(SLVM* vm, int function_index, SLNativeHandle handle);
 int slvm_unbind_native_method(SLVM* vm, int function_index);
 /* Set the host capabilities available to OSLS bindings before execution.
