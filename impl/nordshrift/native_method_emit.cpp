@@ -198,10 +198,10 @@ std::string emitNativeMethods(const sleela::Program& program) {
            "#include <stdint.h>\n#include <stddef.h>\n#include <string.h>\n"
            "#include \"native_loader.h\"\n"
            "typedef struct { const uint8_t *data; uint32_t length; } SLNativeString;\n"
-           "static int64_t sl_i64_add(int64_t a,int64_t b){uint64_t u=(uint64_t)a+(uint64_t)b;int64_t r;memcpy(&r,&u,sizeof r);return r;}\n"
-           "static int64_t sl_i64_sub(int64_t a,int64_t b){uint64_t u=(uint64_t)a-(uint64_t)b;int64_t r;memcpy(&r,&u,sizeof r);return r;}\n"
-           "static int64_t sl_i64_mul(int64_t a,int64_t b){uint64_t u=(uint64_t)a*(uint64_t)b;int64_t r;memcpy(&r,&u,sizeof r);return r;}\n"
-           "static int64_t sl_i64_neg(int64_t a){uint64_t u=UINT64_C(0)-(uint64_t)a;int64_t r;memcpy(&r,&u,sizeof r);return r;}\n\n";
+           "static inline int64_t sl_i64_add(int64_t a,int64_t b){uint64_t u=(uint64_t)a+(uint64_t)b;int64_t r;memcpy(&r,&u,sizeof r);return r;}\n"
+           "static inline int64_t sl_i64_sub(int64_t a,int64_t b){uint64_t u=(uint64_t)a-(uint64_t)b;int64_t r;memcpy(&r,&u,sizeof r);return r;}\n"
+           "static inline int64_t sl_i64_mul(int64_t a,int64_t b){uint64_t u=(uint64_t)a*(uint64_t)b;int64_t r;memcpy(&r,&u,sizeof r);return r;}\n"
+           "static inline int64_t sl_i64_neg(int64_t a){uint64_t u=UINT64_C(0)-(uint64_t)a;int64_t r;memcpy(&r,&u,sizeof r);return r;}\n\n";
     for (const auto& nm:methods) {
         MethodBodyEmitter body;
         out << body.emit(*nm.method,nm.symbol);
