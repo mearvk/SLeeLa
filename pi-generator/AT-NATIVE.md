@@ -1,34 +1,32 @@
 # `@native`, VM dispatch, and Native Drive
 
-This page distinguishes three facilities that must not be conflated:
-AOT annotation analysis, typed in-process native dispatch, and the emerging
-isolated-process IPC route for Pi's large-integer work.
+This page distinguishes four facilities that must not be conflated: AOT
+annotation analysis, typed in-process native dispatch, VM-owned worker handles,
+and the external Native IPC worker process.
 
 ## 1. The `@native` annotation
 
-`@native` is a marker annotation for ahead-of-time native compilation.
-It is behaviour-neutral in ordinary VM execution: it does not authorize a
-module, load a library, start a process, or route a method call. The AOT
-commands remain:
+`@native` is a marker annotation for ahead-of-time native compilation. It is
+behaviour-neutral in ordinary VM execution: it does not authorize a module,
+load a library, start a process, or route a method call. The AOT commands remain:
 
 ```sh
 sleela aot --list source.sleela
 sleela aot --emit source.sleela
 ```
 
-The AOT subset is deliberately narrow and fail-closed. It currently accepts
-scalar literals/variables, arithmetic and comparison, assignment, free calls,
-if/while/for, return, and print. Arrays, object construction, qualified calls,
-and other unsupported constructs are refused. The emitter is whole-program,
-not an independent per-method ABI emitter.
+The AOT subset is deliberately narrow and fail-closed. It accepts only the
+constructs explicitly supported by the emitter; unsupported constructs are
+refused. The emitter is whole-program, not an independent per-method ABI
+emitter. `@native` is not an IPC or process-launch annotation.
 
-## 2. Existing syntax-3.0 native dispatch
+## 2. Existing syntax-3.0 in-process native dispatch
 
-The VM already implements the append-only opcodes `OP_NATIVE_OPEN`,
-`OP_NATIVE_CALL`, and `OP_NATIVE_CLOSE`, exposed as:
+The VM implements the append-only `OP_NATIVE_OPEN`, `OP_NATIVE_CALL`, and
+`OP_NATIVE_CLOSE` operations, exposed as:
 
-- `nativeOpen(path)`: host-authorized open; returns a generation-checked
-  VM-owned handle.
+- `nativeOpen(path)`: host-authorized shared-library open; returns a
+  generation-checked VM-owned handle.
 - `nativeCall(handle, method, ...args)`: invokes a named method through the
   versioned typed ABI.
 - `nativeClose(handle)`: closes and invalidates the handle.
@@ -47,46 +45,66 @@ synchronous, and recursive native operations are rejected.
 See [Native Drive](../impl/native-drive/README.md) and the
 [loader contract](../os-level-support/loader/README.md).
 
-## 3. Why Pi needs a separate IPC route
+## 3. VM-owned IPC worker handles
 
-The 20,000-digit Pi generators use VM-owned arrays and big-integer operations.
-Those arrays cannot cross the scalar ABI, and widening the ABI to pass pointers
-or VM handles would violate the ownership boundary. The next route is an
-isolated math worker process, with canonical serialization of base-1e9 limbs.
+The VM core exposes a bounded table of 64 opaque IPC worker references through
+`slvm_ipc_worker_register`, `slvm_ipc_worker_acquire`,
+`slvm_ipc_worker_release`, and `slvm_ipc_worker_close`.
 
-The first IPC implementation slice now exists:
-- `impl/native-drive/native_ipc_protocol.h`: 24-byte version-1 frame header,
-  scalar/request codec, and canonical signed base-1e9 limb codec, field-by-field
-  little-endian.
-- `impl/tests/native_drive/native_ipc_protocol_smoke.c`: focused codec test.
-- `impl/native-drive/IPC-PROTOCOL.md`: request/response, limb, lifecycle,
-  security, and verification contract.
+Registration accepts an already-created and already-authorized worker plus a
+close callback; registration does not launch or authorize a process. Handles
+carry a slot and nonzero generation. Leases prevent a worker from being closed
+while an operation is using it. Close prevents new acquisitions, waits for
+leases to drain, invalidates the generation, and invokes the close callback
+outside the table lock. VM shutdown closes registered workers. Registration is
+rejected once shutdown begins.
 
-This is only the wire-codec foundation. A persistent worker, process supervisor, and Pi integration remain in
-progress; the request and limb wire codecs are implemented but not yet
-connected to the VM dispatch path. No end-to-end IPC benchmark is claimed.
+This is a VM ownership/lifecycle API, not yet a source-level worker dispatch
+feature. The reserved Native IPC bytecode opcodes remain fail-closed until a
+host supervisor adapter and capability policy are connected.
 
-## 4. Required implementation gates
+## 4. Native IPC v1 process worker
 
-1. Annotation/lowering metadata must identify the method and requested mode;
-   source metadata must never grant authority.
-2. Keep scalar ABI v1 stable; add bounded, canonical signed limb encoding.
-3. Add a separate VM-to-worker call boundary without changing in-process
-   module semantics.
-4. Complete request/response framing, pipes, backpressure, timeout, and cancel.
-5. Enforce executable integrity/allowlists, environment/workdir policy,
-   child cleanup/reaping, and VM-shutdown lifecycle.
-6. Test codec and process faults, differential limb arithmetic, then run the
-   20,000-digit Pi workload against an independent reference on all three OSes.
+The repository now includes a persistent Python reference worker and host-side
+supervisor in `tools/sleela-ipc-worker.py`. It provides:
 
-The exact wire and test contract is in
-[IPC-PROTOCOL.md](../impl/native-drive/IPC-PROTOCOL.md).
+- A version-1 `SLIP` framed protocol with a 24-byte little-endian header,
+  request IDs, and a 16 MiB payload ceiling.
+- A handshake before requests, exact stream reads, scalar request/response
+  encoding, and rejection of malformed frames and trailing bytes.
+- Persistent child-process ownership using an argv vector and
+  `shell=False`, an explicit working directory, an environment allowlist,
+  SHA-256 verification of the launched executable, request timeouts, bounded
+  stderr capture, and graceful shutdown followed by terminate/kill fallback.
+- A reference worker implementing `math.ping`, `math.capabilities`,
+  `bigint.add`, `bigint.sub`, `bigint.mul`, and `pi.compute`.
 
-## 5. Existing Native Drive
+The reference `pi.compute` service uses Python arbitrary-precision integers
+and Chudnovsky binary splitting. Its 20,000-fractional-digit test checks the
+output length, known prefix, and a pinned SHA-256 digest. This validates the
+reference worker's IPC request/response path; it does **not** demonstrate that
+SLeeLa's VM math module or `sleelactl` computed those digits.
 
-Native Drive supports C/C++ builds through the selected host compiler,
-supported SLeeLa AOT output, shared-library ABI checks, shell-free argv process
-execution, bounded stdout/stderr capture, process piping, timeouts, and XClass
-delegation. The `sleelactl` math subject is currently an in-process native
-subject/reference-demo route; it is not yet a persistent external IPC worker
-that accepts Pi limb arrays.
+The C transport-neutral client and the C frame/scalar/request/limb codecs are
+separate building blocks. The canonical base-1e9 limb codec is not yet the
+payload representation used by the Python reference worker's big-integer
+methods, which currently accept decimal strings.
+
+## 5. Required integration gates
+
+1. Connect the process supervisor to the VM-owned worker-handle lifecycle.
+2. Add a host-controlled capability/authorization adapter and connect it to
+   the reserved bytecode operations; source metadata must never grant authority.
+3. Extend integrity policy to cover every executable input that matters,
+   including interpreter/script or worker payloads, not only `argv[0]`.
+4. Decide and implement the production big-integer wire representation:
+   canonical base-1e9 limbs or a separately specified bounded decimal format.
+5. Add fault-injection coverage for timeout, cancellation, child crash,
+   output flood, malformed response, and cleanup/reaping.
+6. Route SLeeLa's actual Pi/math workload through the authorized VM worker path,
+   then compare results with an independent reference and record wall time,
+   CPU time, peak memory, output hash, commands, and runner details on Linux,
+   Windows, and macOS.
+
+The 20,000-digit Python reference-worker test is a correctness fixture, not a
+SLeeLa runtime performance result. Do not extrapolate a VM speed-up from it.
