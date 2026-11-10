@@ -833,6 +833,15 @@ NATIVE_METHOD_NOT_HANDLED_SOURCE := tests/native_drive/native_method_not_handled
 NATIVE_METHOD_NOT_HANDLED_ARTIFACT := $(BUILD)/native_method_not_handled.artifact.sleela
 NATIVE_METHOD_NOT_HANDLED_SMOKE_C := $(BUILD)/native_method_not_handled_smoke.c
 NATIVE_METHOD_NOT_HANDLED_SMOKE := $(BUILD)/native_method_not_handled_smoke$(EXE)
+NATIVE_METHOD_BOUNDARY_SOURCE := tests/native_drive/native_method_boundary.sleela
+NATIVE_METHOD_ERROR_SOURCE := tests/native_drive/native_method_error.sleela
+NATIVE_METHOD_BOUNDARY_ARTIFACT := $(BUILD)/native_method_boundary.artifact.sleela
+NATIVE_METHOD_ERROR_ARTIFACT := $(BUILD)/native_method_error.artifact.sleela
+NATIVE_METHOD_BOUNDARY_PLUGIN_SOURCE := tests/native_drive/native_method_boundary_plugin.c
+NATIVE_METHOD_BOUNDARY_PLUGIN := $(BUILD)/native_method_boundary_plugin$(if $(filter macos,$(PLATFORM)),.dylib,$(if $(filter windows,$(PLATFORM)),.dll,.so))
+NATIVE_METHOD_BOUNDARY_SMOKE_SOURCE := tests/native_drive/native_method_boundary_smoke.c
+NATIVE_METHOD_BOUNDARY_SMOKE_OBJ := $(BUILD)/native_method_boundary_smoke.o
+NATIVE_METHOD_BOUNDARY_SMOKE := $(BUILD)/native_method_boundary_smoke$(EXE)
 NATIVE_METHOD_AOT_C := $(BUILD)/native_method_aot.generated.c
 NATIVE_METHOD_AOT_ARTIFACT := $(BUILD)/native_method_aot.artifact.sleela
 NATIVE_METHOD_AOT_SMOKE := $(BUILD)/native_method_aot_smoke$(EXE)
@@ -850,6 +859,14 @@ endif
 ifneq ($(PLATFORM),windows)
   NATIVE_METHOD_AOT_PLUGIN_CFLAGS := -fPIC
 endif
+ifneq ($(PLATFORM),windows)
+  NATIVE_METHOD_BOUNDARY_PLUGIN_CFLAGS := -fPIC
+endif
+ifeq ($(PLATFORM),macos)
+  NATIVE_METHOD_BOUNDARY_PLUGIN_FLAGS := -dynamiclib
+else
+  NATIVE_METHOD_BOUNDARY_PLUGIN_FLAGS := -shared
+endif
 $(NATIVE_METHOD_AOT_C): $(NATIVE_METHOD_AOT_SOURCE) $(SLEELA_BIN) | $(BUILD)
 	@cd $(CURDIR)/.. && export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; $(CURDIR)/$(SLEELA_BIN) aot --emit impl/$(NATIVE_METHOD_AOT_SOURCE) > $(CURDIR)/$@
 $(NATIVE_METHOD_AOT_PLUGIN): $(NATIVE_METHOD_AOT_C) ../os-level-support/loader/native_loader.h
@@ -859,6 +876,17 @@ $(NATIVE_METHOD_AOT_ARTIFACT): $(NATIVE_METHOD_AOT_SOURCE) $(SLEELA_BIN) | $(BUI
 $(NATIVE_METHOD_AOT_SMOKE_OBJ): tests/native_drive/native_method_aot_smoke.c core/sleela_core.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c $< -o $@
 $(NATIVE_METHOD_AOT_SMOKE): $(NATIVE_METHOD_AOT_SMOKE_OBJ) $(SLCORE_LIB)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+
+$(NATIVE_METHOD_BOUNDARY_ARTIFACT): $(NATIVE_METHOD_BOUNDARY_SOURCE) $(SLEELA_BIN) | $(BUILD)
+	$(SLEELA_BIN) compile $< -o $@
+$(NATIVE_METHOD_ERROR_ARTIFACT): $(NATIVE_METHOD_ERROR_SOURCE) $(SLEELA_BIN) | $(BUILD)
+	$(SLEELA_BIN) compile $< -o $@
+$(NATIVE_METHOD_BOUNDARY_PLUGIN): $(NATIVE_METHOD_BOUNDARY_PLUGIN_SOURCE) ../os-level-support/loader/native_loader.h | $(BUILD)
+	$(CC) $(CFLAGS) $(NATIVE_METHOD_BOUNDARY_PLUGIN_CFLAGS) -DSL_NATIVE_PLUGIN_BUILD $(NATIVE_METHOD_BOUNDARY_PLUGIN_FLAGS) -I../os-level-support/loader $< -o $@
+$(NATIVE_METHOD_BOUNDARY_SMOKE_OBJ): $(NATIVE_METHOD_BOUNDARY_SMOKE_SOURCE) core/sleela_core.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c $< -o $@
+$(NATIVE_METHOD_BOUNDARY_SMOKE): $(NATIVE_METHOD_BOUNDARY_SMOKE_OBJ) $(SLCORE_LIB)
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
 
 # A separate artifact binds a method that the generated AOT plugin does not
@@ -930,9 +958,10 @@ $(NATIVE_METHOD_NOT_HANDLED_SMOKE_C): | $(BUILD)
 	@:
 $(NATIVE_METHOD_NOT_HANDLED_SMOKE): $(NATIVE_METHOD_NOT_HANDLED_SMOKE_C) $(SLCORE_LIB)
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) -Icore $< $(SLCORE_LIB) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
-test-native-method-aot: $(SLEELA_BIN) $(NATIVE_METHOD_AOT_SMOKE) $(NATIVE_METHOD_AOT_PLUGIN) $(NATIVE_METHOD_AOT_ARTIFACT) $(NATIVE_METHOD_AOT_SEMANTIC_REJECT_SOURCE) $(NATIVE_METHOD_AOT_LIBRARY_SOURCE) $(NATIVE_METHOD_NOT_HANDLED_SMOKE) $(NATIVE_METHOD_NOT_HANDLED_ARTIFACT)
+test-native-method-aot: $(SLEELA_BIN) $(NATIVE_METHOD_AOT_SMOKE) $(NATIVE_METHOD_AOT_PLUGIN) $(NATIVE_METHOD_AOT_ARTIFACT) $(NATIVE_METHOD_AOT_SEMANTIC_REJECT_SOURCE) $(NATIVE_METHOD_AOT_LIBRARY_SOURCE) $(NATIVE_METHOD_NOT_HANDLED_SMOKE) $(NATIVE_METHOD_NOT_HANDLED_ARTIFACT) $(NATIVE_METHOD_BOUNDARY_SMOKE) $(NATIVE_METHOD_BOUNDARY_PLUGIN) $(NATIVE_METHOD_BOUNDARY_ARTIFACT) $(NATIVE_METHOD_ERROR_ARTIFACT)
 	$(NATIVE_METHOD_AOT_SMOKE) $(NATIVE_METHOD_AOT_ARTIFACT) $(abspath $(NATIVE_METHOD_AOT_PLUGIN))
 	$(NATIVE_METHOD_NOT_HANDLED_SMOKE) $(NATIVE_METHOD_NOT_HANDLED_ARTIFACT) $(abspath $(NATIVE_METHOD_AOT_PLUGIN))
+	$(NATIVE_METHOD_BOUNDARY_SMOKE) $(NATIVE_METHOD_BOUNDARY_ARTIFACT) $(NATIVE_METHOD_ERROR_ARTIFACT) $(abspath $(NATIVE_METHOD_BOUNDARY_PLUGIN))
 	@cd $(CURDIR)/.. && export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; log="$(CURDIR)/$(BUILD)/native_method_aot_semantic_reject.log"; if $(CURDIR)/$(SLEELA_BIN) aot --list impl/$(NATIVE_METHOD_AOT_SEMANTIC_REJECT_SOURCE) > "$log" 2>&1; then echo "native-method-aot: semantic-invalid source was incorrectly accepted" >&2; cat "$log" >&2; exit 1; fi; grep -q "must be bool" "$log" || { echo "native-method-aot: rejection did not come from semantic boolean-condition validation" >&2; cat "$log" >&2; exit 1; }; echo "native-method-aot: semantic-invalid source correctly refused"
 	@cd $(CURDIR)/.. && export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; log="$(CURDIR)/$(BUILD)/native_method_aot_library.log"; $(CURDIR)/$(SLEELA_BIN) aot --list impl/$(NATIVE_METHOD_AOT_LIBRARY_SOURCE) > "$$log" 2>&1 || { cat "$$log" >&2; exit 1; }; grep -q "all 1 @native method(s) are translatable" "$$log" || { echo "native-method-aot: library unit without main was not accepted" >&2; cat "$$log" >&2; exit 1; }; echo "native-method-aot: library unit without main correctly accepted"
 # Explicit opt-in regression target; it remains outside default and CI aggregates.
