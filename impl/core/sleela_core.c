@@ -2885,6 +2885,7 @@ static SLResult run_thread(SLThread* t) {
         case OP_CALL: {
             int cfi=in.a; if(cfi<0||cfi>=vm->nfunc) TERR("call to unknown function");
             SLFunc* f=&vm->funcs[cfi];
+            if(t->fp>=FRAMES_MAX) TERR("call depth exceeded");
             int base=t->sp-f->nargs;
             if(base<0) TERR("call: not enough arguments on stack");
             /* Automatic @native dispatch is static-only in ABI v1. The normal
@@ -2947,7 +2948,6 @@ static SLResult run_thread(SLThread* t) {
                     TERR(message);
                 }
             }
-            if(t->fp>=FRAMES_MAX) TERR("call depth exceeded");
             SLFrame* nf=&t->frames[t->fp++]; nf->ret_ip=ip; nf->base=base; nf->nargs=f->nargs; nf->handler_base=t->exception_handler_count;
             for(int i=f->nargs;i<f->nlocals;i++){ PUSH(slval_null()); } ip=f->entry;
         } break;
