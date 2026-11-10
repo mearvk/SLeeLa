@@ -161,12 +161,16 @@ argument shape is outside the negotiated ABI before native execution begins.
    body per annotated static method. The plugin exports the typed ABI v1
    loader symbols and dispatches exact canonical signature strings. Initial
    parameter/return types are `int`, `double`, `boolean`, and length-delimited
-   `String`; void returns are represented as NULL. Method-to-method calls,
+   `String`; void returns are represented as NULL. String values may be passed
+   through parameters, locals, assignments, and returns without reinterpretation;
+   string literals and string operators remain excluded. Method-to-method calls,
    string literals/operations, print side effects, objects, arrays, and
    instance methods are refused. The generated source is not compiled or loaded
    automatically; a host must compile it, authorize its resulting library, and
-   bind it explicitly. The C emitter is production code now, but generated
-   plugin compile/load/dispatch conformance remains to be executed.
+   bind it explicitly. An opt-in local target, `make -C impl test-native-method-aot`,
+   generates the fixture plugin source and compiles the C translation unit; this
+   target is not part of CI and has not yet been run in this environment.
+   Generated plugin load/dispatch conformance remains outstanding.
 3. **Host binding API — implemented:** `slvm_bind_native_method()` accepts
    only annotated static methods and a module handle already opened through
    the host's authorization policy. `slvm_unbind_native_method()` is required
