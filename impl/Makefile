@@ -823,6 +823,8 @@ $(NATIVE_METHOD_METADATA_SMOKE): $(NATIVE_METHOD_METADATA_SMOKE_OBJ) $(SLCORE_LI
 $(NATIVE_METHOD_METADATA_ARTIFACT): tests/native_drive/native_method_metadata_compile.sleela $(SLEELA_BIN) | $(BUILD)
 	$(SLEELA_BIN) compile $< -o $@
 test-native-method-metadata: $(NATIVE_METHOD_METADATA_SMOKE) $(NATIVE_METHOD_METADATA_ARTIFACT) $(NATIVE_CALL_FIXTURE)
+	@$(NATIVE_METHOD_METADATA_SMOKE) $(NATIVE_METHOD_METADATA_ARTIFACT) $(abspath $(NATIVE_CALL_FIXTURE))
+
 # Compile the standalone C translation unit emitted for @native static methods.
 NATIVE_METHOD_AOT_SOURCE := tests/native_drive/native_method_aot_compile.sleela
 NATIVE_METHOD_AOT_C := $(BUILD)/native_method_aot.generated.c
@@ -833,7 +835,6 @@ $(NATIVE_METHOD_AOT_OBJ): $(NATIVE_METHOD_AOT_C)
 	$(CC) $(CFLAGS) -DSL_NATIVE_PLUGIN_BUILD -I../os-level-support/loader -c $< -o $@
 test-native-method-aot: $(NATIVE_METHOD_AOT_OBJ)
 	@echo "=== per-method @native AOT source generation and C compilation: PASS ==="
-	@$(NATIVE_METHOD_METADATA_SMOKE) $(NATIVE_METHOD_METADATA_ARTIFACT) $(abspath $(NATIVE_CALL_FIXTURE))
 
 # Explicit opt-in regression target; it remains outside default and CI aggregates.
 $(NATIVE_CONCURRENCY_FIXTURE): $(NATIVE_CONCURRENCY_FIXTURE_SOURCE) ../os-level-support/loader/native_loader.h | $(BUILD)
