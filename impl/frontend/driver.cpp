@@ -2219,10 +2219,10 @@ static bool methodHasNative(const sleela::Method& m){
     return false;
 }
 /* Walk a @native method body and report the FIRST construct outside the
- * supported subset, or empty string if the whole method is translatable.
- * Mirrors exactly what the CGen emitter (impl/nordshrift/sleela_emit.cpp)
- * can translate today: scalar literals/vars, unary/binary ops, free calls,
- * and the Block/VarDecl/Assign/Expr/Print/Return/If/While/For statements. */
+ * independently emitted ABI-v1 subset. This intentionally excludes calls,
+ * print side effects, string literals/operators, division/remainder, VM
+ * composites, and loop timing/spill annotations. The emitter performs a
+ * second typed validation pass before writing any C source. */
 static bool nativeAbiType(const std::string& t, bool result);
 static std::string nativeUnsupportedReason(const sleela::Expr* e);
 static std::string nativeUnsupportedReason(const sleela::Stmt* s);
