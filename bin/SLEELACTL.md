@@ -469,6 +469,150 @@ Current limitations:
   programs. Stop a standalone program through its terminal or process
   supervisor.
 
+## Load and unload across every sleelactl module family
+
+There is no universal `load` or `unload` operation for every module. The
+dispatcher checks each module's registered **nature** and refuses verbs that
+do not match that nature. Use this table as the authoritative lifecycle map:
+
+| Module nature | Load / activate | Unload / deactivate | What happens today |
+| --- | --- | --- | --- |
+| `registry` (codecs, compression, video) | `sleelactl load <module> <id>` | `sleelactl unload <module> <id>` | Runs the package Controller's handler lifecycle pipeline. The CLI invocation is process-local; it does not leave a globally resident handler loaded for the next invocation. |
+| `daemon` (server-edition, antivirus) | `sleelactl start <module>` (and optionally `enable`) | `sleelactl stop <module>` (and optionally `disable`) | Controls the registered systemd unit. Start/stop affect the running service; enable/disable affect boot activation. |
+| `datasource` (database, ledger, connectors) | `sleelactl open <module>` | `sleelactl close <module>` | Reports/drives the package data-source surface. The actual connection and pool lifetime belongs to an `SLDataSource` instance owned by the running application, not a persistent connection held by the CLI. |
+| `subject` (math and future registered subjects) | `import <subject>;` in SLeeLa source; then run the program | End the owning SLeeLa process | Subject code is compiled into the runtime. There is no dynamic subject load/unload command. `sleelactl run math` runs the registered Math reference demo; it does not leave Math loaded in a daemon. |
+| `tool` (compiler, decompiler, debugger, native-drive) | `sleelactl build <tool>` when a build is needed; `run`/ `inspect` invokes it | The one-shot command exits; remove generated artifacts separately if desired | Tools are invoked on demand. They are not resident modules and do not have load/unload verbs. |
+| `protocol` (HTTP, CDMA, Wi-Fi models) | No generic load; use the supported `validate` or `simulate` operation | No generic unload | Specs and reference models are inspected or executed through their own supported operations. |
+| `library` | No runtime load command; use its API from a program where supported | No runtime unload command | Informational/library source surface only. |
+
+Examples by family:
+
+```sh
+# Handler registry: handler ID is required
+sleelactl list registry
+sleelactl load codecs 2
+sleelactl can codecs 2
+sleelactl unload codecs 2
+
+# Daemon: service lifecycle, not module memory loading
+sleelactl start server-edition
+sleelactl status server-edition
+sleelactl stop server-edition
+
+# Data source: application-owned connection lifecycle
+sleelactl available database
+sleelactl open database
+sleelactl close database
+
+# Native subject: source import, not sleelactl load/unload
+sleelactl info math
+sleelactl run math
+```
+
+The `all` fan-out is nature-aware, not a force-load switch. For example,
+`sleelactl stop all` applies only to modules whose nature permits `stop`;
+`sleelactl unload all` applies only to registry modules, and a handler ID is
+still required. It does not load or unload every subject, tool, protocol,
+datasource, or library indiscriminately. Check `sleelactl natures` and
+`sleelactl help <module>` before issuing lifecycle commands.
+
+## `@native`, Native Drive, and acceleration: current behavior
+
+These are related native-code facilities, but they are separate mechanisms.
+Do not interpret the `@native` marker as a request that automatically loads
+a shared library or switches a running VM method to native execution.
+
+### A. `@native` and SLeeLa AOT
+
+`@native` marks code for the supported ahead-of-time (AOT) analysis/emission
+path. It is behaviour-neutral during ordinary VM execution: by itself it does
+not authorize native code, load a module, launch a process, or accelerate a
+method. Inspect and emit the supported subset explicitly:
+
+```sh
+sleela aot --list source.sleela
+sleela aot --emit source.sleela
+```
+
+The current emitter is conservative and fails closed when it encounters
+unsupported constructs. Its supported subset includes scalar literals and
+variables, arithmetic/comparison, assignment, free calls, conditionals,
+loops, return, and print. Arrays, object construction, qualified calls, and
+other unsupported constructs are refused. Emission is currently whole-program,
+not a standalone native entry point for each annotated method.
+
+### B. Native Drive compilation and execution
+
+Native Drive is the host-toolchain bridge. It can compile C/C++ translation
+units with the configured system compiler, build executables or shared
+libraries, compile the supported SLeeLa AOT output, and run programs with
+explicit argv, bounded output capture, piping, and timeouts.
+
+```sh
+# Build a C or C++ executable
+sleelactl build native-drive main.c helper.c -o build/app
+
+# Build a shared library and check for the SLeeLa loader ABI exports
+sleelactl build native-drive plugin.cpp --kind shared \\
+  --require-sleela-abi -o build/plugin.so
+
+# Build supported SLeeLa AOT source through the host C compiler
+sleelactl build native-drive source.sleela --language sleela -o build/source-native
+
+# Execute without an implicit shell
+sleelactl run native-drive --capture -- build/app arg1 arg2
+```
+
+The resulting executable is a separately built artifact. Native Drive does
+not silently replace the interpreter or claim a universal speedup; compare
+correctness and performance for the specific workload and target platform.
+
+### C. Explicit VM shared-library dispatch
+
+The VM also exposes syntax-3.0 native built-ins for a host-authorized shared
+library:
+
+```sleela
+// Illustrative calls; the host must install an authorization callback.
+let handle = nativeOpen("build/plugin.so");
+let result = nativeCall(handle, "calculate", 12, 3.5);
+nativeClose(handle);
+```
+
+The host authorization callback must approve the candidate path. The handle is
+VM-owned and generation-checked; calls cross a versioned typed ABI limited to
+null, bool, int64, double, and length-delimited UTF-8 strings. VM arrays,
+objects, pointers, and raw VM values are not passed through this ABI. A path
+identifies a candidate library; it does not authorize execution. In-process
+native code is trusted code, not a sandbox.
+
+### D. What “native acceleration” means today
+
+There are currently three concrete routes:
+
+1. **Built-in native subjects** such as Math: the frontend lowers supported
+   qualified calls such as `math.sqrt(...)` to the runtime's compiled
+   `__NativeMath` implementation. This is the existing in-process subject
+   route; it is not a dynamically loaded plugin.
+2. **AOT + Native Drive**: explicitly emit the supported SLeeLa source subset,
+   then compile the emitted C with the host compiler and run the resulting
+   executable. This is a separate build/run path, not transparent VM
+   acceleration.
+3. **Authorized native shared libraries**: explicitly open/call/close a
+   compatible library through the VM native ABI. The host controls
+   authorization and lifetime.
+
+The Pi large-integer worker path is separate again. The IPC frame and
+canonical base-1e9 limb codecs exist, but the persistent worker, VM dispatch
+integration, and end-to-end Pi benchmark are not yet complete. The current
+Math subject route does not accept Pi limb arrays through an external worker.
+Do not claim that `@native`, Native Drive, or the existing scalar plugin ABI
+has already accelerated the 20,000-digit Pi workload.
+
+For implementation detail and verification commands, see
+[`@native` and VM dispatch](../pi-generator/AT-NATIVE.md) and
+[Native Drive](../impl/native-drive/README.md).
+
 ## systemd scope and honest degradation
 
 Daemon units use the **system** manager by default. Root invokes `systemctl --system` directly; an unprivileged caller uses `sudo systemctl --system` and therefore needs sudo authorization. For a unit installed in the caller's user manager, set `SLEELACTL_SYSTEMCTL_SCOPE=user`; this invokes `systemctl --user` and never sudo. The registry's daemon handles must match the selected manager's unit scope.
