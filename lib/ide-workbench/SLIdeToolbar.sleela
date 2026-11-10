@@ -1,0 +1,39 @@
+<< SLIdeToolbar — compact native IDE action strip. >>
+#sleela 2.5
+material;
+class SLIdeToolbar {
+  static final int ACTION_NEW=0;
+  static final int ACTION_OPEN=1;
+  static final int ACTION_SAVE=2;
+  static final int ACTION_BUILD=3;
+  static final int ACTION_RUN=4;
+  static final int ACTION_DEBUG=5;
+  static final int ACTION_STOP=6;
+  SLBox row;
+  SLButton[] buttons;
+  String[] labels;
+  int pending;
+  void createIn(SLWidget parent) {
+    row=new SLBox(); row.horizontal(parent,3); row.setExpand(true,false);
+    buttons=new SLButton[7]; labels=new String[7];
+    labels[0]="New"; labels[1]="Open"; labels[2]="Save";
+    labels[3]="Build"; labels[4]="Run"; labels[5]="Debug"; labels[6]="Stop";
+    for(int i=0;i<7;i=i+1) {
+      buttons[i]=new SLButton(); buttons[i].createIn(row,labels[i]);
+      buttons[i].setSizeRequest(78,32); buttons[i].setMargin(2,4,2,4);
+    }
+    buttons[ACTION_BUILD].setSuggested(true);
+    pending=-1;
+  }
+  int poll() {
+    for(int i=0;i<7;i=i+1) {
+      if(buttons[i].clicked()) { pending=i; return i; }
+    }
+    return -1;
+  }
+  int takeAction() { int v=pending; pending=-1; return v; }
+  String actionName(int action) {
+    if(action<0 || action>=7) return "";
+    return labels[action];
+  }
+}
