@@ -207,6 +207,8 @@ std::string emitNativeMethods(const sleela::Program& program) {
             const auto& p=m.params[i];
             const char* tag=p.type=="int"?"SL_NATIVE_VALUE_I64":p.type=="double"?"SL_NATIVE_VALUE_F64":p.type=="boolean"?"SL_NATIVE_VALUE_BOOL":"SL_NATIVE_VALUE_UTF8";
             out << "        if (argv[" << i << "].tag != " << tag << ") return SL_NATIVE_CALL_INVALID_ARGUMENT;\n";
+            if (p.type=="String") out << "        if (!argv[" << i << "].as.utf8.data && argv[" << i << "].as.utf8.length) return SL_NATIVE_CALL_INVALID_ARGUMENT;\n";
+            if (p.type=="boolean") out << "        if (argv[" << i << "].as.boolean != 0 && argv[" << i << "].as.boolean != 1) return SL_NATIVE_CALL_INVALID_ARGUMENT;\n";
             if (p.type=="String")
                 out << "        SLNativeString slv_arg_" << i << " = { argv[" << i << "].as.utf8.data, argv[" << i << "].as.utf8.length };\n";
             else if (p.type=="int") out << "        int64_t slv_arg_" << i << " = argv[" << i << "].as.i64;\n";
@@ -225,7 +227,7 @@ std::string emitNativeMethods(const sleela::Program& program) {
         else if (m.retType=="int") out << "        out_result->tag = SL_NATIVE_VALUE_I64; out_result->as.i64 = slv_result;\n";
         else if (m.retType=="double") out << "        out_result->tag = SL_NATIVE_VALUE_F64; out_result->as.f64 = slv_result;\n";
         else if (m.retType=="boolean") out << "        out_result->tag = SL_NATIVE_VALUE_BOOL; out_result->as.boolean = slv_result ? 1 : 0;\n";
-        else out << "        out_result->tag = SL_NATIVE_VALUE_UTF8; out_result->as.utf8.data = slv_result.data; out_result->as.utf8.length = slv_result.length;\n";
+        else out << "        if (!slv_result.data && slv_result.length) return SL_NATIVE_CALL_ERROR; out_result->tag = SL_NATIVE_VALUE_UTF8; out_result->as.utf8.data = slv_result.data; out_result->as.utf8.length = slv_result.length;\n";
         out << "        return SL_NATIVE_CALL_OK;\n    }\n";
     }
     out << "    return SL_NATIVE_CALL_NOT_HANDLED;\n}\n";
