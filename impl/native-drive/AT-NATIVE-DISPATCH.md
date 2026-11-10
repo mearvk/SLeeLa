@@ -1,6 +1,6 @@
 # Automatic VM dispatch for `@native` methods
 
-**Status: Phases 1, 3, and 4 implemented on branch `feat/native-method-metadata-dispatch-2026-11-09`; generated per-method AOT export emission remains pending.**
+**Status: Per-method ABI-v1 C source emission is implemented on branch `feat/native-method-aot-emitter-2026-11-10`; local compile/load conformance remains pending.**
 
 The compiler now persists method-level `@native` identity in artifact format
 v4. The VM records annotation/static-or-instance flags, the method ABI version,
@@ -27,10 +27,11 @@ binding exists and the arguments fit the scalar/UTF-8 ABI; NOT_HANDLED and
 unsupported VM-owned arguments retain the original bytecode path. Plugin,
 stale-handle, and ABI failures remain errors.
 
-The focused opt-in test now verifies unbound bytecode behavior and an ordinary
-source-level call reaching an authorized plugin export. Generated per-method
-AOT export emission and broader platform/concurrency conformance remain
-pending; no CI workflow is required or invoked.
+The focused opt-in test verifies unbound bytecode behavior and ordinary
+source-level calls reaching an authorized plugin export. The new AOT emitter
+generates per-method C entry points, but a generated-plugin build/load test and
+broader platform/concurrency conformance remain outstanding. No CI workflow is
+required or invoked.
 
 This document specifies the missing connection between the source-level
 `@native` annotation and the existing VM native-module dispatcher. It does not
@@ -155,11 +156,17 @@ argument shape is outside the negotiated ABI before native execution begins.
 1. **Artifact metadata — implemented:** version-4 metadata is append-only,
    validated, and preserved through save/load; versions 1-3 remain
    interpreted-only.
-2. **Per-method code generation — pending:** emit independently addressable
-   native entry points with the versioned typed ABI. The current whole-program
-   AOT emitter must not be treated as a method plugin. ABI v1 currently uses
-   the canonical signature as the export key; the test fixture demonstrates
-   the contract, not a production source-to-plugin generator.
+2. **Per-method code generation — source emitter implemented:** `sleela aot --emit`
+   now emits a standalone C plugin with one independently addressable method
+   body per annotated static method. The plugin exports the typed ABI v1
+   loader symbols and dispatches exact canonical signature strings. Initial
+   parameter/return types are `int`, `double`, `boolean`, and length-delimited
+   `String`; void returns are represented as NULL. Method-to-method calls,
+   string literals/operations, print side effects, objects, arrays, and
+   instance methods are refused. The generated source is not compiled or loaded
+   automatically; a host must compile it, authorize its resulting library, and
+   bind it explicitly. The C emitter is production code now, but generated
+   plugin compile/load/dispatch conformance remains to be executed.
 3. **Host binding API — implemented:** `slvm_bind_native_method()` accepts
    only annotated static methods and a module handle already opened through
    the host's authorization policy. `slvm_unbind_native_method()` is required
@@ -185,6 +192,8 @@ argument shape is outside the negotiated ABI before native execution begins.
 - A VM-owned array/struct argument is never passed to the plugin and uses the
   bytecode body.
 - A native plugin error is reported and is not hidden by bytecode fallback.
+- `sleela aot --emit` produces a C plugin that compiles and exposes each
+  annotated static method under its exact artifact signature.
 - A denied module path cannot be made executable by adding `@native`.
 - Artifact save/load preserves method identities and rejects unsupported
   metadata versions.
