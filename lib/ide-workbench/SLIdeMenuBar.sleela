@@ -26,7 +26,7 @@ class SLIdeMenuBar {
     root = new SLBox(); root.vertical(parent, 0); root.setExpand(true, false);
     menuRow = new SLBox(); menuRow.horizontal(root, 2);
     commandRow = new SLBox(); commandRow.horizontal(root, 2);
-    menus = new SLButton[8]; commands = new SLButton[12];
+    menus = new SLButton[8]; commands = new SLButton[20];
     menuNames = new String[8];
     menuNames[0]="File"; menuNames[1]="Edit"; menuNames[2]="View";
     menuNames[3]="Navigate"; menuNames[4]="Code"; menuNames[5]="Run";
@@ -35,7 +35,7 @@ class SLIdeMenuBar {
       menus[i]=new SLButton(); menus[i].createIn(menuRow,menuNames[i]);
       menus[i].setSizeRequest(76,30); menus[i].setMargin(1,3,1,3);
     }
-    commandNames = new String[12]; commandOwners = new int[12];
+    commandNames = new String[20]; commandOwners = new int[20];
     commandNames[0]="New"; commandOwners[0]=0;
     commandNames[1]="Open"; commandOwners[1]=0;
     commandNames[2]="Save"; commandOwners[2]=0;
@@ -48,7 +48,15 @@ class SLIdeMenuBar {
     commandNames[9]="Build"; commandOwners[9]=4;
     commandNames[10]="Run"; commandOwners[10]=5;
     commandNames[11]="Debug"; commandOwners[11]=5;
-    for (int j=0;j<12;j=j+1) {
+    commandNames[12]="Project"; commandOwners[12]=2;
+    commandNames[13]="Problems"; commandOwners[13]=2;
+    commandNames[14]="Go to File"; commandOwners[14]=3;
+    commandNames[15]="Go to Symbol"; commandOwners[15]=3;
+    commandNames[16]="Format"; commandOwners[16]=4;
+    commandNames[17]="Settings"; commandOwners[17]=6;
+    commandNames[18]="Extensions"; commandOwners[18]=6;
+    commandNames[19]="About SLeeLa IDE"; commandOwners[19]=7;
+    for (int j=0;j<20;j=j+1) {
       commands[j]=new SLButton(); commands[j].createIn(commandRow,commandNames[j]);
       commands[j].setSizeRequest(82,28); commands[j].setMargin(1,2,1,2);
     }
@@ -56,7 +64,7 @@ class SLIdeMenuBar {
   }
 
   void refreshCommands() {
-    for (int i=0;i<12;i=i+1) {
+    for (int i=0;i<20;i=i+1) {
       commands[i].setVisible(commandOwners[i]==activeMenu);
     }
   }
@@ -64,7 +72,7 @@ class SLIdeMenuBar {
     for (int i=0;i<8;i=i+1) {
       if (menus[i].clicked()) { activeMenu=i; refreshCommands(); return -1; }
     }
-    for (int j=0;j<12;j=j+1) {
+    for (int j=0;j<20;j=j+1) {
       if (commandOwners[j]==activeMenu && commands[j].clicked()) {
         pendingCommand=j; return j;
       }
@@ -74,7 +82,7 @@ class SLIdeMenuBar {
   int takeCommand() { int v=pendingCommand; pendingCommand=-1; return v; }
   int selectedMenu() { return activeMenu; }
   String commandName(int index) {
-    if(index<0 || index>=12) return "";
+    if(index<0 || index>=20) return "";
     return commandNames[index];
   }
 }
