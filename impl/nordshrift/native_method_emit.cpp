@@ -90,8 +90,7 @@ class MethodBodyEmitter {
             bool supported=false; for (const char* op:ops) if (x->op==op) supported=true;
             if (!supported) throw std::runtime_error("unsupported binary operator '"+x->op+"'");
             std::string t=typeOf(e);
-            if (x->op=="%" && t!="int") throw std::runtime_error("remainder is supported only for integer operands");
-            if (x->op=="/" && t=="int") throw std::runtime_error("integer division is excluded until divide-by-zero and overflow semantics are implemented");
+            if (x->op=="/" || x->op=="%") throw std::runtime_error("division and remainder are excluded until native error semantics match the VM");
             if (t=="int" && x->op=="+") { out << "sl_i64_add("; expr(x->lhs.get()); out << ", "; expr(x->rhs.get()); out << ")"; return; }
             if (t=="int" && x->op=="-") { out << "sl_i64_sub("; expr(x->lhs.get()); out << ", "; expr(x->rhs.get()); out << ")"; return; }
             if (t=="int" && x->op=="*") { out << "sl_i64_mul("; expr(x->lhs.get()); out << ", "; expr(x->rhs.get()); out << ")"; return; }
