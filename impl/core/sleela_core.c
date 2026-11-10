@@ -881,7 +881,8 @@ int slvm_bind_native_method(SLVM* vm, int function_index, SLNativeHandle handle)
             (SL_NATIVE_METHOD_FLAG_ANNOTATED | SL_NATIVE_METHOD_FLAG_STATIC) &&
             !(fn->native_flags & SL_NATIVE_METHOD_FLAG_INSTANCE) &&
             fn->native_abi_version == SL_NATIVE_METHOD_ABI_VERSION &&
-            fn->native_signature && fn->native_handle == SL_NATIVE_HANDLE_INVALID &&
+            native_method_metadata_valid(fn) &&
+            fn->native_handle == SL_NATIVE_HANDLE_INVALID &&
             sl_native_table_is_valid(&vm->native_modules, handle);
     if (valid) fn->native_handle = handle;
     pthread_mutex_unlock(&vm->native_mtx);
