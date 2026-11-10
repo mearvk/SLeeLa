@@ -182,6 +182,52 @@ done:
     return ok;
 }
 
+static int authorize_exact_path(const char *path, void *context) {
+    const char *approved = (const char *)context;
+    return path && approved && strcmp(path, approved) == 0;
+}
+
+static int check_ordinary_native_dispatch(const char *artifact, const char *plugin) {
+    SLVM *vm = slvm_load_file(artifact);
+    SLNativeHandle handle = SL_NATIVE_HANDLE_INVALID;
+    SLValue result;
+    int ok = 0;
+    if (!vm) return 0;
+    if (slvm_set_native_authorizer(vm, authorize_exact_path, (void *)plugin) != 0 ||
+        slvm_native_module_open(vm, plugin, &handle) != SL_NATIVE_OK ||
+        slvm_bind_native_method(vm, 0, handle) != 0)
+        goto done;
+    /* A bound module cannot be unloaded while any method points at it. */
+    if (slvm_native_module_close(vm, handle) == SL_NATIVE_OK) goto done;
+    if (slvm_run(vm) != SLR_OK) goto done;
+    result = slvm_result(vm);
+    if (result.type != SL_INT || result.as.i != 142) goto done;
+    if (slvm_unbind_native_method(vm, 0) != 0) goto done;
+    if (slvm_native_module_close(vm, handle) != SL_NATIVE_OK) goto done;
+    handle = SL_NATIVE_HANDLE_INVALID;
+    ok = 1;
+done:
+    if (handle != SL_NATIVE_HANDLE_INVALID) {
+        (void)slvm_unbind_native_method(vm, 0);
+        (void)slvm_native_module_close(vm, handle);
+    }
+    slvm_free(vm);
+    return ok;
+}
+
+static int check_interpreted_fallback(const char *artifact) {
+    SLVM *vm = slvm_load_file(artifact);
+    SLValue result;
+    int ok = 0;
+    if (!vm) return 0;
+    if (slvm_run(vm) == SLR_OK) {
+        result = slvm_result(vm);
+        ok = result.type == SL_INT && result.as.i == 42;
+    }
+    slvm_free(vm);
+    return ok;
+}
+
 static int check_compiler_artifact(const char *path) {
     SLVM *vm = slvm_load_file(path);
     uint32_t flags = 0, abi = 0;
@@ -217,6 +263,11 @@ int main(int argc, char **argv) {
         fprintf(stderr, "compiler @native metadata persistence failed\n");
         return 1;
     }
-    puts("native method metadata: PASS (compiler registration, v4 round-trip, digest validation, v3 fallback)");
+    if (argc > 2 && (!check_interpreted_fallback(argv[1]) ||
+                     !check_ordinary_native_dispatch(argv[1], argv[2]))) {
+        fprintf(stderr, "ordinary @native dispatch / interpreted fallback failed\n");
+        return 1;
+    }
+    puts("native method metadata and dispatch: PASS (compiler registration, v4 round-trip, digest validation, v3 compatibility, unbound bytecode fallback, authorized ordinary-call dispatch, bound-module close protection)");
     return 0;
 }
