@@ -3,6 +3,7 @@
 #include <cctype>
 #include <cstdint>
 #include <iomanip>
+#include <map>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -57,15 +58,36 @@ static std::string signature(const ClassDecl& cls, const Method& m) {
 
 class MethodBodyEmitter {
     std::ostringstream out;
+    std::map<std::string,std::string> types;
+    std::string returnType;
     int depth = 0;
+    std::string typeOf(const Expr* e) const {
+        if (dynamic_cast<const IntLit*>(e)) return "int";
+        if (dynamic_cast<const DoubleLit*>(e)) return "double";
+        if (dynamic_cast<const BoolLit*>(e)) return "boolean";
+        if (auto v=dynamic_cast<const VarExpr*>(e)) { auto i=types.find(v->name); if(i==types.end()) throw std::runtime_error("unknown native local '"+v->name+"'"); return i->second; }
+        if (auto u=dynamic_cast<const Unary*>(e)) { std::string t=typeOf(u->operand.get()); if(t=="String") throw std::runtime_error("String values do not support unary operators in ABI v1"); return u->op=="!"?"boolean":t; }
+        if (auto b=dynamic_cast<const Binary*>(e)) { std::string a=typeOf(b->lhs.get()), z=typeOf(b->rhs.get()); if(a=="String"||z=="String") throw std::runtime_error("String arithmetic/comparison is outside native ABI v1"); if(b->op=="=="||b->op=="!="||b->op=="<"||b->op=="<="||b->op==">"||b->op==">="||b->op=="&&"||b->op=="||") return "boolean"; return (a=="double"||z=="double")?"double":"int"; }
+        if (auto c=dynamic_cast<const ConditionalExpr*>(e)) { if(typeOf(c->cond.get())=="String") throw std::runtime_error("String condition is not supported"); std::string a=typeOf(c->thenE.get()),z=typeOf(c->elseE.get()); if(a!=z) throw std::runtime_error("native conditional branches must have the same type"); return a; }
+        if (auto a=dynamic_cast<const AssignmentExpr*>(e)) { auto v=dynamic_cast<const VarExpr*>(a->target.get()); if(!v||a->op!="=") throw std::runtime_error("unsupported native assignment expression"); std::string t=typeOf(v),z=typeOf(a->value.get()); if(t!=z) throw std::runtime_error("native assignment type mismatch"); return t; }
+        throw std::runtime_error("unsupported native expression type");
+    }
     void ind() { for (int i=0;i<depth;i++) out << "    "; }
     void expr(const Expr* e) {
         if (auto x=dynamic_cast<const IntLit*>(e)) { out << "INT64_C(" << x->value << ")"; return; }
         if (auto x=dynamic_cast<const DoubleLit*>(e)) { out << std::setprecision(17) << x->value; return; }
         if (auto x=dynamic_cast<const BoolLit*>(e)) { out << (x->value ? "1" : "0"); return; }
         if (auto x=dynamic_cast<const VarExpr*>(e)) { out << cVar(x->name); return; }
-        if (auto x=dynamic_cast<const Unary*>(e)) { out << "(" << x->op; expr(x->operand.get()); out << ")"; return; }
-        if (auto x=dynamic_cast<const Binary*>(e)) { out << "("; expr(x->lhs.get()); out << " " << x->op << " "; expr(x->rhs.get()); out << ")"; return; }
+        if (auto x=dynamic_cast<const Unary*>(e)) {
+            if (x->op!="-" && x->op!="+" && x->op!="!") throw std::runtime_error("unsupported unary operator '"+x->op+"'");
+            (void)typeOf(e); out << "(" << x->op; expr(x->operand.get()); out << ")"; return;
+        }
+        if (auto x=dynamic_cast<const Binary*>(e)) {
+            static const char* ops[] = {"+","-","*","/","%","==","!=","<","<=",">",">=","&&","||"};
+            bool supported=false; for (const char* op:ops) if (x->op==op) supported=true;
+            if (!supported) throw std::runtime_error("unsupported binary operator '"+x->op+"'");
+            (void)typeOf(e); out << "("; expr(x->lhs.get()); out << " " << x->op << " "; expr(x->rhs.get()); out << ")"; return;
+        }
         if (auto x=dynamic_cast<const ConditionalExpr*>(e)) { out << "("; expr(x->cond.get()); out << " ? "; expr(x->thenE.get()); out << " : "; expr(x->elseE.get()); out << ")"; return; }
         if (auto x=dynamic_cast<const AssignmentExpr*>(e)) {
             auto v=dynamic_cast<const VarExpr*>(x->target.get());
@@ -77,13 +99,16 @@ class MethodBodyEmitter {
     void inlineStmt(const Stmt* s) {
         if (auto d=dynamic_cast<const VarDecl*>(s)) {
             if (!scalarType(d->type)) throw std::runtime_error("unsupported local type '" + d->type + "'");
+            if (types.count(d->name)) throw std::runtime_error("duplicate native local '" + d->name + "'");
+            if (d->init && typeOf(d->init.get()) != d->type) throw std::runtime_error("native local initializer type mismatch for '" + d->name + "'");
+            types[d->name]=d->type;
             out << cType(d->type) << " " << cVar(d->name);
             if (d->init) { out << " = "; expr(d->init.get()); }
             else if (d->type == "String") out << " = (SLNativeString){0}";
             else out << " = 0";
             return;
         }
-        if (auto a=dynamic_cast<const Assign*>(s)) { out << cVar(a->name) << " = "; expr(a->value.get()); return; }
+        if (auto a=dynamic_cast<const Assign*>(s)) { auto i=types.find(a->name); if(i==types.end()||i->second!=typeOf(a->value.get())) throw std::runtime_error("native assignment type mismatch for '"+a->name+"'"); out << cVar(a->name) << " = "; expr(a->value.get()); return; }
         if (auto e=dynamic_cast<const ExprStmt*>(s)) { expr(e->expr.get()); return; }
         throw std::runtime_error("unsupported for-loop initializer/update in native method");
     }
@@ -92,14 +117,16 @@ class MethodBodyEmitter {
         if (auto d=dynamic_cast<const VarDecl*>(s)) { ind(); inlineStmt(d); out << ";\n"; return; }
         if (auto a=dynamic_cast<const Assign*>(s)) { ind(); inlineStmt(a); out << ";\n"; return; }
         if (auto e=dynamic_cast<const ExprStmt*>(s)) { ind(); inlineStmt(e); out << ";\n"; return; }
-        if (auto r=dynamic_cast<const ReturnStmt*>(s)) { ind(); out << "return"; if (r->value) { out << " "; expr(r->value.get()); } out << ";\n"; return; }
+        if (auto r=dynamic_cast<const ReturnStmt*>(s)) { if(returnType=="void" ? (bool)r->value : (!r->value || typeOf(r->value.get())!=returnType)) throw std::runtime_error("native return type mismatch"); ind(); out << "return"; if (r->value) { out << " "; expr(r->value.get()); } out << ";\n"; return; }
         if (auto i=dynamic_cast<const IfStmt*>(s)) {
+            if(typeOf(i->cond.get())=="String") throw std::runtime_error("String if-condition is not supported");
             ind(); out << "if ("; expr(i->cond.get()); out << ")\n"; stmt(i->thenS.get());
             if (i->elseS) { ind(); out << "else\n"; stmt(i->elseS.get()); } return;
         }
-        if (auto w=dynamic_cast<const WhileStmt*>(s)) { ind(); out << "while ("; expr(w->cond.get()); out << ")\n"; stmt(w->body.get()); return; }
+        if (auto w=dynamic_cast<const WhileStmt*>(s)) { if(typeOf(w->cond.get())=="String") throw std::runtime_error("String while-condition is not supported"); ind(); out << "while ("; expr(w->cond.get()); out << ")\n"; stmt(w->body.get()); return; }
         if (auto f=dynamic_cast<const ForStmt*>(s)) {
             ind(); out << "for ("; if (f->init) inlineStmt(f->init.get()); out << "; ";
+            if (f->cond && typeOf(f->cond.get())=="String") throw std::runtime_error("String for-condition is not supported");
             if (f->cond) expr(f->cond.get()); out << "; "; if (f->update) inlineStmt(f->update.get());
             out << ")\n"; stmt(f->body.get()); return;
         }
@@ -107,6 +134,8 @@ class MethodBodyEmitter {
     }
 public:
     std::string emit(const Method& m, const std::string& symbol) {
+        returnType=m.retType;
+        for(const auto& p:m.params) { if(types.count(p.name)) throw std::runtime_error("duplicate native parameter '"+p.name+"'"); types[p.name]=p.type; }
         out << "static " << cType(m.retType) << " " << symbol << "(";
         if (m.params.empty()) out << "void";
         for (size_t i=0;i<m.params.size();++i) {
@@ -118,7 +147,8 @@ public:
         if (m.body) for (const auto& s:m.body->stmts) stmt(s.get());
         ind();
         if (m.retType == "void") out << "return;\n";
-        else out << "return (" << cType(m.retType) << ")0; /* unreachable fallback; semantic compiler validates source */\n";
+        else if (m.retType == "String") out << "return (SLNativeString){0}; /* unreachable fallback */\n";
+        else out << "return (" << cType(m.retType) << ")0; /* unreachable fallback */\n";
         out << "}\n\n";
         return out.str();
     }
@@ -138,6 +168,8 @@ static void validateMethod(const ClassDecl& cls, const Method& m) {
     for (const auto& p:m.params)
         if (!scalarType(p.type)) throw std::runtime_error(cls.name+"."+m.name+": unsupported parameter type '"+p.type+"'");
     if (!m.body) throw std::runtime_error(cls.name+"."+m.name+": method has no body");
+    if (m.retType!="void" && (m.body->stmts.empty() || !dynamic_cast<const ReturnStmt*>(m.body->stmts.back().get())))
+        throw std::runtime_error(cls.name+"."+m.name+": ABI-v1 non-void methods must end with a direct return statement");
     for (const auto& s:m.body->stmts) {
         if (auto v=dynamic_cast<const VarDecl*>(s.get()))
             if (!scalarType(v->type)) throw std::runtime_error(cls.name+"."+m.name+": unsupported local type '"+v->type+"'");
