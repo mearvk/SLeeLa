@@ -62,7 +62,7 @@ For an annotated method such as:
 ```sleela
 class MathEngine {
     @native
-    int sum(int a, int b) {
+    static int sum(int a, int b) {
         return a + b;
     }
 }
@@ -138,8 +138,10 @@ argument shape is outside the negotiated ABI before native execution begins.
 ## 4. ABI and ownership rules
 
 - Version the method ABI separately from the legacy `sl_native_run` ABI.
-- Initially support only null, bool, signed 64-bit integer, double, and
-  length-delimited UTF-8 strings.
+- The existing typed module ABI transports null, bool, signed 64-bit integer,
+  double, and length-delimited UTF-8 strings. The generated method emitter's
+  initial source subset uses int64, double, bool, String, and void returns; it
+  does not yet expose null-typed method parameters.
 - Do not pass `SLValue`, VM pointers, array handles, struct handles, closures,
   or object pointers across the native boundary.
 - A native result string must be validated and copied before the plugin lock is
@@ -157,21 +159,20 @@ argument shape is outside the negotiated ABI before native execution begins.
    validated, and preserved through save/load; versions 1-3 remain
    interpreted-only.
 2. **Per-method code generation — source emitter implemented:** `sleela aot --emit`
-   now emits a standalone C plugin with one independently addressable method
-   body per annotated static method. The plugin exports the typed ABI v1
-   loader symbols and dispatches exact canonical signature strings. Initial
-   parameter/return types are `int`, `double`, `boolean`, and length-delimited
-   `String`; void returns are represented as NULL. String values may be passed
-   through parameters, locals, assignments, and returns without reinterpretation;
-   string literals and string operators remain excluded. Division/remainder are
-   also refused until their zero/overflow behavior matches the VM. Method-to-method calls,
-   string literals/operations, print side effects, objects, arrays, and
-   instance methods are refused. The generated source is not compiled or loaded
-   automatically; a host must compile it, authorize its resulting library, and
-   bind it explicitly. An opt-in local target, `make -C impl test-native-method-aot`,
-   generates the fixture plugin source and compiles the C translation unit; this
-   target is not part of CI and has not yet been run in this environment.
-   Generated plugin load/dispatch conformance remains outstanding.
+   emits a standalone C plugin with one independently addressable method body
+   per annotated static method. The plugin exports the typed ABI v1 loader
+   symbols and dispatches exact canonical signature strings. Supported parameter
+   and return types are `int`, `double`, `boolean`, and length-delimited
+   `String`; void returns are represented as NULL. String values can pass
+   through parameters, locals, assignments, and returns. String literals and
+   string operators are excluded. Division/remainder, method-to-method calls,
+   print side effects, objects, arrays, and instance methods are also refused.
+   The generated source is not compiled or loaded automatically; the host must
+   compile it, authorize its resulting library, and bind it explicitly.
+   The opt-in target `make -C impl test-native-method-aot` generates the fixture
+   source and compiles its C translation unit. It is outside CI and has not yet
+   been run in this environment. Generated-plugin loading and VM dispatch
+   conformance remain outstanding.
 3. **Host binding API — implemented:** `slvm_bind_native_method()` accepts
    only annotated static methods and a module handle already opened through
    the host's authorization policy. `slvm_unbind_native_method()` is required
@@ -208,10 +209,12 @@ argument shape is outside the negotiated ABI before native execution begins.
 ## 7. Current conclusion
 
 The existing `OP_NATIVE_CALL` path is a foundation to reuse, not the missing
-feature itself. Automatic `@native` dispatch requires compiler-emitted
-per-method metadata, per-method native code generation, and an explicit
-host-owned binding table before the ordinary `OP_CALL` path can safely select
-native code. Until those pieces are implemented and tested, `@native` remains
-an AOT request and normal SLeeLa bytecode remains authoritative.
+feature itself. Versioned method metadata, per-method native C source emission,
+host-owned authorized binding, and ordinary `OP_CALL` dispatch are now present.
+The source emitter and generated C compilation target are implemented, but the
+target has not yet been run and generated-plugin load/dispatch conformance is
+still outstanding. Until those checks pass, normal SLeeLa bytecode remains the
+verified baseline and native code must be explicitly compiled, authorized, and
+bound by the host.
 
 *MEARVK LLC — 2026.*
