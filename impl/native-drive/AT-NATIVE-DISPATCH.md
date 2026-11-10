@@ -202,8 +202,13 @@ argument shape is outside the negotiated ABI before native execution begins.
    `SL_NATIVE_CALL_NOT_HANDLED` fallback exactly once per call, module-close
    protection, metadata round trips, digest corruption, and v3 compatibility.
    The NOT_HANDLED test uses two calls to a stateful bytecode body so duplicate
-   fallback is observable. Cross-platform execution, race stress, and the
-   remaining failure matrix still need to run.
+   fallback is observable. The same target also binds array- and struct-typed
+   methods to a sentinel plugin: the expected bytecode result proves neither
+   VM-owned composite reaches the typed ABI. A separate handled-error case
+   requires the plugin failure to propagate rather than invoke bytecode, and
+   a deny-all authorizer verifies that an annotated method cannot open or bind
+   a denied module and still executes its unbound bytecode body. Cross-platform
+   execution, race stress, and the remaining failure matrix still need to run.
 
 ## 6. Acceptance tests
 
@@ -215,9 +220,13 @@ argument shape is outside the negotiated ABI before native execution begins.
 - NOT_HANDLED executes the bytecode body exactly once; the opt-in smoke test
   calls a stateful annotated method twice and checks the exact counter-derived
   result.
-- A VM-owned array/struct argument is never passed to the plugin and uses the
-  bytecode body.
-- A native plugin error is reported and is not hidden by bytecode fallback.
+- A VM-owned array or struct argument is never passed to the plugin and
+  uses the bytecode body; the sentinel-plugin regression expects the
+  bytecode-derived result rather than the plugin's sentinel.
+- A handled native plugin error is reported and is not hidden by bytecode
+  fallback.
+- A denied module path cannot be opened or bound, and an `@native` annotation
+  alone leaves the method on its bytecode implementation.
 - `sleela aot --emit` produces a C plugin that compiles and exposes each
   annotated static method under its exact artifact signature.
 - A denied module path cannot be made executable by adding `@native`.
