@@ -7243,6 +7243,7 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.lang.ArithmeticException&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>message</code></td><td><span class="sig">String message = &quot;&quot;</span></td><td class="desc">---- java.lang.ArithmeticException members ----</td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -7251,6 +7252,8 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getMessage</code></td><td><span class="sig">String getMessage()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="array">Array <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/lang/reflect/Array.sleela)</span></h2>
@@ -86044,6 +86047,16 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.lang.Math&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>E</code></td><td><span class="sig">static final double E = 2.718281828459045</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>PI</code></td><td><span class="sig">static final double PI = 3.141592653589793</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>TAU</code></td><td><span class="sig">static final double TAU = 6.283185307179586</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>LN2</code></td><td><span class="sig">static final double LN2 = 0.6931471805599453</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>LN10</code></td><td><span class="sig">static final double LN10 = 2.302585092994046</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>HALF_PI</code></td><td><span class="sig">static final double HALF_PI = 1.5707963267948966</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>INT_MAX</code></td><td><span class="sig">static final int INT_MAX = 2147483647</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>INT_MIN</code></td><td><span class="sig">static final int INT_MIN = -2147483648</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>LONG_MAX</code></td><td><span class="sig">static final long LONG_MAX = 9223372036854775807</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>LONG_MIN</code></td><td><span class="sig">static final long LONG_MIN = -9223372036854775807 - 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -86052,6 +86065,66 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pi</code></td><td><span class="sig">double pi()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>e</code></td><td><span class="sig">double e()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>posInf</code></td><td><span class="sig">double posInf()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>negInf</code></td><td><span class="sig">double negInf()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nan</code></td><td><span class="sig">double nan()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isNaN</code></td><td><span class="sig">boolean isNaN(double a)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isInfinite</code></td><td><span class="sig">boolean isInfinite(double a)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isFinite</code></td><td><span class="sig">boolean isFinite(double a)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>abs</code></td><td><span class="sig">double abs(double a)</span></td><td class="desc">abs / max / min / signum / copySign / clamp</td></tr>
+<tr><td><code>absInt</code></td><td><span class="sig">int absInt(int a)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>absLong</code></td><td><span class="sig">long absLong(long a)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>max</code></td><td><span class="sig">double max(double a, double b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>min</code></td><td><span class="sig">double min(double a, double b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>maxInt</code></td><td><span class="sig">int maxInt(int a, int b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>minInt</code></td><td><span class="sig">int minInt(int a, int b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>maxLong</code></td><td><span class="sig">long maxLong(long a, long b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>minLong</code></td><td><span class="sig">long minLong(long a, long b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>signum</code></td><td><span class="sig">double signum(double d)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>copySign</code></td><td><span class="sig">double copySign(double magnitude, double sign)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clamp</code></td><td><span class="sig">double clamp(double value, double lo, double hi)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clampInt</code></td><td><span class="sig">int clampInt(long value, int lo, int hi)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>floor</code></td><td><span class="sig">double floor(double a)</span></td><td class="desc">floor / ceil / rint / round</td></tr>
+<tr><td><code>ceil</code></td><td><span class="sig">double ceil(double a)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>rint</code></td><td><span class="sig">double rint(double a)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>round</code></td><td><span class="sig">long round(double a)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>roundFloat</code></td><td><span class="sig">int roundFloat(double a)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sqrt</code></td><td><span class="sig">double sqrt(double x)</span></td><td class="desc">sqrt / cbrt / hypot</td></tr>
+<tr><td><code>cbrt</code></td><td><span class="sig">double cbrt(double x)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hypot</code></td><td><span class="sig">double hypot(double x, double y)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>exp</code></td><td><span class="sig">double exp(double x)</span></td><td class="desc">exp family</td></tr>
+<tr><td><code>expm1</code></td><td><span class="sig">double expm1(double x)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sinh</code></td><td><span class="sig">double sinh(double x)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cosh</code></td><td><span class="sig">double cosh(double x)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tanh</code></td><td><span class="sig">double tanh(double x)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>log</code></td><td><span class="sig">double log(double x)</span></td><td class="desc">log family</td></tr>
+<tr><td><code>log10</code></td><td><span class="sig">double log10(double x)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>log1p</code></td><td><span class="sig">double log1p(double x)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>powInt</code></td><td><span class="sig">double powInt(double a, long n)</span></td><td class="desc">pow</td></tr>
+<tr><td><code>pow</code></td><td><span class="sig">double pow(double a, double b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>reduce</code></td><td><span class="sig">double reduce(double x)</span></td><td class="desc">trigonometry</td></tr>
+<tr><td><code>sin</code></td><td><span class="sig">double sin(double x)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cos</code></td><td><span class="sig">double cos(double x)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tan</code></td><td><span class="sig">double tan(double x)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>atan</code></td><td><span class="sig">double atan(double x)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>atan2</code></td><td><span class="sig">double atan2(double y, double x)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>asin</code></td><td><span class="sig">double asin(double x)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>acos</code></td><td><span class="sig">double acos(double x)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toRadians</code></td><td><span class="sig">double toRadians(double deg)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toDegrees</code></td><td><span class="sig">double toDegrees(double rad)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>floorDiv</code></td><td><span class="sig">long floorDiv(long x, long y)</span></td><td class="desc">integer division and exact arithmetic</td></tr>
+<tr><td><code>floorMod</code></td><td><span class="sig">long floorMod(long x, long y)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ceilDiv</code></td><td><span class="sig">long ceilDiv(long x, long y)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ceilMod</code></td><td><span class="sig">long ceilMod(long x, long y)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addExactInt</code></td><td><span class="sig">int addExactInt(int x, int y)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>subtractExactInt</code></td><td><span class="sig">int subtractExactInt(int x, int y)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>multiplyExactInt</code></td><td><span class="sig">int multiplyExactInt(int x, int y)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>negateExactInt</code></td><td><span class="sig">int negateExactInt(int a)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toIntExact</code></td><td><span class="sig">int toIntExact(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fma</code></td><td><span class="sig">double fma(double a, double b, double c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>scalb</code></td><td><span class="sig">double scalb(double d, int scaleFactor)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="mathcontext">MathContext <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/math/MathContext.sleela)</span></h2>
@@ -161878,7 +161951,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-09 23:59 UTC.
+<code>/lib</code> tree on 2026-11-10 21:23 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
