@@ -463,6 +463,11 @@ SLNativeStatus slvm_native_module_call(SLVM* vm, SLNativeHandle handle,
                                        const char* method, uint32_t argc,
                                        const SLNativeValue* argv, SLNativeValue* out_result);
 SLNativeStatus slvm_native_module_close(SLVM* vm, SLNativeHandle handle);
+/* Bind/unbind an annotated static function to an already-authorized module.
+ * The native export is selected by the exact canonical signature in metadata.
+ * These calls do not load modules or grant authorization. */
+int slvm_bind_native_method(SLVM* vm, int function_index, SLNativeHandle handle);
+int slvm_unbind_native_method(SLVM* vm, int function_index);
 /* Set the host capabilities available to OSLS bindings before execution.
  * The default is read-only host inspection; pass 0 to deny OSLS access. */
 int slvm_set_osls_capabilities(SLVM* vm, uint64_t capabilities);
