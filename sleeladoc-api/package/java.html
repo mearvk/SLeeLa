@@ -25006,6 +25006,13 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.nio.ByteBuffer&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hb</code></td><td><span class="sig">byte[] hb = null</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bpos</code></td><td><span class="sig">int bpos = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>blim</code></td><td><span class="sig">int blim = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bcap</code></td><td><span class="sig">int bcap = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bmark</code></td><td><span class="sig">int bmark = 0 - 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>boff</code></td><td><span class="sig">int boff = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bro</code></td><td><span class="sig">boolean bro = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -25014,6 +25021,7 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkIdx</code></td><td><span class="sig">void checkIdx(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="bytechannel">ByteChannel <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/nio/channels/ByteChannel.sleela)</span></h2>
@@ -55929,6 +55937,13 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.nio.DoubleBuffer&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hb</code></td><td><span class="sig">double[] hb = null</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bpos</code></td><td><span class="sig">int bpos = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>blim</code></td><td><span class="sig">int blim = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bcap</code></td><td><span class="sig">int bcap = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bmark</code></td><td><span class="sig">int bmark = 0 - 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>boff</code></td><td><span class="sig">int boff = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bro</code></td><td><span class="sig">boolean bro = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -55937,6 +55952,7 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkIdx</code></td><td><span class="sig">void checkIdx(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="doubleconsumer">DoubleConsumer <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/function/DoubleConsumer.sleela)</span></h2>
@@ -70261,6 +70277,13 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.nio.FloatBuffer&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hb</code></td><td><span class="sig">float[] hb = null</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bpos</code></td><td><span class="sig">int bpos = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>blim</code></td><td><span class="sig">int blim = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bcap</code></td><td><span class="sig">int bcap = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bmark</code></td><td><span class="sig">int bmark = 0 - 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>boff</code></td><td><span class="sig">int boff = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bro</code></td><td><span class="sig">boolean bro = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -70269,6 +70292,7 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkIdx</code></td><td><span class="sig">void checkIdx(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="floatcontrol">FloatControl <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.desktop/javax/sound/sampled/FloatControl.sleela)</span></h2>
@@ -88256,6 +88280,13 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.nio.IntBuffer&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hb</code></td><td><span class="sig">int[] hb = null</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bpos</code></td><td><span class="sig">int bpos = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>blim</code></td><td><span class="sig">int blim = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bcap</code></td><td><span class="sig">int bcap = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bmark</code></td><td><span class="sig">int bmark = 0 - 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>boff</code></td><td><span class="sig">int boff = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bro</code></td><td><span class="sig">boolean bro = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -88264,6 +88295,7 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkIdx</code></td><td><span class="sig">void checkIdx(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="intconsumer">IntConsumer <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/function/IntConsumer.sleela)</span></h2>
@@ -109264,6 +109296,13 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.nio.LongBuffer&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hb</code></td><td><span class="sig">long[] hb = null</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bpos</code></td><td><span class="sig">int bpos = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>blim</code></td><td><span class="sig">int blim = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bcap</code></td><td><span class="sig">int bcap = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bmark</code></td><td><span class="sig">int bmark = 0 - 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>boff</code></td><td><span class="sig">int boff = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bro</code></td><td><span class="sig">boolean bro = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -109272,6 +109311,7 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkIdx</code></td><td><span class="sig">void checkIdx(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="longconsumer">LongConsumer <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/function/LongConsumer.sleela)</span></h2>
@@ -161187,6 +161227,13 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.nio.ShortBuffer&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hb</code></td><td><span class="sig">short[] hb = null</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bpos</code></td><td><span class="sig">int bpos = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>blim</code></td><td><span class="sig">int blim = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bcap</code></td><td><span class="sig">int bcap = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bmark</code></td><td><span class="sig">int bmark = 0 - 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>boff</code></td><td><span class="sig">int boff = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bro</code></td><td><span class="sig">boolean bro = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -161195,6 +161242,7 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkIdx</code></td><td><span class="sig">void checkIdx(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="shortbufferexception">ShortBufferException <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/javax/crypto/ShortBufferException.sleela)</span></h2>
@@ -202866,7 +202914,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-11 21:08 UTC.
+<code>/lib</code> tree on 2026-11-11 21:11 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
