@@ -148,6 +148,48 @@ deployed). It is not answerable by assuming a city's population, a mayor's
 share, or a multi-decade compounding rate, because none of those quantities
 exist anywhere in this codebase's inputs.
 
+## 6.1 The estimated-return table that was asked for, and why it stops at one trade
+
+A chart of hypothetical trading percentages was requested during planning:
+a trader's "good day" return of 2% to 17%, and a "microtrade advantage"
+multiplier of 2x up to 12x or more. It is included here, computed exactly
+with the real [`SLLongBook`](../lib/advantage/trading-actions-on-verb/SLLongBook.sleela)
+for one invented trade of $10,000 (1,000,000 cents), because the arithmetic
+itself is the useful part — not because the percentages are realistic.
+
+| return assumed on one trade | sell price (cents, from a 100-cent buy) | profit (cents) | capital afterward, as a multiple |
+|---:|---:|---:|---:|
+| 2% ("a good day," low end, as given) | 102 | 20,000 | 1.02x |
+| 5% ("a good day," mid) | 105 | 50,000 | 1.05x |
+| 10% ("a good day," high-ish) | 110 | 100,000 | 1.10x |
+| 17% ("a good day," high end, as given) | 117 | 170,000 | 1.17x |
+| 100% ("microtrade advantage," 2x) | 200 | 1,000,000 | 2.00x |
+| 300% ("microtrade advantage," 4x) | 400 | 3,000,000 | 4.00x |
+| 1,100% ("microtrade advantage," 12x) | 1,200 | 11,000,000 | 12.00x |
+
+No row is estimated by a model; each is `profit = capital x return%` for one
+stand-alone trade, with no repetition and no compounding. "Estimated" here
+means *assumed as a hypothesis to test*, not derived from evidence.
+No naming scheme (for example "Status I" or "Convenient II") is attached to
+this table: that terminology could not be verified as established usage, and
+real, unrelated academic terms that sound similar (the "convenience yield" /
+reserve-currency "status" of a safe asset, in the Treasury-bond literature)
+measure a safety-and-liquidity premium, not a trader's return, so borrowing
+either name here would misstate what the table is.
+
+**Why this does not become a daily rate, a yearly rate, or anything bigger:**
+compounding any of these percentages across trading days shows the
+assumption breaks down almost immediately — 2% a day compounds to about
+1,377x in one year, and 17% a day compounds to over 100x in 30 trading days,
+both figures outside what any real market or strategy sustains. The full
+compounding table, independently cross-checked, and the reasoning behind it
+are in
+[reader 6 of the adult courseware](../lib/advantage/learner-vs-professional/courseware/reading/ages-18-plus/06-single-trade-sensitivity.md).
+This is also why §6's refusal to extrapolate to a city, a mayor, a currency
+or a decade stands: the per-trade numbers above are already shown, by direct
+computation, not to survive being repeated — so there is no sustainable rate
+left to extrapolate in the first place.
+
 ## 7. Reading paths
 
 - **Want the full lineage and reasoning for each model?**
