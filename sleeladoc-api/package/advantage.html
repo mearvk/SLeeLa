@@ -145,7 +145,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; advantage</div>
 <h1>Package <code>advantage</code></h1>
-<div class="lead">This package contains <strong>124</strong> source unit(s) defining <strong>124</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>139</strong> source unit(s) defining <strong>139</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="advantage-demo">advantage-demo <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/advantage-demo.sleela)</span></h2>
 <div data-u="advantage-demo advantagedemo">
@@ -1313,6 +1313,36 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="sleuclid">SLEuclid <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading-actions-on-verb/SLEuclid.sleela)</span></h2>
+<div data-u="sleuclid sleuclid">
+<h3 id="SLEuclid">SLEuclid <span class="pill">class</span></h3>
+<p class="desc">Careful integer Euclidean toolkit: greatest common divisor by Euclid loop, Bezout coefficients, exact fills by two round lots, and squared Euclidean distance with an integer square root.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>maxDiff</code></td><td><span class="sig">int maxDiff = 10000</span></td><td class="desc">Largest absolute value accepted for a coordinate difference.</td></tr>
+<tr><td><code>maxDim</code></td><td><span class="sig">int maxDim = 20</span></td><td class="desc">Largest dimension accepted by distSq.</td></tr>
+<tr><td><code>steps</code></td><td><span class="sig">int steps = 0</span></td><td class="desc">Number of loop passes taken by the last gcd call.</td></tr>
+<tr><td><code>trail</code></td><td><span class="sig">String trail = &quot;&quot;</span></td><td class="desc">The remainder trail of the last gcd call, for example 120,180 -&gt; 180,120</td></tr>
+<tr><td><code>bx</code></td><td><span class="sig">int bx = 0</span></td><td class="desc">Bezout coefficients from the last egcd call: a*bx + b*by = g.</td></tr>
+<tr><td><code>by</code></td><td><span class="sig">int by = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fillA</code></td><td><span class="sig">int fillA = 0</span></td><td class="desc">The first exact fill found by canFill: fillA lots of a plus fillB of b.</td></tr>
+<tr><td><code>fillB</code></td><td><span class="sig">int fillB = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>abs</code></td><td><span class="sig">int abs(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>gcd</code></td><td><span class="sig">int gcd(int a, int b)</span></td><td class="desc">Greatest common divisor of |a| and |b|. gcd(0, 0) is 0.</td></tr>
+<tr><td><code>gcdAll</code></td><td><span class="sig">int gcdAll(int[] v, int n)</span></td><td class="desc">GCD of the first n values of v. Returns 0 when n is 0 or all are 0.</td></tr>
+<tr><td><code>lcm</code></td><td><span class="sig">int lcm(int a, int b)</span></td><td class="desc">Least common multiple, or -1 when the result would pass 2,000,000,000.</td></tr>
+<tr><td><code>egcd</code></td><td><span class="sig">int egcd(int a, int b)</span></td><td class="desc">Extended Euclid for a &gt;= 0 and b &gt;= 0. Returns g and sets bx, by so that a*bx + b*by = g. Returns -1 for a negative input.</td></tr>
+<tr><td><code>bezoutHolds</code></td><td><span class="sig">boolean bezoutHolds(int a, int b, int g)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canFill</code></td><td><span class="sig">boolean canFill(int c, int a, int b)</span></td><td class="desc">True when c shares can be filled exactly by whole lots of a and b. Needs a &gt; 0, b &gt; 0, c &gt;= 0. Sets fillA and fillB to the solution with the fewest a-lots. The gcd test is the necessary condition checked first.</td></tr>
+<tr><td><code>isqrt</code></td><td><span class="sig">int isqrt(int n)</span></td><td class="desc">Floor of the square root of n, or -1 when n is negative.</td></tr>
+<tr><td><code>distSq</code></td><td><span class="sig">int distSq(int[] a, int[] b, int dim)</span></td><td class="desc">Squared Euclidean distance between the first dim entries of a and b. Returns -1 when dim is out of range or any difference passes maxDiff.</td></tr>
+<tr><td><code>dist</code></td><td><span class="sig">int dist(int[] a, int[] b, int dim)</span></td><td class="desc">Floor of the Euclidean distance, or -1 on a rejected input.</td></tr>
+</table>
+</div>
 <h2 class="section" data-u="slgradebook">SLGradeBook <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/grading/SLGradeBook.sleela)</span></h2>
 <div data-u="slgradebook slgradebook">
 <h3 id="SLGradeBook">SLGradeBook <span class="pill">class</span></h3>
@@ -1411,6 +1441,57 @@
 <tr><td><code>optimalQuantity</code></td><td><span class="sig">double optimalQuantity()</span></td><td class="desc">Optimal quantity Q* where MR = MC. 0 if no interior optimum exists.</td></tr>
 <tr><td><code>maxJointProfit</code></td><td><span class="sig">double maxJointProfit()</span></td><td class="desc">The maximum joint surplus, evaluated at Q*.</td></tr>
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sllongbook">SLLongBook <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading-actions-on-verb/SLLongBook.sleela)</span></h2>
+<div data-u="sllongbook sllongbook">
+<h3 id="SLLongBook">SLLongBook <span class="pill">class</span></h3>
+<p class="desc">A long-only position book of FIFO lots with verbs buy, sell, hold and flatten, integer cents, time in whole days, and invariants checked after every action.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>cap</code></td><td><span class="sig">int cap = 16</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lotQty</code></td><td><span class="sig">int[] lotQty = new int[16]</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lotPrice</code></td><td><span class="sig">int[] lotPrice = new int[16]</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lotDay</code></td><td><span class="sig">int[] lotDay = new int[16]</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastDay</code></td><td><span class="sig">int lastDay = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>boughtQty</code></td><td><span class="sig">int boughtQty = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>soldQty</code></td><td><span class="sig">int soldQty = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>boughtCost</code></td><td><span class="sig">int boughtCost = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>costSold</code></td><td><span class="sig">int costSold = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>proceedsTotal</code></td><td><span class="sig">int proceedsTotal = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>feesPaid</code></td><td><span class="sig">int feesPaid = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastSaleCost</code></td><td><span class="sig">int lastSaleCost = 0</span></td><td class="desc">Cost basis and pnl of the most recent sell, before fees.</td></tr>
+<tr><td><code>lastSalePnl</code></td><td><span class="sig">int lastSalePnl = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>reason</code></td><td><span class="sig">String reason(int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>totalQty</code></td><td><span class="sig">int totalQty()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>costBasis</code></td><td><span class="sig">int costBasis()</span></td><td class="desc">Cost of what is still held, in cents.</td></tr>
+<tr><td><code>avgCostFloor</code></td><td><span class="sig">int avgCostFloor()</span></td><td class="desc">Average cost per share, rounded down, and the leftover cents.</td></tr>
+<tr><td><code>avgCostRemainder</code></td><td><span class="sig">int avgCostRemainder()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lotCount</code></td><td><span class="sig">int lotCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lotQtyAt</code></td><td><span class="sig">int lotQtyAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lotPriceAt</code></td><td><span class="sig">int lotPriceAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lotDayAt</code></td><td><span class="sig">int lotDayAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>currentDay</code></td><td><span class="sig">int currentDay()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>buy</code></td><td><span class="sig">int buy(int day, int qty, int price, int fee)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sell</code></td><td><span class="sig">int sell(int day, int qty, int price, int fee)</span></td><td class="desc">Sell oldest lots first. Refuses, changing nothing, when the sell is not valid or exceeds the holding.</td></tr>
+<tr><td><code>hold</code></td><td><span class="sig">int hold(int day)</span></td><td class="desc">Let time pass with no trade.</td></tr>
+<tr><td><code>flatten</code></td><td><span class="sig">int flatten(int day, int price, int fee)</span></td><td class="desc">Sell everything that is held.</td></tr>
+<tr><td><code>compact</code></td><td><span class="sig">void compact()</span></td><td class="desc">Remove emptied lots, keeping the rest in order.</td></tr>
+<tr><td><code>realizedGross</code></td><td><span class="sig">int realizedGross()</span></td><td class="desc">Realized profit before fees, over everything sold so far.</td></tr>
+<tr><td><code>realizedNet</code></td><td><span class="sig">int realizedNet()</span></td><td class="desc">Realized profit after every fee paid so far, buys and sells.</td></tr>
+<tr><td><code>fees</code></td><td><span class="sig">int fees()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ageOf</code></td><td><span class="sig">int ageOf(int i, int today)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>oldestAge</code></td><td><span class="sig">int oldestAge(int today)</span></td><td class="desc">Age of the oldest lot in days, or -1 when flat.</td></tr>
+<tr><td><code>weightedAgeFloor</code></td><td><span class="sig">int weightedAgeFloor(int today)</span></td><td class="desc">Quantity-weighted average age in whole days, rounded down; 0 when flat.</td></tr>
+<tr><td><code>qtyOlderThan</code></td><td><span class="sig">int qtyOlderThan(int today, int maxAge)</span></td><td class="desc">Shares held for more than maxAge days.</td></tr>
+<tr><td><code>isLongTerm</code></td><td><span class="sig">boolean isLongTerm(int i, int today, int threshold)</span></td><td class="desc">A lot is long term when it is held for MORE than threshold days.</td></tr>
+<tr><td><code>qtyLongTerm</code></td><td><span class="sig">int qtyLongTerm(int today, int threshold)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>invariantsHold</code></td><td><span class="sig">boolean invariantsHold()</span></td><td class="desc">---- Invariants ---- 1 every lot has positive quantity and price; 2 lot days never decrease and never pass the book day; 3 count is within the cap; 4 shares held = shares bought - shares sold; 5 cost held = cost bought - cost sold.</td></tr>
 </table>
 </div>
 <h2 class="section" data-u="slmarketscout">SLMarketScout <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/network/SLMarketScout.sleela)</span></h2>
@@ -2290,6 +2371,254 @@
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="tause01openandadd">TaUse01OpenAndAdd <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading-actions-on-verb/01-open-and-add/TaUse01OpenAndAdd.sleela)</span></h2>
+<div data-u="tause01openandadd tause01openandadd">
+<h3 id="TaUse01OpenAndAdd">TaUse01OpenAndAdd <span class="pill">class</span></h3>
+<p class="desc">Trading long, open then add: buy verbs build FIFO lots and an average cost with an exact remainder.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLLongBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tause02trimrealizedpnl">TaUse02TrimRealizedPnl <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading-actions-on-verb/02-trim-realized-pnl/TaUse02TrimRealizedPnl.sleela)</span></h2>
+<div data-u="tause02trimrealizedpnl tause02trimrealizedpnl">
+<h3 id="TaUse02TrimRealizedPnl">TaUse02TrimRealizedPnl <span class="pill">class</span></h3>
+<p class="desc">Trading long, trim: a partial sell consumes the oldest lot first and realizes profit on exactly that cost.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLLongBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tause03flattenandreconcile">TaUse03FlattenAndReconcile <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading-actions-on-verb/03-flatten-and-reconcile/TaUse03FlattenAndReconcile.sleela)</span></h2>
+<div data-u="tause03flattenandreconcile tause03flattenandreconcile">
+<h3 id="TaUse03FlattenAndReconcile">TaUse03FlattenAndReconcile <span class="pill">class</span></h3>
+<p class="desc">Trading long, flatten: the last sell empties the book and total profit reconciles to proceeds minus cost minus fees.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLLongBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tause04refuseshortandbadinput">TaUse04RefuseShortAndBadInput <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading-actions-on-verb/04-refuse-short-and-bad-input/TaUse04RefuseShortAndBadInput.sleela)</span></h2>
+<div data-u="tause04refuseshortandbadinput tause04refuseshortandbadinput">
+<h3 id="TaUse04RefuseShortAndBadInput">TaUse04RefuseShortAndBadInput <span class="pill">class</span></h3>
+<p class="desc">Trading long, refusals: a sell above the holding, bad quantity, bad price, backwards day and flat sells are refused and the book never changes.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLLongBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>snap</code></td><td><span class="sig">int snap(SLLongBook b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tause05lotratiobyeuclid">TaUse05LotRatioByEuclid <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading-actions-on-verb/05-lot-ratio-by-euclid/TaUse05LotRatioByEuclid.sleela)</span></h2>
+<div data-u="tause05lotratiobyeuclid tause05lotratiobyeuclid">
+<h3 id="TaUse05LotRatioByEuclid">TaUse05LotRatioByEuclid <span class="pill">class</span></h3>
+<p class="desc">Trading long, order ratios: Euclid loop reduces a basket of order sizes to the smallest whole-number ratio, showing every remainder step.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLLongBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tause06roundlotfillandbezout">TaUse06RoundLotFillAndBezout <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading-actions-on-verb/06-round-lot-fill-and-bezout/TaUse06RoundLotFillAndBezout.sleela)</span></h2>
+<div data-u="tause06roundlotfillandbezout tause06roundlotfillandbezout">
+<h3 id="TaUse06RoundLotFillAndBezout">TaUse06RoundLotFillAndBezout <span class="pill">class</span></h3>
+<p class="desc">Trading long, exact fills: the gcd test is necessary but not sufficient for filling an order with two round-lot sizes; Bezout coefficients prove the gcd.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLLongBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tause07rebalancedistance">TaUse07RebalanceDistance <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading-actions-on-verb/07-rebalance-distance/TaUse07RebalanceDistance.sleela)</span></h2>
+<div data-u="tause07rebalancedistance tause07rebalancedistance">
+<h3 id="TaUse07RebalanceDistance">TaUse07RebalanceDistance <span class="pill">class</span></h3>
+<p class="desc">Trading long, rebalancing: squared Euclidean distance and an integer square root pick the nearest of several target portfolios, with ties to the first.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLLongBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tause08holdingdays">TaUse08HoldingDays <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading-actions-on-verb/08-holding-days/TaUse08HoldingDays.sleela)</span></h2>
+<div data-u="tause08holdingdays tause08holdingdays">
+<h3 id="TaUse08HoldingDays">TaUse08HoldingDays <span class="pill">class</span></h3>
+<p class="desc">Time on long, age: a lot&#x27;s age is today minus its buy day; time may pass with hold but never run backwards.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLLongBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tause09fifoaging">TaUse09FifoAging <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading-actions-on-verb/09-fifo-aging/TaUse09FifoAging.sleela)</span></h2>
+<div data-u="tause09fifoaging tause09fifoaging">
+<h3 id="TaUse09FifoAging">TaUse09FifoAging <span class="pill">class</span></h3>
+<p class="desc">Time on long, FIFO: a sell consumes the oldest lots first, so what remains is younger and the ages are exact.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLLongBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tause10weightedaverageage">TaUse10WeightedAverageAge <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading-actions-on-verb/10-weighted-average-age/TaUse10WeightedAverageAge.sleela)</span></h2>
+<div data-u="tause10weightedaverageage tause10weightedaverageage">
+<h3 id="TaUse10WeightedAverageAge">TaUse10WeightedAverageAge <span class="pill">class</span></h3>
+<p class="desc">Time on long, weighted age: the quantity-weighted average holding period is exact when divisible and a floor otherwise.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLLongBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tause11termboundary">TaUse11TermBoundary <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading-actions-on-verb/11-term-boundary/TaUse11TermBoundary.sleela)</span></h2>
+<div data-u="tause11termboundary tause11termboundary">
+<h3 id="TaUse11TermBoundary">TaUse11TermBoundary <span class="pill">class</span></h3>
+<p class="desc">Time on long, short term versus long term: a lot is long term only when held MORE than the threshold, so day 365 is still short.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLLongBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tause12timestop">TaUse12TimeStop <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading-actions-on-verb/12-time-stop/TaUse12TimeStop.sleela)</span></h2>
+<div data-u="tause12timestop tause12timestop">
+<h3 id="TaUse12TimeStop">TaUse12TimeStop <span class="pill">class</span></h3>
+<p class="desc">Time on long, time stop: a loop sells every share held longer than a limit; it must end because the old quantity strictly falls.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLLongBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tause13fulllifecycle">TaUse13FullLifecycle <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading-actions-on-verb/13-full-lifecycle/TaUse13FullLifecycle.sleela)</span></h2>
+<div data-u="tause13fulllifecycle tause13fulllifecycle">
+<h3 id="TaUse13FullLifecycle">TaUse13FullLifecycle <span class="pill">class</span></h3>
+<p class="desc">Trading long over time: buys, a hold, a trim, a long-term sale and a flatten, with invariants after every action and an independent reconciliation.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLLongBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="television-trade">television-trade <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/examples/professional/network-trades/television-trade.sleela)</span></h2>
 <div data-u="television-trade televisiontrade">
 <h3 id="TelevisionTrade">TelevisionTrade <span class="pill">class</span></h3>
@@ -2366,7 +2695,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-11 20:06 UTC.
+<code>/lib</code> tree on 2026-11-11 20:08 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
