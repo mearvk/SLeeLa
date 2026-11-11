@@ -42570,6 +42570,7 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.concurrent.CountDownLatch&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cdlCount</code></td><td><span class="sig">long cdlCount = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -158833,6 +158834,8 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.concurrent.Semaphore&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>semPermits</code></td><td><span class="sig">int semPermits = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>semFair</code></td><td><span class="sig">boolean semFair = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -158841,9 +158844,11 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>reducePermits</code></td><td><span class="sig">void reducePermits(int reduction)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>Semaphore</code></td><td><span class="sig">public Semaphore(int permits)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>Semaphore</code></td><td><span class="sig">public Semaphore(int permits, boolean fair)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>reducePermits</code></td><td><span class="sig">void reducePermits(int reduction)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>takePermits</code></td><td><span class="sig">boolean takePermits(int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addPermits</code></td><td><span class="sig">void addPermits(int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="sendfailednotification">SendFailedNotification <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/jdk.sctp/com/sun/nio/sctp/SendFailedNotification.sleela)</span></h2>
@@ -184347,6 +184352,8 @@
 <tr><td><code>compareTo</code></td><td><span class="sig">int compareTo(TimeUnit o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>equals</code></td><td><span class="sig">boolean equals(Any other)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>hashCode</code></td><td><span class="sig">int hashCode()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>unitNanos</code></td><td><span class="sig">long unitNanos()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>scaleTo</code></td><td><span class="sig">long scaleTo(long d, long fromNanos, long toNanos)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="timezone">TimeZone <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/TimeZone.sleela)</span></h2>
@@ -202926,7 +202933,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-11 21:23 UTC.
+<code>/lib</code> tree on 2026-11-11 21:30 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
