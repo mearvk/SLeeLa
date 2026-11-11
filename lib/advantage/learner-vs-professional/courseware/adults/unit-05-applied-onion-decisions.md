@@ -28,6 +28,13 @@ The student first misses A's discount and gets A = 12450. A then looks dearer
 than B (12400), which reverses the choice. The comparison shows the
 difference is 800 cents on supplier A, so only that entry is re-observed.
 
+## More practice
+
+Lessons 7 to 22 of the series are sixteen further trading decisions in the same
+shape, each with a different slip and some with ties. See
+[`TRADING-DECISIONS.md`](../../series/TRADING-DECISIONS.md). For each one, name
+the slip, predict the first-pass verdict, then run the lesson to check.
+
 ## Part 3: Exercises
 
 1. Supplier B adds a discount of -700. Totals? Which is cheaper?

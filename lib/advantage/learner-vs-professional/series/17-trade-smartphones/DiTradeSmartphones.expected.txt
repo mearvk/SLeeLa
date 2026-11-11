@@ -1,0 +1,19 @@
+== Lesson 17: smartphones decision ==
+-- master (onion) --
+  Distributor A total = 61500 cents
+  Distributor B total = 62000 cents
+  Distributor C total = 62500 cents
+  master picks Distributor A
+-- student, first pass: the quote of Distributor B was entered in dollars, not cents --
+  Distributor A total = 61500 cents
+  Distributor B total = 2105 cents
+  Distributor C total = 62500 cents
+  student picks Distributor B
+  Distributor B quote: student 605, master 60500 -> re-observe
+  verdict: 1 entry difference(s) and the picks differ -> not accepted
+-- student re-observes and registers every entry --
+  Distributor A total = 61500 cents
+  Distributor B total = 62000 cents
+  Distributor C total = 62500 cents
+  student picks Distributor A
+  verdict: AGREE, work accepted

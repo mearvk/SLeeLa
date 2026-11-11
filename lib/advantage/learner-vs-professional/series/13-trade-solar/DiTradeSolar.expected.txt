@@ -1,0 +1,16 @@
+== Lesson 13: solar panels decision ==
+-- master (onion) --
+  Supplier A total = 99000 cents
+  Supplier B total = 99000 cents
+  master picks Supplier A
+-- student, first pass: the discount of Supplier A was missed --
+  Supplier A total = 101000 cents
+  Supplier B total = 99000 cents
+  student picks Supplier B
+  Supplier A discount: student did not register it, master has -2000
+  verdict: 1 entry difference(s) and the picks differ -> not accepted
+-- student re-observes and registers every entry --
+  Supplier A total = 99000 cents
+  Supplier B total = 99000 cents
+  student picks Supplier A
+  verdict: AGREE, work accepted

@@ -1,0 +1,22 @@
+== Lesson 16: server racks decision ==
+-- master (onion) --
+  Builder A total = 870000 cents
+  Builder B total = 885000 cents
+  Builder C total = 857000 cents
+  Builder D total = 873000 cents
+  master picks Builder C
+-- student, first pass: Builder C was not observed --
+  Builder A total = 870000 cents
+  Builder B total = 885000 cents
+  Builder C not observed
+  Builder D total = 873000 cents
+  student picks Builder A
+  Builder C: master only, student did not observe it
+  verdict: 1 entry difference(s) and the picks differ -> not accepted
+-- student re-observes and registers every entry --
+  Builder A total = 870000 cents
+  Builder B total = 885000 cents
+  Builder C total = 857000 cents
+  Builder D total = 873000 cents
+  student picks Builder C
+  verdict: AGREE, work accepted

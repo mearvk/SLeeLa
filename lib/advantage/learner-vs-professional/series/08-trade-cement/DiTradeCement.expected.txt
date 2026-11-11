@@ -1,0 +1,16 @@
+== Lesson 8: cement decision ==
+-- master (onion) --
+  Plant A total = 53300 cents
+  Plant B total = 52500 cents
+  master picks Plant B
+-- student, first pass: the fee of Plant B was counted twice --
+  Plant A total = 53300 cents
+  Plant B total = 54000 cents
+  student picks Plant A
+  Plant B fee again: student only, master has no such entry
+  verdict: 1 entry difference(s) and the picks differ -> not accepted
+-- student re-observes and registers every entry --
+  Plant A total = 53300 cents
+  Plant B total = 52500 cents
+  student picks Plant B
+  verdict: AGREE, work accepted

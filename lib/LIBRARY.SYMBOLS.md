@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 13283
+library-source-files: 13300
 library-packages: 121
 module-facade-symbols: 84
-total-symbol-records: 13367
+total-symbol-records: 13384
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -64,6 +64,23 @@ advantage	DiSystemReadiness.sleela	lib/advantage/learner-vs-professional/series/
 advantage	DiAgreement.sleela	lib/advantage/learner-vs-professional/series/04-agreement/DiAgreement.sleela	source
 advantage	DiNestedCarriers.sleela	lib/advantage/learner-vs-professional/series/05-nested-carriers/DiNestedCarriers.sleela	source
 advantage	DiPurchaseOnion.sleela	lib/advantage/learner-vs-professional/series/06-purchase-onion/DiPurchaseOnion.sleela	source
+advantage	DiTradeLumber.sleela	lib/advantage/learner-vs-professional/series/07-trade-lumber/DiTradeLumber.sleela	source
+advantage	DiTradeCement.sleela	lib/advantage/learner-vs-professional/series/08-trade-cement/DiTradeCement.sleela	source
+advantage	DiTradeCopper.sleela	lib/advantage/learner-vs-professional/series/09-trade-copper/DiTradeCopper.sleela	source
+advantage	DiTradeSteel.sleela	lib/advantage/learner-vs-professional/series/10-trade-steel/DiTradeSteel.sleela	source
+advantage	DiTradeCoffee.sleela	lib/advantage/learner-vs-professional/series/11-trade-coffee/DiTradeCoffee.sleela	source
+advantage	DiTradeCotton.sleela	lib/advantage/learner-vs-professional/series/12-trade-cotton/DiTradeCotton.sleela	source
+advantage	DiTradeSolar.sleela	lib/advantage/learner-vs-professional/series/13-trade-solar/DiTradeSolar.sleela	source
+advantage	DiTradeLithium.sleela	lib/advantage/learner-vs-professional/series/14-trade-lithium/DiTradeLithium.sleela	source
+advantage	DiTradeSemiconductors.sleela	lib/advantage/learner-vs-professional/series/15-trade-semiconductors/DiTradeSemiconductors.sleela	source
+advantage	DiTradeServerRacks.sleela	lib/advantage/learner-vs-professional/series/16-trade-server-racks/DiTradeServerRacks.sleela	source
+advantage	DiTradeSmartphones.sleela	lib/advantage/learner-vs-professional/series/17-trade-smartphones/DiTradeSmartphones.sleela	source
+advantage	DiTradeTelevisions.sleela	lib/advantage/learner-vs-professional/series/18-trade-televisions/DiTradeTelevisions.sleela	source
+advantage	DiTradeWheat.sleela	lib/advantage/learner-vs-professional/series/19-trade-wheat/DiTradeWheat.sleela	source
+advantage	DiTradeFuel.sleela	lib/advantage/learner-vs-professional/series/20-trade-fuel/DiTradeFuel.sleela	source
+advantage	DiTradeFreight.sleela	lib/advantage/learner-vs-professional/series/21-trade-freight/DiTradeFreight.sleela	source
+advantage	DiTradeTieCapstone.sleela	lib/advantage/learner-vs-professional/series/22-trade-tie-capstone/DiTradeTieCapstone.sleela	source
+advantage	SLDecisionDesk.sleela	lib/advantage/learner-vs-professional/series/SLDecisionDesk.sleela	source
 advantage	SLNounRegistry.sleela	lib/advantage/learner-vs-professional/series/SLNounRegistry.sleela	source
 advantage	SLBilateralNewsvendor.sleela	lib/advantage/math/SLBilateralNewsvendor.sleela	source
 advantage	SLJointProfitMax.sleela	lib/advantage/math/SLJointProfitMax.sleela	source

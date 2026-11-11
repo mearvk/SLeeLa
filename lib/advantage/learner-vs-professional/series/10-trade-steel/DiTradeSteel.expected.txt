@@ -1,0 +1,19 @@
+== Lesson 10: steel decision ==
+-- master (onion) --
+  Mill A total = 119000 cents
+  Mill B total = 120000 cents
+  Mill C total = 118500 cents
+  master picks Mill C
+-- student, first pass: Mill A was not observed --
+  Mill A not observed
+  Mill B total = 120000 cents
+  Mill C total = 118500 cents
+  student picks Mill C
+  Mill A: master only, student did not observe it
+  verdict: same pick, but 1 entry difference(s) -> not accepted
+-- student re-observes and registers every entry --
+  Mill A total = 119000 cents
+  Mill B total = 120000 cents
+  Mill C total = 118500 cents
+  student picks Mill C
+  verdict: AGREE, work accepted

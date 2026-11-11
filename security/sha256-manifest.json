@@ -1174,6 +1174,74 @@
       "sha256": "775c5961fb8a2f74734815ecaa0609f93d485fa976a383f6aa80f579cf21c5fd"
     },
     {
+      "path": "lib/advantage/learner-vs-professional/series/07-trade-lumber/DiTradeLumber.sleela",
+      "sha256": "3f65ae3b96e4680559320580b3da40b7be5879a62bf244833a12bc445c8993dc"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/08-trade-cement/DiTradeCement.sleela",
+      "sha256": "6d304100baefb28222bec1f7175e7f1a58bd210db548bc74a11903b67f1d20cb"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/09-trade-copper/DiTradeCopper.sleela",
+      "sha256": "32e6e498d3089e858f7c554820e36412a73345e847992a55b8edfa03d5593c1a"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/10-trade-steel/DiTradeSteel.sleela",
+      "sha256": "9ef97897297c689d236c52b71bf10ddda2adc418ade327eab5cf7a215a43e392"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/11-trade-coffee/DiTradeCoffee.sleela",
+      "sha256": "67882ad15c7693a8a5a93be1effd2d5961f8b555c4fd6fcab47d919ab10698ec"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/12-trade-cotton/DiTradeCotton.sleela",
+      "sha256": "acb3582ab2e1a56ec7b1a4d174dcdfca086bbbf39c2f9b51694a1008a62f978d"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/13-trade-solar/DiTradeSolar.sleela",
+      "sha256": "e7e5e095bcd3695cb47500604ad0000ae03e52d44e8e388b1c596d6be6026001"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/14-trade-lithium/DiTradeLithium.sleela",
+      "sha256": "04e13f87b6545797619f941596f344cd4194cf491b4c8038064bb9efe2201752"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/15-trade-semiconductors/DiTradeSemiconductors.sleela",
+      "sha256": "05cd3f17d7a88e1150cde90384852e92b3a68c193a2844c2602b46bfc39541b2"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/16-trade-server-racks/DiTradeServerRacks.sleela",
+      "sha256": "4d81e63cb7737a66b1e48eb36418695c53e030da0461090721d04db67ca8adc3"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/17-trade-smartphones/DiTradeSmartphones.sleela",
+      "sha256": "80ffaca8354cda8a0a7625516388c631d084c54e0c532bd795e99ad7f04b3a48"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/18-trade-televisions/DiTradeTelevisions.sleela",
+      "sha256": "d8f3ae2d1c0d4a4261fdcb284c1df31b52b336cc5a80298e142feb5160940a02"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/19-trade-wheat/DiTradeWheat.sleela",
+      "sha256": "6e6e7f8d2d11dbbb3eec14ba46264aa0152a39202b86c3f27e007bf60eac27e3"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/20-trade-fuel/DiTradeFuel.sleela",
+      "sha256": "3b29f3215b9d9e8ee98997f8d6de8cd2d352ecb7f6c611e7c065bfd20f9fb898"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/21-trade-freight/DiTradeFreight.sleela",
+      "sha256": "8b96910fe008f505e9c2bcb2529293e2974e786ed667a4b22adf40945939fb47"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/22-trade-tie-capstone/DiTradeTieCapstone.sleela",
+      "sha256": "020c50411b4bcb9b89524a4ddd7cfc1a42097024878c4b7cb4b6a948a448cae0"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/SLDecisionDesk.sleela",
+      "sha256": "ec1cebd63cb071fbc5367a75d3d083b751c22fd4b07d292de2559f73d1f0785d"
+    },
+    {
       "path": "lib/advantage/learner-vs-professional/series/SLNounRegistry.sleela",
       "sha256": "fb48637681d1069f5af101e634218bdb533082b50f544122a11fcad06edfc208"
     },

@@ -1,0 +1,16 @@
+== Lesson 15: semiconductors decision ==
+-- master (onion) --
+  Foundry A total = 210000 cents
+  Foundry B total = 207000 cents
+  master picks Foundry B
+-- student, first pass: the discount of Foundry B was entered with the wrong sign --
+  Foundry A total = 210000 cents
+  Foundry B total = 223000 cents
+  student picks Foundry A
+  Foundry B discount: student 8000, master -8000 -> re-observe
+  verdict: 1 entry difference(s) and the picks differ -> not accepted
+-- student re-observes and registers every entry --
+  Foundry A total = 210000 cents
+  Foundry B total = 207000 cents
+  student picks Foundry B
+  verdict: AGREE, work accepted

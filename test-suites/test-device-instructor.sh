@@ -4,7 +4,7 @@
 #   1. every lesson folder has a lesson class with a main(), the Metadata block
 #      header, and an .expected.txt file;
 #   2. running each lesson reproduces its .expected.txt exactly;
-#   3. the lesson set is the six lessons the series README promises.
+#   3. the lesson set is the 22 lessons the series README promises.
 # Set UPDATE=1 to rewrite the expected files after reviewing a deliberate change.
 # Needs the sleela binary (default working-binaries/sleela, override SLEELA=...)
 # and a security/sha256-manifest.json that matches the tree.
@@ -16,9 +16,10 @@ SERIES="lib/advantage/learner-vs-professional/series"
 fail=0
 bad() { echo "FAIL: $*" >&2; fail=1; }
 
-lessons=("$SERIES"/0[1-6]-*/)
-[ "${#lessons[@]}" -eq 6 ] || bad "expected 6 lesson folders, found ${#lessons[@]}"
+lessons=("$SERIES"/[0-9][0-9]-*/)
+[ "${#lessons[@]}" -eq 22 ] || bad "expected 22 lesson folders, found ${#lessons[@]}"
 [ -f "$SERIES/SLNounRegistry.sleela" ] || bad "missing shared SLNounRegistry.sleela"
+[ -f "$SERIES/SLDecisionDesk.sleela" ] || bad "missing shared SLDecisionDesk.sleela"
 
 filter() { grep -v -e '^\[memory' -e '^\[security' -e '^\[defender' -e '^verification'; }
 

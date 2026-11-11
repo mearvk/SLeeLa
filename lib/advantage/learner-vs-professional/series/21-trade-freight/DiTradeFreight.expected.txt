@@ -1,0 +1,19 @@
+== Lesson 21: freight decision ==
+-- master (onion) --
+  Carrier A total = 15800 cents
+  Carrier B total = 15700 cents
+  Carrier C total = 14900 cents
+  master picks Carrier C
+-- student, first pass: the discount of Carrier C was entered with the wrong sign --
+  Carrier A total = 15800 cents
+  Carrier B total = 15700 cents
+  Carrier C total = 16700 cents
+  student picks Carrier B
+  Carrier C discount: student 900, master -900 -> re-observe
+  verdict: 1 entry difference(s) and the picks differ -> not accepted
+-- student re-observes and registers every entry --
+  Carrier A total = 15800 cents
+  Carrier B total = 15700 cents
+  Carrier C total = 14900 cents
+  student picks Carrier C
+  verdict: AGREE, work accepted

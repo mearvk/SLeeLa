@@ -1,0 +1,12 @@
+== Lesson 19: wheat decision ==
+-- master (onion) --
+  Elevator A total = 21400 cents
+  Elevator B total = 21400 cents
+  Elevator C total = 21500 cents
+  master picks Elevator A
+-- student, first pass: every entry observed --
+  Elevator A total = 21400 cents
+  Elevator B total = 21400 cents
+  Elevator C total = 21500 cents
+  student picks Elevator A
+  verdict: AGREE, work accepted

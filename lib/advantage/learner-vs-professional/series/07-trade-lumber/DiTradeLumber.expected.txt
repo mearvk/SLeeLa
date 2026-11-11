@@ -1,0 +1,16 @@
+== Lesson 7: lumber decision ==
+-- master (onion) --
+  Mill A total = 83500 cents
+  Mill B total = 85500 cents
+  master picks Mill A
+-- student, first pass: the discount of Mill A was missed --
+  Mill A total = 86500 cents
+  Mill B total = 85500 cents
+  student picks Mill B
+  Mill A discount: student did not register it, master has -3000
+  verdict: 1 entry difference(s) and the picks differ -> not accepted
+-- student re-observes and registers every entry --
+  Mill A total = 83500 cents
+  Mill B total = 85500 cents
+  student picks Mill A
+  verdict: AGREE, work accepted
