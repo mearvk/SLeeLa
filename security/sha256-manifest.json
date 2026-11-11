@@ -32571,7 +32571,7 @@
     },
     {
       "path": "lib/java/java/lang/System.sleela",
-      "sha256": "f008c59bb67cd1de8a06b2294233a55e11884b82070cdae3dc6023fdc00581d1"
+      "sha256": "024a74c40304e421e62ba32fc97e9aec98dad38c14392312da6beee42103b16a"
     },
     {
       "path": "lib/java/java/lang/Thread.Builder.OfPlatform.sleela",
