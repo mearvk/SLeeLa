@@ -194,6 +194,154 @@ tm_status tm_refurbishment(const tm_refurb_in *in,
     return finish(cost, proceeds, in->hold_days, out);
 }
 
+/* ---- 4. Regional arbitrage ------------------------------------------- */
+
+tm_status tm_regional_premium(double buy_price, double sell_price,
+                              double *out_premium)
+{
+    if (out_premium == NULL) return TM_ERR_ARG;
+    if (!is_positive(buy_price) || !is_positive(sell_price)) {
+        return TM_ERR_RANGE;
+    }
+    *out_premium = sell_price / buy_price - 1.0;
+    return TM_OK;
+}
+
+tm_status tm_regional(const tm_regional_in *in, tm_result *out)
+{
+    double cost, ok_proceeds, lost_proceeds, proceeds;
+
+    if (in == NULL || out == NULL) return TM_ERR_ARG;
+    if (!is_positive(in->buy_price) || !is_positive(in->sell_price) ||
+        !is_positive(in->quantity)) {
+        return TM_ERR_RANGE;
+    }
+    if (!is_rate(in->buy_fee_rate) || !is_rate(in->sell_fee_rate)) {
+        return TM_ERR_RANGE;
+    }
+    if (!is_amount(in->transport_cost_per_unit) ||
+        !is_amount(in->fixed_costs) || !is_amount(in->holding_cost_per_day) ||
+        !is_days(in->transit_days)) {
+        return TM_ERR_RANGE;
+    }
+    if (!is_prob(in->loss_probability) || !is_prob(in->salvage_rate)) {
+        return TM_ERR_RANGE;
+    }
+
+    cost = in->quantity * in->buy_price * (1.0 + in->buy_fee_rate) +
+           in->quantity * in->transport_cost_per_unit + in->fixed_costs +
+           in->holding_cost_per_day * in->transit_days;
+    ok_proceeds = in->quantity * in->sell_price * (1.0 - in->sell_fee_rate);
+    lost_proceeds = in->quantity * in->buy_price * in->salvage_rate;
+    proceeds = (1.0 - in->loss_probability) * ok_proceeds +
+               in->loss_probability * lost_proceeds;
+
+    return finish(cost, proceeds, in->transit_days, out);
+}
+
+/* ---- 5. Supply aggregation -------------------------------------------- */
+
+tm_status tm_aggregation(const tm_aggregation_in *in,
+                         const double *lot_prices, size_t n_lots,
+                         tm_result *out)
+{
+    double purchases = 0.0, cost, expected_sale;
+    size_t i;
+
+    if (in == NULL || lot_prices == NULL || out == NULL) return TM_ERR_ARG;
+    if (n_lots == 0 || n_lots > TM_MAX_LOTS) return TM_ERR_ARG;
+    if (!is_amount(in->set_value) || !is_amount(in->piecemeal_value_per_item) ||
+        !is_prob(in->completion_probability) ||
+        !is_amount(in->per_item_cost) || !is_amount(in->fixed_costs) ||
+        !is_rate(in->sell_fee_rate) || !is_amount(in->holding_cost_per_day) ||
+        !is_days(in->hold_days)) {
+        return TM_ERR_RANGE;
+    }
+    for (i = 0; i < n_lots; ++i) {
+        if (!is_positive(lot_prices[i])) return TM_ERR_RANGE;
+        purchases += lot_prices[i];
+    }
+
+    cost = purchases + (double)n_lots * in->per_item_cost + in->fixed_costs +
+           in->holding_cost_per_day * in->hold_days;
+    expected_sale = in->completion_probability * in->set_value +
+                    (1.0 - in->completion_probability) *
+                        (double)n_lots * in->piecemeal_value_per_item;
+
+    return finish(cost, expected_sale * (1.0 - in->sell_fee_rate),
+                  in->hold_days, out);
+}
+
+/* ---- 6. Informational asymmetry --------------------------------------- */
+
+tm_status tm_mispricing(double listed_price, double estimated_value,
+                        double *out_discount)
+{
+    if (out_discount == NULL) return TM_ERR_ARG;
+    if (!is_positive(listed_price) || !is_positive(estimated_value)) {
+        return TM_ERR_RANGE;
+    }
+    *out_discount = 1.0 - listed_price / estimated_value;
+    return TM_OK;
+}
+
+tm_status tm_asymmetry(const tm_asymmetry_in *in, tm_result *out)
+{
+    double w, cost, value_if_won;
+
+    if (in == NULL || out == NULL) return TM_ERR_ARG;
+    if (!is_positive(in->listed_price) || !is_amount(in->genuine_value) ||
+        !is_amount(in->fallback_value)) {
+        return TM_ERR_RANGE;
+    }
+    if (!is_prob(in->genuine_probability) || !is_prob(in->win_probability)) {
+        return TM_ERR_RANGE;
+    }
+    if (!is_rate(in->buy_fee_rate) || !is_rate(in->sell_fee_rate) ||
+        !is_amount(in->verification_cost) || !is_amount(in->attempt_cost) ||
+        !is_amount(in->holding_cost_per_day) || !is_days(in->hold_days)) {
+        return TM_ERR_RANGE;
+    }
+
+    w = in->win_probability;
+    /* You always pay to look; you pay to buy, verify and hold only if you win. */
+    cost = in->attempt_cost +
+           w * (in->listed_price * (1.0 + in->buy_fee_rate) +
+                in->verification_cost +
+                in->holding_cost_per_day * in->hold_days);
+    value_if_won = in->genuine_probability * in->genuine_value +
+                   (1.0 - in->genuine_probability) * in->fallback_value;
+
+    return finish(cost, w * value_if_won * (1.0 - in->sell_fee_rate),
+                  in->hold_days, out);
+}
+
+/* ---- 7. Consignment --------------------------------------------------- */
+
+tm_status tm_consignment(const tm_consignment_in *in, tm_result *out)
+{
+    double p, cost;
+
+    if (in == NULL || out == NULL) return TM_ERR_ARG;
+    if (!is_positive(in->sale_price) || !is_rate(in->commission_rate) ||
+        !is_prob(in->sale_probability) || !is_rate(in->platform_fee_rate) ||
+        !is_amount(in->labor_cost) || !is_amount(in->fixed_costs) ||
+        !is_prob(in->chargeback_probability) ||
+        !is_amount(in->chargeback_loss) || !is_days(in->days_to_sell)) {
+        return TM_ERR_RANGE;
+    }
+
+    p = in->sale_probability;
+    /* Labor and fixed costs are paid whether or not it sells; platform fees
+     * and chargeback losses arise only if it does. */
+    cost = in->labor_cost + in->fixed_costs +
+           p * (in->platform_fee_rate * in->sale_price +
+                in->chargeback_probability * in->chargeback_loss);
+
+    return finish(cost, p * in->commission_rate * in->sale_price,
+                  in->days_to_sell, out);
+}
+
 /* ---- Bridge to the advantage core ------------------------------------- */
 
 tm_status tm_baseline(const tm_result *r, double cost_of_capital_annual,

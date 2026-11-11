@@ -1,4 +1,4 @@
-# advantage/trading — three cross-asset trading models (C core + C++ layer)
+# advantage/trading — seven cross-asset trading models (C core + C++ layer)
 
 The same three business models apply whether the asset is a token or a
 mid-century dresser; only the numbers differ (fees, holding cost, days held,
@@ -10,14 +10,18 @@ them to the advantage model so `counsel` can rank approaches.
 | **Arbitrage** (`tm_arbitrage`) | Same asset, two venues, price gap | DEX → CEX | Regional listing → premium relist |
 | **Market making** (`tm_marketmaking`, `tm_quote`) | Be the instant buyer and seller; earn the spread, bear stuck-inventory risk | Order book / AMM quoting | "Cash for estate lots" |
 | **Refurbishment** (`tm_refurbishment`) | Buy raw/distressed, improve, sell to a higher tier; result is a *distribution* | Graded numismatic coins | Restored mid-century furniture |
+| **Regional arbitrage** (`tm_regional`, `tm_regional_premium`) | Buy low in one place, move it, sell high in another; the move can fail or damage the goods | Country-exclusive premium (capital-control barrier) | Estate sale → dense urban resale |
+| **Supply aggregation** (`tm_aggregation`) | Collect many small items into a cohesive set; an incomplete set is worth only its parts | Sorted, attributed coin sets | Matched dining-chair sets |
+| **Informational asymmetry** (`tm_asymmetry`, `tm_mispricing`) | A listing is mislabeled or misunderstood. One evaluation = one *candidate*: you pay to look every time, buy only if you win the race, and profit only if your read was right | Mispriced listings / panic discounts | "Old wooden table" that is a designer piece |
+| **Consignment / zero inventory** (`tm_consignment`) | Match buyers and sellers for a commission; no inventory, almost no capital, but your time and counterparty risk are the real inputs | Local OTC / escrow desk | Staging and sales for people moving out |
 
 ## Files
 
 | File | Role |
 |---|---|
 | `trade_models.{h,c}` | C core: the three models, validation, advantage bridge |
-| `trade_models.{hpp,cpp}` | C++ layer: `Checked<T>` results, `vector` outcomes, the trade-off table as data (`profiles()`), `addEvidence` into an `AdvantageStore` |
-| `trading_demo.cpp` | Six approaches (model × asset class), 21 illustrative scenarios, then a ranked counsel |
+| `trade_models.{hpp,cpp}` | C++ layer: `Checked<T>` results, `vector` outcomes, the trade-off tables as data (`profiles()`, `advancedModelMatrix()`), `addEvidence` into an `AdvantageStore` |
+| `trading_demo.cpp` | Fourteen approaches (seven models × digital/physical), 48 illustrative scenarios, both comparison tables, then a ranked counsel |
 | `Makefile` | `make` / `make run` / `make clean`. No OpenSSL, no network |
 
 ## Build and run
@@ -50,6 +54,15 @@ the larger one winning on size. Use `Scale::Absolute` within a single approach.
 - Costs are explicit (fees, slippage, fixed, holding), so a spread that costs
   consume shows up as a loss. `tm_arbitrage_breakeven` gives the break-even
   sell price.
+- Models that involve chance report **expected** values (probability-weighted
+  cost and proceeds); one real trade lands above or below them.
+- The race-and-read model charges the *attempt* every time but the purchase
+  only on a win, so "bots win most races" correctly comes out as a loss.
+- Consignment's return on cost explodes when little capital is tied up. That
+  is real capital efficiency, but it ignores that your time is the scarce
+  input (`labor_cost`) and that one reversed transfer (`chargeback_*`) can
+  erase many commissions; both are explicit inputs. `counsel` further
+  discounts it when its trust assumptions are doubted.
 - Market making models the **unfilled** case (stuck inventory dumped at an
   unwind loss), which is where it actually loses.
 
@@ -69,6 +82,20 @@ the larger one winning on size. Use `Scale::Absolute` within a single approach.
   digital trading would also want a streaming (WebSocket) feed rather than
   request/response HTTP.
 - This is arithmetic, not financial advice.
+
+## Deliberately not built
+
+- **Header spoofing / User-Agent and proxy rotation** to make automated requests
+  look like human browsers and evade rate limits or IP blocks. That is evasion
+  of a platform's access controls, so it is out of scope. Use official APIs,
+  published feeds and webhooks, honor `robots.txt`, terms and rate limits, and
+  identify your client honestly. The module's `bulkfetch` already provides
+  parallel, rate-limited, TLS-verified fetching of sources you are authorized
+  to read.
+- **Automated mass offer messaging** (an auto-POST of pre-written offers to
+  sellers' inboxes the moment something is flagged). Unsolicited messaging at
+  machine speed is spam/abuse and violates most platforms' rules. A better
+  design flags a candidate and **a person decides** what to send.
 
 ## Next
 

@@ -61,5 +61,23 @@ const std::vector<AssetProfile>& profiles() {
     return table;
 }
 
+const std::vector<ModelProfile>& advancedModelMatrix() {
+    static const std::vector<ModelProfile> table = {
+        {"Regional Arbitrage", "high (spatial friction)", "medium",
+         "transport + region-specific data sources",
+         "logistics and moving costs"},
+        {"Supply Aggregation", "very high (patience premium)", "medium",
+         "inventory management",
+         "sorting time and storage"},
+        {"Informational Asymmetry", "extreme (alpha generation)", "high",
+         "keyword search + image/text recognition",
+         "high competition from other buyers and bots"},
+        {"Consignment / Zero-Inventory", "maximum capital efficiency", "high",
+         "escrow and listing management",
+         "trust and client acquisition"},
+    };
+    return table;
+}
+
 }  // namespace trading
 }  // namespace advantage

@@ -21,6 +21,10 @@
  *   - amounts are capped at TM_MAX_AMOUNT so products cannot overflow;
  *   - results are re-checked for finiteness before being returned.
  *
+ * Models that involve chance (loss, completion, winning a race, a sale
+ * happening) report EXPECTED values: total_cost and expected_proceeds are
+ * probability-weighted, so a single real trade will land above or below them.
+ *
  * Costs are modelled explicitly so a "profitable-looking" spread that fees,
  * slippage, storage and time would consume is reported honestly as a loss.
  *
@@ -38,6 +42,7 @@ extern "C" {
 
 #define TM_MAX_AMOUNT 1e12     /* cap on prices, quantities and cost totals */
 #define TM_MAX_OUTCOMES 16     /* cap on refurbishment outcome branches     */
+#define TM_MAX_LOTS 256        /* cap on items in one aggregation           */
 #define TM_PROB_TOLERANCE 1e-6 /* outcome probabilities must sum to 1 +/- this */
 #define TM_MAX_HOLD_DAYS 36500.0
 
@@ -121,6 +126,106 @@ typedef struct {
 tm_status tm_refurbishment(const tm_refurb_in *in,
                            const tm_outcome *outcomes, size_t n_outcomes,
                            tm_result *out);
+
+/* ---- 4. Regional / geofenced arbitrage --------------------------------- */
+/*
+ * Buy where an asset is cheap, move it, sell where it is dear. The edge is
+ * spatial; the friction is logistics. For tokens the "move" may be a capital-
+ * control or conversion barrier (a regional premium); for furniture it is a
+ * truck. Either way the move can fail or damage the goods.
+ */
+typedef struct {
+    double buy_price;            /* per unit, origin region               (> 0) */
+    double sell_price;           /* per unit, destination region          (> 0) */
+    double quantity;             /* units                                 (> 0) */
+    double buy_fee_rate;         /* fraction of buy notional          [0, 1)    */
+    double sell_fee_rate;        /* fraction of sell notional         [0, 1)    */
+    double transport_cost_per_unit; /* freight / conversion per unit      (>= 0) */
+    double fixed_costs;          /* total                                 (>= 0) */
+    double holding_cost_per_day; /* total per day in transit              (>= 0) */
+    double transit_days;         /* days capital is tied up      [0, MAX_HOLD]  */
+    double loss_probability;     /* P(damaged / blocked / not completed) [0, 1] */
+    double salvage_rate;         /* if lost: fraction of buy value
+                                    recovered                           [0, 1] */
+} tm_regional_in;
+
+tm_status tm_regional(const tm_regional_in *in, tm_result *out);
+
+/* Regional premium = sell_price / buy_price - 1 (e.g. 0.05 = 5% premium). */
+tm_status tm_regional_premium(double buy_price, double sell_price,
+                              double *out_premium);
+
+/* ---- 5. Fragmented supply aggregation ----------------------------------- */
+/*
+ * Buy many small items from many sellers, assemble a cohesive set, sell the
+ * set at a premium. The risk is that the set never completes; unsold pieces
+ * then fetch only their piecemeal value.
+ */
+typedef struct {
+    double set_value;            /* sale value of the COMPLETE set        (>= 0) */
+    double piecemeal_value_per_item; /* value of one item sold alone      (>= 0) */
+    double completion_probability;   /* P(the set is completed)          [0, 1] */
+    double per_item_cost;        /* sorting, cleaning, travel, per item   (>= 0) */
+    double fixed_costs;          /* total                                 (>= 0) */
+    double sell_fee_rate;        /* fraction of sale value            [0, 1)    */
+    double holding_cost_per_day; /* storage, total per day                (>= 0) */
+    double hold_days;            /* the "patience" time          [0, MAX_HOLD]  */
+} tm_aggregation_in;
+
+/* lot_prices: acquisition price of each item, 1..TM_MAX_LOTS entries (> 0). */
+tm_status tm_aggregation(const tm_aggregation_in *in,
+                         const double *lot_prices, size_t n_lots,
+                         tm_result *out);
+
+/* ---- 6. Informational asymmetry ----------------------------------------- */
+/*
+ * A listing is mislabeled, mispriced or misunderstood. One evaluation is one
+ * CANDIDATE listing: you pay to look at it (attempt_cost) every time, you only
+ * buy it if you win the race against other buyers (win_probability), and what
+ * you bought is only valuable if your read of it was right
+ * (genuine_probability).
+ */
+typedef struct {
+    double listed_price;         /* what the seller asks                  (> 0) */
+    double genuine_value;        /* sale value if your read is right      (>= 0) */
+    double fallback_value;       /* sale value if your read is wrong      (>= 0) */
+    double genuine_probability;  /* P(your read is right)             [0, 1]    */
+    double win_probability;      /* P(you get it before competitors)  [0, 1]    */
+    double buy_fee_rate;         /* fraction of listed price          [0, 1)    */
+    double sell_fee_rate;        /* fraction of sale value            [0, 1)    */
+    double verification_cost;    /* authentication / inspection, if won   (>= 0) */
+    double attempt_cost;         /* scanning / OCR / tooling per candidate (>= 0) */
+    double holding_cost_per_day; /* total per day                         (>= 0) */
+    double hold_days;            /* days capital is tied up      [0, MAX_HOLD]  */
+} tm_asymmetry_in;
+
+tm_status tm_asymmetry(const tm_asymmetry_in *in, tm_result *out);
+
+/* Apparent discount = 1 - listed_price / estimated_value (needs both > 0). */
+tm_status tm_mispricing(double listed_price, double estimated_value,
+                        double *out_discount);
+
+/* ---- 7. Consignment / zero inventory ------------------------------------ */
+/*
+ * Match buyers and sellers without buying or storing anything: earn a
+ * commission when it sells. Almost no capital is tied up, so "return on cost"
+ * can look enormous -- the real inputs are your TIME (labor_cost) and the
+ * counterparty risk (chargeback / fraud), which are modelled explicitly.
+ */
+typedef struct {
+    double sale_price;           /* expected sale price of the item       (> 0) */
+    double commission_rate;      /* your share of the sale price      [0, 1)    */
+    double sale_probability;     /* P(it sells)                       [0, 1]    */
+    double platform_fee_rate;    /* fees YOU bear, fraction of sale   [0, 1)    */
+    double labor_cost;           /* staging, photos, listing, messaging;
+                                    value your time                     (>= 0) */
+    double fixed_costs;          /* total                                 (>= 0) */
+    double chargeback_probability;/* P(sale reversed / defrauded | sold) [0, 1] */
+    double chargeback_loss;      /* amount you lose if it is              (>= 0) */
+    double days_to_sell;         /* days until it sells          [0, MAX_HOLD]  */
+} tm_consignment_in;
+
+tm_status tm_consignment(const tm_consignment_in *in, tm_result *out);
 
 /* ---- Bridge to the advantage core -------------------------------------- */
 /*

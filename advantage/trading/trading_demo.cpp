@@ -89,6 +89,73 @@ tm_refurb_in refurb(double acquire, double qty, double perUnit, double fixed,
     return in;
 }
 
+tm_regional_in reg(double buy, double sell, double qty, double buyFee,
+                   double sellFee, double perUnitTransport, double fixed,
+                   double holdCost, double days, double lossP, double salvage) {
+    tm_regional_in in{};
+    in.buy_price = buy;
+    in.sell_price = sell;
+    in.quantity = qty;
+    in.buy_fee_rate = buyFee;
+    in.sell_fee_rate = sellFee;
+    in.transport_cost_per_unit = perUnitTransport;
+    in.fixed_costs = fixed;
+    in.holding_cost_per_day = holdCost;
+    in.transit_days = days;
+    in.loss_probability = lossP;
+    in.salvage_rate = salvage;
+    return in;
+}
+
+tm_aggregation_in agg(double setValue, double piecemeal, double completeP,
+                      double perItem, double fixed, double sellFee,
+                      double holdCost, double days) {
+    tm_aggregation_in in{};
+    in.set_value = setValue;
+    in.piecemeal_value_per_item = piecemeal;
+    in.completion_probability = completeP;
+    in.per_item_cost = perItem;
+    in.fixed_costs = fixed;
+    in.sell_fee_rate = sellFee;
+    in.holding_cost_per_day = holdCost;
+    in.hold_days = days;
+    return in;
+}
+
+tm_asymmetry_in asy(double listed, double genuine, double fallback,
+                    double genuineP, double winP, double buyFee, double sellFee,
+                    double verify, double attempt, double holdCost, double days) {
+    tm_asymmetry_in in{};
+    in.listed_price = listed;
+    in.genuine_value = genuine;
+    in.fallback_value = fallback;
+    in.genuine_probability = genuineP;
+    in.win_probability = winP;
+    in.buy_fee_rate = buyFee;
+    in.sell_fee_rate = sellFee;
+    in.verification_cost = verify;
+    in.attempt_cost = attempt;
+    in.holding_cost_per_day = holdCost;
+    in.hold_days = days;
+    return in;
+}
+
+tm_consignment_in con(double sale, double commission, double saleP,
+                      double platformFee, double labor, double fixed,
+                      double cbP, double cbLoss, double days) {
+    tm_consignment_in in{};
+    in.sale_price = sale;
+    in.commission_rate = commission;
+    in.sale_probability = saleP;
+    in.platform_fee_rate = platformFee;
+    in.labor_cost = labor;
+    in.fixed_costs = fixed;
+    in.chargeback_probability = cbP;
+    in.chargeback_loss = cbLoss;
+    in.days_to_sell = days;
+    return in;
+}
+
 void printProfiles() {
     std::cout << "== Strategic trade-offs ==\n";
     for (const auto& p : profiles()) {
@@ -97,6 +164,14 @@ void printProfiles() {
                   << " | liquidity: " << p.liquidity
                   << " | speed: " << p.executionSpeed << "\n"
                   << "    major risks: " << p.majorRisks << "\n";
+    }
+    std::cout << "\n== Advanced model comparison ==\n";
+    for (const auto& m : advancedModelMatrix()) {
+        std::cout << "  " << m.model << "\n"
+                  << "    leverage: " << m.operationalLeverage
+                  << " | scalability: " << m.scalability << "\n"
+                  << "    infrastructure: " << m.infrastructure
+                  << " | friction: " << m.primaryFriction << "\n";
     }
     std::cout << "\n";
 }
@@ -159,6 +234,77 @@ int main() {
         {"Budget the not-restorable branch up front.",
          "Labour is usually the largest unmeasured cost."}));
 
+    store.sources.push_back(makeSource(
+        "regional-digital", "Regional Arbitrage: Country Premium (tokens)",
+        "Buy a token where it is cheap; sell on a country-exclusive venue "
+        "where local demand or capital controls hold the price higher.",
+        {{"The premium persists long enough to cross the barrier.", true},
+         {"Moving funds across the border is lawful for you and permitted "
+          "by both venues.", false},
+         {"Conversion and withdrawal costs are known.", true}},
+        {"A premium that cannot be crossed is a price, not an opportunity.",
+         "Check the legality of the route before the arithmetic."}));
+    store.sources.push_back(makeSource(
+        "regional-physical", "Regional Arbitrage: Estate Sale -> Urban Resale",
+        "Source premium furniture where supply is plentiful; sell where it is "
+        "scarce and dense demand pays for pre-assembled quality.",
+        {{"The destination market pays the assumed price.", true},
+         {"Pieces survive transport without material damage.", true},
+         {"Truck, labour and fuel costs are as estimated.", true}},
+        {"Logistics, not price, decides the margin.",
+         "Price the damaged-in-transit branch before you load the truck."}));
+    store.sources.push_back(makeSource(
+        "aggregation-coins", "Supply Aggregation: Sorted Coin Sets",
+        "Buy small unsorted lots, sort by mint mark or era, sell verified sets.",
+        {{"A matching set can actually be assembled from available lots.", true},
+         {"Sorting and attribution are done correctly.", true},
+         {"Lots are authentic and lawfully sold.", false}},
+        {"The premium is paid for patience and completeness.",
+         "An incomplete set sells for little more than its parts."}));
+    store.sources.push_back(makeSource(
+        "aggregation-furniture", "Supply Aggregation: Matched Furniture Sets",
+        "Collect matching pieces one by one from different sellers into a "
+        "complete set for designers who pay a premium.",
+        {{"Matching pieces keep appearing at acceptable prices.", true},
+         {"Designers will pay the assumed premium for a complete set.", true},
+         {"Storage stays cheap while the set is assembled.", true}},
+        {"Buy toward the set you can finish, not the piece that is cheapest.",
+         "Storage days are the cost of patience."}));
+    store.sources.push_back(makeSource(
+        "asymmetry-digital", "Informational Asymmetry: Mispriced Listings (tokens)",
+        "Find listings mispriced by error or panic, faster than other buyers.",
+        {{"Your read of the mispricing is more often right than wrong.", false},
+         {"You can win the race against faster, better-funded bots.", false},
+         {"The listing is real and the asset is what it claims to be.", true}},
+        {"Count the candidates you looked at and lost, not just the one you won.",
+         "Most apparent bargains are noise or traps."}));
+    store.sources.push_back(makeSource(
+        "asymmetry-physical", "Informational Asymmetry: Mislabeled Furniture",
+        "Spot listings whose title hides what the piece really is.",
+        {{"You can recognise the real thing from photos and a description.", true},
+         {"Few other buyers are looking at the same weak listings.", true},
+         {"Authentication is available before you resell.", true}},
+        {"A typo is only an edge until others search for it too.",
+         "Authenticate before you pay the premium price in your head."}));
+    store.sources.push_back(makeSource(
+        "consignment-digital", "Consignment: Local OTC / Escrow Desk",
+        "Match local cash buyers with digital-asset holders for a fee, holding "
+        "no inventory of your own.",
+        {{"Escrow is sound and funds cannot be reversed after release.", true},
+         {"Counterparties are who they say they are.", false},
+         {"The service is lawful where you operate.", false}},
+        {"Your product is trust; price it as a risk, not a convenience.",
+         "One reversed transfer can erase many commissions."}));
+    store.sources.push_back(makeSource(
+        "consignment-physical", "Consignment: Staging and Sales for Movers",
+        "Photograph, list and negotiate for people clearing a home; split the "
+        "proceeds on pickup; never store the goods.",
+        {{"Owners keep their word on price, pickup and payment.", true},
+         {"Your listings and profile convert at the assumed rate.", true},
+         {"Disputes after pickup are rare and bounded.", true}},
+        {"Your capital is your time; value it.",
+         "Client acquisition, not arithmetic, is the usual limit."}));
+
     // ---- illustrative scenarios -------------------------------------------
     // Arbitrage inputs: buy, sell, qty, buyFee, sellFee, slip, fixed, holdCost/day, days
     // Market making:    bid, ask, qty, fee, fillProb, unwindLoss, fixed, holdCost/day, days
@@ -176,6 +322,12 @@ int main() {
                      tm_refurb_in in, std::vector<tm_outcome> out) {
         scenarios.push_back(
             {id, label, [in, out] { return refurbishment(in, out); }});
+    };
+
+    // Generic adder for any model: the caller has already evaluated it.
+    auto addAny = [&](const std::string& id, const std::string& label,
+                      Checked<tm_result> r) {
+        scenarios.push_back({id, label, [r] { return r; }});
     };
 
     addArb("arbitrage-digital", "gap 1.2%",  arb(1.000, 1.012, 5000, .003, .001, .001, 8, 0, 0.01));
@@ -211,6 +363,44 @@ int main() {
           {{.4, 600}, {.4, 300}, {.2, 100}});
     addRf("refurbishment-furniture", "cheap find", refurb(100, 1, 80, 30, .10, .5, 21),
           {{.5, 550}, {.35, 300}, {.15, 100}});
+
+    // Regional:    buy, sell, qty, buyFee, sellFee, transport/unit, fixed, holdCost/day, days, lossP, salvage
+    addAny("regional-digital", "premium 5%", regional(reg(1.000, 1.050, 10000, .001, .0025, .002, 15, 0, 0.1, .03, .95)));
+    addAny("regional-digital", "premium 2%", regional(reg(1.000, 1.020, 10000, .001, .0025, .002, 15, 0, 0.1, .03, .95)));
+    addAny("regional-digital", "premium faded to 0.5%", regional(reg(1.000, 1.005, 10000, .001, .0025, .002, 15, 0, 0.1, .03, .95)));
+    addAny("regional-digital", "5% but 10% blocked", regional(reg(1.000, 1.050, 10000, .001, .0025, .002, 15, 0, 0.1, .10, .95)));
+
+    addAny("regional-physical", "300 -> 700 x4", regional(reg(300, 700, 4, 0, .10, 60, 120, 2, 3, .05, .5)));
+    addAny("regional-physical", "300 -> 520 x4", regional(reg(300, 520, 4, 0, .10, 60, 120, 2, 3, .05, .5)));
+    addAny("regional-physical", "300 -> 450 x4", regional(reg(300, 450, 4, 0, .10, 60, 120, 2, 3, .05, .5)));
+    addAny("regional-physical", "300 -> 700, damage 15%", regional(reg(300, 700, 4, 0, .10, 60, 120, 2, 3, .15, .5)));
+
+    // Aggregation: setValue, piecemeal/item, completeP, perItem, fixed, sellFee, holdCost/day, days (+ lot prices)
+    const std::vector<double> coinLots = {45, 60, 38, 52, 70, 41, 55, 49};
+    const std::vector<double> chairLots = {85, 110, 95, 70, 120, 90};
+    addAny("aggregation-coins", "set 1100, 60% completes", aggregation(agg(1100, 60, .60, 12, 40, .12, 1, 60), coinLots));
+    addAny("aggregation-coins", "set 1100, 30% completes", aggregation(agg(1100, 60, .30, 12, 40, .12, 1, 60), coinLots));
+    addAny("aggregation-coins", "set 700, 60% completes", aggregation(agg(700, 60, .60, 12, 40, .12, 1, 60), coinLots));
+    addAny("aggregation-furniture", "set 2400, 70% completes", aggregation(agg(2400, 140, .70, 15, 60, .10, .5, 45), chairLots));
+    addAny("aggregation-furniture", "set 2400, 40% completes", aggregation(agg(2400, 140, .40, 15, 60, .10, .5, 45), chairLots));
+    addAny("aggregation-furniture", "set 1400, 70% completes", aggregation(agg(1400, 140, .70, 15, 60, .10, .5, 45), chairLots));
+
+    // Asymmetry (per candidate): listed, genuine, fallback, genuineP, winP, buyFee, sellFee, verify, attempt, holdCost/day, days
+    addAny("asymmetry-digital", "bots win most races", asymmetry(asy(2000, 3500, 1500, .15, .10, .003, .002, 5, .5, 0, 0.01)));
+    addAny("asymmetry-digital", "better read, faster", asymmetry(asy(2000, 3500, 1500, .40, .30, .003, .002, 5, .5, 0, 0.01)));
+    addAny("asymmetry-digital", "middling edge", asymmetry(asy(2000, 3500, 1500, .25, .20, .003, .002, 5, .5, 0, 0.01)));
+    addAny("asymmetry-physical", "'old wooden table'", asymmetry(asy(60, 900, 70, .05, .80, 0, .13, 10, .2, .5, 20)));
+    addAny("asymmetry-physical", "same, 2% are genuine", asymmetry(asy(60, 900, 70, .02, .80, 0, .13, 10, .2, .5, 20)));
+    addAny("asymmetry-physical", "'midcenury' typo", asymmetry(asy(120, 1200, 150, .25, .50, 0, .13, 10, .2, .5, 20)));
+
+    // Consignment: sale, commission, saleP, platformFee, labor, fixed, chargebackP, chargebackLoss, days
+    addAny("consignment-digital", "1%, weak escrow", consignment(con(5000, .01, .90, 0, 15, 2, .02, 5000, 0.1)));
+    addAny("consignment-digital", "1%, sound escrow", consignment(con(5000, .01, .90, 0, 15, 2, .002, 5000, 0.1)));
+    addAny("consignment-digital", "2%, sound escrow", consignment(con(5000, .02, .90, 0, 15, 2, .002, 5000, 0.1)));
+    addAny("consignment-digital", "2%, weak escrow", consignment(con(5000, .02, .90, 0, 15, 2, .02, 5000, 0.1)));
+    addAny("consignment-physical", "1200 sale, 75% sells", consignment(con(1200, .35, .75, .10, 90, 10, .03, 200, 21)));
+    addAny("consignment-physical", "1200 sale, 50% sells", consignment(con(1200, .35, .50, .10, 90, 10, .03, 200, 21)));
+    addAny("consignment-physical", "600 sale, 75% sells", consignment(con(600, .35, .75, .10, 90, 10, .03, 200, 21)));
 
     // ---- evaluate, record evidence ----------------------------------------
     std::cout << "== Scenario evaluations (ILLUSTRATIVE inputs) ==\n"

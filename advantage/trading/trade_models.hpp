@@ -75,6 +75,41 @@ inline Checked<tm_result> refurbishment(const tm_refurb_in& in,
         tm_refurbishment(&in, outcomes.data(), outcomes.size(), &r), r);
 }
 
+inline Checked<tm_result> regional(const tm_regional_in& in) {
+    tm_result r{};
+    return detail::make(tm_regional(&in, &r), r);
+}
+
+// Regional premium = sell/buy - 1 (0.05 = 5%).
+inline Checked<double> regionalPremium(double buyPrice, double sellPrice) {
+    double p = 0.0;
+    return detail::make(tm_regional_premium(buyPrice, sellPrice, &p), p);
+}
+
+inline Checked<tm_result> aggregation(const tm_aggregation_in& in,
+                                      const std::vector<double>& lotPrices) {
+    tm_result r{};
+    return detail::make(
+        tm_aggregation(&in, lotPrices.data(), lotPrices.size(), &r), r);
+}
+
+// One candidate listing (see trade_models.h for the semantics).
+inline Checked<tm_result> asymmetry(const tm_asymmetry_in& in) {
+    tm_result r{};
+    return detail::make(tm_asymmetry(&in, &r), r);
+}
+
+// Apparent discount = 1 - listed/estimated (0.6 = listed 60% below estimate).
+inline Checked<double> mispricing(double listedPrice, double estimatedValue) {
+    double d = 0.0;
+    return detail::make(tm_mispricing(listedPrice, estimatedValue, &d), d);
+}
+
+inline Checked<tm_result> consignment(const tm_consignment_in& in) {
+    tm_result r{};
+    return detail::make(tm_consignment(&in, &r), r);
+}
+
 // Advantage of an evaluated trade after the opportunity cost of its capital.
 inline Checked<double> advantageOf(const tm_result& r, double costOfCapital) {
     double a = 0.0;
@@ -113,6 +148,21 @@ struct AssetProfile {
 // The two rows of the cross-asset comparison. Descriptive, not numeric: use
 // them to choose realistic inputs (hold_days, holding costs, fill odds).
 const std::vector<AssetProfile>& profiles();
+
+// ---- the comparison matrix for the four advanced models, as data -----------
+
+struct ModelProfile {
+    const char* model;
+    const char* operationalLeverage;
+    const char* scalability;
+    const char* infrastructure;
+    const char* primaryFriction;
+};
+
+// Descriptive, not numeric. The infrastructure column names what each model
+// needs *conceptually*; this library supplies only the arithmetic, not the
+// scrapers, OCR, inventory system or escrow platform.
+const std::vector<ModelProfile>& advancedModelMatrix();
 
 }  // namespace trading
 }  // namespace advantage
