@@ -145,8 +145,18 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; guidoc</div>
 <h1>Package <code>guidoc</code></h1>
-<div class="lead">This package contains <strong>8</strong> source unit(s) defining <strong>9</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>11</strong> source unit(s) defining <strong>12</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
+<h2 class="section" data-u="guidoc">guidoc <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/guidoc/guidoc.sleela)</span></h2>
+<div data-u="guidoc guidoc">
+<h3 id="GuiDoc">GuiDoc <span class="pill">class</span></h3>
+<p class="desc">The launcher of the document GUI. It builds the GUI from its spec, runs the readiness gate, optionally opens the file named by the environment variable SLEELA_GUIDOC_OPEN, prints the screen as a text outline and says whether the GUI is ready. With SLEELA_GUIDOC_PLAN=1 it also prints the mount plan a windowing host consumes. On a host with no display it stops there; a windowing host drives the same SLGuiDocApp through click(), type() and accelerate(). Output ends with GUIDOC READY or GUIDOC NOT READY (SLeeLa 3.0 main cannot set an exit status, so scripts match that line).</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="guidoc-demo">guidoc-demo <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/guidoc/guidoc-demo.sleela)</span></h2>
 <div data-u="guidoc-demo guidocdemo">
 <h3 id="GuiDocDemo">GuiDocDemo <span class="pill">class</span></h3>
@@ -168,6 +178,8 @@
 <tr><td><code>en</code></td><td><span class="sig">boolean en(String id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>cur</code></td><td><span class="sig">SLGuiDocTab cur()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>menuClick</code></td><td><span class="sig">int menuClick(String menu, String item)</span></td><td class="desc">Click a menu then one of its items, the way a user would.</td></tr>
+<tr><td><code>menuClickOn</code></td><td><span class="sig">int menuClickOn(SLGuiDocApp a, String menu, String item)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>outlineHas</code></td><td><span class="sig">boolean outlineHas(String line)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>slurp</code></td><td><span class="sig">String slurp(String path)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>dump</code></td><td><span class="sig">void dump(String path, String data)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -197,10 +209,20 @@
 <tr><td><code>openMenu</code></td><td><span class="sig">String openMenu</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>executed</code></td><td><span class="sig">int executed</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>refusedCommands</code></td><td><span class="sig">int refusedCommands</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ready</code></td><td><span class="sig">SLGuiDocReady ready</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cmdRuns</code></td><td><span class="sig">int[] cmdRuns</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>itemClicks</code></td><td><span class="sig">int[] itemClicks</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
 <tr><td><code>configure</code></td><td><span class="sig">boolean configure()</span></td><td class="desc">Build everything from the spec. False if the spec or the white theme is inconsistent (nothing is half-built).</td></tr>
+<tr><td><code>lifecycle</code></td><td><span class="sig">SLGuiDocReady lifecycle()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isReady</code></td><td><span class="sig">boolean isReady()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isCertified</code></td><td><span class="sig">boolean isCertified()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>whenReady</code></td><td><span class="sig">boolean whenReady(String subscriber)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>takeReady</code></td><td><span class="sig">boolean takeReady(String subscriber)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectedNodes</code></td><td><span class="sig">int expectedNodes()</span></td><td class="desc">The node count the spec implies: window, menubar, menus, items, tab bar, tabs, new-tab button, editor, two nodes per row, entry, three status labels and the five dialog nodes.</td></tr>
+<tr><td><code>start</code></td><td><span class="sig">boolean start()</span></td><td class="desc">Run the self-checks. Returns true when the GUI is READY. Can be retried after a failure.</td></tr>
 <tr><td><code>specification</code></td><td><span class="sig">SLGuiDocSpec specification()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>look</code></td><td><span class="sig">SLGuiDocWhite look()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>widgets</code></td><td><span class="sig">SLGuiDocView widgets()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -232,6 +254,14 @@
 <tr><td><code>handle</code></td><td><span class="sig">void handle(String command, int arg)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>accelerate</code></td><td><span class="sig">boolean accelerate(String accel)</span></td><td class="desc">A keyboard accelerator such as Ctrl+S.</td></tr>
 <tr><td><code>execute</code></td><td><span class="sig">boolean execute(String command)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>dispatch</code></td><td><span class="sig">int dispatch(String command, boolean run)</span></td><td class="desc">The one command table. run=false only asks whether the command has a handler. Returns 1 ran and succeeded, 0 ran and was refused, -1 unknown.</td></tr>
+<tr><td><code>flag</code></td><td><span class="sig">int flag(boolean b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>commandRunCount</code></td><td><span class="sig">int commandRunCount(String command)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>itemClickCount</code></td><td><span class="sig">int itemClickCount(String itemId)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>commandsCovered</code></td><td><span class="sig">int commandsCovered()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>itemsCovered</code></td><td><span class="sig">int itemsCovered()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>coverageComplete</code></td><td><span class="sig">boolean coverageComplete()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>printCoverage</code></td><td><span class="sig">void printCoverage()</span></td><td class="desc">Machine-readable coverage lines, one per command and per item.</td></tr>
 <tr><td><code>addTab</code></td><td><span class="sig">boolean addTab(SLGuiDocTab t)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>cmdNew</code></td><td><span class="sig">boolean cmdNew()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>cmdOpen</code></td><td><span class="sig">boolean cmdOpen()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -269,6 +299,7 @@
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
 <tr><td><code>configure</code></td><td><span class="sig">void configure(String sidecarSuffix, int byteLimit)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>getLastCode</code></td><td><span class="sig">int getLastCode()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getSidecarSuffixValue</code></td><td><span class="sig">String getSidecarSuffixValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>sidecarDir</code></td><td><span class="sig">String sidecarDir(String path)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>pad4</code></td><td><span class="sig">String pad4(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>lineFile</code></td><td><span class="sig">String lineFile(String path, int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -279,6 +310,19 @@
 <tr><td><code>save</code></td><td><span class="sig">int save(String path, SLObserverDocument doc)</span></td><td class="desc">Save the document. The plain-text file is replaced atomically (temporary file then rename). A stale or missing sidecar is harmless: load will simply open the file unsplit.</td></tr>
 <tr><td><code>load</code></td><td><span class="sig">int load(String path, SLObserverDocument into)</span></td><td class="desc">Load into an EMPTY document. 0 = exact lines, 10 = opened unsplit.</td></tr>
 <tr><td><code>forget</code></td><td><span class="sig">void forget(String path)</span></td><td class="desc">Remove a saved file and its sidecar (used by tests and by a host cleanup).</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slguidochost">SLGuiDocHost <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/guidoc/SLGuiDocHost.sleela)</span></h2>
+<div data-u="slguidochost slguidochost">
+<h3 id="SLGuiDocHost">SLGuiDocHost <span class="pill">class</span></h3>
+<p class="desc">Defines SLGuiDocHost — the host side of the document GUI: how a host sees the screen. outline() renders the visible GUI as plain text lines (the terminal and headless view: window, menus, tabs, editor rows, entry, status, dialog), and mountPlan() lists every visible node in tree order with its tag, parent, background and foreground colour tokens, enabled flag and text, which is exactly what a windowing host needs to mount real widgets. Every node carries its white role, and colours are resolved by role through SLGuiDocWhite, so no style string is ever parsed.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>emit</code></td><td><span class="sig">int emit(String[] out, int cap, int n, String line)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>outline</code></td><td><span class="sig">int outline(SLGuiDocApp app, String[] out, int cap)</span></td><td class="desc">The visible GUI as text. Returns the number of lines written.</td></tr>
+<tr><td><code>mountPlan</code></td><td><span class="sig">int mountPlan(SLGuiDocApp app, String[] out, int cap)</span></td><td class="desc">Every visible node in tree order, as a mount instruction for a host.</td></tr>
+<tr><td><code>visibleNodes</code></td><td><span class="sig">int visibleNodes(SLGuiDocApp app)</span></td><td class="desc">How many nodes mountPlan() would list (visible nodes).</td></tr>
 </table>
 </div>
 <h2 class="section" data-u="slguidoclistener">SLGuiDocListener <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/guidoc/SLGuiDocListener.sleela)</span></h2>
@@ -313,10 +357,52 @@
 <tr><td><code>noteCount</code></td><td><span class="sig">int noteCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>pump</code></td><td><span class="sig">int pump()</span></td><td class="desc">Read the mailbox. Returns the number of messages handled.</td></tr>
 <tr><td><code>takeRepaint</code></td><td><span class="sig">boolean takeRepaint()</span></td><td class="desc">Take-the-latch: true once per batch of changes.</td></tr>
+<tr><td><code>syncTo</code></td><td><span class="sig">void syncTo(int revision)</span></td><td class="desc">After a load fills the document directly, bring the listener level with its revision (no change message was sent for the load).</td></tr>
 <tr><td><code>hasExternal</code></td><td><span class="sig">boolean hasExternal()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>acknowledgeExternal</code></td><td><span class="sig">void acknowledgeExternal()</span></td><td class="desc">Forget the external flag (the user has seen it).</td></tr>
+<tr><td><code>statusRole</code></td><td><span class="sig">String statusRole()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>statusStyle</code></td><td><span class="sig">String statusStyle()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>statusText</code></td><td><span class="sig">String statusText()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slguidocready">SLGuiDocReady <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/guidoc/SLGuiDocReady.sleela)</span></h2>
+<div data-u="slguidocready slguidocready">
+<h3 id="SLGuiDocReady">SLGuiDocReady <span class="pill">class</span></h3>
+<p class="desc">Defines SLGuiDocReady — the readiness gate and ready lifecycle of the document GUI. Like a document-ready event, the GUI is CREATED, then CHECKING while named self-checks run, then READY (every check passed) or FAILED (the first failure is kept). Nothing may act on the GUI before it is ready. Subscribers register by name with whenReady() and take a one-shot latch once the GUI is ready; a subscriber that registers late still gets its latch. A failed gate never fires a subscriber, and begin() can retry.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>state</code></td><td><span class="sig">int state</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>names</code></td><td><span class="sig">String[] names</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>passedFlag</code></td><td><span class="sig">int[] passedFlag</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>details</code></td><td><span class="sig">String[] details</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failures</code></td><td><span class="sig">int failures</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>firstFailure</code></td><td><span class="sig">String firstFailure</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>subscribers</code></td><td><span class="sig">String[] subscribers</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>latched</code></td><td><span class="sig">int[] latched</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>subscriberCount</code></td><td><span class="sig">int subscriberCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getState</code></td><td><span class="sig">int getState()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isReady</code></td><td><span class="sig">boolean isReady()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hasFailed</code></td><td><span class="sig">boolean hasFailed()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkTotal</code></td><td><span class="sig">int checkTotal()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failureTotal</code></td><td><span class="sig">int failureTotal()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>firstFailureText</code></td><td><span class="sig">String firstFailureText()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkName</code></td><td><span class="sig">String checkName(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkPassed</code></td><td><span class="sig">boolean checkPassed(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkDetail</code></td><td><span class="sig">String checkDetail(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>stateName</code></td><td><span class="sig">String stateName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>begin</code></td><td><span class="sig">boolean begin()</span></td><td class="desc">Start (or restart) the checks. Subscribers that already fired stay fired.</td></tr>
+<tr><td><code>noteCheck</code></td><td><span class="sig">boolean noteCheck(String name, boolean ok, String detail)</span></td><td class="desc">Note one named check. Only valid while checking. A 25th check is a failure: an overflowing gate is not trusted.</td></tr>
+<tr><td><code>finish</code></td><td><span class="sig">boolean finish()</span></td><td class="desc">Close the gate: READY only if at least one check ran and none failed.</td></tr>
+<tr><td><code>subscriberIndex</code></td><td><span class="sig">int subscriberIndex(String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>whenReady</code></td><td><span class="sig">boolean whenReady(String name)</span></td><td class="desc">Register for the ready event. Late subscribers are latched at once.</td></tr>
+<tr><td><code>takeReady</code></td><td><span class="sig">boolean takeReady(String name)</span></td><td class="desc">Take-the-latch: true once per subscriber, and only once the GUI is ready.</td></tr>
+<tr><td><code>subscriberTotal</code></td><td><span class="sig">int subscriberTotal()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="slguidocspec">SLGuiDocSpec <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/guidoc/SLGuiDocSpec.sleela)</span></h2>
@@ -339,6 +425,8 @@
 <tr><td><code>maxBytes</code></td><td><span class="sig">int maxBytes</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>listenerPort</code></td><td><span class="sig">String listenerPort</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>flagExternal</code></td><td><span class="sig">int flagExternal</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>readiness</code></td><td><span class="sig">String readiness</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>release</code></td><td><span class="sig">String release</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>mId</code></td><td><span class="sig">String[] mId</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>mLabel</code></td><td><span class="sig">String[] mLabel</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>mCount</code></td><td><span class="sig">int mCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -367,6 +455,10 @@
 <tr><td><code>setEditor</code></td><td><span class="sig">boolean setEditor(int rows, int numbers, int readOnlyUnsplit)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>setFileDialog</code></td><td><span class="sig">boolean setFileDialog(String suffix, int lines, int bytes)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>setListener</code></td><td><span class="sig">boolean setListener(String port, int external)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setReadiness</code></td><td><span class="sig">boolean setReadiness(String status, String version)</span></td><td class="desc">The document is draft or ready. Ready is a claim that tools/ validate_gui_document.py --gate checks against the demo.</td></tr>
+<tr><td><code>getReadiness</code></td><td><span class="sig">String getReadiness()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getRelease</code></td><td><span class="sig">String getRelease()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isCertified</code></td><td><span class="sig">boolean isCertified()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>commandIndex</code></td><td><span class="sig">int commandIndex(String id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>menuIndex</code></td><td><span class="sig">int menuIndex(String id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>itemIndex</code></td><td><span class="sig">int itemIndex(String id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -450,7 +542,7 @@
 <h2 class="section" data-u="slguidocview">SLGuiDocView <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/guidoc/SLGuiDocView.sleela)</span></h2>
 <div data-u="slguidocview slguidocview">
 <h3 id="SLGuiDocView">SLGuiDocView <span class="pill">class</span></h3>
-<p class="desc">Defines SLGuiDocView — the widget tree of the document GUI: the window, menu bar and menus, tab strip, editor (line gutter and rows), entry, status line and file dialog. Each node has a tag, text, style, visibility, enabled flag and a command; pressing a node latches it and the controller takes the latch. It is self-contained on purpose: a host walks nodeCount() / idAt() / tagAt() / textAt() / styleAt() to mount it on real widgets, and calls press(id) when one is activated.</p>
+<p class="desc">Defines SLGuiDocView — the widget tree of the document GUI: the window, menu bar and menus, tab strip, editor (line gutter and rows), entry, status line and file dialog. Each node has a tag, text, white role (and so a style), visibility, enabled flag and a command; pressing a node latches it and the controller takes the latch. It is self-contained on purpose: a host walks nodeCount() / idAt() / tagAt() / textAt() / styleAt() to mount it on real widgets, and calls press(id) when one is activated.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
@@ -458,7 +550,7 @@
 <tr><td><code>ids</code></td><td><span class="sig">String[] ids</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>tags</code></td><td><span class="sig">String[] tags</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>texts</code></td><td><span class="sig">String[] texts</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>styles</code></td><td><span class="sig">String[] styles</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>roles</code></td><td><span class="sig">String[] roles</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>parents</code></td><td><span class="sig">String[] parents</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>cmds</code></td><td><span class="sig">String[] cmds</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>args</code></td><td><span class="sig">int[] args</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -466,14 +558,16 @@
 <tr><td><code>visible</code></td><td><span class="sig">int[] visible</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>latch</code></td><td><span class="sig">int[] latch</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>count</code></td><td><span class="sig">int count</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>white</code></td><td><span class="sig">SLGuiDocWhite white</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
-<tr><td><code>configure</code></td><td><span class="sig">void configure()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(SLGuiDocWhite look)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>nodeCount</code></td><td><span class="sig">int nodeCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>idAt</code></td><td><span class="sig">String idAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>tagAt</code></td><td><span class="sig">String tagAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>textAt</code></td><td><span class="sig">String textAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>roleAt</code></td><td><span class="sig">String roleAt(int i)</span></td><td class="desc">The white role of a node and the style string made from it.</td></tr>
 <tr><td><code>styleAt</code></td><td><span class="sig">String styleAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>parentAt</code></td><td><span class="sig">String parentAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>commandAt</code></td><td><span class="sig">String commandAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -481,11 +575,12 @@
 <tr><td><code>visibleAt</code></td><td><span class="sig">boolean visibleAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>enabledAt</code></td><td><span class="sig">boolean enabledAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>indexOf</code></td><td><span class="sig">int indexOf(String id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>add</code></td><td><span class="sig">boolean add(String parent, String tag, String id, String text, String style)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>add</code></td><td><span class="sig">boolean add(String parent, String tag, String id, String text, String role)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>bind</code></td><td><span class="sig">void bind(String id, String command, int arg)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>setText</code></td><td><span class="sig">void setText(String id, String t)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>textOf</code></td><td><span class="sig">String textOf(String id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>setStyle</code></td><td><span class="sig">void setStyle(String id, String s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setStyle</code></td><td><span class="sig">void setStyle(String id, String role)</span></td><td class="desc">Give a node a white role (its style follows).</td></tr>
+<tr><td><code>roleOf</code></td><td><span class="sig">String roleOf(String id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>styleOf</code></td><td><span class="sig">String styleOf(String id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>setVisible</code></td><td><span class="sig">void setVisible(String id, boolean on)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>isVisible</code></td><td><span class="sig">boolean isVisible(String id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -513,14 +608,18 @@
 <tr><td><code>isWhite</code></td><td><span class="sig">boolean isWhite()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>name</code></td><td><span class="sig">String name()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>accentColor</code></td><td><span class="sig">String accentColor()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>pair</code></td><td><span class="sig">String pair(String bg, String fg)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>style</code></td><td><span class="sig">String style(String role)</span></td><td class="desc">The style for a role. Unknown roles fall back to the plain surface.</td></tr>
+<tr><td><code>roleAt</code></td><td><span class="sig">String roleAt(int i)</span></td><td class="desc">Every role the GUI draws, in a fixed order.</td></tr>
+<tr><td><code>roleTotal</code></td><td><span class="sig">int roleTotal()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bgOf</code></td><td><span class="sig">String bgOf(String role)</span></td><td class="desc">The background colour token of a role. Unknown roles use the surface.</td></tr>
+<tr><td><code>fgOf</code></td><td><span class="sig">String fgOf(String role)</span></td><td class="desc">The foreground (ink) colour token of a role.</td></tr>
+<tr><td><code>style</code></td><td><span class="sig">String style(String role)</span></td><td class="desc">The style for a role: bg:#RRGGBB;fg:#RRGGBB;</td></tr>
+<tr><td><code>roleOfStyle</code></td><td><span class="sig">String roleOfStyle(String s)</span></td><td class="desc">The role a style string was made from, or &quot;&quot; if it is none of ours. A host uses this with bgOf and fgOf to get colour tokens without parsing text.</td></tr>
 </table>
 </div>
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-11 12:28 UTC.
+<code>/lib</code> tree on 2026-11-11 12:38 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
