@@ -93,6 +93,10 @@ class SLGuiDocSpec {
   String[] tActive;
   int tCount;
   String choiceEdits;
+  String[] kAccel;
+  String[] kScope;
+  String[] kAction;
+  int kCount;
   int refused;
 
   void configure() {
@@ -113,6 +117,10 @@ class SLGuiDocSpec {
     int q = 0;
     while (q < 8) { tItem[q] = ""; tKind[q] = ""; tActive[q] = ""; q = q + 1; }
     tCount = 0; choiceEdits = "keep";
+    kAccel = new String[8]; kScope = new String[8]; kAction = new String[8];
+    int kk = 0;
+    while (kk < 8) { kAccel[kk] = ""; kScope[kk] = ""; kAction[kk] = ""; kk = kk + 1; }
+    kCount = 0;
     mCount = 0; iCount = 0; cCount = 0; refused = 0;
     winTitle = ""; winTheme = ""; maxTabs = 0; dirtyMarker = ""; newTabTitle = "";
     editorRows = 0; lineNumbers = 0; readOnlyWhenUnsplit = 0; sidecarSuffix = "";
@@ -126,7 +134,8 @@ class SLGuiDocSpec {
   boolean knownTheme(String t) { return t == "white" || t == "blue" || t == "gray" || t == "black"; }
   boolean knownWhen(String w) {
     return w == "always" || w == "hasTab" || w == "dirty" || w == "editable"
-        || w == "selectionEditable" || w == "multipleTabs" || w == "admin" || w == "choiceReady";
+        || w == "selectionEditable" || w == "multipleTabs" || w == "admin" || w == "choiceReady"
+        || w == "hasLines";
   }
 
   boolean setWindow(String title, String theme) {
@@ -205,6 +214,35 @@ class SLGuiDocSpec {
     tCount = tCount + 1;
     return true;
   }
+  < Change whether a command asks before it discards unsaved work. >
+  boolean setConfirms(String command, boolean on) {
+    int i = commandIndex(command);
+    if (i < 0) { return no(); }
+    cConfirm[i] = on ? 1 : 0;
+    return true;
+  }
+
+  < A modal key: Enter or Esc, meaningful only while a dialog (ok, cancel) or >
+  < a menu (close) is open. >
+  boolean addKey(String accel, String scope, String action) {
+    if (accel != "Enter" && accel != "Esc") { return no(); }
+    boolean okPair = (scope == "dialog" && (action == "dialog.ok" || action == "dialog.cancel"))
+        || (scope == "menu" && action == "menu.close");
+    if (!okPair || kCount >= 8 || actionForKey(accel, scope) != "") { return no(); }
+    kAccel[kCount] = accel; kScope[kCount] = scope; kAction[kCount] = action;
+    kCount = kCount + 1;
+    return true;
+  }
+  int keyTotal() { return kCount; }
+  String keyAccelAt(int i) { return (i >= 0 && i < kCount) ? kAccel[i] : ""; }
+  String keyScopeAt(int i) { return (i >= 0 && i < kCount) ? kScope[i] : ""; }
+  String keyActionAt(int i) { return (i >= 0 && i < kCount) ? kAction[i] : ""; }
+  String actionForKey(String accel, String scope) {
+    int i = 0;
+    while (i < kCount) { if (kAccel[i] == accel && kScope[i] == scope) { return kAction[i]; } i = i + 1; }
+    return "";
+  }
+
   boolean setLock(String choiceEditsPolicy) {
     if (choiceEditsPolicy != "keep" && choiceEditsPolicy != "revert") { return no(); }
     choiceEdits = choiceEditsPolicy;
@@ -310,7 +348,10 @@ class SLGuiDocSpec {
     setEditor(16, 1, 1);
     setFileDialog(".lines", 64, 65536);
     setListener("gui-listener", 1);
-    setReadiness("ready", "1.1.0");
+    setReadiness("ready", "1.2.0");
+    addKey("Enter", "dialog", "dialog.ok");
+    addKey("Esc", "dialog", "dialog.cancel");
+    addKey("Esc", "menu", "menu.close");
     setLock("keep");
     addCommand("file.new", "cmdNew", 0, "blocked");
     addCommand("file.open", "cmdOpen", 0, "blocked");
@@ -321,8 +362,13 @@ class SLGuiDocSpec {
     addCommand("edit.insertLine", "cmdInsertLine", 0, "choice");
     addCommand("edit.replaceLine", "cmdReplaceLine", 0, "choice");
     addCommand("edit.deleteLine", "cmdDeleteLine", 0, "choice");
+    addCommand("edit.loadLine", "cmdLoadLine", 0, "choice");
     addCommand("view.nextTab", "cmdNextTab", 0, "allowed");
     addCommand("view.prevTab", "cmdPrevTab", 0, "allowed");
+    addCommand("view.selectPrev", "cmdSelectPrev", 0, "allowed");
+    addCommand("view.selectNext", "cmdSelectNext", 0, "allowed");
+    addCommand("view.pageUp", "cmdPageUp", 0, "allowed");
+    addCommand("view.pageDown", "cmdPageDown", 0, "allowed");
     addCommand("system.lock", "cmdLock", 0, "allowed");
     addCommand("system.choice", "cmdChoice", 0, "allowed");
     addCommand("help.about", "cmdAbout", 0, "allowed");
@@ -340,8 +386,13 @@ class SLGuiDocSpec {
     addItem("edit", "insertLine", "Insert Line", "edit.insertLine", "Ctrl+I", "editable");
     addItem("edit", "replaceLine", "Replace Line", "edit.replaceLine", "Ctrl+R", "selectionEditable");
     addItem("edit", "deleteLine", "Delete Line", "edit.deleteLine", "Ctrl+D", "selectionEditable");
+    addItem("edit", "loadLine", "Edit Line", "edit.loadLine", "F2", "selectionEditable");
     addItem("view", "nextTab", "Next Tab", "view.nextTab", "Ctrl+Tab", "multipleTabs");
     addItem("view", "prevTab", "Previous Tab", "view.prevTab", "Ctrl+Shift+Tab", "multipleTabs");
+    addItem("view", "prevLine", "Previous Line", "view.selectPrev", "Up", "hasLines");
+    addItem("view", "nextLine", "Next Line", "view.selectNext", "Down", "hasLines");
+    addItem("view", "pageUp", "Page Up", "view.pageUp", "PageUp", "hasLines");
+    addItem("view", "pageDown", "Page Down", "view.pageDown", "PageDown", "hasLines");
     addItem("system", "lock", "Lock System", "system.lock", "Ctrl+L", "admin");
     addItem("system", "choice", "Editor's Choice", "system.choice", "Ctrl+E", "choiceReady");
     addItem("help", "about", "About", "help.about", "F1", "always");

@@ -44,6 +44,7 @@
       editable          = a tab is open and its document can be edited.
       selectionEditable = editable and a line is selected.
       multipleTabs      = more than one tab is open.
+      hasLines          = a tab is open, editable, and has at least one line.
       admin             = the host has granted admin (there is no login in the GUI).
       choiceReady       = admin, the system is locked, and the active tab can take an
                           editor's choice session (or already has one, to end it).
@@ -55,6 +56,7 @@
       <xs:enumeration value="editable"/>
       <xs:enumeration value="selectionEditable"/>
       <xs:enumeration value="multipleTabs"/>
+      <xs:enumeration value="hasLines"/>
       <xs:enumeration value="admin"/>
       <xs:enumeration value="choiceReady"/>
     </xs:restriction>
@@ -89,6 +91,30 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="ModalKey">
+    <xs:annotation><xs:documentation>A key that only means something while a dialog or a menu is open.</xs:documentation></xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="Enter"/>
+      <xs:enumeration value="Esc"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="KeyScope">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="dialog"/>
+      <xs:enumeration value="menu"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="KeyAction">
+    <xs:annotation><xs:documentation>dialog.ok and dialog.cancel act on the open dialog; menu.close closes the open menu.</xs:documentation></xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="dialog.ok"/>
+      <xs:enumeration value="dialog.cancel"/>
+      <xs:enumeration value="menu.close"/>
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:simpleType name="ChoiceEdits">
     <xs:annotation><xs:documentation>
       keep   = edits made in an editor's choice session stay as ordinary edits.
@@ -105,7 +131,7 @@
   <xs:simpleType name="Accelerator">
     <xs:annotation><xs:documentation>Empty, or Ctrl+Key / Ctrl+Shift+Key / a function key.</xs:documentation></xs:annotation>
     <xs:restriction base="xs:string">
-      <xs:pattern value="|(Ctrl\+)(Shift\+)?[A-Za-z0-9]|(Ctrl\+)(Shift\+)?Tab|F([1-9]|1[0-2])"/>
+      <xs:pattern value="|(Ctrl\+)(Shift\+)?[A-Za-z0-9]|(Ctrl\+)(Shift\+)?Tab|F([1-9]|1[0-2])|Up|Down|PageUp|PageDown"/>
     </xs:restriction>
   </xs:simpleType>
 
@@ -235,6 +261,20 @@
             <xs:attribute name="port" type="Id" use="required"/>
             <xs:attribute name="repaintOn" type="xs:token" use="required" fixed="change"/>
             <xs:attribute name="flagExternal" type="xs:boolean" use="required"/>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="keys">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="key" maxOccurs="8">
+                <xs:complexType>
+                  <xs:attribute name="accelerator" type="ModalKey" use="required"/>
+                  <xs:attribute name="scope" type="KeyScope" use="required"/>
+                  <xs:attribute name="action" type="KeyAction" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
           </xs:complexType>
         </xs:element>
 

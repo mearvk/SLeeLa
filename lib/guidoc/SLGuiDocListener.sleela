@@ -69,13 +69,18 @@ class SLGuiDocListener {
     String lastExternal;
     int repaint;
     int seenNotes;
+    int flagging;
+    int quietChanges;
 
-    void attach(String portName, SLGuiDocWhite look) {
+    < flagExternal=false still counts every change but never flags one as >
+    < external: it stays quiet in the status line. >
+    void attach(String portName, SLGuiDocWhite look, boolean flagExternal) {
       port = new SLObserverPort();
       port.configure(portName);
       white = look;
       lastRevision = 0; changes = 0; externalChanges = 0;
       lastSource = ""; lastExternal = ""; repaint = 1; seenNotes = 0;
+      flagging = flagExternal ? 1 : 0; quietChanges = 0;
     }
     SLObserverPort portOf() { return port; }
     int revisionSeen() { return lastRevision; }
@@ -84,6 +89,8 @@ class SLGuiDocListener {
     String latestSource() { return lastSource; }
     String latestExternal() { return lastExternal; }
     int noteCount() { return seenNotes; }
+    int quietCount() { return quietChanges; }
+    boolean flagsExternal() { return flagging == 1; }
 
     < Read the mailbox. Returns the number of messages handled. >
     int pump() {
@@ -96,8 +103,12 @@ class SLGuiDocListener {
           changes = changes + 1;
           lastSource = m.getTag();
           if (m.getTag() != "gui") {
-            externalChanges = externalChanges + 1;
-            lastExternal = m.getTag();
+            if (flagging == 1) {
+              externalChanges = externalChanges + 1;
+              lastExternal = m.getTag();
+            } else {
+              quietChanges = quietChanges + 1;
+            }
           }
           repaint = 1;
         } else if (m.getKind() == 0 && m.getFrom() == "observer") {

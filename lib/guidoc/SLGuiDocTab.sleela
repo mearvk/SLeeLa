@@ -77,14 +77,14 @@ class SLGuiDocTab {
   int snapTop;
   int snapTaken;
 
-  void configure(String name, SLGuiDocWhite white, String listenerPort) {
+  void configure(String name, SLGuiDocWhite white, String listenerPort, boolean flagExternal) {
     title = name; path = "";
     doc = new SLObserverDocument();
     doc.configure(name);
     obs = new SLDocumentObserver();
     obs.configure(doc);
     listener = new SLGuiDocListener.Responder();
-    listener.attach(listenerPort, white);
+    listener.attach(listenerPort, white, flagExternal);
     obs.admit(listener.portOf());
     savedRevision = 0; readOnly = 0; selected = -1; viewTop = 0;
     locked = 0; choice = 0; snapTaken = 0; snapCount = 0; snapRevision = 0; snapSaved = 0;

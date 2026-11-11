@@ -96,7 +96,7 @@ class SLGuiDocApp {
     white.configure();
     if (!white.isWhite()) { return false; }
     file = new SLGuiDocFile();
-    file.configure(spec.getSidecarSuffix(), spec.getMaxBytes());
+    file.configure(spec.getSidecarSuffix(), spec.getMaxBytes(), spec.getMaxLines());
     view = new SLGuiDocView();
     view.configure(white);
     tabs = new SLGuiDocTab[14];
@@ -182,6 +182,25 @@ class SLGuiDocApp {
     return reverted;
   }
 
+  < Re-read the settings that are copied at build time (the file limits and >
+  < the sidecar suffix). New tabs also read the listener flag from the spec >
+  < when they are made. Call after changing the spec at run time. >
+  void applySettings() {
+    file.configure(spec.getSidecarSuffix(), spec.getMaxBytes(), spec.getMaxLines());
+    audit("settings re-applied");
+  }
+
+  < The window was asked to close (the host reports its close button). With a >
+  < dialog open that cancels the dialog; otherwise it is Quit, which asks >
+  < first if the spec says so. Returns true only if quitting went ahead or a >
+  < confirmation was opened. >
+  boolean requestClose() {
+    if (!ready.isReady()) { return false; }
+    if (dialog != 0) { dialogCancel(); return false; }
+    openMenu = "";
+    return execute("app.quit");
+  }
+
   < The node count the spec implies: window, menubar, menus, items, tab bar, >
   < tabs, new-tab button, editor, two nodes per row, entry, three status >
   < labels and the five dialog nodes. >
@@ -222,7 +241,25 @@ class SLGuiDocApp {
     }
     ready.noteCheck("accelerators-live", dead == 0, dead + " accelerator(s) reach no handler");
     ready.noteCheck("file-layer", file.getSidecarSuffixValue() == spec.getSidecarSuffix(), "the file layer uses the spec sidecar suffix");
-    ready.noteCheck("listener-port", spec.getListenerPort() != "" && spec.flagsExternal(), "the GUI document listener is configured");
+    ready.noteCheck("listener-port", spec.getListenerPort() != "", "the GUI document listener is configured");
+    int unwired = 0;
+    int nd = 0;
+    while (nd < view.nodeCount()) {
+      String nc = view.commandAt(nd);
+      boolean internal = nc == "menu.toggle" || nc == "view.gotoTab" || nc == "editor.select"
+          || nc == "dialog.ok" || nc == "dialog.cancel";
+      if (nc != "" && !internal && dispatch(nc, false) < 0) { unwired = unwired + 1; }
+      nd = nd + 1;
+    }
+    int badKeys = 0;
+    int kx = 0;
+    while (kx < spec.keyTotal()) {
+      String act = spec.keyActionAt(kx);
+      if (act != "dialog.ok" && act != "dialog.cancel" && act != "menu.close") { badKeys = badKeys + 1; }
+      kx = kx + 1;
+    }
+    ready.noteCheck("wiring", unwired == 0 && badKeys == 0,
+        unwired + " node(s) carry a command nothing handles, " + badKeys + " key(s) with no action");
     ready.noteCheck("first-paint", view.textOf("win") == spec.getTitle() && tabCount == 0 && dialog == 0, "the first paint matches the spec");
     int lockBad = 0;
     int lk = 0;
@@ -342,6 +379,7 @@ class SLGuiDocApp {
     if (when == "editable") { return t != null && !t.isReadOnly(); }
     if (when == "selectionEditable") { return t != null && !t.isReadOnly() && t.hasSelection(); }
     if (when == "multipleTabs") { return tabCount > 1; }
+    if (when == "hasLines") { return t != null && !t.isReadOnly() && t.body().lineCount() > 0; }
     if (when == "admin") { return admin == 1; }
     if (when == "choiceReady") {
       return admin == 1 && locked == 1 && t != null && (t.inChoice() || !t.isReadOnly());
@@ -363,6 +401,13 @@ class SLGuiDocApp {
   }
 
   void paint() {
+    < a paint shows everything, so any latched repaint is now served >
+    int pi = 0;
+    while (pi < tabCount) {
+      SLGuiDocTab pt = tabs[pi];
+      pt.guiListener().takeRepaint();
+      pi = pi + 1;
+    }
     SLGuiDocTab cur = activeTab();
     String head = spec.getTitle();
     if (cur != null) { head = head + " - " + tabLabel(cur); }
@@ -547,10 +592,24 @@ class SLGuiDocApp {
 
   < A keyboard accelerator such as Ctrl+S. >
   boolean accelerate(String accel) {
+    if (!ready.isReady()) { refusedCommands = refusedCommands + 1; return false; }
+    String scope = (dialog != 0) ? "dialog" : ((openMenu != "") ? "menu" : "");
+    if (scope != "") {
+      String action = spec.actionForKey(accel, scope);
+      if (action != "") { return runKeyAction(action); }
+    }
     String command = spec.commandForAccel(accel);
     if (command == "") { return false; }
     openMenu = "";
     return execute(command);
+  }
+
+  < Enter and Esc while a dialog or a menu is open. >
+  boolean runKeyAction(String action) {
+    if (action == "dialog.ok") { dialogOk(); return true; }
+    if (action == "dialog.cancel") { dialogCancel(); return true; }
+    if (action == "menu.close") { openMenu = ""; paint(); return true; }
+    return false;
   }
 
   < ---- commands ------------------------------------------------------------- >
@@ -601,6 +660,11 @@ class SLGuiDocApp {
     if (command == "edit.insertLine") { if (run) { return flag(cmdInsertLine()); } return 1; }
     if (command == "edit.replaceLine") { if (run) { return flag(cmdReplaceLine()); } return 1; }
     if (command == "edit.deleteLine") { if (run) { return flag(cmdDeleteLine()); } return 1; }
+    if (command == "edit.loadLine") { if (run) { return flag(cmdLoadLine()); } return 1; }
+    if (command == "view.selectPrev") { if (run) { return flag(cmdSelectPrev()); } return 1; }
+    if (command == "view.selectNext") { if (run) { return flag(cmdSelectNext()); } return 1; }
+    if (command == "view.pageUp") { if (run) { return flag(cmdPageUp()); } return 1; }
+    if (command == "view.pageDown") { if (run) { return flag(cmdPageDown()); } return 1; }
     if (command == "view.nextTab") { if (run) { return flag(cmdNextTab()); } return 1; }
     if (command == "view.prevTab") { if (run) { return flag(cmdPrevTab()); } return 1; }
     if (command == "system.lock") { if (run) { return flag(cmdLock()); } return 1; }
@@ -661,7 +725,7 @@ class SLGuiDocApp {
   boolean cmdNew() {
     untitled = untitled + 1;
     SLGuiDocTab t = new SLGuiDocTab();
-    t.configure(spec.getNewTabTitle() + "-" + untitled, white, spec.getListenerPort());
+    t.configure(spec.getNewTabTitle() + "-" + untitled, white, spec.getListenerPort(), spec.flagsExternal());
     if (!addTab(t)) { return false; }
     say("new document " + t.getTitle());
     return true;
@@ -686,7 +750,7 @@ class SLGuiDocApp {
   boolean cmdCloseTab() {
     endChoice("tab closed");
     SLGuiDocTab t = activeTab();
-    if (t.isDirty()) { dialog = 3; pendingTab = active; return true; }
+    if (t.isDirty() && spec.confirmsDiscard("file.closeTab")) { dialog = 3; pendingTab = active; return true; }
     return closeTab(active);
   }
   boolean cmdQuit() {
@@ -694,7 +758,7 @@ class SLGuiDocApp {
     int i = 0;
     while (i < tabCount) {
       SLGuiDocTab t = tabs[i];
-      if (t.isDirty()) { dialog = 4; return true; }
+      if (t.isDirty() && spec.confirmsDiscard("app.quit")) { dialog = 4; return true; }
       i = i + 1;
     }
     quitFlag = 1;
@@ -732,6 +796,52 @@ class SLGuiDocApp {
     say("deleted line " + (at + 1));
     return true;
   }
+  < ---- moving through the document -------------------------------------- >
+  < Selection moves are navigation, not edits, so they run under the lock. >
+  < The editor scrolls to keep the selected line in view when it repaints. >
+
+  boolean moveTo(int to) {
+    SLGuiDocTab t = activeTab();
+    int last = t.body().lineCount() - 1;
+    if (to > last) { to = last; }
+    if (to < 0) { to = 0; }
+    t.select(to);
+    t.guiListener().acknowledgeExternal();
+    say("line " + (to + 1) + " of " + (last + 1));
+    return true;
+  }
+  boolean cmdSelectPrev() {
+    SLGuiDocTab t = activeTab();
+    int at = t.selectedLine();
+    return moveTo((at < 0) ? (t.body().lineCount() - 1) : (at - 1));
+  }
+  boolean cmdSelectNext() {
+    SLGuiDocTab t = activeTab();
+    int at = t.selectedLine();
+    return moveTo((at < 0) ? 0 : (at + 1));
+  }
+  boolean cmdPageUp() {
+    SLGuiDocTab t = activeTab();
+    int at = t.selectedLine();
+    int from = (at < 0) ? (t.body().lineCount() - 1) : at;
+    return moveTo(from - (spec.getEditorRows() - 1));
+  }
+  boolean cmdPageDown() {
+    SLGuiDocTab t = activeTab();
+    int at = t.selectedLine();
+    int from = (at < 0) ? 0 : at;
+    return moveTo(from + (spec.getEditorRows() - 1));
+  }
+  < Copy the selected line into the entry box so it can be changed and put >
+  < back with Replace Line. Needs the same rights as editing. >
+  boolean cmdLoadLine() {
+    SLGuiDocTab t = activeTab();
+    view.setText("entry", t.body().lineAt(t.selectedLine()));
+    t.guiListener().acknowledgeExternal();
+    say("loaded line " + (t.selectedLine() + 1) + " into the entry box");
+    return true;
+  }
+
   < Admin only (the menu item is enabled only for an admin). Locking refuses >
   < every command that adds content; unlocking ends any editor choice session. >
   boolean cmdLock() {
@@ -813,7 +923,7 @@ class SLGuiDocApp {
     }
     if (tabCount >= spec.getMaxTabs()) { complain("tab limit reached (" + spec.getMaxTabs() + ")"); return false; }
     SLGuiDocTab t = new SLGuiDocTab();
-    t.configure(path, white, spec.getListenerPort());
+    t.configure(path, white, spec.getListenerPort(), spec.flagsExternal());
     int code = t.loadFrom(file, path, spec.lockUnsplit());
     if (code != 0 && code != 10) { complain("open failed (code " + code + ")"); return false; }
     addTab(t);

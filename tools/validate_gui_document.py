@@ -33,11 +33,12 @@ import xml.etree.ElementTree as ET
 
 NS = "{urn:sleela:guidoc:1.0}"
 DISCARDING = {"file.closeTab", "app.quit"}
-WHEN = {"always", "hasTab", "dirty", "editable", "selectionEditable", "multipleTabs", "admin", "choiceReady"}
+WHEN = {"always", "hasTab", "dirty", "editable", "selectionEditable", "multipleTabs", "admin", "choiceReady", "hasLines"}
 ADDS_CONTENT = {"file.new", "file.open", "file.saveAs", "edit.insertLine", "edit.replaceLine", "edit.deleteLine"}
-EDITING = {"edit.insertLine", "edit.replaceLine", "edit.deleteLine"}
+EDITING = {"edit.insertLine", "edit.replaceLine", "edit.deleteLine", "edit.loadLine"}
+KEY_ACTIONS = {"dialog": {"dialog.ok", "dialog.cancel"}, "menu": {"menu.close"}}
 TOGGLE_COMMAND = {"lock": "system.lock", "choice": "system.choice"}
-ACCEL = re.compile(r"^$|^Ctrl\+(Shift\+)?[A-Za-z0-9]$|^Ctrl\+(Shift\+)?Tab$|^F([1-9]|1[0-2])$")
+ACCEL = re.compile(r"^$|^Ctrl\+(Shift\+)?[A-Za-z0-9]$|^Ctrl\+(Shift\+)?Tab$|^F([1-9]|1[0-2])$|^(Up|Down|PageUp|PageDown)$")
 
 
 def fail(errors, where, message):
@@ -79,6 +80,8 @@ def model_of(root):
     m["editor"] = (int(e.get("rows")), tf(e.get("lineNumbers")), tf(e.get("readOnlyWhenUnsplit"))) if e is not None else None
     f = root.find(NS + "fileDialog")
     m["file"] = (f.get("sidecarSuffix"), int(f.get("maxLines")), int(f.get("maxBytes"))) if f is not None else None
+    m["keys"] = [(k.get("accelerator"), k.get("scope"), k.get("action"))
+                 for k in root.findall("%skeys/%skey" % (NS, NS))]
     lk = root.find(NS + "lock")
     m["lock"] = (lk.get("choiceEdits"),) if lk is not None else None
     r = root.find(NS + "readiness")
@@ -141,6 +144,15 @@ def cross_field(m, app_source, require_theme, errors):
     for mid, _ in m["menus"]:
         if not any(i[0] == mid for i in m["items"]):
             fail(errors, "menus", "menu %s has no items" % mid)
+    seen_keys = set()
+    for accel, scope, action in m["keys"]:
+        if action not in KEY_ACTIONS.get(scope, set()):
+            fail(errors, "keys", "key %s in scope %s cannot do %s" % (accel, scope, action))
+        if (accel, scope) in seen_keys:
+            fail(errors, "keys", "key %s is bound twice in scope %s" % (accel, scope))
+        seen_keys.add((accel, scope))
+        if any(i[4] == accel for i in m["items"]):
+            fail(errors, "keys", "modal key %s is also a menu accelerator" % accel)
     if m["window"] and m["window"][1] != require_theme:
         fail(errors, "window", "theme is %r, required %r" % (m["window"][1], require_theme))
     if m["tabs"] and not (1 <= m["tabs"][0] <= 14):
@@ -156,6 +168,7 @@ RE_LIST = re.compile(r"setListener\(\s*%s\s*,\s*(\d+)\s*\)\s*;" % S)
 RE_READY = re.compile(r"setReadiness\(\s*%s\s*,\s*%s\s*\)\s*;" % (S, S))
 RE_CMD = re.compile(r"addCommand\(\s*%s\s*,\s*%s\s*,\s*(\d+)\s*,\s*%s\s*\)\s*;" % (S, S, S))
 RE_TOGGLE = re.compile(r"addToggle\(\s*%s\s*,\s*%s\s*,\s*%s\s*\)\s*;" % (S, S, S))
+RE_KEY = re.compile(r"addKey\(\s*%s\s*,\s*%s\s*,\s*%s\s*\)\s*;" % (S, S, S))
 RE_LOCK = re.compile(r"setLock\(\s*%s\s*\)\s*;" % S)
 RE_MENU = re.compile(r"addMenu\(\s*%s\s*,\s*%s\s*\)\s*;" % (S, S))
 RE_ITEM = re.compile(r"addItem\(\s*%s\s*,\s*%s\s*,\s*%s\s*,\s*%s\s*,\s*%s\s*,\s*%s\s*\)\s*;" % ((S,) * 6))
@@ -191,6 +204,9 @@ def drift(m, spec_source, errors):
         one(RE_READY, m["readiness"], "setReadiness")
     if m["lock"]:
         one(RE_LOCK, m["lock"], "setLock")
+    src_keys = RE_KEY.findall(body)
+    if src_keys != m["keys"]:
+        fail(errors, "drift", "keys differ: source=%s xml=%s" % (src_keys, m["keys"]))
     src_toggles = RE_TOGGLE.findall(body)
     xml_toggles = [(i[1], i[6], i[7]) for i in m["items"] if i[6]]
     if src_toggles != xml_toggles:

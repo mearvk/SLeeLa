@@ -12,7 +12,7 @@ edits made by someone else.
 sleela run lib/guidoc/guidoc.sleela                  # build, check, print the screen
 SLEELA_GUIDOC_OPEN=notes.txt sleela run lib/guidoc/guidoc.sleela     # open a file first
 SLEELA_GUIDOC_PLAN=1 sleela run lib/guidoc/guidoc.sleela             # also print the mount plan
-sleela run lib/guidoc/guidoc-demo.sleela             # 212 self-checks, headless
+sleela run lib/guidoc/guidoc-demo.sleela             # 275 self-checks, headless
 bash test-suites/test-guidoc.sh                      # the release gate (CI runs this)
 ```
 
@@ -58,12 +58,13 @@ in the warning ink, external changes in the status line, errors in the danger in
 | `<editor rows lineNumbers readOnlyWhenUnsplit>` | the editor |
 | `<fileDialog sidecarSuffix maxLines maxBytes>` | load and save limits |
 | `<listener port repaintOn flagExternal>` | the GUI document listener |
+| `<keys><key accelerator scope action>` | modal keys: Enter and Esc while a dialog (`dialog.ok`, `dialog.cancel`) or a menu (`menu.close`) is open |
 | `<lock choiceEdits>` | whether an editor's choice session keeps (`keep`) or reverts (`revert`) its edits |
 | `<readiness status release>` | the readiness claim and the release version |
 
 Commands also carry `lockPolicy` (`allowed` · `blocked` · `choice`) and menu items
 may be toggles (`toggle="lock|choice"` with an `activeLabel`); `enabledWhen` gains
-`admin` and `choiceReady`.
+`admin`, `choiceReady` and `hasLines`.
 
 `SLGuiDocSpec.standard()` is the executable copy; the GUI is **built from it**.
 SLeeLa cannot parse XML at run time (no string access), so
@@ -86,12 +87,49 @@ the XML and `standard()` differ.
 | Edit | Insert Line | Ctrl+I | editable | inserts the entry text after the selected line (or at the end) |
 | Edit | Replace Line | Ctrl+R | selectionEditable | replaces the selected line |
 | Edit | Delete Line | Ctrl+D | selectionEditable | deletes the selected line |
+| Edit | Edit Line | F2 | selectionEditable | copies the selected line into the entry box, to change and Replace |
 | View | Next / Previous Tab | Ctrl+Tab / Ctrl+Shift+Tab | multipleTabs | cycles tabs |
+| View | Previous / Next Line | Up / Down | hasLines | moves the selection; the editor scrolls to keep it in view |
+| View | Page Up / Page Down | PageUp / PageDown | hasLines | moves the selection a page (rows - 1) |
 | System | Lock System / Unlock System | Ctrl+L | admin | the system lock (below) |
 | System | Editor's Choice / End Editor's Choice | Ctrl+E | choiceReady | an admin session on one tab (below) |
 | Help | About | F1 | always | status line |
 
 While a dialog is open, every other command is refused and the menus are disabled.
+
+## Wiring
+
+Everything a window can tell the GUI is one of five events, and
+`SLGuiDocHost.event(app, kind, id, value)` is the single entry point for them:
+
+| Event | Call | What it does |
+|---|---|---|
+| `press id` | `app.click(id)` | a widget was activated: menu, menu item, tab, row, button, dialog button |
+| `type id value` | `app.type(id, value)` | the user typed into an entry (`entry`, `dlg-path`) |
+| `key chord` | `app.accelerate(chord)` | `Ctrl+S`, `Up`, `F2`, ... and `Enter` / `Esc` while a dialog or menu is open |
+| `close` | `app.requestClose()` | the window close button: cancels an open dialog, else Quit (which asks first if work is unsaved) |
+| `tick` | `app.refresh()` | a turn of the host loop: repaint if a document changed outside the GUI |
+
+Every widget with a behavior carries a command; the gate's `wiring` check proves
+each one reaches a handler. A widget that is hidden or disabled cannot be pressed.
+
+**Every setting in the XML changes behavior**, and `guidoc-demo` proves each one by
+changing it and watching:
+
+| XML | Acts on |
+|---|---|
+| `window title/theme` | the window title; the GUI refuses to build in a flavor it does not draw (white) |
+| `command handler`, `menu item` | the dispatch table and the menu; the validator checks each handler exists |
+| `command confirmsDiscard` | whether Close Tab and Quit ask before discarding unsaved work (`setConfirms`) |
+| `command lockPolicy` | what the system lock refuses |
+| `item accelerator`, `enabledWhen`, `toggle` | key chords, whether an item is enabled, its on/off label |
+| `tabs maxTabs/dirtyMarker/newTabTitle` | the tab limit, the `*`, the name of a new tab |
+| `editor rows/lineNumbers/readOnlyWhenUnsplit` | rows shown and the scroll window, the gutter, whether unsplit files lock |
+| `fileDialog maxLines/maxBytes/sidecarSuffix` | load and save limits and the sidecar folder (`applySettings()` after a change) |
+| `listener port/flagExternal` | the listener's port name; whether an outside change is flagged or only counted |
+| `keys` | Enter / Esc in dialogs and menus |
+| `lock choiceEdits` | whether an editor's choice session keeps or reverts its edits |
+| `readiness` | the certified/draft label and the release shown by About and the launcher |
 
 ## The system lock and editor's choice
 
@@ -141,12 +179,12 @@ always unlock.
 ## Ready
 
 The GUI is **ready** only after it has proved itself. `configure()` builds it;
-`start()` runs eleven named self-checks (`SLGuiDocReady`):
+`start()` runs twelve named self-checks (`SLGuiDocReady`):
 
 `spec` · `white-theme` · `widget-tree` (node count equals what the spec implies) ·
 `commands-handled` (every spec command has a handler) · `menu-items-bound` (every
 item exists and is bound to its command) · `accelerators-live` · `file-layer` ·
-`listener-port` · `lock-policy` (no content-adding command is allowed while locked; the lock commands stay allowed; it starts unlocked) · `first-paint` · `no-open-dialog`
+`listener-port` · `wiring` (every widget that carries a command, and every modal key, reaches a handler) · `lock-policy` (no content-adding command is allowed while locked; the lock commands stay allowed; it starts unlocked) · `first-paint` · `no-open-dialog`
 
 | State | Meaning |
 |---|---|
@@ -188,12 +226,12 @@ claim. `status="ready"` here means exactly that, and no more.
 | `SLGuiDocFile` | load and save |
 | `SLGuiDocListener` | the GUI document listener; nested `Responder` is an observer module |
 | `SLGuiDocTab` | one open document: its observer, its listener, path, dirty state, selection, scroll |
-| `SLGuiDocView` | the widget tree (79 nodes): tag, text, style, visible, enabled, command; press latches |
+| `SLGuiDocView` | the widget tree (84 nodes): tag, text, style, visible, enabled, command; press latches |
 | `SLGuiDocApp` | the controller: builds the view from the spec, runs commands, dialogs and tabs, repaints; `start()` runs the ready gate; counts coverage |
 | `SLGuiDocReady` | the ready lifecycle and gate (named checks, one-shot subscribers) |
 | `SLGuiDocHost` | the host side: text outline and mount plan |
 | `guidoc.sleela` | the launcher |
-| `guidoc-demo.sleela` | 212 self-checks and the coverage sweep |
+| `guidoc-demo.sleela` | 275 self-checks and the coverage sweep |
 
 ## The GUI document listener
 
@@ -231,6 +269,10 @@ until the user acknowledges it by selecting a line or editing. A host loop calls
 
 ## Honest limits
 
+* **Not connected to the other packages.** The GUI edits a document directly. The
+  soft-offer desk (`lib/softlisten`), which would let people offer content that is
+  assessed before it is agreed, and the hot-link matrix (`lib/hotlink`) are not
+  wired into it; each tab does have its own observer, which is where they attach.
 * **The launcher stops at the text outline.** There is no windowing host in
   this repo that links; the mount plan is the contract for one. `ready` certifies
   the model, its commands and its screen description, not pixels on a display.
@@ -263,7 +305,7 @@ until the user acknowledges it by selecting a line or editing. A host loop calls
 
 ## Release
 
-* `release` in the XML and `SLGuiDocSpec.standard()` is `1.1.0` (1.0.0 was the GUI itself; 1.1.0 adds the system lock and editor's choice); the launcher,
+* `release` in the XML and `SLGuiDocSpec.standard()` is `1.2.0` (1.0.0 was the GUI itself; 1.1.0 added the system lock and editor's choice; 1.2.0 completes the wiring: navigation, Edit Line, modal keys, window close, the host event entry, and the three settings that nothing read); the launcher,
   About and the status line show it, with `certified` when the claim is `ready`.
 * `test-suites/test-guidoc.sh` is the release gate and
   `.github/workflows/guidoc-ci.yml` runs it on every change to `lib/guidoc`,

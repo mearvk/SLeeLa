@@ -143,6 +143,24 @@ class SLGuiDocHost {
     return n;
   }
 
+  < The single entry point for a windowing host. Everything a real window can >
+  < report is one of these events, and nothing else reaches the GUI: >
+  <   press  id          a widget was activated (menu, menu item, tab, row, button) >
+  <   type   id value    the user typed into an entry widget >
+  <   key    value       a key chord, e.g. Ctrl+S, Up, Enter, Esc >
+  <   close              the window close button >
+  <   tick               a turn of the host loop: repaint if a document changed >
+  < Returns the number of commands run (press), 1 or 0 (key, close, tick), >
+  < 0 (type), or -1 for an unknown event kind. >
+  int event(SLGuiDocApp app, String kind, String id, String value) {
+    if (kind == "press") { return app.click(id); }
+    if (kind == "type") { app.type(id, value); return 0; }
+    if (kind == "key") { return app.accelerate(value) ? 1 : 0; }
+    if (kind == "close") { return app.requestClose() ? 1 : 0; }
+    if (kind == "tick") { return app.refresh() ? 1 : 0; }
+    return -1;
+  }
+
   < How many nodes mountPlan() would list (visible nodes). >
   int visibleNodes(SLGuiDocApp app) {
     SLGuiDocView v = app.widgets();

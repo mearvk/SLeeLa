@@ -20,8 +20,13 @@
     <command id="edit.insertLine" handler="cmdInsertLine" lockPolicy="choice"/>
     <command id="edit.replaceLine" handler="cmdReplaceLine" lockPolicy="choice"/>
     <command id="edit.deleteLine" handler="cmdDeleteLine" lockPolicy="choice"/>
+    <command id="edit.loadLine" handler="cmdLoadLine" lockPolicy="choice"/>
     <command id="view.nextTab" handler="cmdNextTab"/>
     <command id="view.prevTab" handler="cmdPrevTab"/>
+    <command id="view.selectPrev" handler="cmdSelectPrev"/>
+    <command id="view.selectNext" handler="cmdSelectNext"/>
+    <command id="view.pageUp" handler="cmdPageUp"/>
+    <command id="view.pageDown" handler="cmdPageDown"/>
     <command id="system.lock" handler="cmdLock"/>
     <command id="system.choice" handler="cmdChoice"/>
     <command id="help.about" handler="cmdAbout"/>
@@ -40,10 +45,15 @@
       <item id="insertLine" label="Insert Line" command="edit.insertLine" accelerator="Ctrl+I" enabledWhen="editable"/>
       <item id="replaceLine" label="Replace Line" command="edit.replaceLine" accelerator="Ctrl+R" enabledWhen="selectionEditable"/>
       <item id="deleteLine" label="Delete Line" command="edit.deleteLine" accelerator="Ctrl+D" enabledWhen="selectionEditable"/>
+      <item id="loadLine" label="Edit Line" command="edit.loadLine" accelerator="F2" enabledWhen="selectionEditable"/>
     </menu>
     <menu id="view" label="View">
       <item id="nextTab" label="Next Tab" command="view.nextTab" accelerator="Ctrl+Tab" enabledWhen="multipleTabs"/>
       <item id="prevTab" label="Previous Tab" command="view.prevTab" accelerator="Ctrl+Shift+Tab" enabledWhen="multipleTabs"/>
+      <item id="prevLine" label="Previous Line" command="view.selectPrev" accelerator="Up" enabledWhen="hasLines"/>
+      <item id="nextLine" label="Next Line" command="view.selectNext" accelerator="Down" enabledWhen="hasLines"/>
+      <item id="pageUp" label="Page Up" command="view.pageUp" accelerator="PageUp" enabledWhen="hasLines"/>
+      <item id="pageDown" label="Page Down" command="view.pageDown" accelerator="PageDown" enabledWhen="hasLines"/>
     </menu>
     <menu id="system" label="System">
       <item id="lock" label="Lock System" command="system.lock" accelerator="Ctrl+L" enabledWhen="admin"
@@ -64,7 +74,13 @@
 
   <listener port="gui-listener" repaintOn="change" flagExternal="true"/>
 
+  <keys>
+    <key accelerator="Enter" scope="dialog" action="dialog.ok"/>
+    <key accelerator="Esc" scope="dialog" action="dialog.cancel"/>
+    <key accelerator="Esc" scope="menu" action="menu.close"/>
+  </keys>
+
   <lock choiceEdits="keep"/>
 
-  <readiness status="ready" release="1.1.0"/>
+  <readiness status="ready" release="1.2.0"/>
 </guiDocument>

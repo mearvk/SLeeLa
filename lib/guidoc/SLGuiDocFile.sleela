@@ -65,12 +65,17 @@ class SLGuiDocFile {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
   int maxBytes;
+  int maxLines;
   String suffix;
   int lastCode;
 
-  void configure(String sidecarSuffix, int byteLimit) {
+  < The line limit can be lowered below the document capacity (64) but never >
+  < raised above it. >
+  void configure(String sidecarSuffix, int byteLimit, int lineLimit) {
     suffix = sidecarSuffix; maxBytes = byteLimit; lastCode = 0;
+    maxLines = (lineLimit < 1) ? 1 : ((lineLimit > 64) ? 64 : lineLimit);
   }
+  int getMaxLines() { return maxLines; }
   int getLastCode() { return lastCode; }
   String getSidecarSuffixValue() { return suffix; }
   String sidecarDir(String path) { return path + suffix; }
@@ -117,7 +122,7 @@ class SLGuiDocFile {
   < simply open the file unsplit. >
   int save(String path, SLObserverDocument doc) {
     if (path == null || path == "") { lastCode = 1; return 1; }
-    if (doc.lineCount() > 64) { lastCode = 6; return 6; }
+    if (doc.lineCount() > maxLines) { lastCode = 6; return 6; }
     String tmp = path + ".tmp";
     if (!writeWhole(tmp, joinDocument(doc, true))) { lastCode = 2; return 2; }
     if (osRename(tmp, path) != 0) { osRemove(tmp); lastCode = 3; return 3; }
@@ -146,10 +151,10 @@ class SLGuiDocFile {
     String blob = readWhole(path);
     if (blob == null) { lastCode = 4; return 4; }
     if (blob == "") { lastCode = 0; return 0; }
-    if (exists(lineFile(path, 64))) { lastCode = 5; return 5; }
+    if (exists(lineFile(path, maxLines))) { lastCode = 5; return 5; }
     String[] cand = new String[64];
     int n = 0;
-    while (n < 64 && exists(lineFile(path, n))) {
+    while (n < maxLines && exists(lineFile(path, n))) {
       String one = readWhole(lineFile(path, n));
       cand[n] = (one == null) ? "" : one;
       n = n + 1;
