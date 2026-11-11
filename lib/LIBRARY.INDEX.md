@@ -1,5 +1,7 @@
 # SLeeLa /lib Library Index
 
+> Revision 0.85 adds the **`softlisten`** package (`lib/softlisten/`): soft offers and soft listeners. People offer document edits, observer modules and vertical-integration tiers; nothing takes effect until the consuming model agrees. While an offer waits, the Malice, Ties and Loader soft listeners (nested in `SLSoftOfferDesk`) ascertain it, plus a use-model check against the live document, and attach findings of severity info/warn/hold/block; holds clear when the world changes, blocks do not. Soft listeners can be paused, altered (level) and retired, and fail closed (an unavailable listener holds every offer). `SLHotLinker` gains `preflight`, a dry run that `attach` itself now uses. `softlisten-demo` makes 81 self-checks. Documentation: `lib/softlisten/SOFTLISTEN.md`. Three new source units (counts: 13262 to **13265** sources; 13346 to **13349** total records; 119 to **120** packages).
+
 > Revision 0.84 adds the **`hotlink`** package (`lib/hotlink/`): the hot-link matrix and its backing model. `hotlink-matrix.xsd` / `hotlink-matrix.xml` declare which types of class may join a running system (code arrival, instance arrival, contract, trust floor, cap, gates) and which types may be connected, in what mode and fan-out; `SLHotLinkRow`, `SLHotLinkMatrix` (validated, sealable), `SLHotLinker` (instance and connection gate: trust floor, caps, cycle guard, native authorizer plus host-pinned digest, audit trail) and `SLHotLinkIntegration` (grows a vertical-integration stack and moves value only along approved connections) enforce it; `hotlink-demo` makes 80 self-checks. `tools/validate_hotlink_matrix.py` checks the XML against the schema, the cross-field rules and `standard()`. Documentation: `lib/hotlink/HOTLINK.md`. Five new source units (counts: 13257 to **13262** sources; 13341 to **13346** total records; 118 to **119** packages).
 
 > Revision 0.83 adds the **`observer`** package (`lib/observer/`): a dynamic document observer. Modules are admitted through bounded ports while the program runs; on each document change they may answer, converse (hop-limited), or propose edits that the observer alone applies (revision-checked, depth- and rate-capped), with fault quarantine, sender stamping and an audit trail. Ships `SLObserverDocument`, `SLObserverMessage`, `SLObserverPort`, `SLDocumentObserver` (nested `Auditor`), drop-in nested-class modules `SLObserverSummaryModule`, `SLObserverGuardModule`, `SLObserverReviewModule`, the modest GUI `SLObserverView`, and runnable `observer-demo` (39 self-checks) and `observer-gui-demo`. Documentation: `lib/observer/OBSERVER.md`. Ten new source units (counts: 13247 to **13257** sources; 13331 to **13341** total records; 117 to **118** packages).
@@ -38,10 +40,10 @@
 
 
 **Revision:** 0.82  
-**Packages:** 119  
-**SLeeLa source units:** 13262  
+**Packages:** 120  
+**SLeeLa source units:** 13265  
 **Module-facade symbols:** 84  
-**Total symbol records:** 13346  
+**Total symbol records:** 13349  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.66 brings three big-number improvements that make a 10,000,000-digit

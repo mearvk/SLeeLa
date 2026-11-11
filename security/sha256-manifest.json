@@ -8367,7 +8367,7 @@
     },
     {
       "path": "lib/hotlink/SLHotLinker.sleela",
-      "sha256": "e825f7aa0b5dde3b1cd8475217d7b5c44c19b3caa44d0f52fbe61892fc489e7a"
+      "sha256": "00c414f357d4a428af60dffab781e7d3869692c75cbb325ebb4e2c013d36f3ab"
     },
     {
       "path": "lib/hotlink/hotlink-demo.sleela",
@@ -52980,6 +52980,18 @@
     {
       "path": "lib/social-model/SLPackage.sleela",
       "sha256": "f8190d7998e50234cb0c0b343a0847f2457b9be81bec70616cb574d673c7a4d6"
+    },
+    {
+      "path": "lib/softlisten/SLSoftOffer.sleela",
+      "sha256": "7a56d1d222e0aebf837dcc76c565734a33f13784bfbfdd56932083a3b1690c20"
+    },
+    {
+      "path": "lib/softlisten/SLSoftOfferDesk.sleela",
+      "sha256": "9051a939cade39b47b39b19868ce414073b0605dfc0d95ec00df51fbc6962869"
+    },
+    {
+      "path": "lib/softlisten/softlisten-demo.sleela",
+      "sha256": "804306fd6a021e7dceea27e07306c2714aef369d466faa2b7b340ad3e056cb2f"
     },
     {
       "path": "lib/sommeliers/SLSommelierCare.sleela",

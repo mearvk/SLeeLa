@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 13262
-library-packages: 119
+library-source-files: 13265
+library-packages: 120
 module-facade-symbols: 84
-total-symbol-records: 13346
+total-symbol-records: 13349
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -12927,6 +12927,9 @@ slrtp	SLRTPPointcut.sleela	lib/slrtp/SLRTPPointcut.sleela	source
 slrtp	SLRTPProcessor.sleela	lib/slrtp/SLRTPProcessor.sleela	source
 slrtp	slrtp-demo.sleela	lib/slrtp/slrtp-demo.sleela	source
 social-model	SLPackage.sleela	lib/social-model/SLPackage.sleela	facade
+softlisten	SLSoftOffer.sleela	lib/softlisten/SLSoftOffer.sleela	source
+softlisten	SLSoftOfferDesk.sleela	lib/softlisten/SLSoftOfferDesk.sleela	source
+softlisten	softlisten-demo.sleela	lib/softlisten/softlisten-demo.sleela	source
 sommeliers	SLSommelierCare.sleela	lib/sommeliers/SLSommelierCare.sleela	source
 sommeliers	SLSommelierCareDemo.sleela	lib/sommeliers/SLSommelierCareDemo.sleela	source
 sommeliers	SLSommelierCarePlan.sleela	lib/sommeliers/SLSommelierCarePlan.sleela	source

@@ -1,0 +1,617 @@
+<< lib/softlisten/SLSoftOfferDesk.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLSoftOfferDesk — where soft offers wait. People offer
+     document edits, observer modules and vertical-integration tiers; nothing
+     takes effect until the consuming model AGREES. While an offer waits, three
+     built-in soft listeners (nested classes) ascertain it: Malice (deny-listed
+     lines and tokens, reserved offerers, clipped inspection, duplicates and
+     floods), Ties (claimed ties that are false, dead or not declared by the
+     hot-link matrix) and Loader (a dry-run of the hot-link linker: unknown or
+     cold types, trust floor, caps, authorizer, pinned digest). A use-model
+     check adds conflicts with the live document. Findings carry a severity:
+     info, warn, HOLD (not agreeable yet, may clear) or BLOCK (never). The
+     desk is itself a listener on the observer, so a document change re-checks
+     every open offer.
+
+     Honest limit: SLeeLa String has no substring or character access, so the
+     listeners compare whole lines and whole tokens by equality. The host splits
+     text into tokens (up to 8 per offer; more are reported, never ignored).
+     The deny lists are a seed for the host to extend, not a virus database. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+import observer;
+import advantage.integration;
+import hotlink;
+< Family: softlisten. Soft listeners can be paused, resumed, altered (level) >
+< and retired like observer listeners. A paused or retired soft listener >
+< makes every assessment HOLD, never clean. Levels: 0 lenient (block becomes >
+< hold), 1 normal, 2 strict (warn becomes hold). >
+class SLSoftOfferDesk {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39232;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  class Malice {
+    String name;
+    int state;
+    int level;
+    int issued;
+    String[] denyTokens;
+    int tokenTotal;
+    String[] denyLines;
+    int lineTotal;
+
+    void attach() {
+      name = "malice"; state = 0; level = 1; issued = 0;
+      denyTokens = new String[32]; denyLines = new String[16];
+      int i = 0;
+      while (i < 32) { denyTokens[i] = ""; i = i + 1; }
+      int j = 0;
+      while (j < 16) { denyLines[j] = ""; j = j + 1; }
+      tokenTotal = 0; lineTotal = 0;
+      < a small illustrative seed; the host extends it >
+      addLine("rm -rf /");
+      addLine(":(){ :|:& };:");
+      addToken("<script>");
+      addToken("javascript:");
+      addToken("/etc/shadow");
+    }
+    boolean addToken(String t) {
+      if (t == null || t == "" || tokenTotal >= 32) { return false; }
+      denyTokens[tokenTotal] = t; tokenTotal = tokenTotal + 1;
+      return true;
+    }
+    boolean addLine(String t) {
+      if (t == null || t == "" || lineTotal >= 16) { return false; }
+      denyLines[lineTotal] = t; lineTotal = lineTotal + 1;
+      return true;
+    }
+    int denyTotal() { return tokenTotal + lineTotal; }
+    int sev(int base) {
+      if (level == 0 && base == 3) { return 2; }
+      if (level == 2 && base == 1) { return 2; }
+      return base;
+    }
+    int assess(SLSoftOffer o, SLSoftOffer[] all, int count) {
+      int before = o.findingTotal();
+      String who = o.getOfferer();
+      if (who == "" || who == "*" || who == "observer" || who == "soft-desk") {
+        o.addFinding("malice", 3, "reserved-offerer", "the offerer name is reserved");
+      }
+      int kind = o.getKind();
+      String t = o.getText();
+      if (kind == 0 || kind == 1) {
+        if (t == null || t == "") { o.addFinding("malice", sev(1), "empty-text", "the offered text is empty"); }
+      }
+      if (t != null && t != "" && kind != 2) {
+        int i = 0;
+        while (i < lineTotal) {
+          if (t == denyLines[i]) { o.addFinding("malice", sev(3), "deny-line", "the whole line is on the deny list"); }
+          i = i + 1;
+        }
+      }
+      int a = 0;
+      while (a < o.tokenTotal()) {
+        int b = 0;
+        while (b < tokenTotal) {
+          if (o.tokenAt(a) == denyTokens[b]) {
+            o.addFinding("malice", sev(3), "deny-token", "token " + a + " is on the deny list");
+          }
+          b = b + 1;
+        }
+        a = a + 1;
+      }
+      if (o.clippedTokens() > 0) {
+        o.addFinding("malice", 2, "tokens-clipped",
+            o.clippedTokens() + " token(s) beyond the first 8 were not inspected");
+      }
+      int open = 0;
+      int c = 0;
+      while (c < count) {
+        SLSoftOffer other = all[c];
+        if (other.getId() != o.getId() && other.getOfferer() == who) {
+          if (other.isOpen()) { open = open + 1; }
+          if (other.getId() < o.getId() && other.getKind() == kind && other.getLine() == o.getLine()
+              && other.getText() == t && other.getState() != 3 && other.getState() != 4) {
+            o.addFinding("malice", sev(1), "duplicate-offer", "same offerer, kind, line and text as offer " + other.getId());
+          }
+        }
+        c = c + 1;
+      }
+      if (open + 1 > 4) {
+        o.addFinding("malice", 2, "offer-flood", who + " has more than 4 open offers");
+      }
+      int delta = o.findingTotal() - before;
+      issued = issued + delta;
+      return delta;
+    }
+  }
+
+  class Ties {
+    String name;
+    int state;
+    int level;
+    int issued;
+    void attach() { name = "ties"; state = 0; level = 1; issued = 0; }
+    int sev(int base) {
+      if (level == 0 && base == 3) { return 2; }
+      if (level == 2 && base == 1) { return 2; }
+      return base;
+    }
+    boolean anchored(String t, String[] anchors, int anchorCount) {
+      int i = 0;
+      while (i < anchorCount) { if (anchors[i] == t) { return true; } i = i + 1; }
+      return false;
+    }
+    int assess(SLSoftOffer o, SLHotLinker linker, String[] anchors, int anchorCount) {
+      int before = o.findingTotal();
+      int kind = o.getKind();
+      String fromType = "";
+      if (kind == 3) { fromType = o.getTypeId(); }
+      if (kind == 4) { fromType = linker.model().typeForKind(o.getKindOrd()); }
+      int i = 0;
+      while (i < o.tieTotal()) {
+        String t = o.tieAt(i);
+        if (t == "") {
+          o.addFinding("ties", sev(1), "empty-tie", "tie " + i + " is empty");
+        } else {
+          if (t == o.getInstName() || t == o.getOfferer()) {
+            o.addFinding("ties", sev(1), "self-tie", "tie " + i + " points at the offer itself");
+          }
+          int k = 0;
+          while (k < i) {
+            if (o.tieAt(k) == t) { o.addFinding("ties", sev(1), "duplicate-tie", "tie " + i + " repeats tie " + k); }
+            k = k + 1;
+          }
+          boolean live = linker.isLinked(t);
+          if (linker.indexOfName(t) >= 0 && !live) {
+            o.addFinding("ties", sev(3), "dead-tie", "tie " + i + " names an instance that was detached");
+          } else if (!live && !anchored(t, anchors, anchorCount)) {
+            o.addFinding("ties", 2, "false-tie", "tie " + i + " names nothing the system knows");
+          } else if (live && fromType != "") {
+            String toType = linker.typeOfName(t);
+            if (!linker.model().edgeAllowed(fromType, toType)) {
+              o.addFinding("ties", sev(3), "undeclared-tie",
+                  "the matrix does not declare " + fromType + " to " + toType);
+            }
+          }
+        }
+        i = i + 1;
+      }
+      if (o.clippedTies() > 0) {
+        o.addFinding("ties", 2, "ties-clipped", o.clippedTies() + " tie(s) beyond the first 8 were not checked");
+      }
+      int delta = o.findingTotal() - before;
+      issued = issued + delta;
+      return delta;
+    }
+  }
+
+  class Loader {
+    String name;
+    int state;
+    int level;
+    int issued;
+    void attach() { name = "loader"; state = 0; level = 1; issued = 0; }
+    int sev(int base) {
+      if (level == 0 && base == 3) { return 2; }
+      if (level == 2 && base == 1) { return 2; }
+      return base;
+    }
+    int assess(SLSoftOffer o, SLHotLinker linker, SLHotLinkIntegration vi) {
+      int before = o.findingTotal();
+      int kind = o.getKind();
+      if (kind == 3 || kind == 4) {
+        String typeId = o.getTypeId();
+        if (kind == 4) { typeId = linker.model().typeForKind(o.getKindOrd()); }
+        SLHotLinkRow row = linker.model().find(typeId);
+        if (kind == 4 && typeId == "") {
+          o.addFinding("loader", sev(3), "no-type-for-kind", "no class type realises kind " + o.getKindOrd());
+        } else if (row == null) {
+          o.addFinding("loader", sev(3), "unknown-type", "unknown class type " + typeId);
+        } else {
+          if (kind == 3) {
+            SLObserverPort p = o.getPort();
+            if (row.getContract() != "port") {
+              o.addFinding("loader", sev(3), "wrong-contract", typeId + " is not an observer-module type");
+            } else if (p == null) {
+              o.addFinding("loader", sev(3), "no-port", "a module offer must carry a port");
+            } else if (p.getName() != o.getInstName()) {
+              o.addFinding("loader", sev(3), "port-name-mismatch", "the port name differs from the instance name");
+            } else if (p.getState() != 0) {
+              o.addFinding("loader", sev(3), "port-not-fresh", "the port has already been used");
+            }
+          } else {
+            if (row.getContract() != "compartment") {
+              o.addFinding("loader", sev(3), "wrong-contract", typeId + " is not a compartment type");
+            }
+            if (vi == null) {
+              o.addFinding("loader", 2, "no-integration", "no vertical-integration stack is attached");
+            } else if (vi.tiers() >= 32) {
+              o.addFinding("loader", 2, "stack-full", "the vertical stack has no room");
+            }
+          }
+          int verdict = linker.preflight(typeId, o.getInstName(), o.getTrust(), o.getDigest());
+          if (verdict == 0) {
+            o.addFinding("loader", 0, "preflight-ok", "the linker would approve " + o.getInstName());
+          } else if (verdict == 1) {
+            o.addFinding("loader", 2, "loader-transient", linker.preflightWhy);
+          } else {
+            o.addFinding("loader", sev(3), "loader-permanent", linker.preflightWhy);
+          }
+        }
+      }
+      int delta = o.findingTotal() - before;
+      issued = issued + delta;
+      return delta;
+    }
+  }
+
+  SLDocumentObserver observer;
+  SLHotLinker linker;
+  SLHotLinkIntegration integration;
+  SLSoftOfferDesk.Malice malice;
+  SLSoftOfferDesk.Ties ties;
+  SLSoftOfferDesk.Loader loader;
+  SLSoftOffer[] offers;
+  int offerCount;
+  int nextId;
+  String[] anchors;
+  int anchorCount;
+  SLObserverPort deskPort;
+  int agreed;
+  int declined;
+  int refusedAgrees;
+  String[] trail;
+  int trailCount;
+  int trailLost;
+
+  < `vi` may be null when no vertical-integration stack is in play. >
+  void configure(SLDocumentObserver o, SLHotLinker l, SLHotLinkIntegration vi) {
+    observer = o; linker = l; integration = vi;
+    malice = new SLSoftOfferDesk.Malice(); malice.attach();
+    ties = new SLSoftOfferDesk.Ties(); ties.attach();
+    loader = new SLSoftOfferDesk.Loader(); loader.attach();
+    offers = new SLSoftOffer[32];
+    anchors = new String[32]; trail = new String[64];
+    int i = 0;
+    while (i < 32) { anchors[i] = ""; i = i + 1; }
+    int j = 0;
+    while (j < 64) { trail[j] = ""; j = j + 1; }
+    offerCount = 0; nextId = 1; anchorCount = 0;
+    agreed = 0; declined = 0; refusedAgrees = 0; trailCount = 0; trailLost = 0;
+    deskPort = null;
+  }
+
+  void audit(String entry) {
+    if (trailCount < 64) { trail[trailCount] = entry; trailCount = trailCount + 1; }
+    else { trailLost = trailLost + 1; }
+  }
+  int trailSize() { return trailCount; }
+  String trailAt(int i) { return (i >= 0 && i < trailCount) ? trail[i] : ""; }
+  int agreedCount() { return agreed; }
+  int declinedCount() { return declined; }
+  int refusedAgreeCount() { return refusedAgrees; }
+  int offerTotal() { return offerCount; }
+  SLSoftOfferDesk.Malice maliceListener() { return malice; }
+
+  < ---- the desk listens to the document ---------------------------------- >
+
+  boolean attachToObserver() {
+    deskPort = new SLObserverPort();
+    deskPort.configure("soft-desk");
+    return observer.admit(deskPort);
+  }
+  < Host cycle step: any document change re-checks every open offer. >
+  int pump() {
+    if (deskPort == null) { return 0; }
+    int n = 0;
+    boolean changed = false;
+    while (deskPort.hasMail()) {
+      SLObserverMessage m = deskPort.next();
+      n = n + 1;
+      if (m.getKind() == 5) { changed = true; }
+    }
+    if (changed) { reassessOpen(); }
+    return n;
+  }
+
+  boolean registerAnchor(String name) {
+    if (name == null || name == "" || anchorCount >= 32) { return false; }
+    int i = 0;
+    while (i < anchorCount) { if (anchors[i] == name) { return false; } i = i + 1; }
+    anchors[anchorCount] = name; anchorCount = anchorCount + 1;
+    audit("anchor registered: " + name);
+    return true;
+  }
+
+  < ---- soft listener lifecycle ------------------------------------------- >
+
+  int listenerSlot(String n) {
+    if (n == "malice") { return 0; }
+    if (n == "ties") { return 1; }
+    if (n == "loader") { return 2; }
+    return -1;
+  }
+  int listenerState(String n) {
+    int s = listenerSlot(n);
+    if (s == 0) { return malice.state; }
+    if (s == 1) { return ties.state; }
+    if (s == 2) { return loader.state; }
+    return -1;
+  }
+  int listenerLevel(String n) {
+    int s = listenerSlot(n);
+    if (s == 0) { return malice.level; }
+    if (s == 1) { return ties.level; }
+    if (s == 2) { return loader.level; }
+    return -1;
+  }
+  int listenerIssued(String n) {
+    int s = listenerSlot(n);
+    if (s == 0) { return malice.issued; }
+    if (s == 1) { return ties.issued; }
+    if (s == 2) { return loader.issued; }
+    return -1;
+  }
+  void setListenerState(int slot, int st) {
+    if (slot == 0) { malice.state = st; }
+    if (slot == 1) { ties.state = st; }
+    if (slot == 2) { loader.state = st; }
+  }
+  boolean pauseListener(String n) {
+    int s = listenerSlot(n);
+    if (s < 0 || listenerState(n) != 0) { audit("pause refused: " + n); return false; }
+    setListenerState(s, 1); audit("paused soft listener " + n); return true;
+  }
+  boolean resumeListener(String n) {
+    int s = listenerSlot(n);
+    if (s < 0 || listenerState(n) != 1) { audit("resume refused: " + n); return false; }
+    setListenerState(s, 0); audit("resumed soft listener " + n); return true;
+  }
+  < Retiring is final: assessments will HOLD with listener-unavailable. >
+  boolean retireListener(String n) {
+    int s = listenerSlot(n);
+    if (s < 0 || listenerState(n) == 2) { audit("retire refused: " + n); return false; }
+    setListenerState(s, 2); audit("retired soft listener " + n); return true;
+  }
+  boolean alterListener(String n, int level) {
+    int s = listenerSlot(n);
+    if (s < 0 || level < 0 || level > 2 || listenerState(n) == 2) { audit("alter refused: " + n); return false; }
+    if (s == 0) { malice.level = level; }
+    if (s == 1) { ties.level = level; }
+    if (s == 2) { loader.level = level; }
+    audit("altered soft listener " + n + " to level " + level);
+    return true;
+  }
+  boolean addDenyToken(String t) { return malice.addToken(t); }
+  boolean addDenyLine(String t) { return malice.addLine(t); }
+
+  < ---- offers ------------------------------------------------------------- >
+
+  < Start an offer. Fill it in (aimAt..., addToken, addTie), then submit(). >
+  SLSoftOffer begin(String who, int trust, int kind) {
+    SLSoftOffer o = new SLSoftOffer();
+    o.configure(nextId, who, trust, kind);
+    nextId = nextId + 1;
+    return o;
+  }
+  SLSoftOffer offerById(int id) {
+    int i = 0;
+    while (i < offerCount) {
+      SLSoftOffer o = offers[i];
+      if (o.getId() == id) { return o; }
+      i = i + 1;
+    }
+    return null;
+  }
+  int openBy(String who) {
+    int n = 0;
+    int i = 0;
+    while (i < offerCount) {
+      SLSoftOffer o = offers[i];
+      if (o.isOpen() && o.getOfferer() == who) { n = n + 1; }
+      i = i + 1;
+    }
+    return n;
+  }
+  int openTotal() {
+    int n = 0;
+    int i = 0;
+    while (i < offerCount) { SLSoftOffer o = offers[i]; if (o.isOpen()) { n = n + 1; } i = i + 1; }
+    return n;
+  }
+
+  < Lodge an offer. It is assessed at once and then waits. Returns its id, or >
+  < -1 when the desk is full, the offerer already has 4 open offers, the kind >
+  < is unknown, or the offer was not issued by begin(). >
+  int submit(SLSoftOffer o) {
+    if (o == null || o.getId() < 1 || o.getId() >= nextId || offerById(o.getId()) != null) {
+      audit("submit refused (bad offer)"); return -1;
+    }
+    if (o.getKind() < 0 || o.getKind() > 4) { audit("submit refused (kind) from " + o.getOfferer()); return -1; }
+    if (offerCount >= 32) { audit("submit refused (desk full) from " + o.getOfferer()); return -1; }
+    if (openBy(o.getOfferer()) >= 4) { audit("submit refused (offer cap) from " + o.getOfferer()); return -1; }
+    offers[offerCount] = o;
+    offerCount = offerCount + 1;
+    assessAll(o);
+    audit("offer " + o.getId() + " from " + o.getOfferer() + " lodged, worst " + o.worst());
+    return o.getId();
+  }
+
+  < Run every soft listener, then the use-model checks, from scratch. >
+  void assessAll(SLSoftOffer o) {
+    o.clearFindings();
+    int slot = 0;
+    while (slot < 3) {
+      String n = (slot == 0) ? "malice" : ((slot == 1) ? "ties" : "loader");
+      if (listenerState(n) != 0) {
+        o.addFinding(n, 2, "listener-unavailable", "soft listener " + n + " is not running; the offer cannot be cleared");
+      }
+      slot = slot + 1;
+    }
+    if (malice.state == 0) { malice.assess(o, offers, offerCount); }
+    if (ties.state == 0) { ties.assess(o, linker, anchors, anchorCount); }
+    if (loader.state == 0) { loader.assess(o, linker, integration); }
+    useChecks(o);
+    if (o.getState() == 0) { o.setState(1); }
+  }
+
+  < What the consuming model needs of a document offer right now. >
+  void useChecks(SLSoftOffer o) {
+    if (!o.isDocumentOffer()) { return; }
+    SLObserverDocument doc = observer.document();
+    int op = o.getKind();
+    if (op != 2 && o.getText() == null) {
+      o.addFinding("use-model", 3, "no-text", "the offer carries no text");
+      return;
+    }
+    if (!doc.canApply(op, o.getLine())) {
+      o.addFinding("use-model", 2, "out-of-range", "line " + o.getLine() + " cannot take this edit now");
+    } else if (op != 0 && doc.lineAt(o.getLine()) != o.getExpectOld()) {
+      o.addFinding("use-model", 2, "conflict", "line " + o.getLine() + " changed since the offer was made");
+    }
+  }
+
+  boolean reassess(int id) {
+    SLSoftOffer o = offerById(id);
+    if (o == null || !o.isOpen()) { return false; }
+    assessAll(o);
+    return true;
+  }
+  int reassessOpen() {
+    int n = 0;
+    int i = 0;
+    while (i < offerCount) {
+      SLSoftOffer o = offers[i];
+      if (o.isOpen()) { assessAll(o); n = n + 1; }
+      i = i + 1;
+    }
+    return n;
+  }
+
+  boolean refuseAgree(SLSoftOffer o, String why) {
+    refusedAgrees = refusedAgrees + 1;
+    audit("agree refused for offer " + o.getId() + ": " + why);
+    return false;
+  }
+
+  < The consuming model agrees. The offer is re-assessed first. BLOCK and HOLD >
+  < findings refuse; WARN findings refuse unless acknowledged. Document offers >
+  < go through the observer (which can still refuse); module and tier offers >
+  < go through the linker, then their claimed ties are linked for real. >
+  boolean agree(int id, int agreerTrust, boolean acknowledgeWarnings) {
+    SLSoftOffer o = offerById(id);
+    if (o == null) { audit("agree refused: no offer " + id); return false; }
+    if (!o.isOpen()) { return refuseAgree(o, "not open"); }
+    if (agreerTrust < 1) { return refuseAgree(o, "agreer trust too low"); }
+    if (o.getKind() >= 3 && agreerTrust < 2) { return refuseAgree(o, "module and tier offers need an executive agreer"); }
+    assessAll(o);
+    int w = o.worst();
+    if (w >= 3) { return refuseAgree(o, "blocked"); }
+    if (w == 2) { return refuseAgree(o, "held"); }
+    if (w == 1 && !acknowledgeWarnings) { return refuseAgree(o, "warnings not acknowledged"); }
+    int kind = o.getKind();
+    if (kind <= 2) {
+      int r = observer.edit(kind, o.getLine(), o.getText(), o.getOfferer());
+      if (r < 0) { return refuseAgree(o, "the observer or document refused the edit"); }
+    } else {
+      int slot = -1;
+      if (kind == 3) { slot = linker.attachModule(o.getTypeId(), o.getInstName(), o.getTrust(), o.getPort()); }
+      if (kind == 4) {
+        if (integration == null) { return refuseAgree(o, "no vertical-integration stack"); }
+        SLCompartment c = integration.expand(o.getInstName(), o.getText(), o.getKindOrd(), o.getTrust());
+        if (c != null) { slot = 0; }
+      }
+      if (slot < 0) { return refuseAgree(o, "the linker refused the instance"); }
+      int i = 0;
+      while (i < o.tieTotal()) {
+        String t = o.tieAt(i);
+        if (linker.isLinked(t)) {
+          if (!linker.linkPair(o.getInstName(), t)) {
+            linker.detach(o.getInstName());
+            return refuseAgree(o, "tie " + i + " could not be linked; the instance was detached");
+          }
+        }
+        i = i + 1;
+      }
+    }
+    o.setState(2);
+    agreed = agreed + 1;
+    audit("offer " + id + " agreed (" + o.getOfferer() + ")");
+    return true;
+  }
+
+  boolean decline(int id, int agreerTrust, String reason) {
+    SLSoftOffer o = offerById(id);
+    if (o == null || !o.isOpen() || agreerTrust < 1) { audit("decline refused for offer " + id); return false; }
+    o.setState(3);
+    declined = declined + 1;
+    audit("offer " + id + " declined: " + reason);
+    return true;
+  }
+  < Only the offerer can withdraw. >
+  boolean withdraw(int id, String who) {
+    SLSoftOffer o = offerById(id);
+    if (o == null || !o.isOpen() || o.getOfferer() != who) { audit("withdraw refused for offer " + id); return false; }
+    o.setState(4);
+    audit("offer " + id + " withdrawn by " + who);
+    return true;
+  }
+
+  < Drop closed offers (agreed, declined, withdrawn) to free desk slots. >
+  int compact() {
+    int w = 0;
+    int r = 0;
+    while (r < offerCount) {
+      SLSoftOffer o = offers[r];
+      if (o.isOpen()) { offers[w] = o; w = w + 1; }
+      r = r + 1;
+    }
+    int dropped = offerCount - w;
+    offerCount = w;
+    audit("compacted " + dropped + " closed offer(s)");
+    return dropped;
+  }
+}

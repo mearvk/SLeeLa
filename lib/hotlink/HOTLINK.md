@@ -75,6 +75,7 @@ extends.module   (cold: no links; refused while running)
 ### What the linker enforces (fail closed, every refusal audited)
 
 * **Sealed matrix only.** An unsealed matrix is refused; rows and links cannot be added after sealing.
+* **Dry run:** `preflight(type, name, trust, digest)` returns 0 (would attach), 1 (refused for a reason that may pass later) or 2 (refused for good) and changes nothing; `attach` runs the same checks, so they cannot disagree.
 * **Instances:** known type · hot type · not `unverified` unless the host permits it · trust at or above the floor · per-type cap · unique, non-reserved name (names are never reused, 64 per linker) · for observer modules, the port name equals the instance name and the observer must admit the port, otherwise the attach is rolled back.
 * **Native code:** the host must have granted the authorizer **and** pinned the expected digest (once, immutable), and the presented digest must equal it. Revoking the authorizer detaches every native instance.
 * **Connections:** the type pair must be declared · both ends linked · no self-link · no duplicate · fan-out under the limit · no instance-level cycle.
