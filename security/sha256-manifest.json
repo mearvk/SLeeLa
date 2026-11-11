@@ -29719,7 +29719,7 @@
     },
     {
       "path": "lib/java/implementations/java/lang/JavaText.sleela",
-      "sha256": "537dbfacbe1b5c0c7e8c63a64a09ef6423b251b2752543af58caaada4f695a98"
+      "sha256": "0036def6b6a2f4d02d449a8efc4ab9f06a9a3653f6c320eeec73ff05cbb03eef"
     },
     {
       "path": "lib/java/java/applet/Applet.sleela",
@@ -37903,7 +37903,7 @@
     },
     {
       "path": "lib/java/java/util/Properties.sleela",
-      "sha256": "2e841236e8550cd8e1f6b3b638890fa4e69a69ece8a6f82edc1bbfd7015bd851"
+      "sha256": "90c9b40676e8fa358663600366c83dbdeec9f92018d6c0fdbdb752896e2748de"
     },
     {
       "path": "lib/java/java/util/PropertyPermission.sleela",

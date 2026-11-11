@@ -481,6 +481,183 @@ class Properties {
   }
   Enumeration keys() { return new Enumeration(keysArray()); }
   Enumeration elements() { return new Enumeration(valuesArray()); }
+
+  < ---- Properties.load: the JDK line reader and key / value splitter ---- >
+  << load accepts a java.io.StringReader or CharArrayReader (characters) or a
+     java.io.ByteArrayInputStream (bytes read as ISO 8859-1, as
+     load(InputStream) does); Reader and InputStream erase to one SLeeLa
+     signature, so both arrive here. It follows the JDK rules: leading blanks
+     skipped, # and ! comment lines, an odd number of trailing backslashes
+     continues the line, the key ends at the first unescaped =, : or blank, and
+     escapes are converted (\t \n \r \f, \uXXXX, else the character itself).
+     Keys and values are stored as plain Strings, so a character outside the
+     JavaText range (printable ASCII and the five control characters) fails
+     closed with UnsupportedOperationException. >>
+  public synchronized void load(java.io.Reader reader) {
+    if (reader == null) { throw new NullPointerException(); }
+    int[] u = readAllUnits(reader);
+    parseProperties(u, unitsCount);
+  }
+  < stringPropertyNames is declared as the concrete HashSet (Java: Set<String>, which erases to Any here and could not be called through); the set is mutable, where the JDK returns an unmodifiable one >
+  public HashSet stringPropertyNames() {
+    HashSet out = new HashSet();
+    collectStringNames(out);
+    return out;
+  }
+  void collectStringNames(HashSet out) {
+    if (this.propDefaults != null) { this.propDefaults.collectStringNames(out); }
+    Any[] ks = liveKeys();
+    int i = 0;
+    while (i < arrayLength(ks)) {
+      Any k = ks[i];
+      if (k instanceof string) {
+        Any v = get(k);
+        if (v instanceof string) { out.add(k); }
+      }
+      i = i + 1;
+    }
+  }
+
+  int unitsCount = 0;
+  int[] readAllUnits(Any src) {
+    int[] buf = new int[64];
+    int n = 0;
+    int c = 0 - 1;
+    if (src instanceof StringReader) {
+      StringReader r = (StringReader) src;
+      c = r.read();
+      while (c >= 0) { buf = pushUnit(buf, n, c); n = n + 1; c = r.read(); }
+    } else if (src instanceof CharArrayReader) {
+      CharArrayReader r2 = (CharArrayReader) src;
+      c = r2.read();
+      while (c >= 0) { buf = pushUnit(buf, n, c); n = n + 1; c = r2.read(); }
+    } else if (src instanceof ByteArrayInputStream) {
+      ByteArrayInputStream r3 = (ByteArrayInputStream) src;
+      c = r3.read();
+      while (c >= 0) { buf = pushUnit(buf, n, c); n = n + 1; c = r3.read(); }
+    } else {
+      throw new UnsupportedOperationException("java.util.Properties.load: pass a StringReader, CharArrayReader or ByteArrayInputStream");
+    }
+    this.unitsCount = n;
+    return buf;
+  }
+  int[] pushUnit(int[] buf, int n, int c) {
+    int[] b = buf;
+    if (n >= arrayLength(b)) {
+      int[] nb = new int[arrayLength(b) * 2];
+      int i = 0;
+      while (i < n) { nb[i] = b[i]; i = i + 1; }
+      b = nb;
+    }
+    b[n] = c;
+    return b;
+  }
+  boolean isBlank(int c) { return c == 32 || c == 9 || c == 12; }
+
+  void parseProperties(int[] u, int n) {
+    int[] line = new int[64];
+    int i = 0;
+    while (i < n) {
+      while (i < n && isBlank(u[i])) { i = i + 1; }
+      if (i >= n) { return; }
+      int c = u[i];
+      if (c == 10 || c == 13) { i = i + 1; continue; }
+      if (c == 35 || c == 33) {
+        while (i < n && u[i] != 10 && u[i] != 13) { i = i + 1; }
+        continue;
+      }
+      int len = 0;
+      boolean ended = false;
+      while (i < n && !ended) {
+        c = u[i];
+        if (c == 10 || c == 13) {
+          if (trailingBackslashes(line, len) % 2 == 1) {
+            len = len - 1;
+            if (c == 13 && i + 1 < n && u[i + 1] == 10) { i = i + 2; } else { i = i + 1; }
+            while (i < n && isBlank(u[i])) { i = i + 1; }
+          } else {
+            ended = true;
+          }
+        } else {
+          line = pushUnit(line, len, c);
+          len = len + 1;
+          i = i + 1;
+        }
+      }
+      if (!ended && trailingBackslashes(line, len) % 2 == 1) { len = len - 1; }
+      splitAndPut(line, len);
+    }
+  }
+  int trailingBackslashes(int[] line, int len) {
+    int k = len - 1;
+    int count = 0;
+    while (k >= 0 && line[k] == 92) { count = count + 1; k = k - 1; }
+    return count;
+  }
+  void splitAndPut(int[] lb, int limit) {
+    int keyLen = 0;
+    int valueStart = limit;
+    boolean hasSep = false;
+    boolean precedingBackslash = false;
+    boolean found = false;
+    while (keyLen < limit && !found) {
+      int c = lb[keyLen];
+      if ((c == 61 || c == 58) && !precedingBackslash) {
+        valueStart = keyLen + 1;
+        hasSep = true;
+        found = true;
+      } else if (isBlank(c) && !precedingBackslash) {
+        valueStart = keyLen + 1;
+        found = true;
+      } else {
+        if (c == 92) { precedingBackslash = !precedingBackslash; } else { precedingBackslash = false; }
+        keyLen = keyLen + 1;
+      }
+    }
+    boolean stop = false;
+    while (valueStart < limit && !stop) {
+      int c2 = lb[valueStart];
+      if (!isBlank(c2)) {
+        if (!hasSep && (c2 == 61 || c2 == 58)) { hasSep = true; } else { stop = true; }
+      }
+      if (!stop) { valueStart = valueStart + 1; }
+    }
+    String key = loadConvert(lb, 0, keyLen);
+    String value = loadConvert(lb, valueStart, limit);
+    put(key, value);
+  }
+  String loadConvert(int[] lb, int from, int end) {
+    String out = "";
+    int off = from;
+    while (off < end) {
+      int c = lb[off];
+      off = off + 1;
+      if (c == 92 && off < end) {
+        c = lb[off];
+        off = off + 1;
+        if (c == 117) {
+          if (off > end - 4) { throw new IllegalArgumentException("Malformed \\uxxxx encoding."); }
+          int v = 0;
+          int k = 0;
+          while (k < 4) {
+            int h = lb[off];
+            off = off + 1;
+            if (h >= 48 && h <= 57) { v = v * 16 + (h - 48); }
+            else if (h >= 97 && h <= 102) { v = v * 16 + (h - 87); }
+            else if (h >= 65 && h <= 70) { v = v * 16 + (h - 55); }
+            else { throw new IllegalArgumentException("Malformed \\uxxxx encoding."); }
+            k = k + 1;
+          }
+          c = v;
+        } else if (c == 116) { c = 9; }
+        else if (c == 114) { c = 13; }
+        else if (c == 110) { c = 10; }
+        else if (c == 102) { c = 12; }
+      }
+      out = out + JavaText.charString(c);
+    }
+    return out;
+  }
   < ---- END java implementation ---- >
 
   < ---- BEGIN java signatures (generated by tools/jdk_api_signatures.py) ---- >
@@ -488,7 +665,6 @@ class Properties {
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
   public synchronized java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Properties.clone()"); }
-  public synchronized void load(java.io.Reader reader) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Properties.load(java.io.Reader)"); }
   public void store(java.io.OutputStream out, java.lang.String comments) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Properties.store(java.io.OutputStream, java.lang.String)"); }
   public synchronized void replaceAll(java.util.function.BiFunction<? super java.lang.Object, ? super java.lang.Object, ?> function) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Properties.replaceAll(java.util.function.BiFunction<? super java.lang.Object, ? super java.lang.Object, ?>)"); }
   public void list(java.io.PrintStream out) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Properties.list(java.io.PrintStream)"); }
@@ -503,6 +679,5 @@ class Properties {
   public void save(java.io.OutputStream out, java.lang.String comments) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Properties.save(java.io.OutputStream, java.lang.String)"); }
   public synchronized void loadFromXML(java.io.InputStream in) throws java.io.IOException, java.util.InvalidPropertiesFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Properties.loadFromXML(java.io.InputStream)"); }
   public java.util.Enumeration<?> propertyNames() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Properties.propertyNames()"); }
-  public java.util.Set<java.lang.String> stringPropertyNames() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Properties.stringPropertyNames()"); }
   < ---- END java signatures ---- >
 }

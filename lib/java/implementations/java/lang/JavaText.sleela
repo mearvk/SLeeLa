@@ -3,9 +3,10 @@
    in SLeeLa with no VM change. A plain String has no character access, so
    these helpers convert it to UTF-16 (javaStringFromUtf8), work on the code
    units, and convert the result back through a table of one-character
-   literals. The way back covers printable ASCII (32..126) plus tab, newline
-   and carriage return; any other code unit, NUL included, fails closed with UnsupportedOperationException instead of producing wrong
-   text. Callers reach it as JavaText.name(...). >>
+   literals. The way back covers printable ASCII (32..126) plus backspace, tab,
+   newline, form feed and carriage return; any other code unit, NUL
+   included, fails closed with UnsupportedOperationException instead of
+   producing wrong text. Callers reach it as JavaText.name(...). >>
 #sleela 3.0
 material;
 
@@ -69,8 +70,10 @@ class JavaText {
   }
   static String[] buildTable() {
     String[] t = new String[128];
+    t[8] = "\b";
     t[9] = "\t";
     t[10] = "\n";
+    t[12] = "\f";
     t[13] = "\r";
     t[32] = " ";
     t[33] = "!";
@@ -189,7 +192,7 @@ class JavaText {
     int i = 0;
     while (i < n) {
       int c = javaStringCharAt(u, i);
-      if (!(c == 9 || c == 10 || c == 13 || (c >= 32 && c <= 126))) { return u; }
+      if (!(c == 8 || c == 9 || c == 10 || c == 12 || c == 13 || (c >= 32 && c <= 126))) { return u; }
       i = i + 1;
     }
     return plainOf(u);
