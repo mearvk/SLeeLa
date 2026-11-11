@@ -15,7 +15,7 @@ models return an evaluation.
 
 ---
 
-## 1. The foundation: the advantage model
+## 1. THE FOUNDATION: THE ADVANTAGE MODEL
 
 ### 1.1 Advantage (the math core)
 
@@ -78,7 +78,7 @@ counsel can rank.
 
 ---
 
-## 2. The trading models
+## 2. THE TRADING MODELS
 
 All eleven share one result shape (`tm_result`: total cost, expected proceeds,
 expected profit, return on cost, hold days) and one set of conventions:
@@ -226,7 +226,7 @@ reason to promote a token you hold.
 
 ---
 
-## 3. Supporting model: the rate budget
+## 3. SUPPORTING MODEL: THE RATE BUDGET
 
 `rate_budget.h`: `rb_parse_nonneg`, `rb_observe`, `rb_next_delay_ms`
 (C++: `RateBudget`).
@@ -245,7 +245,7 @@ permitted, and no faster.
 
 ---
 
-## 4. How they fit together
+## 4. HOW THEY FIT TOGETHER
 
 ```
  inputs you supply (prices, fees, odds, days)
@@ -285,7 +285,7 @@ and *consignment*, leverage from position in *regional arbitrage*).
 
 ---
 
-## 5. Limits that apply to every model
+## 5. LIMITS THAT APPLY TO EVERY MODEL
 
 - **Illustrative data only.** The demos' rankings mostly reflect invented
   inputs.
