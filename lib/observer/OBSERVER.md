@@ -87,3 +87,5 @@ observer's routing method is `deliverMessage`. `SLGuiDom`/`SLGuiApp` do not link
 under the current binary (pre-existing: `SLGuiEventType` statics and an
 `SLTheme` ambiguity between `ui` and `user-interface`), so the view is
 self-contained rather than built on them.
+
+See also `lib/hotlink/HOTLINK.md`: the hot-link matrix (XML Schema) and the linker that gates which module types may be admitted and connected.

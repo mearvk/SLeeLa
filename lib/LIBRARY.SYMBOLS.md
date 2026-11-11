@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 13257
-library-packages: 118
+library-source-files: 13262
+library-packages: 119
 module-facade-symbols: 84
-total-symbol-records: 13341
+total-symbol-records: 13346
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -1792,6 +1792,11 @@ gui	gui-events-demo.sleela	lib/gui/version-thual/gui-events-demo.sleela	source
 gui	gui-overflow-scroll-demo.sleela	lib/gui/version-thual/gui-overflow-scroll-demo.sleela	source
 gui	gui-scroll-screenfit-demo.sleela	lib/gui/version-thual/gui-scroll-screenfit-demo.sleela	source
 gui	gui-transitions-demo.sleela	lib/gui/version-thual/gui-transitions-demo.sleela	source
+hotlink	SLHotLinkIntegration.sleela	lib/hotlink/SLHotLinkIntegration.sleela	source
+hotlink	SLHotLinkMatrix.sleela	lib/hotlink/SLHotLinkMatrix.sleela	source
+hotlink	SLHotLinkRow.sleela	lib/hotlink/SLHotLinkRow.sleela	source
+hotlink	SLHotLinker.sleela	lib/hotlink/SLHotLinker.sleela	source
+hotlink	hotlink-demo.sleela	lib/hotlink/hotlink-demo.sleela	source
 html	SLPackage.sleela	lib/html/SLPackage.sleela	facade
 http	SLHttpBody.sleela	lib/http/SLHttpBody.sleela	source
 http	SLHttpCache.sleela	lib/http/SLHttpCache.sleela	source

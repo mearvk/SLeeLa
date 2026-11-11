@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  hotlink-matrix.xml: the standard hot-link matrix (instance of hotlink-matrix.xsd).
+  Mirrors SLHotLinkMatrix.standard() in SLHotLinkMatrix.sleela; the validator
+  tools/validate_hotlink_matrix.py fails if the two drift apart.
+-->
+<hotlinkMatrix xmlns="urn:sleela:hotlink:1.0" version="1.0" revision="1">
+  <provenance author="Kiro Agent" date="2026-11-11" origin="International"
+              scienceRating="8" nationalSchedule="none"/>
+
+  <classTypes>
+    <classType id="observer.responder" codeArrival="linked" instanceArrival="hot"
+               contract="port" minTrust="1" maxInstances="14" status="verified"
+               gates="audit trust-floor instance-cap quarantine hop-limit depth-cap revision-check">
+      <description>A module admitted to a SLDocumentObserver through a bounded port.</description>
+    </classType>
+
+    <classType id="vi.nested-model" codeArrival="linked" instanceArrival="hot"
+               contract="compartment" minTrust="2" maxInstances="4"
+               kindFirst="0" kindLast="0" status="verified"
+               gates="audit trust-floor instance-cap fanout-cap cycle-free">
+      <description>A compartment that embeds its own vertical-integration model (kind 0).</description>
+    </classType>
+
+    <classType id="vi.onion" codeArrival="linked" instanceArrival="hot"
+               contract="compartment" minTrust="1" maxInstances="8"
+               kindFirst="1" kindLast="1" status="verified"
+               gates="audit trust-floor instance-cap fanout-cap cycle-free">
+      <description>A straight Sequitur onion-model component (kind 1).</description>
+    </classType>
+
+    <classType id="vi.engineering-bay" codeArrival="linked" instanceArrival="hot"
+               contract="compartment" minTrust="1" maxInstances="8"
+               kindFirst="2" kindLast="2" status="verified"
+               gates="audit trust-floor instance-cap fanout-cap cycle-free">
+      <description>A medium-capacity build or process compartment (kind 2).</description>
+    </classType>
+
+    <classType id="vi.trial" codeArrival="linked" instanceArrival="hot"
+               contract="compartment" minTrust="1" maxInstances="8"
+               kindFirst="3" kindLast="3" status="verified"
+               gates="audit trust-floor instance-cap fanout-cap cycle-free">
+      <description>A study or experiment compartment (kind 3).</description>
+    </classType>
+
+    <classType id="vi.newton-tray" codeArrival="linked" instanceArrival="hot"
+               contract="compartment" minTrust="1" maxInstances="8"
+               kindFirst="4" kindLast="4" status="verified"
+               gates="audit trust-floor instance-cap fanout-cap cycle-free">
+      <description>A median-based enlightenment compartment (kind 4).</description>
+    </classType>
+
+    <classType id="vi.plain" codeArrival="linked" instanceArrival="hot"
+               contract="compartment" minTrust="1" maxInstances="16"
+               kindFirst="5" kindLast="16" status="verified"
+               gates="audit trust-floor instance-cap fanout-cap cycle-free">
+      <description>Plain compartments: resource, medium, hobby, game, entertainment, process,
+        consumption, trading, gaining, selling, forcing, challenging (kinds 5 to 16).</description>
+    </classType>
+
+    <classType id="native.extension" codeArrival="native" instanceArrival="hot"
+               contract="native-abi" minTrust="2" maxInstances="2"
+               requiresAuthorizer="true" digestPolicy="host-pinned" status="unverified"
+               gates="audit trust-floor instance-cap authorizer digest-pin">
+      <description>A native plugin module. The linker only approves; the host opens it, and only
+        after granting the authorizer and pinning the expected SHA-256.</description>
+    </classType>
+
+    <classType id="extends.module" codeArrival="linked" instanceArrival="cold"
+               contract="port" minTrust="1" maxInstances="14" status="declared"
+               gates="audit trust-floor instance-cap">
+      <description>A subclass-style module. Its instances exist only from program start, so the
+        linker refuses it while running.</description>
+    </classType>
+  </classTypes>
+
+  <links>
+    <link from="observer.responder" to="vi.plain" mode="feed" maxFanout="4"/>
+    <link from="observer.responder" to="vi.onion" mode="feed" maxFanout="4"/>
+    <link from="observer.responder" to="vi.engineering-bay" mode="feed" maxFanout="4"/>
+    <link from="observer.responder" to="vi.trial" mode="feed" maxFanout="4"/>
+    <link from="observer.responder" to="vi.newton-tray" mode="feed" maxFanout="4"/>
+    <link from="vi.engineering-bay" to="vi.trial" mode="feed" maxFanout="2"/>
+    <link from="vi.trial" to="vi.newton-tray" mode="feed" maxFanout="2"/>
+    <link from="vi.nested-model" to="vi.nested-model" mode="contain" maxFanout="2"/>
+    <link from="vi.nested-model" to="vi.plain" mode="contain" maxFanout="4"/>
+    <link from="vi.nested-model" to="vi.engineering-bay" mode="contain" maxFanout="4"/>
+    <link from="native.extension" to="observer.responder" mode="feed" maxFanout="2"/>
+  </links>
+</hotlinkMatrix>

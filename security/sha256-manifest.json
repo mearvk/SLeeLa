@@ -8354,6 +8354,26 @@
       "sha256": "d024e8480096efabc5955f64036ce83f571ae6614048a389854da763dc2917e5"
     },
     {
+      "path": "lib/hotlink/SLHotLinkIntegration.sleela",
+      "sha256": "59108a46eadd201cb9ab33a610a7de529bc3ef3df2248eb64c6466593e6d97ee"
+    },
+    {
+      "path": "lib/hotlink/SLHotLinkMatrix.sleela",
+      "sha256": "6500e69a6da3827f50621ace7087a7d2255e1398da31e1ce212f6578905265d5"
+    },
+    {
+      "path": "lib/hotlink/SLHotLinkRow.sleela",
+      "sha256": "ec2b7a440ad3f80030f98453c1d64985900df6aac2c413d08107b50623854d84"
+    },
+    {
+      "path": "lib/hotlink/SLHotLinker.sleela",
+      "sha256": "d559dad0037bb745d92bb0f3a64e2a9c0b01baf1509b821ee53890c6ba3e992a"
+    },
+    {
+      "path": "lib/hotlink/hotlink-demo.sleela",
+      "sha256": "e362f6837275acf42998c41fd677c4f2691a87753af729cdd08d65aa46cc74f3"
+    },
+    {
       "path": "lib/html/SLPackage.sleela",
       "sha256": "10f8580cc6d68f0a255aecebe2f3223e8d18a5d58418fac98b491c7ea17edd43"
     },

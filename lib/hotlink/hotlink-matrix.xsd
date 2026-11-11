@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  hotlink-matrix.xsd: schema for the SLeeLa hot-link matrix (version 1.0).
+
+  The matrix says, for every TYPE of class that may join a running system:
+    * how its CODE arrives            (codeArrival)
+    * whether an INSTANCE may arrive while the program runs (instanceArrival)
+    * how it talks to the host        (contract)
+    * who may bring it, and how many  (minTrust, maxInstances)
+    * which safety GATES guard it     (gates)
+  and, in <links>, which types may be CONNECTED to which, in what mode, and
+  with what fan-out. A connection that is not declared here is refused.
+
+  The backing model is lib/hotlink (SLHotLinkMatrix / SLHotLinker). The XSD 1.0
+  rules below cannot express cross-field constraints, so
+  tools/validate_hotlink_matrix.py enforces those too (see HOTLINK.md).
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="urn:sleela:hotlink:1.0"
+           xmlns="urn:sleela:hotlink:1.0"
+           elementFormDefault="qualified">
+
+  <!-- ===== vocabulary ===================================================== -->
+
+  <xs:simpleType name="TypeId">
+    <xs:annotation><xs:documentation>Stable dotted class-type id, e.g. vi.plain.</xs:documentation></xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:pattern value="[a-z][a-z0-9]*([.-][a-z0-9]+)*"/>
+      <xs:maxLength value="48"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="CodeArrival">
+    <xs:annotation><xs:documentation>
+      linked = the class is compiled in and linked when the program starts.
+      native = code arrives as a host-authorized native plugin (nativeOpen).
+    </xs:documentation></xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="linked"/>
+      <xs:enumeration value="native"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="InstanceArrival">
+    <xs:annotation><xs:documentation>
+      hot  = an instance may join a running system.
+      cold = instances exist only from program start; the linker refuses them later.
+    </xs:documentation></xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="hot"/>
+      <xs:enumeration value="cold"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Contract">
+    <xs:annotation><xs:documentation>
+      port        = bounded mailbox through a SLDocumentObserver.
+      compartment = a tier of a vertical-integration model.
+      native-abi  = the typed native-module ABI (null/bool/int64/double/UTF-8 only).
+    </xs:documentation></xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="port"/>
+      <xs:enumeration value="compartment"/>
+      <xs:enumeration value="native-abi"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Trust">
+    <xs:annotation><xs:documentation>0 anonymous, 1 worker, 2 executive.</xs:documentation></xs:annotation>
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="2"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="InstanceCap">
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="64"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="FanoutCap">
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="14"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="KindOrdinal">
+    <xs:annotation><xs:documentation>SLIntegrationKind id (0..16).</xs:documentation></xs:annotation>
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="16"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Status">
+    <xs:annotation><xs:documentation>
+      verified   = exercised by a passing self-check (lib/hotlink/hotlink-demo or observer-demo).
+      declared   = designed and enforced, but not yet exercised end to end.
+      unverified = depends on something not available in the committed toolchain.
+    </xs:documentation></xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="verified"/>
+      <xs:enumeration value="declared"/>
+      <xs:enumeration value="unverified"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="DigestPolicy">
+    <xs:annotation><xs:documentation>
+      none        = no content digest is involved.
+      host-pinned = the host pins the expected SHA-256 once; later attaches must present it.
+    </xs:documentation></xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="none"/>
+      <xs:enumeration value="host-pinned"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="EdgeMode">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="feed"/>
+      <xs:enumeration value="subscribe"/>
+      <xs:enumeration value="contain"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Gate">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="audit"/>
+      <xs:enumeration value="trust-floor"/>
+      <xs:enumeration value="instance-cap"/>
+      <xs:enumeration value="fanout-cap"/>
+      <xs:enumeration value="cycle-free"/>
+      <xs:enumeration value="quarantine"/>
+      <xs:enumeration value="hop-limit"/>
+      <xs:enumeration value="depth-cap"/>
+      <xs:enumeration value="revision-check"/>
+      <xs:enumeration value="authorizer"/>
+      <xs:enumeration value="digest-pin"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="GateList">
+    <xs:list itemType="Gate"/>
+  </xs:simpleType>
+
+  <!-- ===== structure ====================================================== -->
+
+  <xs:element name="hotlinkMatrix">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="provenance" minOccurs="0">
+          <xs:annotation><xs:documentation>
+            Mirrors the Metadata Class metapattern: faithful values or "none".
+          </xs:documentation></xs:annotation>
+          <xs:complexType>
+            <xs:attribute name="author" type="xs:string" use="required"/>
+            <xs:attribute name="date" type="xs:date" use="required"/>
+            <xs:attribute name="origin" type="xs:string" use="required"/>
+            <xs:attribute name="scienceRating" type="xs:integer" use="required"/>
+            <xs:attribute name="nationalSchedule" type="xs:string" use="required"/>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="classTypes">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="classType" maxOccurs="32">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="description" type="xs:string"/>
+                  </xs:sequence>
+                  <xs:attribute name="id" type="TypeId" use="required"/>
+                  <xs:attribute name="codeArrival" type="CodeArrival" use="required"/>
+                  <xs:attribute name="instanceArrival" type="InstanceArrival" use="required"/>
+                  <xs:attribute name="contract" type="Contract" use="required"/>
+                  <xs:attribute name="minTrust" type="Trust" use="required"/>
+                  <xs:attribute name="maxInstances" type="InstanceCap" use="required"/>
+                  <xs:attribute name="kindFirst" type="KindOrdinal" use="optional"/>
+                  <xs:attribute name="kindLast" type="KindOrdinal" use="optional"/>
+                  <xs:attribute name="requiresAuthorizer" type="xs:boolean" default="false"/>
+                  <xs:attribute name="digestPolicy" type="DigestPolicy" default="none"/>
+                  <xs:attribute name="status" type="Status" use="required"/>
+                  <xs:attribute name="gates" type="GateList" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="links">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="link" minOccurs="0" maxOccurs="64">
+                <xs:complexType>
+                  <xs:attribute name="from" type="TypeId" use="required"/>
+                  <xs:attribute name="to" type="TypeId" use="required"/>
+                  <xs:attribute name="mode" type="EdgeMode" use="required"/>
+                  <xs:attribute name="maxFanout" type="FanoutCap" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="version" type="xs:token" use="required" fixed="1.0"/>
+      <xs:attribute name="revision" type="xs:positiveInteger" use="required"/>
+    </xs:complexType>
+
+    <!-- every classType id is unique; every link endpoint names a classType;
+         a (from,to) pair is declared at most once -->
+    <xs:key name="classTypeKey">
+      <xs:selector xpath="classTypes/classType"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="linkFromRef" refer="classTypeKey">
+      <xs:selector xpath="links/link"/>
+      <xs:field xpath="@from"/>
+    </xs:keyref>
+    <xs:keyref name="linkToRef" refer="classTypeKey">
+      <xs:selector xpath="links/link"/>
+      <xs:field xpath="@to"/>
+    </xs:keyref>
+    <xs:unique name="linkPairUnique">
+      <xs:selector xpath="links/link"/>
+      <xs:field xpath="@from"/>
+      <xs:field xpath="@to"/>
+    </xs:unique>
+  </xs:element>
+</xs:schema>
