@@ -2833,3 +2833,74 @@ An identifier that follows `.` is a member name or the tail of a qualified
 name. It does not cause a `/lib` unit with that simple name to be loaded, so
 package-qualified signature types never trigger an ambiguous simple-name
 resolution.
+
+
+## 39. Object references (`x.ref`, `Ptr`, `Class.deref`)
+
+This section is **normative**. It gives every class or struct instance an
+implicit second view: the VM-level reference of the object. The design rationale,
+the two-tier model, and the measured VM details are in `/POINTERS.md`.
+
+### 39.1 Forms
+
+```
+ref-expr    ::= primary "." "ref"
+deref-expr  ::= class-name "." "deref" "(" expr ")"
+ptr-call    ::= "Ptr" "." ptr-fn "(" [ expr ] ")"
+ptr-fn      ::= "valid" | "old" | "id" | "gen" | "type" | "fields"
+              | "bytes" | "age" | "live" | "limit"
+```
+
+| Form | Type | Meaning |
+|---|---|---|
+| `x.ref` | `int` | the reference of object `x`; `0` when `x` is `null` |
+| `Class.deref(p)` | `Class` | the object `p` names if valid and an instance of `Class`, else `null` |
+| `Ptr.valid(p)`, `Ptr.old(p)` | `boolean` | slot holds the same incarnation; promoted to the old generation |
+| `Ptr.id/gen/type/fields/bytes/age(p)` | `int` | slot index, incarnation, layout index, field slots, collector size in bytes, collections survived; `-1` when `p` is not valid |
+| `Ptr.live()`, `Ptr.limit()` | `int` | active objects in the VM; the object-store ceiling |
+
+### 39.2 Meaning
+
+A reference is an ordinary `int` that packs a slot of the VM's bounded instance
+store and a 31-bit incarnation counter of that slot,
+`(generation << 32) | (slot + 1)`; `0` is the null reference. It is **never a
+machine address**. The collector bumps a slot's generation each time it reclaims
+the slot, so a reference taken before a reclamation never names the object that
+later reuses the slot. A reference does not keep its object alive (it is not an
+object value and is not traced).
+
+Every use is validated: the slot must be in range and occupied, the generation
+must equal the slot's current generation, and, for `deref`, the object must be an
+instance of the named class (a subclass qualifies). A null, stale, forged or
+wrong-class reference never traps and never reaches memory: `deref` yields
+`null`, boolean views yield `false`, and integer views yield `-1`. `deref` returns
+an ordinary strong object value, and it shades the object if a collection is
+marking so that value cannot be freed.
+
+### 39.3 Resolution rules
+
+- `x.ref` applies when `x` has a class or struct type and that type declares no
+  field named `ref`; a declared field named `ref` is always the member. `ref` is
+  not a keyword.
+- `x.ref` is **read-only**: `x.ref = v;` is a compile error.
+- `Class.deref(p)` applies when `Class` names a class and declares no method named
+  `deref`, and is not a variable in scope.
+- The `Ptr` namespace applies only when no class, struct, variable, parameter or
+  field named `Ptr` is in scope (the same rule that recognises `Munction`).
+- `Ptr.*` and `Class.deref` require an `int` argument (or `null`); any other type
+  is a compile error.
+- These forms are **not version-gated**: `x.ref` on a type with no `ref` field was
+  already a compile error in every edition, so no previously valid program
+  changes meaning.
+- Arithmetic on references is not a supported operation. A reference is an
+  `int`, so `p + 1` compiles, but the result is validated like any other
+  reference and may name a different live object.
+
+### 39.4 Runtime
+
+One appended opcode, `OP_REF` (182), implements all of it; its operand packs a
+selector (low 4 bits) and, for `deref`, the class layout index above them. The
+artifact ABI minor version advances to 7 and the artifact layout is unchanged;
+older runtimes reject artifacts containing the new opcode. Artifact validation
+checks the selector and class operand. References are not persisted: they are
+meaningful only within one run of one VM.

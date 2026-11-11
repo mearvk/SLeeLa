@@ -165,6 +165,10 @@ typedef struct {
     int type;
     SLValue fields[SL_MAX_STRUCT_FIELDS];
     SLGCObject *gc_object;
+    /* Incarnation counter of this slot (31 bits). Bumped each time the instance
+     * is reclaimed, so an OP_REF handle taken before the sweep no longer
+     * matches a new object that reuses the slot. Survives slot reuse. */
+    uint32_t generation;
 } SLStructInstance;
 
 /* A live array instance: a dynamic, growable sequence of SLValues. Like a
@@ -1379,7 +1383,7 @@ static void gc_java_string_destroy(void *payload) {
 }
 static void gc_struct_destroy(void *payload) {
     SLStructInstance *si = (SLStructInstance *)payload;
-    if (si) { si->active = 0; si->gc_object = NULL; }
+    if (si) { si->active = 0; si->gc_object = NULL; si->generation = (si->generation + 1u) & 0x7fffffffu; }
 }
 static void gc_array_destroy(void *payload) {
     SLArrayInstance *ai = (SLArrayInstance *)payload;
@@ -1440,6 +1444,27 @@ static int struct_type_is_a(SLVM* vm, int actual, int expected) {
         actual = vm->struct_types[actual].parent_type;
     }
     return 0;
+}
+
+/* ---- object references (OP_REF): weak, generation-checked handles --------- */
+/* A ref is an SL_INT: (generation << 32) | (slot + 1). 0 is the null ref. It is
+ * never a machine address; it indexes the bounded instance store and is
+ * validated on every use. */
+static int64_t ref_pack(int idx, uint32_t gen) {
+    return ((int64_t)(gen & 0x7fffffffu) << 32) | (int64_t)(uint32_t)(idx + 1);
+}
+/* Caller holds struct_mtx. Returns 1 and sets *idx only when `r` names a LIVE
+ * instance of the SAME incarnation (slot in range, active, generation equal). */
+static int ref_resolve_locked(SLVM* vm, int64_t r, int* idx) {
+    if (r <= 0 || !vm->structs) return 0;
+    uint32_t lo = (uint32_t)(r & 0xffffffffLL);
+    uint32_t gen = (uint32_t)((r >> 32) & 0x7fffffffLL);
+    if (lo == 0 || lo > (uint32_t)SL_MAX_STRUCTS) return 0;
+    int i = (int)lo - 1;
+    if (!vm->structs[i].active) return 0;
+    if ((vm->structs[i].generation & 0x7fffffffu) != gen) return 0;
+    *idx = i;
+    return 1;
 }
 
 /* ---- array instances: the same bounded-handle discipline as structs ------- */
@@ -3747,6 +3772,68 @@ static SLResult run_thread(SLThread* t) {
                 matches=((int)value.type==targetTag);
             }
             PUSH(slval_bool(matches));
+        } break;
+        /* ---- object reference: the VM-level view of an object (see sleela_core.h) */
+        case OP_REF: {
+            int sel=SLREF_SEL(in.a);
+            if(sel>=SLREF_COUNT) TERR("invalid ref selector");
+            if(sel==SLREF_LIVE) {
+                pthread_mutex_lock(&vm->struct_mtx);
+                int nlive=vm->nstruct_live;
+                pthread_mutex_unlock(&vm->struct_mtx);
+                PUSH(slval_int(nlive)); break;
+            }
+            if(sel==SLREF_LIMIT) { PUSH(slval_int(SL_MAX_STRUCTS)); break; }
+            SLValue rvv=POP();
+            if(sel==SLREF_OF) {
+                if(rvv.type==SL_NULL) { PUSH(slval_int(0)); break; }
+                if(rvv.type!=SL_STRUCT) TERR("ref requires an object");
+                pthread_mutex_lock(&vm->struct_mtx);
+                int okobj=struct_valid_handle(vm,rvv.as.h);
+                int64_t made=okobj?ref_pack(rvv.as.h,vm->structs[rvv.as.h].generation):0;
+                pthread_mutex_unlock(&vm->struct_mtx);
+                if(!okobj) TERR("ref of an invalid object");
+                PUSH(slval_int(made)); break;
+            }
+            int64_t rraw=0;
+            if(rvv.type==SL_INT) rraw=rvv.as.i;
+            else if(rvv.type!=SL_NULL) TERR("a ref operation requires a ref (int) value");
+            int ridx=-1;
+            SLValue rout;
+            pthread_mutex_lock(&vm->struct_mtx);
+            if(ref_resolve_locked(vm,rraw,&ridx)) {
+                SLStructInstance* rsi=&vm->structs[ridx];
+                switch(sel) {
+                    case SLREF_DEREF:
+                        if(struct_type_is_a(vm,rsi->type,SLREF_TYPEIDX(in.a))) {
+                            /* A weak ref may name an object that is unreachable but
+                             * not yet swept. Turning it back into a strong value
+                             * while a collection is marking would let the sweep
+                             * free a value now on the stack, so shade it first. */
+                            if(rsi->gc_object && gc_phase(&vm->gc)==SLGC_MARKING) gc_mark(&vm->gc,rsi->gc_object);
+                            rout=slval_struct(ridx);
+                        } else rout=slval_null();
+                        break;
+                    case SLREF_VALID:  rout=slval_bool(1); break;
+                    case SLREF_ID:     rout=slval_int(ridx); break;
+                    case SLREF_GEN:    rout=slval_int((int64_t)(rsi->generation & 0x7fffffffu)); break;
+                    case SLREF_TYPE:   rout=slval_int(rsi->type); break;
+                    case SLREF_FIELDS: rout=slval_int(vm->struct_types[rsi->type].nfields); break;
+                    case SLREF_BYTES:  rout=slval_int(rsi->gc_object?(int64_t)rsi->gc_object->bytes:0); break;
+                    case SLREF_AGE:    rout=slval_int(rsi->gc_object?(int64_t)rsi->gc_object->age:0); break;
+                    case SLREF_OLD:    rout=slval_bool(rsi->gc_object && rsi->gc_object->generation==SLGC_GENERATION_OLD); break;
+                    default:           rout=slval_int(-1); break;
+                }
+            } else {
+                /* Stale, forged or null: fail closed with a neutral answer. */
+                switch(sel) {
+                    case SLREF_DEREF: rout=slval_null(); break;
+                    case SLREF_VALID: case SLREF_OLD: rout=slval_bool(0); break;
+                    default: rout=slval_int(-1); break;
+                }
+            }
+            pthread_mutex_unlock(&vm->struct_mtx);
+            PUSH(rout);
         } break;
         /* ---- arrays: dynamic, zero-indexed SLValue sequences ------------ */
         case OP_NEWARRAY: {

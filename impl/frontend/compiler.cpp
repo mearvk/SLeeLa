@@ -707,11 +707,15 @@ private:
         // the return type is scalar or the method cannot be resolved.
         if(auto mc=dynamic_cast<const MethodCall*>(e)){
             std::string rt;
-            { std::string sc; if(isStaticClassRef(mc->receiver.get(),sc)) rt=sc; }
+            bool viaClassName=false;
+            { std::string sc; if(isStaticClassRef(mc->receiver.get(),sc)){ rt=sc; viaClassName=true; } }
             if(rt.empty()) rt=exprStructType(mc->receiver.get());
             if(rt.empty()) return "";
             auto fi=funcIndex_.find(rt+"::"+mc->method);
-            if(fi==funcIndex_.end()) return "";
+            if(fi==funcIndex_.end()){
+                if(viaClassName && mc->method=="deref" && structLayout_.count(rt)) return rt;
+                return "";
+            }
             const std::string& ret=methods_[fi->second].method->retType;
             if(structLayout_.count(ret)) return ret;
             return "";
@@ -838,7 +842,41 @@ private:
         }
         { std::string sc; if(isStaticClassRef(m.base.get(),sc)){ auto g=fieldGlobal_.find(sc+"::"+m.field);
             if(g!=fieldGlobal_.end()){ emit(OP_LOADG,g->second); return; } } }
+        if(m.field=="ref"){
+            // Implicit object reference: x.ref. A declared field named ref wins.
+            const std::string rtn=exprStructType(m.base.get());
+            auto rl=rtn.empty()?structLayout_.end():structLayout_.find(rtn);
+            if(rl!=structLayout_.end() && !rl->second.fieldOffset.count("ref")){
+                emitExpr(m.base.get()); emit(OP_REF,SLREF_PACK(SLREF_OF,0)); return;
+            }
+        }
         int off=-1;memberLayout(m.base.get(),m.field,off);emitExpr(m.base.get());emit(OP_GETFIELD,off);
+    }
+    // True when `e` is the bare name `Ptr` and nothing named Ptr is in scope, so
+    // the builtin Ptr namespace applies (mirrors how Munction is recognised).
+    bool isRefNamespace(const Expr* e) const {
+        auto v=dynamic_cast<const VarExpr*>(e);
+        if(!v||v->name!="Ptr") return false;
+        if(ctx_ && ctx_->slotOf("Ptr")>=0) return false;
+        if(instanceFieldOffset("Ptr")>=0) return false;
+        if(fieldGlobal_.count(currentClass_+"::Ptr")) return false;
+        if(structLayout_.count("Ptr")) return false;
+        return true;
+    }
+    // Lower Ptr.<fn>(...). Each is one OP_REF whose operand selects the view.
+    void emitRefCall(const MethodCall& mc){
+        struct Fn{ const char* name; int sel; int argc; };
+        static const Fn fns[]={
+            {"valid",SLREF_VALID,1},{"old",SLREF_OLD,1},{"id",SLREF_ID,1},{"gen",SLREF_GEN,1},
+            {"type",SLREF_TYPE,1},{"fields",SLREF_FIELDS,1},{"bytes",SLREF_BYTES,1},{"age",SLREF_AGE,1},
+            {"live",SLREF_LIVE,0},{"limit",SLREF_LIMIT,0}};
+        for(const Fn& f:fns){
+            if(mc.method!=f.name) continue;
+            if((int)mc.args.size()!=f.argc) throw std::runtime_error("Semantic error: Ptr."+mc.method+"() expects "+std::to_string(f.argc)+" argument(s), got "+std::to_string(mc.args.size()));
+            if(f.argc==1) emitExpr(mc.args[0].get());
+            emit(OP_REF,SLREF_PACK(f.sel,0)); return;
+        }
+        throw std::runtime_error("Semantic error: Ptr has no function '"+mc.method+"'");
     }
     // Lower a fluent `.method(args)` call. Munction reach verbs consume the
     // receiver's reach handle and push it back (so the chain keeps flowing);
@@ -872,8 +910,16 @@ private:
             if(m=="reception"){noArg("reception");emit(OP_MUN_RECEPTION);return;}
             /* close / closeWithReceipt */ noArg(m.c_str());emit(OP_MUN_CLOSE);return;
         }
+        if(isRefNamespace(mc.receiver.get())){ emitRefCall(mc); return; }
         { std::string sc; if(isStaticClassRef(mc.receiver.get(),sc)){
             auto st=funcIndex_.find(sc+"::"+m);
+            if(st==funcIndex_.end() && m=="deref"){
+                // Implicit Class.deref(ref): the object if the ref is valid and an
+                // instance of Class, else null.
+                if(mc.args.size()!=1) throw std::runtime_error("Semantic error: '"+sc+".deref' expects 1 argument, got "+std::to_string(mc.args.size()));
+                emitExpr(mc.args[0].get());
+                emit(OP_REF,SLREF_PACK(SLREF_DEREF,structLayout_.at(sc).typeIndex)); return;
+            }
             if(st!=funcIndex_.end() && methods_[st->second].method->isStatic){
                 const Method* sm=methods_[st->second].method;
                 if((int)mc.args.size()!=(int)sm->params.size())throw std::runtime_error("Semantic error: method '"+sc+"::"+m+"' expects "+std::to_string(sm->params.size())+" argument(s), got "+std::to_string(mc.args.size()));

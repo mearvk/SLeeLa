@@ -358,7 +358,7 @@ class Analyzer{
    Type t=tn(d->type);if(t.kind==Kind::Error){err("unknown variable type '"+d->type+"'");return;}if(t.kind==Kind::Void){err("variable '"+d->name+"' cannot be void");return;}if(d->init){Type g=expr(*d->init);if(!assignable(t,g))err("initializer for variable '"+d->name+"' has type "+nameOf(g)+", expected "+nameOf(t));}declare(d->name,t);return;
   }
   if(auto a=dynamic_cast<const Assign*>(&s)){Type t=lookup(a->name);if(t.kind==Kind::Error){err("assignment to undeclared variable '"+a->name+"'");return;}Type g=expr(*a->value);if(!assignable(t,g))err("cannot assign "+nameOf(g)+" to '"+a->name+"' of type "+nameOf(t));return;}
-  if(auto f=dynamic_cast<const FieldAssign*>(&s)){Type t=member(*f->base,f->field),g=expr(*f->value);if(t.kind!=Kind::Error&&!assignable(t,g))err("cannot assign "+nameOf(g)+" to field '"+f->field+"' of type "+nameOf(t));return;}
+  if(auto f=dynamic_cast<const FieldAssign*>(&s)){if(isImplicitRef(*f->base,f->field)){err("'ref' is the implicit reference of an object and is read-only");return;}Type t=member(*f->base,f->field),g=expr(*f->value);if(t.kind!=Kind::Error&&!assignable(t,g))err("cannot assign "+nameOf(g)+" to field '"+f->field+"' of type "+nameOf(t));return;}
   if(auto gh=dynamic_cast<const GcHintStmt*>(&s)){
    // GC hint (syntax 1.9): `x = gc N;` / `x = mem N;`. The target must be an
    // in-scope value the developer is releasing, and the aggressiveness must be
@@ -426,6 +426,18 @@ class Analyzer{
   if(auto m=dynamic_cast<const MemberAccess*>(&e))return m->field=="next"&&isNextChain(*m->base);
   return false;
  }
+ // True when `base.ref` names the implicit object reference: the base is a
+ // class/struct value whose declared fields do not include a field named ref.
+ // Evaluated quietly so the caller reports any diagnostics exactly once.
+ bool isImplicitRef(const Expr&base,const std::string&f){
+  if(f!="ref")return false;
+  const size_t keep=r.errors.size();
+  Type b=expr(base);
+  r.errors.resize(keep);
+  if(b.kind!=Kind::Struct)return false;
+  auto s0=fields.find(b.name);
+  return s0!=fields.end()&&!s0->second.count("ref");
+ }
  Type member(const Expr&e,const std::string&f){
   if(auto rv=dynamic_cast<const VarExpr*>(&e)){
    if(classNames.count(rv->name) && lookup(rv->name).kind==Kind::Error){
@@ -434,7 +446,7 @@ class Analyzer{
     err("class '"+rv->name+"' has no static field '"+f+"'");return{Kind::Error,{}};
    }
   }
-  Type b=expr(e);if(b.kind==Kind::Unknown)return b;if(b.kind!=Kind::Struct){err("member '"+f+"' requires a struct value, got "+nameOf(b));return{Kind::Error,{}};}auto s=fields.find(b.name);if(s==fields.end()){err("unknown struct '"+b.name+"'");return{Kind::Error,{}};}auto x=s->second.find(f);if(x==s->second.end()){err("struct '"+b.name+"' has no field '"+f+"'");return{Kind::Error,{}};}return x->second;}
+  Type b=expr(e);if(b.kind==Kind::Unknown)return b;if(f=="ref"&&b.kind==Kind::Struct){auto s0=fields.find(b.name);if(s0!=fields.end()&&!s0->second.count("ref"))return{Kind::Int,{}};}if(b.kind!=Kind::Struct){err("member '"+f+"' requires a struct value, got "+nameOf(b));return{Kind::Error,{}};}auto s=fields.find(b.name);if(s==fields.end()){err("unknown struct '"+b.name+"'");return{Kind::Error,{}};}auto x=s->second.find(f);if(x==s->second.end()){err("struct '"+b.name+"' has no field '"+f+"'");return{Kind::Error,{}};}return x->second;}
  Type expr(const Expr&e){
   if(dynamic_cast<const IntLit*>(&e)){return{Kind::Int,{}};}
   if(dynamic_cast<const DoubleLit*>(&e)){return{Kind::Double,{}};}
@@ -471,7 +483,7 @@ class Analyzer{
   if(auto a=dynamic_cast<const AssignmentExpr*>(&e)){
    Type g=expr(*a->value);
    if(auto v=dynamic_cast<const VarExpr*>(a->target.get())){Type t=lookup(v->name);if(t.kind==Kind::Error){err("assignment to undeclared variable '"+v->name+"'");return{Kind::Error,{}};}if(!assignable(t,g))err("cannot assign "+nameOf(g)+" to '"+v->name+"' of type "+nameOf(t));return t;}
-   if(auto mm=dynamic_cast<const MemberAccess*>(a->target.get())){Type t=member(*mm->base,mm->field);if(t.kind!=Kind::Error&&!assignable(t,g))err("cannot assign "+nameOf(g)+" to field '"+mm->field+"'");return t;}
+   if(auto mm=dynamic_cast<const MemberAccess*>(a->target.get())){if(isImplicitRef(*mm->base,mm->field)){err("'ref' is the implicit reference of an object and is read-only");return{Kind::Error,{}};}Type t=member(*mm->base,mm->field);if(t.kind!=Kind::Error&&!assignable(t,g))err("cannot assign "+nameOf(g)+" to field '"+mm->field+"'");return t;}
    if(auto aa=dynamic_cast<const ArrayAccess*>(a->target.get())){Type base=expr(*aa->base);Type idx=expr(*aa->index);if(idx.kind!=Kind::Int&&idx.kind!=Kind::Unknown)err("array index must be int, got "+nameOf(idx));if(base.kind==Kind::Array){Type el=typeOf(base.elem);if(!assignable(el,g))err("cannot assign "+nameOf(g)+" to element of "+nameOf(base));return el;}if(base.kind!=Kind::Unknown)err("index assignment requires an array value, got "+nameOf(base));return g;}
    err("assignment target must be a variable, struct field, or array element");return{Kind::Error,{}};
   }
@@ -625,11 +637,34 @@ class Analyzer{
  }
  Type fluent(const MethodCall&m){
   if(m.method=="start"){if(auto r=dynamic_cast<const VarExpr*>(m.receiver.get())){if(r->name=="Munction"){if(m.args.size()!=1)err("Munction.start(name) takes one argument");else{Type t=expr(*m.args[0]);if(t.kind!=Kind::String&&t.kind!=Kind::Unknown)err("Munction.start name must be string");}return{Kind::Unknown,{}};}}}
+  // The builtin `Ptr` namespace: Ptr.valid(p), Ptr.id(p), ... operate on an
+  // object reference (an int obtained from `obj.ref`). Like `Munction`, it is
+  // special only when no class/struct/variable named Ptr is in scope.
+  if(auto rf=dynamic_cast<const VarExpr*>(m.receiver.get())){
+   if(rf->name=="Ptr" && !classNames.count("Ptr") && !structs.count("Ptr") && lookup("Ptr").kind==Kind::Error){
+    static const std::map<std::string,std::pair<int,Kind>> refFns={
+     {"valid",{1,Kind::Bool}},{"old",{1,Kind::Bool}},{"id",{1,Kind::Int}},{"gen",{1,Kind::Int}},
+     {"type",{1,Kind::Int}},{"fields",{1,Kind::Int}},{"bytes",{1,Kind::Int}},{"age",{1,Kind::Int}},
+     {"live",{0,Kind::Int}},{"limit",{0,Kind::Int}}};
+    auto fn=refFns.find(m.method);
+    if(fn==refFns.end()){err("Ptr has no function '"+m.method+"' (valid, old, id, gen, type, fields, bytes, age, live, limit)");return{Kind::Error,{}};}
+    if((int)m.args.size()!=fn->second.first){err("Ptr."+m.method+"() expects "+std::to_string(fn->second.first)+" argument(s), got "+std::to_string(m.args.size()));return{Kind::Error,{}};}
+    for(const auto&a:m.args){Type t=expr(*a);if(t.kind!=Kind::Int&&t.kind!=Kind::Unknown&&t.kind!=Kind::Null)err("Ptr."+m.method+"() takes a ref (int), got "+nameOf(t));}
+    return{fn->second.second,{}};
+   }
+  }
   // Static access through the class name (Java): Class.method(args), when the
   // receiver names a class and is not a variable in scope.
   if(auto rv=dynamic_cast<const VarExpr*>(m.receiver.get())){
    if(classNames.count(rv->name) && lookup(rv->name).kind==Kind::Error){
     auto st=methods.find(rv->name+"::"+m.method);
+    if(st==methods.end() && m.method=="deref"){
+     // Implicit `Class.deref(ref)`: the object if the ref is valid and an
+     // instance of this class, else null. Never raises on a stale ref.
+     if(m.args.size()!=1){err("'"+rv->name+".deref' expects 1 argument, got "+std::to_string(m.args.size()));return{Kind::Error,{}};}
+     Type t=expr(*m.args[0]);if(t.kind!=Kind::Int&&t.kind!=Kind::Unknown&&t.kind!=Kind::Null)err("'"+rv->name+".deref' takes a ref (int), got "+nameOf(t));
+     return{Kind::Struct,rv->name};
+    }
     if(st==methods.end()){err("class '"+rv->name+"' has no method '"+m.method+"'");return{Kind::Error,{}};}
     const Method& target=*st->second.m;
     if(!target.isStatic){err("instance method '"+rv->name+"::"+m.method+"' must be called on an instance");return{Kind::Error,{}};}

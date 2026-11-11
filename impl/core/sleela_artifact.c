@@ -190,6 +190,10 @@ static int validate_loaded_vm(const SLVM* vm, char* error, size_t error_size) {
             case OP_SEND: case OP_RECV:
                 if (in->a < 0 || in->a >= SL_MAX_LOCKS) { abi_error(error,error_size,"synchronization slot outside ABI range"); return 0; }
                 break;
+            case OP_REF:
+                if (in->a < 0 || SLREF_SEL(in->a) >= SLREF_COUNT) { abi_error(error,error_size,"ref selector outside ABI range"); return 0; }
+                if (SLREF_SEL(in->a) == SLREF_DEREF && SLREF_TYPEIDX(in->a) >= vm->nstruct_types) { abi_error(error,error_size,"ref class operand outside struct table"); return 0; }
+                break;
             case OP_SYN_STAT: case OP_BEST_STAT:
                 if (in->a < 0 || in->a > 6) { abi_error(error,error_size,"stat selector outside ABI range"); return 0; }
                 break;

@@ -1,0 +1,6 @@
+#sleela 3.0
+class RefUnknownFn {
+    static void main() {
+        print(Ptr.bogus(1));
+    }
+}

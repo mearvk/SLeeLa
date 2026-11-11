@@ -201,6 +201,7 @@ This is the human-readable support map for the canonical source-defined SLeeLa I
 179 | `OP_IPC_OPEN` | Reserved; fail-closed pending process supervisor and VM worker table | `impl/core/sleela_core.c`
 180 | `OP_IPC_CALL` | Reserved; fail-closed pending process supervisor and VM worker table | `impl/core/sleela_core.c`
 181 | `OP_IPC_CLOSE` | Reserved; fail-closed pending process supervisor and VM worker table | `impl/core/sleela_core.c`
+182 | `OP_REF` | Implemented | `impl/core/sleela_core.c`
 
 
 
@@ -223,6 +224,23 @@ operand shapes. The interpreter currently rejects all three with an explicit
 fail-closed diagnostic; they do not launch a worker or create a live handle yet.
 Runtime execution becomes available only after the native process supervisor,
 host capability authorizer, and VM-owned worker-handle table are integrated.
+
+## Object reference opcode
+
+Opcode 182 is the append-only `OP_REF`, the VM-level view of an object (the
+second tier of the two-tier object model; see `/POINTERS.md`). Its single
+operand packs a selector in the low 4 bits and, for `DEREF`, the class type
+index above them: `a = (typeIndex << 4) | selector`. Selectors: `OF`, `DEREF`,
+`VALID`, `ID`, `GEN`, `TYPE`, `FIELDS`, `BYTES`, `AGE`, `OLD`, `LIVE`, `LIMIT`.
+
+A ref is an ordinary `SL_INT` packed as `(generation << 32) | (slot + 1)`, so
+`0` is the null ref. It is a **weak, generation-checked handle**, never a
+machine address: every use validates the slot (in range, active, same
+generation) and a ref that fails validation reads as invalid rather than
+aliasing a different object. Artifact validation checks the selector and the
+class operand. The VM artifact ABI minor version advances to 7; artifact
+serialization layout is unchanged, and older runtimes reject artifacts that
+contain the new opcode.
 
 ## Runtime rule
 

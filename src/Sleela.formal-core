@@ -1033,6 +1033,32 @@ model; it does not authorize a feature the compiler rejects.
      matching for manual lists; any stronger uniqueness rule must be stated by
      the normative grammar/compiler before being treated as implemented.
 
+15.6 Object references (3.0). Let O be the set of live class/struct instances and
+     S the VM's bounded slot set, with a total slot map slot : O -> S and a
+     per-slot incarnation g : S -> N that is incremented exactly when the
+     collector reclaims the slot. For an object o define
+
+       ref(o) = (g(slot(o)) << 32) | (slot(o) + 1)         ref(null) = 0
+
+     and for an integer r define resolve(r) = o iff r > 0, slot index s = (r mod
+     2^32) - 1 lies in S, s is occupied by some o, and g(s) equals the incarnation
+     encoded in r. Otherwise resolve(r) is undefined. Then:
+
+       (a) resolve(ref(o)) = o for every live o until o is reclaimed;
+       (b) after slot(o) is reclaimed, resolve(ref(o)) is undefined even if the
+           slot is reused, because g(slot(o)) has advanced;
+       (c) Class.deref(r) = resolve(r) if defined and an instance of Class
+           (subclasses included), and null otherwise;
+       (d) ref is weak: it is an integer, not an object value, and does not make
+           o reachable.
+
+     No claim is made that ref(o) is a machine address or that arithmetic on refs
+     has a meaning beyond being an integer that is re-validated on use. Refs are
+     not persisted across runs, and methods remain statically bound, so deref
+     yields the requested class, not a runtime-dispatched most-derived type. The
+     normative source is SLEELA.syntax section 39; the design rationale is
+     /POINTERS.md.
+
 ================================================================================
 Part VIII — SleelaDoc Rich Pages as an Observational Documentation Layer
 ================================================================================

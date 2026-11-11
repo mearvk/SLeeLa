@@ -235,7 +235,7 @@
     },
     {
       "path": "impl/core/sleela_artifact.c",
-      "sha256": "34668a9d7b2e1bb065e2e834a5cb6e0c2670ff04ab44326792cd12334773b733"
+      "sha256": "32f522779fcd6b97b6bc7ee21a988c1dee0291e78635083f560e2ae2e9548b13"
     },
     {
       "path": "impl/core/sleela_audio_bridge.cpp",
@@ -263,11 +263,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "10bda96e34acab7c74d2669450a831f3f9a8dc1625bc0a7f8ca28f54cade8c2f"
+      "sha256": "afda33c37627754adf16d7e89d9b2fa35f186ecf996bf6b00020cc6527cd0c20"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "1f1a1f6844ab13918e815c61b1ffde8f3d34f506409a35cf1a177db598203ba4"
+      "sha256": "afe24a4d7c57f11c2cf614ef4a90d16e6213601169af8f943dccdf520d9d9f28"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -551,7 +551,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "0c55bdf9c48a4417160ddb17c2f2d3de1425e016d2d56be67a8d48eca67dc3f0"
+      "sha256": "8f3cc2534d60837ea181517e30e82ce6126012c4b5361f02a2bd564b1131fcf0"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -663,7 +663,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "cd2d057b70868640c63a328e964304bf0654a851813eeed91a817751999615c8"
+      "sha256": "54d8b401b3eac33a2cbd46d5833278ba02c11efd671a7f5358ebc3be4909d745"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -53791,7 +53791,7 @@
     },
     {
       "path": "lib/vm/InstructionSet.sleela",
-      "sha256": "ab84377b9b3fa5c99352e26c031c50da5cf7095c98640142f6300e61fd73ff69"
+      "sha256": "e7ea5b4ce509dce7574867a7144d0737dfdc4d951e0db48a48ff325c88c43467"
     },
     {
       "path": "lib/vm/SLNativeMemory.sleela",

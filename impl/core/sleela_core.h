@@ -6,7 +6,7 @@
 
 /* Stable VM artifact/runtime ABI identifiers. */
 #define SLEELA_VM_ABI_MAJOR 1u
-#define SLEELA_VM_ABI_MINOR 6u
+#define SLEELA_VM_ABI_MINOR 7u
 #define SLEELA_ARTIFACT_FORMAT_VERSION 4u
 #define SL_NATIVE_METHOD_ABI_VERSION 0x00010000u
 #define SL_NATIVE_METHOD_FLAG_ANNOTATED 0x00000001u
@@ -294,11 +294,49 @@ typedef enum {
     OP_IPC_OPEN,
     OP_IPC_CALL,
     OP_IPC_CLOSE,
+    /* Object reference ("ref"): the second, VM-level view of an object.
+     * One opcode; operand a packs a selector and, for DEREF, a class type:
+     *     a = (typeIndex << 4) | selector          (see SLRefSelector)
+     * A ref is an ordinary SL_INT, packed as (generation << 32) | (slot + 1),
+     * so 0 is the null ref. It is a WEAK, generation-checked handle: it does
+     * not keep the object alive, and a slot reused after a sweep carries a new
+     * generation, so a stale ref is detected, never aliased. It is never a
+     * machine address. Every use is validated (slot in range, active,
+     * generation matches); a ref that fails validation reads as invalid.
+     * Stack effect by selector:
+     *   OF      pops object-or-null, pushes ref
+     *   DEREF   pops ref, pushes the object if valid and an instance of the
+     *           class operand, else null
+     *   VALID/OLD       pop ref, push bool
+     *   ID/GEN/TYPE/FIELDS/BYTES/AGE  pop ref, push int (-1 when invalid)
+     *   LIVE/LIMIT      pop nothing, push int (VM-wide object counts)
+     * Appended; never renumber prior opcodes. */
+    OP_REF,
     /* Sentinel: one past the last real opcode. Artifact validation uses this so
      * every defined opcode is accepted and adding a new opcode above never
      * requires updating the validator's upper bound again. KEEP LAST. */
     OP__COUNT
 } SLOp;
+
+/* Selectors for OP_REF (the low 4 bits of operand a). */
+typedef enum {
+    SLREF_OF = 0,
+    SLREF_DEREF,
+    SLREF_VALID,
+    SLREF_ID,
+    SLREF_GEN,
+    SLREF_TYPE,
+    SLREF_FIELDS,
+    SLREF_BYTES,
+    SLREF_AGE,
+    SLREF_OLD,
+    SLREF_LIVE,
+    SLREF_LIMIT,
+    SLREF_COUNT
+} SLRefSelector;
+#define SLREF_PACK(sel, typeIndex) ((int32_t)(((int32_t)(typeIndex) << 4) | (int32_t)(sel)))
+#define SLREF_SEL(a) ((int)((a) & 15))
+#define SLREF_TYPEIDX(a) ((int)((a) >> 4))
 
 #if defined(__cplusplus)
 static_assert(OP_OS_PLATFORM == 103, "legacy OS opcode range must begin at 103");
@@ -325,7 +363,8 @@ static_assert(OP_THROW == 178, "OP_THROW is append-only opcode 178");
 static_assert(OP_IPC_OPEN == 179, "OP_IPC_OPEN is append-only opcode 179");
 static_assert(OP_IPC_CALL == 180, "OP_IPC_CALL is append-only opcode 180");
 static_assert(OP_IPC_CLOSE == 181, "OP_IPC_CLOSE is append-only opcode 181");
-static_assert(OP__COUNT == 182, "the extended ISA must contain 182 opcodes");
+static_assert(OP_REF == 182, "OP_REF is append-only opcode 182");
+static_assert(OP__COUNT == 183, "the extended ISA must contain 183 opcodes");
 #else
 _Static_assert(OP_OS_PLATFORM == 103, "legacy OS opcode range must begin at 103");
 _Static_assert(OP_OS_PCLOSE == 123, "legacy OS opcode range must end at 123");
@@ -351,7 +390,8 @@ _Static_assert(OP_THROW == 178, "OP_THROW is append-only opcode 178");
 _Static_assert(OP_IPC_OPEN == 179, "OP_IPC_OPEN is append-only opcode 179");
 _Static_assert(OP_IPC_CALL == 180, "OP_IPC_CALL is append-only opcode 180");
 _Static_assert(OP_IPC_CLOSE == 181, "OP_IPC_CLOSE is append-only opcode 181");
-_Static_assert(OP__COUNT == 182, "the extended ISA must contain 182 opcodes");
+_Static_assert(OP_REF == 182, "OP_REF is append-only opcode 182");
+_Static_assert(OP__COUNT == 183, "the extended ISA must contain 183 opcodes");
 #endif
 /* GC-hint aggressiveness bands for OP_GC_HINT (operand a). */
 #define SL_GC_HINT_MAX  100   /* clamp ceiling for the 0..100 aggressiveness scale */
