@@ -21,6 +21,13 @@ struct KnowledgeSource {
     std::string sha256;   // optional content pin (lowercase hex), may be empty
 };
 
+// One recorded outcome: what was gained (reward) against what would have
+// been gained anyway (baseline). Parsed from <observation reward baseline/>.
+struct Observation {
+    double reward = 0.0;
+    double baseline = 0.0;
+};
+
 // One source of leverage loaded from <sourceAdvantage> in the XML.
 struct SourceAdvantage {
     std::string id;
@@ -28,6 +35,18 @@ struct SourceAdvantage {
     std::string name;
     std::string description;
     std::vector<std::string> assumptions;  // <assumptions><assumption>...
+
+    // Parallel to `assumptions` (always the same size): true when the
+    // assumption is currently held, false when marked status="doubted".
+    // Unmarked assumptions default to held.
+    std::vector<bool> assumptionHeld;
+
+    // Recorded outcomes for this source, from <evidence><observation/>.
+    // These feed the C advantage math (see counsel.hpp). Empty means the
+    // source has no track record yet -- which is not the same as zero.
+    std::vector<Observation> evidence;
+    double evidenceWeight = 1.0;  // <evidence weight="..."> scales the advantage
+
     std::vector<std::string> knowledge;     // <knowledge><string>...
 
     // Knowledge strings pulled in from a remote source during enrichment.
@@ -51,6 +70,7 @@ struct AdvantageStore {
     // Total counts across all sources, useful for analysis.
     std::size_t assumptionCount() const;
     std::size_t knowledgeCount() const;
+    std::size_t evidenceCount() const;
 };
 
 // Load from a file path. On failure returns false and fills `error`.

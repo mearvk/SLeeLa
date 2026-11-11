@@ -9,6 +9,9 @@
 #include "advantage_store.hpp"
 
 #include <cctype>
+#include <cerrno>
+#include <cmath>
+#include <cstdlib>
 #include <fstream>
 #include <sstream>
 
@@ -30,6 +33,12 @@ std::size_t AdvantageStore::assumptionCount() const {
 std::size_t AdvantageStore::knowledgeCount() const {
     std::size_t n = 0;
     for (const auto& s : sources) n += s.knowledge.size();
+    return n;
+}
+
+std::size_t AdvantageStore::evidenceCount() const {
+    std::size_t n = 0;
+    for (const auto& s : sources) n += s.evidence.size();
     return n;
 }
 
@@ -144,6 +153,19 @@ std::string readText(Scanner& sc) {
     return trim(unescape(sc.s.substr(start, sc.i - start)));
 }
 
+// Strict number parse: the whole string must be a finite number. Fails
+// closed so a typo in the XML can never silently become 0.
+bool parseNumber(const std::string& text, double& out) {
+    if (text.empty()) return false;
+    char* end = nullptr;
+    errno = 0;
+    double v = std::strtod(text.c_str(), &end);
+    if (errno != 0 || end == text.c_str() || *end != '\0') return false;
+    if (!std::isfinite(v)) return false;
+    out = v;
+    return true;
+}
+
 }  // namespace
 
 bool loadFromString(const std::string& xml,
@@ -156,6 +178,7 @@ bool loadFromString(const std::string& xml,
     SourceAdvantage* current = nullptr;
     bool inAssumptions = false;
     bool inKnowledge = false;
+    bool inEvidence = false;
 
     while (readTag(sc, tag)) {
         if (tag.type == Tag::Skip) continue;
@@ -180,13 +203,39 @@ bool loadFromString(const std::string& xml,
                 inAssumptions = true;
             } else if (tag.name == "knowledge") {
                 inKnowledge = true;
+            } else if (tag.name == "evidence" && current) {
+                inEvidence = tag.type == Tag::Start;
+                std::string w = attr(tag.attrs, "weight");
+                if (!w.empty() && !parseNumber(w, current->evidenceWeight)) {
+                    error = "source '" + current->id +
+                            "': invalid evidence weight '" + w + "'";
+                    return false;
+                }
+            } else if (tag.name == "observation" && current && inEvidence) {
+                Observation ob;
+                if (!parseNumber(attr(tag.attrs, "reward"), ob.reward) ||
+                    !parseNumber(attr(tag.attrs, "baseline"), ob.baseline)) {
+                    error = "source '" + current->id +
+                            "': <observation> needs numeric reward and baseline";
+                    return false;
+                }
+                current->evidence.push_back(ob);
             } else if (current && tag.type == Tag::Start) {
                 if (tag.name == "name") {
                     current->name = readText(sc);
                 } else if (tag.name == "description") {
                     current->description = readText(sc);
                 } else if (tag.name == "assumption" && inAssumptions) {
+                    const std::string status = attr(tag.attrs, "status");
+                    if (!status.empty() && status != "held" &&
+                        status != "doubted") {
+                        error = "source '" + current->id +
+                                "': assumption status must be 'held' or "
+                                "'doubted', got '" + status + "'";
+                        return false;
+                    }
                     current->assumptions.push_back(readText(sc));
+                    current->assumptionHeld.push_back(status != "doubted");
                 } else if (tag.name == "string" && inKnowledge) {
                     current->knowledge.push_back(readText(sc));
                 }
@@ -194,6 +243,7 @@ bool loadFromString(const std::string& xml,
         } else if (tag.type == Tag::End) {
             if (tag.name == "assumptions") inAssumptions = false;
             else if (tag.name == "knowledge") inKnowledge = false;
+            else if (tag.name == "evidence") inEvidence = false;
             else if (tag.name == "sourceAdvantage") current = nullptr;
         }
     }
