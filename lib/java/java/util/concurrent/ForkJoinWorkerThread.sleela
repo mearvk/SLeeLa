@@ -58,7 +58,6 @@ class ForkJoinWorkerThread {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
-  public void run() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinWorkerThread.run()"); }
   public int getQueuedTaskCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinWorkerThread.getQueuedTaskCount()"); }
   public java.util.concurrent.ForkJoinPool getPool() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinWorkerThread.getPool()"); }
   public int getPoolIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinWorkerThread.getPoolIndex()"); }
