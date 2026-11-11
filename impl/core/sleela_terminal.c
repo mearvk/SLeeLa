@@ -226,16 +226,17 @@ int slterminal_close(SLTerminalHandle terminal) {
         rc = wait_result == WAIT_FAILED ? (int)GetLastError() : ERROR_TIMEOUT;
     }
 
-    /* The child is now stopped, so no more output can be produced. Drain
-     * bytes already buffered in the ConPTY pipe before releasing HPCON. */
+    /* The child is now stopped. Drain buffered output, then close the read
+     * pipe before ClosePseudoConsole. On Windows 10 and pre-24H2 Windows 11,
+     * ClosePseudoConsole may wait indefinitely unless its output pipe is
+     * closed by the host or drained until the pseudoconsole closes it. */
     drain_terminal_output(t->output_read);
-
-    if (t->console) ClosePseudoConsole(t->console);
-    t->console = NULL;
-
     if (t->output_read && !CloseHandle(t->output_read) && rc == 0)
         rc = (int)GetLastError();
     t->output_read = NULL;
+
+    if (t->console) ClosePseudoConsole(t->console);
+    t->console = NULL;
 
     if (t->process && !CloseHandle(t->process) && rc == 0)
         rc = (int)GetLastError();

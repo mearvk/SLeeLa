@@ -49,6 +49,11 @@ int main(void) {
 
     slsynchro_close(s);
 
+    /* Opening again after close proves the Windows Winsock lease is balanced. */
+    s = slsynchro_open("127.0.0.1", 9);
+    check(s != NULL, "probe reopens after network cleanup");
+    if (s) slsynchro_close(s);
+
     if (failures) { printf("synchro smoke: FAILED (%d)\n", failures); return 1; }
     printf("synchro smoke: PASS\n");
     return 0;
