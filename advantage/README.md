@@ -48,7 +48,15 @@ make run-counsel     # ranked counsel
 The loader **fails closed** (exit 1, with the source named) on: a
 non-numeric or non-finite `reward`/`baseline`/`weight`, a negative weight, an
 assumption `status` other than `held`/`doubted`, a duplicate source `id`, or an
-`<observation>` outside `<evidence>`.
+`<observation>` outside `<evidence>`, or a document that is cut short (a tag
+with no closing `>`, an unclosed element, or a missing `</advantages>`) --
+a partial store never passes for a complete one. Attribute names match whole
+(`xweight=` is not `weight=`; `uuid=` is not `id=`).
+
+The loader is also **bounded**: at most 16 MiB per document, 10,000 sources,
+and 100,000 observations per source. Beyond that it errors instead of
+consuming unbounded memory (see the `kMax*` constants in
+`advantage_store.hpp`). Attribute values must use double quotes.
 
 The observations shipped in `advantages.xml` are **illustrative seed data**,
 not measurements. Replace them with your own outcomes.

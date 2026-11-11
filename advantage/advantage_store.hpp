@@ -12,6 +12,13 @@
 
 namespace advantage {
 
+// Finite bounds on what the loader will accept. Beyond these the load fails
+// with a clear error instead of consuming unbounded memory or time. They are
+// generous for a hand-authored knowledge store.
+constexpr std::size_t kMaxDocumentBytes = 16u * 1024u * 1024u;  // 16 MiB
+constexpr std::size_t kMaxSources = 10000;
+constexpr std::size_t kMaxObservationsPerSource = 100000;
+
 // A declared remote origin for additional knowledge strings. Parsed from an
 // optional <knowledgeSource url="..." sha256="..."/> element. Declaring one
 // does NOT fetch anything: base parsing is pure and offline. Fetching is an
