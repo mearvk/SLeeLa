@@ -1374,6 +1374,66 @@
       "sha256": "8c45a8324cf15bcc8185fc0c3354d2f64e1879a3201672bedb00322a22e68f49"
     },
     {
+      "path": "lib/advantage/trading-actions-on-verb/01-open-and-add/TaUse01OpenAndAdd.sleela",
+      "sha256": "0263d2875ba5c09c19e14e4b788896a3b9efc464dad0b1e1c39d6e6556c7e991"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/02-trim-realized-pnl/TaUse02TrimRealizedPnl.sleela",
+      "sha256": "a109fc5427ae1ec5a130abf040551291aaab62ae66a0198c0809fa921a74aadd"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/03-flatten-and-reconcile/TaUse03FlattenAndReconcile.sleela",
+      "sha256": "45d14ef6fee2a75386f1aa3da8fb9f5c20803a111a0574a08b05a948f415c35a"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/04-refuse-short-and-bad-input/TaUse04RefuseShortAndBadInput.sleela",
+      "sha256": "b05f46cfc1f2e249cd5d373bc13e2a1be21c8a135df02d6c84b1fae0c22a4e2c"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/05-lot-ratio-by-euclid/TaUse05LotRatioByEuclid.sleela",
+      "sha256": "ecbe3a826c0c54946228f2c053429f3e785769cf3f540eb1914f41962c1f9ea4"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/06-round-lot-fill-and-bezout/TaUse06RoundLotFillAndBezout.sleela",
+      "sha256": "7487e07dba443feb98b665bfd808b244528a1ab1926b852076ee9da2bbf530c8"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/07-rebalance-distance/TaUse07RebalanceDistance.sleela",
+      "sha256": "252c05e97e16eaa53ab747db6deef7bdde3155d692ca1e52afd065e8be59b5f1"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/08-holding-days/TaUse08HoldingDays.sleela",
+      "sha256": "fb5a18a5b6f0b70aacc0494c7ccc3aad9041dbbc7b86674c32a59e190ef03d70"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/09-fifo-aging/TaUse09FifoAging.sleela",
+      "sha256": "581b5a3c46826eb96d9342a1e35910418781826585b73324ebd7de2841d02083"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/10-weighted-average-age/TaUse10WeightedAverageAge.sleela",
+      "sha256": "9df3e85593d69a174b81df80d910ad6955499289a33bb96f67ac6c8897806d3b"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/11-term-boundary/TaUse11TermBoundary.sleela",
+      "sha256": "48cc392fa775936aa4adc6d3c83fcfd25a23fb4e736621a797ff464e19624262"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/12-time-stop/TaUse12TimeStop.sleela",
+      "sha256": "cf6f0e0a605dd54d194239b019095994febaaf03e78f979908c9d23f319f0fbc"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/13-full-lifecycle/TaUse13FullLifecycle.sleela",
+      "sha256": "3957332e88e253b4bda5e50fa3a6c1f3ceb6a2fecbad482214d45fa015cfe619"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/SLEuclid.sleela",
+      "sha256": "6deea44d076bb1dad2d23e467d238622b9ad14a32e8b1b0ea3979da667b9ace1"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/SLLongBook.sleela",
+      "sha256": "a57e5727de6de12ee89c5e80c9aa11154bc144cbedf2d5dff7d0e27b0a14592d"
+    },
+    {
       "path": "lib/advantage/trading/SLTradingAggregation.sleela",
       "sha256": "d995204798ac68fdd2c8eedf1305c5f36e2753def12eb94bdd69d9d29e7b2925"
     },

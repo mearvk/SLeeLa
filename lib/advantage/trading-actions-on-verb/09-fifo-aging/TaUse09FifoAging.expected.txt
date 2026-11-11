@@ -1,0 +1,17 @@
+== Use case 9: FIFO aging ==
+  buy 40 @ 5000 on day 0 : ok
+  buy 30 @ 5100 on day 30 : ok
+  buy 50 @ 5300 on day 200 : ok
+  ok   oldest age on day 250 before the sell = 250
+  sell 60 @ 5600 on day 250 : ok
+  ok   cost of the 60 sold (40 @ 5000 + 20 @ 5100) = 302000
+  ok   profit of the sale = 34000
+  ok   lots left = 2
+  ok   first survivor shares = 10
+  ok   first survivor day = 30
+  ok   first survivor age = 220
+  ok   second survivor shares = 50
+  ok   second survivor age = 50
+  ok   oldest age after the sell = 220
+  ok   invariants hold
+  checks passed=11 failed=0

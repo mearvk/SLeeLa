@@ -1,0 +1,13 @@
+== Use case 1: open and add ==
+  buy 100 @ 5000 on day 0, fee 100 : ok
+  buy 50 @ 5200 on day 30, fee 100 : ok
+-- the book --
+  ok   lots = 2
+  ok   shares held = 150
+  ok   cost basis cents = 760000
+  ok   average cost floor = 5066
+  ok   average cost remainder = 100
+  ok   fees paid = 200
+  ok   average * shares + remainder = cost
+  ok   invariants hold
+  checks passed=8 failed=0

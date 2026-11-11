@@ -1,0 +1,29 @@
+== Use case 6: round-lot fill and Bezout ==
+  ok   gcd of the two lot sizes = 10
+  ok   70 can be filled
+  ok   70 uses 20-lots = 2
+  ok   70 uses 30-lots = 1
+  ok   75 cannot (10 does not divide 75)
+  ok   10 cannot (gcd divides it but it is too small)
+  ok   90 can be filled
+  ok   90 uses 20-lots (fewest) = 0
+  ok   90 uses 30-lots = 3
+  ok   110 can be filled
+  ok   110 uses 20-lots = 1
+  ok   110 uses 30-lots = 3
+  ok   the fill adds back to 110
+  buy the 20-lots on day 5 : ok
+  buy the 30-lots on day 5 : ok
+  ok   shares held = 110
+  ok   invariants hold
+-- Bezout certificates --
+  ok   egcd(20,30) gcd = 10
+  ok   coefficient x = -1
+  ok   coefficient y = 1
+  ok   20*x + 30*y = gcd
+  ok   egcd(240,46) gcd = 2
+  ok   coefficient x = -9
+  ok   coefficient y = 47
+  ok   240*x + 46*y = gcd
+  ok   egcd refuses a negative input = -1
+  checks passed=24 failed=0

@@ -1,5 +1,7 @@
 # SLeeLa /lib Library Index
 
+> Revision 0.93 adds a `trading-actions-on-verb/` subject folder to the **`advantage`** package (`lib/advantage/trading-actions-on-verb/`): trading as verbs (`buy`, `sell`, `hold`, `flatten`) on a long-only FIFO position book. `SLLongBook` carries lots, integer-cent money, time-on-long queries (age, weighted age, term, time stop) and checked invariants (conservation of shares and cost); `SLEuclid` carries careful integer Euclid loops (gcd, Bezout, exact fills by two lot sizes, squared Euclidean distance, floor square root) with stated invariants and bounds. Thirteen self-checking use cases (seven on the style of trading long, six on time on long, the last joining both) with `.expected.txt` files are gated by `test-suites/test-trading-actions.sh`; expected values come from an independent Python model. Illustrative only, not trading, tax or legal advice. Fifteen new source units (counts: 13310 to **13325** sources; 13394 to **13409** total records; 121 packages).
+
 > Revision 0.92 extends the Device Instructor series in the **`advantage`** package (`lib/advantage/learner-vs-professional/series/`) from 22 to 32 lessons: ten larger trading decisions (lessons 23 to 32: rice, sugar, aluminum, zinc, nickel, rubber, glass, paper, plastic resin and an eight-way capstone) with five to eight options each. `SLDecisionDesk` now holds up to eight options and adds a sixth slip, a discount filed under the wrong option, caught by comparing the carrier of each entry as well as its value; lessons 7 to 22 output is unchanged. Each lesson has an `.expected.txt` checked by `test-suites/test-device-instructor.sh`, and every outcome was cross-checked against an independent Python oracle. Quotes are illustrative inputs, not market data. Ten new source units (counts: 13300 to **13310** sources; 13384 to **13394** total records; 121 packages).
 
 > Revision 0.91 extends the Device Instructor series in the **`advantage`** package (`lib/advantage/learner-vs-professional/series/`) from six to 22 lessons: sixteen trading decisions (lessons 7 to 22: lumber, cement, copper, steel, coffee, cotton, solar, lithium, semiconductors, server racks, smartphones, televisions, wheat, fuel, freight and a tie capstone) on a new shared `SLDecisionDesk` (the Purchase Master runs the onion, the student registers entries with one slip of five kinds, every differing entry is named, ties go to the earlier option). Each lesson has an `.expected.txt` checked by `test-suites/test-device-instructor.sh`, and the outcomes were cross-checked against an independent Python oracle. Quotes are illustrative inputs, not market data. Seventeen new source units (counts: 13283 to **13300** sources; 13367 to **13384** total records; 121 packages).
@@ -55,9 +57,9 @@
 
 **Revision:** 0.82  
 **Packages:** 121  
-**SLeeLa source units:** 13310  
+**SLeeLa source units:** 13325  
 **Module-facade symbols:** 84  
-**Total symbol records:** 13394  
+**Total symbol records:** 13409  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.66 brings three big-number improvements that make a 10,000,000-digit

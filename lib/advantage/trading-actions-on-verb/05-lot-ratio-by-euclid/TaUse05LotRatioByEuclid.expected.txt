@@ -1,0 +1,25 @@
+== Use case 5: lot ratio by Euclid ==
+  gcd(120,180) trail: 120,180 -> 180,120 -> 120,60 -> 60,0
+  ok   passes for the first gcd = 3
+  ok   gcd of 120 and 180 = 60
+  gcd(60,300) trail: 60,300 -> 300,60 -> 60,0
+  ok   gcd of the basket = 60
+  ok   gcdAll agrees = 60
+  ok   ratio first = 2
+  ok   ratio second = 3
+  ok   ratio third = 5
+  ok   ratio times gcd gives the sizes back
+  ok   gcd of the reduced ratio = 1
+-- edge cases --
+  ok   gcd(0,7) = 7
+  ok   gcd(0,0) = 0
+  ok   gcd(-12,18) = 6
+  ok   lcm(4,6) = 12
+  ok   lcm overflow guard = -1
+-- place the basket in the ratio, one unit of 10 shares --
+  buy 20 @ 5000 on day 1 : ok
+  buy 30 @ 5000 on day 1 : ok
+  buy 50 @ 5000 on day 1 : ok
+  ok   shares held = 100
+  ok   invariants hold
+  checks passed=16 failed=0

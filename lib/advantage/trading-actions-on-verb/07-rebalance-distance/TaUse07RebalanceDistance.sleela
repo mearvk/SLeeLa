@@ -1,0 +1,135 @@
+<< lib/advantage/trading-actions-on-verb/07-rebalance-distance/TaUse07RebalanceDistance.sleela
+   SLeeLa trading-action use case.
+   Definition: Trading long, rebalancing: squared Euclidean distance and an integer square root pick the nearest of several target portfolios, with ties to the first. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Use case 7 (style, Euclidean). The current holdings are a point; each target >
+< portfolio is another point. The nearest target needs the fewest shares moved >
+< in the Euclidean sense. Squares are compared (no square root needed to rank). >
+< The integer square root is only for display and is the floor. Inputs with a >
+< difference above 10000 are refused (-1) so no sum can pass the integer range. >
+class TaUse07RebalanceDistance {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39307;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  int passed = 0;
+  int failed = 0;
+
+  void expect(String label, int got, int want) {
+    if (got == want) {
+      print("  ok   " + label + " = " + got);
+      passed = passed + 1;
+    } else {
+      print("  FAIL " + label + " got " + got + " want " + want);
+      failed = failed + 1;
+    }
+  }
+
+  void expectTrue(String label, boolean got) {
+    if (got) {
+      print("  ok   " + label);
+      passed = passed + 1;
+    } else {
+      print("  FAIL " + label);
+      failed = failed + 1;
+    }
+  }
+
+  void summary() {
+    print("  checks passed=" + passed + " failed=" + failed);
+  }
+
+  void act(SLLongBook b, String text, int code) {
+    print("  " + text + " : " + b.reason(code));
+  }
+
+  void main() {
+    SLEuclid e = new SLEuclid();
+    print("== Use case 7: rebalance distance ==");
+    int[] cur = new int[3];
+    cur[0] = 100;
+    cur[1] = 200;
+    cur[2] = 300;
+    int[] t1 = new int[3];
+    t1[0] = 130;
+    t1[1] = 160;
+    t1[2] = 300;
+    int[] t2 = new int[3];
+    t2[0] = 100;
+    t2[1] = 200;
+    t2[2] = 250;
+    int[] t3 = new int[3];
+    t3[0] = 90;
+    t3[1] = 210;
+    t3[2] = 310;
+    expect("distSq to target 1", e.distSq(cur, t1, 3), 2500);
+    expect("distSq to target 2", e.distSq(cur, t2, 3), 2500);
+    expect("distSq to target 3", e.distSq(cur, t3, 3), 300);
+    expect("distance to target 1 (floor)", e.dist(cur, t1, 3), 50);
+    expect("distance to target 3 (floor)", e.dist(cur, t3, 3), 17);
+    expectTrue("floor property: 17*17 <= 300 < 18*18", e.isqrt(300) * e.isqrt(300) <= 300 && 300 < (e.isqrt(300) + 1) * (e.isqrt(300) + 1));
+    int best = 1;
+    int bestD = e.distSq(cur, t1, 3);
+    int d2b = e.distSq(cur, t2, 3);
+    if (d2b < bestD) { best = 2; bestD = d2b; }
+    int d3b = e.distSq(cur, t3, 3);
+    if (d3b < bestD) { best = 3; bestD = d3b; }
+    expect("nearest target", best, 3);
+    print("-- tie norm: targets 1 and 2 are equally far, the first stays --");
+    int tieBest = 1;
+    if (e.distSq(cur, t2, 3) < e.distSq(cur, t1, 3)) { tieBest = 2; }
+    expect("tie goes to target 1", tieBest, 1);
+    print("-- rejected input --");
+    int[] far = new int[3];
+    far[0] = 20000;
+    far[1] = 200;
+    far[2] = 300;
+    expect("distance beyond the bound", e.distSq(cur, far, 3), 0 - 1);
+    expect("dimension zero", e.distSq(cur, t1, 0), 0 - 1);
+    expect("isqrt of a negative", e.isqrt(0 - 4), 0 - 1);
+    expect("isqrt of the largest int", e.isqrt(2147483647), 46340);
+    summary();
+  }
+}

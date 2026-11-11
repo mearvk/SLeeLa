@@ -1,0 +1,112 @@
+<< lib/advantage/trading-actions-on-verb/04-refuse-short-and-bad-input/TaUse04RefuseShortAndBadInput.sleela
+   SLeeLa trading-action use case.
+   Definition: Trading long, refusals: a sell above the holding, bad quantity, bad price, backwards day and flat sells are refused and the book never changes. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Use case 4 (style). A long-only book never goes short. Every refusal must leave >
+< the book exactly as it was: shares, cost, fees and day. The snapshot method >
+< below sums those four, so any change would show. >
+class TaUse04RefuseShortAndBadInput {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39304;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  int passed = 0;
+  int failed = 0;
+
+  void expect(String label, int got, int want) {
+    if (got == want) {
+      print("  ok   " + label + " = " + got);
+      passed = passed + 1;
+    } else {
+      print("  FAIL " + label + " got " + got + " want " + want);
+      failed = failed + 1;
+    }
+  }
+
+  void expectTrue(String label, boolean got) {
+    if (got) {
+      print("  ok   " + label);
+      passed = passed + 1;
+    } else {
+      print("  FAIL " + label);
+      failed = failed + 1;
+    }
+  }
+
+  void summary() {
+    print("  checks passed=" + passed + " failed=" + failed);
+  }
+
+  void act(SLLongBook b, String text, int code) {
+    print("  " + text + " : " + b.reason(code));
+  }
+
+  int snap(SLLongBook b) {
+    return b.totalQty() * 1000003 % 1000000007 + b.costBasis() % 99991 + b.fees() * 7 + b.currentDay() * 13;
+  }
+
+  void main() {
+    SLLongBook book = new SLLongBook();
+    print("== Use case 4: refuse short and bad input ==");
+    act(book, "buy 100 @ 5000 on day 10, fee 100", book.buy(10, 100, 5000, 100));
+    int before = snap(book);
+    act(book, "sell 101 @ 5100 (more than held)", book.sell(11, 101, 5100, 100));
+    expect("code for sell above holding", book.sell(11, 101, 5100, 100), 3);
+    expect("code for zero quantity", book.sell(11, 0, 5100, 100), 1);
+    expect("code for negative quantity", book.buy(11, 0 - 5, 5100, 100), 1);
+    expect("code for zero price", book.sell(11, 10, 0, 100), 2);
+    expect("code for negative fee", book.sell(11, 10, 5100, 0 - 1), 6);
+    expect("code for day going backwards", book.sell(9, 10, 5100, 100), 5);
+    expectTrue("book unchanged after every refusal", snap(book) == before);
+    expectTrue("invariants hold", book.invariantsHold());
+    print("-- exact sell is fine, then flat means no more sells --");
+    act(book, "sell 100 @ 5100 on day 12, fee 100", book.sell(12, 100, 5100, 100));
+    expect("shares held", book.totalQty(), 0);
+    expect("code for selling from flat", book.sell(13, 1, 5100, 100), 3);
+    expect("code for flatten from flat", book.flatten(13, 5100, 100), 7);
+    expectTrue("invariants hold", book.invariantsHold());
+    summary();
+  }
+}

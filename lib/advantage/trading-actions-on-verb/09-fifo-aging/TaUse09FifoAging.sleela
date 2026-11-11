@@ -1,0 +1,106 @@
+<< lib/advantage/trading-actions-on-verb/09-fifo-aging/TaUse09FifoAging.sleela
+   SLeeLa trading-action use case.
+   Definition: Time on long, FIFO: a sell consumes the oldest lots first, so what remains is younger and the ages are exact. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Use case 9 (time). Three lots: 40 shares on day 0, 30 on day 30, 50 on day 200. >
+< On day 250 a sell of 60 takes all 40 of the oldest and 20 of the next. The >
+< survivors are 10 shares from day 30 (age 220) and 50 from day 200 (age 50). >
+class TaUse09FifoAging {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39309;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  int passed = 0;
+  int failed = 0;
+
+  void expect(String label, int got, int want) {
+    if (got == want) {
+      print("  ok   " + label + " = " + got);
+      passed = passed + 1;
+    } else {
+      print("  FAIL " + label + " got " + got + " want " + want);
+      failed = failed + 1;
+    }
+  }
+
+  void expectTrue(String label, boolean got) {
+    if (got) {
+      print("  ok   " + label);
+      passed = passed + 1;
+    } else {
+      print("  FAIL " + label);
+      failed = failed + 1;
+    }
+  }
+
+  void summary() {
+    print("  checks passed=" + passed + " failed=" + failed);
+  }
+
+  void act(SLLongBook b, String text, int code) {
+    print("  " + text + " : " + b.reason(code));
+  }
+
+  void main() {
+    SLLongBook book = new SLLongBook();
+    print("== Use case 9: FIFO aging ==");
+    act(book, "buy 40 @ 5000 on day 0", book.buy(0, 40, 5000, 0));
+    act(book, "buy 30 @ 5100 on day 30", book.buy(30, 30, 5100, 0));
+    act(book, "buy 50 @ 5300 on day 200", book.buy(200, 50, 5300, 0));
+    expect("oldest age on day 250 before the sell", book.oldestAge(250), 250);
+    act(book, "sell 60 @ 5600 on day 250", book.sell(250, 60, 5600, 0));
+    expect("cost of the 60 sold (40 @ 5000 + 20 @ 5100)", book.lastSaleCost, 302000);
+    expect("profit of the sale", book.lastSalePnl, 34000);
+    expect("lots left", book.lotCount(), 2);
+    expect("first survivor shares", book.lotQtyAt(0), 10);
+    expect("first survivor day", book.lotDayAt(0), 30);
+    expect("first survivor age", book.ageOf(0, 250), 220);
+    expect("second survivor shares", book.lotQtyAt(1), 50);
+    expect("second survivor age", book.ageOf(1, 250), 50);
+    expect("oldest age after the sell", book.oldestAge(250), 220);
+    expectTrue("invariants hold", book.invariantsHold());
+    summary();
+  }
+}

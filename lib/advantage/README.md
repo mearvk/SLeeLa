@@ -38,6 +38,9 @@ a self-contained, validated module with its own literature.
   (arbitrage, market making, refurbishment, regional, aggregation, asymmetry,
   consignment, distressed, virtual, synthetic, momentum), a rate budget, and
   the counsel that ranks them; mirrors the C/C++ module in `/advantage`.
+- [`trading-actions-on-verb/`](./trading-actions-on-verb) — trading as verbs on a
+  long-only FIFO book: thirteen use cases on the style of trading long and on
+  time on long, built on careful Euclid loops and Euclidean distance.
 - [`PREONEM.md`](./PREONEM.md) — the preonem standard under which every
   document here is an enacted `artifact; pure; gasoline;` of the Advantage™
   legislature, graded unto time and space.

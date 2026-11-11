@@ -1,0 +1,16 @@
+== Use case 7: rebalance distance ==
+  ok   distSq to target 1 = 2500
+  ok   distSq to target 2 = 2500
+  ok   distSq to target 3 = 300
+  ok   distance to target 1 (floor) = 50
+  ok   distance to target 3 (floor) = 17
+  ok   floor property: 17*17 <= 300 < 18*18
+  ok   nearest target = 3
+-- tie norm: targets 1 and 2 are equally far, the first stays --
+  ok   tie goes to target 1 = 1
+-- rejected input --
+  ok   distance beyond the bound = -1
+  ok   dimension zero = -1
+  ok   isqrt of a negative = -1
+  ok   isqrt of the largest int = 46340
+  checks passed=12 failed=0

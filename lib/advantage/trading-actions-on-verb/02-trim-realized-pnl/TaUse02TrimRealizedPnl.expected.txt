@@ -1,0 +1,17 @@
+== Use case 2: trim and realized profit ==
+  buy 100 @ 5000 on day 0, fee 100 : ok
+  buy 50 @ 5200 on day 30, fee 100 : ok
+  sell 80 @ 5500 on day 60, fee 100 : ok
+-- the sale --
+  ok   cost of the 80 shares sold = 400000
+  ok   profit of that sale = 40000
+-- what remains --
+  ok   shares held = 70
+  ok   lots = 2
+  ok   first lot shares = 20
+  ok   first lot price = 5000
+  ok   cost basis cents = 360000
+  ok   realized gross = 40000
+  ok   realized net of all fees = 39700
+  ok   invariants hold
+  checks passed=10 failed=0

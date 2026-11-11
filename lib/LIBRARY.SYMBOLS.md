@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 13310
+library-source-files: 13325
 library-packages: 121
 module-facade-symbols: 84
-total-symbol-records: 13394
+total-symbol-records: 13409
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -114,6 +114,21 @@ advantage	SLTransactionalGeodesic.sleela	lib/advantage/physics/SLTransactionalGe
 advantage	SLTrustDecaySDE.sleela	lib/advantage/physics/SLTrustDecaySDE.sleela	source
 advantage	SLTrustMetric.sleela	lib/advantage/physics/SLTrustMetric.sleela	source
 advantage	physics-demo.sleela	lib/advantage/physics/physics-demo.sleela	source
+advantage	TaUse01OpenAndAdd.sleela	lib/advantage/trading-actions-on-verb/01-open-and-add/TaUse01OpenAndAdd.sleela	source
+advantage	TaUse02TrimRealizedPnl.sleela	lib/advantage/trading-actions-on-verb/02-trim-realized-pnl/TaUse02TrimRealizedPnl.sleela	source
+advantage	TaUse03FlattenAndReconcile.sleela	lib/advantage/trading-actions-on-verb/03-flatten-and-reconcile/TaUse03FlattenAndReconcile.sleela	source
+advantage	TaUse04RefuseShortAndBadInput.sleela	lib/advantage/trading-actions-on-verb/04-refuse-short-and-bad-input/TaUse04RefuseShortAndBadInput.sleela	source
+advantage	TaUse05LotRatioByEuclid.sleela	lib/advantage/trading-actions-on-verb/05-lot-ratio-by-euclid/TaUse05LotRatioByEuclid.sleela	source
+advantage	TaUse06RoundLotFillAndBezout.sleela	lib/advantage/trading-actions-on-verb/06-round-lot-fill-and-bezout/TaUse06RoundLotFillAndBezout.sleela	source
+advantage	TaUse07RebalanceDistance.sleela	lib/advantage/trading-actions-on-verb/07-rebalance-distance/TaUse07RebalanceDistance.sleela	source
+advantage	TaUse08HoldingDays.sleela	lib/advantage/trading-actions-on-verb/08-holding-days/TaUse08HoldingDays.sleela	source
+advantage	TaUse09FifoAging.sleela	lib/advantage/trading-actions-on-verb/09-fifo-aging/TaUse09FifoAging.sleela	source
+advantage	TaUse10WeightedAverageAge.sleela	lib/advantage/trading-actions-on-verb/10-weighted-average-age/TaUse10WeightedAverageAge.sleela	source
+advantage	TaUse11TermBoundary.sleela	lib/advantage/trading-actions-on-verb/11-term-boundary/TaUse11TermBoundary.sleela	source
+advantage	TaUse12TimeStop.sleela	lib/advantage/trading-actions-on-verb/12-time-stop/TaUse12TimeStop.sleela	source
+advantage	TaUse13FullLifecycle.sleela	lib/advantage/trading-actions-on-verb/13-full-lifecycle/TaUse13FullLifecycle.sleela	source
+advantage	SLEuclid.sleela	lib/advantage/trading-actions-on-verb/SLEuclid.sleela	source
+advantage	SLLongBook.sleela	lib/advantage/trading-actions-on-verb/SLLongBook.sleela	source
 advantage	SLTradingAggregation.sleela	lib/advantage/trading/SLTradingAggregation.sleela	source
 advantage	SLTradingApproach.sleela	lib/advantage/trading/SLTradingApproach.sleela	source
 advantage	SLTradingArbitrage.sleela	lib/advantage/trading/SLTradingArbitrage.sleela	source

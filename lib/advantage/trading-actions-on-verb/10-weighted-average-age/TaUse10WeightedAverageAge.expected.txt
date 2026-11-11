@@ -1,0 +1,16 @@
+== Use case 10: weighted average age ==
+  buy 100 on day 0 : ok
+  buy 50 on day 60 : ok
+  buy 150 on day 120 : ok
+  ok   weighted age on day 180 = 110
+  ok   oldest age on day 180 = 180
+  buy 3 on day 0 : ok
+  buy 4 on day 5 : ok
+  ok   weighted age on day 10 (floor of 50/7) = 7
+  ok   floor property: 7*7 <= 50 and 50 < 8*7
+-- size, not count --
+  buy 1 on day 0 : ok
+  buy 99 on day 99 : ok
+  ok   weighted age on day 100 = 1
+  ok   invariants hold
+  checks passed=6 failed=0

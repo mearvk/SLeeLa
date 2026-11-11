@@ -1,0 +1,205 @@
+<< lib/advantage/trading-actions-on-verb/SLEuclid.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Careful integer Euclidean toolkit: greatest common divisor by Euclid loop, Bezout coefficients, exact fills by two round lots, and squared Euclidean distance with an integer square root. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Every loop here has a stated invariant and a termination argument, and every >
+< input is checked before it is used. All arithmetic is integer, and bounds >
+< are chosen so no intermediate value passes 2,000,000,000. >
+< >
+< gcd: invariant gcd(x, y) = gcd(a, b); y is a non-negative integer that >
+< strictly decreases each pass because x mod y < y, so the loop ends. >
+< isqrt: invariant lo*lo <= n < (hi+1)*(hi+1); hi - lo strictly shrinks. >
+< canFill: the loop runs at most c / a + 1 times and stops at the first hit. >
+class SLEuclid {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39201;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Largest absolute value accepted for a coordinate difference. >
+  int maxDiff = 10000;
+  < Largest dimension accepted by distSq. >
+  int maxDim = 20;
+  < Number of loop passes taken by the last gcd call. >
+  int steps = 0;
+  < The remainder trail of the last gcd call, for example 120,180 -> 180,120 >
+  String trail = "";
+  < Bezout coefficients from the last egcd call: a*bx + b*by = g. >
+  int bx = 0;
+  int by = 0;
+  < The first exact fill found by canFill: fillA lots of a plus fillB of b. >
+  int fillA = 0;
+  int fillB = 0;
+
+  int abs(int v) {
+    if (v < 0) { return 0 - v; }
+    return v;
+  }
+
+  < Greatest common divisor of |a| and |b|. gcd(0, 0) is 0. >
+  int gcd(int a, int b) {
+    int x = abs(a);
+    int y = abs(b);
+    steps = 0;
+    trail = x + "," + y;
+    while (y != 0) {
+      int r = x % y;
+      x = y;
+      y = r;
+      steps = steps + 1;
+      trail = trail + " -> " + x + "," + y;
+    }
+    return x;
+  }
+
+  < GCD of the first n values of v. Returns 0 when n is 0 or all are 0. >
+  int gcdAll(int[] v, int n) {
+    int g = 0;
+    int i = 0;
+    while (i < n) {
+      g = gcd(g, v[i]);
+      i = i + 1;
+    }
+    return g;
+  }
+
+  < Least common multiple, or -1 when the result would pass 2,000,000,000. >
+  int lcm(int a, int b) {
+    int x = abs(a);
+    int y = abs(b);
+    if (x == 0 || y == 0) { return 0; }
+    int g = gcd(x, y);
+    int q = x / g;
+    if (q > 2000000000 / y) { return -1; }
+    return q * y;
+  }
+
+  < Extended Euclid for a >= 0 and b >= 0. Returns g and sets bx, by so that >
+  < a*bx + b*by = g. Returns -1 for a negative input. >
+  int egcd(int a, int b) {
+    if (a < 0 || b < 0) { return -1; }
+    int oldR = a;
+    int r = b;
+    int oldS = 1;
+    int s = 0;
+    int oldT = 0;
+    int t = 1;
+    while (r != 0) {
+      int q = oldR / r;
+      int nr = oldR - q * r;
+      oldR = r;
+      r = nr;
+      int ns = oldS - q * s;
+      oldS = s;
+      s = ns;
+      int nt = oldT - q * t;
+      oldT = t;
+      t = nt;
+    }
+    bx = oldS;
+    by = oldT;
+    return oldR;
+  }
+
+  boolean bezoutHolds(int a, int b, int g) {
+    return a * bx + b * by == g;
+  }
+
+  < True when c shares can be filled exactly by whole lots of a and b. >
+  < Needs a > 0, b > 0, c >= 0. Sets fillA and fillB to the solution with the >
+  < fewest a-lots. The gcd test is the necessary condition checked first. >
+  boolean canFill(int c, int a, int b) {
+    fillA = 0;
+    fillB = 0;
+    if (a <= 0 || b <= 0 || c < 0) { return false; }
+    int g = gcd(a, b);
+    if (c % g != 0) { return false; }
+    int i = 0;
+    while (i * a <= c) {
+      int rest = c - i * a;
+      if (rest % b == 0) {
+        fillA = i;
+        fillB = rest / b;
+        return true;
+      }
+      i = i + 1;
+    }
+    return false;
+  }
+
+  < Floor of the square root of n, or -1 when n is negative. >
+  int isqrt(int n) {
+    if (n < 0) { return -1; }
+    int lo = 0;
+    int hi = n;
+    if (hi > 46340) { hi = 46340; }
+    while (lo < hi) {
+      int mid = (lo + hi + 1) / 2;
+      if (mid * mid <= n) { lo = mid; }
+      else { hi = mid - 1; }
+    }
+    return lo;
+  }
+
+  < Squared Euclidean distance between the first dim entries of a and b. >
+  < Returns -1 when dim is out of range or any difference passes maxDiff. >
+  int distSq(int[] a, int[] b, int dim) {
+    if (dim < 1 || dim > maxDim) { return -1; }
+    int sum = 0;
+    int i = 0;
+    while (i < dim) {
+      int diff = abs(a[i] - b[i]);
+      if (diff > maxDiff) { return -1; }
+      sum = sum + diff * diff;
+      i = i + 1;
+    }
+    return sum;
+  }
+
+  < Floor of the Euclidean distance, or -1 on a rejected input. >
+  int dist(int[] a, int[] b, int dim) {
+    int s = distSq(a, b, dim);
+    if (s < 0) { return -1; }
+    return isqrt(s);
+  }
+}

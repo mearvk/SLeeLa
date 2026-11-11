@@ -1,0 +1,15 @@
+== Use case 11: term boundary ==
+  buy 10 on day 0 : ok
+  ok   day 364 is short term
+  ok   day 365 is still short term
+  ok   day 366 is long term
+  ok   long-term shares on day 365 = 0
+  ok   long-term shares on day 366 = 10
+-- two lots straddling the line --
+  buy 20 on day 100 : ok
+  ok   long-term shares on day 464 (second lot is 364 days old) = 10
+  ok   long-term shares on day 465 (second lot is 365 days old, still short) = 10
+  ok   long-term shares on day 466 (second lot is 366 days old) = 30
+  ok   long-term shares on day 465 with threshold 364 = 30
+  ok   invariants hold
+  checks passed=10 failed=0

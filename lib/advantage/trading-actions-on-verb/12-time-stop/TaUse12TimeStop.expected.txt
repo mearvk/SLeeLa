@@ -1,0 +1,20 @@
+== Use case 12: time stop ==
+  buy 10 on day 0 : ok
+  buy 20 on day 40 : ok
+  buy 30 on day 80 : ok
+  buy 40 on day 120 : ok
+-- day 130: only the day-0 lot is older than 90 --
+  ok   shares older than 90 on day 130 = 10
+  time stop: sell 10 @ 5200 on day 130 : ok
+  ok   passes taken = 1
+  ok   shares older than 90 after the stop = 0
+  ok   shares held = 90
+-- day 200: three lots have aged past 90 --
+  hold to day 200 : ok
+  time stop: sell 50 @ 5200 on day 200 : ok
+  ok   passes taken = 1
+  ok   shares held = 40
+  ok   oldest age after the stop = 80
+  ok   oldest is within the limit
+  ok   invariants hold
+  checks passed=9 failed=0
