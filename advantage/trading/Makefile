@@ -18,7 +18,7 @@ P := ..
 
 all: trading_demo
 
-trading_demo: trading_demo.o trade_models_cpp.o trade_models.o \
+trading_demo: trading_demo.o trade_models_cpp.o trade_models.o rate_budget.o \
               adv_core.o adv_store.o adv_counsel.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ -lm
 
@@ -29,7 +29,10 @@ trade_models_cpp.o: trade_models.cpp trade_models.hpp trade_models.h \
                     $(P)/advantage_store.hpp
 	$(CXX) $(CXXFLAGS) -c trade_models.cpp -o $@
 
-trading_demo.o: trading_demo.cpp trade_models.hpp trade_models.h \
+rate_budget.o: rate_budget.c rate_budget.h
+	$(CC) $(CFLAGS) -c rate_budget.c -o $@
+
+trading_demo.o: trading_demo.cpp trade_models.hpp trade_models.h rate_budget.hpp \
                 $(P)/counsel.hpp $(P)/advantage_store.hpp
 	$(CXX) $(CXXFLAGS) -c trading_demo.cpp -o $@
 

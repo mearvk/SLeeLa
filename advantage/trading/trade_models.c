@@ -342,6 +342,165 @@ tm_status tm_consignment(const tm_consignment_in *in, tm_result *out)
                   in->days_to_sell, out);
 }
 
+/* ---- 8. Distressed inventory ------------------------------------------ */
+
+tm_status tm_distressed(const tm_distressed_in *in, tm_result *out)
+{
+    double w, s, lot_cost, cost, proceeds;
+
+    if (in == NULL || out == NULL) return TM_ERR_ARG;
+    if (!is_positive(in->lot_price) || !is_positive(in->units) ||
+        !is_amount(in->expected_unit_value) ||
+        !is_prob(in->sell_through_rate) ||
+        !is_amount(in->salvage_unit_value) || !is_rate(in->sell_fee_rate) ||
+        !is_amount(in->per_unit_handling_cost) ||
+        !is_amount(in->disposal_cost_per_unsold_unit) ||
+        !is_amount(in->fixed_costs) || !is_amount(in->holding_cost_per_day) ||
+        !is_days(in->hold_days) || !is_prob(in->win_probability) ||
+        !is_amount(in->pursuit_cost)) {
+        return TM_ERR_RANGE;
+    }
+
+    w = in->win_probability;
+    s = in->sell_through_rate;
+    /* Pay to chase every lot; pay for the lot and its clean-out only if won. */
+    lot_cost = in->lot_price + in->units * in->per_unit_handling_cost +
+               (1.0 - s) * in->units * in->disposal_cost_per_unsold_unit +
+               in->fixed_costs + in->holding_cost_per_day * in->hold_days;
+    cost = in->pursuit_cost + w * lot_cost;
+    proceeds = w * in->units *
+               (s * in->expected_unit_value * (1.0 - in->sell_fee_rate) +
+                (1.0 - s) * in->salvage_unit_value);
+
+    return finish(cost, proceeds, in->hold_days, out);
+}
+
+/* ---- 9. Virtual inventory ---------------------------------------------- */
+
+tm_status tm_virtual(const tm_virtual_in *in, tm_result *out)
+{
+    double f, source_cost, revenue, cost;
+
+    if (in == NULL || out == NULL) return TM_ERR_ARG;
+    if (!is_positive(in->sale_price) || !is_positive(in->source_price) ||
+        !is_positive(in->quantity) || !is_rate(in->sale_fee_rate) ||
+        !is_rate(in->source_fee_rate) || !is_amount(in->shipping_cost) ||
+        !is_rate(in->price_drift_rate) ||
+        !is_prob(in->fulfillment_failure_probability) ||
+        !is_amount(in->failure_loss) || !is_amount(in->fixed_costs) ||
+        !is_days(in->days_to_fulfil)) {
+        return TM_ERR_RANGE;
+    }
+
+    f = in->fulfillment_failure_probability;
+    source_cost = in->quantity * in->source_price *
+                  (1.0 + in->price_drift_rate) * (1.0 + in->source_fee_rate) +
+                  in->shipping_cost;
+    revenue = in->quantity * in->sale_price * (1.0 - in->sale_fee_rate);
+
+    /* Fixed costs are paid regardless; source and shipping only if you
+     * fulfil; the failure loss only if you cannot. */
+    cost = in->fixed_costs + (1.0 - f) * source_cost + f * in->failure_loss;
+    return finish(cost, (1.0 - f) * revenue, in->days_to_fulfil, out);
+}
+
+/* ---- 10. Synthetic bundling -------------------------------------------- */
+
+tm_status tm_synthetic(const tm_synthetic_in *in,
+                       const tm_component *outputs, size_t n_outputs,
+                       tm_result *out)
+{
+    double value = 0.0, cost;
+    size_t i;
+
+    if (in == NULL || outputs == NULL || out == NULL) return TM_ERR_ARG;
+    if (n_outputs == 0 || n_outputs > TM_MAX_COMPONENTS) return TM_ERR_ARG;
+    if (!is_positive(in->input_cost) || !is_amount(in->fixed_costs) ||
+        !is_amount(in->per_output_cost) || !is_rate(in->waste_rate) ||
+        !is_rate(in->sell_fee_rate) || !is_amount(in->holding_cost_per_day) ||
+        !is_days(in->hold_days)) {
+        return TM_ERR_RANGE;
+    }
+    for (i = 0; i < n_outputs; ++i) {
+        if (!is_amount(outputs[i].sale_value) ||
+            !is_prob(outputs[i].sale_probability) ||
+            !is_amount(outputs[i].fallback_value)) {
+            return TM_ERR_RANGE;
+        }
+        /* Waste and the sales fee apply to what sells; the fallback (melt,
+         * scrap) is taken as received. */
+        value += outputs[i].sale_probability * outputs[i].sale_value *
+                     (1.0 - in->waste_rate) * (1.0 - in->sell_fee_rate) +
+                 (1.0 - outputs[i].sale_probability) *
+                     outputs[i].fallback_value;
+    }
+
+    cost = in->input_cost + in->fixed_costs +
+           (double)n_outputs * in->per_output_cost +
+           in->holding_cost_per_day * in->hold_days;
+    return finish(cost, value, in->hold_days, out);
+}
+
+/* ---- 11. Event momentum ------------------------------------------------ */
+
+tm_status tm_hype_decay(double initial_excess, double half_life_days,
+                        double days, double *out_remaining)
+{
+    double v;
+    if (out_remaining == NULL) return TM_ERR_ARG;
+    if (!isfinite(initial_excess) || initial_excess < 0.0 ||
+        initial_excess > TM_MAX_AMOUNT || !isfinite(half_life_days) ||
+        half_life_days <= 0.0 || !is_days(days)) {
+        return TM_ERR_RANGE;
+    }
+    v = initial_excess * pow(0.5, days / half_life_days);
+    if (!isfinite(v)) return TM_ERR_OVERFLOW;
+    *out_remaining = v;
+    return TM_OK;
+}
+
+tm_status tm_momentum(const tm_momentum_in *in,
+                      const tm_outcome *exit_prices, size_t n_exit_prices,
+                      tm_result *out)
+{
+    double psum = 0.0, expected_exit = 0.0, cost, exit_proceeds, stuck, L;
+    size_t i;
+
+    if (in == NULL || exit_prices == NULL || out == NULL) return TM_ERR_ARG;
+    if (n_exit_prices == 0 || n_exit_prices > TM_MAX_OUTCOMES) {
+        return TM_ERR_ARG;
+    }
+    if (!is_positive(in->entry_price) || !is_positive(in->quantity) ||
+        !is_rate(in->buy_fee_rate) || !is_rate(in->sell_fee_rate) ||
+        !is_rate(in->entry_slippage_rate) || !is_rate(in->exit_slippage_rate) ||
+        !is_amount(in->fixed_costs) || !is_amount(in->holding_cost_per_day) ||
+        !is_days(in->hold_days) || !is_prob(in->exit_failure_probability) ||
+        !is_prob(in->stuck_recovery_rate)) {
+        return TM_ERR_RANGE;
+    }
+    /* The exit leg must keep a positive share of its notional. */
+    if (in->sell_fee_rate + in->exit_slippage_rate >= 1.0) return TM_ERR_RANGE;
+
+    for (i = 0; i < n_exit_prices; ++i) {
+        if (!is_prob(exit_prices[i].probability)) return TM_ERR_PROB;
+        if (!is_amount(exit_prices[i].unit_value)) return TM_ERR_RANGE;
+        psum += exit_prices[i].probability;
+        expected_exit += exit_prices[i].probability * exit_prices[i].unit_value;
+    }
+    if (fabs(psum - 1.0) > TM_PROB_TOLERANCE) return TM_ERR_PROB;
+
+    L = in->exit_failure_probability;
+    cost = in->quantity * in->entry_price *
+               (1.0 + in->buy_fee_rate + in->entry_slippage_rate) +
+           in->fixed_costs + in->holding_cost_per_day * in->hold_days;
+    exit_proceeds = in->quantity * expected_exit *
+                    (1.0 - in->sell_fee_rate - in->exit_slippage_rate);
+    stuck = in->quantity * in->entry_price * in->stuck_recovery_rate;
+
+    return finish(cost, (1.0 - L) * exit_proceeds + L * stuck, in->hold_days,
+                  out);
+}
+
 /* ---- Bridge to the advantage core ------------------------------------- */
 
 tm_status tm_baseline(const tm_result *r, double cost_of_capital_annual,

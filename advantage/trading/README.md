@@ -1,4 +1,4 @@
-# advantage/trading — seven cross-asset trading models (C core + C++ layer)
+# advantage/trading — eleven cross-asset trading models (C core + C++ layer)
 
 The same three business models apply whether the asset is a token or a
 mid-century dresser; only the numbers differ (fees, holding cost, days held,
@@ -13,6 +13,10 @@ them to the advantage model so `counsel` can rank approaches.
 | **Regional arbitrage** (`tm_regional`, `tm_regional_premium`) | Buy low in one place, move it, sell high in another; the move can fail or damage the goods | Country-exclusive premium (capital-control barrier) | Estate sale → dense urban resale |
 | **Supply aggregation** (`tm_aggregation`) | Collect many small items into a cohesive set; an incomplete set is worth only its parts | Sorted, attributed coin sets | Matched dining-chair sets |
 | **Informational asymmetry** (`tm_asymmetry`, `tm_mispricing`) | A listing is mislabeled or misunderstood. One evaluation = one *candidate*: you pay to look every time, buy only if you win the race, and profit only if your read was right | Mispriced listings / panic discounts | "Old wooden table" that is a designer piece |
+| **Distressed inventory** (`tm_distressed`) | Buy from sellers who want speed and certainty over price, then sell on. Institutional liquidators compete, so there is a win probability and a cost to chase every lot | Forced-liquidation dips on thin books | Office/eviction/storage-auction truckloads |
+| **Virtual inventory** (`tm_virtual`) | Take the customer's payment first, source the item after. The sale funds the purchase; the risk is being unable to fulfil | Dealer-fulfilled graded coin sales | Pick-up-after-payment resale |
+| **Synthetic bundling** (`tm_synthetic`) | Turn one thing into many (break up a collection) or many into one (assemble parts); wrap/unwrap is the one-output case | Wrapped-token spreads; estate breakups with melt value | Bespoke assembled pieces |
+| **Event momentum** (`tm_momentum`, `tm_hype_decay`) | Enter on a news or trend shock, exit while demand is elevated; hype decays on a half-life and exit liquidity is the dominant risk | News-driven micro-cap entries | Trend-driven vintage buying |
 | **Consignment / zero inventory** (`tm_consignment`) | Match buyers and sellers for a commission; no inventory, almost no capital, but your time and counterparty risk are the real inputs | Local OTC / escrow desk | Staging and sales for people moving out |
 
 ## Files
@@ -20,8 +24,9 @@ them to the advantage model so `counsel` can rank approaches.
 | File | Role |
 |---|---|
 | `trade_models.{h,c}` | C core: the three models, validation, advantage bridge |
-| `trade_models.{hpp,cpp}` | C++ layer: `Checked<T>` results, `vector` outcomes, the trade-off tables as data (`profiles()`, `advancedModelMatrix()`), `addEvidence` into an `AdvantageStore` |
-| `trading_demo.cpp` | Fourteen approaches (seven models × digital/physical), 48 illustrative scenarios, both comparison tables, then a ranked counsel |
+| `trade_models.{hpp,cpp}` | C++ layer: `Checked<T>` results, `vector` outcomes, the trade-off tables as data (`profiles()`, `advancedModelMatrix()`, `nicheModelMatrix()`), `addEvidence` into an `AdvantageStore` |
+| `rate_budget.{h,c,hpp}` | Pure rate-limit budget: reads `X-RateLimit-*` / `Retry-After` values and says how long to wait. No sockets, no sleeping |
+| `trading_demo.cpp` | 22 approaches (eleven models × digital/physical, plus the original pair), 67 illustrative scenarios, all comparison tables, a rate-budget walkthrough, then a ranked counsel |
 | `Makefile` | `make` / `make run` / `make clean`. No OpenSSL, no network |
 
 ## Build and run
@@ -83,7 +88,49 @@ the larger one winning on size. Use `Scale::Absolute` within a single approach.
   request/response HTTP.
 - This is arithmetic, not financial advice.
 
+## Rate budget (`rate_budget.*`)
+
+The polite use of rate-limit headers: take what the server allows at the fastest
+pace it allows, and no faster.
+
+- Reads `X-RateLimit-Limit`, `-Remaining`, `-Reset` and `Retry-After`.
+- Spreads the usable budget (`remaining - reserve`) evenly across the time left
+  in the window, keeps a reserve, enforces a minimum interval, and **always
+  obeys an explicit `Retry-After`**.
+- A required wait over your cap returns "stop", it does not sleep forever.
+- A reset sent as an absolute epoch time is converted (values above 1e9); the
+  C core itself takes seconds-from-now. `Retry-After` as an HTTP date is
+  rejected rather than guessed.
+- Header values must be plain non-negative decimals; anything else is rejected
+  and leaves the state **unchanged** (fail closed).
+- `RateBudget::observe` takes the lowercase-keyed header map that
+  `advantage::HttpResponse` already provides, without linking the transport.
+
+## Model notes
+
+- **Virtual inventory** is only modelled for an *honest* sale: the buyer is told
+  it is fulfilled to order with a stated lead time, from the seller's own
+  listing and photos. Its "return on cost" is on total outlay, not your own
+  capital, so the **failure probability and `failure_loss`** are the numbers to
+  stress. A platform ban ends the model, not one sale.
+- **Event momentum** treats inability to exit as a first-class outcome
+  (`exit_failure_probability`, often near-zero recovery). In thin markets you
+  can be the exit liquidity for someone else's promotion; do not use these
+  numbers to justify promoting a token you hold.
+- **Synthetic bundling** with coins: check local law before melting. Some
+  circulating coins (for example US one- and five-cent pieces) are legally
+  protected from melting.
+
 ## Deliberately not built
+
+- **Copying other sellers' photos, stripping their text or watermarks, and
+  re-uploading them** (the cross-platform "listing bot"). That is copyright
+  circumvention and misrepresents what you are selling. Use your own photos and
+  an honest description.
+- **Persistent authenticated sessions and instant-checkout automation across
+  third-party merchant dashboards.** For the dealer-fulfilled case, integrate a
+  dealer's *documented API* with its terms, keeping keys in the module's
+  encrypted keystore, rather than driving dashboards with stored cookies.
 
 - **Header spoofing / User-Agent and proxy rotation** to make automated requests
   look like human browsers and evade rate limits or IP blocks. That is evasion

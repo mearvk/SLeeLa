@@ -43,6 +43,7 @@ extern "C" {
 #define TM_MAX_AMOUNT 1e12     /* cap on prices, quantities and cost totals */
 #define TM_MAX_OUTCOMES 16     /* cap on refurbishment outcome branches     */
 #define TM_MAX_LOTS 256        /* cap on items in one aggregation           */
+#define TM_MAX_COMPONENTS 64   /* cap on parts in one synthetic bundle      */
 #define TM_PROB_TOLERANCE 1e-6 /* outcome probabilities must sum to 1 +/- this */
 #define TM_MAX_HOLD_DAYS 36500.0
 
@@ -226,6 +227,130 @@ typedef struct {
 } tm_consignment_in;
 
 tm_status tm_consignment(const tm_consignment_in *in, tm_result *out);
+
+/* ---- 8. Distressed inventory & liquidation ------------------------------ */
+/*
+ * Buy from a seller who values speed and certainty over price (forced
+ * liquidation, eviction clean-out, storage auction, flash crash), then sell
+ * the contents on. Institutional liquidators compete for the best lots, so
+ * the model carries a win probability and a cost to pursue every lot.
+ */
+typedef struct {
+    double lot_price;            /* total price of the whole lot          (> 0) */
+    double units;                /* items in the lot                      (> 0) */
+    double expected_unit_value;  /* resale value per unit that sells      (>= 0) */
+    double sell_through_rate;    /* fraction of units that sell at that
+                                    value                               [0, 1] */
+    double salvage_unit_value;   /* per unit for the rest (scrap / dump)  (>= 0) */
+    double sell_fee_rate;        /* fraction of sale value            [0, 1)    */
+    double per_unit_handling_cost;/* sorting, cleaning, listing, per unit (>= 0) */
+    double disposal_cost_per_unsold_unit; /* hauling away what will not sell (>= 0) */
+    double fixed_costs;          /* truck, crew, total                    (>= 0) */
+    double holding_cost_per_day; /* storage, total per day                (>= 0) */
+    double hold_days;            /* days to clear the lot        [0, MAX_HOLD]  */
+    double win_probability;      /* P(you get the lot)                [0, 1]    */
+    double pursuit_cost;         /* cost of chasing the lot, paid either way (>= 0) */
+} tm_distressed_in;
+
+tm_status tm_distressed(const tm_distressed_in *in, tm_result *out);
+
+/* ---- 9. Virtual inventory / sell-before-source -------------------------- */
+/*
+ * Take the customer's payment first and source the item afterwards. The edge
+ * is that the customer's money funds the purchase; the risk is that you cannot
+ * fulfil (item gone, price jumped, source refuses you) after being paid.
+ *
+ * Because the sale funds the purchase, "return on cost" here is measured on
+ * total outlay, NOT on your own capital. Your capital at risk is mainly
+ * fixed_costs plus the failure branch (failure_loss), which is why the
+ * failure probability is the most important number in this model.
+ *
+ * This model assumes an HONEST sale: the buyer is told it is fulfilled to
+ * order with a stated lead time. It makes no allowance for misrepresentation.
+ */
+typedef struct {
+    double sale_price;           /* per unit, charged to your customer    (> 0) */
+    double source_price;         /* per unit, quoted by the source now    (> 0) */
+    double quantity;             /* units                                 (> 0) */
+    double sale_fee_rate;        /* your sales channel's fee          [0, 1)    */
+    double source_fee_rate;      /* fee on the purchase               [0, 1)    */
+    double shipping_cost;        /* total per order                       (>= 0) */
+    double price_drift_rate;     /* adverse move in source price between
+                                    sale and purchase                   [0, 1)    */
+    double fulfillment_failure_probability; /* P(cannot fulfil)       [0, 1]    */
+    double failure_loss;         /* what you lose if you cannot: non-refundable
+                                    fees, penalties, goodwill, total    (>= 0) */
+    double fixed_costs;          /* total                                 (>= 0) */
+    double days_to_fulfil;       /* sale -> delivery             [0, MAX_HOLD]  */
+} tm_virtual_in;
+
+tm_status tm_virtual(const tm_virtual_in *in, tm_result *out);
+
+/* ---- 10. Synthetic bundling (assemble / disassemble) -------------------- */
+/*
+ * Turn one thing into many (break up a collection: sell the rare parts to
+ * specialists, melt the rest) or many into one (assemble mismatched parts into
+ * a finished piece). Both are "pay for inputs, transform at a cost, sell
+ * outputs", so one structure covers them. Wrap/unwrap of a token is the
+ * degenerate case: one output, tiny transform cost, small spread.
+ */
+typedef struct {
+    double sale_value;           /* value of this output if it sells      (>= 0) */
+    double sale_probability;     /* P(it sells at that value)         [0, 1]    */
+    double fallback_value;       /* value if it does not (e.g. melt)      (>= 0) */
+} tm_component;
+
+typedef struct {
+    double input_cost;           /* total paid for the inputs             (> 0) */
+    double fixed_costs;          /* tools, setup, total                   (>= 0) */
+    double per_output_cost;      /* labor / hardware / grading, per output (>= 0) */
+    double waste_rate;           /* fraction of output value lost to
+                                    material waste or defects           [0, 1)    */
+    double sell_fee_rate;        /* fraction of sale value            [0, 1)    */
+    double holding_cost_per_day; /* total per day                         (>= 0) */
+    double hold_days;            /* days including assembly      [0, MAX_HOLD]  */
+} tm_synthetic_in;
+
+/* outputs: 1..TM_MAX_COMPONENTS entries. */
+tm_status tm_synthetic(const tm_synthetic_in *in,
+                       const tm_component *outputs, size_t n_outputs,
+                       tm_result *out);
+
+/* ---- 11. Event-driven momentum / hype cycle ------------------------------ */
+/*
+ * Enter on a news or trend shock and exit while demand is still elevated. The
+ * profit is entirely in the exit-price distribution and in whether you can exit
+ * at all; both are the caller's honest estimates. Hype decays, so time held is
+ * a cost, not a neutral input. High failure rates are normal in this model:
+ * thin or manipulated markets can leave you holding something you cannot sell
+ * (exit_failure_probability), often at near-zero recovery.
+ */
+typedef struct {
+    double entry_price;          /* per unit                              (> 0) */
+    double quantity;             /* units                                 (> 0) */
+    double buy_fee_rate;         /* fraction of entry notional        [0, 1)    */
+    double sell_fee_rate;        /* fraction of exit notional         [0, 1)    */
+    double entry_slippage_rate;  /* adverse fill on the way in        [0, 1)    */
+    double exit_slippage_rate;   /* adverse fill on the way out       [0, 1)    */
+    double fixed_costs;          /* total                                 (>= 0) */
+    double holding_cost_per_day; /* total per day                         (>= 0) */
+    double hold_days;            /* planned holding time         [0, MAX_HOLD]  */
+    double exit_failure_probability; /* P(cannot exit at all)         [0, 1]    */
+    double stuck_recovery_rate;  /* if stuck: fraction of entry value
+                                    recovered                           [0, 1]    */
+} tm_momentum_in;
+
+/* exit_prices: branches that start with tm_outcome{probability, exit price per
+ * unit}; probabilities must sum to 1 (they describe the exits that WERE
+ * possible; the failure to exit is separate). */
+tm_status tm_momentum(const tm_momentum_in *in,
+                      const tm_outcome *exit_prices, size_t n_exit_prices,
+                      tm_result *out);
+
+/* Excess price above baseline remaining after `days`, given a half-life:
+ * remaining = initial_excess * 0.5^(days / half_life_days). */
+tm_status tm_hype_decay(double initial_excess, double half_life_days,
+                        double days, double *out_remaining);
 
 /* ---- Bridge to the advantage core -------------------------------------- */
 /*

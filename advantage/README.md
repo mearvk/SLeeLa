@@ -19,7 +19,7 @@ assumptions (held / doubted) ──▶ trust ─────────┘
 | `counsel.*` | Joins the two: ranks sources with scores, things to verify, and cautions |
 | `enrich.*` | Opt-in, allowlisted fetch of extra (untrusted) knowledge lines |
 | `analyze.cpp` | CLI over all of the above |
-| `trading/` | Seven trading models (arbitrage, market making, refurbishment, regional, aggregation, asymmetry, consignment) in C and C++, joined to the advantage model; see its README |
+| `trading/` | Eleven trading models (arbitrage, market making, refurbishment, regional, aggregation, asymmetry, consignment, distressed, virtual, synthetic, momentum) plus a rate-limit budget, in C and C++, joined to the advantage model; see its README |
 | `transport/` | Secure acquisition layer used by enrichment (see its README) |
 | `examples/` | Worked trade examples (illustrative data; see its README) |
 

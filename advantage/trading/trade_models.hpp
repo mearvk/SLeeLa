@@ -110,6 +110,38 @@ inline Checked<tm_result> consignment(const tm_consignment_in& in) {
     return detail::make(tm_consignment(&in, &r), r);
 }
 
+inline Checked<tm_result> distressed(const tm_distressed_in& in) {
+    tm_result r{};
+    return detail::make(tm_distressed(&in, &r), r);
+}
+
+// Sell-before-source. Assumes an honest, disclosed lead time (see the C header).
+inline Checked<tm_result> virtualInventory(const tm_virtual_in& in) {
+    tm_result r{};
+    return detail::make(tm_virtual(&in, &r), r);
+}
+
+inline Checked<tm_result> synthetic(const tm_synthetic_in& in,
+                                    const std::vector<tm_component>& outputs) {
+    tm_result r{};
+    return detail::make(tm_synthetic(&in, outputs.data(), outputs.size(), &r), r);
+}
+
+// exitPrices: {probability, exit price per unit} branches summing to 1.
+inline Checked<tm_result> momentum(const tm_momentum_in& in,
+                                   const std::vector<tm_outcome>& exitPrices) {
+    tm_result r{};
+    return detail::make(
+        tm_momentum(&in, exitPrices.data(), exitPrices.size(), &r), r);
+}
+
+// Excess above baseline left after `days` given a half-life.
+inline Checked<double> hypeDecay(double initialExcess, double halfLifeDays,
+                                 double days) {
+    double v = 0.0;
+    return detail::make(tm_hype_decay(initialExcess, halfLifeDays, days, &v), v);
+}
+
 // Advantage of an evaluated trade after the opportunity cost of its capital.
 inline Checked<double> advantageOf(const tm_result& r, double costOfCapital) {
     double a = 0.0;
@@ -163,6 +195,16 @@ struct ModelProfile {
 // needs *conceptually*; this library supplies only the arithmetic, not the
 // scrapers, OCR, inventory system or escrow platform.
 const std::vector<ModelProfile>& advancedModelMatrix();
+
+// The comparison matrix for the niche models (descriptive, not numeric).
+struct NicheProfile {
+    const char* model;
+    const char* capitalEfficiency;
+    const char* velocityOfCapital;
+    const char* operationalFriction;
+    const char* mainThreat;
+};
+const std::vector<NicheProfile>& nicheModelMatrix();
 
 }  // namespace trading
 }  // namespace advantage

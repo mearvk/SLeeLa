@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "../counsel.hpp"
+#include "rate_budget.hpp"
 #include "trade_models.hpp"
 
 using namespace advantage;
@@ -156,6 +157,123 @@ tm_consignment_in con(double sale, double commission, double saleP,
     return in;
 }
 
+tm_distressed_in dis(double lotPrice, double units, double unitValue,
+                     double sellThrough, double salvage, double sellFee,
+                     double handling, double disposal, double fixed,
+                     double holdCost, double days, double winP, double pursuit) {
+    tm_distressed_in in{};
+    in.lot_price = lotPrice;
+    in.units = units;
+    in.expected_unit_value = unitValue;
+    in.sell_through_rate = sellThrough;
+    in.salvage_unit_value = salvage;
+    in.sell_fee_rate = sellFee;
+    in.per_unit_handling_cost = handling;
+    in.disposal_cost_per_unsold_unit = disposal;
+    in.fixed_costs = fixed;
+    in.holding_cost_per_day = holdCost;
+    in.hold_days = days;
+    in.win_probability = winP;
+    in.pursuit_cost = pursuit;
+    return in;
+}
+
+tm_virtual_in vir(double sale, double source, double qty, double saleFee,
+                  double sourceFee, double shipping, double drift,
+                  double failP, double failLoss, double fixed, double days) {
+    tm_virtual_in in{};
+    in.sale_price = sale;
+    in.source_price = source;
+    in.quantity = qty;
+    in.sale_fee_rate = saleFee;
+    in.source_fee_rate = sourceFee;
+    in.shipping_cost = shipping;
+    in.price_drift_rate = drift;
+    in.fulfillment_failure_probability = failP;
+    in.failure_loss = failLoss;
+    in.fixed_costs = fixed;
+    in.days_to_fulfil = days;
+    return in;
+}
+
+tm_synthetic_in syn(double input, double fixed, double perOutput, double waste,
+                    double sellFee, double holdCost, double days) {
+    tm_synthetic_in in{};
+    in.input_cost = input;
+    in.fixed_costs = fixed;
+    in.per_output_cost = perOutput;
+    in.waste_rate = waste;
+    in.sell_fee_rate = sellFee;
+    in.holding_cost_per_day = holdCost;
+    in.hold_days = days;
+    return in;
+}
+
+tm_momentum_in mom(double entry, double qty, double buyFee, double sellFee,
+                   double entrySlip, double exitSlip, double fixed,
+                   double holdCost, double days, double failP, double recovery) {
+    tm_momentum_in in{};
+    in.entry_price = entry;
+    in.quantity = qty;
+    in.buy_fee_rate = buyFee;
+    in.sell_fee_rate = sellFee;
+    in.entry_slippage_rate = entrySlip;
+    in.exit_slippage_rate = exitSlip;
+    in.fixed_costs = fixed;
+    in.holding_cost_per_day = holdCost;
+    in.hold_days = days;
+    in.exit_failure_probability = failP;
+    in.stuck_recovery_rate = recovery;
+    return in;
+}
+
+// n identical outputs.
+std::vector<tm_component> repeat(std::size_t n, tm_component c) {
+    return std::vector<tm_component>(n, c);
+}
+
+void printRateBudgetWalkthrough() {
+    std::cout << "== Rate budget (offline walkthrough; no requests are made) ==\n";
+    struct Case {
+        const char* label;
+        std::map<std::string, std::string> headers;
+        double now;
+    };
+    const std::vector<Case> cases = {
+        {"40 of 100 left, 30s to reset",
+         {{"x-ratelimit-limit", "100"}, {"x-ratelimit-remaining", "40"},
+          {"x-ratelimit-reset", "30"}}, 0},
+        {"2 left (== reserve): wait out window",
+         {{"x-ratelimit-limit", "100"}, {"x-ratelimit-remaining", "2"},
+          {"x-ratelimit-reset", "30"}}, 0},
+        {"reset sent as epoch time",
+         {{"x-ratelimit-limit", "100"}, {"x-ratelimit-remaining", "40"},
+          {"x-ratelimit-reset", "1700000030"}}, 1700000000},
+        {"server says Retry-After: 5",
+         {{"x-ratelimit-remaining", "40"}, {"x-ratelimit-reset", "30"},
+          {"retry-after", "5"}}, 0},
+        {"Retry-After: 600 (over the 60s cap)",
+         {{"retry-after", "600"}}, 0},
+        {"malformed remaining",
+         {{"x-ratelimit-remaining", "lots"}}, 0},
+        {"Retry-After as an HTTP date",
+         {{"retry-after", "Wed, 21 Oct 2026 07:28:00 GMT"}}, 0},
+    };
+    for (const auto& c : cases) {
+        RateBudget rb;
+        std::string err;
+        std::cout << "  " << std::left << std::setw(40) << c.label;
+        if (!rb.observe(c.headers, c.now, err)) {
+            std::cout << "REJECTED: " << err << "\n";
+            continue;
+        }
+        Delay d = rb.next();
+        std::cout << std::right << "wait " << std::setw(9) << d.ms << " ms"
+                  << (d.mustStop ? "  -> STOP (exceeds cap)" : "") << "\n";
+    }
+    std::cout << "\n";
+}
+
 void printProfiles() {
     std::cout << "== Strategic trade-offs ==\n";
     for (const auto& p : profiles()) {
@@ -173,7 +291,16 @@ void printProfiles() {
                   << "    infrastructure: " << m.infrastructure
                   << " | friction: " << m.primaryFriction << "\n";
     }
+    std::cout << "\n== Niche model comparison ==\n";
+    for (const auto& m : nicheModelMatrix()) {
+        std::cout << "  " << m.model << "\n"
+                  << "    capital efficiency: " << m.capitalEfficiency
+                  << " | velocity: " << m.velocityOfCapital << "\n"
+                  << "    friction: " << m.operationalFriction
+                  << " | main threat: " << m.mainThreat << "\n";
+    }
     std::cout << "\n";
+    printRateBudgetWalkthrough();
 }
 
 }  // namespace
@@ -305,6 +432,79 @@ int main() {
         {"Your capital is your time; value it.",
          "Client acquisition, not arithmetic, is the usual limit."}));
 
+    store.sources.push_back(makeSource(
+        "distressed-digital", "Distressed Inventory: Forced-Liquidation Dips (tokens)",
+        "Buy assets dumped into a thin book by forced liquidations; sell once "
+        "the market recovers.",
+        {{"The market recovers rather than keeps falling.", false},
+         {"You can exit near the recovered price without moving it.", true},
+         {"You get filled before better-equipped liquidators.", true}},
+        {"Size to what the book can absorb on the way out, not the way in.",
+         "A dip that keeps dipping is a loss, not a discount."}));
+    store.sources.push_back(makeSource(
+        "distressed-physical", "Distressed Inventory: Truckload Clean-Outs",
+        "Buy whole lots from office movers, evictions or storage auctions; "
+        "liquidate the contents piece by piece.",
+        {{"The lot contains what it was described to contain.", true},
+         {"Sell-through holds at the assumed rate.", true},
+         {"You can compete with institutional liquidators for good lots.", true}},
+        {"Budget the unsold remainder and its disposal before you bid.",
+         "Handling per piece, not the lot price, decides the margin."}));
+    store.sources.push_back(makeSource(
+        "virtual-digital", "Virtual Inventory: Dealer-Fulfilled Coin Sales",
+        "List graded coins at a markup to live pricing; buy from a wholesale "
+        "dealer through its API once the customer has paid.",
+        {{"The dealer's API terms permit this use and you hold valid access.", true},
+         {"Stock is still available when you go to buy.", true},
+         {"The customer is told the coin is fulfilled to order.", true}},
+        {"The failure branch, not the markup, sets the risk.",
+         "Price drift between sale and purchase comes straight out of margin."}));
+    store.sources.push_back(makeSource(
+        "virtual-physical", "Virtual Inventory: Pick-Up-After-Payment Resale",
+        "Resell standard items you do not yet hold, collecting them from the "
+        "original seller after your buyer has paid.",
+        {{"Your listing is honest about who you are and the lead time.", true},
+         {"The original item is still available at pick-up.", false},
+         {"The sales channel's rules allow this arrangement.", false}},
+        {"If the original sells first, you owe a refund and bear the penalty.",
+         "A platform ban ends the model, not just one sale."}));
+    store.sources.push_back(makeSource(
+        "synthetic-digital", "Synthetic Bundling: Wrap / Unwrap and Estate Breakups",
+        "Mint or burn wrapped tokens across chains, or split a coin estate "
+        "into collector pieces and melt value.",
+        {{"The wrap/unwrap path is sound and the contracts are free of exploitable bugs.", false},
+         {"Collectors pay the assumed price for the rare pieces.", true},
+         {"Melting or selling the remainder is lawful where you operate.", true}},
+        {"Fees and gas are the whole margin on a wrap spread.",
+         "Check local law before melting coins: some are protected."}));
+    store.sources.push_back(makeSource(
+        "synthetic-physical", "Synthetic Bundling: Bespoke Assembled Pieces",
+        "Combine salvaged components with clean hardware into a finished piece "
+        "sold to a specialist buyer.",
+        {{"Component supply is steady and priced as assumed.", true},
+         {"The finished piece sells to a premium buyer.", true},
+         {"Labor stays within the estimate.", true}},
+        {"Labor is usually the largest unmeasured cost.",
+         "Count the waste: not every slab and base is usable."}));
+    store.sources.push_back(makeSource(
+        "momentum-digital", "Event Momentum: News-Driven Micro-Cap Entries",
+        "Enter a newly listed or newly newsworthy token and exit while "
+        "demand is still elevated.",
+        {{"There will be enough exit liquidity when you sell.", false},
+         {"You are not the exit liquidity for someone else's promotion.", false},
+         {"Fees and slippage on thin books are known.", true}},
+        {"Hype decays on a half-life; time held is a cost.",
+         "Being unable to exit is the dominant risk, not a footnote."}));
+    store.sources.push_back(makeSource(
+        "momentum-physical", "Event Momentum: Trend-Driven Vintage Buying",
+        "Buy local vintage pieces in a style that is going viral, before "
+        "casual sellers reprice them.",
+        {{"The trend lasts long enough to resell.", true},
+         {"Buyers outside the trend still exist as a fallback.", true},
+         {"Your sourcing does not breach any platform's rules.", true}},
+        {"Resell early; a trend that has peaked reprices against you.",
+         "Hold fewer pieces than you can store and sell."}));
+
     // ---- illustrative scenarios -------------------------------------------
     // Arbitrage inputs: buy, sell, qty, buyFee, sellFee, slip, fixed, holdCost/day, days
     // Market making:    bid, ask, qty, fee, fillProb, unwindLoss, fixed, holdCost/day, days
@@ -402,6 +602,51 @@ int main() {
     addAny("consignment-physical", "1200 sale, 50% sells", consignment(con(1200, .35, .50, .10, 90, 10, .03, 200, 21)));
     addAny("consignment-physical", "600 sale, 75% sells", consignment(con(600, .35, .75, .10, 90, 10, .03, 200, 21)));
 
+    // Distressed: lot, units, unitValue, sellThrough, salvage, sellFee, handling, disposal, fixed, holdCost/day, days, winP, pursuit
+    addAny("distressed-digital", "dip recovers", distressed(dis(70000, 100000, .95, .9, .60, .002, 0, 0, 20, 0, .5, .6, 5)));
+    addAny("distressed-digital", "partial recovery", distressed(dis(70000, 100000, .80, .9, .60, .002, 0, 0, 20, 0, .5, .6, 5)));
+    addAny("distressed-digital", "keeps falling", distressed(dis(70000, 100000, .68, .9, .60, .002, 0, 0, 20, 0, .5, .6, 5)));
+    addAny("distressed-digital", "thin exit book", distressed(dis(70000, 100000, .95, .5, .50, .002, 0, 0, 20, 0, .5, .6, 5)));
+    addAny("distressed-physical", "40 pieces, 75% sell", distressed(dis(800, 40, 70, .75, 5, .13, 12, 8, 250, 3, 60, .7, 20)));
+    addAny("distressed-physical", "better stock ($90)", distressed(dis(800, 40, 90, .75, 5, .13, 12, 8, 250, 3, 60, .7, 20)));
+    addAny("distressed-physical", "weak stock, 60% sell", distressed(dis(800, 40, 55, .60, 5, .13, 12, 8, 250, 3, 60, .7, 20)));
+
+    // Virtual: sale, source, qty, saleFee, sourceFee, shipping, drift, failP, failLoss, fixed, days
+    addAny("virtual-digital", "3% failure", virtualInventory(vir(1200, 1100, 1, .03, 0, 15, .004, .03, 60, 4, 3)));
+    addAny("virtual-digital", "15% failure", virtualInventory(vir(1200, 1100, 1, .03, 0, 15, .004, .15, 60, 4, 3)));
+    addAny("virtual-digital", "price drifts 2%", virtualInventory(vir(1200, 1100, 1, .03, 0, 15, .02, .05, 60, 4, 3)));
+    addAny("virtual-digital", "thin markup, 8% fail", virtualInventory(vir(1150, 1100, 1, .03, 0, 15, .004, .08, 150, 4, 3)));
+    addAny("virtual-physical", "20% gone first", virtualInventory(vir(250, 50, 1, .13, 0, 40, 0, .20, 25, 3, 4)));
+    addAny("virtual-physical", "50% gone first", virtualInventory(vir(250, 50, 1, .13, 0, 40, 0, .50, 25, 3, 4)));
+    addAny("virtual-physical", "50% gone, costly refund", virtualInventory(vir(250, 50, 1, .13, 0, 40, 0, .50, 100, 3, 4)));
+    addAny("virtual-physical", "low price, 30% gone", virtualInventory(vir(120, 50, 1, .13, 0, 40, 0, .30, 60, 3, 4)));
+
+    // Synthetic: input, fixed, perOutput, waste, sellFee, holdCost/day, days (+ outputs {saleValue, saleP, fallback})
+    addAny("synthetic-digital", "wrap spread 0.4%", synthetic(syn(100000, 30, 20, 0, .001, 0, .05), {{100400, .95, 99000}}));
+    addAny("synthetic-digital", "wrap spread 0.1%", synthetic(syn(100000, 30, 20, 0, .001, 0, .05), {{100100, .95, 99000}}));
+    addAny("synthetic-digital", "wrap spread 0.8%", synthetic(syn(100000, 30, 20, 0, .001, 0, .05), {{100800, .95, 99000}}));
+    auto estate = [](double rareValue, double rareP) {
+        std::vector<tm_component> v = repeat(25, {rareValue, rareP, 30});
+        v.push_back({0, 0, 600});  // generic damaged coins: melt value only
+        return v;
+    };
+    addAny("synthetic-digital", "estate: rare $220", synthetic(syn(3000, 50, 8, 0, .12, .5, 20), estate(220, .85)));
+    addAny("synthetic-digital", "estate: rare $140", synthetic(syn(3000, 50, 8, 0, .12, .5, 20), estate(140, .85)));
+    addAny("synthetic-digital", "estate: 60% of rare sell", synthetic(syn(3000, 50, 8, 0, .12, .5, 20), estate(220, .60)));
+    addAny("synthetic-physical", "industrial table $1100", synthetic(syn(270, 40, 90, .10, .12, .5, 21), {{1100, .8, 250}}));
+    addAny("synthetic-physical", "table $800", synthetic(syn(270, 40, 90, .10, .12, .5, 21), {{800, .8, 250}}));
+    addAny("synthetic-physical", "$800, 25% waste", synthetic(syn(270, 40, 90, .25, .12, .5, 21), {{800, .8, 250}}));
+    addAny("synthetic-physical", "$700, 50% sells", synthetic(syn(270, 40, 90, .10, .12, .5, 21), {{700, .5, 250}}));
+
+    // Momentum: entry, qty, buyFee, sellFee, entrySlip, exitSlip, fixed, holdCost/day, days, failP, recovery (+ exits {prob, price})
+    addAny("momentum-digital", "average event, 25% stuck", momentum(mom(.02, 500000, .003, .003, .02, .05, 5, 0, .2, .25, .05), {{.3, .05}, {.4, .022}, {.3, .008}}));
+    addAny("momentum-digital", "same, 10% stuck", momentum(mom(.02, 500000, .003, .003, .02, .05, 5, 0, .2, .10, .05), {{.3, .05}, {.4, .022}, {.3, .008}}));
+    addAny("momentum-digital", "strong event, 20% stuck", momentum(mom(.02, 500000, .003, .003, .02, .05, 5, 0, .2, .20, .05), {{.4, .06}, {.4, .03}, {.2, .01}}));
+    addAny("momentum-digital", "weak event, 15% stuck", momentum(mom(.02, 500000, .003, .003, .02, .05, 5, 0, .2, .15, .05), {{.2, .03}, {.4, .018}, {.4, .006}}));
+    addAny("momentum-physical", "trend holds", momentum(mom(90, 10, 0, .13, 0, .03, 40, .4, 25, .10, .5), {{.3, 200}, {.4, 150}, {.3, 100}}));
+    addAny("momentum-physical", "trend fades", momentum(mom(90, 10, 0, .13, 0, .03, 40, .4, 25, .10, .5), {{.1, 200}, {.3, 120}, {.6, 80}}));
+    addAny("momentum-physical", "early in the trend", momentum(mom(90, 10, 0, .13, 0, .03, 40, .4, 25, .10, .5), {{.5, 220}, {.3, 160}, {.2, 110}}));
+
     // ---- evaluate, record evidence ----------------------------------------
     std::cout << "== Scenario evaluations (ILLUSTRATIVE inputs) ==\n"
               << std::fixed << std::setprecision(2);
@@ -434,6 +679,13 @@ int main() {
     if (be.ok) {
         std::cout << "\nBreak-even sell price for the digital arbitrage above: "
                   << std::setprecision(4) << be.value << " (buy at 1.0000)\n";
+    }
+
+    Checked<double> hd = hypeDecay(1.0, 7.0, 14.0);
+    if (hd.ok) {
+        std::cout << "Hype decay: a 100% premium with a 7-day half-life leaves "
+                  << std::setprecision(0) << hd.value * 100.0
+                  << "% after 14 days.\n";
     }
 
     // ---- counsel ----------------------------------------------------------

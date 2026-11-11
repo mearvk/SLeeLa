@@ -79,5 +79,24 @@ const std::vector<ModelProfile>& advancedModelMatrix() {
     return table;
 }
 
+const std::vector<NicheProfile>& nicheModelMatrix() {
+    static const std::vector<NicheProfile> table = {
+        {"Distressed Inventory", "high", "medium",
+         "very high (physical moving and sorting)",
+         "institutional liquidators"},
+        {"Virtual Inventory", "maximum (return on own capital is unbounded)",
+         "ultra-high (immediate)",
+         "low (digital coordination)",
+         "platform terms-of-service bans; failure to fulfil"},
+        {"Synthetic Bundling", "medium", "low (requires assembly)",
+         "high (labor and technical sorting)",
+         "labor costs and material waste"},
+        {"Event Momentum", "medium to high", "ultra-high (minutes to days)",
+         "low (data-driven tracking)",
+         "fast-decaying hype cycles; exit liquidity"},
+    };
+    return table;
+}
+
 }  // namespace trading
 }  // namespace advantage
