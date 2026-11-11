@@ -34067,7 +34067,7 @@
     },
     {
       "path": "lib/java/java/math/BigInteger.sleela",
-      "sha256": "9a49be782086dbd8ce228c24082b961eb0c8162deb381206c252e74f97ee8f0f"
+      "sha256": "1d1a75938458b36955c39de17f973562e0577e38b6cdcfb086513d9c0077189d"
     },
     {
       "path": "lib/java/java/math/BitSieve.sleela",
@@ -37171,7 +37171,7 @@
     },
     {
       "path": "lib/java/java/util/Enumeration.sleela",
-      "sha256": "cb4b85bc9531e1577fd665e235ac892bfb3f4717f86b46c6253cc108c2a0e1f6"
+      "sha256": "65a4ef3b19df8a4c6a19557d4b224ed38078695573857bb126d789b03532fb42"
     },
     {
       "path": "lib/java/java/util/EventListener.sleela",
@@ -37223,7 +37223,7 @@
     },
     {
       "path": "lib/java/java/util/Hashtable.sleela",
-      "sha256": "6b4bbc1061156c4b4e893691ef1c2e0425f522fe1269d2f0b6cd18ec5713619d"
+      "sha256": "8d48c989b32181e2e6ffd002b0957acd9c4fa4b4b95527aa0cb3606195fae429"
     },
     {
       "path": "lib/java/java/util/HexFormat.sleela",
@@ -37647,7 +37647,7 @@
     },
     {
       "path": "lib/java/java/util/concurrent/ArrayBlockingQueue.sleela",
-      "sha256": "3666eac112ff6f1fc76c23f95e0efb6c1df94aedfdd519dd4e75913d627c27f1"
+      "sha256": "72e054494557e933498b2a976d439c43758cbc85f87359809d3dfee6f0dc531a"
     },
     {
       "path": "lib/java/java/util/concurrent/BlockingDeque.sleela",
@@ -37695,15 +37695,15 @@
     },
     {
       "path": "lib/java/java/util/concurrent/ConcurrentHashMap.sleela",
-      "sha256": "1c1c2190e53e1511bc0d965fa4e5714510119e093060ea37f89bd71b5ffc5874"
+      "sha256": "9389a8c74d94ee19709b8dcdbcae96df0dbf45543d5875db0e3d2854a51da8ee"
     },
     {
       "path": "lib/java/java/util/concurrent/ConcurrentLinkedDeque.sleela",
-      "sha256": "06def8a71d30d3a888aa4b5d2b90ad92628cdfd655ef7f61aa929e2fe2c56f60"
+      "sha256": "7f7bffccb8a4976bf85a7a2d547b97e04a2961446020440c51f931cbad6ce549"
     },
     {
       "path": "lib/java/java/util/concurrent/ConcurrentLinkedQueue.sleela",
-      "sha256": "113faff813150d59349d0b70a7943ba0851d5ed95d929394c94648c1a9a3a42c"
+      "sha256": "ee6be6b9d91e471289529e7316ac3c83ad1ad0e7e7c8c18d609ca2b4c0c101f9"
     },
     {
       "path": "lib/java/java/util/concurrent/ConcurrentMap.sleela",
@@ -37715,19 +37715,19 @@
     },
     {
       "path": "lib/java/java/util/concurrent/ConcurrentSkipListMap.sleela",
-      "sha256": "a81f6ae97756575ab472647128e412c062415120268ac45e4ff5c2716ec232ec"
+      "sha256": "1950fb72055165b14c979040c2c77763a192e407d1fd15ea4bcc077a8b4374f2"
     },
     {
       "path": "lib/java/java/util/concurrent/ConcurrentSkipListSet.sleela",
-      "sha256": "187bce5eab665a6d739ce386d418b097813cc8e9b81eb7c35ce6a26bec13201d"
+      "sha256": "12a975c4201b040ea8f4b82e44542fdf559c959841a6197338d466e1d61159f9"
     },
     {
       "path": "lib/java/java/util/concurrent/CopyOnWriteArrayList.sleela",
-      "sha256": "e1cec69964614379e41a3b66e268ad7e81d54fb07889eceda2815c758ee3044b"
+      "sha256": "260e23583d4ba8e47ee23a304e04cfd8554445cf9aa6d32badd6d9d4e0eda186"
     },
     {
       "path": "lib/java/java/util/concurrent/CopyOnWriteArraySet.sleela",
-      "sha256": "56f4064a40418d96c4d8f05bc586db0a09054e9abfa25540d54ddb0b3feb8538"
+      "sha256": "199238847617c229ed3ffe52c1c309ad4d196ae2ca8eebbe9391d559889eb670"
     },
     {
       "path": "lib/java/java/util/concurrent/CountDownLatch.sleela",
@@ -37839,11 +37839,11 @@
     },
     {
       "path": "lib/java/java/util/concurrent/LinkedBlockingDeque.sleela",
-      "sha256": "e6fe49cb5f4eefc139b077009518b01e3f8081d939409615fdd4012cf725b62e"
+      "sha256": "9bf37f26be777f7c7771081819bdcac48f2e1df3f5d94a03bd8d8e32609a358e"
     },
     {
       "path": "lib/java/java/util/concurrent/LinkedBlockingQueue.sleela",
-      "sha256": "d18aa75df6ae18fe39fe4efaa44c8127fd1c88f1bb0fb367ccacb6030ca9aa37"
+      "sha256": "dac3feb58b456a6310adb1605d9ea66a50eaf320c648132f843369d284add132"
     },
     {
       "path": "lib/java/java/util/concurrent/LinkedTransferQueue.sleela",

@@ -1,0 +1,104 @@
+<< examples/java/differential/ConcurrentCollections.sleela
+   SLeeLa side of the ConcurrentCollections differential test.
+   Definition: Prints, line for line, the same results as
+   ConcurrentCollections.java for the concurrent and legacy synchronized
+   collections of java.util and java.util.concurrent. >>
+#sleela 3.0
+material;
+import java.java.util;
+class ConcurrentCollections {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class differential test. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-10";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-10";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+  String getMetaVersion() { return metaVersion; }
+  int getMetaId() { return metaId; }
+  String getAuthor() { return metaAuthor; }
+
+  void main() {
+    ConcurrentHashMap chm = new ConcurrentHashMap();
+    chm.put("a", 1);
+    chm.put("b", 2);
+    chm.putIfAbsent("a", 9);
+    chm.put("c", 3);
+    chm.remove("b");
+    print("" + chm.size() + " " + chm.get("a") + " " + chm.get("zz") + " " + chm.containsKey("c") + " " + chm.contains(3) + " " + chm.mappingCount() + " " + chm.getOrDefault("q", 7));
+    try { chm.put(null, 1); } catch (Any e1) { print("NPE key"); }
+    try { chm.put("k", null); } catch (Any e2) { print("NPE value"); }
+    Hashtable ht = new Hashtable();
+    ht.put("x", 10);
+    ht.put("y", 20);
+    Enumeration en = ht.elements();
+    int sum = 0;
+    while (en.hasMoreElements()) { sum = sum + (int) en.nextElement(); }
+    print("" + ht.size() + " " + ht.get("x") + " " + sum + " " + ht.contains(20) + " " + ht.containsKey("y"));
+    CopyOnWriteArrayList cow = new CopyOnWriteArrayList();
+    cow.add("p");
+    cow.add("q");
+    boolean a1 = cow.addIfAbsent("p");
+    boolean a2 = cow.addIfAbsent("r");
+    String before = cow.toString();
+    ArrayList more = new ArrayList();
+    more.add("q");
+    more.add("s");
+    more.add("t");
+    print("" + a1 + " " + a2 + " " + before + " " + cow.addAllAbsent(more) + " " + cow.toString());
+    CopyOnWriteArraySet cows = new CopyOnWriteArraySet();
+    cows.add(3);
+    cows.add(1);
+    cows.add(3);
+    print(cows.toString() + " " + cows.size());
+    ArrayBlockingQueue abq = new ArrayBlockingQueue(2);
+    print("" + abq.offer(1) + " " + abq.offer(2) + " " + abq.offer(3) + " " + abq.remainingCapacity() + " " + abq.poll() + " " + abq.peek() + " " + abq.size());
+    try { abq.add(5); abq.add(6); } catch (Any e3) { Throwable t3 = (Throwable) e3; print(t3.getMessage()); }
+    LinkedBlockingQueue lbq = new LinkedBlockingQueue();
+    lbq.put("j1");
+    lbq.put("j2");
+    lbq.put("j3");
+    ArrayList sink = new ArrayList();
+    Any first = lbq.take();
+    int drained = lbq.drainTo(sink);
+    print("" + first + " " + drained + " " + sink.toString() + " " + lbq.pollMillis(5));
+    LinkedBlockingDeque lbd = new LinkedBlockingDeque();
+    lbd.putFirst(2);
+    lbd.putFirst(1);
+    lbd.putLast(3);
+    String l0 = lbd.toString();
+    Any tl = lbd.takeLast();
+    Any tf = lbd.takeFirst();
+    print(l0 + " " + tl + " " + tf + " " + lbd.toString());
+    ConcurrentLinkedQueue clq = new ConcurrentLinkedQueue();
+    clq.offer("m");
+    clq.offer("n");
+    print("" + clq.poll() + " " + clq.peek() + " " + clq.size() + " " + clq.isEmpty());
+    ConcurrentLinkedDeque cld = new ConcurrentLinkedDeque();
+    cld.push(1);
+    cld.push(2);
+    cld.offerLast(3);
+    String c0 = cld.toString();
+    Any p1 = cld.pop();
+    Any p2 = cld.pollLast();
+    print(c0 + " " + p1 + " " + p2 + " " + cld.toString());
+    ConcurrentSkipListMap sl = new ConcurrentSkipListMap();
+    sl.put("pear", 1);
+    sl.put("apple", 2);
+    sl.put("fig", 3);
+    print(sl.toString() + " " + sl.firstKey() + " " + sl.ceilingKey("b") + " " + sl.headMap("g").toString());
+    ConcurrentSkipListSet ss = new ConcurrentSkipListSet();
+    ss.add(5);
+    ss.add(2);
+    ss.add(9);
+    ss.add(2);
+    String s0 = ss.toString();
+    print(s0 + " " + ss.first() + " " + ss.higher(5) + " " + ss.pollFirst() + " " + ss.toString());
+  }
+}
