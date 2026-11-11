@@ -56,48 +56,271 @@ class ShortBuffer {
   String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
   String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
 
+
+  < ---- BEGIN java implementation ---- >
+  < ---- java.nio.ShortBuffer members (procedural implementation in SLeeLa) ---- >
+  << java.nio.ShortBuffer as a heap buffer over a short[] with position, limit,
+     capacity, mark, an array offset (for slices) and a read-only flag. The
+     members that Java inherits from java.nio.Buffer (position(), limit(),
+     capacity(), remaining(), hasRemaining(), isReadOnly()) are written here
+     too, because the compiler has no base-typed dispatch yet. Messages match
+     the JDK. hashCode, order(), the view and byte-order forms and the
+     ByteBuffer-backed buffers keep their exact-signature stubs. >>
+  short[] hb = null;
+  int bpos = 0;
+  int blim = 0;
+  int bcap = 0;
+  int bmark = 0 - 1;
+  int boff = 0;
+  boolean bro = false;
+
+  public static ShortBuffer allocate(int capacity) {
+    if (capacity < 0) { throw new IllegalArgumentException("capacity < 0: (" + capacity + " < 0)"); }
+    ShortBuffer b = new ShortBuffer();
+    b.hb = new short[capacity];
+    b.bcap = capacity;
+    b.blim = capacity;
+    return b;
+  }
+  public static ShortBuffer wrap(short[] array) {
+    ShortBuffer b = new ShortBuffer();
+    b.hb = array;
+    b.bcap = arrayLength(array);
+    b.blim = b.bcap;
+    return b;
+  }
+  public static ShortBuffer wrap(short[] array, int offset, int length) {
+    int n = arrayLength(array);
+    if (offset < 0 || length < 0 || offset > n || length > n - offset) {
+      throw new IndexOutOfBoundsException("Range [" + offset + ", " + offset + " + " + length + ") out of bounds for length " + n);
+    }
+    ShortBuffer b = new ShortBuffer();
+    b.hb = array;
+    b.bcap = n;
+    b.bpos = offset;
+    b.blim = offset + length;
+    return b;
+  }
+
+  public final int position() { return this.bpos; }
+  public final int limit() { return this.blim; }
+  public final int capacity() { return this.bcap; }
+  public final int remaining() {
+    int r = this.blim - this.bpos;
+    if (r < 0) { return 0; }
+    return r;
+  }
+  public final boolean hasRemaining() { return this.bpos < this.blim; }
+  public boolean isReadOnly() { return this.bro; }
+  public boolean isDirect() { return false; }
+  public final boolean hasArray() { return !this.bro; }
+  public final int arrayOffset() {
+    if (this.bro) { throw new ReadOnlyBufferException(); }
+    return this.boff;
+  }
+  public final short[] array() {
+    if (this.bro) { throw new ReadOnlyBufferException(); }
+    return this.hb;
+  }
+
+  public final ShortBuffer position(int newPosition) {
+    if (newPosition > this.blim || newPosition < 0) {
+      if (newPosition < 0) { throw new IllegalArgumentException("newPosition < 0: (" + newPosition + " < 0)"); }
+      throw new IllegalArgumentException("newPosition > limit: (" + newPosition + " > " + this.blim + ")");
+    }
+    if (this.bmark > newPosition) { this.bmark = 0 - 1; }
+    this.bpos = newPosition;
+    return this;
+  }
+  public final ShortBuffer limit(int newLimit) {
+    if (newLimit > this.bcap || newLimit < 0) {
+      if (newLimit < 0) { throw new IllegalArgumentException("newLimit < 0: (" + newLimit + " < 0)"); }
+      throw new IllegalArgumentException("newLimit > capacity: (" + newLimit + " > " + this.bcap + ")");
+    }
+    this.blim = newLimit;
+    if (this.bpos > newLimit) { this.bpos = newLimit; }
+    if (this.bmark > newLimit) { this.bmark = 0 - 1; }
+    return this;
+  }
+  public final ShortBuffer mark() {
+    this.bmark = this.bpos;
+    return this;
+  }
+  public final ShortBuffer reset() {
+    if (this.bmark < 0) { throw new InvalidMarkException(); }
+    this.bpos = this.bmark;
+    return this;
+  }
+  public final ShortBuffer clear() {
+    this.bpos = 0;
+    this.blim = this.bcap;
+    this.bmark = 0 - 1;
+    return this;
+  }
+  public final ShortBuffer flip() {
+    this.blim = this.bpos;
+    this.bpos = 0;
+    this.bmark = 0 - 1;
+    return this;
+  }
+  public final ShortBuffer rewind() {
+    this.bpos = 0;
+    this.bmark = 0 - 1;
+    return this;
+  }
+
+  public short get() {
+    if (this.bpos >= this.blim) { throw new BufferUnderflowException(); }
+    short v = this.hb[this.boff + this.bpos];
+    this.bpos = this.bpos + 1;
+    return v;
+  }
+  public short get(int index) {
+    checkIdx(index);
+    return this.hb[this.boff + index];
+  }
+  public ShortBuffer put(short x) {
+    if (this.bro) { throw new ReadOnlyBufferException(); }
+    if (this.bpos >= this.blim) { throw new BufferOverflowException(); }
+    this.hb[this.boff + this.bpos] = x;
+    this.bpos = this.bpos + 1;
+    return this;
+  }
+  public ShortBuffer put(int index, short x) {
+    if (this.bro) { throw new ReadOnlyBufferException(); }
+    checkIdx(index);
+    this.hb[this.boff + index] = x;
+    return this;
+  }
+  public ShortBuffer get(short[] dst, int offset, int length) {
+    int n = arrayLength(dst);
+    if (offset < 0 || length < 0 || offset > n || length > n - offset) {
+      throw new IndexOutOfBoundsException("Range [" + offset + ", " + offset + " + " + length + ") out of bounds for length " + n);
+    }
+    if (length > remaining()) { throw new BufferUnderflowException(); }
+    int i = 0;
+    while (i < length) { dst[offset + i] = this.hb[this.boff + this.bpos + i]; i = i + 1; }
+    this.bpos = this.bpos + length;
+    return this;
+  }
+  public ShortBuffer get(short[] dst) { return get(dst, 0, arrayLength(dst)); }
+  public ShortBuffer put(short[] src, int offset, int length) {
+    if (this.bro) { throw new ReadOnlyBufferException(); }
+    int n = arrayLength(src);
+    if (offset < 0 || length < 0 || offset > n || length > n - offset) {
+      throw new IndexOutOfBoundsException("Range [" + offset + ", " + offset + " + " + length + ") out of bounds for length " + n);
+    }
+    if (length > remaining()) { throw new BufferOverflowException(); }
+    int i = 0;
+    while (i < length) { this.hb[this.boff + this.bpos + i] = src[offset + i]; i = i + 1; }
+    this.bpos = this.bpos + length;
+    return this;
+  }
+  public final ShortBuffer put(short[] src) { return put(src, 0, arrayLength(src)); }
+  public ShortBuffer put(ShortBuffer src) {
+    if (src == this) { throw new IllegalArgumentException("The source buffer is this buffer"); }
+    if (this.bro) { throw new ReadOnlyBufferException(); }
+    int n = src.remaining();
+    if (n > remaining()) { throw new BufferOverflowException(); }
+    int i = 0;
+    while (i < n) { this.hb[this.boff + this.bpos + i] = src.hb[src.boff + src.bpos + i]; i = i + 1; }
+    this.bpos = this.bpos + n;
+    src.bpos = src.bpos + n;
+    return this;
+  }
+
+  public ShortBuffer compact() {
+    if (this.bro) { throw new ReadOnlyBufferException(); }
+    int n = remaining();
+    int i = 0;
+    while (i < n) { this.hb[this.boff + i] = this.hb[this.boff + this.bpos + i]; i = i + 1; }
+    this.bpos = n;
+    this.blim = this.bcap;
+    this.bmark = 0 - 1;
+    return this;
+  }
+  public ShortBuffer slice() {
+    ShortBuffer b = new ShortBuffer();
+    b.hb = this.hb;
+    b.boff = this.boff + this.bpos;
+    b.bcap = remaining();
+    b.blim = b.bcap;
+    b.bro = this.bro;
+    return b;
+  }
+  public ShortBuffer duplicate() {
+    ShortBuffer b = new ShortBuffer();
+    b.hb = this.hb;
+    b.boff = this.boff;
+    b.bcap = this.bcap;
+    b.blim = this.blim;
+    b.bpos = this.bpos;
+    b.bmark = this.bmark;
+    b.bro = this.bro;
+    return b;
+  }
+  public ShortBuffer asReadOnlyBuffer() {
+    ShortBuffer b = duplicate();
+    b.bro = true;
+    return b;
+  }
+
+  public boolean equals(java.lang.Object ob) {
+    if (ob == null) { return false; }
+    ShortBuffer that = (ShortBuffer) ob;
+    if (that == this) { return true; }
+    int n = remaining();
+    if (n != that.remaining()) { return false; }
+    int i = 0;
+    while (i < n) {
+      if (this.hb[this.boff + this.bpos + i] != that.hb[that.boff + that.bpos + i]) { return false; }
+      i = i + 1;
+    }
+    return true;
+  }
+  public int compareTo(ShortBuffer that) {
+    int n = remaining();
+    int m = that.remaining();
+    int k = n;
+    if (m < k) { k = m; }
+    int i = 0;
+    while (i < k) {
+      short a = this.hb[this.boff + this.bpos + i];
+      short b = that.hb[that.boff + that.bpos + i];
+      if (a < b) { return 0 - 1; }
+      if (a > b) { return 1; }
+      i = i + 1;
+    }
+    return n - m;
+  }
+  public int mismatch(ShortBuffer that) {
+    int n = remaining();
+    int m = that.remaining();
+    int k = n;
+    if (m < k) { k = m; }
+    int i = 0;
+    while (i < k) {
+      if (this.hb[this.boff + this.bpos + i] != that.hb[that.boff + that.bpos + i]) { return i; }
+      i = i + 1;
+    }
+    if (n == m) { return 0 - 1; }
+    return k;
+  }
+  public java.lang.String toString() {
+    String cls = "java.nio.HeapShortBuffer";
+    if (this.bro) { cls = cls + "R"; }
+    return cls + "[pos=" + this.bpos + " lim=" + this.blim + " cap=" + this.bcap + "]";
+  }
+  void checkIdx(int index) {
+    if (index < 0 || index >= this.blim) { throw new IndexOutOfBoundsException("Index " + index + " out of bounds for length " + this.blim); }
+  }
+  < ---- END java implementation ---- >
+
   < ---- BEGIN java signatures (generated by tools/jdk_api_signatures.py) ---- >
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
-  public final java.nio.ShortBuffer reset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.reset()"); }
-  public abstract short get() { throw new AbstractMethodError("java.nio.ShortBuffer.get()"); }
-  public java.nio.ShortBuffer get(int index, short[] dst) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.get(int, short[])"); }
-  public abstract short get(int index) { throw new AbstractMethodError("java.nio.ShortBuffer.get(int)"); }
-  public java.nio.ShortBuffer get(short[] dst, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.get(short[], int, int)"); }
-  public java.nio.ShortBuffer get(short[] dst) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.get(short[])"); }
-  public java.nio.ShortBuffer get(int index, short[] dst, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.get(int, short[], int, int)"); }
-  public java.nio.ShortBuffer put(java.nio.ShortBuffer src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.put(java.nio.ShortBuffer)"); }
-  public java.nio.ShortBuffer put(short[] src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.put(short[], int, int)"); }
-  public final java.nio.ShortBuffer put(short[] src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.put(short[])"); }
-  public java.nio.ShortBuffer put(int index, java.nio.ShortBuffer src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.put(int, java.nio.ShortBuffer, int, int)"); }
-  public java.nio.ShortBuffer put(int index, short[] src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.put(int, short[])"); }
-  public java.nio.ShortBuffer put(int index, short[] src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.put(int, short[], int, int)"); }
-  public abstract java.nio.ShortBuffer put(int index, short s) { throw new AbstractMethodError("java.nio.ShortBuffer.put(int, short)"); }
-  public abstract java.nio.ShortBuffer put(short s) { throw new AbstractMethodError("java.nio.ShortBuffer.put(short)"); }
-  public boolean equals(java.lang.Object ob) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.toString()"); }
   public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.hashCode()"); }
-  public int compareTo(java.nio.ShortBuffer that) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.compareTo(java.nio.ShortBuffer)"); }
-  public final java.nio.ShortBuffer clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.clear()"); }
-  public static java.nio.ShortBuffer wrap(short[] array) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.wrap(short[])"); }
-  public static java.nio.ShortBuffer wrap(short[] array, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.wrap(short[], int, int)"); }
-  public final java.nio.ShortBuffer position(int newPosition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.position(int)"); }
-  public int mismatch(java.nio.ShortBuffer that) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.mismatch(java.nio.ShortBuffer)"); }
-  public final java.nio.ShortBuffer limit(int newLimit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.limit(int)"); }
-  public abstract boolean isDirect() { throw new AbstractMethodError("java.nio.ShortBuffer.isDirect()"); }
-  public final boolean hasArray() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.hasArray()"); }
-  public final short[] array() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.array()"); }
-  public final int arrayOffset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.arrayOffset()"); }
-  public final java.nio.ShortBuffer mark() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.mark()"); }
-  public final java.nio.ShortBuffer flip() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.flip()"); }
-  public final java.nio.ShortBuffer rewind() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.rewind()"); }
-  public abstract java.nio.ShortBuffer slice() { throw new AbstractMethodError("java.nio.ShortBuffer.slice()"); }
-  public abstract java.nio.ShortBuffer slice(int index, int length) { throw new AbstractMethodError("java.nio.ShortBuffer.slice(int, int)"); }
-  public abstract java.nio.ShortBuffer duplicate() { throw new AbstractMethodError("java.nio.ShortBuffer.duplicate()"); }
-  public static java.nio.ShortBuffer allocate(int capacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.allocate(int)"); }
-  public abstract java.nio.ShortBuffer asReadOnlyBuffer() { throw new AbstractMethodError("java.nio.ShortBuffer.asReadOnlyBuffer()"); }
-  public abstract java.nio.ShortBuffer compact() { throw new AbstractMethodError("java.nio.ShortBuffer.compact()"); }
   public abstract java.nio.ByteOrder order() { throw new AbstractMethodError("java.nio.ShortBuffer.order()"); }
   < ---- END java signatures ---- >
 }

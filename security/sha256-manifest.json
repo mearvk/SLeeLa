@@ -34931,7 +34931,7 @@
     },
     {
       "path": "lib/java/java/nio/ByteBuffer.sleela",
-      "sha256": "4437a87d4438ad950a4b6421523b504e7f03729954ee986fa6df1a6f37899eaf"
+      "sha256": "50ceb36c83209b3f5285fd7d9b3ed5d186445c7f69db55a6ff0431b003f5a4f0"
     },
     {
       "path": "lib/java/java/nio/ByteOrder.sleela",
@@ -34947,15 +34947,15 @@
     },
     {
       "path": "lib/java/java/nio/DoubleBuffer.sleela",
-      "sha256": "657654058a8ea07459b3e3a90304192124964ca4df9b0420f07d041e59fc2610"
+      "sha256": "1a9c5f2c87010745206c9e3232f0167f0004bc2d25b02d9b6a055b7795953787"
     },
     {
       "path": "lib/java/java/nio/FloatBuffer.sleela",
-      "sha256": "004775f96dcbbb93c24b09f780fa7ee9d92b978f810475ad0459a2cd4234c32d"
+      "sha256": "58267dc4ef4fdd14314d8889515b576cce84fc949e440fecb346d89bbb9075f2"
     },
     {
       "path": "lib/java/java/nio/IntBuffer.sleela",
-      "sha256": "06b0c82bb747eabba9f12634078438062d6ec114f59c2d6f87ac41b46eed168b"
+      "sha256": "63073543e28c10f18b66022fe7dd81b7c305eb69207935bc98f27f9d163681c6"
     },
     {
       "path": "lib/java/java/nio/InvalidMarkException.sleela",
@@ -34963,11 +34963,11 @@
     },
     {
       "path": "lib/java/java/nio/LongBuffer.sleela",
-      "sha256": "b5526d856202909cd4c62d9e4e8f61174ed7b234fb66c4c0b1109ac37c1b075b"
+      "sha256": "f81e40ca39cf67b3c14fb176dc67215fa28ad3d8ed863ad49879daffcdb31b26"
     },
     {
       "path": "lib/java/java/nio/MappedByteBuffer.sleela",
-      "sha256": "1000b1c0a2d732a6e8de8e0095238ed84c644e0a669943774b22911fdcc39afd"
+      "sha256": "e5f197268e7527266ad88191763f4cdc73c21bfc230faeff5e2021aa4f3dbb58"
     },
     {
       "path": "lib/java/java/nio/MappedMemoryUtils.sleela",
@@ -34979,7 +34979,7 @@
     },
     {
       "path": "lib/java/java/nio/ShortBuffer.sleela",
-      "sha256": "331dbff0cb228f78619c7451978a4f3da9e773e77632ee4229181885ad80175e"
+      "sha256": "5fea1ddc6238b538637944863e00b8c7ee446cf2f704ef69936aa2d580808e9b"
     },
     {
       "path": "lib/java/java/nio/StringCharBuffer.sleela",

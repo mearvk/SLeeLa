@@ -58,18 +58,7 @@ class MappedByteBuffer {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
-  public final java.nio.MappedByteBuffer reset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.MappedByteBuffer.reset()"); }
   public final java.nio.MappedByteBuffer load() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.MappedByteBuffer.load()"); }
-  public final java.nio.MappedByteBuffer clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.MappedByteBuffer.clear()"); }
-  public final java.nio.MappedByteBuffer position(int newPosition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.MappedByteBuffer.position(int)"); }
-  public final java.nio.MappedByteBuffer limit(int newLimit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.MappedByteBuffer.limit(int)"); }
-  public final java.nio.MappedByteBuffer mark() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.MappedByteBuffer.mark()"); }
-  public final java.nio.MappedByteBuffer flip() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.MappedByteBuffer.flip()"); }
-  public final java.nio.MappedByteBuffer rewind() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.MappedByteBuffer.rewind()"); }
-  public abstract java.nio.MappedByteBuffer slice() { throw new AbstractMethodError("java.nio.MappedByteBuffer.slice()"); }
-  public abstract java.nio.MappedByteBuffer slice(int index, int length) { throw new AbstractMethodError("java.nio.MappedByteBuffer.slice(int, int)"); }
-  public abstract java.nio.MappedByteBuffer duplicate() { throw new AbstractMethodError("java.nio.MappedByteBuffer.duplicate()"); }
-  public abstract java.nio.MappedByteBuffer compact() { throw new AbstractMethodError("java.nio.MappedByteBuffer.compact()"); }
   public final boolean isLoaded() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.MappedByteBuffer.isLoaded()"); }
   public final java.nio.MappedByteBuffer force() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.MappedByteBuffer.force()"); }
   public final java.nio.MappedByteBuffer force(int index, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.MappedByteBuffer.force(int, int)"); }
