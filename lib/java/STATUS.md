@@ -18,12 +18,12 @@ signatures match the Java originals.
 | Public JDK types (all exported `java.*` / `jdk.*` packages) | **4,801** |
 | Types with a SLeeLa file in `/lib/java` | **4,801 (100%)** |
 | Public members: constructors, methods, fields, enum constants | **51,554** |
-| Members present with their Java meaning ("covered") | **22,012 (42.7%)** |
-| …of which working SLeeLa behavior | **3,671 (7.1%)** |
-| Types with working behavior | **860** (566 hand-written + 294 probed accessor contracts) |
-| Methods carrying their **exact Java signature** (not yet implemented) | **34,244** |
+| Members present with their Java meaning ("covered") | **22,926 (44.5%)** |
+| …of which working SLeeLa behavior | **4,585 (8.9%)** |
+| Types with working behavior | **896** (566 hand-written + 330 probed accessor contracts) |
+| Methods carrying their **exact Java signature** (not yet implemented) | **33,978** |
 | …abstract (throw `AbstractMethodError`, as the JVM does) | 9,732 |
-| …awaiting logic (throw `UnsupportedOperationException` naming the signature) | 24,512 |
+| …awaiting logic (throw `UnsupportedOperationException` naming the signature) | 24,246 |
 | Complete enums / records | 161 / 4 |
 | Constants with their real JDK values | 3,307 |
 
@@ -35,17 +35,20 @@ covered only when SLeeLa declares a constructor with the same number of
 parameters. Before, every constructor of a type counted once the type had
 any constructor. Under the stricter rule the previous state measures
 **40.3% covered and 4.7% behavior**. The probed accessor contracts (section
-3a) raise that to **42.7% and 7.1%**, adding 1,247 working members.
+3a) raised that to **42.7% and 7.1%**. Overload resolution (section 5), with
+every Java constructor of the Throwable pattern and every probed accessor
+constructor, raises it to **44.5% and 8.9%**: 2,161 working members more than
+the previous state.
 
 ### By module (largest first)
 
 | Module | Types | Members | Covered | Behavior |
 |---|---:|---:|---:|---:|
-| java.desktop | 1,526 | 21,096 | 33.9% | 3.8% |
-| java.base | 1,633 | 17,496 | 41.6% | **13.3%** |
-| java.xml | 194 | 1,714 | 63.8% | 4.1% |
-| java.management | 191 | 1,573 | 43.4% | 8.2% |
-| java.sql | 74 | 1,442 | 80.7% | 2.3% |
+| java.desktop | 1,526 | 21,096 | 35.7% | 5.6% |
+| java.base | 1,633 | 17,496 | 43.3% | **15.0%** |
+| java.xml | 194 | 1,714 | 65.9% | 6.2% |
+| java.management | 191 | 1,573 | 45.8% | 10.6% |
+| java.sql | 74 | 1,442 | 83.6% | 5.1% |
 | jdk.xml.dom | 89 | 974 | 99.9% | 0.1% |
 | jdk.compiler | 146 | 920 | 65.8% | 0.0% |
 | java.compiler | 146 | 821 | 54.8% | 1.0% |
@@ -96,12 +99,12 @@ class AbstractList<E> {
 | `java.time` core | 11 | `LocalDate`, `LocalTime`, `LocalDateTime`, `Instant`, `Duration`, `Period`, `Year`, `YearMonth`, `MonthDay`, `DayOfWeek`, `Month` |
 | `java.math` | 1 | `BigInteger`, on the native big-integer opcodes |
 
-### 3a. Probed accessor contracts (294 types)
+### 3a. Probed accessor contracts (330 types)
 
 `tools/ApiAccessorProbe.java` exercises the **public JDK API only**; it never
-reads implementation source. For each concrete public class it builds two
-instances with different arguments, plus a third instance 5 ms later, and
-records what holds on every run:
+reads implementation source. For **every public constructor** of each concrete
+public class it builds two instances with different arguments, plus a third
+instance 5 ms later, and records what holds on every run:
 
 - a getter returns constructor argument *i*;
 - a getter returns the same initial-state value regardless of the
@@ -116,7 +119,8 @@ event.
 `tools/jdk_api_accessors.py` turns the observations into SLeeLa:
 
 - one state field per property;
-- the probed constructor, with its exact Java signature;
+- every probed constructor that determines all of that state, each with its
+  exact Java signature (overload resolution picks among them);
 - getters and setters, with their exact Java signatures.
 
 For example:
@@ -129,7 +133,10 @@ public long getWhen() { return this.heldWhen; }
 Initial-state values are fields, not hard-coded returns, so later logic that
 changes the state stays consistent. `tools/jdk_api_accessors_check.py`
 constructs every top-level probed class in SLeeLa and re-asserts each
-contract: **261 classes in 75 packages, 0 failures**.
+contract for every written constructor: **386 class constructors in 79
+packages, 0 failures**. Object arguments differ in class between runs, so a
+value derived from the argument class, such as `Binding.getClassName()`, is
+never taken for a constant.
 
 ---
 
@@ -137,9 +144,9 @@ contract: **261 classes in 75 packages, 0 failures**.
 
 | Check | Result |
 |---|---|
-| **Side-by-side with the JDK** (`examples/java/differential/run-differential.sh`): each `<Name>.java` runs on OpenJDK and `<Name>.sleela` on the SLeeLa VM, and the output must be identical | **5 / 5 pass**, 101 lines identical: TimeCore 29, MathBigInteger 27, ConcurrentZipBits 23, ConcurrentCollections 14, ExtendedThrowables 8 |
+| **Side-by-side with the JDK** (`examples/java/differential/run-differential.sh`): each `<Name>.java` runs on OpenJDK and `<Name>.sleela` on the SLeeLa VM, and the output must be identical | **5 / 5 pass**, 104 lines identical: TimeCore 29, MathBigInteger 27, ConcurrentZipBits 23, ConcurrentCollections 14, ExtendedThrowables 11 (now including the overloaded Throwable constructors) |
 | **Self-checking programs** (`examples/java/run-conformance.sh`) | **9 / 9 pass**, including a 1,348-value `Double.toString`/`parseDouble` round trip |
-| **Probed accessor contracts** (`lib/java/tools/jdk_api_accessors_check.py`) | **261 classes, 75 packages, 0 failures** |
+| **Probed accessor contracts** (`lib/java/tools/jdk_api_accessors_check.py`) | **386 class constructors, 79 packages, 0 failures** |
 | **Every type compiles** (217 test programs, each referencing up to 120 types) | All clean except 1 batch: `ParagraphView` is defined in two `javax.swing.text` packages |
 | **Compiler test suite** (`cd impl && make test`) | All pass |
 | **Repo-wide regression** (`sleela check` on all 374 main programs, before and after each change) | No regressions |
@@ -166,6 +173,10 @@ contract: **261 classes in 75 packages, 0 failures**.
 - **Library loader:** an identifier after `.` no longer pulls in a `/lib`
   unit with that name.
 - **Any value is assignable to `Object`.**
+- **Overload resolution (SLEELA.syntax section 40).** Several methods with
+  the same name and several constructors per class. A call binds by arity,
+  then by best type match (exact match beats assignable; ties keep the first
+  declaration). Each overload compiles to its own function.
 
 ---
 
@@ -173,7 +184,7 @@ contract: **261 classes in 75 packages, 0 failures**.
 
 | Gap | Effect | Planned fix |
 |---|---|---|
-| No overload resolution; one constructor per class | Hand-implemented classes use suffixes (`absInt`, `addAt`, `toStringRadix`); constructors are not written for the remaining types | Compiler: resolve overloads by argument types |
+| ~~No overload resolution~~ **done** (section 40) | Hand-implemented classes still use the earlier suffixes (`absInt`, `addAt`, `toStringRadix`); stub types write no constructors yet | Rename to the Java names class by class; write constructors where their behavior is known |
 | Hand-implemented classes expose statics as instance methods | `new Math().abs(x)` instead of `Math.abs(x)` | Convert class by class now that static access works |
 | No virtual dispatch through a base-typed receiver | Overrides are not reached through a supertype; exceptions compose messages at construction | Compiler/VM: virtual dispatch |
 | Base-class field initializers don't run for subclasses; `super(...)` not lowered | Generated constructors initialize inherited state explicitly | Compiler |
@@ -201,7 +212,8 @@ contract: **261 classes in 75 packages, 0 failures**.
 | `7e340cc2` | First signature transcription (24,970 stubs); `ConcurrentSkipListMap` deadlock fix | 41.4% |
 | `4d913e06` | **Exact Java signatures** (35,157); compiler reads the Java signature surface; static member access | 41.5% |
 | `398f0f32` | `STATUS.md` | 41.5% |
-| (next commit) | Probed accessor contracts for 294 types; stricter constructor counting | **42.7%** (7.1% behavior) |
+| `0572108e` | Probed accessor contracts for 294 types; stricter constructor counting | 42.7% (7.1% behavior) |
+| (this commit) | **Overload resolution**; all Throwable-pattern constructors; every probed accessor constructor (330 types) | **44.5%** (8.9% behavior) |
 
 ---
 
@@ -238,10 +250,11 @@ python3 tools/generate-sha256-manifest.py --root . --output security/sha256-mani
 
 ## 9. Suggested next steps
 
-1. **Overload resolution in the compiler.** This unlocks Java names for
-   every overload (`Math.abs(int)`/`abs(double)`, `List.add(int, E)`) and
-   real constructors. It is the largest remaining fidelity gap.
-2. **Convert the hand-implemented classes to real static methods.**
+1. **Rename the hand-implemented overload suffixes to the Java names** now
+   that overload resolution exists (`Math.abs(int)`/`abs(double)`,
+   `List.add(int, E)`), and convert their static API to real static methods.
+2. **Write the constructors of the stub types** wherever their behavior is
+   determined, the same way the Throwable and accessor constructors were.
 3. **The String bridge**, which unlocks `java.lang.String` and
    `StringBuilder`.
 4. **Keep converting stubs to logic** in `java.base`, highest use first:

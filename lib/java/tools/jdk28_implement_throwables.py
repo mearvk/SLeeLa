@@ -771,9 +771,16 @@ PRIM = {"int": "int", "short": "int", "byte": "int", "char": "int", "long": "lon
         "float": "double", "double": "double", "boolean": "boolean", "java.lang.String": "String"}
 
 
+_API_TYPES = None
+
+
 def api_types():
+    global _API_TYPES
+    if _API_TYPES is not None:
+        return _API_TYPES
     import json
-    return {json.loads(l)["name"]: json.loads(l) for l in API_PATH.read_text(encoding="utf-8").splitlines() if l.strip()}
+    _API_TYPES = {json.loads(l)["name"]: json.loads(l) for l in API_PATH.read_text(encoding="utf-8").splitlines() if l.strip()}
+    return _API_TYPES
 
 
 def is_throwable(name, types):
@@ -848,6 +855,110 @@ def api_member_block(t, types, cls):
             f"  {cls}({', '.join(params)}) {{ {init} {' '.join(body)} }}\n")
 
 
+# ---------------------------------------------------------------------------
+# Standard constructors (syntax 3.0 constructor overload resolution): every
+# Java constructor of a throwable whose parameters follow the Throwable
+# pattern -- (), (String), (Throwable), (String, Throwable),
+# (String, Throwable, boolean, boolean) -- is written with its exact Java
+# signature next to the class-specific constructor above.
+# ---------------------------------------------------------------------------
+_SIGS = None
+
+
+def sig_types():
+    global _SIGS
+    if _SIGS is None:
+        import json
+        path = ROOT.parent / "api" / "jdk-signatures.jsonl"
+        _SIGS = {json.loads(l)["name"]: json.loads(l) for l in path.read_text(encoding="utf-8").splitlines() if l.strip()}
+    return _SIGS
+
+
+def _throwable_type(t, types):
+    raw = t.split("<", 1)[0]
+    return raw in types and is_throwable(raw, types)
+
+
+def _shape(params, types):
+    kinds = []
+    for ptype, _ in params:
+        raw = ptype.split("<", 1)[0]
+        if raw == "java.lang.String":
+            kinds.append("S")
+        elif _throwable_type(raw, types):
+            kinds.append("T")
+        elif raw == "boolean":
+            kinds.append("B")
+        else:
+            return None
+    shape = "".join(kinds)
+    return shape if shape in ("", "S", "T", "ST", "STBB") else None
+
+
+def _existing_shapes(members, cls):
+    out = set()
+    for params in re.findall(r"^  (?:@\w+\s+)?(?:public |protected )?" + re.escape(cls) + r"\(([^)]*)\)\s*(?:throws [^{]*)?\{", members, re.M):
+        kinds = []
+        for p in [x.strip() for x in params.split(",") if x.strip()]:
+            t = p.rsplit(" ", 1)[0]
+            kinds.append("S" if t in ("String", "java.lang.String") else ("B" if t == "boolean" else "O"))
+        out.add("".join(kinds))
+    return out
+
+
+def standard_ctors(java_name, cls, init, members, types):
+    t = sig_types().get(java_name)
+    if t is None:
+        return ""
+    have = _existing_shapes(members, cls)
+    lines = []
+    for m in t["members"]:
+        if m["name"] != "<init>":
+            continue
+        shape = _shape(m["params"], types)
+        if shape is None:
+            continue
+        key = shape.replace("T", "O")
+        if key in have:
+            continue
+        have.add(key)
+        names = [p[1] + ("_" if p[1] in ("next", "record", "native", "close", "print") else "") for p in m["params"]]
+        params = ", ".join(f"{p[0]} {n}" for p, n in zip(m["params"], names))
+        body = [init]
+        if shape == "":
+            body.append("this.detailMessage = null;")
+        elif shape == "S":
+            body.append(f"this.detailMessage = {names[0]};")
+        elif shape == "T":
+            body.append(f"this.cause = (Throwable) {names[0]}; this.causeInitialized = true;")
+            body.append(f"if ({names[0]} != null) {{ Throwable c0 = (Throwable) {names[0]}; this.detailMessage = c0.toString(); }} else {{ this.detailMessage = null; }}")
+        else:
+            body.append(f"this.detailMessage = {names[0]}; this.cause = (Throwable) {names[1]}; this.causeInitialized = true;")
+        mods = [x for x in m["mods"].split() if x in ("public",)]
+        prefix = "  @JavaProtected\n" if "protected" in m["mods"].split() else ""
+        lines.append(prefix + "  " + " ".join(mods + [cls]) + "(" + params + ") { " + " ".join(body) + " }")
+    if not lines:
+        return ""
+    return ("  << The Java constructors of the Throwable pattern, with their exact\n"
+            "     signatures (constructor overload resolution, syntax 3.0). >>\n" + "\n".join(lines) + "\n")
+
+
+def api_init(t, types):
+    chain = []
+    n = t["super"]
+    while n and n != "java.lang.Throwable":
+        chain.append(n)
+        n = types[n].get("super")
+    inits = [INIT["lang/Throwable"]]
+    for anc in reversed(chain):
+        if anc.startswith("java."):
+            k = anc[len("java."):].replace(".", "/")
+            if k in INIT:
+                inits.append(INIT[k])
+    init = " ".join(inits)
+    return re.sub(r"(^|; )(\w+) = ", lambda mo: mo.group(1) + "this." + mo.group(2) + " = ", init)
+
+
 def transform_api(path, t, types, idx):
     src = path.read_text(encoding="utf-8")
     mo = CLASS_RE.search(src)
@@ -861,7 +972,9 @@ def transform_api(path, t, types, idx):
     header = f"class {cls}{mo.group(2) or ''} extends {psimple} {{"
     src = src[:mo.start()] + header + src[mo.end():]
     src = re.sub(re.escape(BEGIN) + r".*?" + re.escape(END) + r"\n", "", src, flags=re.S)
-    block = BEGIN + "\n" + api_member_block(t, types, cls) + END + "\n"
+    members = api_member_block(t, types, cls)
+    members += standard_ctors(t["name"], cls, api_init(t, types), members, types)
+    block = BEGIN + "\n" + members + END + "\n"
     src = place_block(src, block)
     src = re.sub(r"^#sleela \d+\.\d+$", "#sleela 3.0", src, count=1, flags=re.M)
     src = src.replace("SLeeLa Java SE/JDK 28 source envelope.", "SLeeLa Java SE/JDK 28 source implementation.", 1)
@@ -920,6 +1033,7 @@ def transform(path: Path, key: str) -> str:
     init = chain_init(key)
     members = re.sub(r"^(  " + name + r"\([^)]*\) \{)", lambda mo: mo.group(1) + " " + init, members, flags=re.M)
     members = re.sub(r"^  (String|Throwable|Exception|SQLException) (\w+);$", r"  \1 \2 = null;", members, flags=re.M)
+    members += standard_ctors("java." + key.replace("/", "."), name, init, members, api_types())
     block = BEGIN + "\n" + members + END + "\n"
     src = place_block(body + "\n", block)
     # Implemented units are syntax 3.0 (real throw / UTF-16 string operations).

@@ -2904,3 +2904,28 @@ artifact ABI minor version advances to 7 and the artifact layout is unchanged;
 older runtimes reject artifacts containing the new opcode. Artifact validation
 checks the selector and class operand. References are not persisted: they are
 meaningful only within one run of one VM.
+
+
+## 40. Syntax 3.0 — method and constructor overload resolution
+
+This section is **normative**. A class may declare several methods with the
+same name, and several constructors, when their parameter lists differ.
+Semantic analysis binds each call (`m(args)`, `x.m(args)`, `Class.m(args)`,
+`new T(args)`) to exactly one declaration:
+
+1. **Candidates.** Only declarations with the call's number of arguments
+   are candidates.
+2. **Applicability.** A candidate is applicable when every argument is
+   assignable to its parameter type.
+3. **Ranking.** Each argument scores 2 when its type is exactly the
+   parameter type, 1 when it is assignable to a more specific parameter
+   (not `Any` or `Object`), and 0 otherwise. The applicable candidate with
+   the highest total wins.
+4. **Ties.** On a tie, the first declaration in source order wins.
+5. **Arguments.** Integer arguments to `double` parameters are widened, as
+   for single declarations.
+
+Each overload compiles to its own function. A call resolved by name alone,
+outside semantic analysis, binds to the last declaration of that name, which
+is the behavior before this section. Below syntax 3.0, a class that declares
+more than one constructor is rejected, as before.

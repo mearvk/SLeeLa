@@ -59,5 +59,9 @@ class InvocationTargetException extends ReflectiveOperationException {
   Throwable target = null;
   InvocationTargetException(Throwable target) { this.detailMessage = null; this.cause = null; this.causeInitialized = false; this.suppressedList = new Any[4]; this.suppressedCount = 0; this.stackTrace = new StackTraceElement[0]; this.target = target; cause = target; causeInitialized = true; detailMessage = null; }
   Throwable getTargetException() { return this.target; }
+  << The Java constructors of the Throwable pattern, with their exact
+     signatures (constructor overload resolution, syntax 3.0). >>
+  @JavaProtected
+  InvocationTargetException() { this.detailMessage = null; this.cause = null; this.causeInitialized = false; this.suppressedList = new Any[4]; this.suppressedCount = 0; this.stackTrace = new StackTraceElement[0]; this.detailMessage = null; }
   < ---- END java implementation ---- >
 }

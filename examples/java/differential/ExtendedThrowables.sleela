@@ -42,5 +42,19 @@ class ExtendedThrowables {
     ib.initCause((Throwable) new IOException("io"));
     Throwable c = ib.getCause();
     print(ib.toString() + " | " + c.toString());
+    IOException root = new IOException("disk full");
+    IOException wrapped = new IOException((Throwable) root);
+    IOException both = new IOException("copy failed", (Throwable) root);
+    RuntimeException bare = new RuntimeException();
+    NamingException nested = new NamingException();
+    Throwable wc = wrapped.getCause();
+    print(wrapped.getMessage() + " | " + wc.toString() + " | " + both.getMessage() + " | " + (both.getCause() == (Throwable) root));
+    print(bare.toString() + " | " + bare.getMessage() + " | " + (bare.getCause() == null) + " | " + nested.getMessage());
+    IllegalStateException st = new IllegalStateException("bad", (Throwable) new ArithmeticException("x"));
+    UnsupportedOperationException un = new UnsupportedOperationException((Throwable) null);
+    Throwable sc = st.getCause();
+    NoSuchElementException ns = new NoSuchElementException("gone", (Throwable) root);
+    Throwable nc = ns.getCause();
+    print(sc.toString() + " | " + un.getMessage() + " | " + new BadPaddingException().toString() + " | " + nc.toString());
   }
 }

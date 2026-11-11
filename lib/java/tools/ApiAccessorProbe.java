@@ -22,7 +22,7 @@ import java.util.concurrent.*;
  *
  * Only get* / is* / has* getters, and accessors named like a constructor
  * parameter, are probed. Output: one JSON object per class that yielded
- * at least one observation. Each class probe runs on its own thread with a
+ * at least one observation, one line per probed constructor. Each class probe runs on its own thread with a
  * time limit; classes in packages or with names that touch the host (files,
  * sockets, threads, processes, windows, audio, printing) are never touched.
  *
@@ -56,7 +56,9 @@ public class ApiAccessorProbe {
         if (t == float.class) return (float) (v + 0.25);
         if (t == boolean.class) return ((i + r) % 2) == 0;
         if (t == String.class) return "s" + r + "_" + i + "_" + k;
-        if (t == Object.class) return new Object();
+        // Object arguments differ in class between runs, so a value derived from
+        // the argument class (getClass().getName()) never looks constant.
+        if (t == Object.class) return r == 0 ? new Object() : new StringBuilder("r" + i);
         if (t == Integer.class) return Integer.valueOf(v);
         if (t == Long.class) return Long.valueOf(v);
         if (t == Double.class) return Double.valueOf(v + 0.5);
@@ -119,6 +121,8 @@ public class ApiAccessorProbe {
             getterByName.put(m.getName(), m);
         }
         if (getters.isEmpty()) return null;
+        // Every public constructor is probed; one output line per constructor.
+        List<String> lines = new ArrayList<>();
         for (Constructor<?> ctor : ctors) {
             Class<?>[] pt = ctor.getParameterTypes();
             for (int k = 0; k < 2; k++) {
@@ -169,13 +173,14 @@ public class ApiAccessorProbe {
                         if (same(r1, v1, t) && same(r2, v2, t)) obs.add("[\"setter\"," + q(s.getName()) + "," + q(g.getName()) + "]");
                     } catch (Throwable e) { }
                 }
-                if (obs.isEmpty()) return null;
+                if (obs.isEmpty()) break;
                 StringBuilder p = new StringBuilder();
                 for (int i = 0; i < pt.length; i++) { if (i > 0) p.append(","); p.append(q(pt[i].getTypeName())); }
-                return "{\"name\":" + q(c.getName().replace('$', '.')) + ",\"ctor\":[" + p + "],\"scheme\":" + k + ",\"obs\":[" + String.join(",", obs) + "]}";
+                lines.add("{\"name\":" + q(c.getName().replace('$', '.')) + ",\"ctor\":[" + p + "],\"scheme\":" + k + ",\"obs\":[" + String.join(",", obs) + "]}");
+                break;
             }
         }
-        return null;
+        return lines.isEmpty() ? null : String.join("\n", lines);
     }
 
     public static void main(String[] args) throws Exception {

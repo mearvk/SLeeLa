@@ -103,7 +103,7 @@ struct MethodSig{const Method* m=nullptr;std::string owner;};
 class Analyzer{
  const Program&p; const SyntaxVersion&syntax; const bool requireMain; SemanticResult r;
  std::set<std::string> structs; std::set<std::string> classNames; std::map<std::string,std::map<std::string,Type>> fields;
- std::map<std::string,MethodSig> methods; std::map<std::string,Type> globals; std::map<std::string,std::string> owners;
+ std::map<std::string,MethodSig> methods; std::map<std::string,std::vector<MethodSig>> overloads; std::map<std::string,Type> globals; std::map<std::string,std::string> owners;
  std::map<std::string,std::string> superOf; // derived class -> resolved base (syntax 1.10)
  struct Scope{std::map<std::string,Type> vars;}; std::vector<Scope> scopes; const Method* cur=nullptr; std::string cls;
  void err(const std::string&s){r.errors.push_back("Semantic error: "+s);}
@@ -253,7 +253,7 @@ class Analyzer{
     methodDeclarations[key].push_back(&m);
     if(!known(m.retType))err("unknown return type '"+m.retType+"' for method '"+m.name+"'");
     if(m.isProtected&&!m.isStatic)err("protected method '"+m.name+"' must also be static");
-    methods[key]={&m,c.name};if(m.name=="main")methods["main"]={&m,c.name};}
+    methods[key]={&m,c.name};overloads[key].push_back({&m,c.name});if(m.name=="main")methods["main"]={&m,c.name};}
   }
   // --- OOD inheritance (syntax 1.10): resolve `class D extends B`. ----------
   // A derived class inherits the base class's instance fields and methods.
@@ -308,7 +308,7 @@ class Analyzer{
      const std::string pfx=sup+"::";
      std::vector<std::pair<std::string,MethodSig>> toAdd;
      for(const auto&kv:methods){ const std::string&bk=kv.first; if(bk.rfind(pfx,0)!=0) continue; std::string mname=bk.substr(pfx.size()); if(mname=="main") continue; const std::string dk=name+"::"+mname; if(!methods.count(dk)) toAdd.push_back({dk,kv.second}); }
-     for(auto&e:toAdd) methods[e.first]=e.second;
+     for(auto&e:toAdd){ methods[e.first]=e.second; auto ob=overloads.find(sup+e.first.substr(e.first.find("::"))); if(ob!=overloads.end()&&!overloads.count(e.first)) overloads[e.first]=ob->second; }
      superOf[name]=sup;
     }
     inProgress.erase(name);
@@ -408,14 +408,27 @@ class Analyzer{
  // rather than silently narrowing behavior. Argument subexpressions are always
  // analyzed (even on the error paths) so nested type errors are still reported.
  void checkConstructorArgs(const NewExpr&n){
+  if(n.args.empty()&&syntax<SyntaxVersion{1,8}) return;
   if(syntax<SyntaxVersion{1,8}){for(const auto&a:n.args)expr(*a);err("constructor arguments for '"+n.typeName+"' require syntax 1.8");return;}
-  const Method* ctor=nullptr; int ctorCount=0;
+  std::vector<const Method*> ctors;
   for(const auto&c:p.classes) if(c.name==n.typeName)
-   for(const auto&m:c.methods) if(m.java.constructor){ctorCount++; if(m.params.size()==n.args.size())ctor=&m;}
-  if(ctorCount==0){for(const auto&a:n.args)expr(*a);err("class '"+n.typeName+"' declares no constructor to accept "+std::to_string(n.args.size())+" argument(s)");return;}
-  if(ctorCount>1){for(const auto&a:n.args)expr(*a);err("class '"+n.typeName+"' declares multiple constructors; syntax 1.8 does not support constructor overload resolution");return;}
-  if(!ctor){for(const auto&a:n.args)expr(*a);err("constructor of '"+n.typeName+"' expects a different number of arguments than "+std::to_string(n.args.size()));return;}
-  for(size_t i=0;i<n.args.size();++i){Type g=expr(*n.args[i]),w=tn(ctor->params[i].type);if(!assignable(w,g))err("constructor argument "+std::to_string(i+1)+" to '"+n.typeName+"' has type "+nameOf(g)+", expected "+nameOf(w));}
+   for(const auto&m:c.methods) if(m.java.constructor) ctors.push_back(&m);
+  std::vector<Type> at=argTypesOf(n.args);
+  if(n.args.empty()){ for(const Method* m:ctors) if(m->params.empty()){ n.resolved=m; break; } return; }
+  if(ctors.empty()){err("class '"+n.typeName+"' declares no constructor to accept "+std::to_string(n.args.size())+" argument(s)");return;}
+  // Constructor overload resolution (syntax 3.0): same rule as methods.
+  const Method* ctor=nullptr; int bestScore=-1;
+  for(const Method* m:ctors){
+   if(m->params.size()!=n.args.size()) continue;
+   int score=0; bool ok=true;
+   for(size_t i=0;i<at.size();++i){Type w=tn(m->params[i].type); if(!assignable(w,at[i])){ok=false;break;} if(w.kind==at[i].kind&&(w.kind!=Kind::Struct||w.name==at[i].name)) score+=2; else if(w.kind!=Kind::Any) score+=1;}
+   if(ok&&score>bestScore){ctor=m;bestScore=score;}
+  }
+  if(!ctor) for(const Method* m:ctors) if(m->params.size()==n.args.size()){ctor=m;break;}
+  if(!ctor){err("class '"+n.typeName+"' declares no constructor to accept "+std::to_string(n.args.size())+" argument(s)");return;}
+  if(ctors.size()>1&&syntax<SyntaxVersion{3,0}){err("class '"+n.typeName+"' declares multiple constructors; constructor overload resolution requires syntax 3.0");return;}
+  n.resolved=ctor;
+  for(size_t i=0;i<n.args.size();++i){Type w=tn(ctor->params[i].type);if(!assignable(w,at[i]))err("constructor argument "+std::to_string(i+1)+" to '"+n.typeName+"' has type "+nameOf(at[i])+", expected "+nameOf(w));}
  }
  // The `next` / `next.next` / `next.next.next.next` system-degree idiom (see
  // compiler emitVar/emitMember): `next` is Degree 1 and each `.next` step is a
@@ -473,7 +486,7 @@ class Analyzer{
     return typeOf(n->typeName);
    }
    if(!structs.count(n->typeName)&&!classNames.count(n->typeName)){err("new of unknown class or struct '"+n->typeName+"'");return{Kind::Error,{}};}
-   if(!n->args.empty())checkConstructorArgs(*n);
+   checkConstructorArgs(*n);
    return{Kind::Struct,n->typeName};}
   if(auto m=dynamic_cast<const MemberAccess*>(&e)){if(m->field=="next"&&isNextChain(*m->base))return{Kind::Int,{}};return member(*m->base,m->field);}
   if(auto u=dynamic_cast<const Unary*>(&e)){Type t=expr(*u->operand);if(u->op=="-"&&(!numeric(t)||t.kind==Kind::Unsigned)&&t.kind!=Kind::Unknown)err("unary '-' requires signed numeric operand, got "+nameOf(t));if(u->op=="!"&&t.kind!=Kind::Bool&&t.kind!=Kind::Unknown)err("unary '!' requires bool operand, got "+nameOf(t));return t;}
@@ -542,6 +555,31 @@ class Analyzer{
   }
   err("unknown binary operator '"+b.op+"'");return{Kind::Error,{}};
  }
+ // Overload resolution (syntax 3.0): among the declarations of key with the
+ // call's arity, choose the one whose parameter types accept the arguments,
+ // preferring exact type matches; ties keep the first declaration. Returns the
+ // single declaration (or the last-declared one) when there is no choice.
+ const MethodSig* pickOverload(const std::string& key,const std::vector<Type>& argTypes){
+  auto ov=overloads.find(key);
+  if(ov==overloads.end()||ov->second.size()<2){auto it=methods.find(key);return it==methods.end()?nullptr:&it->second;}
+  const MethodSig* best=nullptr; int bestScore=-1;
+  for(const auto& cand:ov->second){
+   const Method& m=*cand.m;
+   if(m.params.size()!=argTypes.size()) continue;
+   int score=0; bool ok=true;
+   for(size_t i=0;i<argTypes.size();++i){
+    Type w=tn(m.params[i].type); const Type& g=argTypes[i];
+    if(!assignable(w,g)){ok=false;break;}
+    if(w.kind==g.kind&&(w.kind!=Kind::Struct||w.name==g.name)) score+=2;
+    else if(w.kind!=Kind::Any&&!(w.kind==Kind::Struct&&w.name=="Object")) score+=1;
+   }
+   if(ok&&score>bestScore){best=&cand;bestScore=score;}
+  }
+  if(best) return best;
+  for(const auto& cand:ov->second) if(cand.m->params.size()==argTypes.size()) return &cand;
+  auto it=methods.find(key); return it==methods.end()?nullptr:&it->second;
+ }
+ std::vector<Type> argTypesOf(const std::vector<ExprP>& args){std::vector<Type> t;for(const auto&a:args)t.push_back(expr(*a));return t;}
  Type call(const Call&c){auto it=methods.find(cls+"::"+c.callee);if(it==methods.end())it=methods.find(c.callee);if(it==methods.end()&&c.callee.rfind("__native_",0)==0){
    // Synthesized native helpers are stored as qualified class methods. Match
    // the complete helper symbol across native owners, not just chemistry.
@@ -549,7 +587,7 @@ class Analyzer{
     const auto sep=entry.first.rfind("::");
     if(sep!=std::string::npos&&entry.first.compare(sep+2,std::string::npos,c.callee)==0&&entry.first.substr(0,sep).rfind("__Native",0)==0){it=methods.find(entry.first);break;}
    }
-  }if(it!=methods.end()){const Method&m=*it->second.m;if(c.args.size()!=m.params.size())err("method '"+c.callee+"' expects "+std::to_string(m.params.size())+" argument(s), got "+std::to_string(c.args.size()));size_t n=c.args.size()<m.params.size()?c.args.size():m.params.size();for(size_t i=0;i<n;i++){Type g=expr(*c.args[i]),w=tn(m.params[i].type);if(!assignable(w,g))err("argument "+std::to_string(i+1)+" to '"+c.callee+"' has type "+nameOf(g)+", expected "+nameOf(w));}if(m.isProtected&&it->second.owner!=cls)err("protected method access denied for '"+c.callee+"'");return tn(m.retType);}
+  }if(it!=methods.end()){std::vector<Type> at=argTypesOf(c.args);if(const MethodSig* pk=pickOverload(it->first,at)){it=methods.find(it->first);c.resolved=pk->m;}const Method&m=c.resolved?*c.resolved:*it->second.m;if(c.args.size()!=m.params.size())err("method '"+c.callee+"' expects "+std::to_string(m.params.size())+" argument(s), got "+std::to_string(c.args.size()));size_t n=c.args.size()<m.params.size()?c.args.size():m.params.size();for(size_t i=0;i<n;i++){Type g=at[i],w=tn(m.params[i].type);if(!assignable(w,g))err("argument "+std::to_string(i+1)+" to '"+c.callee+"' has type "+nameOf(g)+", expected "+nameOf(w));}if(m.isProtected&&it->second.owner!=cls)err("protected method access denied for '"+c.callee+"'");return tn(m.retType);}
   // `spawn(method)` names a zero-arg method to run on a new thread; its single
   // argument is a method name, not a value, so it is not resolved as a variable.
   if(c.callee=="spawn"){if(c.args.size()!=1){err("spawn(method) takes exactly one argument");return{Kind::Unknown,{}};}auto v=dynamic_cast<const VarExpr*>(c.args[0].get());if(!v||(!methods.count(v->name)&&!methods.count(cls+"::"+v->name)))err("spawn(method) argument must be a declared method name");return{Kind::Unknown,{}};}
@@ -666,11 +704,13 @@ class Analyzer{
      return{Kind::Struct,rv->name};
     }
     if(st==methods.end()){err("class '"+rv->name+"' has no method '"+m.method+"'");return{Kind::Error,{}};}
-    const Method& target=*st->second.m;
+    std::vector<Type> at=argTypesOf(m.args);
+    const MethodSig* pk=pickOverload(st->first,at); m.resolved=pk->m;
+    const Method& target=*pk->m;
     if(!target.isStatic){err("instance method '"+rv->name+"::"+m.method+"' must be called on an instance");return{Kind::Error,{}};}
     if(m.args.size()!=target.params.size())err("method '"+m.method+"' expects "+std::to_string(target.params.size())+" argument(s), got "+std::to_string(m.args.size()));
-    for(size_t i=0;i<m.args.size()&&i<target.params.size();++i){Type g=expr(*m.args[i]),w=tn(target.params[i].type);if(!assignable(w,g))err("argument to '"+m.method+"' has type "+nameOf(g)+", expected "+nameOf(w));}
-    if(target.isProtected&&st->second.owner!=cls)err("protected method access denied for '"+m.method+"'");
+    for(size_t i=0;i<m.args.size()&&i<target.params.size();++i){Type g=at[i],w=tn(target.params[i].type);if(!assignable(w,g))err("argument to '"+m.method+"' has type "+nameOf(g)+", expected "+nameOf(w));}
+    if(target.isProtected&&pk->owner!=cls)err("protected method access denied for '"+m.method+"'");
     return tn(target.retType);
    }
   }
@@ -679,10 +719,12 @@ class Analyzer{
   if(v.count(m.method)){if(m.method=="consume"||m.method=="latch"||m.method=="close"||m.method=="reception"||m.method=="closeWithReceipt"){if(!m.args.empty())err("Munction "+m.method+"() takes no arguments");}else{if(m.args.size()!=1)err("Munction "+m.method+"() takes exactly one argument");if(!m.args.empty()){Type t=expr(*m.args[0]);if(t.kind!=Kind::String&&t.kind!=Kind::Unknown)err("Munction "+m.method+" argument must be string");}}return m.method=="closeWithReceipt"?Type{Kind::String,{}}:rcv;}
   if(rcv.kind!=Kind::Struct){err("method '"+m.method+"' requires a class or struct receiver");return{Kind::Error,{}};}
   auto it=methods.find(rcv.name+"::"+m.method);if(it==methods.end()){err("class '"+rcv.name+"' has no method '"+m.method+"'");return{Kind::Error,{}};}
-  const Method& target=*it->second.m;if(target.isStatic)err("static method '"+rcv.name+"::"+m.method+"' must be called through its class");
+  std::vector<Type> at=argTypesOf(m.args);
+  const MethodSig* pk=pickOverload(it->first,at); m.resolved=pk->m;
+  const Method& target=*pk->m;if(target.isStatic)err("static method '"+rcv.name+"::"+m.method+"' must be called through its class");
   if(m.args.size()!=target.params.size())err("method '"+m.method+"' expects "+std::to_string(target.params.size())+" argument(s), got "+std::to_string(m.args.size()));
-  for(size_t i=0;i<m.args.size()&&i<target.params.size();++i){Type g=expr(*m.args[i]),w=tn(target.params[i].type);if(!assignable(w,g))err("argument to '"+m.method+"' has type "+nameOf(g)+", expected "+nameOf(w));}
-  if(target.isProtected&&it->second.owner!=cls)err("protected method access denied for '"+m.method+"'");
+  for(size_t i=0;i<m.args.size()&&i<target.params.size();++i){Type g=at[i],w=tn(target.params[i].type);if(!assignable(w,g))err("argument to '"+m.method+"' has type "+nameOf(g)+", expected "+nameOf(w));}
+  if(target.isProtected&&pk->owner!=cls)err("protected method access denied for '"+m.method+"'");
   return tn(target.retType);
 }
 public:

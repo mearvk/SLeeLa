@@ -61,5 +61,8 @@ class InvalidRequestStateException extends RuntimeException {
   << Constructor com.sun.jdi.request.InvalidRequestStateException(String); the
      inherited Throwable state is initialized first (see the java.* ancestors). >>
   InvalidRequestStateException(String p0) { this.detailMessage = null; this.cause = null; this.causeInitialized = false; this.suppressedList = new Any[4]; this.suppressedCount = 0; this.stackTrace = new StackTraceElement[0]; this.detailMessage = p0; }
+  << The Java constructors of the Throwable pattern, with their exact
+     signatures (constructor overload resolution, syntax 3.0). >>
+  public InvalidRequestStateException() { this.detailMessage = null; this.cause = null; this.causeInitialized = false; this.suppressedList = new Any[4]; this.suppressedCount = 0; this.stackTrace = new StackTraceElement[0]; this.detailMessage = null; }
   < ---- END java implementation ---- >
 }

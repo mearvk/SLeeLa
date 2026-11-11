@@ -61,5 +61,9 @@ class JSException extends RuntimeException {
   << Constructor netscape.javascript.JSException(String); the
      inherited Throwable state is initialized first (see the java.* ancestors). >>
   JSException(String p0) { this.detailMessage = null; this.cause = null; this.causeInitialized = false; this.suppressedList = new Any[4]; this.suppressedCount = 0; this.stackTrace = new StackTraceElement[0]; this.detailMessage = p0; }
+  << The Java constructors of the Throwable pattern, with their exact
+     signatures (constructor overload resolution, syntax 3.0). >>
+  public JSException() { this.detailMessage = null; this.cause = null; this.causeInitialized = false; this.suppressedList = new Any[4]; this.suppressedCount = 0; this.stackTrace = new StackTraceElement[0]; this.detailMessage = null; }
+  public JSException(java.lang.Throwable t) { this.detailMessage = null; this.cause = null; this.causeInitialized = false; this.suppressedList = new Any[4]; this.suppressedCount = 0; this.stackTrace = new StackTraceElement[0]; this.cause = (Throwable) t; this.causeInitialized = true; if (t != null) { Throwable c0 = (Throwable) t; this.detailMessage = c0.toString(); } else { this.detailMessage = null; } }
   < ---- END java implementation ---- >
 }

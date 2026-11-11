@@ -206,12 +206,20 @@ public:
             fieldGlobal_[key]=slvm_declare_global(vm_,key.c_str()); staticFieldType_[key]=f.type; fieldProtected_[key]=f.isProtected; fieldOwner_[key]=cls.name; fields_.push_back(&f);
             if(structLayout_.count(f.type)) varType_[key]=f.type;
         }
+        std::map<std::string,int> overloadCount;
         for(const auto& cls:prog_.classes) for(const auto& m:cls.methods){
-            const std::string key=cls.name+"::"+m.name;
+            const std::string baseKey=cls.name+"::"+m.name;
+            // Each overload gets its own function; the first keeps the plain
+            // key, later ones "Class::name#k". The plain key stays bound to
+            // the last declaration (the pre-overload behavior) for callers
+            // that resolve by name alone.
+            const int k=overloadCount[baseKey]++;
+            const std::string key = k==0 ? baseKey : baseKey+"#"+std::to_string(k);
             MethodInfo mi; mi.method=&m; mi.nlocals=countLocals(m)+(m.isStatic?0:1);
-            methodKeyByPtr_[&m]=key; methodOwner_[key]=cls.name;
+            methodKeyByPtr_[&m]=key; methodOwner_[key]=cls.name; methodOwner_[baseKey]=cls.name;
             if(m.isProtected) protectedMethods_.insert(key);
-            funcIndex_[key]=(int)methods_.size(); methods_.push_back(mi);
+            funcIndexByPtr_[&m]=(int)methods_.size();
+            funcIndex_[key]=(int)methods_.size(); funcIndex_[baseKey]=(int)methods_.size(); methods_.push_back(mi);
             if(m.name=="main") funcIndex_["main"]=(int)methods_.size()-1;
         }
         // OOD inheritance (syntax 1.10): make a base method callable as
@@ -260,7 +268,7 @@ private:
     // position (offset) and declared type, in declaration order.
     struct StructLayout { std::string name; int typeIndex=-1; std::map<std::string,int> fieldOffset; std::vector<std::string> fieldType; };
     const Program& prog_; SLVM* vm_; const catalog::Catalog* cat_; SyntaxVersion syntax_;
-    std::map<std::string,int> funcIndex_; std::map<std::string,std::string> methodOwner_; std::map<const Method*,std::string> methodKeyByPtr_; std::set<std::string> protectedMethods_; std::vector<MethodInfo> methods_;
+    std::map<std::string,int> funcIndex_; std::map<std::string,std::string> methodOwner_; std::map<const Method*,std::string> methodKeyByPtr_; std::map<const Method*,int> funcIndexByPtr_; std::set<std::string> protectedMethods_; std::vector<MethodInfo> methods_;
     std::map<std::string,int> fieldGlobal_; std::map<std::string,std::string> staticFieldType_; std::map<std::string,bool> fieldProtected_; std::map<std::string,std::string> fieldOwner_; std::vector<const Field*> fields_; MethodCtx* ctx_=nullptr;
     std::string currentClass_;
     std::map<std::string,StructLayout> structLayout_;
@@ -716,7 +724,7 @@ private:
                 if(viaClassName && mc->method=="deref" && structLayout_.count(rt)) return rt;
                 return "";
             }
-            const std::string& ret=methods_[fi->second].method->retType;
+            const std::string& ret = mc->resolved ? mc->resolved->retType : methods_[fi->second].method->retType;
             if(structLayout_.count(ret)) return ret;
             return "";
         }
@@ -746,7 +754,7 @@ private:
                 if(m.params.size()==argc) match=&m;
             }
         if(ctorCount==0) return nullptr;
-        if(ctorCount>1) throw std::runtime_error("Semantic error: class '"+className+"' declares multiple constructors; syntax 1.8 does not support constructor overload resolution");
+        if(ctorCount>1 && syntax_<SyntaxVersion{3,0}) throw std::runtime_error("Semantic error: class '"+className+"' declares multiple constructors; constructor overload resolution requires syntax 3.0");
         if(!match) throw std::runtime_error("Semantic error: no constructor of '"+className+"' takes "+std::to_string(argc)+" argument(s)");
         return match;
     }
@@ -755,7 +763,7 @@ private:
         auto it=structLayout_.find(n.typeName);if(it==structLayout_.end())throw std::runtime_error("Semantic error: 'new' of unknown class or struct '"+n.typeName+"'");
         // Resolve a matching constructor before allocating so an arity/overload
         // error is reported without leaving a half-built instance plan.
-        const Method* ctor = n.args.empty() ? findConstructor(n.typeName,0) : findConstructor(n.typeName,n.args.size());
+        const Method* ctor = n.resolved ? n.resolved : (n.args.empty() ? findConstructor(n.typeName,0) : findConstructor(n.typeName,n.args.size()));
         if(!n.args.empty() && !ctor) throw std::runtime_error("Semantic error: class '"+n.typeName+"' has no constructor to accept "+std::to_string(n.args.size())+" argument(s)");
         emit(OP_NEWSTRUCT,it->second.typeIndex);
         // Initialize class fields per instance. A duplicated handle is consumed
@@ -779,11 +787,12 @@ private:
         // method; its (null) return value is discarded so the fully initialized
         // instance remains on the stack as the value of `new Type(args)`.
         if(ctor){
-            auto target=funcIndex_.find(n.typeName+"::"+ctor->name);
-            if(target==funcIndex_.end()) throw std::runtime_error("Semantic error: constructor of '"+n.typeName+"' is not registered");
+            int fidx=resolvedIndex(ctor);
+            if(fidx<0){ auto target=funcIndex_.find(n.typeName+"::"+ctor->name); if(target!=funcIndex_.end()) fidx=target->second; }
+            if(fidx<0) throw std::runtime_error("Semantic error: constructor of '"+n.typeName+"' is not registered");
             emit(OP_DUP);
-            for(const auto& a:n.args) emitExpr(a.get());
-            emit(OP_CALL,target->second);
+            emitArgsCoerced(n.args,ctor);
+            emit(OP_CALL,fidx);
             emit(OP_POP);
         }
     }
@@ -808,6 +817,11 @@ private:
     // Static access through a class name (Java Class.member): the name is not
     // a local, an instance field or a static of the current class, and the
     // class declares the member.
+    // Function index of the overload chosen by semantic analysis, or -1.
+    int resolvedIndex(const Method* m) const {
+        if(!m) return -1;
+        auto f=funcIndexByPtr_.find(m); return f==funcIndexByPtr_.end()?-1:f->second;
+    }
     bool isStaticClassRef(const Expr* e, std::string& cls) const {
         auto v=dynamic_cast<const VarExpr*>(e);
         if(!v) return false;
@@ -920,19 +934,25 @@ private:
                 emitExpr(mc.args[0].get());
                 emit(OP_REF,SLREF_PACK(SLREF_DEREF,structLayout_.at(sc).typeIndex)); return;
             }
-            if(st!=funcIndex_.end() && methods_[st->second].method->isStatic){
-                const Method* sm=methods_[st->second].method;
+            int ri=resolvedIndex(mc.resolved);
+            if(ri>=0 || (st!=funcIndex_.end() && methods_[st->second].method->isStatic)){
+                const int fi = ri>=0 ? ri : st->second;
+                const Method* sm=methods_[fi].method;
+                if(sm->isStatic){
                 if((int)mc.args.size()!=(int)sm->params.size())throw std::runtime_error("Semantic error: method '"+sc+"::"+m+"' expects "+std::to_string(sm->params.size())+" argument(s), got "+std::to_string(mc.args.size()));
-                emitArgsCoerced(mc.args,sm);emit(OP_CALL,st->second);return;
+                emitArgsCoerced(mc.args,sm);emit(OP_CALL,fi);return;
+                }
             } } }
         const std::string receiverType=exprStructType(mc.receiver.get());
         auto target=funcIndex_.find(receiverType+"::"+m);
-        if(target==funcIndex_.end())throw std::runtime_error("Semantic error: class '"+(receiverType.empty()?std::string("<unknown>"):receiverType)+"' has no method '"+m+"'");
-        const Method* method=methods_[target->second].method;
+        int fidx = target==funcIndex_.end() ? -1 : target->second;
+        { int ri=resolvedIndex(mc.resolved); if(ri>=0 && target!=funcIndex_.end()) fidx=ri; }
+        if(fidx<0)throw std::runtime_error("Semantic error: class '"+(receiverType.empty()?std::string("<unknown>"):receiverType)+"' has no method '"+m+"'");
+        const Method* method=methods_[fidx].method;
         if(method->isStatic)throw std::runtime_error("Semantic error: static method '"+receiverType+"::"+m+"' must be called through its class");
         if((int)mc.args.size()!=(int)method->params.size())throw std::runtime_error("Semantic error: method '"+receiverType+"::"+m+"' expects "+std::to_string(method->params.size())+" argument(s), got "+std::to_string(mc.args.size()));
         if(method->isProtected&&receiverType!=currentClass_)throw std::runtime_error("protected method access denied");
-        emitExpr(mc.receiver.get());emitArgsCoerced(mc.args,method);emit(OP_CALL,target->second);
+        emitExpr(mc.receiver.get());emitArgsCoerced(mc.args,method);emit(OP_CALL,fidx);
     }
     void emitVar(const VarExpr& v){
         if(v.name=="next"){emit(OP_CONST,slvm_add_const_int(vm_,kNextSystemDegree));return;}
@@ -1479,11 +1499,12 @@ private:
         if(tryEmitBuiltin(c))return;
         auto it=funcIndex_.find(currentClass_+"::"+c.callee);
         if(it!=funcIndex_.end()){
-            const Method* target=methods_[it->second].method;
+            int fidx=it->second; { int ri=resolvedIndex(c.resolved); if(ri>=0) fidx=ri; }
+            const Method* target=methods_[fidx].method;
             if((int)c.args.size()!=(int)target->params.size())throw std::runtime_error("Semantic error: method '"+currentClass_+"::"+c.callee+"' expects "+std::to_string(target->params.size())+" argument(s), got "+std::to_string(c.args.size()));
             if(target->isProtected&&methodOwner_[currentClass_+"::"+c.callee]!=currentClass_)throw std::runtime_error("protected method access denied");
             if(!target->isStatic)emitThis();
-            emitArgsCoerced(c.args,target);emit(OP_CALL,it->second);return;
+            emitArgsCoerced(c.args,target);emit(OP_CALL,fidx);return;
         }
         // Native subject helpers are synthesized as qualified class methods.
         // Resolve all __Native* helper names consistently with semantic analysis.

@@ -19,14 +19,14 @@ constants). Two numbers are reported:
 
 - **Covered.** Members that exist in SLeeLa with their Java meaning. This
   includes the API-declared part below plus hand-implemented behavior.
-  Currently **42.7%**.
-- **Behavior.** Only hand-written method bodies. Currently **7.1%**.
+  Currently **44.5%**.
+- **Behavior.** Only hand-written method bodies. Currently **8.9%**.
 
 ### Exact Java signatures (`tools/jdk_api_signatures.py`)
 
 Every public method of every JDK type that SLeeLa does not implement yet is
-written with its **exact Java signature**. That is 34,244 methods: 9,732
-abstract and 24,512 awaiting logic. The modifiers, type parameters and
+written with its **exact Java signature**. That is 33,978 methods: 9,732
+abstract and 24,246 awaiting logic. The modifiers, type parameters and
 generic types come from `api/jdk-signatures.jsonl`, which
 `tools/ApiSignatures.java` writes from reflection on a real JDK, with
 parameter names read from the JDK source declarations. For example:
@@ -187,7 +187,9 @@ and re-running them.
    `Class.method(...)` now work (SLEELA.syntax section 38). The
    hand-implemented classes still expose their static API as instance
    methods; they are converted class by class.
-2. **Overload resolution** by parameter types, and more than one constructor per class.
+2. **Overload resolution** by parameter types, and more than one constructor
+   per class. *Done* (SLEELA.syntax section 40); the hand-implemented
+   classes still carry their earlier suffixed names.
 3. **Virtual dispatch.** An override is not reached through a base-typed
    receiver or an implicit-`this` call. That is why exceptions compose their
    message into `detailMessage` at construction instead of overriding

@@ -63,5 +63,8 @@ class InvalidClassException extends ObjectStreamException {
     classname = c;
     if (c == null) { detailMessage = reason; } else { detailMessage = c + "; " + reason; }
   }
+  << The Java constructors of the Throwable pattern, with their exact
+     signatures (constructor overload resolution, syntax 3.0). >>
+  public InvalidClassException(java.lang.String reason, java.lang.Throwable cause) { this.detailMessage = null; this.cause = null; this.causeInitialized = false; this.suppressedList = new Any[4]; this.suppressedCount = 0; this.stackTrace = new StackTraceElement[0]; this.classname = null; this.detailMessage = reason; this.cause = (Throwable) cause; this.causeInitialized = true; }
   < ---- END java implementation ---- >
 }

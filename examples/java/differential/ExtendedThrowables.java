@@ -24,5 +24,15 @@ public class ExtendedThrowables {
         IllegalBlockSizeException ib = new IllegalBlockSizeException("16");
         ib.initCause(new java.io.IOException("io"));
         System.out.println(ib + " | " + ib.getCause());
+        java.io.IOException root = new java.io.IOException("disk full");
+        java.io.IOException wrapped = new java.io.IOException(root);
+        java.io.IOException both = new java.io.IOException("copy failed", root);
+        RuntimeException bare = new RuntimeException();
+        NamingException nested = new NamingException();
+        System.out.println(wrapped.getMessage() + " | " + wrapped.getCause() + " | " + both.getMessage() + " | " + (both.getCause() == root));
+        System.out.println(bare + " | " + bare.getMessage() + " | " + (bare.getCause() == null) + " | " + nested.getMessage());
+        IllegalStateException st = new IllegalStateException("bad", new ArithmeticException("x"));
+        UnsupportedOperationException un = new UnsupportedOperationException((Throwable) null);
+        System.out.println(st.getCause() + " | " + un.getMessage() + " | " + new BadPaddingException() + " | " + new java.util.NoSuchElementException("gone", root).getCause());
     }
 }

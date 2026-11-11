@@ -56,10 +56,10 @@ methods):
 In addition, every one of the **4,801 public JDK types** now has a file. Each
 carries its API-declared part, generated from the reflected JDK API:
 constants with their real values, fields, abstract methods, and complete
-enums and records. Together that covers **42.7% of the 51,554 public members**
-(7.1% is working behavior, including 294 probed accessor contracts; see [STATUS.md](STATUS.md)), measured in [COVERAGE.md](COVERAGE.md).
+enums and records. Together that covers **44.5% of the 51,554 public members**
+(8.9% is working behavior, including 330 probed accessor contracts; see [STATUS.md](STATUS.md)), measured in [COVERAGE.md](COVERAGE.md).
 
-Every remaining public method carries its **exact Java signature**: 34,244
+Every remaining public method carries its **exact Java signature**: 33,978
 methods, including generics, varargs, static, abstract and throws. Abstract
 methods throw `AbstractMethodError`, as the JVM does. The others throw
 `UnsupportedOperationException` naming the signature until their logic is

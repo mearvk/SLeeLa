@@ -59,5 +59,9 @@ class SSLException extends IOException {
   << Constructor javax.net.ssl.SSLException(String); the
      inherited Throwable state is initialized first (see the java.* ancestors). >>
   SSLException(String p0) { this.detailMessage = null; this.cause = null; this.causeInitialized = false; this.suppressedList = new Any[4]; this.suppressedCount = 0; this.stackTrace = new StackTraceElement[0]; this.detailMessage = p0; }
+  << The Java constructors of the Throwable pattern, with their exact
+     signatures (constructor overload resolution, syntax 3.0). >>
+  public SSLException(java.lang.String message, java.lang.Throwable cause) { this.detailMessage = null; this.cause = null; this.causeInitialized = false; this.suppressedList = new Any[4]; this.suppressedCount = 0; this.stackTrace = new StackTraceElement[0]; this.detailMessage = message; this.cause = (Throwable) cause; this.causeInitialized = true; }
+  public SSLException(java.lang.Throwable cause) { this.detailMessage = null; this.cause = null; this.causeInitialized = false; this.suppressedList = new Any[4]; this.suppressedCount = 0; this.stackTrace = new StackTraceElement[0]; this.cause = (Throwable) cause; this.causeInitialized = true; if (cause != null) { Throwable c0 = (Throwable) cause; this.detailMessage = c0.toString(); } else { this.detailMessage = null; } }
   < ---- END java implementation ---- >
 }
