@@ -36215,7 +36215,7 @@
     },
     {
       "path": "lib/java/java/security/Provider.sleela",
-      "sha256": "46f199afd6eb22fa8b97696a784553f95b0357551446e03e67344b71b8a46f0f"
+      "sha256": "bd5501733577973e2ac42d94776a65199bd5c7c455e4140800130146d9005969"
     },
     {
       "path": "lib/java/java/security/ProviderException.sleela",
@@ -37691,7 +37691,7 @@
     },
     {
       "path": "lib/java/java/util/IdentityHashMap.sleela",
-      "sha256": "817d497588fbc68918c5545c689798a16d37eb5ef366b5f60f868cee0be4aefe"
+      "sha256": "b6cfedcea586b6f1e27b58bdcfe209cdd88c2976ccea4c363d09667fdebcfcaa"
     },
     {
       "path": "lib/java/java/util/IllegalFormatArgumentIndexException.sleela",
@@ -37899,7 +37899,7 @@
     },
     {
       "path": "lib/java/java/util/Properties.sleela",
-      "sha256": "c613e67aef6e0536d8d2cbada9cb25d4917d7203291a966a98acec35ce1ac0c2"
+      "sha256": "2e841236e8550cd8e1f6b3b638890fa4e69a69ece8a6f82edc1bbfd7015bd851"
     },
     {
       "path": "lib/java/java/util/PropertyPermission.sleela",
@@ -38099,7 +38099,7 @@
     },
     {
       "path": "lib/java/java/util/WeakHashMap.sleela",
-      "sha256": "f6bbc21d9300007cf7e42e89844e7b865be22e3e0e33805cc60d0c4d0dabf4a9"
+      "sha256": "86d1c1009826eff78ff0c101a58025254c750dad42fd1992ef6ad567479b14dd"
     },
     {
       "path": "lib/java/java/util/concurrent/AbstractExecutorService.sleela",

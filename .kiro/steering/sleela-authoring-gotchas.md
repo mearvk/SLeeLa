@@ -108,3 +108,18 @@ Rule: keep every value that is ever compared at or below 9007199254740991, and
 refuse (do not clamp or wrap) inputs that could push it past. See
 `lib/advantage/trading-actions-on-verb/SLEuclid.sleela` for the pattern
 (`maxExact`) and `TaUse15EuclidExhaustive` for the edge tests.
+
+## Built-in names and type tests (found while implementing /lib/java, 2026-11)
+
+- **`read`, `write`, `sleep` are VM built-ins.** An unqualified call inside a
+  class binds to the built-in, not to the class method of the same name
+  (`read(b, off, len)` fails with `read(handle) takes one argument`). Call your
+  own method as `this.read(...)` / `this.write(...)`.
+- **`instanceof` with a built-in value type uses the lowercase VM name:**
+  `x instanceof string`, `int`, `long`, `double`, `boolean`.
+  `x instanceof String` is always false for a built-in string, and the cast
+  `(String) x` fails at run time ("not a valid class/struct instance").
+  To turn an `Any` that holds a string into a `String`, write `"" + x`.
+- **Java `byte`/`char`/`short` ride the int slot.** `int` and `long` overloads
+  cannot be told apart, so do not implement a Java method whose result depends
+  on which one the caller passed (for example `HexFormat.toHexDigits(value)`).
