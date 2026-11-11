@@ -36671,7 +36671,7 @@
     },
     {
       "path": "lib/java/java/sql/Date.sleela",
-      "sha256": "5072eea573910d8b6a916e63392bae37e47dcaca454c613f84769e22224ad6e9"
+      "sha256": "6cba352ca7db7dcea4c933e72a7a861b20f8696f941ce682005e63e8250fbeca"
     },
     {
       "path": "lib/java/java/sql/Driver.sleela",
@@ -36839,11 +36839,11 @@
     },
     {
       "path": "lib/java/java/sql/Time.sleela",
-      "sha256": "754e128102605bcab01357c3cf7b3e3be42a50c707814b2196a1c6a7c625ad91"
+      "sha256": "4a2a07972692ee1bb436634702e76cdf20c121dc3b0a5bec286736168f85a194"
     },
     {
       "path": "lib/java/java/sql/Timestamp.sleela",
-      "sha256": "1d215b57ba097140e3f3abfbd30e1ad28e044e6ec58037439fb734748a1e8fa7"
+      "sha256": "4e25ba12f8d7bcc8cb4bc68a8ee88b3cc749608c54fc3a539bc54c65472613dd"
     },
     {
       "path": "lib/java/java/sql/Types.sleela",
@@ -37503,7 +37503,7 @@
     },
     {
       "path": "lib/java/java/util/Date.sleela",
-      "sha256": "9df1c7d29fafb74acf9c66f09070889bdfbc0ec25119975960ed087d78c48f3e"
+      "sha256": "3cd19814a194aaabcc7e01eeb73f4a56f1e7b5cd62f5dc10fc18f69099812dc4"
     },
     {
       "path": "lib/java/java/util/Deque.sleela",
