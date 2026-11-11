@@ -21,12 +21,13 @@
 #     sleelactl [options] <verb> all                  # nature-aware fan-out
 #     sleelactl list [nature|registry-module]   status [module|all]
 #     sleelactl natures [--markdown]    help [verb|module|nature]
-#     sleelactl check-registry [--strict]   where   completion bash|zsh   version
+#     sleelactl check-registry [--strict]   keys [--markdown]   where
+#     sleelactl completion bash|zsh   version
 #
 # Options (before the verb; also accepted right after `all`):
 #     --dry-run    print the exact action; change nothing
 #     --yes, -y    confirm a mutating daemon verb fanned out with `all`
-#     --json       machine-readable output for list, status, natures, where
+#     --json       machine-readable output for list, status, natures, keys, where
 #
 # Exit codes:
 #     0   success
@@ -110,6 +111,35 @@ natures_for_verb() {
 }
 all_verbs() { printf '%s\n' "$NATURE_TABLE" | awk -F'|' '{n=split($2,v," "); for(i=1;i<=n;i++) if(!s[v[i]]++) printf "%s ", v[i]}'; }
 is_mutating_daemon_verb() { case "$1" in start|stop|restart|reload|enable|disable) return 0 ;; *) return 1 ;; esac; }
+# =============================================================================
+# The ONE registry key schema: nature|key|need|kind|description
+#   need: req (required) | any:<group> (at least one of the group) | opt |
+#         warn (optional, warned when absent)
+#   kind: path (source path, must exist under --strict) | build (build output
+#         path, safety-checked only) | unit | label | int | list | deps | text
+#   nature "*" applies to every nature; key "sub.*" matches sub.<word>.
+# check-registry, use-time path checks, and `keys --markdown` derive from it.
+# =============================================================================
+KEY_TABLE='*|summary|warn|text|short human description
+daemon|unit|any:svc|unit|systemd unit (*.service)
+daemon|launchd|any:svc|label|launchd label
+daemon|winsvc|any:svc|label|Windows service name
+daemon|after|opt|deps|modules this daemon is started after (comma list)
+registry|dir|req|path|package directory
+registry|demo|req|path|reference pipeline (.sleela) run by probe/status
+registry|handlers|warn|int|handler count; ids are 0..N-1
+datasource|dir|req|path|package directory
+protocol|dir|req|path|module directory (Makefile, spec, docs)
+protocol|sim|opt|build|built simulator run by simulate
+tool|dir|any:src|path|tool directory built with make
+tool|script|any:src|path|Python driver that receives build/run/inspect
+tool|bin|opt|list|CLI names run by run/inspect (dir tools)
+tool|runsub|opt|list|words after run forwarded as driver subcommands
+tool|sub.*|opt|path|helper script for inspect <word>
+tool|doc|opt|path|documentation shown by info
+subject|demo|req|path|reference demo (.sleela) run by run
+library|dir|opt|path|package directory'
+
 # In-program Controller API that is deliberately not a CLI verb.
 is_inprogram_registry_call() { case "$1" in load|unload|enable|disable|can) return 0 ;; *) return 1 ;; esac; }
 
@@ -232,9 +262,11 @@ root_path() { # module key -> absolute path, or "" when unset (paths validated b
 # Validate every path-valued field of a module in the CURRENT shell, so a bad
 # entry stops the command (usage_die inside $(...) would only exit a subshell).
 entry_check() { # module
-  _ec=$(reg_records | awk -F'\t' -v m="$1" '
+  _ec=$(reg_records | SL_KEYS="$KEY_TABLE" awk -F'\t' -v m="$1" '
+    BEGIN { n = split(ENVIRON["SL_KEYS"], L, "\n")
+            for (i = 1; i <= n; i++) { split(L[i], f, "|"); if (f[4] == "path" || f[4] == "build") pk[f[2]] = 1 } }
     $1=="M" && $3==m { for (i=4;i<=NF;i++){ p=index($i,"="); k=substr($i,1,p-1)
-      if (k=="dir"||k=="demo"||k=="script"||k=="sim"||k=="doc"||k ~ /^sub\./) print k "=" substr($i,p+1) } exit }')
+      if ((k in pk) || (k ~ /^sub\./ && ("sub.*" in pk))) print k "=" substr($i,p+1) } exit }')
   set -f
   for _ec_kv in $_ec; do
     path_ok "${_ec_kv#*=}" || { set +f; usage_die "registry entry '$1' has an unsafe ${_ec_kv%%=*} path '${_ec_kv#*=}' (must be relative, without '..')"; }
@@ -386,7 +418,8 @@ registry_cmd() { # module verb [args]
     list)
       okay "$1 — $(summary_of "$1")"
       if [ -n "$_rg_n" ]; then info "handlers: $_rg_n (ids 0..$((_rg_n - 1)))"; else info "handlers: not declared (handlers= unset)"; fi
-      [ -n "$_rg_dir" ] && info "sources:  $(rel "$_rg_dir")/ ($(ls "$_rg_dir"/*.sleela 2>/dev/null | wc -l | tr -d ' ') .sleela files)"
+      if [ -n "$_rg_dir" ] && [ -d "$_rg_dir" ]; then info "sources:  $(rel "$_rg_dir")/ ($(ls "$_rg_dir"/*.sleela 2>/dev/null | wc -l | tr -d ' ') .sleela files)"
+      elif [ -n "$_rg_dir" ]; then warn "sources:  $(field "$1" dir)/ not present in this install"; fi
       [ -n "$_rg_demo" ] && info "pipeline: $(rel "$_rg_demo")   (run it: $PROG probe $1)"
       info "load/unload/enable/disable/canProcess are Controller calls inside a SLeeLa program." ;;
     probe|status)
@@ -684,6 +717,25 @@ cmd_natures() { # [--markdown]
   done
 }
 
+cmd_keys() { # [--markdown]
+  if [ "${1:-}" = --markdown ]; then
+    printf '| Nature | Key | Need | Kind | Meaning |\n| --- | --- | --- | --- | --- |\n'
+    printf '%s\n' "$KEY_TABLE" | awk -F'|' '{ n=$1; if (n=="*") n="(all)"; nd=$3; if (nd ~ /^any:/) nd="one of " substr(nd,5)
+      printf "| %s | `%s=` | %s | %s | %s |\n", n, $2, nd, $4, $5 }'
+    return 0
+  fi
+  if [ "$FORMAT" = json ]; then
+    printf '%s\n' "$KEY_TABLE" | awk -F'|' '
+      function esc(s) { gsub(/\\/,"\\\\",s); gsub(/"/,"\\\"",s); return "\"" s "\"" }
+      BEGIN { printf "[" }
+      { printf "%s{\"nature\":%s,\"key\":%s,\"need\":%s,\"kind\":%s,\"description\":%s}", (NR>1?",":""), esc($1), esc($2), esc($3), esc($4), esc($5) }
+      END { print "]" }'
+    return 0
+  fi
+  say "${B}sleelactl registry keys${R} (format 2) — need: req | one of <group> | opt | warn"
+  printf '%s\n' "$KEY_TABLE" | awk -F'|' '{ printf "  %-11s %-10s %-9s %-6s %s\n", $1, $2, $3, $4, $5 }'
+}
+
 cmd_where() {
   _w_mgr=$(svc_manager 2>/dev/null) || _w_mgr=invalid
   _w_scope=$(svc_scope 2>/dev/null) || _w_scope=invalid
@@ -708,19 +760,35 @@ cmd_check_registry() { # [--strict]
   _c_strict=0
   for _c_a in "$@"; do case "$_c_a" in --strict) _c_strict=1 ;; *) usage_die "check-registry: unknown argument '$_c_a'" ;; esac; done
   reg_require
-  _c_report=$(reg_records | awk -F'\t' -v natures="$ALL_NATURES" '
+  _c_report=$(reg_records | SL_KEYS="$KEY_TABLE" awk -F'\t' -v natures="$ALL_NATURES" '
     function E(l, m) { print "error\t" l "\t" m; ne++ }
     function W(l, m) { print "warning\t" l "\t" m; nw++ }
+    function schema(nat, k) {          # returns "need|kind" for nat/key, "" if not allowed
+      if ((nat SUBSEP k) in S) return S[nat, k]
+      if (("*" SUBSEP k) in S) return S["*", k]
+      if (k ~ /^sub\.[a-z][a-z0-9_-]*$/ && ((nat SUBSEP "sub.*") in S)) return S[nat, "sub.*"]
+      return ""
+    }
+    function kindcheck(line, name, k, v, kind) {
+      if (kind == "path" || kind == "build") {
+        if (v == "" || v ~ /^\// || v ~ /(^|\/)\.\.(\/|$)/ || index(v, "\\")) E(line, name ": unsafe " k " path \"" v "\" (must be relative, without ..)")
+        else if (kind == "path") print "path\t" line "\t" name "\t" k "\t" v
+      }
+      else if (kind == "unit" && v !~ /^[A-Za-z0-9@._:-]+\.service$/) E(line, name ": invalid systemd unit \"" v "\"")
+      else if (kind == "label" && v !~ /^[A-Za-z0-9._-]+$/) E(line, name ": invalid " k " name \"" v "\"")
+      else if (kind == "int" && v !~ /^[1-9][0-9]*$/) E(line, name ": " k " must be a positive integer")
+      else if (kind == "list" && v !~ /^[A-Za-z0-9._+-]+(,[A-Za-z0-9._+-]+)*$/) E(line, name ": " k " must be a comma list of words")
+      else if (kind == "deps") { deps[name] = v; depline[name] = line }
+    }
     BEGIN {
       n = split(natures, a, " "); for (i = 1; i <= n; i++) known[a[i]] = 1
-      allowed["daemon"] = " unit launchd winsvc after summary "
-      allowed["registry"] = " dir demo handlers summary "
-      allowed["datasource"] = " dir summary "
-      allowed["protocol"] = " dir sim summary "
-      allowed["tool"] = " dir script bin runsub doc summary "
-      allowed["subject"] = " demo summary "
-      allowed["library"] = " dir summary "
-      split("dir demo script sim doc", pk, " "); for (i in pk) pathkey[pk[i]] = 1
+      n = split(ENVIRON["SL_KEYS"], L, "\n")
+      for (i = 1; i <= n; i++) {
+        split(L[i], f, "|"); S[f[1], f[2]] = f[3] "|" f[4]
+        if (f[3] == "req") req[f[1]] = req[f[1]] " " f[2]
+        if (f[3] == "warn") wrn[f[1]] = wrn[f[1]] " " f[2]
+        if (f[3] ~ /^any:/) { g = f[1] SUBSEP substr(f[3], 5); grp[g] = grp[g] " " f[2]; grpnat[g] = f[1] }
+      }
     }
     $1 == "F" { fmt = $2; next }
     $1 == "E" { E($2, $3); next }
@@ -728,7 +796,7 @@ cmd_check_registry() { # [--strict]
       line = $2; name = $3; cnt++
       if (name !~ /^[a-z0-9][a-z0-9.+_-]*$/) E(line, "invalid module name \"" name "\"")
       if (name in first) E(line, "duplicate module \"" name "\" (first defined on line " first[name] ")"); else first[name] = line
-      delete kv; nat = ""
+      split("", kv)
       for (i = 4; i <= NF; i++) {
         p = index($i, "="); k = substr($i, 1, p - 1); v = substr($i, p + 1)
         if (k in kv) E(line, name ": duplicate key " k)
@@ -740,52 +808,43 @@ cmd_check_registry() { # [--strict]
       if ("legacy" in kv) W(line, name ": legacy format-1 entry (rewrite as format=2)")
       for (k in kv) {
         if (k == "nature" || k == "legacy") continue
-        if (nat == "tool" && k ~ /^sub\.[a-z][a-z0-9_-]*$/) { pathcheck(line, name, k, kv[k]); continue }
-        if (index(allowed[nat], " " k " ") == 0) E(line, name ": key \"" k "\" is not valid for a " nat " module")
-        if (k in pathkey) pathcheck(line, name, k, kv[k])
+        sc = schema(nat, k)
+        if (sc == "") { E(line, name ": key \"" k "\" is not valid for a " nat " module"); continue }
+        split(sc, nk, "|"); kindcheck(line, name, k, kv[k], nk[2])
       }
-      if (nat == "daemon") {
-        if (kv["unit"] == "" && kv["launchd"] == "" && kv["winsvc"] == "") E(line, name ": needs unit=, launchd=, or winsvc=")
-        if (kv["unit"] != "" && kv["unit"] !~ /^[A-Za-z0-9@._:-]+\.service$/) E(line, name ": invalid systemd unit \"" kv["unit"] "\"")
-        if (kv["launchd"] != "" && kv["launchd"] !~ /^[A-Za-z0-9._-]+$/) E(line, name ": invalid launchd label")
-        if (kv["winsvc"] != "" && kv["winsvc"] !~ /^[A-Za-z0-9._-]+$/) E(line, name ": invalid Windows service name")
-        if (kv["after"] != "") { deps[name] = kv["after"]; depline[name] = line }
+      m = split(req[nat], r, " ")
+      for (j = 1; j <= m; j++) if (kv[r[j]] == "" && !(r[j] == "demo" && ("legacy" in kv))) E(line, name ": needs " r[j] "=")
+      m = split(wrn[nat] " " wrn["*"], r, " ")
+      for (j = 1; j <= m; j++) if (kv[r[j]] == "") W(line, name ": " r[j] "= not declared")
+      for (g in grp) if (grpnat[g] == nat) {
+        m = split(grp[g], r, " "); ok = 0; want = ""
+        for (j = 1; j <= m; j++) { if (kv[r[j]] != "") ok = 1; want = want (j > 1 ? ", " : "") r[j] "=" }
+        if (!ok) E(line, name ": needs one of " want)
       }
-      if (nat == "registry") {
-        if (kv["dir"] == "") E(line, name ": needs dir=")
-        if (kv["demo"] == "" && !("legacy" in kv)) E(line, name ": needs demo=")
-        if (kv["handlers"] != "" && kv["handlers"] !~ /^[1-9][0-9]*$/) E(line, name ": handlers must be a positive integer")
-        if (kv["handlers"] == "") W(line, name ": handlers= not declared")
-      }
-      if ((nat == "datasource" || nat == "protocol") && kv["dir"] == "") E(line, name ": needs dir=")
-      if (nat == "tool" && kv["dir"] == "" && kv["script"] == "") E(line, name ": needs dir= or script=")
-      if (nat == "subject" && kv["demo"] == "") E(line, name ": needs demo=")
-      if (kv["summary"] == "") W(line, name ": no summary=")
       next
-    }
-    function pathcheck(line, name, k, v) {
-      if (v == "" || v ~ /^\// || v ~ /(^|\/)\.\.(\/|$)/ || index(v, "\\")) E(line, name ": unsafe " k " path \"" v "\" (must be relative, without ..)")
-      else if (k != "sim") print "path\t" line "\t" name "\t" k "\t" v   # sim= is a build output
     }
     END {
       if (fmt == "") W(0, "no format= line (legacy format 1)")
-      for (m in deps) {
-        k = split(deps[m], d, ",")
-        for (j = 1; j <= k; j++) if (!(d[j] in first)) E(depline[m], m ": after= names unknown module \"" d[j] "\"")
+      for (mm in deps) {
+        k = split(deps[mm], d, ",")
+        for (j = 1; j <= k; j++) if (!(d[j] in first)) E(depline[mm], mm ": after= names unknown module \"" d[j] "\"")
       }
-      # cycle detection (DFS colouring)
-      for (m in deps) if (!color[m]) visit(m)
+      for (mm in deps) if (!color[mm]) visit(mm)
       print "summary\t" cnt "\t" ne + 0 "\t" nw + 0
     }
-    function visit(m,   k, d, j) {
-      color[m] = 1; k = split(deps[m], d, ",")
+    function visit(mm,   k, d, j) {
+      color[mm] = 1; k = split(deps[mm], d, ",")
       for (j = 1; j <= k; j++) {
-        if (color[d[j]] == 1) { E(depline[m], "after= dependency cycle through \"" m "\" and \"" d[j] "\""); continue }
+        if (color[d[j]] == 1) { E(depline[mm], "after= dependency cycle through \"" mm "\" and \"" d[j] "\""); continue }
         if (!color[d[j]] && (d[j] in deps)) visit(d[j])
       }
-      color[m] = 2
+      color[mm] = 2
     }')
-  _c_err=0; _c_warn=0; _c_mods=0
+  _c_err=0; _c_warn=0; _c_mods=0; _c_absent=0
+  # In an installed layout, modules that were not installed are expected to be
+  # absent; summarise them unless --strict or SLEELACTL_VERBOSE=1.
+  _c_list_absent=1
+  [ "$REGISTRY_SOURCE" = installed ] && [ "$_c_strict" -eq 0 ] && [ "${SLEELACTL_VERBOSE:-0}" != 1 ] && _c_list_absent=0
   _c_tmp=$(printf '%s\n' "$_c_report")
   _c_ifs=$IFS
   set -f
@@ -797,12 +856,18 @@ cmd_check_registry() { # [--strict]
     case "$1" in
       error)   err "line $2: $3"; _c_err=$((_c_err + 1)) ;;
       warning) warn "line $2: $3"; _c_warn=$((_c_warn + 1)) ;;
-      path)    [ -e "$ROOT/$5" ] || [ -e "$ROOT/lib/sleela/$5" ] || [ -e "$SELF/../lib/sleela/$5" ] || { warn "line $2: $3: $4 path '$5' does not exist in this install"; _c_warn=$((_c_warn + 1)); } ;;
+      path)    if ! { [ -e "$ROOT/$5" ] || [ -e "$ROOT/lib/sleela/$5" ] || [ -e "$SELF/../lib/sleela/$5" ]; }; then
+                 _c_absent=$((_c_absent + 1)); _c_warn=$((_c_warn + 1))
+                 [ "$_c_list_absent" -eq 1 ] && warn "line $2: $3: $4 path '$5' does not exist in this install"
+               fi ;;
       summary) _c_mods=$2 ;;
     esac
   done
   IFS=$_c_ifs
   set +f
+  if [ "$_c_absent" -gt 0 ] && [ "$_c_list_absent" -eq 0 ]; then
+    info "$_c_absent registry path(s) belong to modules not present in this install (SLEELACTL_VERBOSE=1 lists them)"
+  fi
   say "check-registry: $_c_mods modules, $_c_err error(s), $_c_warn warning(s)  [$REGISTRY]"
   [ "$_c_err" -eq 0 ] || return 1
   [ "$_c_strict" -eq 0 ] || [ "$_c_warn" -eq 0 ] || return 1
@@ -812,7 +877,7 @@ cmd_check_registry() { # [--strict]
 cmd_completion() { # bash|zsh
   case "${1:-}" in bash|zsh) ;; *) usage_die "completion needs 'bash' or 'zsh'" ;; esac
   reg_require
-  _cp_verbs=$(printf '%s ' $(all_verbs) list status natures help check-registry where completion version | tr ' ' '\n' | awk 'NF && !s[$0]++' | tr '\n' ' ')
+  _cp_verbs=$(printf '%s ' $(all_verbs) list status natures keys help check-registry where completion version | tr ' ' '\n' | awk 'NF && !s[$0]++' | tr '\n' ' ')
   _cp_mods=$(reg_names | tr '\n' ' ')
   [ "$1" = zsh ] && printf 'autoload -U +X bashcompinit && bashcompinit\n'
   printf '# sleelactl %s completion (generated from %s)\n' "$VERSION" "$REGISTRY"
@@ -869,6 +934,7 @@ ${B}Usage${R}
   $PROG natures [--markdown]               natures and their verbs
   $PROG help [verb|module|nature]          this help, or details for one topic
   $PROG check-registry [--strict]          validate the module registry
+  $PROG keys [--markdown]                  the registry key schema (format 2)
   $PROG where                              show the resolved root, registry, runtime, service manager
   $PROG completion bash|zsh                print a shell completion script
   $PROG version
@@ -876,7 +942,7 @@ ${B}Usage${R}
 ${B}Options${R} (before the verb, or right after 'all')
   --dry-run       show the exact action; change nothing
   --yes, -y       confirm a mutating daemon verb with 'all'
-  --json          machine-readable output (list, status, natures, where)
+  --json          machine-readable output (list, status, natures, keys, where)
 
 ${B}Examples${R}
   $PROG start server-edition        start the server daemon (systemd/launchd)
@@ -914,14 +980,15 @@ while [ "$#" -ge 1 ] && parse_flag "$1"; do shift; done
 verb=$1; shift
 
 case "$verb" in
-  list|status|natures|where) ;;
-  *) [ "$FORMAT" = json ] && usage_die "--json is supported for list, status, natures, and where" ;;
+  list|status|natures|keys|where) ;;
+  *) [ "$FORMAT" = json ] && usage_die "--json is supported for list, status, natures, keys, and where" ;;
 esac
 
 case "$verb" in
   -h|--help|help)    cmd_help "${1:-}" ;;
   list)              cmd_list "${1:-}" ;;
   natures)           cmd_natures "${1:-}" ;;
+  keys)              cmd_keys "${1:-}" ;;
   status)            cmd_status "${1:-all}" ;;
   where|doctor)      cmd_where ;;
   check-registry)    cmd_check_registry "$@" ;;

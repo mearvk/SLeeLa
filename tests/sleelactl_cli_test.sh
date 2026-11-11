@@ -158,11 +158,15 @@ esc    nature=protocol dir=../../etc
 inj    nature=daemon   unit=foo;bar
 lost   nature=daemon   unit=l.service  after=ghost
 keyed  nature=subject  demo=demo.sleela  color=blue
+nosvc  nature=daemon   summary="no service mapping"
+badbin nature=tool     dir=x  bin="a b"
+badlbl nature=daemon   launchd=bad/label
 quote  nature=tool     dir=x  summary="unterminated
 EOF
 check "check-registry finds errors" 1 env SLEELACTL_REGISTRY="$TMP/bad.conf" "$CTL" check-registry
 for msg in 'duplicate module "a"' 'unknown nature "bogus"' 'unsafe dir path "../../etc"' 'invalid systemd unit "foo;bar"' \
-           'after= names unknown module "ghost"' 'dependency cycle' 'key "color" is not valid' 'unterminated quote'; do
+           'after= names unknown module "ghost"' 'dependency cycle' 'key "color" is not valid' 'unterminated quote' \
+           'nosvc: needs one of unit=, launchd=, winsvc=' 'badbin: bin must be a comma list' 'invalid launchd name'; do
   has err "$msg"
 done
 : >"$SCTL_LOG"
@@ -178,6 +182,10 @@ check "completion needs a shell" 2 "$CTL" completion fish
 "$REPO/bin/sleelactl" natures --markdown >"$TMP/gen.md"
 awk '/<!-- natures:begin -->/{f=1;next} /<!-- natures:end -->/{f=0} f' "$REPO/bin/SLEELACTL.md" >"$TMP/doc.md"
 cmp -s "$TMP/gen.md" "$TMP/doc.md" || { fail "bin/SLEELACTL.md natures table is out of date (regenerate: sleelactl natures --markdown)"; diff "$TMP/doc.md" "$TMP/gen.md" || true; }
+"$REPO/bin/sleelactl" keys --markdown >"$TMP/gen.md"
+awk '/<!-- keys:begin -->/{f=1;next} /<!-- keys:end -->/{f=0} f' "$REPO/bin/SLEELACTL.md" >"$TMP/doc.md"
+cmp -s "$TMP/gen.md" "$TMP/doc.md" || { fail "bin/SLEELACTL.md keys table is out of date (regenerate: sleelactl keys --markdown)"; diff "$TMP/doc.md" "$TMP/gen.md" || true; }
+check "json keys" 0 "$CTL" --json keys; json_ok "keys"
 check "where" 0 "$CTL" where; has out "service manager:"
 
 if [ "$fails" -ne 0 ]; then echo "sleelactl CLI tests: $fails FAILURE(S)"; exit 1; fi

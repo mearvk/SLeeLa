@@ -17,9 +17,9 @@ Keep them when editing.
    is format 2 (`format=2`; `name nature=... key=value ... summary="..."`). The
    script holds NO module-specific knowledge — no module names, unit names,
    binary names, pipeline filenames, or per-module branches. New behaviour is a
-   new registry KEY handled generically per nature (document it in the header
-   of registry.conf, in `check-registry`'s allowed-keys table, and in
-   `bin/SLEELACTL.md`). Legacy format-1 lines stay readable.
+   new registry KEY handled generically per nature (add it to `KEY_TABLE`;
+   `check-registry`, `entry_check`, and the docs table follow automatically).
+   Legacy format-1 lines stay readable.
 2. **Validate the registry, and enforce safety at use time.** `check-registry`
    rejects duplicates, unknown natures/keys, missing required keys, unsafe
    paths (absolute or `..`), malformed unit/label/service names, bad
@@ -32,19 +32,23 @@ Keep them when editing.
    in-program Controller API: not CLI verbs (exit 64 with a pointer to
    `controller.<verb>(id)`). Do not reintroduce them unless a resident
    Controller host exists to hold the state.
-4. **One nature table.** `NATURE_TABLE` in the script defines natures, verbs,
+4. **One key schema.** `KEY_TABLE` (nature|key|need|kind|description) drives
+   `check-registry`, the use-time path checks (`entry_check`), and the docs
+   table (`keys --markdown`, between `<!-- keys:begin/end -->`). Add or change a
+   registry key there only; do not re-list keys in registry.conf's header.
+5. **One nature table.** `NATURE_TABLE` in the script defines natures, verbs,
    and descriptions; `natures`, `help`, `completion`, and the docs table
    (`natures --markdown`, between `<!-- natures:begin/end -->` in
    `bin/SLEELACTL.md`) derive from it. The test fails if the docs drift.
-5. **Daemons go through the service-manager adapter** (systemd `unit=`,
+6. **Daemons go through the service-manager adapter** (systemd `unit=`,
    launchd `launchd=`, Windows SCM `winsvc=`; `SLEELACTL_SERVICE_MANAGER`
    overrides auto-detection). No mapping for the active manager → exit 3, never
    a guess. Never invent service names or `after=` edges; register only what
    the real unit/plist/service definitions declare.
-6. **Results on stdout, diagnostics on stderr** (`err`, `warn`, `hint` →
-   stderr). `--json` is supported for `list`, `status`, `natures`, `where`
+7. **Results on stdout, diagnostics on stderr** (`err`, `warn`, `hint` →
+   stderr). `--json` is supported for `list`, `status`, `natures`, `keys`, `where`
    and rejected elsewhere; keep JSON valid (the test parses it).
-7. **Parse the registry once** (`reg_require` → `REG`), not per lookup.
+8. **Parse the registry once** (`reg_require` → `REG`), not per lookup.
 
 ## Honesty and safety rules (carried from 1.1)
 
@@ -59,6 +63,12 @@ Keep them when editing.
   (dependencies first; reversed for stop/disable).
 - `validate` prefers `validate` > `syntax` > `test`; tools run only the `bin=`
   CLI by name.
+
+## Installer
+
+`make -C install install-check` gates on `check-registry --strict`; `do-install`
+writes completions to `<prefix>/share/sleela/completions/`; `sleelactl` is in
+`install-runtime.py`'s `INSTALLED_BINARIES`, so uninstall removes it.
 
 ## Portability
 

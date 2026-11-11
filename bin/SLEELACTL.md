@@ -129,16 +129,16 @@ first.
 sleelactl [--dry-run] [--yes|-y] [--json] <verb> <module|all> [args]
 sleelactl list [nature|registry-module]     status [module|all]
 sleelactl natures [--markdown]              help [verb|module|nature]
-sleelactl check-registry [--strict]         where
-sleelactl completion bash|zsh               version
+sleelactl check-registry [--strict]         keys [--markdown]
+sleelactl where                             completion bash|zsh      version
 ```
 
 - `--dry-run` prints the exact action (for daemons, the service-manager
   command, including `sudo` when it would be used) and changes nothing.
   `--yes` confirms an `all` fan-out of a mutating daemon verb. Both may also
   follow `all` (`sleelactl stop all --yes`).
-- `--json` gives machine-readable output for `list`, `status`, `natures`, and
-  `where` (other commands reject it with exit 2). `status` entries carry
+- `--json` gives machine-readable output for `list`, `status`, `natures`,
+  `keys`, and `where` (other commands reject it with exit 2). `status` entries carry
   `module`, `nature`, `state` (`ok`, `failed`, `unavailable`, `none`), `exit`.
 - `help <verb>` lists the natures and modules that accept the verb;
   `help <nature>` lists its verbs and modules; an unknown topic exits 2.
@@ -146,7 +146,10 @@ sleelactl completion bash|zsh               version
   came from beside the script, an installed layout, or `SLEELACTL_REGISTRY`),
   registry format, runtime and version, Python, and service manager.
 - `completion bash|zsh` prints a completion script generated from the
-  registry: `eval "$(sleelactl completion bash)"` (or `zsh`).
+  registry: `eval "$(sleelactl completion bash)"` (or `zsh`). `make -C install
+  install` also writes both to `<prefix>/share/sleela/completions/`
+  (`sleelactl.bash`, `sleelactl.zsh`) — source one from your shell profile.
+- `keys [--markdown]` prints the registry key schema (see below).
 - Diagnostics go to stderr, results to stdout. `SLEELACTL_VERBOSE=1` shows
   the full `sleela` stderr (verification preamble included); by default it is
   suppressed on success and the last diagnostic lines are printed on failure.
@@ -198,15 +201,36 @@ format=2
 <name>  nature=<nature>  [key=value ...]  [summary="free text"]
 ```
 
-| Nature | Keys (`*` required) |
-| --- | --- |
-| daemon | `unit=` systemd unit (`*.service`), `launchd=` label, `winsvc=` service — at least one; `after=a,b` dependencies |
-| registry | `dir=*`, `demo=*` reference pipeline, `handlers=` count |
-| datasource | `dir=*` |
-| protocol | `dir=*`, `sim=` built simulator |
-| tool | `dir=*` (with `bin=` CLI names) or `script=*` driver; `runsub=` words forwarded as driver subcommands; `sub.<word>=` helper for `inspect <word>`; `doc=` |
-| subject | `demo=*` reference demo |
-| library | `dir=` |
+<!-- keys:begin -->
+| Nature | Key | Need | Kind | Meaning |
+| --- | --- | --- | --- | --- |
+| (all) | `summary=` | warn | text | short human description |
+| daemon | `unit=` | one of svc | unit | systemd unit (*.service) |
+| daemon | `launchd=` | one of svc | label | launchd label |
+| daemon | `winsvc=` | one of svc | label | Windows service name |
+| daemon | `after=` | opt | deps | modules this daemon is started after (comma list) |
+| registry | `dir=` | req | path | package directory |
+| registry | `demo=` | req | path | reference pipeline (.sleela) run by probe/status |
+| registry | `handlers=` | warn | int | handler count; ids are 0..N-1 |
+| datasource | `dir=` | req | path | package directory |
+| protocol | `dir=` | req | path | module directory (Makefile, spec, docs) |
+| protocol | `sim=` | opt | build | built simulator run by simulate |
+| tool | `dir=` | one of src | path | tool directory built with make |
+| tool | `script=` | one of src | path | Python driver that receives build/run/inspect |
+| tool | `bin=` | opt | list | CLI names run by run/inspect (dir tools) |
+| tool | `runsub=` | opt | list | words after run forwarded as driver subcommands |
+| tool | `sub.*=` | opt | path | helper script for inspect <word> |
+| tool | `doc=` | opt | path | documentation shown by info |
+| subject | `demo=` | req | path | reference demo (.sleela) run by run |
+| library | `dir=` | opt | path | package directory |
+<!-- keys:end -->
+
+_Generated from the script's single `KEY_TABLE` by `sleelactl keys --markdown`
+(`check-registry` and the use-time path checks read the same table);
+`tests/sleelactl_cli_test.sh` fails if this table drifts. "one of svc" means at
+least one key of that group is required; `warn` keys are optional but reported
+when missing; `path` values must exist under `--strict`, `build` values are
+build outputs and are only safety-checked._
 
 Paths are relative to the SLeeLa root and may not be absolute or contain `..`.
 Legacy format-1 lines (`<name> <nature> <handle> <summary>`, no `format=`
@@ -216,7 +240,10 @@ line) are still read; `check-registry` flags them.
 duplicate names, unknown natures, keys not valid for a nature, missing required
 keys, unsafe paths, malformed unit/label/service names, non-integer
 `handlers=`, unknown or cyclic `after=` references, and (as warnings, errors
-with `--strict`) source paths that do not exist. CI runs it with `--strict`.
+with `--strict`) source paths that do not exist. CI and `make -C install
+install-check` run it with `--strict`. In an installed layout, paths of modules
+that were not installed are summarised in one line (`SLEELACTL_VERBOSE=1` lists
+them).
 
 The same safety rules are enforced at use time: a module whose paths escape
 the root or whose service name is malformed is refused (exit 2) before any
