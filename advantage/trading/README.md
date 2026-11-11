@@ -26,7 +26,7 @@ them to the advantage model so `counsel` can rank approaches.
 | `trade_models.{h,c}` | C core: the three models, validation, advantage bridge |
 | `trade_models.{hpp,cpp}` | C++ layer: `Checked<T>` results, `vector` outcomes, the trade-off tables as data (`profiles()`, `advancedModelMatrix()`, `nicheModelMatrix()`), `addEvidence` into an `AdvantageStore` |
 | `rate_budget.{h,c,hpp}` | Pure rate-limit budget: reads `X-RateLimit-*` / `Retry-After` values and says how long to wait. No sockets, no sleeping |
-| `trading_demo.cpp` | 22 approaches (eleven models × digital/physical, plus the original pair), 67 illustrative scenarios, all comparison tables, a rate-budget walkthrough, then a ranked counsel |
+| `trading_demo.cpp` | 22 approaches (eleven models × digital and physical), 67 illustrative scenarios, all comparison tables, a rate-budget walkthrough, then a ranked counsel |
 | `Makefile` | `make` / `make run` / `make clean`. No OpenSSL, no network |
 
 ## Build and run
