@@ -10,7 +10,8 @@ gasoline;
 < cents as values. The student adds them up by hand. The Purchase Master puts >
 < the same figures through the advantage onion (dividend, additions, >
 < subtraction). The instructor accepts only when both pick the same supplier >
-< at the same total. A quote not in the field is never guessed at. >
+< at the same total. On a tie the norm is supplier A. >
+< A quote not in the field is never guessed at. >
 class DiPurchaseOnion {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. A worker-class
@@ -80,6 +81,12 @@ class DiPurchaseOnion {
     return dev.getDividend().getCurrent();
   }
 
+  < Tie norm: supplier A is chosen when the two totals are equal. >
+  String pick(int a, int b) {
+    if (a <= b) { return "supplier A"; }
+    return "supplier B";
+  }
+
   void main() {
     print("== Lesson 6: purchase onion ==");
 
@@ -88,8 +95,7 @@ class DiPurchaseOnion {
     int mB = masterTotal("supplier B", 11500, 900, 0);
     print("  supplier A total = " + mA + " cents");
     print("  supplier B total = " + mB + " cents");
-    String mPick = "supplier B";
-    if (mA < mB) { mPick = "supplier A"; }
+    String mPick = pick(mA, mB);
     print("  master picks " + mPick);
 
     print("-- student, first pass: the discount entry was missed --");
@@ -98,8 +104,7 @@ class DiPurchaseOnion {
     int sB = studentTotal("supplier B");
     print("  supplier A total = " + sA + " cents");
     print("  supplier B total = " + sB + " cents");
-    String sPick = "supplier B";
-    if (sA < sB) { sPick = "supplier A"; }
+    String sPick = pick(sA, sB);
     print("  student picks " + sPick);
     if (sA == mA && sB == mB && sPick == mPick) { print("  verdict: AGREE, work accepted"); }
     else { print("  verdict: totals differ, supplier A is off by " + (sA - mA) + " cents -> re-observe supplier A"); }
@@ -110,11 +115,16 @@ class DiPurchaseOnion {
     sB = studentTotal("supplier B");
     print("  supplier A total = " + sA + " cents");
     print("  supplier B total = " + sB + " cents");
-    sPick = "supplier B";
-    if (sA < sB) { sPick = "supplier A"; }
+    sPick = pick(sA, sB);
     print("  student picks " + sPick);
     if (sA == mA && sB == mB && sPick == mPick) { print("  verdict: AGREE, work accepted"); }
     else { print("  verdict: totals differ"); }
+
+    print("-- tie norm: equal totals go to supplier A --");
+    int tieB = masterTotal("supplier B", 11500, 900, -750);
+    print("  supplier A total = " + mA + " cents");
+    print("  supplier B total = " + tieB + " cents");
+    print("  master picks " + pick(mA, tieB));
 
     print("-- concerns: a quote outside the field --");
     print("  " + reg.chain("C quote"));

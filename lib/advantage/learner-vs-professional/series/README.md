@@ -64,7 +64,8 @@ expected file with `UPDATE=1 bash test-suites/test-device-instructor.sh`.
    3; three refusals. Tally: `accepted=7 refused=3 registered=7`.
 6. Lesson 6: the master picks supplier A at 11650 cents; the student first
    misses an 800-cent discount and picks supplier B (12450 vs 12400), is told
-   to re-observe supplier A, then agrees.
+   to re-observe supplier A, then agrees. On an exact tie the norm picks
+   supplier A (see `.kiro/steering/advantage-tie-norm.md`).
 
 ## Conventions
 

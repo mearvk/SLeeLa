@@ -13,6 +13,10 @@
   supplier B total = 12400 cents
   student picks supplier A
   verdict: AGREE, work accepted
+-- tie norm: equal totals go to supplier A --
+  supplier A total = 11650 cents
+  supplier B total = 11650 cents
+  master picks supplier A
 -- concerns: a quote outside the field --
   not observed (not in field purchase of one item)
   supplier C is not observed, so it is not compared

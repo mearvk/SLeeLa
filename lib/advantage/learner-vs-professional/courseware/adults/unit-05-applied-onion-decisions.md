@@ -31,9 +31,8 @@ difference is 800 cents on supplier A, so only that entry is re-observed.
 ## Part 3: Exercises
 
 1. Supplier B adds a discount of -700. Totals? Which is cheaper?
-2. Supplier B's discount is -750. Totals? Lesson 6 picks supplier A only if
-   A is strictly cheaper. Which does it pick on a tie, and why does that
-   matter?
+2. Supplier B's discount is -750. Totals? Which supplier does lesson 6 pick on
+   a tie, and why should a tie rule be written down?
 3. A third quote (supplier C) is mentioned on a call but not in hand. How
    should it be treated in the analysis?
 4. Where do the layers go? Place quote, fee and discount on the onion layers
@@ -44,8 +43,10 @@ difference is 800 cents on supplier A, so only that entry is re-observed.
 ## Answer key
 
 1. B = 11500 + 900 − 700 = 11700. A (11650) is still cheaper, by 50 cents.
-2. B = 11650, a tie with A. The code `if (mA < mB)` is false on a tie, so it picks
-   supplier B. A tie rule should be chosen on purpose and written down.
+2. B = 11650, a tie with A. Lesson 6 follows the tie norm and picks supplier A
+   (`a <= b` in `pick`). The norm is saved in
+   `.kiro/steering/advantage-tie-norm.md`. A tie rule should be chosen on
+   purpose, written down, and used by both the student and the Purchase Master.
 3. As "not observed": outside the field, not compared. The lesson prints
    "supplier C is not observed, so it is not compared".
 4. Quote is the dividend; the fee is the additions layer; the discount is the
