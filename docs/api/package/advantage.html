@@ -141,7 +141,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; advantage</div>
 <h1>Package <code>advantage</code></h1>
-<div class="lead">This package contains <strong>73</strong> source unit(s) defining <strong>73</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>90</strong> source unit(s) defining <strong>90</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="advantage-demo">advantage-demo <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/advantage-demo.sleela)</span></h2>
 <div data-u="advantage-demo advantagedemo">
@@ -1372,6 +1372,326 @@
 <tr><td><code>absD</code></td><td><span class="sig">double absD(double a)</span></td><td class="desc">Absolute value for doubles.</td></tr>
 </table>
 </div>
+<h2 class="section" data-u="sltradingaggregation">SLTradingAggregation <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading/SLTradingAggregation.sleela)</span></h2>
+<div data-u="sltradingaggregation sltradingaggregation">
+<h3 id="SLTradingAggregation">SLTradingAggregation <span class="pill">class</span></h3>
+<p class="desc">Fragmented supply aggregation: collect many small items into a cohesive set and sell the set at a premium, pricing the chance it never completes.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>chk</code></td><td><span class="sig">SLTradingCheck chk</span></td><td class="desc">---- shared validation, created on first use ----</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>check</code></td><td><span class="sig">SLTradingCheck check()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>evaluate</code></td><td><span class="sig">SLTradingResult evaluate(double setValue, double piecemealValuePerItem,</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sltradingapproach">SLTradingApproach <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading/SLTradingApproach.sleela)</span></h2>
+<div data-u="sltradingapproach sltradingapproach">
+<h3 id="SLTradingApproach">SLTradingApproach <span class="pill">class</span></h3>
+<p class="desc">One trading approach as a source of leverage: recorded evidence, assumptions held or doubted, and the honest score (mean x confidence x trust).</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>id</code></td><td><span class="sig">String id = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>rewards</code></td><td><span class="sig">double[] rewards</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>baselines</code></td><td><span class="sig">double[] baselines</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>capacity</code></td><td><span class="sig">int capacity = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>assumptionsHeld</code></td><td><span class="sig">int assumptionsHeld = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>assumptionsTotal</code></td><td><span class="sig">int assumptionsTotal = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">boolean configure(String approachId, String approachName, int held, int total)</span></td><td class="desc">The held count must be between 0 and the total. Returns false otherwise.</td></tr>
+<tr><td><code>getId</code></td><td><span class="sig">String getId()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getName</code></td><td><span class="sig">String getName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getCount</code></td><td><span class="sig">int getCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAssumptionsHeld</code></td><td><span class="sig">int getAssumptionsHeld()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAssumptionsTotal</code></td><td><span class="sig">int getAssumptionsTotal()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>finiteNumber</code></td><td><span class="sig">boolean finiteNumber(double v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addObservation</code></td><td><span class="sig">boolean addObservation(double reward, double baseline)</span></td><td class="desc">Record one observation. Rejects non-finite values and a full ledger.</td></tr>
+<tr><td><code>addTrade</code></td><td><span class="sig">boolean addTrade(SLTradingResult r, double costOfCapital, boolean perUnitCost)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mean</code></td><td><span class="sig">double mean()</span></td><td class="desc">Mean advantage over the evidence; 0.0 when there is none (unknown).</td></tr>
+<tr><td><code>sqrtD</code></td><td><span class="sig">double sqrtD(double x)</span></td><td class="desc">Square root by Newton iteration, so no external math library is needed.</td></tr>
+<tr><td><code>spread</code></td><td><span class="sig">double spread()</span></td><td class="desc">Sample standard deviation of the per-observation advantage; 0.0 below 2.</td></tr>
+<tr><td><code>confidence</code></td><td><span class="sig">double confidence(double prior)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>trust</code></td><td><span class="sig">double trust()</span></td><td class="desc">Share of the assumptions still held; 1.0 when none are recorded.</td></tr>
+<tr><td><code>score</code></td><td><span class="sig">double score(double prior)</span></td><td class="desc">score = mean advantage x confidence x trust</td></tr>
+<tr><td><code>cautions</code></td><td><span class="sig">String cautions(double prior, int minEvidence)</span></td><td class="desc">Plain-language reasons the score should be taken with care.</td></tr>
+<tr><td><code>describe</code></td><td><span class="sig">String describe(double prior)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sltradingarbitrage">SLTradingArbitrage <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading/SLTradingArbitrage.sleela)</span></h2>
+<div data-u="sltradingarbitrage sltradingarbitrage">
+<h3 id="SLTradingArbitrage">SLTradingArbitrage <span class="pill">class</span></h3>
+<p class="desc">Arbitrage: the same asset at two prices on two venues, net of both-leg fees, slippage, fixed and holding costs, with a break-even sell price.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>chk</code></td><td><span class="sig">SLTradingCheck chk</span></td><td class="desc">---- shared validation, created on first use ----</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>check</code></td><td><span class="sig">SLTradingCheck check()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>inputsOk</code></td><td><span class="sig">boolean inputsOk(double buyPrice, double sellPrice, double quantity,</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>totalCost</code></td><td><span class="sig">double totalCost(double buyPrice, double quantity, double buyFeeRate,</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>evaluate</code></td><td><span class="sig">SLTradingResult evaluate(double buyPrice, double sellPrice, double quantity,</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>breakeven</code></td><td><span class="sig">double breakeven(double buyPrice, double sellPrice, double quantity,</span></td><td class="desc">Lowest sell price per unit at which the arbitrage breaks even. Returns -1.0 when the inputs are invalid.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sltradingasymmetry">SLTradingAsymmetry <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading/SLTradingAsymmetry.sleela)</span></h2>
+<div data-u="sltradingasymmetry sltradingasymmetry">
+<h3 id="SLTradingAsymmetry">SLTradingAsymmetry <span class="pill">class</span></h3>
+<p class="desc">Informational asymmetry: a listing is mislabeled or misunderstood; one evaluation is one candidate, pricing the race and the read.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>chk</code></td><td><span class="sig">SLTradingCheck chk</span></td><td class="desc">---- shared validation, created on first use ----</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>check</code></td><td><span class="sig">SLTradingCheck check()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pricesOk</code></td><td><span class="sig">boolean pricesOk(double listedPrice, double estimatedValue)</span></td><td class="desc">Apparent discount = 1 - listed / estimated (0.6 means listed 60 percent below the estimate). Check pricesOk first; discount returns -1000000.0 for invalid prices.</td></tr>
+<tr><td><code>discount</code></td><td><span class="sig">double discount(double listedPrice, double estimatedValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>evaluate</code></td><td><span class="sig">SLTradingResult evaluate(double listedPrice, double genuineValue,</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sltradingcheck">SLTradingCheck <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading/SLTradingCheck.sleela)</span></h2>
+<div data-u="sltradingcheck sltradingcheck">
+<h3 id="SLTradingCheck">SLTradingCheck <span class="pill">class</span></h3>
+<p class="desc">Shared fail-closed validation helpers and finite bounds for the trading models (amount, positive, rate, probability, days, distribution).</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>maxAmount</code></td><td><span class="sig">double maxAmount()</span></td><td class="desc">---- finite bounds (same limits as the C core) ----</td></tr>
+<tr><td><code>maxHoldDays</code></td><td><span class="sig">double maxHoldDays()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>probTolerance</code></td><td><span class="sig">double probTolerance()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>maxOutcomes</code></td><td><span class="sig">int maxOutcomes()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>maxLots</code></td><td><span class="sig">int maxLots()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>maxComponents</code></td><td><span class="sig">int maxComponents()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isFinite</code></td><td><span class="sig">boolean isFinite(double v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isAmount</code></td><td><span class="sig">boolean isAmount(double v)</span></td><td class="desc">finite and 0 up to the amount cap</td></tr>
+<tr><td><code>isPositive</code></td><td><span class="sig">boolean isPositive(double v)</span></td><td class="desc">finite and strictly above 0, up to the amount cap</td></tr>
+<tr><td><code>isRate</code></td><td><span class="sig">boolean isRate(double v)</span></td><td class="desc">finite, 0 up to but not including 1</td></tr>
+<tr><td><code>isProb</code></td><td><span class="sig">boolean isProb(double v)</span></td><td class="desc">finite, 0 up to and including 1</td></tr>
+<tr><td><code>isDays</code></td><td><span class="sig">boolean isDays(double v)</span></td><td class="desc">finite, 0 up to the maximum holding time</td></tr>
+<tr><td><code>isDistribution</code></td><td><span class="sig">boolean isDistribution(double[] p, int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fail</code></td><td><span class="sig">SLTradingResult fail(String why)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>rangeMessage</code></td><td><span class="sig">String rangeMessage()</span></td><td class="desc">Standard messages, shared so every model words its rejections the same.</td></tr>
+<tr><td><code>distributionMessage</code></td><td><span class="sig">String distributionMessage()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>countMessage</code></td><td><span class="sig">String countMessage()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>finish</code></td><td><span class="sig">SLTradingResult finish(double totalCost, double proceeds, double holdDays)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sltradingconsignment">SLTradingConsignment <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading/SLTradingConsignment.sleela)</span></h2>
+<div data-u="sltradingconsignment sltradingconsignment">
+<h3 id="SLTradingConsignment">SLTradingConsignment <span class="pill">class</span></h3>
+<p class="desc">Consignment and zero inventory: earn a commission without owning anything, pricing labor and counterparty risk.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>chk</code></td><td><span class="sig">SLTradingCheck chk</span></td><td class="desc">---- shared validation, created on first use ----</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>check</code></td><td><span class="sig">SLTradingCheck check()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>evaluate</code></td><td><span class="sig">SLTradingResult evaluate(double salePrice, double commissionRate,</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sltradingcounsel">SLTradingCounsel <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading/SLTradingCounsel.sleela)</span></h2>
+<div data-u="sltradingcounsel sltradingcounsel">
+<h3 id="SLTradingCounsel">SLTradingCounsel <span class="pill">class</span></h3>
+<p class="desc">Counsel over trading approaches: ranks approaches best-first by their honest score and reports the cautions that go with each.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>items</code></td><td><span class="sig">SLTradingApproach[] items</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>init</code></td><td><span class="sig">void init()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>size</code></td><td><span class="sig">int size()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>add</code></td><td><span class="sig">boolean add(SLTradingApproach a)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>at</code></td><td><span class="sig">SLTradingApproach at(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>rank</code></td><td><span class="sig">int[] rank(double prior)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>line</code></td><td><span class="sig">String line(int position, int[] order, double prior)</span></td><td class="desc">One ranked line for a position in the order returned by rank().</td></tr>
+<tr><td><code>cautionsFor</code></td><td><span class="sig">String cautionsFor(int position, int[] order, double prior, int minEvidence)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sltradingdistressed">SLTradingDistressed <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading/SLTradingDistressed.sleela)</span></h2>
+<div data-u="sltradingdistressed sltradingdistressed">
+<h3 id="SLTradingDistressed">SLTradingDistressed <span class="pill">class</span></h3>
+<p class="desc">Distressed inventory and liquidation: buy from a seller who wants speed, pricing the race against institutional liquidators and the unsold remainder.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>chk</code></td><td><span class="sig">SLTradingCheck chk</span></td><td class="desc">---- shared validation, created on first use ----</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>check</code></td><td><span class="sig">SLTradingCheck check()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>evaluate</code></td><td><span class="sig">SLTradingResult evaluate(double lotPrice, double units,</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sltradingmarketmaking">SLTradingMarketMaking <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading/SLTradingMarketMaking.sleela)</span></h2>
+<div data-u="sltradingmarketmaking sltradingmarketmaking">
+<h3 id="SLTradingMarketMaking">SLTradingMarketMaking <span class="pill">class</span></h3>
+<p class="desc">Market making: quote both sides and earn the spread, pricing the case where inventory does not turn over.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>chk</code></td><td><span class="sig">SLTradingCheck chk</span></td><td class="desc">---- shared validation, created on first use ----</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>check</code></td><td><span class="sig">SLTradingCheck check()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>quoteOk</code></td><td><span class="sig">boolean quoteOk(double fairValue, double halfSpreadRate)</span></td><td class="desc">Symmetric quote around a fair value: bid = fair*(1-h), ask = fair*(1+h).</td></tr>
+<tr><td><code>bid</code></td><td><span class="sig">double bid(double fairValue, double halfSpreadRate)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ask</code></td><td><span class="sig">double ask(double fairValue, double halfSpreadRate)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>evaluate</code></td><td><span class="sig">SLTradingResult evaluate(double bid, double ask, double quantity,</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sltradingmomentum">SLTradingMomentum <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading/SLTradingMomentum.sleela)</span></h2>
+<div data-u="sltradingmomentum sltradingmomentum">
+<h3 id="SLTradingMomentum">SLTradingMomentum <span class="pill">class</span></h3>
+<p class="desc">Event-driven momentum: enter on a news or trend shock and exit while demand is elevated, with exit failure as a first-class outcome and hype decay.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>chk</code></td><td><span class="sig">SLTradingCheck chk</span></td><td class="desc">---- shared validation, created on first use ----</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>check</code></td><td><span class="sig">SLTradingCheck check()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pow2neg</code></td><td><span class="sig">double pow2neg(double x)</span></td><td class="desc">---- hype decay: remaining = initial * 0.5 ^ (days / halfLife) ---- 2 ^ -x is built from whole halvings plus a short Taylor series for the fractional part, so no external math library is needed.</td></tr>
+<tr><td><code>hypeDecay</code></td><td><span class="sig">double hypeDecay(double initialExcess, double halfLifeDays, double days)</span></td><td class="desc">Excess price above baseline left after the given days. Returns -1.0 for invalid input; a real remainder is never negative.</td></tr>
+<tr><td><code>evaluate</code></td><td><span class="sig">SLTradingResult evaluate(double entryPrice, double quantity,</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sltradingratebudget">SLTradingRateBudget <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading/SLTradingRateBudget.sleela)</span></h2>
+<div data-u="sltradingratebudget sltradingratebudget">
+<h3 id="SLTradingRateBudget">SLTradingRateBudget <span class="pill">class</span></h3>
+<p class="desc">Rate budget: stay inside the rate limit a server publishes by turning the X-RateLimit and Retry-After values into a wait before the next request.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>limit</code></td><td><span class="sig">double limit = -1.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>remaining</code></td><td><span class="sig">double remaining = -1.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>resetSeconds</code></td><td><span class="sig">double resetSeconds = -1.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>retryAfterSeconds</code></td><td><span class="sig">double retryAfterSeconds = -1.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>init</code></td><td><span class="sig">void init()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getLimit</code></td><td><span class="sig">double getLimit()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getRemaining</code></td><td><span class="sig">double getRemaining()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getResetSeconds</code></td><td><span class="sig">double getResetSeconds()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getRetryAfterSeconds</code></td><td><span class="sig">double getRetryAfterSeconds()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>valueOk</code></td><td><span class="sig">boolean valueOk(double v)</span></td><td class="desc">A header value is acceptable when absent (-1.0) or a finite number from 0 up to 1e12. NaN fails every ordered comparison, so it is rejected.</td></tr>
+<tr><td><code>observe</code></td><td><span class="sig">boolean observe(double limitValue, double remainingValue,</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>secondsUntilReset</code></td><td><span class="sig">double secondsUntilReset(double resetValue, double nowEpochSeconds)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nextDelayMs</code></td><td><span class="sig">double nextDelayMs(double reserve, double minIntervalMs, double maxWaitMs)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mustStop</code></td><td><span class="sig">boolean mustStop(double reserve, double minIntervalMs, double maxWaitMs)</span></td><td class="desc">True when the required wait is longer than the caller allows: the caller should stop instead of sleeping. Also true when the options are invalid.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sltradingrefurbishment">SLTradingRefurbishment <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading/SLTradingRefurbishment.sleela)</span></h2>
+<div data-u="sltradingrefurbishment sltradingrefurbishment">
+<h3 id="SLTradingRefurbishment">SLTradingRefurbishment <span class="pill">class</span></h3>
+<p class="desc">Value-add refurbishment: buy raw or distressed, improve, sell into a higher tier, with the result expressed as a distribution of outcomes.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>chk</code></td><td><span class="sig">SLTradingCheck chk</span></td><td class="desc">---- shared validation, created on first use ----</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>check</code></td><td><span class="sig">SLTradingCheck check()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>evaluate</code></td><td><span class="sig">SLTradingResult evaluate(double acquirePrice, double quantity,</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sltradingregional">SLTradingRegional <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading/SLTradingRegional.sleela)</span></h2>
+<div data-u="sltradingregional sltradingregional">
+<h3 id="SLTradingRegional">SLTradingRegional <span class="pill">class</span></h3>
+<p class="desc">Regional and geofenced arbitrage: buy in one place, move it, sell in another, pricing the chance the move fails or damages the goods.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>chk</code></td><td><span class="sig">SLTradingCheck chk</span></td><td class="desc">---- shared validation, created on first use ----</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>check</code></td><td><span class="sig">SLTradingCheck check()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pricesOk</code></td><td><span class="sig">boolean pricesOk(double buyPrice, double sellPrice)</span></td><td class="desc">Regional premium = sell / buy - 1 (0.05 means a 5 percent premium). Check pricesOk first: premium returns -2.0 for invalid prices, and a real premium can never be below -1.</td></tr>
+<tr><td><code>premium</code></td><td><span class="sig">double premium(double buyPrice, double sellPrice)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>evaluate</code></td><td><span class="sig">SLTradingResult evaluate(double buyPrice, double sellPrice, double quantity,</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sltradingresult">SLTradingResult <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading/SLTradingResult.sleela)</span></h2>
+<div data-u="sltradingresult sltradingresult">
+<h3 id="SLTradingResult">SLTradingResult <span class="pill">class</span></h3>
+<p class="desc">The common evaluation result of every trading model: total cost, expected proceeds, expected profit, return on cost, holding time, plus the advantage bridge (baseline and advantage net of the opportunity cost of capital).</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>ok</code></td><td><span class="sig">boolean ok = false</span></td><td class="desc">---- result state ----</td></tr>
+<tr><td><code>error</code></td><td><span class="sig">String error = &quot;not evaluated&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>totalCost</code></td><td><span class="sig">double totalCost = 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectedProceeds</code></td><td><span class="sig">double expectedProceeds = 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectedProfit</code></td><td><span class="sig">double expectedProfit = 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>returnOnCost</code></td><td><span class="sig">double returnOnCost = 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>holdDays</code></td><td><span class="sig">double holdDays = 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(double cost, double proceeds, double days)</span></td><td class="desc">Record a successful evaluation. Profit and return on cost are derived.</td></tr>
+<tr><td><code>failWith</code></td><td><span class="sig">void failWith(String why)</span></td><td class="desc">Record a rejected evaluation. All numeric fields are reset to zero so a rejected result can never be mistaken for a real one.</td></tr>
+<tr><td><code>isOk</code></td><td><span class="sig">boolean isOk()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getError</code></td><td><span class="sig">String getError()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getTotalCost</code></td><td><span class="sig">double getTotalCost()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getExpectedProceeds</code></td><td><span class="sig">double getExpectedProceeds()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getExpectedProfit</code></td><td><span class="sig">double getExpectedProfit()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getReturnOnCost</code></td><td><span class="sig">double getReturnOnCost()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getHoldDays</code></td><td><span class="sig">double getHoldDays()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>rateOk</code></td><td><span class="sig">boolean rateOk(double costOfCapital)</span></td><td class="desc">A cost of capital is a yearly fraction between 0 and 10. NaN fails both comparisons, so it is rejected too.</td></tr>
+<tr><td><code>baseline</code></td><td><span class="sig">double baseline(double costOfCapital)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>advantage</code></td><td><span class="sig">double advantage(double costOfCapital)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sltradingsynthetic">SLTradingSynthetic <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading/SLTradingSynthetic.sleela)</span></h2>
+<div data-u="sltradingsynthetic sltradingsynthetic">
+<h3 id="SLTradingSynthetic">SLTradingSynthetic <span class="pill">class</span></h3>
+<p class="desc">Synthetic bundling: turn one thing into many or many into one, with waste and fallback values for what does not sell.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>chk</code></td><td><span class="sig">SLTradingCheck chk</span></td><td class="desc">---- shared validation, created on first use ----</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>check</code></td><td><span class="sig">SLTradingCheck check()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>evaluate</code></td><td><span class="sig">SLTradingResult evaluate(double inputCost, double fixedCosts,</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sltradingvirtual">SLTradingVirtual <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading/SLTradingVirtual.sleela)</span></h2>
+<div data-u="sltradingvirtual sltradingvirtual">
+<h3 id="SLTradingVirtual">SLTradingVirtual <span class="pill">class</span></h3>
+<p class="desc">Virtual inventory: take payment first and source the item after, pricing fulfilment failure and source price drift.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>chk</code></td><td><span class="sig">SLTradingCheck chk</span></td><td class="desc">---- shared validation, created on first use ----</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>check</code></td><td><span class="sig">SLTradingCheck check()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>evaluate</code></td><td><span class="sig">SLTradingResult evaluate(double salePrice, double sourcePrice,</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="sltransactionalgeodesic">SLTransactionalGeodesic <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/physics/SLTransactionalGeodesic.sleela)</span></h2>
 <div data-u="sltransactionalgeodesic sltransactionalgeodesic">
 <h3 id="SLTransactionalGeodesic">SLTransactionalGeodesic <span class="pill">class</span></h3>
@@ -1570,6 +1890,24 @@
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="trading-demo">trading-demo <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading/trading-demo.sleela)</span></h2>
+<div data-u="trading-demo tradingdemo">
+<h3 id="TradingDemo">TradingDemo <span class="pill">class</span></h3>
+<p class="desc">Runnable demonstration + validation of the advantage/trading subject (eleven trading models, rate budget, and counsel).</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expectNear</code></td><td><span class="sig">void expectNear(String label, double got, double want, double tol)</span></td><td class="desc">---- tiny test harness ----</td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean cond)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectRejected</code></td><td><span class="sig">void expectRejected(String label, SLTradingResult r)</span></td><td class="desc">A rejected evaluation must carry a reason and report zero everywhere.</td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="youthfulness-exchange">youthfulness-exchange <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/medium-results/youthfulness-exchange.sleela)</span></h2>
 <div data-u="youthfulness-exchange youthfulnessexchange">
 <h3 id="YouthfulnessExchange">YouthfulnessExchange <span class="pill">class</span></h3>
@@ -1584,7 +1922,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-11 03:11 UTC.
+<code>/lib</code> tree on 2026-11-11 04:44 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
