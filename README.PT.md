@@ -1,10 +1,12 @@
 # SLeeLa 3.0 — Portugal (PT)
 
 <p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>
 
 <p align="center"><strong>Uma linguagem nativa de sistemas, com compilador, ambiente de execução e ecossistema de máquinas virtuais.</strong></p>
+<p align="center"><a href="https://github.com/mearvk/SLeeLa/actions"><img alt="GitHub Actions" src="https://img.shields.io/github/actions/workflow/status/mearvk/SLeeLa/test-suite.yml?branch=main&label=test%20suite"></a> <a href="docs/PLATFORM-SUPPORT.md"><img alt="Platform matrix" src="https://img.shields.io/badge/platforms-Linux%20%7C%20macOS%20%7C%20Windows-273238"></a></p>
 
-> **Edição internacional por país.** Este ficheiro reúne as versões linguísticas previstas para Portugal. A tradução técnica é realizada por etapas. As secções já traduzidas são reproduzidas integralmente; as secções ainda por traduzir são identificadas de forma explícita.
+> **Edição internacional por país.** Este ficheiro disponibiliza a edição em português europeu (pt-PT) destinada a Portugal. Os identificadores técnicos, comandos, exemplos de código, nomes de ficheiros e ligações permanecem inalterados.
 
 **The Now. The Ingredient.** Uma linguagem de programação é mais do que a sua sintaxe: inclui o compilador, o ambiente de execução, as bibliotecas, as ferramentas e os contratos de plataforma que tornam o software utilizável.
 
@@ -31,22 +33,23 @@
 
 Adições recentes à linguagem, aos controladores e à biblioteca padrão:
 
-- **Pacote de biblioteca padrão `advantage`.** [`lib/advantage/`](lib/advantage/README.md) modela a obtenção de um dividendo único relativamente a um modelo, através de uma estrutura em camadas denominada **Sequitur onion** (dividendo → revisão → preocupações → matemática → adições → subtração → reagrupamento → iteração). Inclui os domínios `math/` (economia de comércio bilateral, maximização conjunta do lucro, negociação de Nash e rácio crítico newsvendor), `physics/` (analogia de modelação estrutural-económica dos campos de confiança), `integration/` (integração vertical recursiva), `grading/` (classificação de sofisticação A–D) e `output/` (saída encaminhável para terminal, CommonRails ou socket/conector). Inclui exemplos executáveis e documentação de definições, matemática e física. O consumidor C/C++ em [`advantage/`](advantage/README.md) integra o modelo em exemplos de comércio.
-- **Anotações de temporização de ciclos — `@loopDelay` / `@loopBudget`.** Estas anotações comportamentais, colocadas antes de ciclos `for`, `while` ou `do`, introduzem pausas reais na execução. `@loopDelay(ms = 250)` define uma pausa por iteração; `@loopBudget(seconds = 10, iterations = 1000)` distribui um número conhecido de iterações por um orçamento de tempo total. Ambas utilizam o opcode aditivo `OP_SLEEP` (ISA 157), que também suporta a função integrada `sleep(<ms>)`. A implementação usa `nanosleep` / `Sleep`. Consulte [`SLEELA.syntax` §32](SLEELA.syntax), a [referência da API](api/sleela/3.0/LOOP_TIMING_API.md) e o [exemplo executável](examples/loop-timing-annotation-demo.sleela).
-- **SleelaDoc na linha de comandos — `sleela docs`.** O comando lista tópicos documentáveis, apresenta pacotes e resolve classes, incluindo nomes sem distinção entre maiúsculas e minúsculas e o prefixo padrão `SL`. As páginas incluem definição, objetivo de conceção, relações, estrutura, conceitos de utilização e uma escala de domínio de cinco níveis. As etiquetas `@intent`, `@thesis`, `@axiom`, `@param`, `@see` e `@mastery` enriquecem a documentação. `sleela docs --generate [dir]` cria um corpus de texto para consulta offline; `make sleeladoc` reúne o corpus e as fontes correspondentes em `sleeladoc/build/sleeladoc.jar`. Consulte [`lib/sleeladoc/`](lib/sleeladoc/README.md) e [`sleela(1)`](man/man1/sleela.1).
-- **SleelaDoc e documentação HTML.** O extrator [`lib/sleeladoc`](lib/sleeladoc/README.md) transforma comentários documentais de unidades `.sleela` em páginas Markdown ou HTML. O sítio navegável de toda a biblioteca `/lib` é gerado em [`sleeladoc-api/`](sleeladoc-api/README.md). A compilação pode também emitir páginas MediaWiki através de `--wiki`. Consulte [SLEELADOC](manifesto/SLEELADOC.md), [SLEELADOC.WIKI](manifesto/SLEELADOC.WIKI.md) e o [exemplo](lib/sleeladoc/sleeladoc-demo.sleela).
-- **Modelo de objetos de documento XML (`lib/xml`).** A biblioteca inclui uma árvore DOM com nós de elemento, texto, comentário, CDATA e instrução de processamento, atributos nomeados, serialização compacta/formatada, escape XML 1.0 §2.4, análise por células de caracteres e registo de qualidade `SLXmlAspect`. A igualdade entre nós é reflexiva, simétrica e determinística, com níveis de identidade, assunto e estrutura. Consulte [`lib/xml/README.md`](lib/xml/README.md) e o [exemplo executável](lib/xml/xml-dom.sleela).
-- **Primitivos inteiros alargados.** `int`, `long` e `int64` são inteiros assinados de 64 bits; `int128` é atualmente suportado por uma representação de 64 bits, estando o suporte real de 128 bits documentado como trabalho futuro. As famílias binárias assinadas `int32`–`int16777216` (sintaxe 2.7) e não assinadas `uint32`–`uint16777216` (sintaxe 2.8) ampliam a família. Consulte [`SLEELA.syntax`](SLEELA.syntax) §§21, 24 e 25.
-- **Campos consequentes `@mix` (sintaxe 2.9).** Uma classe pode declarar campos de instância repetidos com o mesmo nome se cada declaração tiver `@mix`. O grupo é indexado por ordem crescente (`1,2,3,…`) ou por índices explícitos em `@mix(1,2,3,...)`; a quantidade de índices tem de corresponder à quantidade de campos. Consulte [§28](SLEELA.syntax).
-- **Preonems — marcadores documentais do Processo Natural.** Os marcadores declarativos incluem `author`/`authorial`, `material`, `memory`, `determine`, `object`, `field`, `pure`, `gasoline` e `artifact`. São contextuais, dependentes da versão e não alteram a análise sintática, a tipagem ou a geração de código; fora da posição de marcador continuam a ser identificadores normais. Consulte [`SLEELA.syntax`](SLEELA.syntax) §§18–20, 23, 26, 30 e 35.
-- **Nordshrift com acesso integral à biblioteca.** Na sintaxe 3.0, Nordshrift utiliza o mesmo índice recursivo de `/lib` que o compilador, abrangendo pacotes e unidades `.sleela`; `nordshrift check` apresenta as contagens da árvore completa.
-- **Stanchion de recursão.** [`recursion/stanchion/`](recursion/stanchion/README.md) contém protótipos de referência C e C++ para sete contratos primitivos documentados, além de exemplos genéricos, aplicados, científicos e pedagógicos. As fontes de referência devem ser compiladas e testadas antes de serem consideradas verificadas.
-- **Comentários angulares (`<` / `<<`).** O frontend reconhece comentários de linha `< line >` e de bloco `<< block >>`; consulte [§1.1](SLEELA.syntax).
-- **Literais inteiros por radix.** Os literais `int` aceitam hexadecimal (`0x`), binário (`0b`) e octal (`0o`), com separadores `_`, tanto na linguagem como no formato de modelos CPU [`.xlt`](lib/xlt/README.md). Consulte [§1.4](SLEELA.syntax).
-- **Norma Metadata Class.** O padrão de metadados descritivos — proveniência, legalidade e âmbito jurisdicional — é aplicado aos ficheiros `.sleela` que contêm classes em `/lib`. Consulte [§15](SLEELA.syntax) e a [lição 13](tutorial/13-metadata-class.md).
-- **Família de texto e String.** `lib/text` fornece operações de caracteres e cadeias, incluindo `charAt`, `substring`, `indexOf`, `reverse`, alinhamento de colunas e modelos posicionais. Consulte o [tutorial](tutorial/14-text-and-strings.md) e o [exemplo](lib/text/text-string-demo.sleela).
-- **String em folhas Nordshrift.** Uma folha `.sst` pode declarar um bloco tipado `strings:` que contribui para o manifesto de componentes da compilação. Consulte a [referência Nordshrift](wiki/Nordshrift-Sheet-Reference.md).
-- **Modelos CPU por opcodes e equivalência de chamadas.** Cada `SL<ARCH>CPU` suporta a execução de um fluxo nativo de instruções através do ciclo fetch-decode-execute e a execução equivalente de código de outro processo sobre a infraestrutura VM partilhada. Consulte [`lib/cpu/EXECUTION.md` §5](lib/cpu/EXECUTION.md).
+- **O pacote de biblioteca padrão `advantage` — tirar partido de um dividendo, com matemática, física, integração, classificação e saída encaminhável.** [`lib/advantage/`](lib/advantage/README.md) encapsula *a obtenção de vantagem sobre um dividendo único relativamente a um modelo* sob a forma de uma **Sequitur onion** em camadas (dividendo → revisão → preocupações → matemática → adições → subtração → reagrupamento → iteração), navegável para dentro e para fora, com atualização dinâmica completa e restituição, exposta através de um **modelo do utilizador** simples e de um **modelo do programador** com controlo total. Contém cinco áreas temáticas: **`math/`**, economia de comércio bilateral (maximização conjunta do lucro, negociação de Nash, rácio crítico newsvendor bilateral); **`physics/`**, uma «física dos campos de confiança» de economia estrutural (a confiança como tensor métrico, a geodésica transacional, uma estrutura de contacto de anúncio, uma SDE de decaimento de confiança CIR+salto — uma analogia de modelação, assinalada como tal); **`integration/`**, um modelo de integração vertical recursivamente componível para o capitalismo/comércio a retalho (compartimentos, baias de engenharia, compartimentos de ensaio, tabuleiros de mediana newton e uma pontuação de sofisticação do sistema); **`grading/`**, um classificador de circuito de sofisticação que avalia cada módulo e qualquer conjunto de módulos vencedores/perdedores/classificadores/absolutos de A a D; e **`output/`**, um ponto de emissão encaminhável que envia a saída dos módulos para o terminal, para uma superfície formatada por **CommonRails** ou para um socket/conector (enquadrada para um `slnet_write` nativo). Cada classe transporta o registo Metadata-Class; cinco demonstrações executáveis validam os temas, e os documentos complementares [`DEFINITIONS.md`](lib/advantage/DEFINITIONS.md), [`MATH.md`](lib/advantage/MATH.md) e [`PHYSICS.md`](lib/advantage/PHYSICS.md) descrevem-nos. Um consumidor nativo C/C++ em [`advantage/`](advantage/README.md) (o núcleo C `advantage_value`/`advantage_mean`, um repositório de conhecimento XML, uma biblioteca segura de aquisição HTTPS/SFTP/SSH + armazém de chaves + transporte DH/ECDH) liga o modelo a [exemplos de comércio](advantage/examples/README.md) elaborados — comércios positivos a partir de fontes presumidas da internet, uma sequência de relevância para o público (Comerciantes, Consumidores, Auxiliares, Curadores) e oito modelos classificados de A a D (D = mais Cement, A = mais Brand).
+- **Anotações de temporização de ciclos — `@loopDelay` / `@loopBudget` (e a função integrada `sleep(ms)`).** As primeiras anotações **ao nível da instrução e comportamentais** da SLeeLa: escritas na sua própria linha antes de um ciclo `for` / `while` / `do`, introduzem uma pausa real na execução do ciclo. `@loopDelay(ms = 250)` / `@loopDelay(seconds = 2)` aguarda um período fixo por iteração (um simples `@loopDelay(250)` assume milissegundos); `@loopBudget(seconds = 10, iterations = 1000)` distribui uniformemente um número conhecido de iterações por um orçamento total de tempo real. Ambas são reduzidas ao novo opcode aditivo **`OP_SLEEP`** (ISA 157), que suporta também uma função integrada geral **`sleep(<ms>)`**, invocável em qualquer lugar; a pausa é implementada de forma portátil (`nanosleep` / `Sleep`). Especificado em [`SLEELA.syntax` §32](SLEELA.syntax); referência da API em [`api/sleela/3.0/LOOP_TIMING_API.md`](api/sleela/3.0/LOOP_TIMING_API.md); [`examples/loop-timing-annotation-demo.sleela`](examples/loop-timing-annotation-demo.sleela) é executável. Um índice de adições da sessão (incluindo esta, a multiplicação nativa de inteiros grandes `OP_BIGMUL` e as ferramentas autónomas **[local-generator](local-generator/README.md)** e **[pi-generator](pi-generator/README.md)**) encontra-se em [`api/sleela/3.0/SESSION-ADDITIONS-API.md`](api/sleela/3.0/SESSION-ADDITIONS-API.md). As três superfícies de API geradas ([`sleeladoc-api/`](sleeladoc-api/README.md), [`docs/api/`](docs/api/README.md) e o instantâneo imutável [`api/sleela/3.0/version-014/`](api/sleela/3.0/version-014/index.html)) foram reconstruídas com `make api-docs` e passam a incluir as novas entradas de instruções `SLISASleep` / `SLISABigMul` na página do pacote `vm`.
+- **SleelaDoc a partir da linha de comandos — `sleela docs`.** O SleelaDoc é agora acessível diretamente a partir do terminal. `sleela docs` lista todos os tópicos documentáveis; `sleela docs crypto` mostra um pacote; `sleela docs stringbuilder` resolve uma classe (sem distinção entre maiúsculas e minúsculas e pelo prefixo `SL` da biblioteca padrão → `SLStringBuilder`) e apresenta uma página completa — **definição, objetivo de conceção, relações, estrutura, conceitos de utilização e uma escada de domínio de cinco degraus** — com resultados ordenados do tipo «quis dizer» em caso de aproximação. Os autores enriquecem qualquer página simplesmente acrescentando etiquetas `@` do SleelaDoc (`@intent`, `@thesis`, `@axiom`, `@param`, `@see`, `@mastery`). `sleela docs --generate [dir]` escreve um corpus de texto simples (uma página por classe + um `TOPICS.index`) que a CLI lê depois offline; **`make sleeladoc`** reúne esse corpus **e as fontes `.sleela` correspondentes** em `sleeladoc/build/sleeladoc.jar`. Para temas apenas de fachada (por exemplo, `psychiatry`, `politico`), `sleela docs --facade <topic>` pesquisa o sistema de ficheiros em tempo de execução e lista as **pastas (e depois os ficheiros, como movimento natural)** reais, limitado por tetos substituíveis pelo utilizador de **6 MB / 6000 ficheiros / 6 minutos**. As unidades `lib/sleeladoc` são mantidas na edição atual, **`#sleela 3.0`**. Consulte [`man/man1/sleela.1`](man/man1/sleela.1) e [`lib/sleeladoc/README.md`](lib/sleeladoc/README.md).
+- **SleelaDoc — uma solução de documentação ao estilo Javadoc, com um sítio HTML gerado.** O **SleelaDoc** é a convenção de comentários de documentação no código-fonte da SLeeLa (comentários entre ângulos, sinalizados com `@doc` / `@page`; ver [`manifesto/SLEELADOC.md`](manifesto/SLEELADOC.md)), e [`lib/sleeladoc`](lib/sleeladoc/README.md) é o **extrator** que converte uma unidade `.sleela` numa página de API em Markdown ou HTML — tal como o `javadoc` o faz para Java, documentando a *intenção*. Um sítio de documentação HTML completo e navegável para **todo o `/lib`** é gerado em [`/sleeladoc-api`](sleeladoc-api/README.md) por `tools/generate-sleeladoc-api.py` (abra `sleeladoc-api/index.html`; um estilo limpo em azul / azul-claro / cinzento-claro / branco, com uma hierarquia pacote → classe → membro e um glossário escrito para o leitor *Student 2*). O compilador emite também, como subproduto da compilação, saídas de documentação marcadas pelo autor (uma página MediaWiki com `--wiki` + um gémeo de código-fonte originado), documentadas em [`manifesto/SLEELADOC.WIKI.md`](manifesto/SLEELADOC.WIKI.md). Executável: [`lib/sleeladoc/sleeladoc-demo.sleela`](lib/sleeladoc/sleeladoc-demo.sleela).
+- **Modelo de Objetos de Documento XML (`lib/xml`).** Um DOM XML do lado da SLeeLa — um documento que detém uma árvore de nós de elemento/texto/comentário/CDATA/PI com filhos ordenados e atributos nomeados, um serializador (compacto/formatado, escape XML 1.0 §2.4), um analisador por células de caracteres e o registo de qualidade `SLXmlAspect`. A igualdade de nós é um empate de confiança em três degraus (identidade → mesmo assunto → estrutura), reflexivo, simétrico e determinístico. Consulte [`lib/xml/README.md`](lib/xml/README.md) e o exemplo executável [`lib/xml/xml-dom.sleela`](lib/xml/xml-dom.sleela).
+- **Primitivos inteiros com sinal alargados (`long`, `int64`, `int128`).** `int`, `long` e `int64` são todos inteiros com sinal de 64 bits, com verificação de tipos e execução idênticas; `int128` é aceite como tipo inteiro (suportado por 64 bits por agora, sendo o verdadeiro 128 bits um seguimento documentado). A série binária com sinal `int32`..`int16777216` (sintaxe 2.7) e a série sem sinal correspondente `uint32`..`uint16777216` (sintaxe 2.8) ampliam-na. Consulte [`SLEELA.syntax`](SLEELA.syntax) §21, §24, §25.
+- **Campos consequentes `@mix` (sintaxe 2.9).** Uma classe pode declarar vários campos de instância com o **mesmo nome** quando cada repetição transporta `@mix`; a linguagem entende o grupo como consequente (um array / lista indexado), de cima para baixo `1,2,3,…` por predefinição ou manualmente através de `@mix(1,2,3,...)`, cuja contagem de índices tem de corresponder ao número de campos. Consulte [`SLEELA.syntax`](SLEELA.syntax) §28.
+- **Marcadores documentais — o Processo Natural, intitulado os Preonems (`author`/`authorial`, `material`, `memory`, `determine`, `object`, `field`).** Estas palavras-marcador documentais simples são coletivamente intituladas os **Preonems** (um marcador é um *Preonem*; o conjunto, os *Preonems* — ver [`SLEELA.syntax`](SLEELA.syntax) §26.1). Marcadores documentais de primeira classe, exclusivamente declarativos, que nomeiam o que um documento *é* na ordem da sua feitura: `author`/`authorial` (sintaxe 2.4; tratado por conselho profissional — o único membro com efeito comportamental), `material;` (Fonte assente) e `memory;` (sintaxe 2.5), `determine;` (sintaxe 2.6; um documento aberto a ser processado por um médico, um físico ou um fantasma com vista à conclusão por mão legal) e os dois mais recentes, **`object;`** (uma coisa assente que figura no catálogo do que é — **reificada, com existência concreta, na sintaxe 2.8**) e **`field;`** (o terreno da relação em que os objetos se encontram e se movem) — ambos condicionados a partir da sintaxe 2.6. Cada um é simples, contextual e condicionado por versão pelo frontend, sem efeito na análise sintática, na tipagem nem na geração de código; fora da posição de marcador, todos continuam a ser identificadores normais (pelo que `field` nunca perturba um membro de classe nem um acesso `.field`). Consulte [`SLEELA.syntax`](SLEELA.syntax) §18–§20, §23 e §26.
+- **Nordshrift na sintaxe 3.0 com alcance integral da biblioteca.** O Nordshrift resolve através do mesmo índice recursivo de `/lib` que o compilador, alcançando todos os pacotes e unidades `.sleela`; `nordshrift check` apresenta as contagens da árvore completa.
+- **Stanchion de recursão.** O diretório [`recursion/stanchion/`](recursion/stanchion/README.md) inclui agora protótipos de referência dedicados em C e C++ para os sete contratos primitivos documentados, além de exemplos genéricos, aplicados, científicos e pedagógicos. São fontes de referência; compile-as e teste-as antes de as considerar verificadas.
+
+- **Comentários entre ângulos (`<` / `<<`).** Um novo estilo de comentário para o futuro — `< linha >` e `<< bloco >>` — analisado lexicalmente pelo frontend da SLeeLa e documentado em [`SLEELA.syntax`](SLEELA.syntax) §1.1.
+- **Literais inteiros por base.** Os literais `int` aceitam agora as formas hexadecimal (`0x`), binária (`0b`) e octal (`0o`) com separadores de dígitos `_`, tanto na linguagem de código-fonte SLeeLa ([`SLEELA.syntax`](SLEELA.syntax) §1.4) como no [formato de modelos de CPU `.xlt`](lib/xlt/README.md).
+- **A norma Metadata Class em toda a biblioteca.** A metapadronização de metadados descritivos (proveniência, legalidade, âmbito jurisdicional) é agora transportada por todos os ficheiros `.sleela` com classes em `/lib`; consulte [`SLEELA.syntax`](SLEELA.syntax) §15 e [a lição do tutorial](tutorial/13-metadata-class.md).
+- **Uma família de texto / String mais rica.** `lib/text` ganha auxiliares reais na própria linguagem, uma vista por células de caracteres com `charAt`/`substring`/`indexOf`/`reverse`/alinhamento de colunas genuínos e um modelador posicional real — consulte o [tutorial de texto e String](tutorial/14-text-and-strings.md) e o exemplo executável [`lib/text/text-string-demo.sleela`](lib/text/text-string-demo.sleela).
+- **`String` de primeira classe nas folhas Nordshrift.** Uma folha `.sst` pode declarar um bloco `strings:` tipado que contribui para o manifesto de componentes da compilação; consulte a [Referência de Folhas Nordshrift](wiki/Nordshrift-Sheet-Reference.md).
+- **Modelos de CPU executados por opcodes e por equivalência de chamadas de função.** Cada `SL<ARCH>CPU` herda a base de executar um fluxo de instruções nativo através do seu ciclo de obtenção-descodificação-execução *e* de executar o código de um outro processo presumido por chamadas equivalentes sobre o substrato VM partilhado — consulte [`lib/cpu/EXECUTION.md`](lib/cpu/EXECUTION.md) §5.
 
 ## III. Compilação e testes
 
@@ -114,7 +117,7 @@ Primeiro, é perguntado se o pacote principal deve ser instalado; em seguida, es
 
 ## V. Linguagem e ambiente de execução
 
-A gramática normativa encontra-se em [`SLEELA.syntax`](SLEELA.syntax). O repositório documenta atualmente a sintaxe **3.0**; a versão do compilador/ferramentas e a versão da sintaxe do código-fonte são independentes. A superfície 3.0 acrescenta os marcadores documentais **`pure` e `gasoline`** (§30): dois Preonems declarativos e contextuais, sem efeito de execução próprio, que expressam a posição de um documento através da sua própria honestidade. A sintaxe 3.0 reúne as superfícies da linguagem 1.0 a 2.9 numa edição normativa atual e mantém os requisitos de versão mínima de cada funcionalidade.
+A gramática normativa encontra-se em [`SLEELA.syntax`](SLEELA.syntax). O repositório documenta atualmente a sintaxe **3.0**; a versão do compilador/ferramentas e a versão da sintaxe do código-fonte são independentes. A superfície 3.0 acrescenta os marcadores documentais **`pure` e `gasoline`** (§30): um par de Preonems simples, contextuais e exclusivamente declarativos, que significam quase o mesmo, marcando cada um a posição do documento através da sua própria honestidade. A sintaxe 3.0 reúne as superfícies da linguagem 1.0 a 2.9 numa edição normativa atual e mantém os requisitos de versão mínima de cada funcionalidade.
 
 A superfície anterior, 2.9, acrescenta os **campos sequenciais `@mix`** (§28): uma classe pode declarar vários campos de instância com o mesmo nome, desde que cada um esteja marcado com `@mix`. São tratados como um grupo indexado (por ordem crescente, por predefinição: `1,2,3,…`, ou definido manualmente através de `@mix(1,2,3,...)`; o número de índices tem de corresponder ao número de campos). Inclui também as famílias de inteiros binários alargados com sinal e sem sinal, de `int32` a `int16777216` (§24) e de `uint32` a `uint16777216` (§25), que ampliam `long`, `int64` e `int128` (§21); documentos de suporte de palavras-chave (§22); e os **Preonems**: marcadores documentais declarativos `author`/`authorial` (§18), `material`/`memory` (§19–§20), `determine` (§23), `object`/`field` (§26), `pure`/`gasoline` (§30) e `artifact` (§35; um estatuto de qualidade legislativa avaliado em relação ao tempo e ao espaço). Em conjunto, são designados Preonems (§26.1).
 
@@ -145,27 +148,59 @@ O manifesto de integridade é gerado em `antivirus/build/`. Abrange entradas de 
 
 Um lançamento só é considerado verificado quando os trabalhos de CI relevantes são concluídos com sucesso para o commit exato desse lançamento e os artefactos resultantes são inspecionados.
 
+
 ## VIII. Temas do editor SLeeLa — Vim e Emacs
 
-A SLeeLa inclui um conjunto coordenado de esquemas de cores escuros e profissionais para **Vim** e **Emacs**, além de um utilitário de paletas nativo C/C++. O esquema original **American Professional** continua a ser o predefinido. Existem dez paletas complementares inspiradas em diferentes tradições culturais e institucionais; são interpretações de design, não representações oficiais de qualquer país, cultura, tribunal ou instituição.
+A SLeeLa inclui um conjunto coordenado de esquemas de cores escuros e profissionais para **Vim** e **Emacs**, além de um utilitário de paletas nativo C/C++. O esquema original **American Professional** continua a ser o predefinido. Existem dez paletas complementares inspiradas em diferentes tradições culturais e institucionais; são paletas de design interpretativas, não representações oficiais de qualquer país, cultura, tribunal ou instituição.
 
 ### Os onze esquemas e as respetivas cores
 
 | Esquema | Fundo | Primeiro plano | Palavras-chave | Tipos | Cadeias | Comentários |
 |---|---|---|---|---|---|---|
-| American Professional | `#101820` | `#F4F7FA` | `#7FB3FF` | `#73DACA` | `#F2C078` | `#8A96A3` |
-| Pan-Eurasian | `#111827` | `#F0F2F5` | `#7AA7E8` | `#69C9B3` | `#D7B56D` | `#8995A5` |
-| Russian and Slavic — Medium | `#202733` | `#E8EAF0` | `#A9C0DD` | `#8FC4B2` | `#D6BD8B` | `#9AA3AF` |
-| Central Asian / Silk Road | `#1C2529` | `#F5F0E5` | `#7FADE0` | `#45C6C2` | `#D9B56D` | `#92A3A0` |
-| East Asian | `#171A1C` | `#F2EFE7` | `#D97878` | `#72C7A5` | `#D8B76A` | `#969F9B` |
-| ICC — International Criminal Court | `#0E1A2B` | `#EAF0F7` | `#5B8FD6` | `#7FB7C9` | `#D9B25A` | `#7E8CA0` |
-| SCOTUS — U.S. Supreme Court | `#1A1416` | `#F3EEE6` | `#9E2B35` | `#8FA9B8` | `#C9A24B` | `#8C8178` |
-| Greek (Hellenic) | `#0A1A30` | `#FFFFFF` | `#2E7BD6` | `#5E9FE0` | `#9FC3EC` | `#6E86A6` |
-| Turkish (Al Bayrak) | `#2A0609` | `#FFFFFF` | `#F23D48` | `#F0A9AE` | `#F0C9A9` | `#A8767A` |
-| Kiro | `#0B0B12` | `#F5F5FA` | `#A98EDA` | `#6E8BE0` | `#E8C547` | `#6A6482` |
-| SLeeLa | `#08080E` | `#FFFFFF` | `#B07CFF` | `#5A7CFF` | `#FFD21E` | `#6E5F9E` |
+| **American Professional** | <span style="display:inline-block;width:1em;height:1em;background:#101820;border:1px solid #888"></span> `#101820` | <span style="display:inline-block;width:1em;height:1em;background:#F4F7FA;border:1px solid #888"></span> `#F4F7FA` | <span style="display:inline-block;width:1em;height:1em;background:#7FB3FF;border:1px solid #888"></span> `#7FB3FF` | <span style="display:inline-block;width:1em;height:1em;background:#73DACA;border:1px solid #888"></span> `#73DACA` | <span style="display:inline-block;width:1em;height:1em;background:#F2C078;border:1px solid #888"></span> `#F2C078` | <span style="display:inline-block;width:1em;height:1em;background:#8A96A3;border:1px solid #888"></span> `#8A96A3` |
+| **Pan-Eurasian** | <span style="display:inline-block;width:1em;height:1em;background:#111827;border:1px solid #888"></span> `#111827` | <span style="display:inline-block;width:1em;height:1em;background:#F0F2F5;border:1px solid #888"></span> `#F0F2F5` | <span style="display:inline-block;width:1em;height:1em;background:#7AA7E8;border:1px solid #888"></span> `#7AA7E8` | <span style="display:inline-block;width:1em;height:1em;background:#69C9B3;border:1px solid #888"></span> `#69C9B3` | <span style="display:inline-block;width:1em;height:1em;background:#D7B56D;border:1px solid #888"></span> `#D7B56D` | <span style="display:inline-block;width:1em;height:1em;background:#8995A5;border:1px solid #888"></span> `#8995A5` |
+| **Russian and Slavic — Medium** | <span style="display:inline-block;width:1em;height:1em;background:#202733;border:1px solid #888"></span> `#202733` | <span style="display:inline-block;width:1em;height:1em;background:#E8EAF0;border:1px solid #888"></span> `#E8EAF0` | <span style="display:inline-block;width:1em;height:1em;background:#A9C0DD;border:1px solid #888"></span> `#A9C0DD` | <span style="display:inline-block;width:1em;height:1em;background:#8FC4B2;border:1px solid #888"></span> `#8FC4B2` | <span style="display:inline-block;width:1em;height:1em;background:#D6BD8B;border:1px solid #888"></span> `#D6BD8B` | <span style="display:inline-block;width:1em;height:1em;background:#9AA3AF;border:1px solid #888"></span> `#9AA3AF` |
+| **Central Asian / Silk Road** | <span style="display:inline-block;width:1em;height:1em;background:#1C2529;border:1px solid #888"></span> `#1C2529` | <span style="display:inline-block;width:1em;height:1em;background:#F5F0E5;border:1px solid #888"></span> `#F5F0E5` | <span style="display:inline-block;width:1em;height:1em;background:#7FADE0;border:1px solid #888"></span> `#7FADE0` | <span style="display:inline-block;width:1em;height:1em;background:#45C6C2;border:1px solid #888"></span> `#45C6C2` | <span style="display:inline-block;width:1em;height:1em;background:#D9B56D;border:1px solid #888"></span> `#D9B56D` | <span style="display:inline-block;width:1em;height:1em;background:#92A3A0;border:1px solid #888"></span> `#92A3A0` |
+| **East Asian** | <span style="display:inline-block;width:1em;height:1em;background:#171A1C;border:1px solid #888"></span> `#171A1C` | <span style="display:inline-block;width:1em;height:1em;background:#F2EFE7;border:1px solid #888"></span> `#F2EFE7` | <span style="display:inline-block;width:1em;height:1em;background:#D97878;border:1px solid #888"></span> `#D97878` | <span style="display:inline-block;width:1em;height:1em;background:#72C7A5;border:1px solid #888"></span> `#72C7A5` | <span style="display:inline-block;width:1em;height:1em;background:#D8B76A;border:1px solid #888"></span> `#D8B76A` | <span style="display:inline-block;width:1em;height:1em;background:#969F9B;border:1px solid #888"></span> `#969F9B` |
+| **ICC — International Criminal Court** | <span style="display:inline-block;width:1em;height:1em;background:#0E1A2B;border:1px solid #888"></span> `#0E1A2B` | <span style="display:inline-block;width:1em;height:1em;background:#EAF0F7;border:1px solid #888"></span> `#EAF0F7` | <span style="display:inline-block;width:1em;height:1em;background:#5B8FD6;border:1px solid #888"></span> `#5B8FD6` | <span style="display:inline-block;width:1em;height:1em;background:#7FB7C9;border:1px solid #888"></span> `#7FB7C9` | <span style="display:inline-block;width:1em;height:1em;background:#D9B25A;border:1px solid #888"></span> `#D9B25A` | <span style="display:inline-block;width:1em;height:1em;background:#7E8CA0;border:1px solid #888"></span> `#7E8CA0` |
+| **SCOTUS — U.S. Supreme Court** | <span style="display:inline-block;width:1em;height:1em;background:#1A1416;border:1px solid #888"></span> `#1A1416` | <span style="display:inline-block;width:1em;height:1em;background:#F3EEE6;border:1px solid #888"></span> `#F3EEE6` | <span style="display:inline-block;width:1em;height:1em;background:#9E2B35;border:1px solid #888"></span> `#9E2B35` | <span style="display:inline-block;width:1em;height:1em;background:#8FA9B8;border:1px solid #888"></span> `#8FA9B8` | <span style="display:inline-block;width:1em;height:1em;background:#C9A24B;border:1px solid #888"></span> `#C9A24B` | <span style="display:inline-block;width:1em;height:1em;background:#8C8178;border:1px solid #888"></span> `#8C8178` |
+| **Greek (Hellenic)** | <span style="display:inline-block;width:1em;height:1em;background:#0A1A30;border:1px solid #888"></span> `#0A1A30` | <span style="display:inline-block;width:1em;height:1em;background:#FFFFFF;border:1px solid #888"></span> `#FFFFFF` | <span style="display:inline-block;width:1em;height:1em;background:#2E7BD6;border:1px solid #888"></span> `#2E7BD6` | <span style="display:inline-block;width:1em;height:1em;background:#5E9FE0;border:1px solid #888"></span> `#5E9FE0` | <span style="display:inline-block;width:1em;height:1em;background:#9FC3EC;border:1px solid #888"></span> `#9FC3EC` | <span style="display:inline-block;width:1em;height:1em;background:#6E86A6;border:1px solid #888"></span> `#6E86A6` |
+| **Turkish (Al Bayrak)** | <span style="display:inline-block;width:1em;height:1em;background:#2A0609;border:1px solid #888"></span> `#2A0609` | <span style="display:inline-block;width:1em;height:1em;background:#FFFFFF;border:1px solid #888"></span> `#FFFFFF` | <span style="display:inline-block;width:1em;height:1em;background:#F23D48;border:1px solid #888"></span> `#F23D48` | <span style="display:inline-block;width:1em;height:1em;background:#F0A9AE;border:1px solid #888"></span> `#F0A9AE` | <span style="display:inline-block;width:1em;height:1em;background:#F0C9A9;border:1px solid #888"></span> `#F0C9A9` | <span style="display:inline-block;width:1em;height:1em;background:#A8767A;border:1px solid #888"></span> `#A8767A` |
+| **Kiro** | <span style="display:inline-block;width:1em;height:1em;background:#0B0B12;border:1px solid #888"></span> `#0B0B12` | <span style="display:inline-block;width:1em;height:1em;background:#F5F5FA;border:1px solid #888"></span> `#F5F5FA` | <span style="display:inline-block;width:1em;height:1em;background:#A98EDA;border:1px solid #888"></span> `#A98EDA` | <span style="display:inline-block;width:1em;height:1em;background:#6E8BE0;border:1px solid #888"></span> `#6E8BE0` | <span style="display:inline-block;width:1em;height:1em;background:#E8C547;border:1px solid #888"></span> `#E8C547` | <span style="display:inline-block;width:1em;height:1em;background:#6A6482;border:1px solid #888"></span> `#6A6482` |
+| **SLeeLa** | <span style="display:inline-block;width:1em;height:1em;background:#08080E;border:1px solid #888"></span> `#08080E` | <span style="display:inline-block;width:1em;height:1em;background:#FFFFFF;border:1px solid #888"></span> `#FFFFFF` | <span style="display:inline-block;width:1em;height:1em;background:#B07CFF;border:1px solid #888"></span> `#B07CFF` | <span style="display:inline-block;width:1em;height:1em;background:#5A7CFF;border:1px solid #888"></span> `#5A7CFF` | <span style="display:inline-block;width:1em;height:1em;background:#FFD21E;border:1px solid #888"></span> `#FFD21E` | <span style="display:inline-block;width:1em;height:1em;background:#6E5F9E;border:1px solid #888"></span> `#6E5F9E` |
 
-As paletas grega e turca derivam das cores oficiais das bandeiras nacionais: azul grego `#0D5EAF), branco `#FFFFFF), vermelho turco `#E30A17` e branco `#FFFFFF`. Os fundos e acentos apresentados são interpretações escurecidas e adequadas a editores. As referências de cor documentam a proveniência e não constituem representação oficial dos Estados. As paletas usam ainda cores adicionais para funções, constantes, seleções, diagnósticos e diretivas do pré-processador.
+#### Cores das bandeiras nacionais (paleta de origem)
+
+Os esquemas grego e turco derivam das **cores oficiais das bandeiras nacionais** dos dois países, aqui apresentadas com os respetivos valores hexadecimais exatos publicados. Os fundos e os acentos dos esquemas acima são interpretações escurecidas e adequadas a editores destas cores de origem — a tabela seguinte é a referência das «cores tal como expostas nacionalmente».
+
+| País | Cor | Hex | Base e significado |
+|---|---|---|---|
+| **Grécia** | Azul | <span style="display:inline-block;width:1em;height:1em;background:#0D5EAF;border:1px solid #888"></span> `#0D5EAF` | Azul da bandeira nacional (Lei 851/1978). O céu e os mares; descrito heraldicamente como *azure*. |
+| **Grécia** | Branco | <span style="display:inline-block;width:1em;height:1em;background:#FFFFFF;border:1px solid #888"></span> `#FFFFFF` | Branco da bandeira nacional. A pureza da luta pela independência; a cruz denota o cristianismo ortodoxo oriental. |
+| **Türkiye** | Vermelho (*al bayrak*) | <span style="display:inline-block;width:1em;height:1em;background:#E30A17;border:1px solid #888"></span> `#E30A17` | Vermelho da bandeira nacional (Lei da Bandeira Turca). O campo; por tradição, o sangue dos mártires e a soberania otomana. |
+| **Türkiye** | Branco | <span style="display:inline-block;width:1em;height:1em;background:#FFFFFF;border:1px solid #888"></span> `#FFFFFF` | Branco da bandeira nacional. O crescente e a estrela — paz, pureza e o símbolo da herança turcomana/islâmica. |
+
+Os esquemas ancoram o primeiro plano de cada editor no **branco** nacional e as palavras-chave, o cursor, a seleção e a linha de estado no **azul** nacional exato (`#0D5EAF`) ou no **vermelho** nacional exato (`#E30A17`), de modo que as cores que importam são literalmente as cores nacionais. Trata-se de paletas de design interpretativas; a referência das cores das bandeiras é fornecida a título de proveniência e não constitui uma representação oficial de nenhum dos Estados. Os significados das cores seguem a descrição dos símbolos de Estado do Ministério dos Negócios Estrangeiros da República Helénica e a tradição da Lei da Bandeira Turca.
+
+### Tabela de amostras de cores
+
+As células de paleta abaixo usam **amostras SVG**, pelo que o GitHub apresenta as cores reais em vez de células de cor HTML vazias. Cada faixa mostra as seis cores por esta ordem: fundo, primeiro plano, palavras-chave, tipos, cadeias e comentários. Os códigos hexadecimais exatos estão listados ao lado de cada amostra, pela mesma ordem de esquemas da tabela de referência acima.
+
+| Esquema | Cores da paleta apresentadas | Códigos hex (fundo · primeiro plano · palavras-chave · tipos · cadeias · comentários) |
+|---|---|---|
+| **American Professional** | ![Paleta American Professional: fundo, primeiro plano, palavras-chave, tipos, cadeias, comentários](lib/linux-editors/palettes/american-professional.svg) | `#101820` · `#F4F7FA` · `#7FB3FF` · `#73DACA` · `#F2C078` · `#8A96A3` |
+| **Pan-Eurasian** | ![Paleta Pan-Eurasian: fundo, primeiro plano, palavras-chave, tipos, cadeias, comentários](lib/linux-editors/palettes/pan-eurasian.svg) | `#111827` · `#F0F2F5` · `#7AA7E8` · `#69C9B3` · `#D7B56D` · `#8995A5` |
+| **Russian and Slavic — Medium** | ![Paleta Russian and Slavic Medium: fundo, primeiro plano, palavras-chave, tipos, cadeias, comentários](lib/linux-editors/palettes/russian-slavic-medium.svg) | `#202733` · `#E8EAF0` · `#A9C0DD` · `#8FC4B2` · `#D6BD8B` · `#9AA3AF` |
+| **Central Asian / Silk Road** | ![Paleta Central Asian Silk Road: fundo, primeiro plano, palavras-chave, tipos, cadeias, comentários](lib/linux-editors/palettes/central-asian-silk-road.svg) | `#1C2529` · `#F5F0E5` · `#7FADE0` · `#45C6C2` · `#D9B56D` · `#92A3A0` |
+| **East Asian** | ![Paleta East Asian: fundo, primeiro plano, palavras-chave, tipos, cadeias, comentários](lib/linux-editors/palettes/east-asian.svg) | `#171A1C` · `#F2EFE7` · `#D97878` · `#72C7A5` · `#D8B76A` · `#969F9B` |
+| **ICC — International Criminal Court** | ![Paleta ICC: fundo, primeiro plano, palavras-chave, tipos, cadeias, comentários](lib/linux-editors/palettes/icc.svg) | `#0E1A2B` · `#EAF0F7` · `#5B8FD6` · `#7FB7C9` · `#D9B25A` · `#7E8CA0` |
+| **SCOTUS — U.S. Supreme Court** | ![Paleta SCOTUS: fundo, primeiro plano, palavras-chave, tipos, cadeias, comentários](lib/linux-editors/palettes/scotus.svg) | `#1A1416` · `#F3EEE6` · `#9E2B35` · `#8FA9B8` · `#C9A24B` · `#8C8178` |
+| **Greek (Hellenic)** | ![Paleta Greek Hellenic: fundo, primeiro plano, palavras-chave, tipos, cadeias, comentários](lib/linux-editors/palettes/greek.svg) | `#0A1A30` · `#FFFFFF` · `#2E7BD6` · `#5E9FE0` · `#9FC3EC` · `#6E86A6` |
+| **Turkish (Al Bayrak)** | ![Paleta Turkish Al Bayrak: fundo, primeiro plano, palavras-chave, tipos, cadeias, comentários](lib/linux-editors/palettes/turkish.svg) | `#2A0609` · `#FFFFFF` · `#F23D48` · `#F0A9AE` · `#F0C9A9` · `#A8767A` |
+| **Kiro** | ![Paleta Kiro: fundo, primeiro plano, palavras-chave, tipos, cadeias, comentários](lib/linux-editors/palettes/kiro.svg) | `#0B0B12` · `#F5F5FA` · `#A98EDA` · `#6E8BE0` · `#E8C547` · `#6A6482` |
+| **SLeeLa** | ![Paleta SLeeLa: fundo, primeiro plano, palavras-chave, tipos, cadeias, comentários](lib/linux-editors/palettes/sleela.svg) | `#08080E` · `#FFFFFF` · `#B07CFF` · `#5A7CFF` · `#FFD21E` · `#6E5F9E` |
+
+Utilizam-se cores de acento adicionais para funções, constantes, seleções, diagnósticos e diretivas do pré-processador. A paleta Russian and Slavic usa intencionalmente ardósia, azul, verde-sálvia, rubi e ouro antigo de intensidade média, para uma aparência profissional mais calma.
 
 ### Instalar os esquemas Vim
 
@@ -178,7 +213,7 @@ cp lib/linux-editors/vim/ftdetect/sleela.vim ~/.vim/ftdetect/
 cp lib/linux-editors/vim/colors/sleela-*.vim ~/.vim/colors/
 ```
 
-Adicione a `~/.vimrc`:
+Adicione o seguinte a `~/.vimrc` para ativar o realce de sintaxe SLeeLa e escolher um esquema:
 
 ```vim
 syntax enable
@@ -186,9 +221,23 @@ set background=dark
 colorscheme sleela-american
 ```
 
-Escolha um esquema: `sleela-american`, `sleela-eurasia`, `sleela-russian-slavic`, `sleela-silk-road`, `sleela-east-asian`, `sleela-greek`, `sleela-turkish`, `sleela-kiro` ou `sleela-sleela`. Reinicie o Vim ou execute `:source $MYVIMRC`.
+Escolha exatamente um destes nomes de esquema de cores:
+
+- `sleela-american`
+- `sleela-eurasia`
+- `sleela-russian-slavic`
+- `sleela-silk-road`
+- `sleela-east-asian`
+- `sleela-greek`
+- `sleela-turkish`
+- `sleela-kiro`
+- `sleela-sleela`
+
+Por exemplo, utilize `colorscheme sleela-russian-slavic` para a paleta Russian and Slavic de intensidade média, ou `colorscheme sleela-greek` / `colorscheme sleela-turkish` para as paletas helénica e Al Bayrak. Reinicie o Vim ou carregue a sua configuração com `:source $MYVIMRC`.
 
 ### Instalar os esquemas Emacs
+
+Crie um diretório local de temas e copie os ficheiros de modo e de tema a partir da raiz do repositório:
 
 ```sh
 mkdir -p ~/.emacs.d/sleela
@@ -196,7 +245,7 @@ cp lib/linux-editors/emacs/sleela-mode.el ~/.emacs.d/sleela/
 cp lib/linux-editors/emacs/sleela-*-theme.el ~/.emacs.d/sleela/
 ```
 
-Adicione a `~/.emacs` ou `~/.emacs.d/init.el`:
+Adicione o seguinte a `~/.emacs` ou `~/.emacs.d/init.el`:
 
 ```elisp
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/sleela"))
@@ -205,9 +254,11 @@ Adicione a `~/.emacs` ou `~/.emacs.d/init.el`:
 (load-theme 'sleela-american t)
 ```
 
-Substitua `sleela-american` por `sleela-eurasia`, `sleela-russian-slavic`, `sleela-silk-road`, `sleela-east-asian`, `sleela-greek`, `sleela-turkish`, `sleela-kiro` ou `sleela-sleela`. Se o Emacs pedir autorização para confiar no tema, inspecione primeiro o ficheiro local.
+Substitua `sleela-american` por `sleela-eurasia`, `sleela-russian-slavic`, `sleela-silk-road`, `sleela-east-asian`, `sleela-greek`, `sleela-turkish`, `sleela-kiro` ou `sleela-sleela` para selecionar outro esquema. Se o Emacs perguntar se deve confiar no tema, inspecione primeiro o ficheiro de tema local antes de aceitar.
 
 ### Pré-visualizar as paletas nativas C/C++
+
+O pequeno utilitário de paletas nativo pode listar esquemas, imprimir as respetivas cores de terminal e consultar uma cor individual:
 
 ```sh
 make -C linux-editors
@@ -217,7 +268,9 @@ make -C linux-editors
 make -C linux-editors test
 ```
 
-Por compatibilidade, `--palette` e `--hex COLOR` sem `--theme` selecionam American Professional. Os resultados de compilação e testes devem ser verificados no sistema de destino e em CI; a documentação de um comando não prova, por si só, que tenha passado. Consulte o [guia de integração de editores](linux-editors/README.md).
+Por compatibilidade retroativa, `--palette` e `--hex COLOR` sem `--theme` selecionam American Professional. Os resultados de compilação e de testes devem ser verificados no sistema de destino e em CI; a documentação de um comando não é, por si só, prova de que passou.
+
+Consulte [o guia de integração de editores](linux-editors/README.md) para as descrições completas das paletas e os pormenores do utilitário.
 
 ## IX. Contribuir
 
@@ -260,7 +313,7 @@ Num sistema com ecrã, abre-se a janela de edição em tempo real; num anfitriã
 
 ## XIII. Ordenação do mapa de entrada UTF-4088
 
-O catálogo especializado UTF-4088 define o percurso espacial do mapa de entrada e as iterações abstratas de pressão em [`utf-4088/INPUT-MAP-AND-PRESSURE.md`](utf-4088/INPUT-MAP-AND-PRESSURE.md). A política de índice de assuntos do National Lien está em [`utf-4088/NATIONAL-LIEN-REGISTER.md`](utf-4088/NATIONAL-LIEN-REGISTER.md). As coordenadas do mapa, os níveis de pressão (1–50), os IDs permanentes do catálogo e as classificações alfabéticas são campos independentes; nenhum deve ser substituído silenciosamente por outro. A pressão é um nível de iteração algorítmica, não uma grandeza física.
+O catálogo especializado UTF-4088 define o percurso espacial do mapa de entrada e as iterações abstratas de pressão em [`utf-4088/INPUT-MAP-AND-PRESSURE.md`](../utf-4088/INPUT-MAP-AND-PRESSURE.md). A política de índice de assuntos do National Lien está em [`utf-4088/NATIONAL-LIEN-REGISTER.md`](../utf-4088/NATIONAL-LIEN-REGISTER.md). As coordenadas do mapa, os níveis de pressão (1–50), os IDs permanentes do catálogo e as classificações alfabéticas são campos independentes; nenhum deve ser substituído silenciosamente por outro. A pressão é um nível de iteração algorítmica, não uma grandeza física.
 
 ## XIV. Índice de pacotes recentes e ampliados
 
@@ -268,13 +321,13 @@ Este índice adicional destaca pacotes, bibliotecas de domínio e coleções de 
 
 ### A–C
 
-- **Advantage** — `lib/advantage/` e `advantage/`: modelação de um dividendo único através de uma estrutura Sequitur onion, com cinco áreas: `math/` (maximização conjunta do lucro, negociação de Nash e bilateral newsvendor), `physics/` (métrica, geodésica, contacto e SDE de campos de confiança, identificados como analogia de modelação), `integration/` (compartimentos de integração vertical e pontuação de sofisticação), `grading/` (classificador de circuitos A–D) e `output/` (saída para terminal, CommonRails ou socket). Um consumidor C/C++ em `advantage/` liga o modelo a exemplos de comércio. Consulte [`lib/advantage/README.md`](lib/advantage/README.md) e [`DEFINITIONS.md`](lib/advantage/DEFINITIONS.md).
+- **Advantage** — `lib/advantage/` e `advantage/`: obtenção de vantagem sobre um dividendo único relativamente a um modelo, como uma Sequitur onion em camadas, com cinco subpastas temáticas — `math/` (maximização conjunta do lucro, negociação de Nash, newsvendor bilateral), `physics/` (métrica/geodésica/contacto/SDE de campos de confiança, uma analogia de modelação assinalada), `integration/` (compartimentos de integração vertical e uma pontuação de sofisticação), `grading/` (um classificador de circuito de sofisticação A–D para módulos e conjuntos) e `output/` (emissão para terminal / CommonRails / socket). Um consumidor nativo C/C++ (`advantage/`) liga o modelo a exemplos de comércio elaborados. Consulte [`lib/advantage/README.md`](lib/advantage/README.md) e [`DEFINITIONS.md`](lib/advantage/DEFINITIONS.md).
 - **Alfabeto e UTF-4088** — `alphabet/sleela/`, `lib/alphabet/native/` e `utf-4088/`: catálogos alfabéticos, suporte nativo de conjuntos de caracteres, ordenação de mapas de entrada e documentação de integração UTF-4088.
 - **AutoCAD Creator** — `autocad/creator/` e `lib/autocad/`: fluxos de desenho 2D interativos e componentes reutilizáveis para documentos e edição CAD.
-- **Ballum** — controlo de ecrã ao nível do píxel: leitura/escrita de píxeis, cópia de regiões, brilho, temperatura de cor e gama globais, entrada de rato/teclado e superfície framebuffer de ecrã inteiro. O núcleo nativo está em `ballum/`, a fachada SLeeLa em `lib/ballum/` e a ponte VM em `impl/`. Consulte [`ballum/README.md`](ballum/README.md) e os [exemplos](ballum/example/).
+- **Ballum** — controlo de ecrã ao nível do píxel: definição/leitura por píxel, cópia de regiões (blit), brilho/calor/gama de todo o ecrã, entrada de rato/teclado e uma **superfície framebuffer de ecrã inteiro** para um controlo por píxel total, próprio e rápido (janela override-redirect + uma única apresentação `XPutImage`/MIT-SHM em Linux/X11). Núcleo nativo em `ballum/`, com a fachada SLeeLa em `lib/ballum/` e uma ponte VM em `impl/`; consulte [`ballum/README.md`](ballum/README.md) e os [exemplos executáveis](ballum/example/) em `ballum/example/`.
 - **CDMA** — `cdma/` e `lib/cdma/`: material técnico relacionado com CDMA e trabalho de biblioteca-fonte SLeeLa.
 - **Character** — `lib/character/`: perfis de caracteres e estatísticas reutilizáveis, incluindo exemplos biográficos.
-- **Coorenagraph** — `lib/coorenagraph/`: raciocínio ético, vocabulário moral, deliberação e conceitos relacionados.
+- **Coorenagraph** — `lib/coorenagraph/`: raciocínio ético, vocabulário moral, deliberação e conceitos relacionados; consulte o README do pacote e os ficheiros de código-fonte.
 
 ### D–G
 
@@ -301,15 +354,20 @@ Este índice adicional destaca pacotes, bibliotecas de domínio e coleções de 
 
 Quando um pacote é adicionado ou substancialmente ampliado, acrescente aqui a respetiva entrada no grupo alfabético adequado, ligue ao diretório canónico e ao README e descreva apenas capacidades sustentadas pelas fontes presentes no repositório. Mantenha este índice aditivo: não remova nem reescreva as secções existentes do README ao atualizar o índice de pacotes.
 
-## XV. Bitcoin Conjegeum
+---
+
+## <img src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="25" height="25" alt="Debian"> XV. Bitcoin Conjegeum
 
 ![CremeOak](https://github.com/mearvk/Java.Web.Server.Telnet.Front.Java.21/raw/main/images/national-bitcoin-icc-logo-005.jpg)
 
-`bc1qs6v4q9zsw70t0umk3m0quhvf9dr6cdeskl28dh` :: `⠝⠇⠼⠁⠟⠎⠼⠋⠧⠼⠙⠟⠼⠊⠵⠎⠺⠼⠛⠼⠚⠞⠼⠚⠥⠍⠦⠼⠉⠍⠼⠚⠟⠥⠓⠧⠦⠼⠊⠙⠫⠼⠋⠉⠙⠑⠎⠅⠇⠼⠼⠃⠼⠗⠙⠓`
+bc1qs6v4q9zsw70t0umk3m0quhvf9dr6cdeskl28dh :: ⠝⠇⠼⠁⠟⠎⠼⠋⠧⠼⠙⠟⠼⠊⠵⠎⠺⠼⠛⠼⠚⠞⠼⠚⠥⠍⠦⠼⠉⠍⠼⠚⠟⠥⠓⠧⠦⠼⠊⠙⠫⠼⠋⠉⠙⠑⠎⠅⠇⠼⠼⠃⠼⠗⠙⠓
 
-`bc1qx33vma553gddsjkq372l3xlm8e8huv2vzad3cc` :: `⠃⠉⠼⠁⠟⠭⠼⠉⠼⠉⠪⠍⠁⠼⠑⠑⠛⠙⠙⠎⠚⠅⠟⠼⠉⠼⠛⠼⠝⠇⠼⠉⠼⠭⠇⠍⠼⠨e⠼⠨a⠓⠥⠪⠼⠪⠼⠪⠵⠁⠙⠼⠉⠉`
+
+bc1qx33vma553gddsjkq372l3xlm8e8huv2vzad3cc :: ⠃⠉⠼⠁⠟⠭⠼⠉⠼⠉⠪⠍⠁⠼⠑⠑⠛⠙⠙⠎⠚⠅⠟⠼⠉⠼⠛⠼⠝⠇⠼⠉⠼⠭⠇⠍⠼⠨e⠼⠨a⠓⠥⠪⠼⠪⠼⠪⠵⠁⠙⠼⠉⠉
 
 Política democrática e política dos EUA.
+
+---
 
 ## XVI. Imagens de marca da ciência nacional
 
@@ -334,7 +392,6 @@ O ficheiro binário gerado tem 16 777 244 bytes e foi concebido para permanecer 
 ---
 
 # SLeeLa
-
 <p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
 <p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>
 
@@ -342,31 +399,32 @@ O ficheiro binário gerado tem 16 777 244 bytes e foi concebido para permanecer 
 
 ## XVIII. Adições recentes — constante Pi, arranque Modium/Registry, matemática sleelactl e `@native`
 
-Esta secção regista funcionalidades adicionadas no trabalho de 2026-11, começando pelos grupos mais recentes. Todas estão comprometidas em `master`.
+Esta secção regista funcionalidades adicionadas durante o trabalho de 2026-11, começando pelos grupos mais recentes. Os ficheiros de origem ligados e o respetivo estado de validação são a referência autorizada; as alterações em revisão não são descritas como integradas até chegarem a `master`.
 
 ### Constante de catálogo Pi com 100 000 000 dígitos
 
-O repositório inclui um valor verificado de π com **cem milhões de dígitos** em [`pi-generator/pi.100000000.digits`](pi-generator/pi.100000000.digits), além de um valor com 57 344 dígitos em [`pi-generator/pi.57344.digits`](pi-generator/pi.57344.digits). Ambos foram verificados independentemente como valores genuínos de π. [`pi-generator/VERIFIED.md`](pi-generator/VERIFIED.md) documenta as verificações: prefixo de referência, ponto de Feynman na posição fracionária 762, o dígito famoso na posição um milhão, concordância com `lib/math/SLPiReference.sleela`, análise da frequência de dígitos do ficheiro completo e um script de reprodução.
+O repositório inclui um valor verificado de π com **cem milhões de dígitos** em [`pi-generator/pi.100000000.digits`](pi-generator/pi.100000000.digits) (um decimal bem formado, `3.14159…`), além de um valor com 57 344 dígitos em [`pi-generator/pi.57344.digits`](pi-generator/pi.57344.digits). Ambos foram verificados independentemente como valores genuínos de π — consulte [`pi-generator/VERIFIED.md`](pi-generator/VERIFIED.md), que documenta as verificações (prefixo de manual, o ponto de Feynman na posição fracionária 762, o célebre milionésimo dígito, concordância com `lib/math/SLPiReference.sleela` e uma análise da frequência de dígitos do ficheiro completo) e um script de reprodução num só passo.
 
 ### Modium™ / Registry™ carregam a constante Pi no arranque do subsistema
 
-Nos pontos de entrada dedicados — `sleela registry` e `sleela modium` (e na primeira execução do instalador), **não** em cada `sleela run` — os subsistemas Modium e Registry carregam a constante de catálogo Pi. Num terminal interativo, apresentam temporariamente uma linha vermelha `Loading Modium™` / `Loading Registry™`, que é apagada antes da saída normal. O comportamento depende estritamente de TTY, pelo que a saída canalizada e os testes permanecem inalterados byte a byte. O localizador, não os bytes, é registado como predefinição da chave `Math` do Registry: `piReferenceLargePath` e `piReferenceLargeDigits`, tanto no modelo SLeeLa ([`lib/registry/SLRegistry.sleela`](lib/registry/SLRegistry.sleela)) como no semeador nativo ([`registry/sleela_registry.c`](registry/sleela_registry.c)). `lib/math/SLPiReference.sleela` expõe `largePath()` e `largeDigits()`. A constante é instalada na localização SLeeLa do sistema operativo (`<data>/pi/`) pelos instaladores padrão `make` e guiado. Consulte [`MODIUM-REGISTRY-PI-STARTUP.md`](pi-generator/MODIUM-REGISTRY-PI-STARTUP.md).
+Nos pontos de entrada dedicados — `sleela registry` e `sleela modium` (e na primeira execução do instalador), **não** em cada `sleela run` — os subsistemas Modium e Registry carregam a constante de catálogo π de grande dimensão. Num terminal interativo, apresentam uma linha vermelha transitória `Loading Modium™` / `Loading Registry™`, que é depois apagada no próprio local antes de começar a saída normal; o efeito está estritamente condicionado a TTY, pelo que a saída canalizada e a dos testes permanecem inalteradas byte a byte. O localizador (não os bytes) é registado como predefinições da chave `Math` do Registry, `piReferenceLargePath` e `piReferenceLargeDigits`, tanto no modelo SLeeLa ([`lib/registry/SLRegistry.sleela`](lib/registry/SLRegistry.sleela)) como no semeador nativo ([`registry/sleela_registry.c`](registry/sleela_registry.c)); `lib/math/SLPiReference.sleela` expõe `largePath()` / `largeDigits()`. A constante π é instalada na localização SLeeLa do sistema operativo (`<data>/pi/`) **tanto** pelo instalador `make` padrão **como** pelo instalador guiado «beautiful». Pormenores: [`pi-generator/MODIUM-REGISTRY-PI-STARTUP.md`](pi-generator/MODIUM-REGISTRY-PI-STARTUP.md).
 
-### `sleelactl` — instalador guiado e domínio matemático com backend nativo
+### `sleelactl` — o instalador guiado e um domínio `math` com backend nativo
 
-- O instalador guiado («beautiful») instala agora `sleelactl` (o plano de controlo SLeeLa) e o respetivo registo de módulos, em correspondência com o instalador `make`. Consulte [`bin/SLEELACTL.md`](bin/SLEELACTL.md).
-- `sleelactl` recebeu uma nova natureza `subject` para bibliotecas de domínio C/C++ nativas compiladas no runtime e regista a primeira: `math`. `sleelactl run math` executa o backend `__NativeMath` (`impl/subjects/math/math_native.cpp`) através da demonstração de referência; `sleelactl info math` explica como o alcançar (`import math;`). Esta natureza oferece apenas os verbos `run` e `info`; não existe `check`, porque `sleela check` não carrega os domínios nativos registados por SHEET.
+- O instalador guiado («beautiful») instala agora `sleelactl` (o plano de controlo da SLeeLa) e o respetivo registo de módulos, em correspondência com o instalador `make`. Consulte [`bin/SLEELACTL.md`](bin/SLEELACTL.md).
+- `sleelactl` ganhou uma nova natureza **`subject`** para as bibliotecas de domínio nativas C/C++ compiladas no runtime, e regista a primeira: **`math`**. `sleelactl run math` exercita de ponta a ponta o backend nativo `__NativeMath` (`impl/subjects/math/math_native.cpp`) através da demonstração de referência do domínio; `sleelactl info math` explica como é alcançado (`import math;`). A natureza de domínio oferece apenas `run info` — não existe deliberadamente um verbo `check`, porque `sleela check` não carrega os domínios nativos registados por SHEET.
 
-### `@native` e `sleela aot` — Parte 1 do percurso SLeeLa → C/C++ nativo
+### `@native`, Native Drive e execução multilinguagem
 
-A nova anotação de método **`@native`** solicita compilação nativa antecipada de um método intensivo. O comando `sleela aot` encontra os métodos anotados, verifica se pertencem a um subconjunto suportado para transferência e emite C/C++. A operação **falha de forma fechada** — recusa construções ainda não traduzíveis e apresenta uma razão precisa, evitando produzir métodos parcialmente traduzidos.
+Uma nova anotação de método **`@native`** solicita a compilação nativa antecipada de um método intensivo. O novo comando `sleela aot` encontra os métodos `@native`, verifica se cada um está dentro de um *subconjunto transferível* suportado e emite C/C++ — **falhando de forma fechada** (recusando, com uma razão precisa) perante qualquer construção que ainda não consiga traduzir, de modo que nunca é produzido um método traduzido pela metade.
 
 ```sh
 sleela aot --list <file.sleela>    # veredito por método: ok / REFUSED (motivo)
 sleela aot --emit <file.sleela>    # emitir C/C++ (stdout) para um programa no subconjunto
 ```
 
-Atualmente, `@native` não altera o comportamento: os programas continuam a ser verificados e executados sem alterações; a anotação apenas solicita tratamento nativo. Esta é a Parte 1: estabelece a anotação e a fronteira honesta do subconjunto. A compilação do C/C++ emitido para uma biblioteca partilhada e o encaminhamento da VM para essa biblioteca (com fallback para o interpretador) são etapas posteriores. Consulte [`pi-generator/AT-NATIVE.md`](pi-generator/AT-NATIVE.md) para o subconjunto suportado e os códigos de saída.
+`@native` continua a ser um pedido de tratamento AOT, com as construções não suportadas rejeitadas antes da emissão. O [Native Drive](impl/native-drive/README.md) suporta compilações multiunidade de executáveis e bibliotecas partilhadas C/C++ através de compiladores do anfitrião (incluindo MSVC), saída AOT SLeeLa suportada, inspeção de símbolos face à ABI do carregador nativo, execução de processos sem shell, tratamento de stdin/stdout/stderr, encadeamento em várias fases e delegação XClass ao carregador de produção. O `sleelactl` expõe os respetivos comandos de compilação/execução e encaminha a inspeção XClass e a renderização/instalação explícita de unidades systemd através de `inspect native-drive`. A VM possui uma tabela limitada de identificadores de módulos nativos, com autorização obrigatória do anfitrião e identificadores verificados por geração. A sintaxe 3.0 acrescenta agora `nativeOpen`, `nativeCall` e `nativeClose`: o despacho de bytecode aditivo atravessa uma ABI com versão própria para null/bool/int64/double/UTF-8, enquanto arrays, structs e outros valores compostos pertencentes à VM permanecem dentro do interpretador e podem usar o recurso de bytecode com o mesmo nome. Os plugins podem opcionalmente receber uma tabela de callbacks do anfitrião com versão, para invocar funções SLeeLa exatas através de execução aninhada da VM, com raízes de GC para pilhas suspensas, uma lista de permissão explícita de nomes de callbacks do anfitrião e chamadas recursivas à API nativa rejeitadas. O código nativo continua a ser código confiável em processo, não uma sandbox. As anotações de política de processos no código-fonte têm um esquema com versão, mas ainda não são analisadas nem aplicadas. Pormenores, fronteiras de segurança e o registo das sete frentes de trabalho: [Native Drive](impl/native-drive/README.md) e [`pi-generator/AT-NATIVE.md`](pi-generator/AT-NATIVE.md).
+
 
 ## XIX. Edições internacionais do README
 
@@ -423,8 +481,8 @@ A SLeeLa disponibiliza pontos de entrada README específicos por país para os 5
 - [README.US](README.US.md)
 - [README.ZA](README.ZA.md)
 
-**Política de tradução:** estes ficheiros são pontos de entrada localizados. Uma edição só deve ser descrita como tradução completa quando todas as secções estiverem traduzidas, os identificadores técnicos e as ligações tiverem sido verificados e a edição tiver recebido revisão linguística. A cobertura linguística é representativa e não afirma que todas as línguas regionais, indígenas, gestuais ou constitucionalmente reconhecidas estejam integralmente traduzidas.
+**Política de tradução:** estes ficheiros são pontos de entrada localizados e iniciais. As respetivas introduções e títulos de língua estão localizados, enquanto a referência técnica completa permanece no [README.md](README.md) canónico em inglês. Um ficheiro de país não deve ser descrito como tradução completa até que todas as secções tenham sido traduzidas, os identificadores técnicos e as ligações tenham sido verificados e a edição tenha recebido revisão linguística. A cobertura linguística desta primeira fase é representativa e não constitui uma afirmação de que todas as línguas constitucionalmente reconhecidas, regionais, indígenas ou gestuais estejam integralmente traduzidas.
 
 ---
 
-**Estado da tradução:** secções I–XIX traduzidas para português. Identificadores técnicos, comandos, exemplos de código, nomes de ficheiros e ligações foram preservados. Recomenda-se revisão final por um falante nativo antes de publicação como tradução editorial aprovada.
+**Estado da tradução:** secções I–XIX traduzidas para português europeu. Identificadores técnicos, comandos, exemplos de código, nomes de ficheiros, ligações e endereços foram preservados. Recomenda-se revisão final por falantes nativos antes de a edição ser publicada como tradução editorial aprovada.

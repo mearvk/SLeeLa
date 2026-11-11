@@ -1,8 +1,10 @@
 # SLeeLa 3.0 — España (ES)
 
 <p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>
 
 <p align="center"><strong>Un lenguaje nativo de sistemas, con compilador, entorno de ejecución y ecosistema de máquinas virtuales.</strong></p>
+<p align="center"><a href="https://github.com/mearvk/SLeeLa/actions"><img alt="GitHub Actions" src="https://img.shields.io/github/actions/workflow/status/mearvk/SLeeLa/test-suite.yml?branch=main&label=test%20suite"></a> <a href="docs/PLATFORM-SUPPORT.md"><img alt="Platform matrix" src="https://img.shields.io/badge/platforms-Linux%20%7C%20macOS%20%7C%20Windows-273238"></a></p>
 
 > **Edición internacional por país.** Este archivo reúne las versiones lingüísticas previstas para España: español, catalán, gallego y euskera. La traducción técnica se realiza por etapas. Las secciones traducidas se reproducen íntegramente; las pendientes se identifican expresamente.
 
@@ -153,17 +155,17 @@ SLeeLa incluye un conjunto coordinado de esquemas de color oscuros y profesional
 
 | Esquema | Fondo | Primer plano | Palabras clave | Tipos | Cadenas | Comentarios |
 |---|---|---|---|---|---|---|
-| **American Professional** | `#101820` | `#F4F7FA` | `#7FB3FF` | `#73DACA` | `#F2C078` | `#8A96A3` |
-| **Pan-Eurasian** | `#111827` | `#F0F2F5` | `#7AA7E8` | `#69C9B3` | `#D7B56D` | `#8995A5` |
-| **Russian and Slavic — Medium** | `#202733` | `#E8EAF0` | `#A9C0DD` | `#8FC4B2` | `#D6BD8B` | `#9AA3AF` |
-| **Central Asian / Silk Road** | `#1C2529` | `#F5F0E5` | `#7FADE0` | `#45C6C2` | `#D9B56D` | `#92A3A0` |
-| **East Asian** | `#171A1C` | `#F2EFE7` | `#D97878` | `#72C7A5` | `#D8B76A` | `#969F9B` |
-| **ICC — Corte Penal Internacional** | `#0E1A2B` | `#EAF0F7` | `#5B8FD6` | `#7FB7C9` | `#D9B25A` | `#7E8CA0` |
-| **SCOTUS — Tribunal Supremo de EE. UU.** | `#1A1416` | `#F3EEE6` | `#9E2B35` | `#8FA9B8` | `#C9A24B` | `#8C8178` |
-| **Greek (Hellenic)** | `#0A1A30` | `#FFFFFF` | `#2E7BD6` | `#5E9FE0` | `#9FC3EC` | `#6E86A6` |
-| **Turkish (Al Bayrak)** | `#2A0609` | `#FFFFFF` | `#F23D48` | `#F0A9AE` | `#F0C9A9` | `#A8767A` |
-| **Kiro** | `#0B0B12` | `#F5F5FA` | `#A98EDA` | `#6E8BE0` | `#E8C547` | `#6A6482` |
-| **SLeeLa** | `#08080E` | `#FFFFFF` | `#B07CFF` | `#5A7CFF` | `#FFD21E` | `#6E5F9E` |
+| **American Professional** | <span style="display:inline-block;width:1em;height:1em;background:#101820;border:1px solid #888"></span> `#101820` | <span style="display:inline-block;width:1em;height:1em;background:#F4F7FA;border:1px solid #888"></span> `#F4F7FA` | <span style="display:inline-block;width:1em;height:1em;background:#7FB3FF;border:1px solid #888"></span> `#7FB3FF` | <span style="display:inline-block;width:1em;height:1em;background:#73DACA;border:1px solid #888"></span> `#73DACA` | <span style="display:inline-block;width:1em;height:1em;background:#F2C078;border:1px solid #888"></span> `#F2C078` | <span style="display:inline-block;width:1em;height:1em;background:#8A96A3;border:1px solid #888"></span> `#8A96A3` |
+| **Pan-Eurasian** | <span style="display:inline-block;width:1em;height:1em;background:#111827;border:1px solid #888"></span> `#111827` | <span style="display:inline-block;width:1em;height:1em;background:#F0F2F5;border:1px solid #888"></span> `#F0F2F5` | <span style="display:inline-block;width:1em;height:1em;background:#7AA7E8;border:1px solid #888"></span> `#7AA7E8` | <span style="display:inline-block;width:1em;height:1em;background:#69C9B3;border:1px solid #888"></span> `#69C9B3` | <span style="display:inline-block;width:1em;height:1em;background:#D7B56D;border:1px solid #888"></span> `#D7B56D` | <span style="display:inline-block;width:1em;height:1em;background:#8995A5;border:1px solid #888"></span> `#8995A5` |
+| **Russian and Slavic — Medium** | <span style="display:inline-block;width:1em;height:1em;background:#202733;border:1px solid #888"></span> `#202733` | <span style="display:inline-block;width:1em;height:1em;background:#E8EAF0;border:1px solid #888"></span> `#E8EAF0` | <span style="display:inline-block;width:1em;height:1em;background:#A9C0DD;border:1px solid #888"></span> `#A9C0DD` | <span style="display:inline-block;width:1em;height:1em;background:#8FC4B2;border:1px solid #888"></span> `#8FC4B2` | <span style="display:inline-block;width:1em;height:1em;background:#D6BD8B;border:1px solid #888"></span> `#D6BD8B` | <span style="display:inline-block;width:1em;height:1em;background:#9AA3AF;border:1px solid #888"></span> `#9AA3AF` |
+| **Central Asian / Silk Road** | <span style="display:inline-block;width:1em;height:1em;background:#1C2529;border:1px solid #888"></span> `#1C2529` | <span style="display:inline-block;width:1em;height:1em;background:#F5F0E5;border:1px solid #888"></span> `#F5F0E5` | <span style="display:inline-block;width:1em;height:1em;background:#7FADE0;border:1px solid #888"></span> `#7FADE0` | <span style="display:inline-block;width:1em;height:1em;background:#45C6C2;border:1px solid #888"></span> `#45C6C2` | <span style="display:inline-block;width:1em;height:1em;background:#D9B56D;border:1px solid #888"></span> `#D9B56D` | <span style="display:inline-block;width:1em;height:1em;background:#92A3A0;border:1px solid #888"></span> `#92A3A0` |
+| **East Asian** | <span style="display:inline-block;width:1em;height:1em;background:#171A1C;border:1px solid #888"></span> `#171A1C` | <span style="display:inline-block;width:1em;height:1em;background:#F2EFE7;border:1px solid #888"></span> `#F2EFE7` | <span style="display:inline-block;width:1em;height:1em;background:#D97878;border:1px solid #888"></span> `#D97878` | <span style="display:inline-block;width:1em;height:1em;background:#72C7A5;border:1px solid #888"></span> `#72C7A5` | <span style="display:inline-block;width:1em;height:1em;background:#D8B76A;border:1px solid #888"></span> `#D8B76A` | <span style="display:inline-block;width:1em;height:1em;background:#969F9B;border:1px solid #888"></span> `#969F9B` |
+| **ICC — Corte Penal Internacional** | <span style="display:inline-block;width:1em;height:1em;background:#0E1A2B;border:1px solid #888"></span> `#0E1A2B` | <span style="display:inline-block;width:1em;height:1em;background:#EAF0F7;border:1px solid #888"></span> `#EAF0F7` | <span style="display:inline-block;width:1em;height:1em;background:#5B8FD6;border:1px solid #888"></span> `#5B8FD6` | <span style="display:inline-block;width:1em;height:1em;background:#7FB7C9;border:1px solid #888"></span> `#7FB7C9` | <span style="display:inline-block;width:1em;height:1em;background:#D9B25A;border:1px solid #888"></span> `#D9B25A` | <span style="display:inline-block;width:1em;height:1em;background:#7E8CA0;border:1px solid #888"></span> `#7E8CA0` |
+| **SCOTUS — Tribunal Supremo de EE. UU.** | <span style="display:inline-block;width:1em;height:1em;background:#1A1416;border:1px solid #888"></span> `#1A1416` | <span style="display:inline-block;width:1em;height:1em;background:#F3EEE6;border:1px solid #888"></span> `#F3EEE6` | <span style="display:inline-block;width:1em;height:1em;background:#9E2B35;border:1px solid #888"></span> `#9E2B35` | <span style="display:inline-block;width:1em;height:1em;background:#8FA9B8;border:1px solid #888"></span> `#8FA9B8` | <span style="display:inline-block;width:1em;height:1em;background:#C9A24B;border:1px solid #888"></span> `#C9A24B` | <span style="display:inline-block;width:1em;height:1em;background:#8C8178;border:1px solid #888"></span> `#8C8178` |
+| **Greek (Hellenic)** | <span style="display:inline-block;width:1em;height:1em;background:#0A1A30;border:1px solid #888"></span> `#0A1A30` | <span style="display:inline-block;width:1em;height:1em;background:#FFFFFF;border:1px solid #888"></span> `#FFFFFF` | <span style="display:inline-block;width:1em;height:1em;background:#2E7BD6;border:1px solid #888"></span> `#2E7BD6` | <span style="display:inline-block;width:1em;height:1em;background:#5E9FE0;border:1px solid #888"></span> `#5E9FE0` | <span style="display:inline-block;width:1em;height:1em;background:#9FC3EC;border:1px solid #888"></span> `#9FC3EC` | <span style="display:inline-block;width:1em;height:1em;background:#6E86A6;border:1px solid #888"></span> `#6E86A6` |
+| **Turkish (Al Bayrak)** | <span style="display:inline-block;width:1em;height:1em;background:#2A0609;border:1px solid #888"></span> `#2A0609` | <span style="display:inline-block;width:1em;height:1em;background:#FFFFFF;border:1px solid #888"></span> `#FFFFFF` | <span style="display:inline-block;width:1em;height:1em;background:#F23D48;border:1px solid #888"></span> `#F23D48` | <span style="display:inline-block;width:1em;height:1em;background:#F0A9AE;border:1px solid #888"></span> `#F0A9AE` | <span style="display:inline-block;width:1em;height:1em;background:#F0C9A9;border:1px solid #888"></span> `#F0C9A9` | <span style="display:inline-block;width:1em;height:1em;background:#A8767A;border:1px solid #888"></span> `#A8767A` |
+| **Kiro** | <span style="display:inline-block;width:1em;height:1em;background:#0B0B12;border:1px solid #888"></span> `#0B0B12` | <span style="display:inline-block;width:1em;height:1em;background:#F5F5FA;border:1px solid #888"></span> `#F5F5FA` | <span style="display:inline-block;width:1em;height:1em;background:#A98EDA;border:1px solid #888"></span> `#A98EDA` | <span style="display:inline-block;width:1em;height:1em;background:#6E8BE0;border:1px solid #888"></span> `#6E8BE0` | <span style="display:inline-block;width:1em;height:1em;background:#E8C547;border:1px solid #888"></span> `#E8C547` | <span style="display:inline-block;width:1em;height:1em;background:#6A6482;border:1px solid #888"></span> `#6A6482` |
+| **SLeeLa** | <span style="display:inline-block;width:1em;height:1em;background:#08080E;border:1px solid #888"></span> `#08080E` | <span style="display:inline-block;width:1em;height:1em;background:#FFFFFF;border:1px solid #888"></span> `#FFFFFF` | <span style="display:inline-block;width:1em;height:1em;background:#B07CFF;border:1px solid #888"></span> `#B07CFF` | <span style="display:inline-block;width:1em;height:1em;background:#5A7CFF;border:1px solid #888"></span> `#5A7CFF` | <span style="display:inline-block;width:1em;height:1em;background:#FFD21E;border:1px solid #888"></span> `#FFD21E` | <span style="display:inline-block;width:1em;height:1em;background:#6E5F9E;border:1px solid #888"></span> `#6E5F9E` |
 
 ### Colores de las banderas nacionales (paleta de origen)
 
@@ -352,7 +354,7 @@ Cuando se añada un paquete o se amplíe sustancialmente, incorpore aquí su ent
 
 ---
 
-## XV. Bitcoin Conjegeum
+## <img src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="25" height="25" alt="Debian"> XV. Bitcoin Conjegeum
 
 ![CremeOak](https://github.com/mearvk/Java.Web.Server.Telnet.Front.Java.21/raw/main/images/national-bitcoin-icc-logo-005.jpg)
 
@@ -384,9 +386,17 @@ python3 utf-4088/tools/generate_catalogue.py \
 
 El archivo binario generado tiene 16.777.244 bytes y está diseñado para permanecer por debajo de 20.000.000 bytes. Las pruebas unitarias y un flujo de trabajo de GitHub Actions verifican el número de entradas, la unicidad de los glifos, el tamaño y SHA-256; las ejecuciones satisfactorias publican el binario y el resumen como artefacto del flujo de trabajo `utf4088-million-catalogue`. El binario generado se mantiene deliberadamente fuera del historial de Git. UTF-4088 sigue siendo experimental y no es compatible con Unicode.
 
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>
+
+---
+
 ## XVIII. Incorporaciones recientes: Pi, Modium/Registry, sleelactl y `@native`
 
-Esta sección resume las funciones añadidas durante el trabajo de 2026-11, todas incorporadas a `master`.
+Esta sección recoge las funciones añadidas durante el trabajo de 2026-11, con los grupos más recientes primero. Los archivos fuente enlazados y su estado de validación son la referencia autorizada; los cambios en revisión no se describen como integrados hasta que llegan a `master`.
 
 ### Constante de catálogo Pi de 100.000.000 de dígitos
 
@@ -401,7 +411,7 @@ En los puntos de entrada dedicados —`sleela registry` y `sleela modium`, así 
 - El instalador guiado («beautiful») instala ahora `sleelactl` (el plano de control de SLeeLa) y su registro de módulos, al igual que el instalador `make`. Véase [`bin/SLEELACTL.md`](bin/SLEELACTL.md).
 - `sleelactl` incorpora la naturaleza **`subject`** para bibliotecas de temas nativos C/C++ compiladas en el runtime, y registra la primera: **`math`**. `sleelactl run math` ejecuta de extremo a extremo el backend `__NativeMath` (`impl/subjects/math/math_native.cpp`) mediante su demostración de referencia; `sleelactl info math` explica el acceso mediante `import math;`. Esta naturaleza solo ofrece `run` e `info`; no incluye `check`, porque `sleela check` no carga los temas nativos registrados mediante SHEET.
 
-### `@native` y `sleela aot`: primera etapa de SLeeLa → C/C++ nativo
+### `@native`, Native Drive y ejecución multilingüe
 
 La nueva anotación de método **`@native`** solicita compilación nativa anticipada (*ahead-of-time*) para un método intensivo. El comando `sleela aot` localiza estos métodos, verifica que estén dentro del *subconjunto descargable* admitido y genera C/C++. **Falla de forma cerrada**: rechaza con un motivo preciso toda construcción que aún no pueda traducir, evitando generar métodos parcialmente traducidos.
 
@@ -410,7 +420,8 @@ sleela aot --list <file.sleela>    # veredicto por método: ok / REFUSED (motivo
 sleela aot --emit <file.sleela>    # genera C/C++ (stdout) para un programa admitido
 ```
 
-Actualmente, `@native` no cambia el comportamiento: los programas siguen verificándose y ejecutándose sin cambios; la anotación solo solicita tratamiento nativo. Esta Parte 1 establece la anotación y el límite explícito del subconjunto. La compilación del C/C++ emitido en una biblioteca compartida y el despacho de la VM hacia ella, con retorno al intérprete como alternativa, corresponden a etapas posteriores. Detalles, subconjunto admitido y códigos de salida: [`pi-generator/AT-NATIVE.md`](pi-generator/AT-NATIVE.md).
+`@native` sigue siendo una solicitud de tratamiento AOT, y las construcciones no admitidas se rechazan antes de la emisión. El [Native Drive](impl/native-drive/README.md) admite compilaciones de ejecutables y bibliotecas compartidas C/C++ de varias unidades mediante compiladores del host (incluido MSVC), la salida AOT admitida de SLeeLa, la inspección de símbolos frente a la ABI del cargador nativo, la ejecución de procesos sin shell, la gestión de stdin/stdout/stderr, el encadenamiento de varias etapas mediante tuberías y la delegación de XClass al cargador de producción. `sleelactl` expone sus comandos de compilación y ejecución, y encamina la inspección de XClass y la generación e instalación explícitas de unidades systemd mediante `inspect native-drive`. La VM posee una tabla acotada de manejadores de módulos nativos, con autorización obligatoria del host y manejadores verificados por generación. La sintaxis 3.0 añade ahora `nativeOpen`, `nativeCall` y `nativeClose`: el despacho de bytecode de solo anexión atraviesa una ABI con versión independiente (null/bool/int64/double/UTF-8), mientras que los arrays, structs y demás valores compuestos propiedad de la VM permanecen dentro del intérprete y pueden recurrir al bytecode del mismo nombre como alternativa. Los plugins pueden recibir opcionalmente una tabla de callbacks del host con versión para invocar funciones SLeeLa exactas mediante ejecución anidada de la VM, con raíces de GC para pilas suspendidas, una lista de permitidos explícita de nombres de callback del host y rechazo de las llamadas recursivas a la API nativa. El código nativo sigue siendo código de confianza dentro del proceso, no un entorno aislado. Las anotaciones de política de procesos en el código fuente tienen un esquema con versión, pero todavía no se analizan ni se aplican. Detalles, límites de seguridad y registro de los siete flujos de trabajo: [Native Drive](impl/native-drive/README.md) y [`pi-generator/AT-NATIVE.md`](pi-generator/AT-NATIVE.md).
+
 
 ## XIX. Ediciones internacionales del README
 

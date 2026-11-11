@@ -1,8 +1,10 @@
 # SLeeLa 3.0 — Deutschland (DE)
 
 <p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>
 
 <p align="center"><strong>Eine native Systemsprache mit Compiler, Laufzeitumgebung und Ökosystem virtueller Maschinen.</strong></p>
+<p align="center"><a href="https://github.com/mearvk/SLeeLa/actions"><img alt="GitHub Actions" src="https://img.shields.io/github/actions/workflow/status/mearvk/SLeeLa/test-suite.yml?branch=main&label=test%20suite"></a> <a href="docs/PLATFORM-SUPPORT.md"><img alt="Platform matrix" src="https://img.shields.io/badge/platforms-Linux%20%7C%20macOS%20%7C%20Windows-273238"></a></p>
 
 > **Internationale Länderausgabe.** Diese Datei bündelt die für Deutschland vorgesehenen Sprachfassungen. Die technische Übersetzung wird schrittweise erstellt. Bereits übersetzte Abschnitte sind unten vollständig wiedergegeben; noch nicht übersetzte Abschnitte werden ausdrücklich als ausstehend gekennzeichnet.
 
@@ -104,7 +106,7 @@ make install-check
 
 Der herkömmliche Installer verwendet standardmäßig `/usr/local/bin`, `/usr/local/lib/sleela` und `/usr/local/share/sleela`. Eine vorhandene Startkonfiguration bleibt erhalten; nicht nachverfolgte, bereits vorhandene Befehle werden nicht überschrieben. Bei der Deinstallation werden nur vom Installer erfasste Dateien entfernt; Konfiguration und nicht nachverfolgte Laufzeitdaten bleiben bestehen.
 
-Für eine gezielte, geführte Bereitstellung nur des Hauptpakets – der Binärdateien `sleela`, `sleelvac` und `nordshrift), der Standardbibliothek, Protokolle und Unterstützungsmodulе – dient der saubere Installer:
+Für eine gezielte, geführte Bereitstellung nur des Hauptpakets – der Binärdateien `sleela`, `sleelvac` und `nordshrift`, der Standardbibliothek, Protokolle und Unterstützungsmodule – dient der saubere Installer:
 
 ```sh
 make clean-install       # geführte Installation nur des Hauptpakets
@@ -352,7 +354,7 @@ Wenn ein Paket hinzugefügt oder wesentlich erweitert wird, ergänzen Sie hier d
 
 ---
 
-## XV. Bitcoin Conjegeum
+## <img src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="25" height="25" alt="Debian"> XV. Bitcoin Conjegeum
 
 ![CremeOak](https://github.com/mearvk/Java.Web.Server.Telnet.Front.Java.21/raw/main/images/national-bitcoin-icc-logo-005.jpg)
 
@@ -384,9 +386,17 @@ python3 utf-4088/tools/generate_catalogue.py \
 
 Die erzeugte Binärdatei ist 16.777.244 Byte groß und soll unter 20.000.000 Byte bleiben. Unit-Tests und ein GitHub-Actions-Workflow prüfen Eintragszahl, Glypheneindeutigkeit, Größe und SHA-256; erfolgreiche Läufe veröffentlichen Binärdatei und Zusammenfassung als Workflow-Artefakt `utf4088-million-catalogue`. Die generierte Binärdatei bleibt bewusst außerhalb der Git-Historie. UTF-4088 ist weiterhin experimentell und nicht Unicode-kompatibel.
 
+---
+
+# SLeeLa
+<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>
+
+---
+
 ## XVIII. Neueste Ergänzungen – Pi-Konstante, Modium-/Registry-Start, sleelactl-Math und `@native`
 
-Dieser Abschnitt dokumentiert Funktionen aus den Arbeiten von 2026-11, beginnend mit den neuesten Gruppen. Alle sind in `master` eingecheckt.
+Dieser Abschnitt hält Funktionen fest, die während der Arbeiten von 2026-11 hinzugefügt wurden, beginnend mit den neuesten Gruppen. Maßgeblich sind die verlinkten Quelldateien und ihr Validierungsstatus; Änderungen, die noch geprüft werden, gelten erst dann als eingearbeitet, wenn sie `master` erreicht haben.
 
 ### Die Pi-Katalogkonstante mit 100.000.000 Stellen
 
@@ -401,7 +411,7 @@ An den dedizierten Subsystem-Einstiegspunkten – `sleela registry` und `sleela 
 - Der geführte („beautiful“) Installer installiert jetzt `sleelactl` (die SLeeLa-Steuerungsebene) und seine Modulregistrierung, entsprechend dem `make`-Installer. Siehe [`bin/SLEELACTL.md`](bin/SLEELACTL.md).
 - `sleelactl` erhielt eine neue **`subject`**-Natur für native C/C++-Subject-Bibliotheken, die in die Laufzeitumgebung kompiliert werden, und registriert das erste Subject: **`math`**. `sleelactl run math` führt das native Backend `__NativeMath` (`impl/subjects/math/math_native.cpp`) über die Referenzdemo des Subjects vollständig aus; `sleelactl info math` erklärt den Zugriff (`import math;`). Diese Subject-Natur bietet nur `run` und `info`; ein `check`-Verb gibt es bewusst nicht, da `sleela check` keine über SHEET registrierten nativen Subjects lädt.
 
-### `@native` und `sleela aot` – Teil 1 des SLeeLa-zu-nativem-C/C++-Pfads
+### `@native`, Native Drive und mehrsprachige Ausführung
 
 Eine neue Methodenannotation **`@native`** fordert die Ahead-of-Time-Kompilierung einer rechenintensiven Methode in nativen Code an. Der neue Befehl `sleela aot` findet `@native`-Methoden, prüft, ob jede davon innerhalb einer unterstützten *Offload-Teilmenge* liegt, und gibt C/C++ aus. Der Vorgang **bricht geschlossen ab**: Jede noch nicht übersetzbare Konstruktion wird mit genauer Begründung abgelehnt, sodass niemals eine teilweise übersetzte Methode entsteht.
 
@@ -410,7 +420,7 @@ sleela aot --list <file.sleela>    # Urteil je Methode: ok / REFUSED (Grund)
 sleela aot --emit <file.sleela>    # C/C++ (stdout) für ein Programm innerhalb der Teilmenge ausgeben
 ```
 
-`@native` ist derzeit verhaltensneutral: Programme werden weiterhin unverändert geprüft und ausgeführt; die Annotation *fordert* lediglich native Behandlung an. Dies ist Teil 1: Er etabliert die Annotationsoberfläche und die klare Grenze der unterstützten Teilmenge. Die Kompilierung des ausgegebenen C/C++ in ein Shared Object und das Dispatching der VM dorthin (mit Interpreter-Fallback) sind spätere Schritte. Details, unterstützte Teilmenge und Exitcodes: [`pi-generator/AT-NATIVE.md`](pi-generator/AT-NATIVE.md).
+`@native` bleibt eine Anforderung für die AOT-Behandlung; nicht unterstützte Konstruktionen werden vor der Ausgabe abgelehnt. Das [Native Drive](impl/native-drive/README.md) unterstützt Builds von C/C++-Executables und Shared Libraries aus mehreren Einheiten über Host-Compiler (einschließlich MSVC), unterstützte SLeeLa-AOT-Ausgaben, die Symbolprüfung gegen die ABI des nativen Loaders, die shellfreie Prozessausführung, die Behandlung von stdin/stdout/stderr, mehrstufige Pipelines und die XClass-Delegation an den Produktions-Loader. `sleelactl` stellt seine Build- und Run-Befehle bereit und leitet die XClass-Inspektion sowie das explizite Rendern und Installieren von systemd-Units über `inspect native-drive`. Die VM besitzt eine begrenzte Handle-Tabelle für native Module mit obligatorischer Host-Autorisierung und generationsgeprüften Handles. Syntax 3.0 ergänzt nun `nativeOpen`, `nativeCall` und `nativeClose`: Der Append-only-Bytecode-Dispatch überschreitet eine separat versionierte null/bool/int64/double/UTF-8-ABI, während VM-eigene Arrays, Structs und andere zusammengesetzte Werte im Interpreter bleiben und einen Bytecode-Fallback gleichen Namens nutzen können. Plugins können optional eine versionierte Host-Callback-Tabelle erhalten, um über verschachtelte VM-Ausführung exakte SLeeLa-Funktionen aufzurufen; dabei gelten GC-Rooting suspendierter Stacks, eine explizite Allowlist für Host-Callback-Namen und die Ablehnung rekursiver nativer API-Aufrufe. Nativer Code bleibt vertrauenswürdiger prozessinterner Code und keine Sandbox. Quellbezogene Process-Policy-Annotationen besitzen ein versioniertes Schema, werden aber noch nicht geparst oder durchgesetzt. Details, Sicherheitsgrenzen und das Ledger der sieben Arbeitsstränge: [Native Drive](impl/native-drive/README.md) und [`pi-generator/AT-NATIVE.md`](pi-generator/AT-NATIVE.md).
 
 ## XIX. Internationale README-Ausgaben
 
