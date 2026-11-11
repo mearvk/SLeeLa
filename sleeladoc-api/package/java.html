@@ -9076,14 +9076,21 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="arrayblockingqueue">ArrayBlockingQueue <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/ArrayBlockingQueue.sleela)</span></h2>
+<h2 class="section" data-u="arrayblockingqueue">ArrayBlockingQueue <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/ArrayBlockingQueue.sleela)</span></h2>
 <div data-u="arrayblockingqueue arrayblockingqueue">
-<h3 id="ArrayBlockingQueue">ArrayBlockingQueue <span class="pill">class</span></h3>
+<h3 id="ArrayBlockingQueue">ArrayBlockingQueue <span class="pill">class</span> <span class="muted">extends <code>AbstractQueue</code></span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.concurrent.ArrayBlockingQueue. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.concurrent.ArrayBlockingQueue&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>capacityLimit</code></td><td><span class="sig">int capacityLimit</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>data</code></td><td><span class="sig">Any[] data</span></td><td class="desc">circular Any[] buffer: element i lives at data[(head + i) % capacity]</td></tr>
+<tr><td><code>head</code></td><td><span class="sig">int head</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>modCount</code></td><td><span class="sig">int modCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>gcSlot</code></td><td><span class="sig">int gcSlot</span></td><td class="desc">value semantics shared by the collections (hash, equality, natural order)</td></tr>
+<tr><td><code>utfOps</code></td><td><span class="sig">int utfOps</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -9092,6 +9099,86 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>add</code></td><td><span class="sig">boolean add(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addAll</code></td><td><span class="sig">boolean addAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>subList</code></td><td><span class="sig">ArrayBlockingQueue subList(int fromIndex, int toIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>reversed</code></td><td><span class="sig">ArrayBlockingQueue reversed()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ensureCapacity</code></td><td><span class="sig">void ensureCapacity(int minCapacity)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>trimToSize</code></td><td><span class="sig">void trimToSize()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>offer</code></td><td><span class="sig">boolean offer(Any e)</span></td><td class="desc">java.util.Queue / java.util.Deque</td></tr>
+<tr><td><code>offerFirst</code></td><td><span class="sig">boolean offerFirst(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>offerLast</code></td><td><span class="sig">boolean offerLast(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>poll</code></td><td><span class="sig">Any poll()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pollFirst</code></td><td><span class="sig">Any pollFirst()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pollLast</code></td><td><span class="sig">Any pollLast()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>peek</code></td><td><span class="sig">Any peek()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>peekFirst</code></td><td><span class="sig">Any peekFirst()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>peekLast</code></td><td><span class="sig">Any peekLast()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>element</code></td><td><span class="sig">Any element()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>push</code></td><td><span class="sig">void push(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pop</code></td><td><span class="sig">Any pop()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeFirstOccurrence</code></td><td><span class="sig">boolean removeFirstOccurrence(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeLastOccurrence</code></td><td><span class="sig">boolean removeLastOccurrence(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>descendingIterator</code></td><td><span class="sig">Iterator descendingIterator()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>remainingCapacity</code></td><td><span class="sig">int remainingCapacity()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>put</code></td><td><span class="sig">void put(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>putFirst</code></td><td><span class="sig">void putFirst(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>putLast</code></td><td><span class="sig">void putLast(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>take</code></td><td><span class="sig">Any take()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>takeFirst</code></td><td><span class="sig">Any takeFirst()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>takeLast</code></td><td><span class="sig">Any takeLast()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>offerMillis</code></td><td><span class="sig">boolean offerMillis(Any e, long timeoutMillis)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pollMillis</code></td><td><span class="sig">Any pollMillis(long timeoutMillis)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>drainTo</code></td><td><span class="sig">int drainTo(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>drainToMax</code></td><td><span class="sig">int drainToMax(Any c, int maxElements)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>seqInit</code></td><td><span class="sig">void seqInit(int capacity)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>slot</code></td><td><span class="sig">int slot(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>at</code></td><td><span class="sig">Any at(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>putAt</code></td><td><span class="sig">void putAt(int i, Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>grow</code></td><td><span class="sig">void grow(int minCapacity)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>insertAt</code></td><td><span class="sig">void insertAt(int index, Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>insertAtRaw</code></td><td><span class="sig">void insertAtRaw(int index, Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>deleteAt</code></td><td><span class="sig">Any deleteAt(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>deleteAtRaw</code></td><td><span class="sig">Any deleteAtRaw(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkElementIndex</code></td><td><span class="sig">void checkElementIndex(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkPositionIndex</code></td><td><span class="sig">void checkPositionIndex(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>size</code></td><td><span class="sig">int size()</span></td><td class="desc">java.util.Collection</td></tr>
+<tr><td><code>isEmpty</code></td><td><span class="sig">boolean isEmpty()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>contains</code></td><td><span class="sig">boolean contains(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toArray</code></td><td><span class="sig">Any[] toArray()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clear</code></td><td><span class="sig">void clear()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>containsAll</code></td><td><span class="sig">boolean containsAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeObject</code></td><td><span class="sig">boolean removeObject(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeAll</code></td><td><span class="sig">boolean removeAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>retainAll</code></td><td><span class="sig">boolean retainAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>iterator</code></td><td><span class="sig">Iterator iterator()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashCode</code></td><td><span class="sig">int hashCode()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>equals</code></td><td><span class="sig">boolean equals(Any o)</span></td><td class="desc">Java List.equals: same size and pairwise-equal elements in order.</td></tr>
+<tr><td><code>get</code></td><td><span class="sig">Any get(int index)</span></td><td class="desc">java.util.List</td></tr>
+<tr><td><code>set</code></td><td><span class="sig">Any set(int index, Any element)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addAt</code></td><td><span class="sig">void addAt(int index, Any element)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>remove</code></td><td><span class="sig">Any remove(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>indexOf</code></td><td><span class="sig">int indexOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastIndexOf</code></td><td><span class="sig">int lastIndexOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addAllAt</code></td><td><span class="sig">boolean addAllAt(int index, Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sort</code></td><td><span class="sig">void sort(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mergeSort</code></td><td><span class="sig">void mergeSort(Any[] a, Any[] tmp, int lo, int hi)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getFirst</code></td><td><span class="sig">Any getFirst()</span></td><td class="desc">java.util.SequencedCollection (Java 21+)</td></tr>
+<tr><td><code>getLast</code></td><td><span class="sig">Any getLast()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addFirst</code></td><td><span class="sig">void addFirst(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addLast</code></td><td><span class="sig">void addLast(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeFirst</code></td><td><span class="sig">Any removeFirst()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeLast</code></td><td><span class="sig">Any removeLast()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>utfTick</code></td><td><span class="sig">void utfTick()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashOf</code></td><td><span class="sig">int hashOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrapHash</code></td><td><span class="sig">int wrapHash(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrap32</code></td><td><span class="sig">int wrap32(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>same</code></td><td><span class="sig">boolean same(Any a, Any b)</span></td><td class="desc">Value equality: numbers and strings by value, objects by identity.</td></tr>
+<tr><td><code>compareValues</code></td><td><span class="sig">int compareValues(Any a, Any b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>textOf</code></td><td><span class="sig">String textOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>elementsOf</code></td><td><span class="sig">Any[] elementsOf(Any c)</span></td><td class="desc">Elements of any collection implemented in this package, as an array.</td></tr>
+<tr><td><code>outOfBounds</code></td><td><span class="sig">IndexOutOfBoundsException outOfBounds(int index, int length)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="arraydeque">ArrayDeque <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/ArrayDeque.sleela)</span></h2>
@@ -21152,16 +21239,17 @@
 </div>
 <h2 class="section" data-u="biginteger">BigInteger <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/math/BigInteger.sleela)</span></h2>
 <div data-u="biginteger biginteger">
-<h3 id="BigInteger">BigInteger <span class="pill">class</span></h3>
+<h3 id="BigInteger">BigInteger <span class="pill">class</span> <span class="muted">extends <code>Number</code></span></h3>
 <p class="desc">Native SLeeLa source declaration for the Java type java.math.BigInteger. The Java class name is retained exactly. The SLeeLa declaration is the source contract; Java behavior is supplied only through the conformance boundary.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.math.BigInteger&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>ZERO</code></td><td><span class="sig">static Any ZERO = null</span></td><td class="desc">---- BEGIN java declarations (generated by tools/jdk_api_declare.py) ---- constants and static fields (values reflected from the JDK)</td></tr>
-<tr><td><code>ONE</code></td><td><span class="sig">static Any ONE = null</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>TWO</code></td><td><span class="sig">static Any TWO = null</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>TEN</code></td><td><span class="sig">static Any TEN = null</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>signum</code></td><td><span class="sig">int signum</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mag</code></td><td><span class="sig">int[] mag</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>quoOut</code></td><td><span class="sig">int[] quoOut</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>remOut</code></td><td><span class="sig">int[] remOut</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nib</code></td><td><span class="sig">int[] nib</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -21170,6 +21258,89 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>limbs</code></td><td><span class="sig">int[] limbs(int n)</span></td><td class="desc">limb utilities</td></tr>
+<tr><td><code>trimmed</code></td><td><span class="sig">int[] trimmed(int[] a, int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>magZero</code></td><td><span class="sig">boolean magZero(int[] a)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cmpMag</code></td><td><span class="sig">int cmpMag(int[] a, int[] b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addMag</code></td><td><span class="sig">int[] addMag(int[] a, int[] b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>subMag</code></td><td><span class="sig">int[] subMag(int[] a, int[] b)</span></td><td class="desc">a - b for |a| &gt;= |b|.</td></tr>
+<tr><td><code>mulMag</code></td><td><span class="sig">int[] mulMag(int[] a, int[] b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>divMag</code></td><td><span class="sig">void divMag(int[] a, int[] b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mulAddSmall</code></td><td><span class="sig">int[] mulAddSmall(int[] a, long small, long add)</span></td><td class="desc">magnitude * small + add (small, add below 2^31), for radix parsing.</td></tr>
+<tr><td><code>make</code></td><td><span class="sig">BigInteger make(int sig, int[] m)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>parseInto</code></td><td><span class="sig">void parseInto(String val, int radix)</span></td><td class="desc">parsing</td></tr>
+<tr><td><code>groupError</code></td><td><span class="sig">NumberFormatException groupError(String u, int z, int n, int bad, int radix)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>digitsPerInt</code></td><td><span class="sig">int digitsPerInt(int radix)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ZERO</code></td><td><span class="sig">BigInteger ZERO()</span></td><td class="desc">static factories and constants (call on any BigInteger)</td></tr>
+<tr><td><code>ONE</code></td><td><span class="sig">BigInteger ONE()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>TWO</code></td><td><span class="sig">BigInteger TWO()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>TEN</code></td><td><span class="sig">BigInteger TEN()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>valueOf</code></td><td><span class="sig">BigInteger valueOf(long val)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>newRadix</code></td><td><span class="sig">BigInteger newRadix(String val, int radix)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>signum</code></td><td><span class="sig">int signum()</span></td><td class="desc">arithmetic</td></tr>
+<tr><td><code>negate</code></td><td><span class="sig">BigInteger negate()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>abs</code></td><td><span class="sig">BigInteger abs()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>add</code></td><td><span class="sig">BigInteger add(BigInteger val)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>subtract</code></td><td><span class="sig">BigInteger subtract(BigInteger val)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>multiply</code></td><td><span class="sig">BigInteger multiply(BigInteger val)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkDivisor</code></td><td><span class="sig">void checkDivisor(BigInteger val)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>divide</code></td><td><span class="sig">BigInteger divide(BigInteger val)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>remainder</code></td><td><span class="sig">BigInteger remainder(BigInteger val)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>divideAndRemainder</code></td><td><span class="sig">BigInteger[] divideAndRemainder(BigInteger val)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mod</code></td><td><span class="sig">BigInteger mod(BigInteger m)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pow</code></td><td><span class="sig">BigInteger pow(int exponent)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>gcd</code></td><td><span class="sig">BigInteger gcd(BigInteger val)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sqrt</code></td><td><span class="sig">BigInteger sqrt()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sqrtAndRemainder</code></td><td><span class="sig">BigInteger[] sqrtAndRemainder()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>modPow</code></td><td><span class="sig">BigInteger modPow(BigInteger exponent, BigInteger m)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>modInverse</code></td><td><span class="sig">BigInteger modInverse(BigInteger m)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isProbablePrime</code></td><td><span class="sig">boolean isProbablePrime(int certainty)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nextProbablePrime</code></td><td><span class="sig">BigInteger nextProbablePrime()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareTo</code></td><td><span class="sig">int compareTo(BigInteger val)</span></td><td class="desc">comparison</td></tr>
+<tr><td><code>equals</code></td><td><span class="sig">boolean equals(Any x)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>min</code></td><td><span class="sig">BigInteger min(BigInteger val)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>max</code></td><td><span class="sig">BigInteger max(BigInteger val)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>words32</code></td><td><span class="sig">long[] words32(int[] m)</span></td><td class="desc">32-bit word view (big-endian unsigned words of the magnitude)</td></tr>
+<tr><td><code>fromWords32</code></td><td><span class="sig">int[] fromWords32(long[] w)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>twos</code></td><td><span class="sig">long[] twos(int n)</span></td><td class="desc">Two-complement little-endian 32-bit words, sign-extended to n words.</td></tr>
+<tr><td><code>fromTwos</code></td><td><span class="sig">BigInteger fromTwos(long[] r)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wordsFor</code></td><td><span class="sig">int wordsFor(BigInteger o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bitop</code></td><td><span class="sig">long bitop(long a, long b, int op)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bitwise</code></td><td><span class="sig">BigInteger bitwise(BigInteger val, int op)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>and</code></td><td><span class="sig">BigInteger and(BigInteger val)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>or</code></td><td><span class="sig">BigInteger or(BigInteger val)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>xor</code></td><td><span class="sig">BigInteger xor(BigInteger val)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>not</code></td><td><span class="sig">BigInteger not()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>andNot</code></td><td><span class="sig">BigInteger andNot(BigInteger val)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>shiftLeft</code></td><td><span class="sig">BigInteger shiftLeft(int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>shiftRight</code></td><td><span class="sig">BigInteger shiftRight(int n)</span></td><td class="desc">Arithmetic shift: floor(this / 2^n).</td></tr>
+<tr><td><code>testBit</code></td><td><span class="sig">boolean testBit(int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setBit</code></td><td><span class="sig">BigInteger setBit(int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clearBit</code></td><td><span class="sig">BigInteger clearBit(int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>flipBit</code></td><td><span class="sig">BigInteger flipBit(int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getLowestSetBit</code></td><td><span class="sig">int getLowestSetBit()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bitsOfMag</code></td><td><span class="sig">int bitsOfMag(int[] m)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bitLength</code></td><td><span class="sig">int bitLength()</span></td><td class="desc">Bits in the minimal two-complement representation, excluding the sign bit.</td></tr>
+<tr><td><code>popMag</code></td><td><span class="sig">int popMag(int[] m)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bitCount</code></td><td><span class="sig">int bitCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>longValue</code></td><td><span class="sig">long longValue()</span></td><td class="desc">conversions</td></tr>
+<tr><td><code>intValue</code></td><td><span class="sig">int intValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>byteValue</code></td><td><span class="sig">int byteValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>shortValue</code></td><td><span class="sig">int shortValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>longValueExact</code></td><td><span class="sig">long longValueExact()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>intValueExact</code></td><td><span class="sig">int intValueExact()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>shortValueExact</code></td><td><span class="sig">int shortValueExact()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>byteValueExact</code></td><td><span class="sig">int byteValueExact()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>doubleValue</code></td><td><span class="sig">double doubleValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>floatValue</code></td><td><span class="sig">double floatValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>magLong</code></td><td><span class="sig">long magLong(int[] m)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashCode</code></td><td><span class="sig">int hashCode()</span></td><td class="desc">Java hashCode: 31 * h + word over the big-endian magnitude words, times signum.</td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toStringRadix</code></td><td><span class="sig">String toStringRadix(int radix)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toByteArray</code></td><td><span class="sig">int[] toByteArray()</span></td><td class="desc">Two-complement big-endian bytes (ints in -128..127), minimal length.</td></tr>
+<tr><td><code>newFromBytes</code></td><td><span class="sig">BigInteger newFromBytes(int[] val)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>newSignMagnitude</code></td><td><span class="sig">BigInteger newSignMagnitude(int sig, int[] magnitude)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>newRandomBits</code></td><td><span class="sig">BigInteger newRandomBits(int numBits, Random rnd)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="binaryencodable">BinaryEncodable <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/security/BinaryEncodable.sleela)</span></h2>
@@ -38297,14 +38468,24 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="concurrenthashmap">ConcurrentHashMap <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/ConcurrentHashMap.sleela)</span></h2>
+<h2 class="section" data-u="concurrenthashmap">ConcurrentHashMap <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/ConcurrentHashMap.sleela)</span></h2>
 <div data-u="concurrenthashmap concurrenthashmap">
-<h3 id="ConcurrentHashMap">ConcurrentHashMap <span class="pill">class</span></h3>
+<h3 id="ConcurrentHashMap">ConcurrentHashMap <span class="pill">class</span> <span class="muted">extends <code>AbstractMap</code></span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.concurrent.ConcurrentHashMap. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.concurrent.ConcurrentHashMap&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>keys</code></td><td><span class="sig">Any[] keys</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>vals</code></td><td><span class="sig">Any[] vals</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashes</code></td><td><span class="sig">int[] hashes</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>live</code></td><td><span class="sig">boolean[] live</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>table</code></td><td><span class="sig">int[] table</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>used</code></td><td><span class="sig">int used</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>modCount</code></td><td><span class="sig">int modCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>gcSlot</code></td><td><span class="sig">int gcSlot</span></td><td class="desc">value semantics shared by the collections (hash, equality, natural order)</td></tr>
+<tr><td><code>utfOps</code></td><td><span class="sig">int utfOps</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -38313,6 +38494,58 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>keysArray</code></td><td><span class="sig">Any[] keysArray()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>valuesArray</code></td><td><span class="sig">Any[] valuesArray()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>size</code></td><td><span class="sig">int size()</span></td><td class="desc">java.util.Map</td></tr>
+<tr><td><code>isEmpty</code></td><td><span class="sig">boolean isEmpty()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getOrDefault</code></td><td><span class="sig">Any getOrDefault(Any key, Any defaultValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>containsValue</code></td><td><span class="sig">boolean containsValue(Any value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>remove</code></td><td><span class="sig">Any remove(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clear</code></td><td><span class="sig">void clear()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>putIfAbsent</code></td><td><span class="sig">Any putIfAbsent(Any key, Any value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>replace</code></td><td><span class="sig">Any replace(Any key, Any value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>replaceValue</code></td><td><span class="sig">boolean replaceValue(Any key, Any oldValue, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeMapping</code></td><td><span class="sig">boolean removeMapping(Any key, Any value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>putAll</code></td><td><span class="sig">void putAll(Any m)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>copyPairs</code></td><td><span class="sig">void copyPairs(Any[] ks, Any[] vs)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>keySet</code></td><td><span class="sig">HashSet keySet()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>values</code></td><td><span class="sig">ArrayList values()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>entrySet</code></td><td><span class="sig">ArrayList entrySet()</span></td><td class="desc">Snapshot of the mappings as KeyValueHolder entries (Map.Entry).</td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashCode</code></td><td><span class="sig">int hashCode()</span></td><td class="desc">Java Map.hashCode: the sum of key.hashCode() ^ value.hashCode().</td></tr>
+<tr><td><code>equals</code></td><td><span class="sig">boolean equals(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>zeros</code></td><td><span class="sig">int[] zeros(int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>falses</code></td><td><span class="sig">boolean[] falses(int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashInit</code></td><td><span class="sig">void hashInit(int capacity)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>spread</code></td><td><span class="sig">int spread(int h)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>findEntry</code></td><td><span class="sig">int findEntry(Any key, int h)</span></td><td class="desc">Entry index of key, or -1.</td></tr>
+<tr><td><code>rehash</code></td><td><span class="sig">void rehash(int newCap)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>appendEntry</code></td><td><span class="sig">void appendEntry(Any key, Any value, int h)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>putEntry</code></td><td><span class="sig">Any putEntry(Any key, Any value)</span></td><td class="desc">Insert or replace; returns the previous value (null when absent).</td></tr>
+<tr><td><code>putEntryRaw</code></td><td><span class="sig">Any putEntryRaw(Any key, Any value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeEntry</code></td><td><span class="sig">Any removeEntry(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeEntryRaw</code></td><td><span class="sig">Any removeEntryRaw(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hasKey</code></td><td><span class="sig">boolean hasKey(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>valueFor</code></td><td><span class="sig">Any valueFor(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clearEntries</code></td><td><span class="sig">void clearEntries()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>liveKeys</code></td><td><span class="sig">Any[] liveKeys()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>liveValues</code></td><td><span class="sig">Any[] liveValues()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>utfTick</code></td><td><span class="sig">void utfTick()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashOf</code></td><td><span class="sig">int hashOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrapHash</code></td><td><span class="sig">int wrapHash(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrap32</code></td><td><span class="sig">int wrap32(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>same</code></td><td><span class="sig">boolean same(Any a, Any b)</span></td><td class="desc">Value equality: numbers and strings by value, objects by identity.</td></tr>
+<tr><td><code>compareValues</code></td><td><span class="sig">int compareValues(Any a, Any b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>textOf</code></td><td><span class="sig">String textOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>elementsOf</code></td><td><span class="sig">Any[] elementsOf(Any c)</span></td><td class="desc">Elements of any collection implemented in this package, as an array.</td></tr>
+<tr><td><code>outOfBounds</code></td><td><span class="sig">IndexOutOfBoundsException outOfBounds(int index, int length)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>put</code></td><td><span class="sig">Any put(Any key, Any value)</span></td><td class="desc">null-hostile Map entry points (Java NullPointerException)</td></tr>
+<tr><td><code>get</code></td><td><span class="sig">Any get(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>containsKey</code></td><td><span class="sig">boolean containsKey(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>contains</code></td><td><span class="sig">boolean contains(Any value)</span></td><td class="desc">legacy enumeration views and contains(value)</td></tr>
+<tr><td><code>keys</code></td><td><span class="sig">Enumeration keys()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>elements</code></td><td><span class="sig">Enumeration elements()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mappingCount</code></td><td><span class="sig">long mappingCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="concurrenthashmap.keysetview">ConcurrentHashMap.KeySetView <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/ConcurrentHashMap.KeySetView.sleela)</span></h2>
@@ -38369,14 +38602,20 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="concurrentlinkeddeque">ConcurrentLinkedDeque <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/ConcurrentLinkedDeque.sleela)</span></h2>
+<h2 class="section" data-u="concurrentlinkeddeque">ConcurrentLinkedDeque <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/ConcurrentLinkedDeque.sleela)</span></h2>
 <div data-u="concurrentlinkeddeque concurrentlinkeddeque">
-<h3 id="ConcurrentLinkedDeque">ConcurrentLinkedDeque <span class="pill">class</span></h3>
+<h3 id="ConcurrentLinkedDeque">ConcurrentLinkedDeque <span class="pill">class</span> <span class="muted">extends <code>AbstractCollection</code></span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.concurrent.ConcurrentLinkedDeque. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.concurrent.ConcurrentLinkedDeque&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>data</code></td><td><span class="sig">Any[] data</span></td><td class="desc">circular Any[] buffer: element i lives at data[(head + i) % capacity]</td></tr>
+<tr><td><code>head</code></td><td><span class="sig">int head</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>modCount</code></td><td><span class="sig">int modCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>gcSlot</code></td><td><span class="sig">int gcSlot</span></td><td class="desc">value semantics shared by the collections (hash, equality, natural order)</td></tr>
+<tr><td><code>utfOps</code></td><td><span class="sig">int utfOps</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -38385,6 +38624,75 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>add</code></td><td><span class="sig">boolean add(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addAll</code></td><td><span class="sig">boolean addAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>subList</code></td><td><span class="sig">ConcurrentLinkedDeque subList(int fromIndex, int toIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>reversed</code></td><td><span class="sig">ConcurrentLinkedDeque reversed()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ensureCapacity</code></td><td><span class="sig">void ensureCapacity(int minCapacity)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>trimToSize</code></td><td><span class="sig">void trimToSize()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>offer</code></td><td><span class="sig">boolean offer(Any e)</span></td><td class="desc">java.util.Queue / java.util.Deque</td></tr>
+<tr><td><code>offerFirst</code></td><td><span class="sig">boolean offerFirst(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>offerLast</code></td><td><span class="sig">boolean offerLast(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>poll</code></td><td><span class="sig">Any poll()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pollFirst</code></td><td><span class="sig">Any pollFirst()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pollLast</code></td><td><span class="sig">Any pollLast()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>peek</code></td><td><span class="sig">Any peek()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>peekFirst</code></td><td><span class="sig">Any peekFirst()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>peekLast</code></td><td><span class="sig">Any peekLast()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>element</code></td><td><span class="sig">Any element()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>push</code></td><td><span class="sig">void push(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pop</code></td><td><span class="sig">Any pop()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeFirstOccurrence</code></td><td><span class="sig">boolean removeFirstOccurrence(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeLastOccurrence</code></td><td><span class="sig">boolean removeLastOccurrence(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>descendingIterator</code></td><td><span class="sig">Iterator descendingIterator()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>seqInit</code></td><td><span class="sig">void seqInit(int capacity)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>slot</code></td><td><span class="sig">int slot(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>at</code></td><td><span class="sig">Any at(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>putAt</code></td><td><span class="sig">void putAt(int i, Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>grow</code></td><td><span class="sig">void grow(int minCapacity)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>insertAt</code></td><td><span class="sig">void insertAt(int index, Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>insertAtRaw</code></td><td><span class="sig">void insertAtRaw(int index, Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>deleteAt</code></td><td><span class="sig">Any deleteAt(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>deleteAtRaw</code></td><td><span class="sig">Any deleteAtRaw(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkElementIndex</code></td><td><span class="sig">void checkElementIndex(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkPositionIndex</code></td><td><span class="sig">void checkPositionIndex(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>size</code></td><td><span class="sig">int size()</span></td><td class="desc">java.util.Collection</td></tr>
+<tr><td><code>isEmpty</code></td><td><span class="sig">boolean isEmpty()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>contains</code></td><td><span class="sig">boolean contains(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toArray</code></td><td><span class="sig">Any[] toArray()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clear</code></td><td><span class="sig">void clear()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>containsAll</code></td><td><span class="sig">boolean containsAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeObject</code></td><td><span class="sig">boolean removeObject(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeAll</code></td><td><span class="sig">boolean removeAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>retainAll</code></td><td><span class="sig">boolean retainAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>iterator</code></td><td><span class="sig">Iterator iterator()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashCode</code></td><td><span class="sig">int hashCode()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>equals</code></td><td><span class="sig">boolean equals(Any o)</span></td><td class="desc">Java List.equals: same size and pairwise-equal elements in order.</td></tr>
+<tr><td><code>get</code></td><td><span class="sig">Any get(int index)</span></td><td class="desc">java.util.List</td></tr>
+<tr><td><code>set</code></td><td><span class="sig">Any set(int index, Any element)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addAt</code></td><td><span class="sig">void addAt(int index, Any element)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>remove</code></td><td><span class="sig">Any remove(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>indexOf</code></td><td><span class="sig">int indexOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastIndexOf</code></td><td><span class="sig">int lastIndexOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addAllAt</code></td><td><span class="sig">boolean addAllAt(int index, Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sort</code></td><td><span class="sig">void sort(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mergeSort</code></td><td><span class="sig">void mergeSort(Any[] a, Any[] tmp, int lo, int hi)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getFirst</code></td><td><span class="sig">Any getFirst()</span></td><td class="desc">java.util.SequencedCollection (Java 21+)</td></tr>
+<tr><td><code>getLast</code></td><td><span class="sig">Any getLast()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addFirst</code></td><td><span class="sig">void addFirst(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addLast</code></td><td><span class="sig">void addLast(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeFirst</code></td><td><span class="sig">Any removeFirst()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeLast</code></td><td><span class="sig">Any removeLast()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>utfTick</code></td><td><span class="sig">void utfTick()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashOf</code></td><td><span class="sig">int hashOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrapHash</code></td><td><span class="sig">int wrapHash(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrap32</code></td><td><span class="sig">int wrap32(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>same</code></td><td><span class="sig">boolean same(Any a, Any b)</span></td><td class="desc">Value equality: numbers and strings by value, objects by identity.</td></tr>
+<tr><td><code>compareValues</code></td><td><span class="sig">int compareValues(Any a, Any b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>textOf</code></td><td><span class="sig">String textOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>elementsOf</code></td><td><span class="sig">Any[] elementsOf(Any c)</span></td><td class="desc">Elements of any collection implemented in this package, as an array.</td></tr>
+<tr><td><code>outOfBounds</code></td><td><span class="sig">IndexOutOfBoundsException outOfBounds(int index, int length)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="concurrentlinkedqueue">ConcurrentLinkedQueue <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/ConcurrentLinkedQueue.sleela)</span></h2>
@@ -38405,14 +38713,20 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="concurrentlinkedqueue">ConcurrentLinkedQueue <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/ConcurrentLinkedQueue.sleela)</span></h2>
+<h2 class="section" data-u="concurrentlinkedqueue">ConcurrentLinkedQueue <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/ConcurrentLinkedQueue.sleela)</span></h2>
 <div data-u="concurrentlinkedqueue concurrentlinkedqueue">
-<h3 id="ConcurrentLinkedQueue">ConcurrentLinkedQueue <span class="pill">class</span></h3>
+<h3 id="ConcurrentLinkedQueue">ConcurrentLinkedQueue <span class="pill">class</span> <span class="muted">extends <code>AbstractQueue</code></span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.concurrent.ConcurrentLinkedQueue. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.concurrent.ConcurrentLinkedQueue&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>data</code></td><td><span class="sig">Any[] data</span></td><td class="desc">circular Any[] buffer: element i lives at data[(head + i) % capacity]</td></tr>
+<tr><td><code>head</code></td><td><span class="sig">int head</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>modCount</code></td><td><span class="sig">int modCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>gcSlot</code></td><td><span class="sig">int gcSlot</span></td><td class="desc">value semantics shared by the collections (hash, equality, natural order)</td></tr>
+<tr><td><code>utfOps</code></td><td><span class="sig">int utfOps</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -38421,6 +38735,75 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>add</code></td><td><span class="sig">boolean add(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addAll</code></td><td><span class="sig">boolean addAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>subList</code></td><td><span class="sig">ConcurrentLinkedQueue subList(int fromIndex, int toIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>reversed</code></td><td><span class="sig">ConcurrentLinkedQueue reversed()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ensureCapacity</code></td><td><span class="sig">void ensureCapacity(int minCapacity)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>trimToSize</code></td><td><span class="sig">void trimToSize()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>offer</code></td><td><span class="sig">boolean offer(Any e)</span></td><td class="desc">java.util.Queue / java.util.Deque</td></tr>
+<tr><td><code>offerFirst</code></td><td><span class="sig">boolean offerFirst(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>offerLast</code></td><td><span class="sig">boolean offerLast(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>poll</code></td><td><span class="sig">Any poll()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pollFirst</code></td><td><span class="sig">Any pollFirst()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pollLast</code></td><td><span class="sig">Any pollLast()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>peek</code></td><td><span class="sig">Any peek()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>peekFirst</code></td><td><span class="sig">Any peekFirst()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>peekLast</code></td><td><span class="sig">Any peekLast()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>element</code></td><td><span class="sig">Any element()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>push</code></td><td><span class="sig">void push(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pop</code></td><td><span class="sig">Any pop()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeFirstOccurrence</code></td><td><span class="sig">boolean removeFirstOccurrence(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeLastOccurrence</code></td><td><span class="sig">boolean removeLastOccurrence(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>descendingIterator</code></td><td><span class="sig">Iterator descendingIterator()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>seqInit</code></td><td><span class="sig">void seqInit(int capacity)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>slot</code></td><td><span class="sig">int slot(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>at</code></td><td><span class="sig">Any at(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>putAt</code></td><td><span class="sig">void putAt(int i, Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>grow</code></td><td><span class="sig">void grow(int minCapacity)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>insertAt</code></td><td><span class="sig">void insertAt(int index, Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>insertAtRaw</code></td><td><span class="sig">void insertAtRaw(int index, Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>deleteAt</code></td><td><span class="sig">Any deleteAt(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>deleteAtRaw</code></td><td><span class="sig">Any deleteAtRaw(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkElementIndex</code></td><td><span class="sig">void checkElementIndex(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkPositionIndex</code></td><td><span class="sig">void checkPositionIndex(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>size</code></td><td><span class="sig">int size()</span></td><td class="desc">java.util.Collection</td></tr>
+<tr><td><code>isEmpty</code></td><td><span class="sig">boolean isEmpty()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>contains</code></td><td><span class="sig">boolean contains(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toArray</code></td><td><span class="sig">Any[] toArray()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clear</code></td><td><span class="sig">void clear()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>containsAll</code></td><td><span class="sig">boolean containsAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeObject</code></td><td><span class="sig">boolean removeObject(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeAll</code></td><td><span class="sig">boolean removeAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>retainAll</code></td><td><span class="sig">boolean retainAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>iterator</code></td><td><span class="sig">Iterator iterator()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashCode</code></td><td><span class="sig">int hashCode()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>equals</code></td><td><span class="sig">boolean equals(Any o)</span></td><td class="desc">Java List.equals: same size and pairwise-equal elements in order.</td></tr>
+<tr><td><code>get</code></td><td><span class="sig">Any get(int index)</span></td><td class="desc">java.util.List</td></tr>
+<tr><td><code>set</code></td><td><span class="sig">Any set(int index, Any element)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addAt</code></td><td><span class="sig">void addAt(int index, Any element)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>remove</code></td><td><span class="sig">Any remove(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>indexOf</code></td><td><span class="sig">int indexOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastIndexOf</code></td><td><span class="sig">int lastIndexOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addAllAt</code></td><td><span class="sig">boolean addAllAt(int index, Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sort</code></td><td><span class="sig">void sort(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mergeSort</code></td><td><span class="sig">void mergeSort(Any[] a, Any[] tmp, int lo, int hi)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getFirst</code></td><td><span class="sig">Any getFirst()</span></td><td class="desc">java.util.SequencedCollection (Java 21+)</td></tr>
+<tr><td><code>getLast</code></td><td><span class="sig">Any getLast()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addFirst</code></td><td><span class="sig">void addFirst(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addLast</code></td><td><span class="sig">void addLast(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeFirst</code></td><td><span class="sig">Any removeFirst()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeLast</code></td><td><span class="sig">Any removeLast()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>utfTick</code></td><td><span class="sig">void utfTick()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashOf</code></td><td><span class="sig">int hashOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrapHash</code></td><td><span class="sig">int wrapHash(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrap32</code></td><td><span class="sig">int wrap32(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>same</code></td><td><span class="sig">boolean same(Any a, Any b)</span></td><td class="desc">Value equality: numbers and strings by value, objects by identity.</td></tr>
+<tr><td><code>compareValues</code></td><td><span class="sig">int compareValues(Any a, Any b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>textOf</code></td><td><span class="sig">String textOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>elementsOf</code></td><td><span class="sig">Any[] elementsOf(Any c)</span></td><td class="desc">Elements of any collection implemented in this package, as an array.</td></tr>
+<tr><td><code>outOfBounds</code></td><td><span class="sig">IndexOutOfBoundsException outOfBounds(int index, int length)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="concurrentmap">ConcurrentMap <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/ConcurrentMap.sleela)</span></h2>
@@ -38563,14 +38946,20 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="concurrentskiplistmap">ConcurrentSkipListMap <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/ConcurrentSkipListMap.sleela)</span></h2>
+<h2 class="section" data-u="concurrentskiplistmap">ConcurrentSkipListMap <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/ConcurrentSkipListMap.sleela)</span></h2>
 <div data-u="concurrentskiplistmap concurrentskiplistmap">
-<h3 id="ConcurrentSkipListMap">ConcurrentSkipListMap <span class="pill">class</span></h3>
+<h3 id="ConcurrentSkipListMap">ConcurrentSkipListMap <span class="pill">class</span> <span class="muted">extends <code>AbstractMap</code></span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.concurrent.ConcurrentSkipListMap. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.concurrent.ConcurrentSkipListMap&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>keys</code></td><td><span class="sig">Any[] keys</span></td><td class="desc">sorted parallel arrays with binary search (natural ordering)</td></tr>
+<tr><td><code>vals</code></td><td><span class="sig">Any[] vals</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>modCount</code></td><td><span class="sig">int modCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>gcSlot</code></td><td><span class="sig">int gcSlot</span></td><td class="desc">value semantics shared by the collections (hash, equality, natural order)</td></tr>
+<tr><td><code>utfOps</code></td><td><span class="sig">int utfOps</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -38579,6 +38968,72 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>keysArray</code></td><td><span class="sig">Any[] keysArray()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>valuesArray</code></td><td><span class="sig">Any[] valuesArray()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>putEntry</code></td><td><span class="sig">Any putEntry(Any key, Any value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>putEntryRaw</code></td><td><span class="sig">Any putEntryRaw(Any key, Any value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>valueFor</code></td><td><span class="sig">Any valueFor(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hasKey</code></td><td><span class="sig">boolean hasKey(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeEntry</code></td><td><span class="sig">Any removeEntry(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeEntryRaw</code></td><td><span class="sig">Any removeEntryRaw(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clearEntries</code></td><td><span class="sig">void clearEntries()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>firstKey</code></td><td><span class="sig">Any firstKey()</span></td><td class="desc">java.util.NavigableMap / SortedMap</td></tr>
+<tr><td><code>lastKey</code></td><td><span class="sig">Any lastKey()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>floorKey</code></td><td><span class="sig">Any floorKey(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lowerKey</code></td><td><span class="sig">Any lowerKey(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ceilingKey</code></td><td><span class="sig">Any ceilingKey(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>higherKey</code></td><td><span class="sig">Any higherKey(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>firstEntry</code></td><td><span class="sig">KeyValueHolder firstEntry()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastEntry</code></td><td><span class="sig">KeyValueHolder lastEntry()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pollFirstEntry</code></td><td><span class="sig">KeyValueHolder pollFirstEntry()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pollLastEntry</code></td><td><span class="sig">KeyValueHolder pollLastEntry()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>headMap</code></td><td><span class="sig">ConcurrentSkipListMap headMap(Any toKey)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tailMap</code></td><td><span class="sig">ConcurrentSkipListMap tailMap(Any fromKey)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>subMap</code></td><td><span class="sig">ConcurrentSkipListMap subMap(Any fromKey, Any toKey)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>descendingMap</code></td><td><span class="sig">ConcurrentSkipListMap descendingMap()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>size</code></td><td><span class="sig">int size()</span></td><td class="desc">java.util.Map</td></tr>
+<tr><td><code>isEmpty</code></td><td><span class="sig">boolean isEmpty()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>put</code></td><td><span class="sig">Any put(Any key, Any value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>get</code></td><td><span class="sig">Any get(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getOrDefault</code></td><td><span class="sig">Any getOrDefault(Any key, Any defaultValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>containsKey</code></td><td><span class="sig">boolean containsKey(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>containsValue</code></td><td><span class="sig">boolean containsValue(Any value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>remove</code></td><td><span class="sig">Any remove(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clear</code></td><td><span class="sig">void clear()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>putIfAbsent</code></td><td><span class="sig">Any putIfAbsent(Any key, Any value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>replace</code></td><td><span class="sig">Any replace(Any key, Any value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>replaceValue</code></td><td><span class="sig">boolean replaceValue(Any key, Any oldValue, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeMapping</code></td><td><span class="sig">boolean removeMapping(Any key, Any value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>putAll</code></td><td><span class="sig">void putAll(Any m)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>copyPairs</code></td><td><span class="sig">void copyPairs(Any[] ks, Any[] vs)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>keySet</code></td><td><span class="sig">ConcurrentSkipListSet keySet()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>values</code></td><td><span class="sig">ArrayList values()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>entrySet</code></td><td><span class="sig">ArrayList entrySet()</span></td><td class="desc">Snapshot of the mappings as KeyValueHolder entries (Map.Entry).</td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashCode</code></td><td><span class="sig">int hashCode()</span></td><td class="desc">Java Map.hashCode: the sum of key.hashCode() ^ value.hashCode().</td></tr>
+<tr><td><code>equals</code></td><td><span class="sig">boolean equals(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sortedInit</code></td><td><span class="sig">void sortedInit()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>search</code></td><td><span class="sig">int search(Any key)</span></td><td class="desc">Index of key if present, else -(insertion point) - 1.</td></tr>
+<tr><td><code>insertSorted</code></td><td><span class="sig">void insertSorted(int at, Any key, Any value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>insertSortedRaw</code></td><td><span class="sig">void insertSortedRaw(int at, Any key, Any value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>deleteSorted</code></td><td><span class="sig">void deleteSorted(int at)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>deleteSortedRaw</code></td><td><span class="sig">void deleteSortedRaw(int at)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>floorIndex</code></td><td><span class="sig">int floorIndex(Any k)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lowerIndex</code></td><td><span class="sig">int lowerIndex(Any k)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ceilingIndex</code></td><td><span class="sig">int ceilingIndex(Any k)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>higherIndex</code></td><td><span class="sig">int higherIndex(Any k)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>keyAtOrNull</code></td><td><span class="sig">Any keyAtOrNull(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sliceKeys</code></td><td><span class="sig">Any[] sliceKeys()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sliceVals</code></td><td><span class="sig">Any[] sliceVals()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>utfTick</code></td><td><span class="sig">void utfTick()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashOf</code></td><td><span class="sig">int hashOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrapHash</code></td><td><span class="sig">int wrapHash(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrap32</code></td><td><span class="sig">int wrap32(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>same</code></td><td><span class="sig">boolean same(Any a, Any b)</span></td><td class="desc">Value equality: numbers and strings by value, objects by identity.</td></tr>
+<tr><td><code>compareValues</code></td><td><span class="sig">int compareValues(Any a, Any b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>textOf</code></td><td><span class="sig">String textOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>elementsOf</code></td><td><span class="sig">Any[] elementsOf(Any c)</span></td><td class="desc">Elements of any collection implemented in this package, as an array.</td></tr>
+<tr><td><code>outOfBounds</code></td><td><span class="sig">IndexOutOfBoundsException outOfBounds(int index, int length)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="concurrentskiplistset">ConcurrentSkipListSet <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/ConcurrentSkipListSet.sleela)</span></h2>
@@ -38599,14 +39054,20 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="concurrentskiplistset">ConcurrentSkipListSet <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/ConcurrentSkipListSet.sleela)</span></h2>
+<h2 class="section" data-u="concurrentskiplistset">ConcurrentSkipListSet <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/ConcurrentSkipListSet.sleela)</span></h2>
 <div data-u="concurrentskiplistset concurrentskiplistset">
-<h3 id="ConcurrentSkipListSet">ConcurrentSkipListSet <span class="pill">class</span></h3>
+<h3 id="ConcurrentSkipListSet">ConcurrentSkipListSet <span class="pill">class</span> <span class="muted">extends <code>AbstractSet</code></span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.concurrent.ConcurrentSkipListSet. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.concurrent.ConcurrentSkipListSet&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>keys</code></td><td><span class="sig">Any[] keys</span></td><td class="desc">sorted parallel arrays with binary search (natural ordering)</td></tr>
+<tr><td><code>vals</code></td><td><span class="sig">Any[] vals</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>modCount</code></td><td><span class="sig">int modCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>gcSlot</code></td><td><span class="sig">int gcSlot</span></td><td class="desc">value semantics shared by the collections (hash, equality, natural order)</td></tr>
+<tr><td><code>utfOps</code></td><td><span class="sig">int utfOps</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -38615,6 +39076,53 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>size</code></td><td><span class="sig">int size()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isEmpty</code></td><td><span class="sig">boolean isEmpty()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>add</code></td><td><span class="sig">boolean add(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>contains</code></td><td><span class="sig">boolean contains(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>remove</code></td><td><span class="sig">boolean remove(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clear</code></td><td><span class="sig">void clear()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toArray</code></td><td><span class="sig">Any[] toArray()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>iterator</code></td><td><span class="sig">Iterator iterator()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>descendingIterator</code></td><td><span class="sig">Iterator descendingIterator()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addAll</code></td><td><span class="sig">boolean addAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>containsAll</code></td><td><span class="sig">boolean containsAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeAll</code></td><td><span class="sig">boolean removeAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>first</code></td><td><span class="sig">Any first()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>last</code></td><td><span class="sig">Any last()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>floor</code></td><td><span class="sig">Any floor(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lower</code></td><td><span class="sig">Any lower(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ceiling</code></td><td><span class="sig">Any ceiling(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>higher</code></td><td><span class="sig">Any higher(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pollFirst</code></td><td><span class="sig">Any pollFirst()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pollLast</code></td><td><span class="sig">Any pollLast()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>headSet</code></td><td><span class="sig">ConcurrentSkipListSet headSet(Any toElement)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tailSet</code></td><td><span class="sig">ConcurrentSkipListSet tailSet(Any fromElement)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashCode</code></td><td><span class="sig">int hashCode()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>equals</code></td><td><span class="sig">boolean equals(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sortedInit</code></td><td><span class="sig">void sortedInit()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>search</code></td><td><span class="sig">int search(Any key)</span></td><td class="desc">Index of key if present, else -(insertion point) - 1.</td></tr>
+<tr><td><code>insertSorted</code></td><td><span class="sig">void insertSorted(int at, Any key, Any value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>insertSortedRaw</code></td><td><span class="sig">void insertSortedRaw(int at, Any key, Any value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>deleteSorted</code></td><td><span class="sig">void deleteSorted(int at)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>deleteSortedRaw</code></td><td><span class="sig">void deleteSortedRaw(int at)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>floorIndex</code></td><td><span class="sig">int floorIndex(Any k)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lowerIndex</code></td><td><span class="sig">int lowerIndex(Any k)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ceilingIndex</code></td><td><span class="sig">int ceilingIndex(Any k)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>higherIndex</code></td><td><span class="sig">int higherIndex(Any k)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>keyAtOrNull</code></td><td><span class="sig">Any keyAtOrNull(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sliceKeys</code></td><td><span class="sig">Any[] sliceKeys()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sliceVals</code></td><td><span class="sig">Any[] sliceVals()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>utfTick</code></td><td><span class="sig">void utfTick()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashOf</code></td><td><span class="sig">int hashOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrapHash</code></td><td><span class="sig">int wrapHash(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrap32</code></td><td><span class="sig">int wrap32(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>same</code></td><td><span class="sig">boolean same(Any a, Any b)</span></td><td class="desc">Value equality: numbers and strings by value, objects by identity.</td></tr>
+<tr><td><code>compareValues</code></td><td><span class="sig">int compareValues(Any a, Any b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>textOf</code></td><td><span class="sig">String textOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>elementsOf</code></td><td><span class="sig">Any[] elementsOf(Any c)</span></td><td class="desc">Elements of any collection implemented in this package, as an array.</td></tr>
+<tr><td><code>outOfBounds</code></td><td><span class="sig">IndexOutOfBoundsException outOfBounds(int index, int length)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="condition">Condition <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/locks/Condition.sleela)</span></h2>
@@ -42077,7 +42585,7 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="copyonwritearraylist">CopyOnWriteArrayList <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/CopyOnWriteArrayList.sleela)</span></h2>
+<h2 class="section" data-u="copyonwritearraylist">CopyOnWriteArrayList <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/CopyOnWriteArrayList.sleela)</span></h2>
 <div data-u="copyonwritearraylist copyonwritearraylist">
 <h3 id="CopyOnWriteArrayList">CopyOnWriteArrayList <span class="pill">class</span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.concurrent.CopyOnWriteArrayList. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
@@ -42085,6 +42593,12 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.concurrent.CopyOnWriteArrayList&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>data</code></td><td><span class="sig">Any[] data</span></td><td class="desc">circular Any[] buffer: element i lives at data[(head + i) % capacity]</td></tr>
+<tr><td><code>head</code></td><td><span class="sig">int head</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>modCount</code></td><td><span class="sig">int modCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>gcSlot</code></td><td><span class="sig">int gcSlot</span></td><td class="desc">value semantics shared by the collections (hash, equality, natural order)</td></tr>
+<tr><td><code>utfOps</code></td><td><span class="sig">int utfOps</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -42093,6 +42607,62 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>add</code></td><td><span class="sig">boolean add(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addAll</code></td><td><span class="sig">boolean addAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>subList</code></td><td><span class="sig">CopyOnWriteArrayList subList(int fromIndex, int toIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>reversed</code></td><td><span class="sig">CopyOnWriteArrayList reversed()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ensureCapacity</code></td><td><span class="sig">void ensureCapacity(int minCapacity)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>trimToSize</code></td><td><span class="sig">void trimToSize()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addIfAbsent</code></td><td><span class="sig">boolean addIfAbsent(Any e)</span></td><td class="desc">java.util.concurrent.CopyOnWriteArrayList additions</td></tr>
+<tr><td><code>addAllAbsent</code></td><td><span class="sig">int addAllAbsent(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>seqInit</code></td><td><span class="sig">void seqInit(int capacity)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>slot</code></td><td><span class="sig">int slot(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>at</code></td><td><span class="sig">Any at(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>putAt</code></td><td><span class="sig">void putAt(int i, Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>grow</code></td><td><span class="sig">void grow(int minCapacity)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>insertAt</code></td><td><span class="sig">void insertAt(int index, Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>insertAtRaw</code></td><td><span class="sig">void insertAtRaw(int index, Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>deleteAt</code></td><td><span class="sig">Any deleteAt(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>deleteAtRaw</code></td><td><span class="sig">Any deleteAtRaw(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkElementIndex</code></td><td><span class="sig">void checkElementIndex(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkPositionIndex</code></td><td><span class="sig">void checkPositionIndex(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>size</code></td><td><span class="sig">int size()</span></td><td class="desc">java.util.Collection</td></tr>
+<tr><td><code>isEmpty</code></td><td><span class="sig">boolean isEmpty()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>contains</code></td><td><span class="sig">boolean contains(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toArray</code></td><td><span class="sig">Any[] toArray()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clear</code></td><td><span class="sig">void clear()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>containsAll</code></td><td><span class="sig">boolean containsAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeObject</code></td><td><span class="sig">boolean removeObject(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeAll</code></td><td><span class="sig">boolean removeAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>retainAll</code></td><td><span class="sig">boolean retainAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>iterator</code></td><td><span class="sig">Iterator iterator()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashCode</code></td><td><span class="sig">int hashCode()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>equals</code></td><td><span class="sig">boolean equals(Any o)</span></td><td class="desc">Java List.equals: same size and pairwise-equal elements in order.</td></tr>
+<tr><td><code>get</code></td><td><span class="sig">Any get(int index)</span></td><td class="desc">java.util.List</td></tr>
+<tr><td><code>set</code></td><td><span class="sig">Any set(int index, Any element)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addAt</code></td><td><span class="sig">void addAt(int index, Any element)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>remove</code></td><td><span class="sig">Any remove(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>indexOf</code></td><td><span class="sig">int indexOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastIndexOf</code></td><td><span class="sig">int lastIndexOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addAllAt</code></td><td><span class="sig">boolean addAllAt(int index, Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sort</code></td><td><span class="sig">void sort(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mergeSort</code></td><td><span class="sig">void mergeSort(Any[] a, Any[] tmp, int lo, int hi)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getFirst</code></td><td><span class="sig">Any getFirst()</span></td><td class="desc">java.util.SequencedCollection (Java 21+)</td></tr>
+<tr><td><code>getLast</code></td><td><span class="sig">Any getLast()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addFirst</code></td><td><span class="sig">void addFirst(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addLast</code></td><td><span class="sig">void addLast(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeFirst</code></td><td><span class="sig">Any removeFirst()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeLast</code></td><td><span class="sig">Any removeLast()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>utfTick</code></td><td><span class="sig">void utfTick()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashOf</code></td><td><span class="sig">int hashOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrapHash</code></td><td><span class="sig">int wrapHash(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrap32</code></td><td><span class="sig">int wrap32(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>same</code></td><td><span class="sig">boolean same(Any a, Any b)</span></td><td class="desc">Value equality: numbers and strings by value, objects by identity.</td></tr>
+<tr><td><code>compareValues</code></td><td><span class="sig">int compareValues(Any a, Any b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>textOf</code></td><td><span class="sig">String textOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>elementsOf</code></td><td><span class="sig">Any[] elementsOf(Any c)</span></td><td class="desc">Elements of any collection implemented in this package, as an array.</td></tr>
+<tr><td><code>outOfBounds</code></td><td><span class="sig">IndexOutOfBoundsException outOfBounds(int index, int length)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="copyonwritearrayset">CopyOnWriteArraySet <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/CopyOnWriteArraySet.sleela)</span></h2>
@@ -42113,14 +42683,24 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="copyonwritearrayset">CopyOnWriteArraySet <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/CopyOnWriteArraySet.sleela)</span></h2>
+<h2 class="section" data-u="copyonwritearrayset">CopyOnWriteArraySet <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/CopyOnWriteArraySet.sleela)</span></h2>
 <div data-u="copyonwritearrayset copyonwritearrayset">
-<h3 id="CopyOnWriteArraySet">CopyOnWriteArraySet <span class="pill">class</span></h3>
+<h3 id="CopyOnWriteArraySet">CopyOnWriteArraySet <span class="pill">class</span> <span class="muted">extends <code>AbstractSet</code></span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.concurrent.CopyOnWriteArraySet. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.concurrent.CopyOnWriteArraySet&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>keys</code></td><td><span class="sig">Any[] keys</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>vals</code></td><td><span class="sig">Any[] vals</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashes</code></td><td><span class="sig">int[] hashes</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>live</code></td><td><span class="sig">boolean[] live</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>table</code></td><td><span class="sig">int[] table</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>used</code></td><td><span class="sig">int used</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>modCount</code></td><td><span class="sig">int modCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>gcSlot</code></td><td><span class="sig">int gcSlot</span></td><td class="desc">value semantics shared by the collections (hash, equality, natural order)</td></tr>
+<tr><td><code>utfOps</code></td><td><span class="sig">int utfOps</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -42129,6 +42709,46 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>size</code></td><td><span class="sig">int size()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isEmpty</code></td><td><span class="sig">boolean isEmpty()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>add</code></td><td><span class="sig">boolean add(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>contains</code></td><td><span class="sig">boolean contains(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>remove</code></td><td><span class="sig">boolean remove(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clear</code></td><td><span class="sig">void clear()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toArray</code></td><td><span class="sig">Any[] toArray()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>iterator</code></td><td><span class="sig">Iterator iterator()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addAll</code></td><td><span class="sig">boolean addAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>containsAll</code></td><td><span class="sig">boolean containsAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeAll</code></td><td><span class="sig">boolean removeAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>retainAll</code></td><td><span class="sig">boolean retainAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashCode</code></td><td><span class="sig">int hashCode()</span></td><td class="desc">Java Set.hashCode: the sum of the element hash codes.</td></tr>
+<tr><td><code>equals</code></td><td><span class="sig">boolean equals(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>zeros</code></td><td><span class="sig">int[] zeros(int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>falses</code></td><td><span class="sig">boolean[] falses(int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashInit</code></td><td><span class="sig">void hashInit(int capacity)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>spread</code></td><td><span class="sig">int spread(int h)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>findEntry</code></td><td><span class="sig">int findEntry(Any key, int h)</span></td><td class="desc">Entry index of key, or -1.</td></tr>
+<tr><td><code>rehash</code></td><td><span class="sig">void rehash(int newCap)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>appendEntry</code></td><td><span class="sig">void appendEntry(Any key, Any value, int h)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>putEntry</code></td><td><span class="sig">Any putEntry(Any key, Any value)</span></td><td class="desc">Insert or replace; returns the previous value (null when absent).</td></tr>
+<tr><td><code>putEntryRaw</code></td><td><span class="sig">Any putEntryRaw(Any key, Any value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeEntry</code></td><td><span class="sig">Any removeEntry(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeEntryRaw</code></td><td><span class="sig">Any removeEntryRaw(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hasKey</code></td><td><span class="sig">boolean hasKey(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>valueFor</code></td><td><span class="sig">Any valueFor(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clearEntries</code></td><td><span class="sig">void clearEntries()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>liveKeys</code></td><td><span class="sig">Any[] liveKeys()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>liveValues</code></td><td><span class="sig">Any[] liveValues()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>utfTick</code></td><td><span class="sig">void utfTick()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashOf</code></td><td><span class="sig">int hashOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrapHash</code></td><td><span class="sig">int wrapHash(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrap32</code></td><td><span class="sig">int wrap32(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>same</code></td><td><span class="sig">boolean same(Any a, Any b)</span></td><td class="desc">Value equality: numbers and strings by value, objects by identity.</td></tr>
+<tr><td><code>compareValues</code></td><td><span class="sig">int compareValues(Any a, Any b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>textOf</code></td><td><span class="sig">String textOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>elementsOf</code></td><td><span class="sig">Any[] elementsOf(Any c)</span></td><td class="desc">Elements of any collection implemented in this package, as an array.</td></tr>
+<tr><td><code>outOfBounds</code></td><td><span class="sig">IndexOutOfBoundsException outOfBounds(int index, int length)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="copyoption">CopyOption <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/nio/file/CopyOption.sleela)</span></h2>
@@ -62349,6 +62969,8 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.Enumeration&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>items</code></td><td><span class="sig">Any[] items</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cursor</code></td><td><span class="sig">int cursor</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -62357,8 +62979,9 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>hasMoreElements</code></td><td><span class="sig">boolean hasMoreElements()</span></td><td class="desc">---- BEGIN java declarations (generated by tools/jdk_api_declare.py) ---- abstract methods: implemented by a concrete subtype; a direct call throws AbstractMethodError as on the JVM</td></tr>
+<tr><td><code>hasMoreElements</code></td><td><span class="sig">boolean hasMoreElements()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>nextElement</code></td><td><span class="sig">Any nextElement()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>asIterator</code></td><td><span class="sig">Iterator asIterator()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="enummap">EnumMap <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/EnumMap.sleela)</span></h2>
@@ -76815,14 +77438,24 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="hashtable">Hashtable <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/Hashtable.sleela)</span></h2>
+<h2 class="section" data-u="hashtable">Hashtable <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/Hashtable.sleela)</span></h2>
 <div data-u="hashtable hashtable">
-<h3 id="Hashtable">Hashtable <span class="pill">class</span></h3>
+<h3 id="Hashtable">Hashtable <span class="pill">class</span> <span class="muted">extends <code>Dictionary</code></span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.Hashtable. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.Hashtable&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>keys</code></td><td><span class="sig">Any[] keys</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>vals</code></td><td><span class="sig">Any[] vals</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashes</code></td><td><span class="sig">int[] hashes</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>live</code></td><td><span class="sig">boolean[] live</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>table</code></td><td><span class="sig">int[] table</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>used</code></td><td><span class="sig">int used</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>modCount</code></td><td><span class="sig">int modCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>gcSlot</code></td><td><span class="sig">int gcSlot</span></td><td class="desc">value semantics shared by the collections (hash, equality, natural order)</td></tr>
+<tr><td><code>utfOps</code></td><td><span class="sig">int utfOps</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -76831,6 +77464,57 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>keysArray</code></td><td><span class="sig">Any[] keysArray()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>valuesArray</code></td><td><span class="sig">Any[] valuesArray()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>size</code></td><td><span class="sig">int size()</span></td><td class="desc">java.util.Map</td></tr>
+<tr><td><code>isEmpty</code></td><td><span class="sig">boolean isEmpty()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getOrDefault</code></td><td><span class="sig">Any getOrDefault(Any key, Any defaultValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>containsValue</code></td><td><span class="sig">boolean containsValue(Any value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>remove</code></td><td><span class="sig">Any remove(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clear</code></td><td><span class="sig">void clear()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>putIfAbsent</code></td><td><span class="sig">Any putIfAbsent(Any key, Any value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>replace</code></td><td><span class="sig">Any replace(Any key, Any value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>replaceValue</code></td><td><span class="sig">boolean replaceValue(Any key, Any oldValue, Any newValue)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeMapping</code></td><td><span class="sig">boolean removeMapping(Any key, Any value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>putAll</code></td><td><span class="sig">void putAll(Any m)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>copyPairs</code></td><td><span class="sig">void copyPairs(Any[] ks, Any[] vs)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>keySet</code></td><td><span class="sig">HashSet keySet()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>values</code></td><td><span class="sig">ArrayList values()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>entrySet</code></td><td><span class="sig">ArrayList entrySet()</span></td><td class="desc">Snapshot of the mappings as KeyValueHolder entries (Map.Entry).</td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashCode</code></td><td><span class="sig">int hashCode()</span></td><td class="desc">Java Map.hashCode: the sum of key.hashCode() ^ value.hashCode().</td></tr>
+<tr><td><code>equals</code></td><td><span class="sig">boolean equals(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>zeros</code></td><td><span class="sig">int[] zeros(int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>falses</code></td><td><span class="sig">boolean[] falses(int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashInit</code></td><td><span class="sig">void hashInit(int capacity)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>spread</code></td><td><span class="sig">int spread(int h)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>findEntry</code></td><td><span class="sig">int findEntry(Any key, int h)</span></td><td class="desc">Entry index of key, or -1.</td></tr>
+<tr><td><code>rehash</code></td><td><span class="sig">void rehash(int newCap)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>appendEntry</code></td><td><span class="sig">void appendEntry(Any key, Any value, int h)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>putEntry</code></td><td><span class="sig">Any putEntry(Any key, Any value)</span></td><td class="desc">Insert or replace; returns the previous value (null when absent).</td></tr>
+<tr><td><code>putEntryRaw</code></td><td><span class="sig">Any putEntryRaw(Any key, Any value)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeEntry</code></td><td><span class="sig">Any removeEntry(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeEntryRaw</code></td><td><span class="sig">Any removeEntryRaw(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hasKey</code></td><td><span class="sig">boolean hasKey(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>valueFor</code></td><td><span class="sig">Any valueFor(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clearEntries</code></td><td><span class="sig">void clearEntries()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>liveKeys</code></td><td><span class="sig">Any[] liveKeys()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>liveValues</code></td><td><span class="sig">Any[] liveValues()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>utfTick</code></td><td><span class="sig">void utfTick()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashOf</code></td><td><span class="sig">int hashOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrapHash</code></td><td><span class="sig">int wrapHash(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrap32</code></td><td><span class="sig">int wrap32(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>same</code></td><td><span class="sig">boolean same(Any a, Any b)</span></td><td class="desc">Value equality: numbers and strings by value, objects by identity.</td></tr>
+<tr><td><code>compareValues</code></td><td><span class="sig">int compareValues(Any a, Any b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>textOf</code></td><td><span class="sig">String textOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>elementsOf</code></td><td><span class="sig">Any[] elementsOf(Any c)</span></td><td class="desc">Elements of any collection implemented in this package, as an array.</td></tr>
+<tr><td><code>outOfBounds</code></td><td><span class="sig">IndexOutOfBoundsException outOfBounds(int index, int length)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>put</code></td><td><span class="sig">Any put(Any key, Any value)</span></td><td class="desc">null-hostile Map entry points (Java NullPointerException)</td></tr>
+<tr><td><code>get</code></td><td><span class="sig">Any get(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>containsKey</code></td><td><span class="sig">boolean containsKey(Any key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>contains</code></td><td><span class="sig">boolean contains(Any value)</span></td><td class="desc">legacy enumeration views and contains(value)</td></tr>
+<tr><td><code>keys</code></td><td><span class="sig">Enumeration keys()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>elements</code></td><td><span class="sig">Enumeration elements()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="headers">Headers <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/jdk.httpserver/com/sun/net/httpserver/Headers.sleela)</span></h2>
@@ -106181,14 +106865,20 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="linkedblockingdeque">LinkedBlockingDeque <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/LinkedBlockingDeque.sleela)</span></h2>
+<h2 class="section" data-u="linkedblockingdeque">LinkedBlockingDeque <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/LinkedBlockingDeque.sleela)</span></h2>
 <div data-u="linkedblockingdeque linkedblockingdeque">
-<h3 id="LinkedBlockingDeque">LinkedBlockingDeque <span class="pill">class</span></h3>
+<h3 id="LinkedBlockingDeque">LinkedBlockingDeque <span class="pill">class</span> <span class="muted">extends <code>AbstractQueue</code></span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.concurrent.LinkedBlockingDeque. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.concurrent.LinkedBlockingDeque&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>data</code></td><td><span class="sig">Any[] data</span></td><td class="desc">circular Any[] buffer: element i lives at data[(head + i) % capacity]</td></tr>
+<tr><td><code>head</code></td><td><span class="sig">int head</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>modCount</code></td><td><span class="sig">int modCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>gcSlot</code></td><td><span class="sig">int gcSlot</span></td><td class="desc">value semantics shared by the collections (hash, equality, natural order)</td></tr>
+<tr><td><code>utfOps</code></td><td><span class="sig">int utfOps</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -106197,6 +106887,86 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>add</code></td><td><span class="sig">boolean add(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addAll</code></td><td><span class="sig">boolean addAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>subList</code></td><td><span class="sig">LinkedBlockingDeque subList(int fromIndex, int toIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>reversed</code></td><td><span class="sig">LinkedBlockingDeque reversed()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ensureCapacity</code></td><td><span class="sig">void ensureCapacity(int minCapacity)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>trimToSize</code></td><td><span class="sig">void trimToSize()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>offer</code></td><td><span class="sig">boolean offer(Any e)</span></td><td class="desc">java.util.Queue / java.util.Deque</td></tr>
+<tr><td><code>offerFirst</code></td><td><span class="sig">boolean offerFirst(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>offerLast</code></td><td><span class="sig">boolean offerLast(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>poll</code></td><td><span class="sig">Any poll()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pollFirst</code></td><td><span class="sig">Any pollFirst()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pollLast</code></td><td><span class="sig">Any pollLast()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>peek</code></td><td><span class="sig">Any peek()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>peekFirst</code></td><td><span class="sig">Any peekFirst()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>peekLast</code></td><td><span class="sig">Any peekLast()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>element</code></td><td><span class="sig">Any element()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>push</code></td><td><span class="sig">void push(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pop</code></td><td><span class="sig">Any pop()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeFirstOccurrence</code></td><td><span class="sig">boolean removeFirstOccurrence(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeLastOccurrence</code></td><td><span class="sig">boolean removeLastOccurrence(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>descendingIterator</code></td><td><span class="sig">Iterator descendingIterator()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>remainingCapacity</code></td><td><span class="sig">int remainingCapacity()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>put</code></td><td><span class="sig">void put(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>putFirst</code></td><td><span class="sig">void putFirst(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>putLast</code></td><td><span class="sig">void putLast(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>take</code></td><td><span class="sig">Any take()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>takeFirst</code></td><td><span class="sig">Any takeFirst()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>takeLast</code></td><td><span class="sig">Any takeLast()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>offerMillis</code></td><td><span class="sig">boolean offerMillis(Any e, long timeoutMillis)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pollMillis</code></td><td><span class="sig">Any pollMillis(long timeoutMillis)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>drainTo</code></td><td><span class="sig">int drainTo(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>drainToMax</code></td><td><span class="sig">int drainToMax(Any c, int maxElements)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>seqInit</code></td><td><span class="sig">void seqInit(int capacity)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>slot</code></td><td><span class="sig">int slot(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>at</code></td><td><span class="sig">Any at(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>putAt</code></td><td><span class="sig">void putAt(int i, Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>grow</code></td><td><span class="sig">void grow(int minCapacity)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>insertAt</code></td><td><span class="sig">void insertAt(int index, Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>insertAtRaw</code></td><td><span class="sig">void insertAtRaw(int index, Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>deleteAt</code></td><td><span class="sig">Any deleteAt(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>deleteAtRaw</code></td><td><span class="sig">Any deleteAtRaw(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkElementIndex</code></td><td><span class="sig">void checkElementIndex(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkPositionIndex</code></td><td><span class="sig">void checkPositionIndex(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>size</code></td><td><span class="sig">int size()</span></td><td class="desc">java.util.Collection</td></tr>
+<tr><td><code>isEmpty</code></td><td><span class="sig">boolean isEmpty()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>contains</code></td><td><span class="sig">boolean contains(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toArray</code></td><td><span class="sig">Any[] toArray()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clear</code></td><td><span class="sig">void clear()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>containsAll</code></td><td><span class="sig">boolean containsAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeObject</code></td><td><span class="sig">boolean removeObject(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeAll</code></td><td><span class="sig">boolean removeAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>retainAll</code></td><td><span class="sig">boolean retainAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>iterator</code></td><td><span class="sig">Iterator iterator()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashCode</code></td><td><span class="sig">int hashCode()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>equals</code></td><td><span class="sig">boolean equals(Any o)</span></td><td class="desc">Java List.equals: same size and pairwise-equal elements in order.</td></tr>
+<tr><td><code>get</code></td><td><span class="sig">Any get(int index)</span></td><td class="desc">java.util.List</td></tr>
+<tr><td><code>set</code></td><td><span class="sig">Any set(int index, Any element)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addAt</code></td><td><span class="sig">void addAt(int index, Any element)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>remove</code></td><td><span class="sig">Any remove(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>indexOf</code></td><td><span class="sig">int indexOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastIndexOf</code></td><td><span class="sig">int lastIndexOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addAllAt</code></td><td><span class="sig">boolean addAllAt(int index, Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sort</code></td><td><span class="sig">void sort(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mergeSort</code></td><td><span class="sig">void mergeSort(Any[] a, Any[] tmp, int lo, int hi)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getFirst</code></td><td><span class="sig">Any getFirst()</span></td><td class="desc">java.util.SequencedCollection (Java 21+)</td></tr>
+<tr><td><code>getLast</code></td><td><span class="sig">Any getLast()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addFirst</code></td><td><span class="sig">void addFirst(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addLast</code></td><td><span class="sig">void addLast(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeFirst</code></td><td><span class="sig">Any removeFirst()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeLast</code></td><td><span class="sig">Any removeLast()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>utfTick</code></td><td><span class="sig">void utfTick()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashOf</code></td><td><span class="sig">int hashOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrapHash</code></td><td><span class="sig">int wrapHash(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrap32</code></td><td><span class="sig">int wrap32(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>same</code></td><td><span class="sig">boolean same(Any a, Any b)</span></td><td class="desc">Value equality: numbers and strings by value, objects by identity.</td></tr>
+<tr><td><code>compareValues</code></td><td><span class="sig">int compareValues(Any a, Any b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>textOf</code></td><td><span class="sig">String textOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>elementsOf</code></td><td><span class="sig">Any[] elementsOf(Any c)</span></td><td class="desc">Elements of any collection implemented in this package, as an array.</td></tr>
+<tr><td><code>outOfBounds</code></td><td><span class="sig">IndexOutOfBoundsException outOfBounds(int index, int length)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="linkedblockingqueue">LinkedBlockingQueue <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/LinkedBlockingQueue.sleela)</span></h2>
@@ -106217,14 +106987,20 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
-<h2 class="section" data-u="linkedblockingqueue">LinkedBlockingQueue <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/LinkedBlockingQueue.sleela)</span></h2>
+<h2 class="section" data-u="linkedblockingqueue">LinkedBlockingQueue <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/util/concurrent/LinkedBlockingQueue.sleela)</span></h2>
 <div data-u="linkedblockingqueue linkedblockingqueue">
-<h3 id="LinkedBlockingQueue">LinkedBlockingQueue <span class="pill">class</span></h3>
+<h3 id="LinkedBlockingQueue">LinkedBlockingQueue <span class="pill">class</span> <span class="muted">extends <code>AbstractQueue</code></span></h3>
 <p class="desc">SLeeLa source declaration for the Java type java.util.concurrent.LinkedBlockingQueue. Java behavior is supplied through the SLeeLa Java conformance boundary.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.concurrent.LinkedBlockingQueue&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>data</code></td><td><span class="sig">Any[] data</span></td><td class="desc">circular Any[] buffer: element i lives at data[(head + i) % capacity]</td></tr>
+<tr><td><code>head</code></td><td><span class="sig">int head</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>modCount</code></td><td><span class="sig">int modCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>gcSlot</code></td><td><span class="sig">int gcSlot</span></td><td class="desc">value semantics shared by the collections (hash, equality, natural order)</td></tr>
+<tr><td><code>utfOps</code></td><td><span class="sig">int utfOps</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -106233,6 +107009,86 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>add</code></td><td><span class="sig">boolean add(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addAll</code></td><td><span class="sig">boolean addAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>subList</code></td><td><span class="sig">LinkedBlockingQueue subList(int fromIndex, int toIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>reversed</code></td><td><span class="sig">LinkedBlockingQueue reversed()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ensureCapacity</code></td><td><span class="sig">void ensureCapacity(int minCapacity)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>trimToSize</code></td><td><span class="sig">void trimToSize()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>offer</code></td><td><span class="sig">boolean offer(Any e)</span></td><td class="desc">java.util.Queue / java.util.Deque</td></tr>
+<tr><td><code>offerFirst</code></td><td><span class="sig">boolean offerFirst(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>offerLast</code></td><td><span class="sig">boolean offerLast(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>poll</code></td><td><span class="sig">Any poll()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pollFirst</code></td><td><span class="sig">Any pollFirst()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pollLast</code></td><td><span class="sig">Any pollLast()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>peek</code></td><td><span class="sig">Any peek()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>peekFirst</code></td><td><span class="sig">Any peekFirst()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>peekLast</code></td><td><span class="sig">Any peekLast()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>element</code></td><td><span class="sig">Any element()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>push</code></td><td><span class="sig">void push(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pop</code></td><td><span class="sig">Any pop()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeFirstOccurrence</code></td><td><span class="sig">boolean removeFirstOccurrence(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeLastOccurrence</code></td><td><span class="sig">boolean removeLastOccurrence(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>descendingIterator</code></td><td><span class="sig">Iterator descendingIterator()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>remainingCapacity</code></td><td><span class="sig">int remainingCapacity()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>put</code></td><td><span class="sig">void put(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>putFirst</code></td><td><span class="sig">void putFirst(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>putLast</code></td><td><span class="sig">void putLast(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>take</code></td><td><span class="sig">Any take()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>takeFirst</code></td><td><span class="sig">Any takeFirst()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>takeLast</code></td><td><span class="sig">Any takeLast()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>offerMillis</code></td><td><span class="sig">boolean offerMillis(Any e, long timeoutMillis)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pollMillis</code></td><td><span class="sig">Any pollMillis(long timeoutMillis)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>drainTo</code></td><td><span class="sig">int drainTo(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>drainToMax</code></td><td><span class="sig">int drainToMax(Any c, int maxElements)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>seqInit</code></td><td><span class="sig">void seqInit(int capacity)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>slot</code></td><td><span class="sig">int slot(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>at</code></td><td><span class="sig">Any at(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>putAt</code></td><td><span class="sig">void putAt(int i, Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>grow</code></td><td><span class="sig">void grow(int minCapacity)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>insertAt</code></td><td><span class="sig">void insertAt(int index, Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>insertAtRaw</code></td><td><span class="sig">void insertAtRaw(int index, Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>deleteAt</code></td><td><span class="sig">Any deleteAt(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>deleteAtRaw</code></td><td><span class="sig">Any deleteAtRaw(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkElementIndex</code></td><td><span class="sig">void checkElementIndex(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkPositionIndex</code></td><td><span class="sig">void checkPositionIndex(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>size</code></td><td><span class="sig">int size()</span></td><td class="desc">java.util.Collection</td></tr>
+<tr><td><code>isEmpty</code></td><td><span class="sig">boolean isEmpty()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>contains</code></td><td><span class="sig">boolean contains(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toArray</code></td><td><span class="sig">Any[] toArray()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clear</code></td><td><span class="sig">void clear()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>containsAll</code></td><td><span class="sig">boolean containsAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeObject</code></td><td><span class="sig">boolean removeObject(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeAll</code></td><td><span class="sig">boolean removeAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>retainAll</code></td><td><span class="sig">boolean retainAll(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>iterator</code></td><td><span class="sig">Iterator iterator()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">String toString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashCode</code></td><td><span class="sig">int hashCode()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>equals</code></td><td><span class="sig">boolean equals(Any o)</span></td><td class="desc">Java List.equals: same size and pairwise-equal elements in order.</td></tr>
+<tr><td><code>get</code></td><td><span class="sig">Any get(int index)</span></td><td class="desc">java.util.List</td></tr>
+<tr><td><code>set</code></td><td><span class="sig">Any set(int index, Any element)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addAt</code></td><td><span class="sig">void addAt(int index, Any element)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>remove</code></td><td><span class="sig">Any remove(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>indexOf</code></td><td><span class="sig">int indexOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastIndexOf</code></td><td><span class="sig">int lastIndexOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addAllAt</code></td><td><span class="sig">boolean addAllAt(int index, Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sort</code></td><td><span class="sig">void sort(Any c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mergeSort</code></td><td><span class="sig">void mergeSort(Any[] a, Any[] tmp, int lo, int hi)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getFirst</code></td><td><span class="sig">Any getFirst()</span></td><td class="desc">java.util.SequencedCollection (Java 21+)</td></tr>
+<tr><td><code>getLast</code></td><td><span class="sig">Any getLast()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addFirst</code></td><td><span class="sig">void addFirst(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addLast</code></td><td><span class="sig">void addLast(Any e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeFirst</code></td><td><span class="sig">Any removeFirst()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>removeLast</code></td><td><span class="sig">Any removeLast()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>utfTick</code></td><td><span class="sig">void utfTick()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashOf</code></td><td><span class="sig">int hashOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrapHash</code></td><td><span class="sig">int wrapHash(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wrap32</code></td><td><span class="sig">int wrap32(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>same</code></td><td><span class="sig">boolean same(Any a, Any b)</span></td><td class="desc">Value equality: numbers and strings by value, objects by identity.</td></tr>
+<tr><td><code>compareValues</code></td><td><span class="sig">int compareValues(Any a, Any b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>textOf</code></td><td><span class="sig">String textOf(Any o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>elementsOf</code></td><td><span class="sig">Any[] elementsOf(Any c)</span></td><td class="desc">Elements of any collection implemented in this package, as an array.</td></tr>
+<tr><td><code>outOfBounds</code></td><td><span class="sig">IndexOutOfBoundsException outOfBounds(int index, int length)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="linkedhashmap">LinkedHashMap <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/util/LinkedHashMap.sleela)</span></h2>
@@ -206036,7 +206892,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-10 23:34 UTC.
+<code>/lib</code> tree on 2026-11-11 00:06 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
