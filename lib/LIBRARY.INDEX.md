@@ -1,5 +1,7 @@
 # SLeeLa /lib Library Index
 
+> Revision 0.98 adds `lib/java/implementations/java/lang/JavaText.sleela`, the plain-String / Java UTF-16 text bridge used by `java.io.File` (sources 13359, symbols 13443).
+>
 > Revision 0.97 adds `long-medium-averages/` to the advantage courseware (`lib/advantage/learner-vs-professional/courseware/long-medium-averages/`): `SLDailyCapBook` (SLLongBook plus a 2,000-actions-per-day cap, status code 10) and 17 entries — 16 medium-term FIFO trade stories across invented goods, plus one proving the cap boundary (2000th accepted, 2001st refused unchanged, reset on day change). A companion `ORGANIZED.md` glossary separates terms that are defined and used in code from terms raised in planning that were never given a working definition (notably 'Flat 2', left explicitly open) and records one declined request (sexual content) outside the scope of this library. Gate: `test-suites/test-long-medium-averages.sh` (17 entries); expected values for entries 1-16 came from an independent Python model. Eighteen new source units (counts: 13340 to **13358** sources; 13424 to **13442** total records; 121 packages).
 
 > Revision 0.96 adds illustrative short margin to `trading-actions-on-verb` (`lib/advantage/trading-actions-on-verb/`): `SLShortMargin` computes the exact ceiling requirement without a product that could pass 2^53, equity and excess, the deposit that meets a call, the fewest shares to cover (binary search, checked against a scan and for minimality) and the first call day under borrow cost (closed form, checked against stepping). Four new use cases (23 to 26): the requirement, a call and cover, a differential grid test, and margin wearing down with time against the short book accrual. Python reproduced every expected value and count; off-by-one mutations were caught, and a mutation that made the binary search never terminate was caught as a hang, so `test-suites/test-trading-actions.sh` now runs each case under a timeout and covers 26 use cases. Five new source units (counts: 13335 to **13340** sources; 13419 to **13424** total records; 121 packages).
@@ -65,9 +67,9 @@
 
 **Revision:** 0.82  
 **Packages:** 121  
-**SLeeLa source units:** 13358  
+**SLeeLa source units:** 13359  
 **Module-facade symbols:** 84  
-**Total symbol records:** 13442  
+**Total symbol records:** 13443  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.66 brings three big-number improvements that make a 10,000,000-digit

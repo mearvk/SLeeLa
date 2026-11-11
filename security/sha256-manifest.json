@@ -29718,6 +29718,10 @@
       "sha256": "56272bfcb167a74a1b5c92a74810b518a3621bd28e06c4f4c3c886eac7b89fa1"
     },
     {
+      "path": "lib/java/implementations/java/lang/JavaText.sleela",
+      "sha256": "6786d638bb9db327289ae9050e0ff019c6243d05a722d9d4c8663a417b6be3ac"
+    },
+    {
       "path": "lib/java/java/applet/Applet.sleela",
       "sha256": "9b258eb190265b97d3a9f8c671edeecde4138331fa081a2576da0644627e7d81"
     },
@@ -31871,7 +31875,7 @@
     },
     {
       "path": "lib/java/java/io/File.sleela",
-      "sha256": "8cf5c0427b852d3462e664dc7d7bb39d84bc90ae4828f8160147f1790323bf14"
+      "sha256": "25a333b7ac465cba2d463a3a0f9b27a63191ffaabd17ac1a2407f5153ddbf34e"
     },
     {
       "path": "lib/java/java/io/FileCleanable.sleela",

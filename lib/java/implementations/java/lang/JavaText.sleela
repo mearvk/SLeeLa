@@ -1,0 +1,222 @@
+<< lib/java/implementations/java/lang/JavaText.sleela
+   Text bridge between plain SLeeLa Strings and Java UTF-16 Strings, written
+   in SLeeLa with no VM change. A plain String has no character access, so
+   these helpers convert it to UTF-16 (javaStringFromUtf8), work on the code
+   units, and convert the result back through a table of one-character
+   literals. The way back covers printable ASCII (32..126) plus tab, newline
+   and carriage return; any other code unit, NUL included, fails closed with UnsupportedOperationException instead of producing wrong
+   text. Callers reach it as JavaText.name(...). >>
+#sleela 3.0
+material;
+
+class JavaText {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "SLeeLa /lib/java";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "none";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  static String[] asciiTable = null;
+
+  < the plain one-character String for an ASCII code unit >
+  static String charString(int c) {
+    if (c < 0 || c > 127) {
+      throw new UnsupportedOperationException("JavaText: code unit " + c + " is outside ASCII; plain SLeeLa Strings can only be rebuilt from ASCII");
+    }
+    if (asciiTable == null) { asciiTable = buildTable(); }
+    String[] t = asciiTable;
+    String one = t[c];
+    if (one == null) {
+      throw new UnsupportedOperationException("JavaText: control code unit " + c + " has no plain SLeeLa String form");
+    }
+    return one;
+  }
+  static String[] buildTable() {
+    String[] t = new String[128];
+    t[9] = "\t";
+    t[10] = "\n";
+    t[13] = "\r";
+    t[32] = " ";
+    t[33] = "!";
+    t[34] = "\"";
+    t[35] = "#";
+    t[36] = "$";
+    t[37] = "%";
+    t[38] = "&";
+    t[39] = "'";
+    t[40] = "(";
+    t[41] = ")";
+    t[42] = "*";
+    t[43] = "+";
+    t[44] = ",";
+    t[45] = "-";
+    t[46] = ".";
+    t[47] = "/";
+    t[48] = "0";
+    t[49] = "1";
+    t[50] = "2";
+    t[51] = "3";
+    t[52] = "4";
+    t[53] = "5";
+    t[54] = "6";
+    t[55] = "7";
+    t[56] = "8";
+    t[57] = "9";
+    t[58] = ":";
+    t[59] = ";";
+    t[60] = "<";
+    t[61] = "=";
+    t[62] = ">";
+    t[63] = "?";
+    t[64] = "@";
+    t[65] = "A";
+    t[66] = "B";
+    t[67] = "C";
+    t[68] = "D";
+    t[69] = "E";
+    t[70] = "F";
+    t[71] = "G";
+    t[72] = "H";
+    t[73] = "I";
+    t[74] = "J";
+    t[75] = "K";
+    t[76] = "L";
+    t[77] = "M";
+    t[78] = "N";
+    t[79] = "O";
+    t[80] = "P";
+    t[81] = "Q";
+    t[82] = "R";
+    t[83] = "S";
+    t[84] = "T";
+    t[85] = "U";
+    t[86] = "V";
+    t[87] = "W";
+    t[88] = "X";
+    t[89] = "Y";
+    t[90] = "Z";
+    t[91] = "[";
+    t[92] = "\\";
+    t[93] = "]";
+    t[94] = "^";
+    t[95] = "_";
+    t[96] = "`";
+    t[97] = "a";
+    t[98] = "b";
+    t[99] = "c";
+    t[100] = "d";
+    t[101] = "e";
+    t[102] = "f";
+    t[103] = "g";
+    t[104] = "h";
+    t[105] = "i";
+    t[106] = "j";
+    t[107] = "k";
+    t[108] = "l";
+    t[109] = "m";
+    t[110] = "n";
+    t[111] = "o";
+    t[112] = "p";
+    t[113] = "q";
+    t[114] = "r";
+    t[115] = "s";
+    t[116] = "t";
+    t[117] = "u";
+    t[118] = "v";
+    t[119] = "w";
+    t[120] = "x";
+    t[121] = "y";
+    t[122] = "z";
+    t[123] = "{";
+    t[124] = "|";
+    t[125] = "}";
+    t[126] = "~";
+    return t;
+  }
+
+  < plain String to Java UTF-16 String, and back >
+  static String utf16(String plain) { return javaStringFromUtf8(plain); }
+  static String plainOf(String u) {
+    String out = "";
+    int n = javaStringLength(u);
+    int i = 0;
+    while (i < n) {
+      out = out + charString(javaStringCharAt(u, i));
+      i = i + 1;
+    }
+    return out;
+  }
+
+  < character access on a plain String, counted in UTF-16 code units as Java does >
+  static int length(String s) { return javaStringLength(javaStringFromUtf8(s)); }
+  static int charAt(String s, int index) {
+    String u = javaStringFromUtf8(s);
+    int n = javaStringLength(u);
+    if (index < 0 || index >= n) { throw new StringIndexOutOfBoundsException("Index " + index + " out of bounds for length " + n); }
+    return javaStringCharAt(u, index);
+  }
+  static String substring(String s, int begin, int end) {
+    String u = javaStringFromUtf8(s);
+    int n = javaStringLength(u);
+    if (begin < 0 || begin > end || end > n) {
+      throw new StringIndexOutOfBoundsException("begin " + begin + ", end " + end + ", length " + n);
+    }
+    return plainOf(javaStringSubstring(u, begin, end));
+  }
+  static int indexOfChar(String s, int ch, int fromIndex) {
+    String u = javaStringFromUtf8(s);
+    int n = javaStringLength(u);
+    int i = fromIndex;
+    if (i < 0) { i = 0; }
+    while (i < n) {
+      if (javaStringCharAt(u, i) == ch) { return i; }
+      i = i + 1;
+    }
+    return 0 - 1;
+  }
+  static int lastIndexOfChar(String s, int ch) {
+    String u = javaStringFromUtf8(s);
+    int i = javaStringLength(u) - 1;
+    while (i >= 0) {
+      if (javaStringCharAt(u, i) == ch) { return i; }
+      i = i - 1;
+    }
+    return 0 - 1;
+  }
+}

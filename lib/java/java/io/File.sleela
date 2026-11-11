@@ -67,28 +67,31 @@ class File {
   < ---- BEGIN java implementation ---- >
   < ---- java.io.File members (procedural implementation in SLeeLa) ---- >
   << java.io.File over the os file builtins (osExists, osIsDir, osFileSize,
-     osMakeDir, osRemove, osRename). The path is kept exactly as given: SLeeLa
-     plain strings have no character access, so the duplicate-slash and
-     trailing-slash normalization of the JDK is not applied, and members that
-     need to inspect the text (getName, getParent, isAbsolute, canonical and
-     absolute forms, listing) keep their exact-signature stubs. length()
-     returns 0 for a missing file, as Java does. mkdir() returns false for an
-     existing directory, as Java does. >>
+     osMakeDir, osRemove, osRename, oslsListDirectory). Paths are normalized
+     as the JDK does on Unix: repeated slashes collapse and a trailing slash is
+     dropped (except for the root). Path text is read through JavaText, so any
+     member that has to rebuild a path from its characters (normalization,
+     getName, getParent, list) works for ASCII paths and fails closed with
+     UnsupportedOperationException on others; paths that need no rebuilding
+     keep any characters. length() returns 0 for a missing file and mkdir()
+     false for an existing directory, as Java does. hashCode (needs XOR),
+     canonical forms (need symlink resolution), permissions, timestamps and
+     the URI and Path bridges keep their stubs. >>
   String path;
 
   public File(java.lang.String pathname) {
     if (pathname == null) { throw new NullPointerException(); }
-    this.path = pathname;
+    this.path = normalizePath(pathname);
   }
   public File(java.lang.String parent, java.lang.String child) {
     if (child == null) { throw new NullPointerException(); }
-    if (parent == null) { this.path = child; }
-    else { this.path = parent + "/" + child; }
+    if (parent == null) { this.path = normalizePath(child); }
+    else { this.path = joinPath(normalizePath(parent), normalizePath(child)); }
   }
   public File(File parent, java.lang.String child) {
     if (child == null) { throw new NullPointerException(); }
-    if (parent == null) { this.path = child; }
-    else { this.path = parent.path + "/" + child; }
+    if (parent == null) { this.path = normalizePath(child); }
+    else { this.path = joinPath(parent.path, normalizePath(child)); }
   }
 
   public java.lang.String getPath() { return this.path; }
@@ -116,30 +119,182 @@ class File {
     if (dest == null) { throw new NullPointerException(); }
     return osRename(this.path, dest.path) == 0;
   }
+
+  public java.lang.String getName() {
+    int i = JavaText.lastIndexOfChar(this.path, 47);
+    if (i < 0) { return this.path; }
+    return JavaText.substring(this.path, i + 1, JavaText.length(this.path));
+  }
+  public java.lang.String getParent() {
+    int i = JavaText.lastIndexOfChar(this.path, 47);
+    if (i < 0) { return null; }
+    if (i == 0) {
+      if (JavaText.length(this.path) > 1) { return "/"; }
+      return null;
+    }
+    return JavaText.substring(this.path, 0, i);
+  }
+  public File getParentFile() {
+    String p = getParent();
+    if (p == null) { return null; }
+    return new File(p);
+  }
+  public boolean isAbsolute() {
+    return JavaText.length(this.path) > 0 && JavaText.charAt(this.path, 0) == 47;
+  }
+  public java.lang.String getAbsolutePath() {
+    if (isAbsolute()) { return this.path; }
+    String cwd = osCurrentDir();
+    if (this.path == "") { return cwd; }
+    return joinPath(cwd, this.path);
+  }
+  public File getAbsoluteFile() { return new File(getAbsolutePath()); }
+  public boolean isHidden() {
+    String n = getName();
+    return JavaText.length(n) > 0 && JavaText.charAt(n, 0) == 46;
+  }
+  public int compareTo(File pathname) {
+    return javaStringCompareTo(javaStringFromUtf8(this.path), javaStringFromUtf8(pathname.path));
+  }
+  public boolean mkdirs() {
+    if (exists()) { return false; }
+    if (mkdir()) { return true; }
+    File abs = getAbsoluteFile();
+    File parent = abs.getParentFile();
+    if (parent == null) { return false; }
+    if (!parent.mkdirs() && !parent.exists()) { return false; }
+    return abs.mkdir();
+  }
+  public java.lang.String[] list() {
+    String json = oslsListDirectory(this.path);
+    return parseEntries(json);
+  }
+  public File[] listFiles() {
+    String[] names = list();
+    if (names == null) { return null; }
+    File[] out = new File[arrayLength(names)];
+    int i = 0;
+    while (i < arrayLength(names)) {
+      out[i] = new File(this, names[i]);
+      i = i + 1;
+    }
+    return out;
+  }
+
+  < path helpers >
+  String joinPath(String parent, String child) {
+    if (parent == "") { return normalizePath("/" + child); }
+    if (child == "") { return parent; }
+    if (parent == "/") { return normalizePath("/" + child); }
+    return normalizePath(parent + "/" + child);
+  }
+  < Unix normalization: collapse repeated slashes, drop a trailing slash; rebuilds the text only when needed >
+  String normalizePath(String p) {
+    String u = javaStringFromUtf8(p);
+    int n = javaStringLength(u);
+    boolean needed = false;
+    int i = 0;
+    while (i < n) {
+      if (javaStringCharAt(u, i) == 47) {
+        if (i == n - 1 && n > 1) { needed = true; }
+        if (i + 1 < n && javaStringCharAt(u, i + 1) == 47) { needed = true; }
+      }
+      i = i + 1;
+    }
+    if (!needed) { return p; }
+    String out = "";
+    boolean prevSlash = false;
+    i = 0;
+    while (i < n) {
+      int c = javaStringCharAt(u, i);
+      if (c == 47) {
+        if (!prevSlash) { out = out + "/"; }
+        prevSlash = true;
+      } else {
+        out = out + JavaText.charString(c);
+        prevSlash = false;
+      }
+      i = i + 1;
+    }
+    if (out != "/" && JavaText.length(out) > 1 && JavaText.charAt(out, JavaText.length(out) - 1) == 47) {
+      out = JavaText.substring(out, 0, JavaText.length(out) - 1);
+    }
+    return out;
+  }
+  < parse the entries array of an oslsListDirectory JSON reply, without . and .. ; null when the status is not 0 >
+  String[] parseEntries(String json) {
+    String u = javaStringFromUtf8(json);
+    int n = javaStringLength(u);
+    String ok = javaStringFromUtf8("\"status\":0");
+    int m = javaStringLength(ok);
+    boolean good = false;
+    int i = 0;
+    while (i + m <= n) {
+      if (javaStringSubstring(u, i, i + m) == ok) { good = true; }
+      i = i + 1;
+    }
+    if (!good) { return null; }
+    String key = javaStringFromUtf8("\"entries\":[");
+    int k = javaStringLength(key);
+    int start = 0 - 1;
+    i = 0;
+    while (i + k <= n && start < 0) {
+      if (javaStringSubstring(u, i, i + k) == key) { start = i + k; }
+      i = i + 1;
+    }
+    if (start < 0) { return null; }
+    String[] tmp = new String[64];
+    int count = 0;
+    i = start;
+    while (i < n && javaStringCharAt(u, i) != 93) {
+      if (javaStringCharAt(u, i) == 34) {
+        String name = "";
+        i = i + 1;
+        while (i < n && javaStringCharAt(u, i) != 34) {
+          int c = javaStringCharAt(u, i);
+          if (c == 92 && i + 1 < n) {
+            i = i + 1;
+            int e = javaStringCharAt(u, i);
+            if (e == 110) { c = 10; }
+            else if (e == 116) { c = 9; }
+            else if (e == 114) { c = 13; }
+            else if (e == 117) { throw new UnsupportedOperationException("java.io.File.list: \\u escapes in a directory entry are not supported yet"); }
+            else { c = e; }
+          }
+          name = name + JavaText.charString(c);
+          i = i + 1;
+        }
+        if (name != "." && name != "..") {
+          if (count >= arrayLength(tmp)) {
+            String[] bigger = new String[arrayLength(tmp) * 2];
+            int j = 0;
+            while (j < count) { bigger[j] = tmp[j]; j = j + 1; }
+            tmp = bigger;
+          }
+          tmp[count] = name;
+          count = count + 1;
+        }
+      }
+      i = i + 1;
+    }
+    String[] out = new String[count];
+    int j = 0;
+    while (j < count) { out[j] = tmp[j]; j = j + 1; }
+    return out;
+  }
   < ---- END java implementation ---- >
 
   < ---- BEGIN java signatures (generated by tools/jdk_api_signatures.py) ---- >
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
-  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.getName()"); }
   public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.hashCode()"); }
-  public boolean isHidden() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.isHidden()"); }
-  public int compareTo(java.io.File pathname) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.compareTo(java.io.File)"); }
-  public java.lang.String[] list() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.list()"); }
-  public java.lang.String[] list(java.io.FilenameFilter filter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.list(java.io.FilenameFilter)"); }
-  public boolean isAbsolute() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.isAbsolute()"); }
-  public java.lang.String getParent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.getParent()"); }
   public boolean setReadOnly() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.setReadOnly()"); }
   public java.net.URI toURI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.toURI()"); }
   public java.net.URL toURL() throws java.net.MalformedURLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.toURL()"); }
-  public java.lang.String getAbsolutePath() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.getAbsolutePath()"); }
   public boolean createNewFile() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.createNewFile()"); }
   public java.lang.String getCanonicalPath() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.getCanonicalPath()"); }
-  public java.io.File getAbsoluteFile() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.getAbsoluteFile()"); }
   public java.io.File getCanonicalFile() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.getCanonicalFile()"); }
-  public java.io.File getParentFile() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.getParentFile()"); }
-  public boolean mkdirs() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.mkdirs()"); }
   public boolean setWritable(boolean writable) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.setWritable(boolean)"); }
   public boolean setWritable(boolean writable, boolean ownerOnly) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.setWritable(boolean, boolean)"); }
   public boolean setReadable(boolean readable, boolean ownerOnly) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.setReadable(boolean, boolean)"); }
@@ -152,8 +307,6 @@ class File {
   public boolean canWrite() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.canWrite()"); }
   public long lastModified() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.lastModified()"); }
   public void deleteOnExit() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.deleteOnExit()"); }
-  public java.io.File[] listFiles(java.io.FileFilter filter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.listFiles(java.io.FileFilter)"); }
-  public java.io.File[] listFiles() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.listFiles()"); }
   public boolean setLastModified(long time) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.setLastModified(long)"); }
   public boolean canExecute() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.canExecute()"); }
   public long getTotalSpace() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.getTotalSpace()"); }
