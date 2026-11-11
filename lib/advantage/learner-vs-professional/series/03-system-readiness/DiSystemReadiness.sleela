@@ -1,0 +1,122 @@
+<< lib/advantage/learner-vs-professional/series/03-system-readiness/DiSystemReadiness.sleela
+   SLeeLa courseware lesson.
+   Definition: Device Instructor check that the system reports enough good input to teach: each reading is present, plausible and sufficient, or honestly not observed. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Lesson 3. The instructor asks the system for readings. A reading of -1 means >
+< not observed, which is never guessed at and never counted as ready. >
+class DiSystemReadiness {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39103;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String[] names = new String[5];
+  int[] readings = new int[5];
+  int[] minimums = new int[5];
+
+  void setup() {
+    names[0] = "memory MB";    minimums[0] = 512;
+    names[1] = "storage MB";   minimums[1] = 1024;
+    names[2] = "display";      minimums[2] = 1;
+    names[3] = "input device"; minimums[3] = 1;
+    names[4] = "clock set";    minimums[4] = 1;
+    int i = 0;
+    while (i < 5) { readings[i] = -1; i = i + 1; }
+  }
+
+  void report(int slot, int value) { readings[slot] = value; }
+
+  < Status codes: 0 ready, 1 not observed, 2 implausible, 3 below minimum. >
+  int status(int slot) {
+    int v = readings[slot];
+    if (v == -1) { return 1; }
+    if (v < 0) { return 2; }
+    if (v < minimums[slot]) { return 3; }
+    return 0;
+  }
+
+  String word(int code) {
+    if (code == 0) { return "ready"; }
+    if (code == 1) { return "NOT OBSERVED"; }
+    if (code == 2) { return "IMPLAUSIBLE reading"; }
+    return "BELOW MINIMUM";
+  }
+
+  < Prints the report and returns how many checks are not ready. >
+  int audit() {
+    int bad = 0;
+    int i = 0;
+    while (i < 5) {
+      int s = status(i);
+      print("  " + names[i] + " reading=" + readings[i] + " need>=" + minimums[i] + " : " + word(s));
+      if (s != 0) { bad = bad + 1; }
+      i = i + 1;
+    }
+    return bad;
+  }
+
+  void verdict(int bad) {
+    if (bad == 0) { print("  verdict: the instructor is ready to receive input"); }
+    else { print("  verdict: NOT ready, " + bad + " check(s) to fix"); }
+  }
+
+  void main() {
+    setup();
+    print("== Lesson 3: system readiness ==");
+    print("-- nothing reported yet --");
+    verdict(audit());
+
+    print("-- partial, flawed report --");
+    report(0, 2048);
+    report(1, 300);
+    report(2, 1);
+    report(3, -7);
+    verdict(audit());
+
+    print("-- corrected report --");
+    report(1, 8192);
+    report(3, 1);
+    report(4, 1);
+    verdict(audit());
+  }
+}

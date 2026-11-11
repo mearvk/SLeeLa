@@ -447,7 +447,7 @@
     },
     {
       "path": "impl/core/sleela_terminal.c",
-      "sha256": "ddf3c9ac6678d8c706dcb760ea36c06fd7d55abde410fbb0e181b68b57fa74a2"
+      "sha256": "c7570ea6f3c55af951ac02e4b7e6fa0bb9435a267713085b784b9cc90918c0fa"
     },
     {
       "path": "impl/core/sleela_terminal.h",
@@ -499,7 +499,7 @@
     },
     {
       "path": "impl/core/synchro_smoke.c",
-      "sha256": "15ef76e832e24b3d12e2d0e31cd82fa0e8b08c81b55febf8e1ba283fe0c50d16"
+      "sha256": "c906824fd2e940227582ecf849e3bed59b92a0d6e82056e7f0b9466d335fb013"
     },
     {
       "path": "impl/core/terminal_platform_smoke.c",
@@ -1148,6 +1148,22 @@
     {
       "path": "lib/advantage/integration/integration-demo.sleela",
       "sha256": "341c46266b9457df52d75da5e78da2e629047aeec8fea8ddd1cb23c22282a6e9"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/01-registry-intake/DiRegistryIntake.sleela",
+      "sha256": "f41384e78755fd1dbb851dde379f098acf48ee0fdd37df9fc848b33c1c47e638"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/02-student-input-gate/DiStudentInput.sleela",
+      "sha256": "342fcc8d5c22f1cfa072d13c903890e32a0c8da4fbb7730b10d9346c2912cc6c"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/03-system-readiness/DiSystemReadiness.sleela",
+      "sha256": "ace81829c7c06a82d55350104a4754e9f77b79ebb08266ecec7adbfa945f3d3f"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/04-agreement/DiAgreement.sleela",
+      "sha256": "0f039330c867ee1e24da7d0ba915d876ff5ef69338d892befe4a413891998e54"
     },
     {
       "path": "lib/advantage/math/SLBilateralNewsvendor.sleela",

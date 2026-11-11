@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 13276
+library-source-files: 13280
 library-packages: 121
 module-facade-symbols: 84
-total-symbol-records: 13360
+total-symbol-records: 13364
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -58,6 +58,10 @@ advantage	SLNewtonMedianTray.sleela	lib/advantage/integration/SLNewtonMedianTray
 advantage	SLTrialCompartment.sleela	lib/advantage/integration/SLTrialCompartment.sleela	source
 advantage	SLVerticalIntegration.sleela	lib/advantage/integration/SLVerticalIntegration.sleela	source
 advantage	integration-demo.sleela	lib/advantage/integration/integration-demo.sleela	source
+advantage	DiRegistryIntake.sleela	lib/advantage/learner-vs-professional/series/01-registry-intake/DiRegistryIntake.sleela	source
+advantage	DiStudentInput.sleela	lib/advantage/learner-vs-professional/series/02-student-input-gate/DiStudentInput.sleela	source
+advantage	DiSystemReadiness.sleela	lib/advantage/learner-vs-professional/series/03-system-readiness/DiSystemReadiness.sleela	source
+advantage	DiAgreement.sleela	lib/advantage/learner-vs-professional/series/04-agreement/DiAgreement.sleela	source
 advantage	SLBilateralNewsvendor.sleela	lib/advantage/math/SLBilateralNewsvendor.sleela	source
 advantage	SLJointProfitMax.sleela	lib/advantage/math/SLJointProfitMax.sleela	source
 advantage	SLNashBargaining.sleela	lib/advantage/math/SLNashBargaining.sleela	source
