@@ -5,8 +5,11 @@ ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT HUP INT TERM
 mkdir -p "$TMP/bin"
+# The override registry REPLACES the repository registry, so every module this
+# test queries must be listed here (native-drive included).
 cat >"$TMP/registry.conf" <<'EOF'
 example daemon example.service Test daemon
+native-drive tool tools/sleela-native-drive.py Native Drive test entry
 EOF
 cat >"$TMP/bin/id" <<'EOF'
 #!/bin/sh

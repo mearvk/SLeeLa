@@ -1,0 +1,42 @@
+name: sleelactl
+
+on:
+  push:
+    paths:
+      - '.github/workflows/sleelactl.yml'
+      - 'bin/sleelactl'
+      - 'bin/sleelactl.d/**'
+      - 'tests/sleelactl_*_test.sh'
+  pull_request:
+    paths:
+      - 'bin/sleelactl'
+      - 'bin/sleelactl.d/**'
+      - 'tests/sleelactl_*_test.sh'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sleelactl:
+    name: sleelactl (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax check (POSIX sh)
+        run: sh -n bin/sleelactl
+      - name: Functional contract tests (/bin/sh; dash on Ubuntu)
+        run: sh tests/sleelactl_cli_test.sh
+      - name: systemd scope tests
+        run: sh tests/sleelactl_systemctl_scope_test.sh
+      - name: Functional contract tests under dash explicitly
+        if: runner.os == 'Linux'
+        run: |
+          command -v dash >/dev/null || sudo apt-get install -y dash
+          dash -n bin/sleelactl
+          dash tests/sleelactl_cli_test.sh
+          dash tests/sleelactl_systemctl_scope_test.sh

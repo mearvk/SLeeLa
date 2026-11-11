@@ -35,15 +35,30 @@
 # cannot do (no fake "start" of a protocol spec, no fake "decode" of a daemon).
 #
 # Underlying mechanisms (honest, delegating to what already exists):
-#     daemon      -> systemctl on the module's unit (user bus when unprivileged)
-#     registry    -> the lib/<pkg> SLeeLa Controller via `sleela run`
+#     daemon      -> systemctl on the module's unit (scope: SLEELACTL_SYSTEMCTL_SCOPE,
+#                    system by default; non-root system mutations go through sudo)
+#     registry    -> list/probe/status run the lib/<pkg> reference pipeline via
+#                    `sleela run`; load/unload/enable/disable/can are refused
+#                    (process-local Controller state cannot outlive a CLI call)
 #     datasource  -> the lib/<pkg> SLDataSource surface via `sleela run`
 #     protocol    -> `make -C <dir>` targets / the module's own sim/validate CLI
 #     tool        -> the module's built CLI, or `make -C <dir>`
 #     subject     -> the native C/C++ subject (impl/subjects/<name>) exercised by
-#                    running its reference demo through `sleela run`/`check`
+#                    running its reference demo through `sleela run`
 # When a mechanism is absent (no systemctl, binary not built), sleelactl says so
 # plainly and exits non-zero rather than faking success.
+#
+# Global options (before the verb; also accepted right after `all`):
+#     --dry-run    print what would be done; change nothing
+#     --yes, -y    confirm a mutating daemon verb fanned out with `all`
+#
+# Exit codes:
+#     0   success
+#     1   the operation ran and failed, or the module is not present here
+#     2   usage error (unknown module/nature/option, bad id, missing --yes)
+#     3   mechanism unavailable or not offered from the CLI (no systemctl,
+#         runtime not built, process-local registry mutation)
+#     64  the verb is not legal for the module's nature
 # =============================================================================
 set -u
 
@@ -68,8 +83,9 @@ if [ ! -f "$REGISTRY" ]; then
     [ -f "$cand" ] && { REGISTRY="$cand"; break; }
   done
 fi
-# Allow an explicit override.
-[ -n "${SLEELACTL_REGISTRY:-}" ] && [ -f "$SLEELACTL_REGISTRY" ] && REGISTRY="$SLEELACTL_REGISTRY"
+# An explicit override is honoured strictly: if it names a missing file,
+# sleelactl fails (exit 2) rather than silently using another registry.
+[ -n "${SLEELACTL_REGISTRY:-}" ] && REGISTRY="$SLEELACTL_REGISTRY"
 
 # The SLeeLa runtime used to drive registry/datasource surfaces. Prefer a built
 # compiler in-tree; fall back to one on PATH.
@@ -91,6 +107,10 @@ okay() { printf '  %s✓%s %s\n' "$G" "$R" "$*"; }
 warn() { printf '  %s!%s %s\n' "$Y" "$R" "$*"; }
 err()  { printf '  %s✗%s %s\n' "$RD" "$R" "$*" >&2; }
 die()  { err "$*"; exit 1; }
+usage_die() { err "$*"; exit 2; }
+
+DRY_RUN=0
+ASSUME_YES=0
 
 # Resolve helper scripts in both repository/quick-safe layouts (ROOT/tools)
 # and conventional installs (PREFIX/lib/sleela/tools).
@@ -120,7 +140,7 @@ run_python() {
 
 # --- registry access ----------------------------------------------------------
 # Each lookup reads the plain-text registry; small enough to re-scan cheaply.
-reg_require() { [ -f "$REGISTRY" ] || die "module registry not found: $REGISTRY"; }
+reg_require() { [ -f "$REGISTRY" ] || usage_die "module registry not found: $REGISTRY"; }
 
 # Emit "name nature handle" for a module, or nothing if unknown.
 reg_row() {
@@ -169,6 +189,39 @@ verbs_for_nature() {
 verb_allowed() { # verb nature
   for v in $(verbs_for_nature "$2"); do [ "$v" = "$1" ] && return 0; done
   return 1
+}
+
+ALL_NATURES="daemon registry datasource protocol tool subject library"
+is_nature() { for n in $ALL_NATURES; do [ "$n" = "$1" ] && return 0; done; return 1; }
+natures_for_verb() { # verb -> space-separated natures that accept it
+  out=""
+  for n in $ALL_NATURES; do verb_allowed "$1" "$n" && out="$out $n"; done
+  printf '%s\n' "${out# }"
+}
+is_mutating_daemon_verb() {
+  case "$1" in start|stop|restart|reload|enable|disable) return 0 ;; *) return 1 ;; esac
+}
+# Registry mutations act on a process-local Controller; no process outlives a
+# CLI call to hold that state, so these are refused honestly (exit 3).
+is_process_local_registry_verb() {
+  case "$1" in load|unload|enable|disable|can) return 0 ;; *) return 1 ;; esac
+}
+
+# Run a SLeeLa program, keeping stderr. The runtime prints verification/
+# security preamble on stderr, so on success it is suppressed (set
+# SLEELACTL_VERBOSE=1 to see it); on failure the last diagnostic lines are shown.
+run_sleela() { # program.sleela
+  _rs_log=$(mktemp "${TMPDIR:-/tmp}/sleelactl.XXXXXX" 2>/dev/null) || _rs_log=""
+  if [ -z "$_rs_log" ]; then "$SLEELA_BIN" run "$1"; return $?; fi
+  "$SLEELA_BIN" run "$1" 2>"$_rs_log"; _rs_rc=$?
+  if [ "${SLEELACTL_VERBOSE:-0}" = 1 ]; then cat "$_rs_log" >&2
+  elif [ "$_rs_rc" -ne 0 ]; then
+    err "sleela run exited $_rs_rc; last diagnostics:"
+    grep -v -E '^(verification: PASS|\[security\]|\[defender\]|\[memory-manager\])' "$_rs_log" \
+      | tail -n 15 | sed 's/^/      /' >&2
+  fi
+  rm -f "$_rs_log"
+  return "$_rs_rc"
 }
 
 # =============================================================================
@@ -237,26 +290,43 @@ registry_demo() { # pkg -> path to the runnable Controller pipeline, if any
   done
   return 1
 }
+registry_size() { # module -> declared handler count from its summary ("N handlers"), if any
+  summary_of "$1" | sed -n 's/.*(\([0-9][0-9]*\) handlers.*/\1/p'
+}
 registry_cmd() { # module verb [id]
   pkg=$(handle_of "$1"); id="${3:-}"
   demo=$(registry_demo "$pkg" 2>/dev/null) || demo=""
   case "$2" in
-    list)
-      info "handlers registered by the $pkg Controller:"
-      if [ -n "$demo" ] && registry_runtime_ok; then "$SLEELA_BIN" run "$demo" 2>/dev/null || warn "could not run $pkg pipeline"; \
-      else warn "built SLeeLa runtime not found ($SLEELA_BIN); listing the registry source instead"; ls "$ROOT/lib/$pkg"/SL*"$( : )"*.sleela 2>/dev/null | sed 's|.*/|    |'; fi ;;
-    load|unload|enable|disable|probe|can|status)
-      [ "$2" = status ] || [ -n "$id" ] || { warn "$2 needs a codec id (0-based); showing the registry instead"; id=""; }
-      if [ -n "$demo" ] && registry_runtime_ok; then
-        info "$pkg Controller.$2${id:+ $id} (via $(basename "$demo"))"
-        "$SLEELA_BIN" run "$demo" 2>/dev/null \
-          && okay "$1: ran the Controller pipeline (load/canProcess/decode/unload are exercised in the reference flow)" \
-          || warn "$pkg pipeline did not complete"
-      else
-        warn "SLeeLa runtime not built; '$2' on the $pkg registry is a process-local Controller call."
+    list|probe|status)
+      [ "$#" -le 2 ] || usage_die "'$2' takes no handler id (got '$id'); try: $PROG $2 $1"
+      if [ -z "$demo" ]; then warn "$1: no reference pipeline found under lib/$pkg"; return 1; fi
+      if ! registry_runtime_ok; then
+        warn "SLeeLa runtime not built ($SLEELA_BIN); cannot run the $pkg reference pipeline."
         info "build it:  (cd impl && make build/sleela)   then re-run"
+        if [ "$2" = list ]; then
+          info "registry sources in lib/$pkg:"
+          ls "$ROOT/lib/$pkg"/*.sleela 2>/dev/null | sed 's|.*/|    |'
+        fi
         return 3
+      fi
+      info "$pkg reference pipeline ($(basename "$demo")): Controller/Loader/Verifier/Processor"
+      if run_sleela "$demo"; then
+        okay "$1: reference pipeline completed (a demonstration run; no registry state persists after it)"
+      else
+        err "$1: reference pipeline failed"; return 1
       fi ;;
+    load|unload|enable|disable|can)
+      [ -n "$id" ] || usage_die "'$2' needs a handler id (a non-negative integer); try: $PROG list $1"
+      case "$id" in *[!0-9]*) usage_die "handler id must be a non-negative integer, got '$id'" ;; esac
+      size=$(registry_size "$1")
+      if [ -n "$size" ] && [ "$id" -ge "$size" ]; then
+        usage_die "handler id $id is out of range for $1 (0..$((size - 1)))"
+      fi
+      err "'$2 $1 $id' is not offered from the command line."
+      info "the $pkg Controller is process-local: its loaded/backend state lives inside one"
+      info "running SLeeLa program, and no daemon holds it between sleelactl calls."
+      info "do it in SLeeLa (e.g. controller.$2($id)), or run the reference flow:  $PROG probe $1"
+      return 3 ;;
     *) die "registry verb '$2' not understood" ;;
   esac
 }
@@ -298,9 +368,16 @@ protocol_cmd() { # module verb [args]
       [ -f "$dir/README.md" ] && info "see: ${dir#$ROOT/}/README.md"
       ls "$dir"/*.SPEC.md "$dir"/*.md 2>/dev/null | head -3 | sed 's|.*/|    spec: |' ;;
     validate)
-      if [ -f "$dir/Makefile" ] && grep -qE '^(syntax|test|validate):' "$dir/Makefile"; then
-        tgt=$(grep -oE '^(validate|syntax|test):' "$dir/Makefile" | head -1 | tr -d :)
-        info "make -C ${dir#$ROOT/} $tgt"; make -C "$dir" "$tgt" && okay "$1 validated" || { warn "$1 validation reported issues"; return 1; }
+      tgt=""
+      if [ -f "$dir/Makefile" ]; then
+        # Prefer an explicit validate target, then syntax, then test.
+        for t in validate syntax test; do
+          grep -qE "^$t:" "$dir/Makefile" && { tgt=$t; break; }
+        done
+      fi
+      if [ -n "$tgt" ]; then
+        info "make -C ${dir#$ROOT/} $tgt"
+        if make -C "$dir" "$tgt"; then okay "$1 validated ($tgt)"; else err "$1 validation reported issues"; return 1; fi
       else warn "$1 has no validate/syntax/test target; nothing to run"; return 3; fi ;;
     simulate)
       sim=""
@@ -320,6 +397,27 @@ protocol_cmd() { # module verb [args]
 # =============================================================================
 # tool (compiler/decompiler/debugger): one-shot build-time tools.
 # =============================================================================
+# The CLI a tool's build produces. Matched by NAME only, never by "first
+# executable in a directory" (which picked test/example binaries).
+tool_binary_names() { # module
+  case "$1" in
+    compiler)   echo "sleelac" ;;
+    decompiler) echo "sleela-decompiler" ;;
+    debugger)   echo "sleela-debugger" ;;
+    *)          echo "$1 sleela-$1" ;;
+  esac
+}
+tool_binary() { # module dir -> path of the built CLI
+  for name in $(tool_binary_names "$1"); do
+    for sub in build build/Release build/stage/bin cli bin .; do
+      for cand in "$2/$sub/$name" "$2/$sub/$name.exe"; do
+        [ -f "$cand" ] && [ -x "$cand" ] && { printf '%s\n' "$cand"; return 0; }
+      done
+    done
+  done
+  return 1
+}
+
 tool_cmd() { # module verb [args]
   if [ "$1" = "native-drive" ]; then
     script=$(runtime_file "$(handle_of "$1")") || { warn "native-drive script not present in repository or installed runtime"; return 1; }
@@ -359,12 +457,9 @@ tool_cmd() { # module verb [args]
       [ -f "$dir/Makefile" ] || { warn "$1 has no Makefile to build"; return 3; }
       info "make -C ${dir#$ROOT/}"; make -C "$dir" && okay "$1 built" || { warn "$1 build failed"; return 1; } ;;
     run|inspect)
-      bin=""
-      for b in "$dir/cli"/* "$dir/build"/* "$dir/bin"/*; do
-        [ -x "$b" ] && [ ! -d "$b" ] && { bin="$b"; break; }
-      done
+      bin=$(tool_binary "$1" "$dir") || bin=""
       if [ -n "$bin" ]; then shift 2; info "$bin $*"; "$bin" "$@"; \
-      else warn "$1: no built CLI found; run  sleelactl build $1  first"; return 3; fi ;;
+      else warn "$1: no built CLI ($(tool_binary_names "$1" | tr ' ' '/')) found; run  $PROG build $1  first"; return 3; fi ;;
     *) die "tool verb '$2' not understood" ;;
   esac
 }
@@ -401,10 +496,10 @@ subject_cmd() { # module verb [args]
       [ -f "$demo" ] || { warn "$1: reference demo $demo_rel not present; cannot run"; return 1; }
       if registry_runtime_ok; then
         info "$SLEELA_BIN run $demo_rel"
-        if "$SLEELA_BIN" run "$demo" 2>/dev/null; then
+        if run_sleela "$demo"; then
           okay "$1: ran the native subject demo (its __Native* methods executed)"
         else
-          warn "$1: run of $demo_rel did not complete"; return 1
+          err "$1: run of $demo_rel did not complete"; return 1
         fi
       else
         warn "SLeeLa runtime not built ($SLEELA_BIN); cannot run the native '$1' subject."
@@ -419,11 +514,20 @@ subject_cmd() { # module verb [args]
 dispatch() { # verb module [args...]
   verb="$1"; mod="$2"; shift 2
   nat=$(nature_of "$mod") || true
-  [ -n "$nat" ] || die "unknown module '$mod'  (try: $PROG list)"
+  [ -n "$nat" ] || usage_die "unknown module '$mod'  (try: $PROG list)"
   if ! verb_allowed "$verb" "$nat"; then
     err "'$verb' is not valid for '$mod' (a $nat module)."
     info "legal verbs for $mod:  $(verbs_for_nature "$nat")"
     return 64
+  fi
+  if [ "$DRY_RUN" -eq 1 ]; then
+    if [ "$nat" = daemon ]; then
+      _dr_scope=$(systemctl_scope) || return $?
+      info "[dry-run] would run: systemctl --$_dr_scope $verb $(handle_of "$mod")"
+    else
+      info "[dry-run] would run: $PROG $verb $mod${*:+ $*}  ($nat)"
+    fi
+    return 0
   fi
   case "$nat" in
     daemon)     daemon_cmd "$mod" "$verb" "$@" ;;
@@ -440,23 +544,32 @@ dispatch() { # verb module [args...]
 # --- 'all' fan-out: apply a verb to every module whose nature allows it ------
 dispatch_all() { # verb [args...]
   verb="$1"; shift
-  any=0; rc=0
+  if is_mutating_daemon_verb "$verb" && [ "$DRY_RUN" -eq 0 ] && [ "$ASSUME_YES" -eq 0 ]; then
+    usage_die "refusing to '$verb' every daemon without --yes (preview first: $PROG --dry-run $verb all)"
+  fi
+  _all_any=0; _all_rc=0
   for m in $(reg_names); do
-    nat=$(nature_of "$m")
-    if verb_allowed "$verb" "$nat"; then
-      any=1
-      printf '%s== %s (%s) ==%s\n' "$B" "$m" "$nat" "$R"
-      dispatch "$verb" "$m" "$@" || rc=$?
+    _all_nat=$(nature_of "$m")
+    verb_allowed "$verb" "$_all_nat" || continue
+    _all_any=1
+    printf '%s== %s (%s) ==%s\n' "$B" "$m" "$_all_nat" "$R"
+    if [ "$_all_nat" = registry ] && is_process_local_registry_verb "$verb"; then
+      info "skipped: '$verb' on a process-local registry is not offered from the CLI"
+      continue
     fi
+    dispatch "$verb" "$m" "$@" || { _r=$?; [ "$_all_rc" -eq 0 ] && _all_rc=$_r; }
   done
-  [ "$any" -eq 1 ] || { err "no module accepts the verb '$verb'."; return 64; }
-  return "$rc"
+  [ "$_all_any" -eq 1 ] || { err "no module accepts the verb '$verb'."; return 64; }
+  return "$_all_rc"
 }
 
 # --- cross-cutting verbs -----------------------------------------------------
 cmd_list() {
   filter="${1:-}"
   reg_require
+  if [ -n "$filter" ] && ! is_nature "$filter"; then
+    usage_die "unknown nature '$filter' (natures: $ALL_NATURES)"
+  fi
   printf '%s%-18s %-11s %s%s\n' "$B" MODULE NATURE SUMMARY "$R"
   for m in $(reg_names "$filter"); do
     printf '  %-18s %s%-11s%s %s\n' "$m" "$G" "$(nature_of "$m")" "$R" "$(summary_of "$m")"
@@ -466,22 +579,25 @@ cmd_list() {
 cmd_status() {
   target="${1:-all}"
   if [ "$target" = all ]; then
+    _st_rc=0
     for m in $(reg_names); do
-      nat=$(nature_of "$m")
-      case "$nat" in
-        daemon)                printf '%s== %s (daemon) ==%s\n' "$B" "$m" "$R"; dispatch status "$m" || true ;;
-        registry|datasource)   printf '%s== %s (%s) ==%s\n' "$B" "$m" "$nat" "$R"; dispatch status "$m" || true ;;
-        *)                     printf '  %-18s %s%s%s  (no runtime status; %s)\n' "$m" "$GY" "$nat" "$R" "$(summary_of "$m")" ;;
+      _st_nat=$(nature_of "$m")
+      case "$_st_nat" in
+        daemon|registry|datasource)
+          printf '%s== %s (%s) ==%s\n' "$B" "$m" "$_st_nat" "$R"
+          dispatch status "$m" || { _r=$?; [ "$_st_rc" -eq 0 ] && _st_rc=$_r; } ;;
+        *) printf '  %-18s %s%s%s  (no runtime status; %s)\n' "$m" "$GY" "$_st_nat" "$R" "$(summary_of "$m")" ;;
       esac
     done
-  else
-    nat=$(nature_of "$target")
-    [ -n "$nat" ] || die "unknown module '$target'  (try: $PROG list)"
-    case "$nat" in
-      daemon|registry|datasource) dispatch status "$target" ;;
-      *) okay "$target ($nat) — $(summary_of "$target")"; info "a $nat module has no running status; use: $PROG info $target" ;;
-    esac
+    # Non-zero when any controllable module failed or could not be checked.
+    return "$_st_rc"
   fi
+  nat=$(nature_of "$target") || true
+  [ -n "$nat" ] || usage_die "unknown module '$target'  (try: $PROG list)"
+  case "$nat" in
+    daemon|registry|datasource) dispatch status "$target" ;;
+    *) okay "$target ($nat) — $(summary_of "$target")"; info "a $nat module has no running status; use: $PROG info $target" ;;
+  esac
 }
 
 cmd_natures() {
@@ -510,6 +626,23 @@ cmd_help() {
       okay "$topic — a $nat module"; info "$(summary_of "$topic")"
       info "legal verbs:  $(verbs_for_nature "$nat")"; return 0
     fi
+    if is_nature "$topic"; then
+      okay "$topic — a module nature"
+      info "legal verbs:  $(verbs_for_nature "$topic")"
+      info "modules:      $(reg_names "$topic" | tr '\n' ' ')"; return 0
+    fi
+    _hv_nats=$(natures_for_verb "$topic")
+    if [ -n "$_hv_nats" ]; then
+      okay "$topic — a verb accepted by: $_hv_nats"
+      for n in $_hv_nats; do
+        info "$n modules:  $(reg_names "$n" | tr '\n' ' ')"
+      done
+      is_mutating_daemon_verb "$topic" && info "with 'all' on daemons it needs --yes (preview with --dry-run)"
+      [ "$topic" = load ] || [ "$topic" = unload ] || [ "$topic" = can ] && \
+        info "on registries it validates the id, then is refused (exit 3): the Controller is process-local"
+      return 0
+    fi
+    usage_die "no such verb, module, or nature: '$topic'  (try: $PROG help)"
   fi
   cat <<EOF
 ${B}sleelactl${R} — the unified SLeeLa control plane
@@ -520,13 +653,19 @@ ${B}Usage${R}
   $PROG list [nature]               list modules (optionally filtered by nature)
   $PROG status [module|all]         show running status
   $PROG natures                     explain natures and their verbs
-  $PROG help [verb|module]          this help, or the verbs legal for a module
+  $PROG help [verb|module|nature]   this help, or details for one topic
+
+${B}Options${R} (before the verb, or right after 'all')
+  --dry-run                         show what would be done; change nothing
+  --yes, -y                         confirm a mutating daemon verb with 'all'
 
 ${B}Examples${R}
   $PROG start server-edition        start the server daemon (systemd)
   $PROG enable antivirus            enable the antivirus coordinator at boot
   $PROG status all                  status of every controllable module
-  $PROG load codecs 2               load FLAC (id 2) in the codec registry
+  $PROG probe codecs                run the codec registry reference pipeline
+  $PROG --dry-run stop all          preview stopping every daemon
+  $PROG stop all --yes              stop every daemon
   $PROG list registry               list the registry-nature modules
   $PROG available database          report the database data-source availability
   $PROG validate http-9.0           validate the HTTP/9.0 protocol spec
@@ -537,10 +676,22 @@ ${B}Examples${R}
 Verbs are gated by module nature (see '$PROG natures'); an unsupported verb is
 refused with the correct verb set — sleelactl never fakes an action a module
 cannot perform.
+
+${B}Exit codes${R}
+  0 success   1 operation failed / module absent   2 usage error
+  3 mechanism unavailable or not offered from the CLI   64 verb not legal for the nature
 EOF
 }
 
 # --- main --------------------------------------------------------------------
+parse_flag() { # flag -> 0 if it was a global flag (and records it)
+  case "$1" in
+    --dry-run) DRY_RUN=1 ;;
+    --yes|-y)  ASSUME_YES=1 ;;
+    *) return 1 ;;
+  esac
+}
+while [ "$#" -ge 1 ] && parse_flag "$1"; do shift; done
 [ "$#" -ge 1 ] || { cmd_help; exit 0; }
 verb="$1"; shift
 
@@ -549,10 +700,16 @@ case "$verb" in
   list)           cmd_list "${1:-}" ;;
   natures)        cmd_natures ;;
   status)         cmd_status "${1:-all}" ;;
-  version|--version) say "sleelactl (SLeeLa control plane) 1.0" ;;
+  version|--version) say "sleelactl (SLeeLa control plane) 1.1" ;;
+  -*)             usage_die "unknown option '$verb'  (try: $PROG help)" ;;
   *)
-    [ "$#" -ge 1 ] || die "verb '$verb' needs a module (or 'all'). Try: $PROG help"
+    [ "$#" -ge 1 ] || usage_die "verb '$verb' needs a module (or 'all'). Try: $PROG help $verb"
     mod="$1"; shift
-    if [ "$mod" = all ]; then dispatch_all "$verb" "$@"; else dispatch "$verb" "$mod" "$@"; fi
+    if [ "$mod" = all ]; then
+      while [ "$#" -ge 1 ] && parse_flag "$1"; do shift; done
+      dispatch_all "$verb" "$@"
+    else
+      dispatch "$verb" "$mod" "$@"
+    fi
     ;;
 esac
