@@ -1,0 +1,106 @@
+<< lib/advantage/trading/SLTradingMarketMaking.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Market making: quote both sides and earn the spread, pricing the case where
+   inventory does not turn over. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Model 2 of the trading subject. Be the instant buyer and seller. The risk is >
+< inventory that does not sell, modelled as a fill probability and an unwind >
+< loss. Digital: order book or AMM quoting. Physical: buying estate lots. >
+class SLTradingMarketMaking {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39003;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  < ---- shared validation, created on first use ---- >
+  SLTradingCheck chk;
+  SLTradingCheck check() {
+    if (chk == null) { chk = new SLTradingCheck(); }
+    return chk;
+  }
+
+  < Symmetric quote around a fair value: bid = fair*(1-h), ask = fair*(1+h). >
+  boolean quoteOk(double fairValue, double halfSpreadRate) {
+    SLTradingCheck c = check();
+    return c.isPositive(fairValue) && c.isRate(halfSpreadRate);
+  }
+  double bid(double fairValue, double halfSpreadRate) {
+    if (quoteOk(fairValue, halfSpreadRate) == false) { return -1.0; }
+    return fairValue * (1.0 - halfSpreadRate);
+  }
+  double ask(double fairValue, double halfSpreadRate) {
+    if (quoteOk(fairValue, halfSpreadRate) == false) { return -1.0; }
+    return fairValue * (1.0 + halfSpreadRate);
+  }
+
+  << Evaluate one round trip. The fee is per side and may be a rebate (a
+     negative fee) but must stay strictly between -1 and 1. fillProbability is
+     the chance the round trip completes at the ask; otherwise the inventory is
+     dumped at an unwind loss below the bid. >>
+  SLTradingResult evaluate(double bid, double ask, double quantity,
+                           double feeRate, double fillProbability,
+                           double unwindLossRate, double fixedCosts,
+                           double holdingCostPerDay, double holdDays) {
+    SLTradingCheck c = check();
+    if (c.isPositive(bid) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isPositive(ask) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isPositive(quantity) == false) { return c.fail(c.rangeMessage()); }
+    if (ask < bid) { return c.fail(c.rangeMessage()); }
+    if (c.isFinite(feeRate) == false) { return c.fail(c.rangeMessage()); }
+    if (feeRate <= -1.0 || feeRate >= 1.0) { return c.fail(c.rangeMessage()); }
+    if (c.isProb(fillProbability) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isProb(unwindLossRate) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isAmount(fixedCosts) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isAmount(holdingCostPerDay) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isDays(holdDays) == false) { return c.fail(c.rangeMessage()); }
+
+    double cost = quantity * bid * (1.0 + feeRate) + fixedCosts
+                + holdingCostPerDay * holdDays;
+    double done = quantity * ask * (1.0 - feeRate);
+    double stuck = quantity * bid * (1.0 - unwindLossRate) * (1.0 - feeRate);
+    double proceeds = fillProbability * done + (1.0 - fillProbability) * stuck;
+    return c.finish(cost, proceeds, holdDays);
+  }
+}

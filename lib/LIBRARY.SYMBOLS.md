@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 13230
+library-source-files: 13247
 library-packages: 117
 module-facade-symbols: 84
-total-symbol-records: 13314
+total-symbol-records: 13331
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -80,6 +80,23 @@ advantage	SLTransactionalGeodesic.sleela	lib/advantage/physics/SLTransactionalGe
 advantage	SLTrustDecaySDE.sleela	lib/advantage/physics/SLTrustDecaySDE.sleela	source
 advantage	SLTrustMetric.sleela	lib/advantage/physics/SLTrustMetric.sleela	source
 advantage	physics-demo.sleela	lib/advantage/physics/physics-demo.sleela	source
+advantage	SLTradingAggregation.sleela	lib/advantage/trading/SLTradingAggregation.sleela	source
+advantage	SLTradingApproach.sleela	lib/advantage/trading/SLTradingApproach.sleela	source
+advantage	SLTradingArbitrage.sleela	lib/advantage/trading/SLTradingArbitrage.sleela	source
+advantage	SLTradingAsymmetry.sleela	lib/advantage/trading/SLTradingAsymmetry.sleela	source
+advantage	SLTradingCheck.sleela	lib/advantage/trading/SLTradingCheck.sleela	source
+advantage	SLTradingConsignment.sleela	lib/advantage/trading/SLTradingConsignment.sleela	source
+advantage	SLTradingCounsel.sleela	lib/advantage/trading/SLTradingCounsel.sleela	source
+advantage	SLTradingDistressed.sleela	lib/advantage/trading/SLTradingDistressed.sleela	source
+advantage	SLTradingMarketMaking.sleela	lib/advantage/trading/SLTradingMarketMaking.sleela	source
+advantage	SLTradingMomentum.sleela	lib/advantage/trading/SLTradingMomentum.sleela	source
+advantage	SLTradingRateBudget.sleela	lib/advantage/trading/SLTradingRateBudget.sleela	source
+advantage	SLTradingRefurbishment.sleela	lib/advantage/trading/SLTradingRefurbishment.sleela	source
+advantage	SLTradingRegional.sleela	lib/advantage/trading/SLTradingRegional.sleela	source
+advantage	SLTradingResult.sleela	lib/advantage/trading/SLTradingResult.sleela	source
+advantage	SLTradingSynthetic.sleela	lib/advantage/trading/SLTradingSynthetic.sleela	source
+advantage	SLTradingVirtual.sleela	lib/advantage/trading/SLTradingVirtual.sleela	source
+advantage	trading-demo.sleela	lib/advantage/trading/trading-demo.sleela	source
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
 alphabet	AlphabetBuilder.sleela	lib/alphabet/AlphabetBuilder.sleela	source
 alphabet	ArabicAlphabet.sleela	lib/alphabet/ArabicAlphabet.sleela	source

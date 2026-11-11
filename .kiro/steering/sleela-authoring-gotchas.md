@@ -59,6 +59,22 @@ syntax 1.0 – 3.0**. Keep new/edited `.sleela` code within these rules.
    `Munction closeWithReceipt() requires a reach handle`. Name it something else
    (`requestClose()`, `sealMoment()`, `dispose()`).
 
+3. **New arrays start as `null`, not zero.** `new int[n]` / `new double[n]`
+   elements read as `null` until assigned, so `used[j] == 0` is false and a sum
+   over unassigned slots misbehaves. Assign every element you will read. This
+   fails at `run` with `array index out of range` when the value is later used
+   as an index, even though `check` passes. (Found in
+   `lib/advantage/trading/SLTradingCounsel.sleela`, whose `rank` initialises its
+   working arrays for this reason.)
+
+4. **int / int is integer division.** `held / total` of two `int`s truncates;
+   write `(held * 1.0) / total` when a fraction is intended.
+
+5. **`String` has no methods.** The built-in `String` exposes only `+`
+   concatenation and `==` / `!=`: no `length`, `charAt`, `substring`, `trim`.
+   Text that needs parsing (for example rate-limit header values) must be
+   parsed by the caller or the C layer, and passed in as numbers.
+
 ## Comment placement (reminder)
 
 Angle-bracket comments (`<` / `<<`) must start a line (only whitespace before).

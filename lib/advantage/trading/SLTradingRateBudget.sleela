@@ -1,0 +1,155 @@
+<< lib/advantage/trading/SLTradingRateBudget.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Rate budget: stay inside the rate limit a server publishes by turning the
+   X-RateLimit and Retry-After values into a wait before the next request. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Supporting model of the trading subject. Takes the numbers a server tells you >
+< and says how long to wait: the usable budget spread evenly over the window, >
+< a reserve held back, and an explicit Retry-After always obeyed. It respects >
+< the limit; it never evades one. Pure: no sockets, no clock, no sleeping. >
+< Honest limit: the SLeeLa String type has no character access, so header text >
+< cannot be parsed in-language. The caller passes parsed numbers (-1.0 for an >
+< absent header); strict string parsing lives in the C layer. >
+class SLTradingRateBudget {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39013;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 7;
+  << metaNationalSchedule: Retry-After is defined in RFC 9110, HTTP
+     Semantics, section 10.2.3 (IETF, 2022). The X-RateLimit headers are
+     a common convention, not a ratified standard. >>
+  String metaNationalSchedule = "RFC 9110 (HTTP Semantics, section 10.2.3 Retry-After)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  << ---- state ----
+     -1.0 means "the server has not told us" (the header was absent). >>
+  double limit = -1.0;
+  double remaining = -1.0;
+  double resetSeconds = -1.0;
+  double retryAfterSeconds = -1.0;
+
+  void init() {
+    limit = -1.0;
+    remaining = -1.0;
+    resetSeconds = -1.0;
+    retryAfterSeconds = -1.0;
+  }
+
+  double getLimit() { return limit; }
+  double getRemaining() { return remaining; }
+  double getResetSeconds() { return resetSeconds; }
+  double getRetryAfterSeconds() { return retryAfterSeconds; }
+
+  < A header value is acceptable when absent (-1.0) or a finite number from 0 >
+  < up to 1e12. NaN fails every ordered comparison, so it is rejected. >
+  boolean valueOk(double v) {
+    if (v == -1.0) { return true; }
+    if ((v - v) != 0.0) { return false; }
+    return v >= 0.0 && v <= 1.0e12;
+  }
+
+  << Record the values from one response, already parsed to numbers. Pass -1.0
+     for any header that was absent: the stored value is kept, except
+     retryAfter, which is cleared because a response without Retry-After lifts
+     the back-off. If any present value is invalid the call returns false and
+     the state is not modified (fail closed). >>
+  boolean observe(double limitValue, double remainingValue,
+                  double resetValue, double retryAfterValue) {
+    if (valueOk(limitValue) == false) { return false; }
+    if (valueOk(remainingValue) == false) { return false; }
+    if (valueOk(resetValue) == false) { return false; }
+    if (valueOk(retryAfterValue) == false) { return false; }
+    if (limitValue != -1.0) { limit = limitValue; }
+    if (remainingValue != -1.0) { remaining = remainingValue; }
+    if (resetValue != -1.0) { resetSeconds = resetValue; }
+    retryAfterSeconds = retryAfterValue;
+    return true;
+  }
+
+  << Some servers send the reset as an absolute epoch time. A value above 1e9
+     is treated as epoch and converted to seconds from now (never negative);
+     smaller values are already seconds from now. >>
+  double secondsUntilReset(double resetValue, double nowEpochSeconds) {
+    if (resetValue > 1.0e9) {
+      if (resetValue > nowEpochSeconds) { return resetValue - nowEpochSeconds; }
+      return 0.0;
+    }
+    return resetValue;
+  }
+
+  << Milliseconds to wait before the next request, or -1.0 if the options are
+     invalid.
+       - an explicit Retry-After wins over everything;
+       - if remaining is at or below the reserve, wait out the window;
+       - otherwise spread the usable budget (remaining minus reserve) evenly
+         over the time left in the window;
+       - never less than minIntervalMs; unknown values fall back to it. >>
+  double nextDelayMs(double reserve, double minIntervalMs, double maxWaitMs) {
+    if ((reserve - reserve) != 0.0 || reserve < 0.0) { return -1.0; }
+    if ((minIntervalMs - minIntervalMs) != 0.0 || minIntervalMs < 0.0) { return -1.0; }
+    if ((maxWaitMs - maxWaitMs) != 0.0 || maxWaitMs <= 0.0) { return -1.0; }
+    double delay = 0.0;
+    if (retryAfterSeconds >= 0.0) {
+      delay = retryAfterSeconds * 1000.0;
+    } else {
+      if (remaining < 0.0 || resetSeconds < 0.0) {
+        delay = minIntervalMs;
+      } else {
+        if (remaining <= reserve) {
+          delay = resetSeconds * 1000.0;
+        } else {
+          delay = (resetSeconds * 1000.0) / (remaining - reserve);
+        }
+      }
+    }
+    if (delay < minIntervalMs) { delay = minIntervalMs; }
+    return delay;
+  }
+
+  < True when the required wait is longer than the caller allows: the caller >
+  < should stop instead of sleeping. Also true when the options are invalid. >
+  boolean mustStop(double reserve, double minIntervalMs, double maxWaitMs) {
+    double d = nextDelayMs(reserve, minIntervalMs, maxWaitMs);
+    if (d < 0.0) { return true; }
+    return d > maxWaitMs;
+  }
+}

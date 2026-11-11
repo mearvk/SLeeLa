@@ -1,0 +1,100 @@
+<< lib/advantage/trading/SLTradingDistressed.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Distressed inventory and liquidation: buy from a seller who wants speed,
+   pricing the race against institutional liquidators and the unsold remainder. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Model 8 of the trading subject. Digital: forced-liquidation dips on thin >
+< books. Physical: office, eviction and storage-auction truckloads. >
+class SLTradingDistressed {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39009;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  < ---- shared validation, created on first use ---- >
+  SLTradingCheck chk;
+  SLTradingCheck check() {
+    if (chk == null) { chk = new SLTradingCheck(); }
+    return chk;
+  }
+
+  << Buy from a seller who values speed and certainty over price, then sell
+     on. Institutional liquidators compete, so there is a win probability and a
+     pursuit cost paid for every lot chased. The lot clean-out costs are paid
+     only if the lot is won. >>
+  SLTradingResult evaluate(double lotPrice, double units,
+                           double expectedUnitValue, double sellThroughRate,
+                           double salvageUnitValue, double sellFeeRate,
+                           double perUnitHandlingCost,
+                           double disposalCostPerUnsoldUnit, double fixedCosts,
+                           double holdingCostPerDay, double holdDays,
+                           double winProbability, double pursuitCost) {
+    SLTradingCheck c = check();
+    if (c.isPositive(lotPrice) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isPositive(units) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isAmount(expectedUnitValue) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isProb(sellThroughRate) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isAmount(salvageUnitValue) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isRate(sellFeeRate) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isAmount(perUnitHandlingCost) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isAmount(disposalCostPerUnsoldUnit) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isAmount(fixedCosts) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isAmount(holdingCostPerDay) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isDays(holdDays) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isProb(winProbability) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isAmount(pursuitCost) == false) { return c.fail(c.rangeMessage()); }
+
+    double w = winProbability;
+    double s = sellThroughRate;
+    double lotCost = lotPrice + units * perUnitHandlingCost
+                   + (1.0 - s) * units * disposalCostPerUnsoldUnit
+                   + fixedCosts + holdingCostPerDay * holdDays;
+    double cost = pursuitCost + w * lotCost;
+    double proceeds = w * units
+        * (s * expectedUnitValue * (1.0 - sellFeeRate)
+           + (1.0 - s) * salvageUnitValue);
+    return c.finish(cost, proceeds, holdDays);
+  }
+}

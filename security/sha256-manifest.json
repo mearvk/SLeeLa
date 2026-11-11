@@ -1238,6 +1238,74 @@
       "sha256": "8c45a8324cf15bcc8185fc0c3354d2f64e1879a3201672bedb00322a22e68f49"
     },
     {
+      "path": "lib/advantage/trading/SLTradingAggregation.sleela",
+      "sha256": "d995204798ac68fdd2c8eedf1305c5f36e2753def12eb94bdd69d9d29e7b2925"
+    },
+    {
+      "path": "lib/advantage/trading/SLTradingApproach.sleela",
+      "sha256": "908d2fde890db00795af04f6f4f11ebdb8ee12689c6134ec99d178386771c6a6"
+    },
+    {
+      "path": "lib/advantage/trading/SLTradingArbitrage.sleela",
+      "sha256": "cdbc7500a99281a573e87841d0b8295528e756d45a9e84831f7363d269455418"
+    },
+    {
+      "path": "lib/advantage/trading/SLTradingAsymmetry.sleela",
+      "sha256": "449da021a25e72d44f2ae247aacb03524d224b7808f6b5cfbbfd5a0a22c5069b"
+    },
+    {
+      "path": "lib/advantage/trading/SLTradingCheck.sleela",
+      "sha256": "8e97ecea36154118a8b9d78f3de1b49140f7bdfb57dbca1c7cafed88f903da2c"
+    },
+    {
+      "path": "lib/advantage/trading/SLTradingConsignment.sleela",
+      "sha256": "1f2ac1f1f911dac9663b9c78e11fd24a8ad899d9c71d6e4a6ee2e5b063c5d2df"
+    },
+    {
+      "path": "lib/advantage/trading/SLTradingCounsel.sleela",
+      "sha256": "1b76d8e9d0d2fc0d12fe2fa7b7e4f4222cdd0a84629845c1a8896999c7e13aaa"
+    },
+    {
+      "path": "lib/advantage/trading/SLTradingDistressed.sleela",
+      "sha256": "b9e49fdc4253692aa6649cba67bd5aad79d8b62eb622aeede49652033dd22a8a"
+    },
+    {
+      "path": "lib/advantage/trading/SLTradingMarketMaking.sleela",
+      "sha256": "5bb8a383e241e8f5b5b801affde0f3b1b18563ec02f0f7a3545902b7a816d1f4"
+    },
+    {
+      "path": "lib/advantage/trading/SLTradingMomentum.sleela",
+      "sha256": "6d4562ac6227c260e8dc85a6e84d227fce0458625d8ad3f41f12cbe27dfb4324"
+    },
+    {
+      "path": "lib/advantage/trading/SLTradingRateBudget.sleela",
+      "sha256": "371fe124eabbf6079dc026f2cb501b0ab9998767e22aea57f30b071ab04b98da"
+    },
+    {
+      "path": "lib/advantage/trading/SLTradingRefurbishment.sleela",
+      "sha256": "887d070d7b7b8c1a71acd0806881436ffeb9d3eae0ae1e4fc4424428f8f16b9f"
+    },
+    {
+      "path": "lib/advantage/trading/SLTradingRegional.sleela",
+      "sha256": "b5944fd3b831a759d119cb7c1398f725733ece2865683b501e06adcdc3600c7d"
+    },
+    {
+      "path": "lib/advantage/trading/SLTradingResult.sleela",
+      "sha256": "ce99ea11a7a9cb53b4962f7c9cb99013d5ac6a9e34d3906c85635b962c86e1be"
+    },
+    {
+      "path": "lib/advantage/trading/SLTradingSynthetic.sleela",
+      "sha256": "5b1aa5517575f2df5c7eb55657e2f6eba247a836810a45ce5913aa1ce834f3d6"
+    },
+    {
+      "path": "lib/advantage/trading/SLTradingVirtual.sleela",
+      "sha256": "643530e0743f2775e71b203b90402ae2f108cc3203ff754a370bc67170f366a9"
+    },
+    {
+      "path": "lib/advantage/trading/trading-demo.sleela",
+      "sha256": "78eb7baa6f4dcca8ea05df454959e5fe5f6cc7b5812129adaf5ff31f73cf3d55"
+    },
+    {
       "path": "lib/alphabet/Alphabet.sleela",
       "sha256": "c065f793cc47b78b993576038515aa934676c1be29a079f70c63a4ba3b5b6f59"
     },

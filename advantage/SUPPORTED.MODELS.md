@@ -307,7 +307,17 @@ and *consignment*, leverage from position in *regional arbitrage*).
 - Persistent authenticated sessions and instant-checkout automation across
   third-party merchant dashboards.
 
+### SLeeLa port
+
+All eleven models, the rate budget, and counsel are ported to SLeeLa in
+[`lib/advantage/trading/`](../lib/advantage/trading) (see
+[`lib/advantage/TRADING.md`](../lib/advantage/TRADING.md)). The port is
+validated by a runnable demo of 93 self-checks against the same hand-computed
+anchors, and matches this module's counsel scores. One honest difference: the
+SLeeLa `String` type has no character access, so the rate budget there takes
+already-parsed numbers instead of header text.
+
 ### Planned
 
-- SLeeLa source versioning of these models (deferred).
+- SLeeLa source *versioning* of these models (deferred; to be scoped).
 - Annualization (trades per year) for fair cross-asset ranking.

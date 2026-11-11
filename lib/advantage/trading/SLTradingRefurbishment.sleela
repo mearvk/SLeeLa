@@ -1,0 +1,95 @@
+<< lib/advantage/trading/SLTradingRefurbishment.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Value-add refurbishment: buy raw or distressed, improve, sell into a higher
+   tier, with the result expressed as a distribution of outcomes. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Model 3 of the trading subject. Value is created by work, and work can come >
+< out several ways, so the result is a probability-weighted outcome list. >
+< Digital: raw coins sent for grading. Physical: restored furniture. >
+class SLTradingRefurbishment {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39004;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  < ---- shared validation, created on first use ---- >
+  SLTradingCheck chk;
+  SLTradingCheck check() {
+    if (chk == null) { chk = new SLTradingCheck(); }
+    return chk;
+  }
+
+  << probs and values are parallel arrays of n outcome branches: the chance of
+     each outcome and the sale value per unit in that case. The probabilities
+     must sum to 1 within a small tolerance. >>
+  SLTradingResult evaluate(double acquirePrice, double quantity,
+                           double perUnitCost, double fixedCosts,
+                           double sellFeeRate, double holdingCostPerDay,
+                           double holdDays, double[] probs, double[] values,
+                           int n) {
+    SLTradingCheck c = check();
+    if (n < 1 || n > c.maxOutcomes()) { return c.fail(c.countMessage()); }
+    if (c.isPositive(acquirePrice) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isPositive(quantity) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isAmount(perUnitCost) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isAmount(fixedCosts) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isRate(sellFeeRate) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isAmount(holdingCostPerDay) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isDays(holdDays) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isDistribution(probs, n) == false) { return c.fail(c.distributionMessage()); }
+
+    double expectedValue = 0.0;
+    int i = 0;
+    while (i < n) {
+      if (c.isAmount(values[i]) == false) { return c.fail(c.rangeMessage()); }
+      expectedValue = expectedValue + probs[i] * values[i];
+      i = i + 1;
+    }
+    double cost = quantity * (acquirePrice + perUnitCost) + fixedCosts
+                + holdingCostPerDay * holdDays;
+    double proceeds = quantity * expectedValue * (1.0 - sellFeeRate);
+    return c.finish(cost, proceeds, holdDays);
+  }
+}

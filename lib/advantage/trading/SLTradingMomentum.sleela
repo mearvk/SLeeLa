@@ -1,0 +1,145 @@
+<< lib/advantage/trading/SLTradingMomentum.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Event-driven momentum: enter on a news or trend shock and exit while demand
+   is elevated, with exit failure as a first-class outcome and hype decay. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Model 11 of the trading subject. Time is both the edge and the risk. Being >
+< unable to exit is the dominant risk in thin markets: you can be the exit >
+< liquidity for another party promotion. These numbers are not a reason to >
+< promote a token you hold. >
+class SLTradingMomentum {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39012;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  < ---- shared validation, created on first use ---- >
+  SLTradingCheck chk;
+  SLTradingCheck check() {
+    if (chk == null) { chk = new SLTradingCheck(); }
+    return chk;
+  }
+
+  < ---- hype decay: remaining = initial * 0.5 ^ (days / halfLife) ---- >
+  < 2 ^ -x is built from whole halvings plus a short Taylor series for the >
+  < fractional part, so no external math library is needed. >
+  double pow2neg(double x) {
+    if (x > 1100.0) { return 0.0; }
+    double r = 1.0;
+    double rest = x;
+    while (rest >= 1.0) {
+      r = r * 0.5;
+      rest = rest - 1.0;
+    }
+    double t = 0.0 - rest * 0.6931471805599453;
+    double term = 1.0;
+    double sum = 1.0;
+    int k = 1;
+    while (k < 25) {
+      term = term * t / k;
+      sum = sum + term;
+      k = k + 1;
+    }
+    return r * sum;
+  }
+
+  < Excess price above baseline left after the given days. Returns -1.0 for >
+  < invalid input; a real remainder is never negative. >
+  double hypeDecay(double initialExcess, double halfLifeDays, double days) {
+    SLTradingCheck c = check();
+    if (c.isFinite(initialExcess) == false) { return -1.0; }
+    if (initialExcess < 0.0 || initialExcess > c.maxAmount()) { return -1.0; }
+    if (c.isFinite(halfLifeDays) == false) { return -1.0; }
+    if (halfLifeDays <= 0.0) { return -1.0; }
+    if (c.isDays(days) == false) { return -1.0; }
+    return initialExcess * pow2neg(days / halfLifeDays);
+  }
+
+  << Enter on a news or trend shock and exit while demand is elevated.
+     exitProbs and exitPrices are parallel arrays of n exit branches (chance
+     and price per unit) that must sum to 1; they describe the exits that WERE
+     possible. The chance of being unable to exit at all is separate
+     (exitFailureProbability), with a recovery rate for the stuck inventory.
+     Inability to exit is a first-class outcome here, not a footnote. >>
+  SLTradingResult evaluate(double entryPrice, double quantity,
+                           double buyFeeRate, double sellFeeRate,
+                           double entrySlippageRate, double exitSlippageRate,
+                           double fixedCosts, double holdingCostPerDay,
+                           double holdDays, double exitFailureProbability,
+                           double stuckRecoveryRate, double[] exitProbs,
+                           double[] exitPrices, int n) {
+    SLTradingCheck c = check();
+    if (n < 1 || n > c.maxOutcomes()) { return c.fail(c.countMessage()); }
+    if (c.isPositive(entryPrice) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isPositive(quantity) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isRate(buyFeeRate) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isRate(sellFeeRate) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isRate(entrySlippageRate) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isRate(exitSlippageRate) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isAmount(fixedCosts) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isAmount(holdingCostPerDay) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isDays(holdDays) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isProb(exitFailureProbability) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isProb(stuckRecoveryRate) == false) { return c.fail(c.rangeMessage()); }
+    < the exit leg must keep a positive share of its notional >
+    if (sellFeeRate + exitSlippageRate >= 1.0) { return c.fail(c.rangeMessage()); }
+    if (c.isDistribution(exitProbs, n) == false) { return c.fail(c.distributionMessage()); }
+
+    double expectedExit = 0.0;
+    int i = 0;
+    while (i < n) {
+      if (c.isAmount(exitPrices[i]) == false) { return c.fail(c.rangeMessage()); }
+      expectedExit = expectedExit + exitProbs[i] * exitPrices[i];
+      i = i + 1;
+    }
+    double L = exitFailureProbability;
+    double cost = quantity * entryPrice * (1.0 + buyFeeRate + entrySlippageRate)
+                + fixedCosts + holdingCostPerDay * holdDays;
+    double exitProceeds = quantity * expectedExit
+                        * (1.0 - sellFeeRate - exitSlippageRate);
+    double stuck = quantity * entryPrice * stuckRecoveryRate;
+    return c.finish(cost, (1.0 - L) * exitProceeds + L * stuck, holdDays);
+  }
+}
