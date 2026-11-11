@@ -145,7 +145,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; java</div>
 <h1>Package <code>java</code></h1>
-<div class="lead">This package contains <strong>10219</strong> source unit(s) defining <strong>10219</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>10220</strong> source unit(s) defining <strong>10220</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="aboutevent">AboutEvent <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.desktop/java/awt/desktop/AboutEvent.sleela)</span></h2>
 <div data-u="aboutevent aboutevent">
@@ -67046,6 +67046,9 @@
 <tr><td><code>File</code></td><td><span class="sig">public File(java.lang.String pathname)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>File</code></td><td><span class="sig">public File(java.lang.String parent, java.lang.String child)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>File</code></td><td><span class="sig">public File(File parent, java.lang.String child)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>joinPath</code></td><td><span class="sig">String joinPath(String parent, String child)</span></td><td class="desc">path helpers</td></tr>
+<tr><td><code>normalizePath</code></td><td><span class="sig">String normalizePath(String p)</span></td><td class="desc">Unix normalization: collapse repeated slashes, drop a trailing slash; rebuilds the text only when needed</td></tr>
+<tr><td><code>parseEntries</code></td><td><span class="sig">String[] parseEntries(String json)</span></td><td class="desc">parse the entries array of an oslsListDirectory JSON reply, without . and .. ; null when the status is not 0</td></tr>
 </table>
 </div>
 <h2 class="section" data-u="filealreadyexistsexception">FileAlreadyExistsException <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/nio/file/FileAlreadyExistsException.sleela)</span></h2>
@@ -93258,6 +93261,27 @@
 <tr><td><code>supportsUtf16Indexing</code></td><td><span class="sig">boolean supportsUtf16Indexing()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>supportsCodePointIteration</code></td><td><span class="sig">boolean supportsCodePointIteration()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>supportsJavaHashCode</code></td><td><span class="sig">boolean supportsJavaHashCode()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="javatext">JavaText <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/implementations/java/lang/JavaText.sleela)</span></h2>
+<div data-u="javatext javatext">
+<h3 id="JavaText">JavaText <span class="pill">class</span></h3>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>asciiTable</code></td><td><span class="sig">static String[] asciiTable = null</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>charString</code></td><td><span class="sig">static String charString(int c)</span></td><td class="desc">the plain one-character String for an ASCII code unit</td></tr>
+<tr><td><code>buildTable</code></td><td><span class="sig">static String[] buildTable()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>utf16</code></td><td><span class="sig">static String utf16(String plain)</span></td><td class="desc">plain String to Java UTF-16 String, and back</td></tr>
+<tr><td><code>plainOf</code></td><td><span class="sig">static String plainOf(String u)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>length</code></td><td><span class="sig">static int length(String s)</span></td><td class="desc">character access on a plain String, counted in UTF-16 code units as Java does</td></tr>
+<tr><td><code>charAt</code></td><td><span class="sig">static int charAt(String s, int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>substring</code></td><td><span class="sig">static String substring(String s, int begin, int end)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>indexOfChar</code></td><td><span class="sig">static int indexOfChar(String s, int ch, int fromIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastIndexOfChar</code></td><td><span class="sig">static int lastIndexOfChar(String s, int ch)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="javatype">JavaType <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/JavaType.sleela)</span></h2>
@@ -203105,7 +203129,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-11 21:39 UTC.
+<code>/lib</code> tree on 2026-11-11 21:45 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
