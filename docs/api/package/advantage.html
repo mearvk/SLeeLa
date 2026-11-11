@@ -145,7 +145,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; advantage</div>
 <h1>Package <code>advantage</code></h1>
-<div class="lead">This package contains <strong>154</strong> source unit(s) defining <strong>154</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>172</strong> source unit(s) defining <strong>172</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="advantage-demo">advantage-demo <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/advantage-demo.sleela)</span></h2>
 <div data-u="advantage-demo advantagedemo">
@@ -1253,6 +1253,60 @@
 <tr><td><code>isOk</code></td><td><span class="sig">boolean isOk(int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>isTransient</code></td><td><span class="sig">boolean isTransient(int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>name</code></td><td><span class="sig">String name(int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sldailycapbook">SLDailyCapBook <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/courseware/long-medium-averages/SLDailyCapBook.sleela)</span></h2>
+<div data-u="sldailycapbook sldailycapbook">
+<h3 id="SLDailyCapBook">SLDailyCapBook <span class="pill">class</span></h3>
+<p class="desc">A long-only FIFO position book, the same shape as SLLongBook, with one added rule: a single day may record at most 2,000 actions (buy, sell, hold or flatten calls that reach the quantity/price/fee checks).</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>dailyCap</code></td><td><span class="sig">int dailyCap = 2000</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>maxQty</code></td><td><span class="sig">int maxQty = 100000000</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>maxPrice</code></td><td><span class="sig">int maxPrice = 10000000</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>maxFee</code></td><td><span class="sig">int maxFee = 100000000</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>maxTotal</code></td><td><span class="sig">int maxTotal = 4000000000000000</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>maxDay</code></td><td><span class="sig">int maxDay = 10000000</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lotQty</code></td><td><span class="sig">int[] lotQty = new int[16]</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lotPrice</code></td><td><span class="sig">int[] lotPrice = new int[16]</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lotDay</code></td><td><span class="sig">int[] lotDay = new int[16]</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastDay</code></td><td><span class="sig">int lastDay = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>boughtQty</code></td><td><span class="sig">int boughtQty = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>soldQty</code></td><td><span class="sig">int soldQty = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>boughtCost</code></td><td><span class="sig">int boughtCost = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>costSold</code></td><td><span class="sig">int costSold = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>proceedsTotal</code></td><td><span class="sig">int proceedsTotal = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>feesPaid</code></td><td><span class="sig">int feesPaid = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastSaleCost</code></td><td><span class="sig">int lastSaleCost = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastSalePnl</code></td><td><span class="sig">int lastSalePnl = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>actionsToday</code></td><td><span class="sig">int actionsToday = 0</span></td><td class="desc">How many actions (of any verb) have been recorded on lastDay so far.</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>reason</code></td><td><span class="sig">String reason(int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>totalQty</code></td><td><span class="sig">int totalQty()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>costBasis</code></td><td><span class="sig">int costBasis()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>avgCostFloor</code></td><td><span class="sig">int avgCostFloor()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>avgCostRemainder</code></td><td><span class="sig">int avgCostRemainder()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lotCount</code></td><td><span class="sig">int lotCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lotQtyAt</code></td><td><span class="sig">int lotQtyAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lotPriceAt</code></td><td><span class="sig">int lotPriceAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lotDayAt</code></td><td><span class="sig">int lotDayAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>currentDay</code></td><td><span class="sig">int currentDay()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>actionsOnCurrentDay</code></td><td><span class="sig">int actionsOnCurrentDay()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>remainingToday</code></td><td><span class="sig">int remainingToday()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>admitAction</code></td><td><span class="sig">boolean admitAction(int day)</span></td><td class="desc">Call once per verb, after the day is known valid (not backwards) but before anything else changes. On a new day the counter resets to 0. Returns true when the action may proceed, false when the cap refuses it.</td></tr>
+<tr><td><code>buy</code></td><td><span class="sig">int buy(int day, int qty, int price, int fee)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sell</code></td><td><span class="sig">int sell(int day, int qty, int price, int fee)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hold</code></td><td><span class="sig">int hold(int day)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>flatten</code></td><td><span class="sig">int flatten(int day, int price, int fee)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compact</code></td><td><span class="sig">void compact()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>realizedGross</code></td><td><span class="sig">int realizedGross()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>realizedNet</code></td><td><span class="sig">int realizedNet()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fees</code></td><td><span class="sig">int fees()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>invariantsHold</code></td><td><span class="sig">boolean invariantsHold()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="sldecisiondesk">SLDecisionDesk <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/series/SLDecisionDesk.sleela)</span></h2>
@@ -2479,6 +2533,328 @@
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="tamed01coppercoins">TaMed01Coppercoins <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/courseware/long-medium-averages/01-copper-coins/TaMed01Coppercoins.sleela)</span></h2>
+<div data-u="tamed01coppercoins tamed01coppercoins">
+<h3 id="TaMed01Coppercoins">TaMed01Coppercoins <span class="pill">class</span></h3>
+<p class="desc">Medium-term entry 1: copper coins, a short-horizon active trade (two buys, one sell), checked against the daily action cap of 2000.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLDailyCapBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tamed02silvertradingtokens">TaMed02Silvertradingtokens <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/courseware/long-medium-averages/02-silver-tokens/TaMed02Silvertradingtokens.sleela)</span></h2>
+<div data-u="tamed02silvertradingtokens tamed02silvertradingtokens">
+<h3 id="TaMed02Silvertradingtokens">TaMed02Silvertradingtokens <span class="pill">class</span></h3>
+<p class="desc">Medium-term entry 2: silver trading tokens, a short-horizon active trade (two buys, one sell), checked against the daily action cap of 2000.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLDailyCapBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tamed03goldgamechips">TaMed03Goldgamechips <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/courseware/long-medium-averages/03-gold-chips/TaMed03Goldgamechips.sleela)</span></h2>
+<div data-u="tamed03goldgamechips tamed03goldgamechips">
+<h3 id="TaMed03Goldgamechips">TaMed03Goldgamechips <span class="pill">class</span></h3>
+<p class="desc">Medium-term entry 3: gold game chips, a short-horizon active trade (two buys, one sell), checked against the daily action cap of 2000.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLDailyCapBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tamed04brassrounds">TaMed04Brassrounds <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/courseware/long-medium-averages/04-brass-rounds/TaMed04Brassrounds.sleela)</span></h2>
+<div data-u="tamed04brassrounds tamed04brassrounds">
+<h3 id="TaMed04Brassrounds">TaMed04Brassrounds <span class="pill">class</span></h3>
+<p class="desc">Medium-term entry 4: brass rounds, a short-horizon active trade (two buys, one sell), checked against the daily action cap of 2000.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLDailyCapBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tamed05bronzetradingmedals">TaMed05Bronzetradingmedals <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/courseware/long-medium-averages/05-bronze-medals/TaMed05Bronzetradingmedals.sleela)</span></h2>
+<div data-u="tamed05bronzetradingmedals tamed05bronzetradingmedals">
+<h3 id="TaMed05Bronzetradingmedals">TaMed05Bronzetradingmedals <span class="pill">class</span></h3>
+<p class="desc">Medium-term entry 5: bronze trading medals, a short-horizon active trade (two buys, one sell), checked against the daily action cap of 2000.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLDailyCapBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tamed06nickelblanks">TaMed06Nickelblanks <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/courseware/long-medium-averages/06-nickel-blanks/TaMed06Nickelblanks.sleela)</span></h2>
+<div data-u="tamed06nickelblanks tamed06nickelblanks">
+<h3 id="TaMed06Nickelblanks">TaMed06Nickelblanks <span class="pill">class</span></h3>
+<p class="desc">Medium-term entry 6: nickel blanks, a short-horizon active trade (two buys, one sell), checked against the daily action cap of 2000.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLDailyCapBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tamed07tinpucks">TaMed07Tinpucks <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/courseware/long-medium-averages/07-tin-pucks/TaMed07Tinpucks.sleela)</span></h2>
+<div data-u="tamed07tinpucks tamed07tinpucks">
+<h3 id="TaMed07Tinpucks">TaMed07Tinpucks <span class="pill">class</span></h3>
+<p class="desc">Medium-term entry 7: tin pucks, a short-horizon active trade (two buys, one sell), checked against the daily action cap of 2000.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLDailyCapBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tamed08zincslugs">TaMed08Zincslugs <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/courseware/long-medium-averages/08-zinc-slugs/TaMed08Zincslugs.sleela)</span></h2>
+<div data-u="tamed08zincslugs tamed08zincslugs">
+<h3 id="TaMed08Zincslugs">TaMed08Zincslugs <span class="pill">class</span></h3>
+<p class="desc">Medium-term entry 8: zinc slugs, a short-horizon active trade (two buys, one sell), checked against the daily action cap of 2000.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLDailyCapBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tamed09steelwashers">TaMed09Steelwashers <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/courseware/long-medium-averages/09-steel-washers/TaMed09Steelwashers.sleela)</span></h2>
+<div data-u="tamed09steelwashers tamed09steelwashers">
+<h3 id="TaMed09Steelwashers">TaMed09Steelwashers <span class="pill">class</span></h3>
+<p class="desc">Medium-term entry 9: steel washers, a short-horizon active trade (two buys, one sell), checked against the daily action cap of 2000.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLDailyCapBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tamed10platinumfoils">TaMed10Platinumfoils <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/courseware/long-medium-averages/10-platinum-foils/TaMed10Platinumfoils.sleela)</span></h2>
+<div data-u="tamed10platinumfoils tamed10platinumfoils">
+<h3 id="TaMed10Platinumfoils">TaMed10Platinumfoils <span class="pill">class</span></h3>
+<p class="desc">Medium-term entry 10: platinum foils, a short-horizon active trade (two buys, one sell), checked against the daily action cap of 2000.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLDailyCapBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tamed11titaniumtabs">TaMed11Titaniumtabs <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/courseware/long-medium-averages/11-titanium-tabs/TaMed11Titaniumtabs.sleela)</span></h2>
+<div data-u="tamed11titaniumtabs tamed11titaniumtabs">
+<h3 id="TaMed11Titaniumtabs">TaMed11Titaniumtabs <span class="pill">class</span></h3>
+<p class="desc">Medium-term entry 11: titanium tabs, a short-horizon active trade (two buys, one sell), checked against the daily action cap of 2000.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLDailyCapBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tamed12irontags">TaMed12Irontags <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/courseware/long-medium-averages/12-iron-tags/TaMed12Irontags.sleela)</span></h2>
+<div data-u="tamed12irontags tamed12irontags">
+<h3 id="TaMed12Irontags">TaMed12Irontags <span class="pill">class</span></h3>
+<p class="desc">Medium-term entry 12: iron tags, a short-horizon active trade (two buys, one sell), checked against the daily action cap of 2000.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLDailyCapBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tamed13quartzcountingchips">TaMed13Quartzcountingchips <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/courseware/long-medium-averages/13-quartz-chips/TaMed13Quartzcountingchips.sleela)</span></h2>
+<div data-u="tamed13quartzcountingchips tamed13quartzcountingchips">
+<h3 id="TaMed13Quartzcountingchips">TaMed13Quartzcountingchips <span class="pill">class</span></h3>
+<p class="desc">Medium-term entry 13: quartz counting chips, a short-horizon active trade (two buys, one sell), checked against the daily action cap of 2000.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLDailyCapBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tamed14obsidiantradingflakes">TaMed14Obsidiantradingflakes <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/courseware/long-medium-averages/14-obsidian-flakes/TaMed14Obsidiantradingflakes.sleela)</span></h2>
+<div data-u="tamed14obsidiantradingflakes tamed14obsidiantradingflakes">
+<h3 id="TaMed14Obsidiantradingflakes">TaMed14Obsidiantradingflakes <span class="pill">class</span></h3>
+<p class="desc">Medium-term entry 14: obsidian trading flakes, a short-horizon active trade (two buys, one sell), checked against the daily action cap of 2000.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLDailyCapBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tamed15granitecounters">TaMed15Granitecounters <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/courseware/long-medium-averages/15-granite-counters/TaMed15Granitecounters.sleela)</span></h2>
+<div data-u="tamed15granitecounters tamed15granitecounters">
+<h3 id="TaMed15Granitecounters">TaMed15Granitecounters <span class="pill">class</span></h3>
+<p class="desc">Medium-term entry 15: granite counters, a short-horizon active trade (two buys, one sell), checked against the daily action cap of 2000.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLDailyCapBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tamed16slatemarkers">TaMed16Slatemarkers <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/courseware/long-medium-averages/16-slate-markers/TaMed16Slatemarkers.sleela)</span></h2>
+<div data-u="tamed16slatemarkers tamed16slatemarkers">
+<h3 id="TaMed16Slatemarkers">TaMed16Slatemarkers <span class="pill">class</span></h3>
+<p class="desc">Medium-term entry 16: slate markers, a short-horizon active trade (two buys, one sell), checked against the daily action cap of 2000.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLDailyCapBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tamed17dailycapboundary">TaMed17DailyCapBoundary <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/courseware/long-medium-averages/17-daily-cap-boundary/TaMed17DailyCapBoundary.sleela)</span></h2>
+<div data-u="tamed17dailycapboundary tamed17dailycapboundary">
+<h3 id="TaMed17DailyCapBoundary">TaMed17DailyCapBoundary <span class="pill">class</span></h3>
+<p class="desc">The 2,000-actions-per-day rule proved at its boundary: the 2000th action on a day succeeds, the 2001st is refused unchanged, and a new day resets the count.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="tause01openandadd">TaUse01OpenAndAdd <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading-actions-on-verb/01-open-and-add/TaUse01OpenAndAdd.sleela)</span></h2>
 <div data-u="tause01openandadd tause01openandadd">
 <h3 id="TaUse01OpenAndAdd">TaUse01OpenAndAdd <span class="pill">class</span></h3>
@@ -3126,7 +3502,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-11 21:30 UTC.
+<code>/lib</code> tree on 2026-11-11 21:32 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
