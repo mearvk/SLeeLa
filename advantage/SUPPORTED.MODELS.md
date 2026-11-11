@@ -321,3 +321,100 @@ already-parsed numbers instead of header text.
 
 - SLeeLa source *versioning* of these models (deferred; to be scoped).
 - Annualization (trades per year) for fair cross-asset ranking.
+
+---
+
+## 6. SLeeLa-Native Position and Margin Models (lib/advantage)
+
+A separate, newer family of SLeeLa-native models, distinct from the eleven
+trading models above and from their 1:1 port. Where the models in sections 1-2
+evaluate a **single prospective trade** against a baseline, this family models
+an **ongoing position book**: a sequence of buy/sell (or short/cover) actions
+over time, with exact FIFO lot accounting, and the margin arithmetic a short
+position needs. They share this module's conventions (fail closed, finite
+bounds, illustrative data only, no execution) but use verbs and status codes
+rather than a `tm_result`/evidence/counsel pipeline, so they are documented
+here as their own family rather than folded into the eleven above.
+
+Location: [`lib/advantage/trading-actions-on-verb/`](../lib/advantage/trading-actions-on-verb)
+(engineering detail: [`ENGINEERING.md`](../lib/advantage/trading-actions-on-verb/ENGINEERING.md),
+checking: [`ASSURANCE.md`](../lib/advantage/trading-actions-on-verb/ASSURANCE.md)).
+Companion courseware: [`lib/advantage/learner-vs-professional/`](../lib/advantage/learner-vs-professional/README.md).
+
+### 6.1 Long position book: `SLLongBook`
+
+A long-only FIFO lot book with four verbs: `buy`, `sell` (oldest lot first),
+`hold` (let time pass) and `flatten` (sell everything held). A sell larger
+than the holding is refused (status 3) and never becomes a short; every
+refusal leaves the book unchanged. Tracks realized gross/net profit (net is a
+cash view: proceeds minus cost sold minus every fee paid), and time-on-long
+queries (age, FIFO-aware weighted average age, a strict "more than N days"
+term boundary, and the shares held past an age limit for a time-stop loop).
+`invariantsHold()` checks conservation of shares and cost after every action.
+
+### 6.2 Short position book: `SLShortBook`
+
+The mirror of `SLLongBook`: `shortSell`, `cover` (oldest lot first), `hold`,
+`coverAll`. Short only (a cover above the shares short is refused, status 3,
+never becomes a long). Adds a borrow cost (cents per share per day, frozen
+while any share is short) and `markToMarket`. The **mirror law**: given the
+same days, quantities, prices and fees, every status code, share/lot counts,
+ages and cost-basis-versus-proceeds match the long book, and short realized
+gross is exactly the negative of long realized gross — checked over 1,200
+random actions per run (use case 22) against the long book itself, and
+separately against an independent per-share shadow model (use case 21).
+
+### 6.3 Short margin: `SLShortMargin`
+
+Illustrative margin arithmetic, explicitly not a broker or regulator rule: the
+required percentage is a caller-supplied basis-points parameter. Computes
+equity (collateral minus short value), the required margin as an **exact
+ceiling** of value times percent (computed without ever forming a product
+that could exceed the runtime's exact-integer-comparison limit), the deposit
+that clears a call, the fewest shares to cover to clear a call (binary search,
+checked against a linear scan and for minimality — and against a negative-
+equity case where no cover can help), and the first day a call becomes due
+under ongoing borrow cost (closed form, checked against day-by-day stepping).
+
+### 6.4 Careful integer toolkit: `SLEuclid`
+
+Supporting integer routines built for this family and reused by it: `gcd`,
+`gcdAll`, `lcm`, extended Euclid (`egcd`, with a Bezout-identity check),
+exact two-lot-size order fills in logarithmic time (`canFill`, with a linear
+`canFillScan` kept as a reference), an exact integer square root (`isqrt`),
+and squared Euclidean distance / nearest-target selection (`distSq`, `dist`,
+`nearestIndex`). Every routine states its loop invariant and termination
+argument, and every bound is sized against the runtime's **measured**
+integer-comparison exactness limit (exact only up to 2^53 - 1, not the full
+64-bit range) rather than assumed; out-of-range input is refused, never
+silently clamped or wrapped.
+
+### 6.5 Daily action cap: `SLDailyCapBook`
+
+A teaching variant of `SLLongBook` (in the courseware, not the core trading
+folder) with one added rule: a single day may record at most 2,000 actions
+across `buy`/`sell`/`hold`/`flatten`; the 2,001st is refused (status 10) and
+changes nothing, and the count resets when the day changes. This is a fixed
+teaching bound, not a market or regulatory limit.
+
+### Checking
+
+26 use cases exercise 6.1-6.4 (`test-suites/test-trading-actions.sh`); 17
+courseware entries exercise 6.5 (`test-suites/test-long-medium-averages.sh`).
+Expected values for the deterministic cases were independently computed in
+Python and compared against the SLeeLa output; the random/differential cases
+(6.1-6.2 mirror and shadow tests) were cross-checked the same way. Several
+deliberately broken copies of these classes (an off-by-one in a rounding
+step, a sign flip, an allowed-one-too-many bound, a non-terminating search)
+were each confirmed to make the gate fail before the fix was accepted.
+
+### Honest limits of this family
+
+- Illustrative only: no order is placed, no market is read, and the margin
+  model in particular ignores fees and real price paths.
+- The "long term" boundary and the 2,000-actions-per-day cap are both fixed,
+  stated constants for teaching, not real-world thresholds.
+- The exact-integer-comparison limit (2^53 - 1) was measured against one
+  build of the SLeeLa runtime, not proven from the runtime's own source.
+- Not yet connected to the eleven-model/evidence/counsel pipeline in sections
+  1-5; there is no current path from a `tm_result` into one of these books.
