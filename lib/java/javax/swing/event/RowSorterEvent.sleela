@@ -61,6 +61,5 @@ class RowSorterEvent {
   public javax.swing.event.RowSorterEvent.Type getType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.RowSorterEvent.getType()"); }
   public int getPreviousRowCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.RowSorterEvent.getPreviousRowCount()"); }
   public int convertPreviousRowIndexToModel(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.RowSorterEvent.convertPreviousRowIndexToModel(int)"); }
-  public javax.swing.RowSorter<?> getSource() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.RowSorterEvent.getSource()"); }
   < ---- END java signatures ---- >
 }

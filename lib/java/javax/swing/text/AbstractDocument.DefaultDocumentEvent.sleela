@@ -71,9 +71,5 @@ class DefaultDocumentEvent {
   public void undo() throws javax.swing.undo.CannotUndoException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.AbstractDocument.DefaultDocumentEvent.undo()"); }
   public void redo() throws javax.swing.undo.CannotRedoException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.AbstractDocument.DefaultDocumentEvent.redo()"); }
   public boolean addEdit(javax.swing.undo.UndoableEdit anEdit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.AbstractDocument.DefaultDocumentEvent.addEdit(javax.swing.undo.UndoableEdit)"); }
-  public boolean isSignificant() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.AbstractDocument.DefaultDocumentEvent.isSignificant()"); }
-  public java.lang.String getPresentationName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.AbstractDocument.DefaultDocumentEvent.getPresentationName()"); }
-  public java.lang.String getUndoPresentationName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.AbstractDocument.DefaultDocumentEvent.getUndoPresentationName()"); }
-  public java.lang.String getRedoPresentationName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.AbstractDocument.DefaultDocumentEvent.getRedoPresentationName()"); }
   < ---- END java signatures ---- >
 }

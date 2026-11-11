@@ -67,7 +67,6 @@ class MatteBorder {
   public void paintBorder(java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.MatteBorder.paintBorder(java.awt.Component, java.awt.Graphics, int, int, int, int)"); }
   public java.awt.Insets getBorderInsets() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.MatteBorder.getBorderInsets()"); }
   public java.awt.Insets getBorderInsets(java.awt.Component c, java.awt.Insets insets) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.MatteBorder.getBorderInsets(java.awt.Component, java.awt.Insets)"); }
-  public boolean isBorderOpaque() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.MatteBorder.isBorderOpaque()"); }
   public javax.swing.Icon getTileIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.MatteBorder.getTileIcon()"); }
   public java.awt.Color getMatteColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.MatteBorder.getMatteColor()"); }
   < ---- END java signatures ---- >

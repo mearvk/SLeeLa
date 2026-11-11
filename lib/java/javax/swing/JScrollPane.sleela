@@ -108,7 +108,6 @@ class JScrollPane {
   public void setViewportBorder(javax.swing.border.Border viewportBorder) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.setViewportBorder(javax.swing.border.Border)"); }
   public java.awt.Rectangle getViewportBorderBounds() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.getViewportBorderBounds()"); }
   public void setRowHeaderView(java.awt.Component view) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.setRowHeaderView(java.awt.Component)"); }
-  public boolean isValidateRoot() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.isValidateRoot()"); }
   public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.getAccessibleContext()"); }
   public void setLayout(java.awt.LayoutManager layout) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.setLayout(java.awt.LayoutManager)"); }
   < ---- END java signatures ---- >

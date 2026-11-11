@@ -165,7 +165,6 @@ class JInternalFrame {
   public void setLayout(java.awt.LayoutManager manager) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setLayout(java.awt.LayoutManager)"); }
   @JavaProtected
   void addImpl(java.awt.Component comp, java.lang.Object constraints, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.addImpl(java.awt.Component, java.lang.Object, int)"); }
-  public final boolean isFocusCycleRoot() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.isFocusCycleRoot()"); }
   public java.awt.Component getFocusOwner() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.getFocusOwner()"); }
   public java.awt.Component getMostRecentFocusOwner() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.getMostRecentFocusOwner()"); }
   public final java.awt.Container getFocusCycleRootAncestor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.getFocusCycleRootAncestor()"); }

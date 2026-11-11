@@ -75,7 +75,6 @@ class SynthScrollBarUI {
   void paintThumb(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, java.awt.Rectangle thumbBounds) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthScrollBarUI.paintThumb(javax.swing.plaf.synth.SynthContext, java.awt.Graphics, java.awt.Rectangle)"); }
   @JavaProtected
   java.awt.Dimension getMinimumThumbSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthScrollBarUI.getMinimumThumbSize()"); }
-  public boolean getSupportsAbsolutePositioning() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthScrollBarUI.getSupportsAbsolutePositioning()"); }
   public void paintBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthScrollBarUI.paintBorder(javax.swing.plaf.synth.SynthContext, java.awt.Graphics, int, int, int, int)"); }
   public void propertyChange(java.beans.PropertyChangeEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthScrollBarUI.propertyChange(java.beans.PropertyChangeEvent)"); }
   @JavaProtected

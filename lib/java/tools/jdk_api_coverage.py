@@ -14,7 +14,10 @@ Only members inside the generated/hand-written implementation blocks
 envelope helpers (typeName, invoke, ...) never inflate coverage.
 
 Counting rules (deliberately conservative where it matters):
-  * a constructor is covered when the type declares a constructor;
+  * a Java constructor is covered when the type declares a SLeeLa
+    constructor with the same number of parameters (a class admits one
+    constructor until overload resolution lands, so usually one Java
+    constructor per type counts);
   * an abstract method is covered when its exact Java signature is declared
     (signatures block, body throws AbstractMethodError, as on the JVM);
   * a method entry is covered when the implementation declares a method with
@@ -46,7 +49,23 @@ SIG = re.compile(r"< ---- BEGIN java signatures.*?---- >\n(.*?)  < ---- END java
 DECL = re.compile(r"< ---- BEGIN java declarations.*?---- >\n(.*?)  < ---- END java declarations ---- >", re.S)
 METHOD = re.compile(r"^  (?:@\w+\s+)?(?:(?:public|protected|private|static|final|abstract|default|synchronized|native|strictfp) )*(?:<[^()]*> )?[A-Za-z_][\w.]*(?:<[^()]*>)?(?:\[\])* +(\w+)\s*\(", re.M)
 ABSTRACT = re.compile(r"^  (?:public |protected )?abstract [^\n]*? (\w+)\s*\([^\n]*AbstractMethodError", re.M)
-CTOR = re.compile(r"^  ([A-Z]\w*)\s*\([^)]*\)\s*\{", re.M)
+CTOR = re.compile(r"^  (?:(?:public|protected|private) )?([A-Z]\w*)\s*\(([^)]*)\)\s*(?:throws [^{]*)?\{", re.M)
+
+
+def arities(text):
+    """Parameter counts of the constructors declared in text."""
+    out = set()
+    for _, params in CTOR.findall(text):
+        depth, n = 0, (1 if params.strip() else 0)
+        for ch in params:
+            if ch == "<":
+                depth += 1
+            elif ch == ">":
+                depth -= 1
+            elif ch == "," and depth == 0:
+                n += 1
+        out.add(n)
+    return out
 FIELD = re.compile(r"^  (?:static )?(?:final )?[A-Za-z_][\w\[\]<>]* +(\w+)\s*(?:=|;)", re.M)
 
 
@@ -71,8 +90,8 @@ def analyse(path: Path):
     return {"implemented": bool(m) or bool(d) or bool(abstract_names), "behavior": bool(m), "signatures": sig_count,
             "methods": collections.Counter(METHOD.findall(impl + decl)) + abstract_names,
             "impl_methods": collections.Counter(METHOD.findall(impl)),
-            "ctors": set(CTOR.findall(impl + decl)),
-            "impl_ctors": set(CTOR.findall(impl)),
+            "ctors": arities(impl + decl),
+            "impl_ctors": arities(impl),
             "fields": set(FIELD.findall(impl + decl)) | (set(FIELD.findall(src)) if m else set()),
             "impl_fields": set(FIELD.findall(impl))}
 
@@ -114,7 +133,8 @@ def main() -> int:
                 row["behavior_types"] += 1
 
             def count(meth, ctor, fld):
-                c = len(ctors) if ctors and ctor else 0
+                # a Java constructor counts when SLeeLa declares one of the same arity
+                c = sum(1 for k in ctors if len(k[2]) in ctor)
                 c += covered_methods(meths, meth)
                 c += sum(1 for f in t["fields"] if f[0] in fld)
                 c += sum(1 for k in t.get("constants", []) if k in fld)

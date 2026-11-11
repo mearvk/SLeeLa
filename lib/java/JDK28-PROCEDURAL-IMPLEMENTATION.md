@@ -19,14 +19,14 @@ constants). Two numbers are reported:
 
 - **Covered.** Members that exist in SLeeLa with their Java meaning. This
   includes the API-declared part below plus hand-implemented behavior.
-  Currently **41.5%**.
-- **Behavior.** Only hand-written method bodies. Currently **5.9%**.
+  Currently **42.7%**.
+- **Behavior.** Only hand-written method bodies. Currently **7.1%**.
 
 ### Exact Java signatures (`tools/jdk_api_signatures.py`)
 
 Every public method of every JDK type that SLeeLa does not implement yet is
-written with its **exact Java signature**. That is 35,157 methods: 9,732
-abstract and 25,425 awaiting logic. The modifiers, type parameters and
+written with its **exact Java signature**. That is 34,244 methods: 9,732
+abstract and 24,512 awaiting logic. The modifiers, type parameters and
 generic types come from `api/jdk-signatures.jsonl`, which
 `tools/ApiSignatures.java` writes from reflection on a real JDK, with
 parameter names read from the JDK source declarations. For example:

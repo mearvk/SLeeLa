@@ -212,15 +212,12 @@ class JComponent {
   public void revalidate() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.revalidate()"); }
   public java.awt.FontMetrics getFontMetrics(java.awt.Font font) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getFontMetrics(java.awt.Font)"); }
   public void printAll(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.printAll(java.awt.Graphics)"); }
-  public boolean isValidateRoot() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.isValidateRoot()"); }
   public void addNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.addNotify()"); }
   public java.awt.Insets getInsets() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getInsets()"); }
   public java.awt.Insets getInsets(java.awt.Insets insets) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getInsets(java.awt.Insets)"); }
   public void removeNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.removeNotify()"); }
   public void setFont(java.awt.Font font) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setFont(java.awt.Font)"); }
   public java.awt.Dimension getMaximumSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getMaximumSize()"); }
-  public float getAlignmentX() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getAlignmentX()"); }
-  public float getAlignmentY() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getAlignmentY()"); }
   public void paint(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.paint(java.awt.Graphics)"); }
   public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getListeners(java.lang.Class<T>)"); }
   < ---- END java signatures ---- >

@@ -133,11 +133,9 @@ class Window {
   public java.awt.image.BufferStrategy getBufferStrategy() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Window.getBufferStrategy()"); }
   public void setLocation(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Window.setLocation(int, int)"); }
   public void setLocation(java.awt.Point p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Window.setLocation(java.awt.Point)"); }
-  public boolean isValidateRoot() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Window.isValidateRoot()"); }
   public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Window.getAccessibleContext()"); }
   public void addNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Window.addNotify()"); }
   public void removeNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Window.removeNotify()"); }
-  public final boolean isFocusCycleRoot() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Window.isFocusCycleRoot()"); }
   public java.awt.Component getFocusOwner() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Window.getFocusOwner()"); }
   public boolean isShowing() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Window.isShowing()"); }
   public void paint(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Window.paint(java.awt.Graphics)"); }

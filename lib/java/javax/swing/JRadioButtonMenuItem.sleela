@@ -60,7 +60,6 @@ class JRadioButtonMenuItem {
      UnsupportedOperationException naming the Java signature. >>
   @JavaProtected
   java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JRadioButtonMenuItem.paramString()"); }
-  public java.lang.String getUIClassID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JRadioButtonMenuItem.getUIClassID()"); }
   public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JRadioButtonMenuItem.getAccessibleContext()"); }
   < ---- END java signatures ---- >
 }

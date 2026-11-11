@@ -73,7 +73,6 @@ class StateEdit {
   void init(javax.swing.undo.StateEditable anObject, java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.StateEdit.init(javax.swing.undo.StateEditable, java.lang.String)"); }
   public void undo() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.StateEdit.undo()"); }
   public void redo() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.StateEdit.redo()"); }
-  public java.lang.String getPresentationName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.StateEdit.getPresentationName()"); }
   @JavaProtected
   void removeRedundantState() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.StateEdit.removeRedundantState()"); }
   < ---- END java signatures ---- >

@@ -80,7 +80,6 @@ class Applet {
   public void play(java.net.URL url, java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.applet.Applet.play(java.net.URL, java.lang.String)"); }
   public void play(java.net.URL url) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.applet.Applet.play(java.net.URL)"); }
   public final void setStub(java.applet.AppletStub stub) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.applet.Applet.setStub(java.applet.AppletStub)"); }
-  public boolean isValidateRoot() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.applet.Applet.isValidateRoot()"); }
   public static final java.applet.AudioClip newAudioClip(java.net.URL url) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.applet.Applet.newAudioClip(java.net.URL)"); }
   public java.lang.String getAppletInfo() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.applet.Applet.getAppletInfo()"); }
   public java.lang.String[][] getParameterInfo() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.applet.Applet.getParameterInfo()"); }
