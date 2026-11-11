@@ -170572,12 +170572,13 @@
 <h2 class="section" data-u="stringbuilder">StringBuilder <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/lang/StringBuilder.sleela)</span></h2>
 <div data-u="stringbuilder stringbuilder">
 <h3 id="StringBuilder">StringBuilder <span class="pill">class</span></h3>
-<p class="desc">SLeeLa source declaration for the Java type java.lang.StringBuilder. &gt; &lt; Java behavior is supplied through the SLeeLa Java conformance boundary. &gt; &lt; &gt; #sleela 3.0 material; class StringBuilder { &lt; ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- &gt; &lt;&lt; Eleven catalogued attributes with getter/setter pairs, so a GUI, loader, or catalog can read and (where appropriate) override this record. Values are faithful to the subject&#x27;s real origin where publicly known.</p>
+<p class="desc">SLeeLa source declaration for the Java type StringBuilder. &gt; &lt; Java behavior is supplied through the SLeeLa Java conformance boundary. &gt; &lt; &gt; #sleela 3.0 material; class StringBuilder { &lt; ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- &gt; &lt;&lt; Eleven catalogued attributes with getter/setter pairs, so a GUI, loader, or catalog can read and (where appropriate) override this record. Values are faithful to the subject&#x27;s real origin where publicly known.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
-<tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.lang.StringBuilder&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>heldToString</code></td><td><span class="sig">String heldToString</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;StringBuilder&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>buf</code></td><td><span class="sig">String buf = javaStringFromCodeUnits()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>asciiTable</code></td><td><span class="sig">String asciiTable = javaStringFromUtf8(&quot; !?#$%&amp;&#x27;()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[?]^_`abcdefghijklmnopqrstuvwxyz{|}~&quot;)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -170586,7 +170587,14 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>StringBuilder</code></td><td><span class="sig">public StringBuilder()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>StringBuilder</code></td><td><span class="sig">public StringBuilder(int capacity)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>StringBuilder</code></td><td><span class="sig">public StringBuilder(java.lang.String str)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>appendText</code></td><td><span class="sig">StringBuilder appendText(java.lang.String text)</span></td><td class="desc">internal helpers</td></tr>
+<tr><td><code>spliceIn</code></td><td><span class="sig">StringBuilder spliceIn(int offset, java.lang.String utf16)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkIndex</code></td><td><span class="sig">void checkIndex(int index, int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkOffset</code></td><td><span class="sig">void checkOffset(int offset, int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkRange</code></td><td><span class="sig">void checkRange(int start, int end, int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="stringcharacteriterator">StringCharacterIterator <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/text/StringCharacterIterator.sleela)</span></h2>
@@ -200394,7 +200402,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-11 19:40 UTC.
+<code>/lib</code> tree on 2026-11-11 19:46 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
