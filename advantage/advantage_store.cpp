@@ -3,8 +3,11 @@
 // A compact, dependency-free parser for the advantages.xml schema. It walks
 // the document element-by-element, understanding exactly the tags this
 // module emits: <advantages>, <sourceAdvantage>, <name>, <description>,
-// <assumptions>/<assumption>, and <knowledge>/<string>. Anything else is
-// skipped. This avoids pulling in an external XML library while still
+// <assumptions>/<assumption> (optional status="held|doubted">),
+// <knowledge>/<string>, <knowledgeSource>, and <evidence>/<observation>.
+// Unknown tags are skipped, but malformed values in the fields that feed the
+// math (numbers, assumption status, duplicate ids, stray <observation>) are
+// rejected with an error rather than silently coerced. This avoids pulling in an external XML library while still
 // loading the data faithfully into memory for analysis.
 #include "advantage_store.hpp"
 
@@ -190,6 +193,15 @@ bool loadFromString(const std::string& xml,
                 out.sources.emplace_back();
                 current = &out.sources.back();
                 current->id = attr(tag.attrs, "id");
+                if (!current->id.empty()) {
+                    for (std::size_t k = 0; k + 1 < out.sources.size(); ++k) {
+                        if (out.sources[k].id == current->id) {
+                            error = "duplicate sourceAdvantage id '" +
+                                    current->id + "'";
+                            return false;
+                        }
+                    }
+                }
                 current->kind = attr(tag.attrs, "kind");
             } else if (tag.name == "knowledgeSource") {
                 // Declared remote origin. Recorded only; never fetched here.
@@ -211,6 +223,11 @@ bool loadFromString(const std::string& xml,
                             "': invalid evidence weight '" + w + "'";
                     return false;
                 }
+                if (current->evidenceWeight < 0.0) {
+                    error = "source '" + current->id +
+                            "': evidence weight must not be negative";
+                    return false;
+                }
             } else if (tag.name == "observation" && current && inEvidence) {
                 Observation ob;
                 if (!parseNumber(attr(tag.attrs, "reward"), ob.reward) ||
@@ -220,6 +237,10 @@ bool loadFromString(const std::string& xml,
                     return false;
                 }
                 current->evidence.push_back(ob);
+            } else if (tag.name == "observation") {
+                error = "<observation> must appear inside <evidence> within a "
+                        "<sourceAdvantage>";
+                return false;
             } else if (current && tag.type == Tag::Start) {
                 if (tag.name == "name") {
                     current->name = readText(sc);

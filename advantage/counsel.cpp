@@ -2,9 +2,11 @@
 #include "counsel.hpp"
 
 #include <algorithm>
+#include <cmath>
 #include <iomanip>
 #include <ostream>
 #include <sstream>
+#include <string>
 
 #include "advantage.hpp"
 
@@ -52,6 +54,19 @@ Counsel assess(const SourceAdvantage& s, const CounselOptions& opts) {
                         static_cast<double>(c.assumptionsTotal);
 
     c.score = c.meanAdvantage * c.confidence * c.trust;
+
+    // Extreme inputs can overflow to inf/NaN. A NaN would also break the
+    // strict weak ordering the ranking sort relies on, so neutralize it:
+    // an unusable score is reported as 0 with an explicit caution.
+    const bool finite = std::isfinite(c.meanAdvantage) &&
+                        std::isfinite(c.spread) && std::isfinite(c.score);
+    if (!finite) {
+        c.meanAdvantage = 0.0;
+        c.spread = 0.0;
+        c.score = 0.0;
+        c.cautions.push_back(
+            "evidence values overflowed the math; score withheld (set to 0)");
+    }
 
     // What to verify: doubted assumptions first, then the held ones (held is
     // not the same as proven).
