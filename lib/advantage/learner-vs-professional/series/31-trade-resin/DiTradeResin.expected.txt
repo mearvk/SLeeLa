@@ -1,0 +1,34 @@
+== Lesson 31: plastic resin decision ==
+-- master (onion) --
+  Compounder A total = 78200 cents
+  Compounder B total = 80700 cents
+  Compounder C total = 66800 cents
+  Compounder D total = 51000 cents
+  Compounder E total = 81400 cents
+  Compounder F total = 73500 cents
+  Compounder G total = 85000 cents
+  Compounder H total = 50600 cents
+  master picks Compounder H
+-- student, first pass: the discount of Compounder H was filed under Compounder A --
+  Compounder A total = 76100 cents
+  Compounder B total = 80700 cents
+  Compounder C total = 66800 cents
+  Compounder D total = 51000 cents
+  Compounder E total = 81400 cents
+  Compounder F total = 73500 cents
+  Compounder G total = 85000 cents
+  Compounder H total = 52700 cents
+  student picks Compounder D
+  Compounder H discount: student filed it under Compounder A, master files it under Compounder H -> re-observe
+  verdict: 1 entry difference(s) and the picks differ -> not accepted
+-- student re-observes and registers every entry --
+  Compounder A total = 78200 cents
+  Compounder B total = 80700 cents
+  Compounder C total = 66800 cents
+  Compounder D total = 51000 cents
+  Compounder E total = 81400 cents
+  Compounder F total = 73500 cents
+  Compounder G total = 85000 cents
+  Compounder H total = 50600 cents
+  student picks Compounder H
+  verdict: AGREE, work accepted

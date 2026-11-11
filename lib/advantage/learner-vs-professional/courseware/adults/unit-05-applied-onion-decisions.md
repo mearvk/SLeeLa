@@ -30,7 +30,7 @@ difference is 800 cents on supplier A, so only that entry is re-observed.
 
 ## More practice
 
-Lessons 7 to 22 of the series are sixteen further trading decisions in the same
+Lessons 7 to 32 of the series are twenty-six further trading decisions in the same
 shape, each with a different slip and some with ties. See
 [`TRADING-DECISIONS.md`](../../series/TRADING-DECISIONS.md). For each one, name
 the slip, predict the first-pass verdict, then run the lesson to check.

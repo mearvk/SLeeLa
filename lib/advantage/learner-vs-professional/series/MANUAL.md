@@ -58,7 +58,7 @@ which is in the customer file". Each noun has one place; the last name is
 always the field. If the chain says "not observed", the noun is not in the
 field.
 
-## 5b. Trading decisions (lessons 7 to 22)
+## 5b. Trading decisions (lessons 7 to 32)
 
 | message | meaning | what to do |
 |---------|---------|------------|
@@ -67,6 +67,7 @@ field.
 | `X discount: student +N, master -N` | the sign is wrong | a discount reduces the total; enter it negative |
 | `X: master only, student did not observe it` | an option was not looked at | observe and register it |
 | `X quote: student N, master N00` | cents were entered as dollars | enter integer cents |
+| `X discount: student filed it under A, master files it under B` | the value is right but the carrier is wrong | file the entry under the option it belongs to |
 | `same pick, but N entry difference(s)` | right answer, wrong observation | not accepted; fix the entry |
 | a tie in totals | two options cost the same | the earlier listed option wins (the tie norm) |
 

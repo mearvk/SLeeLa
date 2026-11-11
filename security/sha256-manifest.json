@@ -1238,8 +1238,48 @@
       "sha256": "020c50411b4bcb9b89524a4ddd7cfc1a42097024878c4b7cb4b6a948a448cae0"
     },
     {
+      "path": "lib/advantage/learner-vs-professional/series/23-trade-rice/DiTradeRice.sleela",
+      "sha256": "956493ce927f0c965965f533c30c19a18932a43f301ccf8e0e00e47c3590948e"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/24-trade-sugar/DiTradeSugar.sleela",
+      "sha256": "a6ed947ac37fc665f2fb77b08c38c9916ab237eedd5379b31c8a74953279ab15"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/25-trade-aluminum/DiTradeAluminum.sleela",
+      "sha256": "7dde39c2fd5537690dfabd50027a820d9d432b7593adf277a0f37336c50277bf"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/26-trade-zinc/DiTradeZinc.sleela",
+      "sha256": "8ef7dbfebfe9ad76914c78babd91f5656b16582d908ed0eba70924323feda2c7"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/27-trade-nickel/DiTradeNickel.sleela",
+      "sha256": "f46c0308e0dc3e32d6fafc7de36b11eda57224c572487b316b31ae49d08218f6"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/28-trade-rubber/DiTradeRubber.sleela",
+      "sha256": "7244ad202b6b4e0fe3f58cd10eecebddf92cc517e6cc2f182ca256131f29d634"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/29-trade-glass/DiTradeGlass.sleela",
+      "sha256": "59892ed0a0049436aa58db3353653e07327443d51123d972954983e2046b34cd"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/30-trade-paper/DiTradePaper.sleela",
+      "sha256": "d7545ed8f5319579fbe8396d2f2829dd71ae2ef25c723c5fa6a92bb376e49745"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/31-trade-resin/DiTradeResin.sleela",
+      "sha256": "ef5f6d886d2d175641ab64b859c79620b4973ec597300068eb3d3503a81fe99d"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/32-trade-eight-way-capstone/DiTradeEightWayCapstone.sleela",
+      "sha256": "aec391d2e315c16c4334b93d13920b770281d7f045909428b44c33308d088cbd"
+    },
+    {
       "path": "lib/advantage/learner-vs-professional/series/SLDecisionDesk.sleela",
-      "sha256": "ec1cebd63cb071fbc5367a75d3d083b751c22fd4b07d292de2559f73d1f0785d"
+      "sha256": "73962cf92e1cde66e3c5985845c7c758a631412253ac924cf2c0a932f7a4b142"
     },
     {
       "path": "lib/advantage/learner-vs-professional/series/SLNounRegistry.sleela",

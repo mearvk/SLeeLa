@@ -1,10 +1,10 @@
 # Device Instructor Series
 
-Twenty-two runnable SLeeLa lessons for people who want to see that the **Device
+Thirty-two runnable SLeeLa lessons for people who want to see that the **Device
 Instructor** is ready to receive good input about the **System** and about
 **Students**. Each lesson is one class with a `main()`, in its own folder, with
-an `.expected.txt` file holding its exact output. Lessons 1, 2 and 4 to 22 build
-on the shared [`SLNounRegistry`](./SLNounRegistry.sleela); lessons 7 to 22 also use
+an `.expected.txt` file holding its exact output. Lessons 1, 2 and 4 to 32 build
+on the shared [`SLNounRegistry`](./SLNounRegistry.sleela); lessons 7 to 32 also use
 the [`SLDecisionDesk`](./SLDecisionDesk.sleela).
 
 | # | lesson | the Instructor shows that it... |
@@ -16,28 +16,38 @@ the [`SLDecisionDesk`](./SLDecisionDesk.sleela).
 | 5 | [`05-nested-carriers`](./05-nested-carriers/DiNestedCarriers.sleela) | handles a carrier that is itself carried: prints the chain back to the field, counts what a carrier holds, and refuses a second place, an unregistered carrier or a self-carrier |
 | 6 | [`06-purchase-onion`](./06-purchase-onion/DiPurchaseOnion.sleela) | takes registry to onion: the student totals registered quotes by hand, the Purchase Master runs the Sequitur onion, and the two are compared until they agree |
 
-Lessons 7 to 22 are sixteen trading decisions, all in the same shape as lesson
-6. See [`TRADING-DECISIONS.md`](./TRADING-DECISIONS.md) for the full table
+Lessons 7 to 32 are twenty-six trading decisions, all in the same shape as
+lesson 6. See [`TRADING-DECISIONS.md`](./TRADING-DECISIONS.md) for the full table
 (goods, options, student slip, master pick, ties).
 
-| # | goods | slip |
-|---|-------|------|
-| 7 | Lumber | missed discount |
-| 8 | Cement | fee counted twice |
-| 9 | Copper | discount sign flipped |
-| 10 | Steel | option not observed |
-| 11 | Coffee | quote in dollars, not cents |
-| 12 | Cotton | no slip (clean) |
-| 13 | Solar panels | missed discount |
-| 14 | Lithium | fee counted twice |
-| 15 | Semiconductors | discount sign flipped |
-| 16 | Server racks | option not observed |
-| 17 | Smartphones | quote in dollars, not cents |
-| 18 | Televisions | missed discount |
-| 19 | Wheat | no slip (clean) |
-| 20 | Fuel | fee counted twice |
-| 21 | Freight | discount sign flipped |
-| 22 | Tie capstone | option not observed |
+| # | goods | options | slip |
+|---|-------|:------:|------|
+| 7 | Lumber | 2 | missed discount |
+| 8 | Cement | 2 | fee counted twice |
+| 9 | Copper | 2 | discount sign flipped |
+| 10 | Steel | 3 | option not observed |
+| 11 | Coffee | 2 | quote in dollars, not cents |
+| 12 | Cotton | 3 | no slip (clean) |
+| 13 | Solar panels | 2 | missed discount |
+| 14 | Lithium | 3 | fee counted twice |
+| 15 | Semiconductors | 2 | discount sign flipped |
+| 16 | Server racks | 4 | option not observed |
+| 17 | Smartphones | 3 | quote in dollars, not cents |
+| 18 | Televisions | 4 | missed discount |
+| 19 | Wheat | 3 | no slip (clean) |
+| 20 | Fuel | 3 | fee counted twice |
+| 21 | Freight | 3 | discount sign flipped |
+| 22 | Tie capstone | 4 | option not observed |
+| 23 | Rice | 5 | discount filed under the next option |
+| 24 | Sugar | 5 | missed discount |
+| 25 | Aluminum | 6 | fee counted twice |
+| 26 | Zinc | 6 | discount filed under the next option |
+| 27 | Nickel | 5 | discount sign flipped |
+| 28 | Rubber | 7 | option not observed |
+| 29 | Glass | 6 | quote in dollars, not cents |
+| 30 | Paper | 8 | no slip (clean) |
+| 31 | Plastic resin | 8 | discount filed under the next option |
+| 32 | Eight-way capstone | 8 | missed discount |
 
 Courseware that uses these lessons:
 [children, unit 1](../courseware/children/unit-01-true-or-false.md) (lessons 1
@@ -55,7 +65,7 @@ working-binaries/sleela run lib/advantage/learner-vs-professional/series/01-regi
 
 Do the same for the others. A lesson finds `SLNounRegistry` (and, for lesson
 6, the `lib/advantage` onion classes) in the folders above it. Lessons are
-independent; the suggested order is 1 to 22. See [`MANUAL.md`](./MANUAL.md) for
+independent; the suggested order is 1 to 32. See [`MANUAL.md`](./MANUAL.md) for
 user concerns and troubleshooting.
 
 ## Assurance
@@ -91,7 +101,7 @@ expected file with `UPDATE=1 bash test-suites/test-device-instructor.sh`.
    to re-observe supplier A, then agrees. On an exact tie the norm picks
    supplier A (see `.kiro/steering/advantage-tie-norm.md`).
 
-7. Lessons 7 to 22: each prints the master totals and pick, the student first
+7. Lessons 7 to 32: each prints the master totals and pick, the student first
    pass with its slip, every differing entry, the verdict, and (unless the
    first pass agrees) the re-observation ending in "AGREE, work accepted".
 

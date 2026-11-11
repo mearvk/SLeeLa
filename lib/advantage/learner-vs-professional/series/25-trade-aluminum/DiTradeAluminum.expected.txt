@@ -1,0 +1,28 @@
+== Lesson 25: aluminum decision ==
+-- master (onion) --
+  Smelter A total = 54800 cents
+  Smelter B total = 76400 cents
+  Smelter C total = 58300 cents
+  Smelter D total = 55300 cents
+  Smelter E total = 59300 cents
+  Smelter F total = 92600 cents
+  master picks Smelter A
+-- student, first pass: the fee of Smelter A was counted twice --
+  Smelter A total = 58700 cents
+  Smelter B total = 76400 cents
+  Smelter C total = 58300 cents
+  Smelter D total = 55300 cents
+  Smelter E total = 59300 cents
+  Smelter F total = 92600 cents
+  student picks Smelter D
+  Smelter A fee again: student only, master has no such entry
+  verdict: 1 entry difference(s) and the picks differ -> not accepted
+-- student re-observes and registers every entry --
+  Smelter A total = 54800 cents
+  Smelter B total = 76400 cents
+  Smelter C total = 58300 cents
+  Smelter D total = 55300 cents
+  Smelter E total = 59300 cents
+  Smelter F total = 92600 cents
+  student picks Smelter A
+  verdict: AGREE, work accepted

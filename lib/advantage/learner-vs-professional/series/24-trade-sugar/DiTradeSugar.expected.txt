@@ -1,0 +1,25 @@
+== Lesson 24: sugar decision ==
+-- master (onion) --
+  Refinery A total = 84900 cents
+  Refinery B total = 42700 cents
+  Refinery C total = 80800 cents
+  Refinery D total = 41600 cents
+  Refinery E total = 72900 cents
+  master picks Refinery D
+-- student, first pass: the discount of Refinery D was missed --
+  Refinery A total = 84900 cents
+  Refinery B total = 42700 cents
+  Refinery C total = 80800 cents
+  Refinery D total = 43500 cents
+  Refinery E total = 72900 cents
+  student picks Refinery B
+  Refinery D discount: student did not register it, master has -1900
+  verdict: 1 entry difference(s) and the picks differ -> not accepted
+-- student re-observes and registers every entry --
+  Refinery A total = 84900 cents
+  Refinery B total = 42700 cents
+  Refinery C total = 80800 cents
+  Refinery D total = 41600 cents
+  Refinery E total = 72900 cents
+  student picks Refinery D
+  verdict: AGREE, work accepted

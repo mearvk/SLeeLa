@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 13300
+library-source-files: 13310
 library-packages: 121
 module-facade-symbols: 84
-total-symbol-records: 13384
+total-symbol-records: 13394
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -80,6 +80,16 @@ advantage	DiTradeWheat.sleela	lib/advantage/learner-vs-professional/series/19-tr
 advantage	DiTradeFuel.sleela	lib/advantage/learner-vs-professional/series/20-trade-fuel/DiTradeFuel.sleela	source
 advantage	DiTradeFreight.sleela	lib/advantage/learner-vs-professional/series/21-trade-freight/DiTradeFreight.sleela	source
 advantage	DiTradeTieCapstone.sleela	lib/advantage/learner-vs-professional/series/22-trade-tie-capstone/DiTradeTieCapstone.sleela	source
+advantage	DiTradeRice.sleela	lib/advantage/learner-vs-professional/series/23-trade-rice/DiTradeRice.sleela	source
+advantage	DiTradeSugar.sleela	lib/advantage/learner-vs-professional/series/24-trade-sugar/DiTradeSugar.sleela	source
+advantage	DiTradeAluminum.sleela	lib/advantage/learner-vs-professional/series/25-trade-aluminum/DiTradeAluminum.sleela	source
+advantage	DiTradeZinc.sleela	lib/advantage/learner-vs-professional/series/26-trade-zinc/DiTradeZinc.sleela	source
+advantage	DiTradeNickel.sleela	lib/advantage/learner-vs-professional/series/27-trade-nickel/DiTradeNickel.sleela	source
+advantage	DiTradeRubber.sleela	lib/advantage/learner-vs-professional/series/28-trade-rubber/DiTradeRubber.sleela	source
+advantage	DiTradeGlass.sleela	lib/advantage/learner-vs-professional/series/29-trade-glass/DiTradeGlass.sleela	source
+advantage	DiTradePaper.sleela	lib/advantage/learner-vs-professional/series/30-trade-paper/DiTradePaper.sleela	source
+advantage	DiTradeResin.sleela	lib/advantage/learner-vs-professional/series/31-trade-resin/DiTradeResin.sleela	source
+advantage	DiTradeEightWayCapstone.sleela	lib/advantage/learner-vs-professional/series/32-trade-eight-way-capstone/DiTradeEightWayCapstone.sleela	source
 advantage	SLDecisionDesk.sleela	lib/advantage/learner-vs-professional/series/SLDecisionDesk.sleela	source
 advantage	SLNounRegistry.sleela	lib/advantage/learner-vs-professional/series/SLNounRegistry.sleela	source
 advantage	SLBilateralNewsvendor.sleela	lib/advantage/math/SLBilateralNewsvendor.sleela	source

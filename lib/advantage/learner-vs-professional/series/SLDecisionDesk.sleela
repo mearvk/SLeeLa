@@ -6,13 +6,14 @@ material;
 artifact;
 pure;
 gasoline;
-< The desk holds up to four options, each with a quote, a fee and a discount in >
+< The desk holds up to eight options, each with a quote, a fee and a discount in >
 < integer cents. The Purchase Master totals each option through the advantage >
 < onion. The student registers the same entries in a noun registry, possibly >
 < with one slip, and totals them by hand. The desk names every differing >
 < entry. Tie norm: when two totals are equal the earlier listed option wins. >
 < Slip kinds: 0 none, 1 missed discount, 2 fee counted twice, 3 discount sign >
-< flipped, 4 option not observed, 5 quote entered in dollars not cents. >
+< flipped, 4 option not observed, 5 quote entered in dollars not cents, >
+< 6 discount filed under the next option (wrapping round). >
 class SLDecisionDesk {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. A worker-class
@@ -57,10 +58,10 @@ class SLDecisionDesk {
 
   String fieldName = "";
   int n = 0;
-  String[] names = new String[4];
-  int[] q = new int[4];
-  int[] f = new int[4];
-  int[] d = new int[4];
+  String[] names = new String[8];
+  int[] q = new int[8];
+  int[] f = new int[8];
+  int[] d = new int[8];
   SLNounRegistry sreg = new SLNounRegistry();
 
   void setup(String fieldLabel) {
@@ -107,8 +108,13 @@ class SLDecisionDesk {
     int i = 0;
     while (i < n) {
       boolean skip = (kind == 4 && i == k);
-      if (!skip) {
-        sreg.register(names[i], fieldName);
+      if (!skip) { sreg.register(names[i], fieldName); }
+      i = i + 1;
+    }
+    i = 0;
+    while (i < n) {
+      boolean skip2 = (kind == 4 && i == k);
+      if (!skip2) {
         int qv = q[i];
         if (kind == 5 && i == k) { qv = q[i] / 100; }
         sreg.registerValue(names[i] + " quote", names[i], qv);
@@ -117,7 +123,9 @@ class SLDecisionDesk {
         if (d[i] != 0 && !(kind == 1 && i == k)) {
           int dv = d[i];
           if (kind == 3 && i == k) { dv = 0 - d[i]; }
-          sreg.registerValue(names[i] + " discount", names[i], dv);
+          String owner = names[i];
+          if (kind == 6 && i == k) { owner = names[(i + 1) % n]; }
+          sreg.registerValue(names[i] + " discount", owner, dv);
         }
       }
       i = i + 1;
@@ -149,8 +157,8 @@ class SLDecisionDesk {
     return names[i];
   }
 
-  < Compare one entry. Returns 1 when it differs, else 0. >
-  int checkEntry(String entry, boolean masterHas, int mv) {
+  < Compare one entry: present, carrier and value. Returns 1 when it differs. >
+  int checkEntry(String entry, String owner, boolean masterHas, int mv) {
     boolean sh = sreg.has(entry);
     if (masterHas && !sh) {
       print("  " + entry + ": student did not register it, master has " + mv);
@@ -158,6 +166,10 @@ class SLDecisionDesk {
     }
     if (!masterHas && sh) {
       print("  " + entry + ": student only, master has no such entry");
+      return 1;
+    }
+    if (masterHas && sh && sreg.carrierOf(entry) != owner) {
+      print("  " + entry + ": student filed it under " + sreg.carrierOf(entry) + ", master files it under " + owner + " -> re-observe");
       return 1;
     }
     if (masterHas && sh && sreg.valueOf(entry) != mv) {
@@ -176,10 +188,10 @@ class SLDecisionDesk {
         print("  " + names[i] + ": master only, student did not observe it");
         diffs = diffs + 1;
       } else {
-        diffs = diffs + checkEntry(names[i] + " quote", true, q[i]);
-        diffs = diffs + checkEntry(names[i] + " fee", true, f[i]);
-        diffs = diffs + checkEntry(names[i] + " discount", d[i] != 0, d[i]);
-        diffs = diffs + checkEntry(names[i] + " fee again", false, 0);
+        diffs = diffs + checkEntry(names[i] + " quote", names[i], true, q[i]);
+        diffs = diffs + checkEntry(names[i] + " fee", names[i], true, f[i]);
+        diffs = diffs + checkEntry(names[i] + " discount", names[i], d[i] != 0, d[i]);
+        diffs = diffs + checkEntry(names[i] + " fee again", names[i], false, 0);
       }
       i = i + 1;
     }
@@ -228,6 +240,7 @@ class SLDecisionDesk {
     if (kind == 2) { return "the fee of " + names[k] + " was counted twice"; }
     if (kind == 3) { return "the discount of " + names[k] + " was entered with the wrong sign"; }
     if (kind == 4) { return names[k] + " was not observed"; }
+    if (kind == 6) { return "the discount of " + names[k] + " was filed under " + names[(k + 1) % n]; }
     return "the quote of " + names[k] + " was entered in dollars, not cents";
   }
 

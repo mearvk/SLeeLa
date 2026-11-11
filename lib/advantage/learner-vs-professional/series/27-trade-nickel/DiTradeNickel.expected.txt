@@ -1,0 +1,25 @@
+== Lesson 27: nickel decision ==
+-- master (onion) --
+  Refiner A total = 50800 cents
+  Refiner B total = 51800 cents
+  Refiner C total = 50200 cents
+  Refiner D total = 73100 cents
+  Refiner E total = 67100 cents
+  master picks Refiner C
+-- student, first pass: the discount of Refiner C was entered with the wrong sign --
+  Refiner A total = 50800 cents
+  Refiner B total = 51800 cents
+  Refiner C total = 51400 cents
+  Refiner D total = 73100 cents
+  Refiner E total = 67100 cents
+  student picks Refiner A
+  Refiner C discount: student 600, master -600 -> re-observe
+  verdict: 1 entry difference(s) and the picks differ -> not accepted
+-- student re-observes and registers every entry --
+  Refiner A total = 50800 cents
+  Refiner B total = 51800 cents
+  Refiner C total = 50200 cents
+  Refiner D total = 73100 cents
+  Refiner E total = 67100 cents
+  student picks Refiner C
+  verdict: AGREE, work accepted

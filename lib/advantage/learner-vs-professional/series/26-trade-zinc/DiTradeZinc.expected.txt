@@ -1,0 +1,28 @@
+== Lesson 26: zinc decision ==
+-- master (onion) --
+  Miner A total = 60900 cents
+  Miner B total = 45000 cents
+  Miner C total = 87700 cents
+  Miner D total = 82300 cents
+  Miner E total = 79400 cents
+  Miner F total = 45900 cents
+  master picks Miner B
+-- student, first pass: the discount of Miner E was filed under Miner F --
+  Miner A total = 60900 cents
+  Miner B total = 45000 cents
+  Miner C total = 87700 cents
+  Miner D total = 82300 cents
+  Miner E total = 80600 cents
+  Miner F total = 44700 cents
+  student picks Miner F
+  Miner E discount: student filed it under Miner F, master files it under Miner E -> re-observe
+  verdict: 1 entry difference(s) and the picks differ -> not accepted
+-- student re-observes and registers every entry --
+  Miner A total = 60900 cents
+  Miner B total = 45000 cents
+  Miner C total = 87700 cents
+  Miner D total = 82300 cents
+  Miner E total = 79400 cents
+  Miner F total = 45900 cents
+  student picks Miner B
+  verdict: AGREE, work accepted

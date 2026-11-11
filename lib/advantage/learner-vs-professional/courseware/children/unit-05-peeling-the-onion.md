@@ -48,7 +48,7 @@ Run lesson 5 (boxes inside boxes) and lesson 6 (prices) with a grown-up.
 
 ## More toy-shop practice
 
-With a grown-up, run lessons 7 to 22. Each is a shopping choice: the
+With a grown-up, run lessons 7 to 32. Each is a shopping choice: the
 Instructor and the student add up the same prices, and the Instructor points at
 the one number that is different. See
 [the list of decisions](../../series/TRADING-DECISIONS.md).

@@ -1,0 +1,34 @@
+== Lesson 32: eight-way capstone decision ==
+-- master (onion) --
+  Vendor A total = 54100 cents
+  Vendor B total = 87700 cents
+  Vendor C total = 54100 cents
+  Vendor D total = 68800 cents
+  Vendor E total = 58900 cents
+  Vendor F total = 63300 cents
+  Vendor G total = 59800 cents
+  Vendor H total = 64700 cents
+  master picks Vendor A
+-- student, first pass: the discount of Vendor A was missed --
+  Vendor A total = 56000 cents
+  Vendor B total = 87700 cents
+  Vendor C total = 54100 cents
+  Vendor D total = 68800 cents
+  Vendor E total = 58900 cents
+  Vendor F total = 63300 cents
+  Vendor G total = 59800 cents
+  Vendor H total = 64700 cents
+  student picks Vendor C
+  Vendor A discount: student did not register it, master has -1900
+  verdict: 1 entry difference(s) and the picks differ -> not accepted
+-- student re-observes and registers every entry --
+  Vendor A total = 54100 cents
+  Vendor B total = 87700 cents
+  Vendor C total = 54100 cents
+  Vendor D total = 68800 cents
+  Vendor E total = 58900 cents
+  Vendor F total = 63300 cents
+  Vendor G total = 59800 cents
+  Vendor H total = 64700 cents
+  student picks Vendor A
+  verdict: AGREE, work accepted
