@@ -150,7 +150,7 @@
 <h2 class="section" data-u="guidoc">guidoc <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/guidoc/guidoc.sleela)</span></h2>
 <div data-u="guidoc guidoc">
 <h3 id="GuiDoc">GuiDoc <span class="pill">class</span></h3>
-<p class="desc">The launcher of the document GUI. It builds the GUI from its spec, runs the readiness gate, optionally opens the file named by the environment variable SLEELA_GUIDOC_OPEN, prints the screen as a text outline and says whether the GUI is ready. With SLEELA_GUIDOC_PLAN=1 it also prints the mount plan a windowing host consumes. On a host with no display it stops there; a windowing host drives the same SLGuiDocApp through click(), type() and accelerate(). Output ends with GUIDOC READY or GUIDOC NOT READY (SLeeLa 3.0 main cannot set an exit status, so scripts match that line).</p>
+<p class="desc">The launcher of the document GUI. It builds the GUI from its spec, runs the readiness gate, optionally opens the file named by the environment variable SLEELA_GUIDOC_OPEN, prints the screen as a text outline and says whether the GUI is ready. SLEELA_GUIDOC_ADMIN=1 makes the session an admin and SLEELA_GUIDOC_LOCK=1 (admin only) locks the system before the screen is printed. With SLEELA_GUIDOC_PLAN=1 it also prints the mount plan a windowing host consumes. On a host with no display it stops there; a windowing host drives the same SLGuiDocApp through click(), type() and accelerate(). Output ends with GUIDOC READY or GUIDOC NOT READY (SLeeLa 3.0 main cannot set an exit status, so scripts match that line).</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -179,6 +179,7 @@
 <tr><td><code>cur</code></td><td><span class="sig">SLGuiDocTab cur()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>menuClick</code></td><td><span class="sig">int menuClick(String menu, String item)</span></td><td class="desc">Click a menu then one of its items, the way a user would.</td></tr>
 <tr><td><code>menuClickOn</code></td><td><span class="sig">int menuClickOn(SLGuiDocApp a, String menu, String item)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>auditHas</code></td><td><span class="sig">boolean auditHas(SLGuiDocApp a, String entry)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>outlineHas</code></td><td><span class="sig">boolean outlineHas(String line)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>slurp</code></td><td><span class="sig">String slurp(String path)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>dump</code></td><td><span class="sig">void dump(String path, String data)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -212,6 +213,12 @@
 <tr><td><code>ready</code></td><td><span class="sig">SLGuiDocReady ready</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>cmdRuns</code></td><td><span class="sig">int[] cmdRuns</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>itemClicks</code></td><td><span class="sig">int[] itemClicks</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>admin</code></td><td><span class="sig">int admin</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>locked</code></td><td><span class="sig">int locked</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>choiceTab</code></td><td><span class="sig">int choiceTab</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>trail</code></td><td><span class="sig">String[] trail</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>trailCount</code></td><td><span class="sig">int trailCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>trailLost</code></td><td><span class="sig">int trailLost</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -221,6 +228,17 @@
 <tr><td><code>isCertified</code></td><td><span class="sig">boolean isCertified()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>whenReady</code></td><td><span class="sig">boolean whenReady(String subscriber)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>takeReady</code></td><td><span class="sig">boolean takeReady(String subscriber)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>audit</code></td><td><span class="sig">void audit(String entry)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>auditSize</code></td><td><span class="sig">int auditSize()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>auditAt</code></td><td><span class="sig">String auditAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isAdmin</code></td><td><span class="sig">boolean isAdmin()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isLocked</code></td><td><span class="sig">boolean isLocked()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>choiceIndex</code></td><td><span class="sig">int choiceIndex()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>inChoice</code></td><td><span class="sig">boolean inChoice()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setAdmin</code></td><td><span class="sig">void setAdmin(boolean on)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lockAllows</code></td><td><span class="sig">boolean lockAllows(String command)</span></td><td class="desc">Does the lock let this command run right now?</td></tr>
+<tr><td><code>lockAllTabs</code></td><td><span class="sig">void lockAllTabs(boolean on)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>endChoice</code></td><td><span class="sig">boolean endChoice(String reason)</span></td><td class="desc">End the editor choice session, if any. Returns true when edits were reverted. Callers set their own status text.</td></tr>
 <tr><td><code>expectedNodes</code></td><td><span class="sig">int expectedNodes()</span></td><td class="desc">The node count the spec implies: window, menubar, menus, items, tab bar, tabs, new-tab button, editor, two nodes per row, entry, three status labels and the five dialog nodes.</td></tr>
 <tr><td><code>start</code></td><td><span class="sig">boolean start()</span></td><td class="desc">Run the self-checks. Returns true when the GUI is READY. Can be retried after a failure.</td></tr>
 <tr><td><code>specification</code></td><td><span class="sig">SLGuiDocSpec specification()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -238,6 +256,7 @@
 <tr><td><code>menuOpen</code></td><td><span class="sig">String menuOpen()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>executedCount</code></td><td><span class="sig">int executedCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>refusedCount</code></td><td><span class="sig">int refusedCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>itemText</code></td><td><span class="sig">String itemText(int i, boolean paintedState)</span></td><td class="desc">The text of a menu item: its label (or, for a toggle that is on, its active label) and its accelerator.</td></tr>
 <tr><td><code>buildView</code></td><td><span class="sig">void buildView()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>whenHolds</code></td><td><span class="sig">boolean whenHolds(String when)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>say</code></td><td><span class="sig">void say(String text)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -272,6 +291,8 @@
 <tr><td><code>cmdInsertLine</code></td><td><span class="sig">boolean cmdInsertLine()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>cmdReplaceLine</code></td><td><span class="sig">boolean cmdReplaceLine()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>cmdDeleteLine</code></td><td><span class="sig">boolean cmdDeleteLine()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cmdLock</code></td><td><span class="sig">boolean cmdLock()</span></td><td class="desc">Admin only (the menu item is enabled only for an admin). Locking refuses every command that adds content; unlocking ends any editor choice session.</td></tr>
+<tr><td><code>cmdChoice</code></td><td><span class="sig">boolean cmdChoice()</span></td><td class="desc">Admin only, and only while the system is locked: start an editor choice session on the active tab, or end the one that is running.</td></tr>
 <tr><td><code>cmdNextTab</code></td><td><span class="sig">boolean cmdNextTab()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>cmdPrevTab</code></td><td><span class="sig">boolean cmdPrevTab()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>cmdAbout</code></td><td><span class="sig">boolean cmdAbout()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -440,7 +461,13 @@
 <tr><td><code>cId</code></td><td><span class="sig">String[] cId</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>cHandler</code></td><td><span class="sig">String[] cHandler</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>cConfirm</code></td><td><span class="sig">int[] cConfirm</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cLock</code></td><td><span class="sig">String[] cLock</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>cCount</code></td><td><span class="sig">int cCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tItem</code></td><td><span class="sig">String[] tItem</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tKind</code></td><td><span class="sig">String[] tKind</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tActive</code></td><td><span class="sig">String[] tActive</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tCount</code></td><td><span class="sig">int tCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>choiceEdits</code></td><td><span class="sig">String choiceEdits</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>refused</code></td><td><span class="sig">int refused</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
@@ -462,7 +489,19 @@
 <tr><td><code>commandIndex</code></td><td><span class="sig">int commandIndex(String id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>menuIndex</code></td><td><span class="sig">int menuIndex(String id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>itemIndex</code></td><td><span class="sig">int itemIndex(String id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>addCommand</code></td><td><span class="sig">boolean addCommand(String id, String handler, int confirms)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addCommand</code></td><td><span class="sig">boolean addCommand(String id, String handler, int confirms, String lockPolicy)</span></td><td class="desc">lockPolicy: allowed (runs while the system is locked), blocked (refused while locked), choice (refused while locked unless the active tab is in an editor choice session).</td></tr>
+<tr><td><code>addToggle</code></td><td><span class="sig">boolean addToggle(String itemId, String kind, String activeLabel)</span></td><td class="desc">A toggle item shows its label when the state is off and activeLabel when on. kind is lock (the system lock) or choice (an editor choice session).</td></tr>
+<tr><td><code>setLock</code></td><td><span class="sig">boolean setLock(String choiceEditsPolicy)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lockPolicyOf</code></td><td><span class="sig">String lockPolicyOf(String command)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toggleTotal</code></td><td><span class="sig">int toggleTotal()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toggleItemAt</code></td><td><span class="sig">String toggleItemAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toggleKindAt</code></td><td><span class="sig">String toggleKindAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toggleActiveLabelAt</code></td><td><span class="sig">String toggleActiveLabelAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toggleKindOf</code></td><td><span class="sig">String toggleKindOf(String itemId)</span></td><td class="desc">The toggle kind of an item (&quot;&quot; if it is not a toggle).</td></tr>
+<tr><td><code>toggleLabelOf</code></td><td><span class="sig">String toggleLabelOf(String itemId)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getChoiceEdits</code></td><td><span class="sig">String getChoiceEdits()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>choiceReverts</code></td><td><span class="sig">boolean choiceReverts()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>commandsWithPolicy</code></td><td><span class="sig">int commandsWithPolicy(String policy)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>addMenu</code></td><td><span class="sig">boolean addMenu(String id, String label)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>addItem</code></td><td><span class="sig">boolean addItem(String menu, String id, String label, String command, String accel, String when)</span></td><td class="desc">An item needs an existing menu and command, a unique id, a known enabled-when condition, and an accelerator no other item uses.</td></tr>
 <tr><td><code>menuTotal</code></td><td><span class="sig">int menuTotal()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -512,6 +551,15 @@
 <tr><td><code>readOnly</code></td><td><span class="sig">int readOnly</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>selected</code></td><td><span class="sig">int selected</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>viewTop</code></td><td><span class="sig">int viewTop</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>locked</code></td><td><span class="sig">int locked</span></td><td class="desc">system lock: 1 while the system is locked</td></tr>
+<tr><td><code>choice</code></td><td><span class="sig">int choice</span></td><td class="desc">editor choice: 1 while an admin session may edit this tab despite the lock</td></tr>
+<tr><td><code>snapLines</code></td><td><span class="sig">String[] snapLines</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>snapCount</code></td><td><span class="sig">int snapCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>snapRevision</code></td><td><span class="sig">int snapRevision</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>snapSaved</code></td><td><span class="sig">int snapSaved</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>snapSelected</code></td><td><span class="sig">int snapSelected</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>snapTop</code></td><td><span class="sig">int snapTop</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>snapTaken</code></td><td><span class="sig">int snapTaken</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -528,8 +576,13 @@
 <tr><td><code>topLine</code></td><td><span class="sig">int topLine()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>hasSelection</code></td><td><span class="sig">boolean hasSelection()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>settle</code></td><td><span class="sig">void settle()</span></td><td class="desc">The host cycle for this tab: deliver, let the listener read, route.</td></tr>
-<tr><td><code>edit</code></td><td><span class="sig">int edit(int op, int line, String text, String source)</span></td><td class="desc">Edit through the observer. Refused when the tab is read-only.</td></tr>
-<tr><td><code>editAs</code></td><td><span class="sig">int editAs(int op, int line, String text, String source)</span></td><td class="desc">Someone else changes the document (used for external changes).</td></tr>
+<tr><td><code>isLocked</code></td><td><span class="sig">boolean isLocked()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>inChoice</code></td><td><span class="sig">boolean inChoice()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setLocked</code></td><td><span class="sig">void setLocked(boolean on)</span></td><td class="desc">Locking the tab freezes its observer, so the lock holds against any other writer too, not just the menu.</td></tr>
+<tr><td><code>edit</code></td><td><span class="sig">int edit(int op, int line, String text, String source)</span></td><td class="desc">Edit through the observer. Refused when the tab is read-only, and refused while the system is locked unless an editor choice session is running on this tab (checked here as well as in the menu, so no path around the lock).</td></tr>
+<tr><td><code>editAs</code></td><td><span class="sig">int editAs(int op, int line, String text, String source)</span></td><td class="desc">Someone else changes the document (used for external changes). While the system is locked this is refused even during an editor choice session: the exemption is for the admin editing through the GUI only.</td></tr>
+<tr><td><code>beginChoice</code></td><td><span class="sig">boolean beginChoice()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>endChoice</code></td><td><span class="sig">boolean endChoice(boolean revert)</span></td><td class="desc">End the session. With revert=true the document is put back exactly as it was when the session began. Returns true when something was reverted.</td></tr>
 <tr><td><code>isDirty</code></td><td><span class="sig">boolean isDirty()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>markSaved</code></td><td><span class="sig">void markSaved()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>select</code></td><td><span class="sig">void select(int line)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -619,7 +672,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-11 12:38 UTC.
+<code>/lib</code> tree on 2026-11-11 12:50 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
