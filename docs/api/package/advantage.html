@@ -145,7 +145,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; advantage</div>
 <h1>Package <code>advantage</code></h1>
-<div class="lead">This package contains <strong>94</strong> source unit(s) defining <strong>94</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>97</strong> source unit(s) defining <strong>97</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="advantage-demo">advantage-demo <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/advantage-demo.sleela)</span></h2>
 <div data-u="advantage-demo advantagedemo">
@@ -236,50 +236,63 @@
 <h2 class="section" data-u="diagreement">DiAgreement <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/series/04-agreement/DiAgreement.sleela)</span></h2>
 <div data-u="diagreement diagreement">
 <h3 id="DiAgreement">DiAgreement <span class="pill">class</span></h3>
-<p class="desc">Device Instructor agreement test: the student and the Purchase Master observe the same field independently and the instructor points at exactly what differs.</p>
+<p class="desc">Device Instructor agreement test: the student and the Purchase Master each build a registry of the same field and the instructor points at exactly what differs.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
-<tr><td><code>sNouns</code></td><td><span class="sig">String[] sNouns = new String[8]</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>sCarriers</code></td><td><span class="sig">String[] sCarriers = new String[8]</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>sCount</code></td><td><span class="sig">int sCount = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>mNouns</code></td><td><span class="sig">String[] mNouns = new String[8]</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>mCarriers</code></td><td><span class="sig">String[] mCarriers = new String[8]</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>mCount</code></td><td><span class="sig">int mCount = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>student</code></td><td><span class="sig">SLNounRegistry student = new SLNounRegistry()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>master</code></td><td><span class="sig">SLNounRegistry master = new SLNounRegistry()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
-<tr><td><code>studentAdd</code></td><td><span class="sig">void studentAdd(String noun, String carrier)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>masterAdd</code></td><td><span class="sig">void masterAdd(String noun, String carrier)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>studentSet</code></td><td><span class="sig">void studentSet(String noun, String carrier)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>masterIndex</code></td><td><span class="sig">int masterIndex(String noun)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>studentIndex</code></td><td><span class="sig">int studentIndex(String noun)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>compare</code></td><td><span class="sig">int compare()</span></td><td class="desc">Prints each difference and returns the number of differences.</td></tr>
 <tr><td><code>verdict</code></td><td><span class="sig">void verdict(int diffs)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="dinestedcarriers">DiNestedCarriers <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/series/05-nested-carriers/DiNestedCarriers.sleela)</span></h2>
+<div data-u="dinestedcarriers dinestedcarriers">
+<h3 id="DiNestedCarriers">DiNestedCarriers <span class="pill">class</span></h3>
+<p class="desc">Device Instructor lesson on nested carriers: a carrier can itself be carried, every chain leads back to the field, and each noun has exactly one place.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>reg</code></td><td><span class="sig">SLNounRegistry reg = new SLNounRegistry()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>tryRegister</code></td><td><span class="sig">void tryRegister(String noun, String carrier)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="dipurchaseonion">DiPurchaseOnion <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/series/06-purchase-onion/DiPurchaseOnion.sleela)</span></h2>
+<div data-u="dipurchaseonion dipurchaseonion">
+<h3 id="DiPurchaseOnion">DiPurchaseOnion <span class="pill">class</span></h3>
+<p class="desc">Device Instructor lesson taking registry to onion: the student totals registered quotes by hand, the Purchase Master runs the Sequitur onion, and the instructor compares.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>reg</code></td><td><span class="sig">SLNounRegistry reg = new SLNounRegistry()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>loadQuotes</code></td><td><span class="sig">void loadQuotes(boolean discountSeen)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>studentTotal</code></td><td><span class="sig">int studentTotal(String supplier)</span></td><td class="desc">The student: a plain sum of every registered value under the supplier.</td></tr>
+<tr><td><code>masterTotal</code></td><td><span class="sig">int masterTotal(String label, int quote, int fee, int discount)</span></td><td class="desc">The Purchase Master: the same figures through the advantage onion.</td></tr>
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="diregistryintake">DiRegistryIntake <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/series/01-registry-intake/DiRegistryIntake.sleela)</span></h2>
 <div data-u="diregistryintake diregistryintake">
 <h3 id="DiRegistryIntake">DiRegistryIntake <span class="pill">class</span></h3>
-<p class="desc">Device Instructor intake: a registry of nouns and noun-carriers inside a declared field of observation.</p>
+<p class="desc">Device Instructor intake: the shared registry refuses input until a field of observation is declared and keeps one carrier per noun.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
-<tr><td><code>field</code></td><td><span class="sig">String field = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>nouns</code></td><td><span class="sig">String[] nouns = new String[16]</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>carriers</code></td><td><span class="sig">String[] carriers = new String[16]</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>count</code></td><td><span class="sig">int count = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>accepted</code></td><td><span class="sig">int accepted = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>refused</code></td><td><span class="sig">int refused = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>reg</code></td><td><span class="sig">SLNounRegistry reg = new SLNounRegistry()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
-<tr><td><code>declareField</code></td><td><span class="sig">void declareField(String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>indexOf</code></td><td><span class="sig">int indexOf(String noun)</span></td><td class="desc">Returns the index of a noun, or -1 when it is not registered.</td></tr>
-<tr><td><code>register</code></td><td><span class="sig">int register(String noun, String carrier)</span></td><td class="desc">Result codes: 0 accepted, 1 field not declared, 2 noun already placed, 3 registry full.</td></tr>
-<tr><td><code>reason</code></td><td><span class="sig">String reason(int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>observe</code></td><td><span class="sig">String observe(String noun)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>tryRegister</code></td><td><span class="sig">void tryRegister(String noun, String carrier)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
@@ -287,20 +300,17 @@
 <h2 class="section" data-u="distudentinput">DiStudentInput <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/series/02-student-input-gate/DiStudentInput.sleela)</span></h2>
 <div data-u="distudentinput distudentinput">
 <h3 id="DiStudentInput">DiStudentInput <span class="pill">class</span></h3>
-<p class="desc">Device Instructor gate that accepts only good student input: a claim, registered evidence, and the next step in sequitur order.</p>
+<p class="desc">Device Instructor gate that accepts only good student input: a claim, evidence registered in the shared registry, and the next step in sequitur order.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
-<tr><td><code>registry</code></td><td><span class="sig">String[] registry = new String[8]</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>regCount</code></td><td><span class="sig">int regCount = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>reg</code></td><td><span class="sig">SLNounRegistry reg = new SLNounRegistry()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>lastStep</code></td><td><span class="sig">int lastStep = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>good</code></td><td><span class="sig">int good = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>refused</code></td><td><span class="sig">int refused = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
-<tr><td><code>addEntry</code></td><td><span class="sig">void addEntry(String id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>registered</code></td><td><span class="sig">boolean registered(String id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>submit</code></td><td><span class="sig">int submit(int step, String claim, String evidence)</span></td><td class="desc">Result codes: 0 good, 1 empty claim, 2 evidence not registered, 3 step out of order.</td></tr>
 <tr><td><code>reason</code></td><td><span class="sig">String reason(int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>show</code></td><td><span class="sig">void show(int step, String claim, String evidence)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -1314,6 +1324,44 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="slnounregistry">SLNounRegistry <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/series/SLNounRegistry.sleela)</span></h2>
+<div data-u="slnounregistry slnounregistry">
+<h3 id="SLNounRegistry">SLNounRegistry <span class="pill">class</span></h3>
+<p class="desc">Shared registry of nouns and noun-carriers inside one declared field of observation, used by every Device Instructor lesson.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>field</code></td><td><span class="sig">String field = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nouns</code></td><td><span class="sig">String[] nouns = new String[32]</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>carriers</code></td><td><span class="sig">String[] carriers = new String[32]</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>values</code></td><td><span class="sig">int[] values = new int[32]</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>accepted</code></td><td><span class="sig">int accepted = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>refused</code></td><td><span class="sig">int refused = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>declareField</code></td><td><span class="sig">void declareField(String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fieldName</code></td><td><span class="sig">String fieldName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>size</code></td><td><span class="sig">int size()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>acceptedCount</code></td><td><span class="sig">int acceptedCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>refusedCount</code></td><td><span class="sig">int refusedCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nounAt</code></td><td><span class="sig">String nounAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>carrierAt</code></td><td><span class="sig">String carrierAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>indexOf</code></td><td><span class="sig">int indexOf(String noun)</span></td><td class="desc">Returns the index of a noun, or -1 when it is not registered.</td></tr>
+<tr><td><code>has</code></td><td><span class="sig">boolean has(String noun)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>register</code></td><td><span class="sig">int register(String noun, String carrier)</span></td><td class="desc">Result codes: 0 accepted, 1 field not declared, 2 noun already placed, 3 registry full, 4 carrier is neither the field nor a registered noun.</td></tr>
+<tr><td><code>registerValue</code></td><td><span class="sig">int registerValue(String noun, String carrier, int value)</span></td><td class="desc">Registers a noun that also holds an integer value, for example cents.</td></tr>
+<tr><td><code>reason</code></td><td><span class="sig">String reason(int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>carrierOf</code></td><td><span class="sig">String carrierOf(String noun)</span></td><td class="desc">The immediate carrier, or an empty string when the noun is not observed.</td></tr>
+<tr><td><code>valueOf</code></td><td><span class="sig">int valueOf(String noun)</span></td><td class="desc">The stored value, or -1 when the noun is not observed. Use has() first when -1 could be a real value.</td></tr>
+<tr><td><code>depthOf</code></td><td><span class="sig">int depthOf(String noun)</span></td><td class="desc">Number of hops from the noun up to the field, or -1 when not observed.</td></tr>
+<tr><td><code>chain</code></td><td><span class="sig">String chain(String noun)</span></td><td class="desc">The chain from the noun up to the field, for example: order 2 -&gt; order list -&gt; customer-17 -&gt; (field)</td></tr>
+<tr><td><code>carries</code></td><td><span class="sig">int carries(String carrier)</span></td><td class="desc">How many nouns this carrier holds directly.</td></tr>
+<tr><td><code>totalUnder</code></td><td><span class="sig">int totalUnder(String carrier)</span></td><td class="desc">Sum of the values of every noun this carrier holds, directly or deeper.</td></tr>
+<tr><td><code>isUnder</code></td><td><span class="sig">boolean isUnder(String noun, String carrier)</span></td><td class="desc">True when the carrier appears anywhere on the noun chain below the field.</td></tr>
+</table>
+</div>
 <h2 class="section" data-u="slpackage">SLPackage <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/SLPackage.sleela)</span></h2>
 <div data-u="slpackage slpackage">
 <h3 id="SLPackage">SLPackage <span class="pill">class</span></h3>
@@ -2022,7 +2070,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-11 19:01 UTC.
+<code>/lib</code> tree on 2026-11-11 19:34 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
