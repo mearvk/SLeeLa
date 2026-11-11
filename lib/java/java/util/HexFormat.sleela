@@ -54,45 +54,171 @@ class HexFormat {
   String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
   String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
 
+
+  < ---- BEGIN java implementation ---- >
+  < ---- java.util.HexFormat members (procedural implementation in SLeeLa) ---- >
+  << java.util.HexFormat as an immutable value: case, delimiter, prefix and
+     suffix, each with-method returning a new HexFormat. Output Strings are
+     plain SLeeLa Strings built by concatenation. The long, int, short, byte
+     and char forms of toHexDigits(value) cannot be told apart by the VM, so
+     only toHexDigits(value, digits) is implemented; the one-argument form
+     throws and says why. The
+     parse side (parseHex, fromHexDigits*) needs character access to a String,
+     which SLeeLa does not have, and keeps its exact-signature stubs, as does
+     the Appendable form of formatHex and hashCode. fromHexDigit reports a bad
+     digit by its code number. >>
+  boolean upper = false;
+  String delim = "";
+  String pfx = "";
+  String sfx = "";
+
+  public static HexFormat of() { return new HexFormat(); }
+  public static HexFormat ofDelimiter(java.lang.String delimiter) {
+    if (delimiter == null) { throw new NullPointerException(); }
+    HexFormat f = new HexFormat();
+    f.delim = delimiter;
+    return f;
+  }
+  HexFormat copyOf() {
+    HexFormat f = new HexFormat();
+    f.upper = this.upper;
+    f.delim = this.delim;
+    f.pfx = this.pfx;
+    f.sfx = this.sfx;
+    return f;
+  }
+  public HexFormat withDelimiter(java.lang.String delimiter) {
+    if (delimiter == null) { throw new NullPointerException(); }
+    HexFormat f = copyOf();
+    f.delim = delimiter;
+    return f;
+  }
+  public HexFormat withPrefix(java.lang.String prefix) {
+    if (prefix == null) { throw new NullPointerException(); }
+    HexFormat f = copyOf();
+    f.pfx = prefix;
+    return f;
+  }
+  public HexFormat withSuffix(java.lang.String suffix) {
+    if (suffix == null) { throw new NullPointerException(); }
+    HexFormat f = copyOf();
+    f.sfx = suffix;
+    return f;
+  }
+  public HexFormat withUpperCase() {
+    HexFormat f = copyOf();
+    f.upper = true;
+    return f;
+  }
+  public HexFormat withLowerCase() {
+    HexFormat f = copyOf();
+    f.upper = false;
+    return f;
+  }
+  public java.lang.String delimiter() { return this.delim; }
+  public java.lang.String prefix() { return this.pfx; }
+  public java.lang.String suffix() { return this.sfx; }
+  public boolean isUpperCase() { return this.upper; }
+  public boolean equals(java.lang.Object o) {
+    if (o == null) { return false; }
+    HexFormat other = (HexFormat) o;
+    return other.upper == this.upper && other.delim == this.delim && other.pfx == this.pfx && other.sfx == this.sfx;
+  }
+
+  public java.lang.String formatHex(byte[] bytes) { return formatHex(bytes, 0, arrayLength(bytes)); }
+  public java.lang.String formatHex(byte[] bytes, int fromIndex, int toIndex) {
+    int n = arrayLength(bytes);
+    if (fromIndex < 0 || fromIndex > toIndex || toIndex > n) {
+      throw new IndexOutOfBoundsException("Range [" + fromIndex + ", " + toIndex + ") out of bounds for length " + n);
+    }
+    String out = "";
+    int i = fromIndex;
+    while (i < toIndex) {
+      if (i > fromIndex) { out = out + this.delim; }
+      out = out + this.pfx + byteDigits(bytes[i]) + this.sfx;
+      i = i + 1;
+    }
+    return out;
+  }
+  public java.lang.String toHexDigits(long value) {
+    throw new UnsupportedOperationException("java.util.HexFormat.toHexDigits(value): the VM cannot tell long, int, short, byte and char apart, so the digit count is unknown; use toHexDigits(value, digits)");
+  }
+  public java.lang.String toHexDigits(long value, int digits) {
+    if (digits < 0 || digits > 16) { throw new IllegalArgumentException("number of digits: " + digits); }
+    String out = "";
+    int i = digits - 1;
+    while (i >= 0) {
+      long p = 1;
+      int k = 0;
+      while (k < i) { p = p * 16; k = k + 1; }
+      long nib = hfmod(hfdiv(value, p), 16);
+      out = out + hexDigit((int) nib);
+      i = i - 1;
+    }
+    return out;
+  }
+  public char toHighHexDigit(int value) { return hexCode(hfmod(value, 256) / 16); }
+  public char toLowHexDigit(int value) { return hexCode(hfmod(value, 256) % 16); }
+
+  public static boolean isHexDigit(int ch) {
+    return (ch >= 48 && ch <= 57) || (ch >= 65 && ch <= 70) || (ch >= 97 && ch <= 102);
+  }
+  public static int fromHexDigit(int ch) {
+    if (ch >= 48 && ch <= 57) { return ch - 48; }
+    if (ch >= 65 && ch <= 70) { return ch - 55; }
+    if (ch >= 97 && ch <= 102) { return ch - 87; }
+    throw new NumberFormatException("not a hexadecimal digit: code " + ch);
+  }
+
+  < ---- helpers ---- >
+  String byteDigits(int b) {
+    long v = hfmod(b, 256);
+    return hexDigit((int) (v / 16)) + hexDigit((int) (v % 16));
+  }
+  String hexDigit(int v) {
+    if (v < 10) { return "" + v; }
+    String s = "a";
+    if (v == 10) { s = "a"; }
+    if (v == 11) { s = "b"; }
+    if (v == 12) { s = "c"; }
+    if (v == 13) { s = "d"; }
+    if (v == 14) { s = "e"; }
+    if (v == 15) { s = "f"; }
+    if (this.upper) {
+      if (v == 10) { s = "A"; }
+      if (v == 11) { s = "B"; }
+      if (v == 12) { s = "C"; }
+      if (v == 13) { s = "D"; }
+      if (v == 14) { s = "E"; }
+      if (v == 15) { s = "F"; }
+    }
+    return s;
+  }
+  int hexCode(long v) {
+    if (v < 10) { return (int) v + 48; }
+    if (this.upper) { return (int) v + 55; }
+    return (int) v + 87;
+  }
+  static long hfdiv(long a, long b) {
+    long q = a / b;
+    if ((a % b != 0) && ((a < 0) != (b < 0))) { q = q - 1; }
+    return q;
+  }
+  static long hfmod(long a, long b) { return a - hfdiv(a, b) * b; }
+  < ---- END java implementation ---- >
+
   < ---- BEGIN java signatures (generated by tools/jdk_api_signatures.py) ---- >
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
-  public boolean equals(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.equals(java.lang.Object)"); }
   public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.toString()"); }
   public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.hashCode()"); }
-  public boolean isUpperCase() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.isUpperCase()"); }
-  public static java.util.HexFormat of() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.of()"); }
-  public java.lang.String prefix() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.prefix()"); }
-  public java.lang.String suffix() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.suffix()"); }
-  public java.lang.String delimiter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.delimiter()"); }
-  public java.util.HexFormat withUpperCase() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.withUpperCase()"); }
-  public java.lang.String toHexDigits(long value, int digits) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.toHexDigits(long, int)"); }
-  public java.lang.String toHexDigits(long value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.toHexDigits(long)"); }
-  public java.lang.String toHexDigits(int value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.toHexDigits(int)"); }
-  public java.lang.String toHexDigits(char value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.toHexDigits(char)"); }
-  public java.lang.String toHexDigits(short value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.toHexDigits(short)"); }
-  public java.lang.String toHexDigits(byte value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.toHexDigits(byte)"); }
-  public <A extends java.lang.Appendable> A toHexDigits(A out, byte value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.toHexDigits(A, byte)"); }
-  public <A extends java.lang.Appendable> A formatHex(A out, byte[] bytes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.formatHex(A, byte[])"); }
-  public java.lang.String formatHex(byte[] bytes, int fromIndex, int toIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.formatHex(byte[], int, int)"); }
-  public java.lang.String formatHex(byte[] bytes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.formatHex(byte[])"); }
-  public <A extends java.lang.Appendable> A formatHex(A out, byte[] bytes, int fromIndex, int toIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.formatHex(A, byte[], int, int)"); }
   public byte[] parseHex(java.lang.CharSequence string) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.parseHex(java.lang.CharSequence)"); }
   public byte[] parseHex(char[] chars, int fromIndex, int toIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.parseHex(char[], int, int)"); }
   public byte[] parseHex(java.lang.CharSequence string, int fromIndex, int toIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.parseHex(java.lang.CharSequence, int, int)"); }
   public static int fromHexDigits(java.lang.CharSequence string) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.fromHexDigits(java.lang.CharSequence)"); }
   public static int fromHexDigits(java.lang.CharSequence string, int fromIndex, int toIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.fromHexDigits(java.lang.CharSequence, int, int)"); }
-  public char toHighHexDigit(int value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.toHighHexDigit(int)"); }
-  public char toLowHexDigit(int value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.toLowHexDigit(int)"); }
-  public static int fromHexDigit(int ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.fromHexDigit(int)"); }
   public static long fromHexDigitsToLong(java.lang.CharSequence string, int fromIndex, int toIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.fromHexDigitsToLong(java.lang.CharSequence, int, int)"); }
   public static long fromHexDigitsToLong(java.lang.CharSequence string) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.fromHexDigitsToLong(java.lang.CharSequence)"); }
-  public static java.util.HexFormat ofDelimiter(java.lang.String delimiter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.ofDelimiter(java.lang.String)"); }
-  public java.util.HexFormat withDelimiter(java.lang.String delimiter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.withDelimiter(java.lang.String)"); }
-  public java.util.HexFormat withPrefix(java.lang.String prefix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.withPrefix(java.lang.String)"); }
-  public java.util.HexFormat withSuffix(java.lang.String suffix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.withSuffix(java.lang.String)"); }
-  public java.util.HexFormat withLowerCase() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.withLowerCase()"); }
-  public static boolean isHexDigit(int ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.isHexDigit(int)"); }
   < ---- END java signatures ---- >
 }
