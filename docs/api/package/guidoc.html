@@ -239,6 +239,8 @@
 <tr><td><code>lockAllows</code></td><td><span class="sig">boolean lockAllows(String command)</span></td><td class="desc">Does the lock let this command run right now?</td></tr>
 <tr><td><code>lockAllTabs</code></td><td><span class="sig">void lockAllTabs(boolean on)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>endChoice</code></td><td><span class="sig">boolean endChoice(String reason)</span></td><td class="desc">End the editor choice session, if any. Returns true when edits were reverted. Callers set their own status text.</td></tr>
+<tr><td><code>applySettings</code></td><td><span class="sig">void applySettings()</span></td><td class="desc">Re-read the settings that are copied at build time (the file limits and the sidecar suffix). New tabs also read the listener flag from the spec when they are made. Call after changing the spec at run time.</td></tr>
+<tr><td><code>requestClose</code></td><td><span class="sig">boolean requestClose()</span></td><td class="desc">The window was asked to close (the host reports its close button). With a dialog open that cancels the dialog; otherwise it is Quit, which asks first if the spec says so. Returns true only if quitting went ahead or a confirmation was opened.</td></tr>
 <tr><td><code>expectedNodes</code></td><td><span class="sig">int expectedNodes()</span></td><td class="desc">The node count the spec implies: window, menubar, menus, items, tab bar, tabs, new-tab button, editor, two nodes per row, entry, three status labels and the five dialog nodes.</td></tr>
 <tr><td><code>start</code></td><td><span class="sig">boolean start()</span></td><td class="desc">Run the self-checks. Returns true when the GUI is READY. Can be retried after a failure.</td></tr>
 <tr><td><code>specification</code></td><td><span class="sig">SLGuiDocSpec specification()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -272,6 +274,7 @@
 <tr><td><code>pump</code></td><td><span class="sig">int pump()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>handle</code></td><td><span class="sig">void handle(String command, int arg)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>accelerate</code></td><td><span class="sig">boolean accelerate(String accel)</span></td><td class="desc">A keyboard accelerator such as Ctrl+S.</td></tr>
+<tr><td><code>runKeyAction</code></td><td><span class="sig">boolean runKeyAction(String action)</span></td><td class="desc">Enter and Esc while a dialog or a menu is open.</td></tr>
 <tr><td><code>execute</code></td><td><span class="sig">boolean execute(String command)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>dispatch</code></td><td><span class="sig">int dispatch(String command, boolean run)</span></td><td class="desc">The one command table. run=false only asks whether the command has a handler. Returns 1 ran and succeeded, 0 ran and was refused, -1 unknown.</td></tr>
 <tr><td><code>flag</code></td><td><span class="sig">int flag(boolean b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -291,6 +294,12 @@
 <tr><td><code>cmdInsertLine</code></td><td><span class="sig">boolean cmdInsertLine()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>cmdReplaceLine</code></td><td><span class="sig">boolean cmdReplaceLine()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>cmdDeleteLine</code></td><td><span class="sig">boolean cmdDeleteLine()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>moveTo</code></td><td><span class="sig">boolean moveTo(int to)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cmdSelectPrev</code></td><td><span class="sig">boolean cmdSelectPrev()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cmdSelectNext</code></td><td><span class="sig">boolean cmdSelectNext()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cmdPageUp</code></td><td><span class="sig">boolean cmdPageUp()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cmdPageDown</code></td><td><span class="sig">boolean cmdPageDown()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cmdLoadLine</code></td><td><span class="sig">boolean cmdLoadLine()</span></td><td class="desc">Copy the selected line into the entry box so it can be changed and put back with Replace Line. Needs the same rights as editing.</td></tr>
 <tr><td><code>cmdLock</code></td><td><span class="sig">boolean cmdLock()</span></td><td class="desc">Admin only (the menu item is enabled only for an admin). Locking refuses every command that adds content; unlocking ends any editor choice session.</td></tr>
 <tr><td><code>cmdChoice</code></td><td><span class="sig">boolean cmdChoice()</span></td><td class="desc">Admin only, and only while the system is locked: start an editor choice session on the active tab, or end the one that is running.</td></tr>
 <tr><td><code>cmdNextTab</code></td><td><span class="sig">boolean cmdNextTab()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -313,12 +322,14 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>maxBytes</code></td><td><span class="sig">int maxBytes</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>maxLines</code></td><td><span class="sig">int maxLines</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>suffix</code></td><td><span class="sig">String suffix</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>lastCode</code></td><td><span class="sig">int lastCode</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
-<tr><td><code>configure</code></td><td><span class="sig">void configure(String sidecarSuffix, int byteLimit)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(String sidecarSuffix, int byteLimit, int lineLimit)</span></td><td class="desc">The line limit can be lowered below the document capacity (64) but never raised above it.</td></tr>
+<tr><td><code>getMaxLines</code></td><td><span class="sig">int getMaxLines()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>getLastCode</code></td><td><span class="sig">int getLastCode()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>getSidecarSuffixValue</code></td><td><span class="sig">String getSidecarSuffixValue()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>sidecarDir</code></td><td><span class="sig">String sidecarDir(String path)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -343,6 +354,7 @@
 <tr><td><code>emit</code></td><td><span class="sig">int emit(String[] out, int cap, int n, String line)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>outline</code></td><td><span class="sig">int outline(SLGuiDocApp app, String[] out, int cap)</span></td><td class="desc">The visible GUI as text. Returns the number of lines written.</td></tr>
 <tr><td><code>mountPlan</code></td><td><span class="sig">int mountPlan(SLGuiDocApp app, String[] out, int cap)</span></td><td class="desc">Every visible node in tree order, as a mount instruction for a host.</td></tr>
+<tr><td><code>event</code></td><td><span class="sig">int event(SLGuiDocApp app, String kind, String id, String value)</span></td><td class="desc">The single entry point for a windowing host. Everything a real window can report is one of these events, and nothing else reaches the GUI: press id a widget was activated (menu, menu item, tab, row, button) type id value the user typed into an entry widget key value a key chord, e.g. Ctrl+S, Up, Enter, Esc close the window close button tick a turn of the host loop: repaint if a document changed Returns the number of commands run (press), 1 or 0 (key, close, tick), 0 (type), or -1 for an unknown event kind.</td></tr>
 <tr><td><code>visibleNodes</code></td><td><span class="sig">int visibleNodes(SLGuiDocApp app)</span></td><td class="desc">How many nodes mountPlan() would list (visible nodes).</td></tr>
 </table>
 </div>
@@ -365,10 +377,12 @@
 <tr><td><code>lastExternal</code></td><td><span class="sig">String lastExternal</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>repaint</code></td><td><span class="sig">int repaint</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>seenNotes</code></td><td><span class="sig">int seenNotes</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>flagging</code></td><td><span class="sig">int flagging</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>quietChanges</code></td><td><span class="sig">int quietChanges</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
-<tr><td><code>attach</code></td><td><span class="sig">void attach(String portName, SLGuiDocWhite look)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>attach</code></td><td><span class="sig">void attach(String portName, SLGuiDocWhite look, boolean flagExternal)</span></td><td class="desc">flagExternal=false still counts every change but never flags one as external: it stays quiet in the status line.</td></tr>
 <tr><td><code>portOf</code></td><td><span class="sig">SLObserverPort portOf()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>revisionSeen</code></td><td><span class="sig">int revisionSeen()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>changeCount</code></td><td><span class="sig">int changeCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -376,6 +390,8 @@
 <tr><td><code>latestSource</code></td><td><span class="sig">String latestSource()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>latestExternal</code></td><td><span class="sig">String latestExternal()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>noteCount</code></td><td><span class="sig">int noteCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>quietCount</code></td><td><span class="sig">int quietCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>flagsExternal</code></td><td><span class="sig">boolean flagsExternal()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>pump</code></td><td><span class="sig">int pump()</span></td><td class="desc">Read the mailbox. Returns the number of messages handled.</td></tr>
 <tr><td><code>takeRepaint</code></td><td><span class="sig">boolean takeRepaint()</span></td><td class="desc">Take-the-latch: true once per batch of changes.</td></tr>
 <tr><td><code>syncTo</code></td><td><span class="sig">void syncTo(int revision)</span></td><td class="desc">After a load fills the document directly, bring the listener level with its revision (no change message was sent for the load).</td></tr>
@@ -468,6 +484,10 @@
 <tr><td><code>tActive</code></td><td><span class="sig">String[] tActive</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>tCount</code></td><td><span class="sig">int tCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>choiceEdits</code></td><td><span class="sig">String choiceEdits</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>kAccel</code></td><td><span class="sig">String[] kAccel</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>kScope</code></td><td><span class="sig">String[] kScope</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>kAction</code></td><td><span class="sig">String[] kAction</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>kCount</code></td><td><span class="sig">int kCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>refused</code></td><td><span class="sig">int refused</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
@@ -491,6 +511,13 @@
 <tr><td><code>itemIndex</code></td><td><span class="sig">int itemIndex(String id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>addCommand</code></td><td><span class="sig">boolean addCommand(String id, String handler, int confirms, String lockPolicy)</span></td><td class="desc">lockPolicy: allowed (runs while the system is locked), blocked (refused while locked), choice (refused while locked unless the active tab is in an editor choice session).</td></tr>
 <tr><td><code>addToggle</code></td><td><span class="sig">boolean addToggle(String itemId, String kind, String activeLabel)</span></td><td class="desc">A toggle item shows its label when the state is off and activeLabel when on. kind is lock (the system lock) or choice (an editor choice session).</td></tr>
+<tr><td><code>setConfirms</code></td><td><span class="sig">boolean setConfirms(String command, boolean on)</span></td><td class="desc">Change whether a command asks before it discards unsaved work.</td></tr>
+<tr><td><code>addKey</code></td><td><span class="sig">boolean addKey(String accel, String scope, String action)</span></td><td class="desc">A modal key: Enter or Esc, meaningful only while a dialog (ok, cancel) or a menu (close) is open.</td></tr>
+<tr><td><code>keyTotal</code></td><td><span class="sig">int keyTotal()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>keyAccelAt</code></td><td><span class="sig">String keyAccelAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>keyScopeAt</code></td><td><span class="sig">String keyScopeAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>keyActionAt</code></td><td><span class="sig">String keyActionAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>actionForKey</code></td><td><span class="sig">String actionForKey(String accel, String scope)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>setLock</code></td><td><span class="sig">boolean setLock(String choiceEditsPolicy)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>lockPolicyOf</code></td><td><span class="sig">String lockPolicyOf(String command)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>toggleTotal</code></td><td><span class="sig">int toggleTotal()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -563,7 +590,7 @@
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
-<tr><td><code>configure</code></td><td><span class="sig">void configure(String name, SLGuiDocWhite white, String listenerPort)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>configure</code></td><td><span class="sig">void configure(String name, SLGuiDocWhite white, String listenerPort, boolean flagExternal)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>getTitle</code></td><td><span class="sig">String getTitle()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>setTitle</code></td><td><span class="sig">void setTitle(String t)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>getPath</code></td><td><span class="sig">String getPath()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -672,7 +699,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-11 12:50 UTC.
+<code>/lib</code> tree on 2026-11-11 12:56 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
