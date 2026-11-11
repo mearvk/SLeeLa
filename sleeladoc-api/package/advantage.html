@@ -145,7 +145,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; advantage</div>
 <h1>Package <code>advantage</code></h1>
-<div class="lead">This package contains <strong>149</strong> source unit(s) defining <strong>149</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>154</strong> source unit(s) defining <strong>154</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="advantage-demo">advantage-demo <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/advantage-demo.sleela)</span></h2>
 <div data-u="advantage-demo advantagedemo">
@@ -1848,6 +1848,36 @@
 <tr><td><code>invariantsHold</code></td><td><span class="sig">boolean invariantsHold()</span></td><td class="desc">---- Invariants ---- 1 every lot has positive quantity and price; 2 lot days never decrease and never pass the book day; 3 count is within the 16-lot capacity; 4 shares short = shares sold short - shares covered; 5 proceeds held = proceeds opened - proceeds covered.</td></tr>
 </table>
 </div>
+<h2 class="section" data-u="slshortmargin">SLShortMargin <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading-actions-on-verb/SLShortMargin.sleela)</span></h2>
+<div data-u="slshortmargin slshortmargin">
+<h3 id="SLShortMargin">SLShortMargin <span class="pill">class</span></h3>
+<p class="desc">Illustrative margin arithmetic for a short position in exact integers: the ceiling requirement, equity and excess, the deposit needed to meet a call, the fewest shares to cover to restore margin (binary search), and the day a borrow cost first causes a call.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>maxValue</code></td><td><span class="sig">int maxValue = 4000000000000000</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>maxBp</code></td><td><span class="sig">int maxBp = 15000</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>maxShares</code></td><td><span class="sig">int maxShares = 100000000</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>maxPrice</code></td><td><span class="sig">int maxPrice = 10000000</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>maxRate</code></td><td><span class="sig">int maxRate = 1000</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>maxDays</code></td><td><span class="sig">int maxDays = 10000000</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>shortValue</code></td><td><span class="sig">int shortValue(int shares, int price)</span></td><td class="desc">Short value in cents, or -1 when shares or price are outside their bounds.</td></tr>
+<tr><td><code>required</code></td><td><span class="sig">int required(int value, int bp)</span></td><td class="desc">Required margin: ceiling of value * bp / 10000, or -1 for an input out of range. The ceiling never rounds in the holder favour.</td></tr>
+<tr><td><code>equity</code></td><td><span class="sig">int equity(int collateral, int shares, int price)</span></td><td class="desc">Equity = collateral - short value. May be negative. An input out of range answers -2*maxValue, which no valid equity can reach.</td></tr>
+<tr><td><code>inRange</code></td><td><span class="sig">boolean inRange(int collateral, int shares, int price, int bp)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>excess</code></td><td><span class="sig">int excess(int collateral, int shares, int price, int bp)</span></td><td class="desc">Excess = equity - required. Answers -2*maxValue when an input is out of range.</td></tr>
+<tr><td><code>callDue</code></td><td><span class="sig">boolean callDue(int collateral, int shares, int price, int bp)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>callAmount</code></td><td><span class="sig">int callAmount(int collateral, int shares, int price, int bp)</span></td><td class="desc">Deposit that restores excess to zero, or 0 when no call is due.</td></tr>
+<tr><td><code>enoughAfterCover</code></td><td><span class="sig">boolean enoughAfterCover(int collateral, int shares, int price, int bp, int k)</span></td><td class="desc">True when covering k shares leaves enough equity for the shares still short.</td></tr>
+<tr><td><code>sharesToCover</code></td><td><span class="sig">int sharesToCover(int collateral, int shares, int price, int bp)</span></td><td class="desc">Fewest shares to cover so the rest are adequately margined. Returns 0 when no cover is needed, -1 when no cover can help (equity is negative) or the input is out of range. Binary search. Invariant: the answer is in [lo, hi]. enoughAfterCover is monotone in k, because required falls as k grows while equity is fixed. hi - lo strictly shrinks, so the loop ends after about log2(shares) passes.</td></tr>
+<tr><td><code>sharesToCoverScan</code></td><td><span class="sig">int sharesToCoverScan(int collateral, int shares, int price, int bp)</span></td><td class="desc">Reference: try k = 0, 1, 2, ... up to shares. Used to cross-check.</td></tr>
+<tr><td><code>daysToCall</code></td><td><span class="sig">int daysToCall(int collateral, int shares, int price, int bp, int rate)</span></td><td class="desc">Borrow cost drains collateral by shares * rate each day at a fixed price. The first day d &gt;= 0 on which the excess is negative: 0 when already due, floor(excess / burn) + 1 otherwise. Returns -2 when nothing drains (burn is 0), -3 when the day is beyond maxDays, and -1 for an input out of range.</td></tr>
+<tr><td><code>daysToCallScan</code></td><td><span class="sig">int daysToCallScan(int collateral, int shares, int price, int bp, int rate)</span></td><td class="desc">Reference: step one day at a time until the excess is negative.</td></tr>
+</table>
+</div>
 <h2 class="section" data-u="slsophisticationcircuit">SLSophisticationCircuit <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/grading/SLSophisticationCircuit.sleela)</span></h2>
 <div data-u="slsophisticationcircuit slsophisticationcircuit">
 <h3 id="SLSophisticationCircuit">SLSophisticationCircuit <span class="pill">class</span></h3>
@@ -2941,6 +2971,85 @@
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="tause23marginrequirement">TaUse23MarginRequirement <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading-actions-on-verb/23-margin-requirement/TaUse23MarginRequirement.sleela)</span></h2>
+<div data-u="tause23marginrequirement tause23marginrequirement">
+<h3 id="TaUse23MarginRequirement">TaUse23MarginRequirement <span class="pill">class</span></h3>
+<p class="desc">Margin arithmetic: the requirement is the exact ceiling of value times percent, computed without a product that could pass the exact-comparison limit.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLLongBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>direct</code></td><td><span class="sig">int direct(int value, int bp)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tause24margincallandcover">TaUse24MarginCallAndCover <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading-actions-on-verb/24-margin-call-and-cover/TaUse24MarginCallAndCover.sleela)</span></h2>
+<div data-u="tause24margincallandcover tause24margincallandcover">
+<h3 id="TaUse24MarginCallAndCover">TaUse24MarginCallAndCover <span class="pill">class</span></h3>
+<p class="desc">Short margin call: the deposit that restores the margin, and the fewest shares to cover found by binary search and confirmed by a scan; when equity is negative a cover cannot help.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLLongBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act2</code></td><td><span class="sig">void act2(SLShortBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tause25margindifferential">TaUse25MarginDifferential <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading-actions-on-verb/25-margin-differential/TaUse25MarginDifferential.sleela)</span></h2>
+<div data-u="tause25margindifferential tause25margindifferential">
+<h3 id="TaUse25MarginDifferential">TaUse25MarginDifferential <span class="pill">class</span></h3>
+<p class="desc">Margin by differential testing: the binary search for the fewest shares to cover and the closed form for the first call day are each checked against a slow reference over every combination of a grid.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLLongBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tause26marginandtime">TaUse26MarginAndTime <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading-actions-on-verb/26-margin-and-time/TaUse26MarginAndTime.sleela)</span></h2>
+<div data-u="tause26marginandtime tause26marginandtime">
+<h3 id="TaUse26MarginAndTime">TaUse26MarginAndTime <span class="pill">class</span></h3>
+<p class="desc">Time on short with margin: borrow cost drains collateral by shares times rate each day, so the first call day has a closed form, confirmed by stepping and by the book&#x27;s own accrual.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLLongBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act2</code></td><td><span class="sig">void act2(SLShortBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="television-trade">television-trade <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/examples/professional/network-trades/television-trade.sleela)</span></h2>
 <div data-u="television-trade televisiontrade">
 <h3 id="TelevisionTrade">TelevisionTrade <span class="pill">class</span></h3>
@@ -3017,7 +3126,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-11 21:02 UTC.
+<code>/lib</code> tree on 2026-11-11 21:05 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
