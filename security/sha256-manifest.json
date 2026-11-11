@@ -1462,6 +1462,22 @@
       "sha256": "e1ddb83fcf0e4f065bdcf1e69e157df86a00720d639c42165256ceb144bac741"
     },
     {
+      "path": "lib/advantage/trading-actions-on-verb/23-margin-requirement/TaUse23MarginRequirement.sleela",
+      "sha256": "dcd61a371d697588562543598811dbd4a651084093649f32a33a92f4322850e0"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/24-margin-call-and-cover/TaUse24MarginCallAndCover.sleela",
+      "sha256": "7c11dc3debe682b996f1bbb5a1cb046bb8b97b2ba541aced9bad27c6d41e2f0f"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/25-margin-differential/TaUse25MarginDifferential.sleela",
+      "sha256": "43eef938241438cd685020fb334146b67291efb476fc0c403f439c26f5d6e1b7"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/26-margin-and-time/TaUse26MarginAndTime.sleela",
+      "sha256": "65fb510a59149c558f96971d2aedcccd8fb34d226014e1c52f0f37142740f584"
+    },
+    {
       "path": "lib/advantage/trading-actions-on-verb/SLEuclid.sleela",
       "sha256": "38864e285b15c74ddd9c54d683f400a91b640604c1ff93ebbc332f590d043001"
     },
@@ -1472,6 +1488,10 @@
     {
       "path": "lib/advantage/trading-actions-on-verb/SLShortBook.sleela",
       "sha256": "b623ae75c71ac67b8989bfd53a5bc497abef7e57629ea0e89932569a23107e7a"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/SLShortMargin.sleela",
+      "sha256": "a526f666ac84215f2664e78731434841accd743ffa6ba6d614c25be1905adc9e"
     },
     {
       "path": "lib/advantage/trading/SLTradingAggregation.sleela",

@@ -1,0 +1,24 @@
+== Use case 26: borrow cost wears the margin down ==
+  ok   set the borrow rate = 0
+  short 100 @ 5000 on day 0 : ok
+  ok   collateral = 750000
+  ok   excess on day 0 (price stays 5000) = 100000
+  ok   borrow burn per day (100 shares * 3) = 300
+  ok   first day with a call (closed form) = 334
+  ok   first day with a call (stepping) = 334
+-- check against the book itself --
+  hold to day 333 : ok
+  ok   borrow accrued on day 333 = 99900
+  ok   excess on day 333 = 100
+  ok   no call yet on day 333
+  hold to day 334 : ok
+  ok   borrow accrued on day 334 = 100200
+  ok   excess on day 334 = -200
+  ok   a call is due on day 334
+-- edge cases --
+  ok   nothing drains at rate 0 = -2
+  ok   already due today = 0
+  ok   rate above the bound is refused = -1
+  ok   a horizon beyond the day bound = -3
+  ok   invariants hold
+  checks passed=17 failed=0

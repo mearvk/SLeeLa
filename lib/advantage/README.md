@@ -39,8 +39,8 @@ a self-contained, validated module with its own literature.
   consignment, distressed, virtual, synthetic, momentum), a rate budget, and
   the counsel that ranks them; mirrors the C/C++ module in `/advantage`.
 - [`trading-actions-on-verb/`](./trading-actions-on-verb) — trading as verbs on a
-  long-only FIFO book and its short-only mirror: twenty-two use cases on the
-  style of trading long and short and on time held, built on careful Euclid
+  long-only FIFO book and its short-only mirror: twenty-six use cases on the
+  style of trading long and short, short margin, and time held, built on careful Euclid
   loops and Euclidean distance, with differential stress tests, an exhaustive
   Euclid check and a long/short mirror law.
 - [`PREONEM.md`](./PREONEM.md) — the preonem standard under which every

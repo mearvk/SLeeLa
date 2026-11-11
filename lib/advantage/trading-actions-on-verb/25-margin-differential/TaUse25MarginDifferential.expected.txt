@@ -1,0 +1,14 @@
+== Use case 25: binary search and closed form against slow references ==
+  ok   sharesToCover combinations tested = 1152
+  ok   combinations where the methods or the minimality test fail = 0
+  ok   combinations where no cover can help = 354
+  ok   combinations where no cover is needed = 547
+  ok   combinations where some shares must be covered = 251
+-- daysToCall: closed form against stepping one day at a time --
+  ok   daysToCall combinations tested = 216
+  ok   combinations where closed form and stepping differ = 0
+  ok   combinations where nothing drains (never) = 53
+  ok   combinations already due on day 0 = 57
+  ok   combinations due on a later day = 106
+  ok   sum of those later days = 480
+  checks passed=11 failed=0

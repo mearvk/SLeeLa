@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 # Assurance gate for lib/advantage/trading-actions-on-verb.
-#   1. twenty-two use-case folders, each with a class that has main(), the
+#   1. twenty-six use-case folders, each with a class that has main(), the
 #      Metadata block and an .expected.txt;
 #   2. each run reproduces its .expected.txt exactly;
 #   3. no run prints a FAIL line and every run ends with "failed=0".
+# A case that does not finish within CASE_TIMEOUT seconds (default 300) fails
+# instead of hanging the gate.
 # UPDATE=1 rewrites the expected files after a reviewed change.
 set -uo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -15,11 +17,12 @@ bad() { echo "FAIL: $*" >&2; fail=1; }
 filter() { grep -v -e '^\[memory' -e '^\[security' -e '^\[defender' -e '^verification'; }
 
 cases=("$DIR"/[0-9][0-9]-*/)
-[ "${#cases[@]}" -eq 22 ] || bad "expected 22 use cases, found ${#cases[@]}"
+[ "${#cases[@]}" -eq 26 ] || bad "expected 26 use cases, found ${#cases[@]}"
 [ -f "$DIR/SLLongBook.sleela" ] || bad "missing SLLongBook.sleela"
 [ -f "$DIR/SLEuclid.sleela" ] || bad "missing SLEuclid.sleela"
 [ -f "$DIR/SLShortBook.sleela" ] || bad "missing SLShortBook.sleela"
-for lib in SLLongBook SLShortBook SLEuclid; do
+[ -f "$DIR/SLShortMargin.sleela" ] || bad "missing SLShortMargin.sleela"
+for lib in SLLongBook SLShortBook SLShortMargin SLEuclid; do
   grep -q 'Descriptive metadata (version 1.11 nested-friendly accessors)' "$DIR/$lib.sleela" || bad "$lib lacks the Metadata block"
 done
 
@@ -30,7 +33,7 @@ for c in "${cases[@]}"; do
   exp="${src%.sleela}.expected.txt"
   grep -q 'void main()' "$src" || bad "$src has no main()"
   grep -q 'Descriptive metadata (version 1.11 nested-friendly accessors)' "$src" || bad "$src lacks the Metadata block"
-  out="$("$SLEELA" run "$src" 2>&1 | filter)"
+  out="$(timeout "${CASE_TIMEOUT:-300}" "$SLEELA" run "$src" 2>&1 | filter)"
   if [ "${UPDATE:-0}" = "1" ]; then printf '%s\n' "$out" > "$exp"; echo "updated $exp"; continue; fi
   printf '%s\n' "$out" | grep -q '^  FAIL ' && bad "$src printed a FAIL line"
   printf '%s\n' "$out" | tail -1 | grep -q 'failed=0$' || bad "$src did not end with failed=0"

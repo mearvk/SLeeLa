@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 13335
+library-source-files: 13340
 library-packages: 121
 module-facade-symbols: 84
-total-symbol-records: 13419
+total-symbol-records: 13424
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -136,9 +136,14 @@ advantage	TaUse19LossAsymmetry.sleela	lib/advantage/trading-actions-on-verb/19-l
 advantage	TaUse20BorrowCostAndTimeStop.sleela	lib/advantage/trading-actions-on-verb/20-borrow-cost-and-time-stop/TaUse20BorrowCostAndTimeStop.sleela	source
 advantage	TaUse21ShortDifferentialStress.sleela	lib/advantage/trading-actions-on-verb/21-short-differential-stress/TaUse21ShortDifferentialStress.sleela	source
 advantage	TaUse22MirrorLawStress.sleela	lib/advantage/trading-actions-on-verb/22-mirror-law-stress/TaUse22MirrorLawStress.sleela	source
+advantage	TaUse23MarginRequirement.sleela	lib/advantage/trading-actions-on-verb/23-margin-requirement/TaUse23MarginRequirement.sleela	source
+advantage	TaUse24MarginCallAndCover.sleela	lib/advantage/trading-actions-on-verb/24-margin-call-and-cover/TaUse24MarginCallAndCover.sleela	source
+advantage	TaUse25MarginDifferential.sleela	lib/advantage/trading-actions-on-verb/25-margin-differential/TaUse25MarginDifferential.sleela	source
+advantage	TaUse26MarginAndTime.sleela	lib/advantage/trading-actions-on-verb/26-margin-and-time/TaUse26MarginAndTime.sleela	source
 advantage	SLEuclid.sleela	lib/advantage/trading-actions-on-verb/SLEuclid.sleela	source
 advantage	SLLongBook.sleela	lib/advantage/trading-actions-on-verb/SLLongBook.sleela	source
 advantage	SLShortBook.sleela	lib/advantage/trading-actions-on-verb/SLShortBook.sleela	source
+advantage	SLShortMargin.sleela	lib/advantage/trading-actions-on-verb/SLShortMargin.sleela	source
 advantage	SLTradingAggregation.sleela	lib/advantage/trading/SLTradingAggregation.sleela	source
 advantage	SLTradingApproach.sleela	lib/advantage/trading/SLTradingApproach.sleela	source
 advantage	SLTradingArbitrage.sleela	lib/advantage/trading/SLTradingArbitrage.sleela	source

@@ -1,0 +1,32 @@
+== Use case 24: a margin call and the fewest shares to cover ==
+  short 100 @ 5000 on day 0 : ok
+  ok   collateral = proceeds 500000 + deposit 250000 = 750000
+-- price 5000, requirement 30 percent --
+  ok   equity = 250000
+  ok   required = 150000
+  ok   excess = 100000
+  ok   no call is due
+-- price rises to 7000 --
+  ok   equity = 50000
+  ok   required = 210000
+  ok   excess = -160000
+  ok   a call is due
+  ok   deposit that restores the margin = 160000
+  ok   excess after that deposit = 0
+-- or cover: the fewest shares --
+  ok   fewest shares to cover (binary search) = 77
+  ok   fewest shares to cover (scan) = 77
+  ok   covering one fewer is not enough
+  ok   covering that many is enough
+  cover 77 @ 7000 on day 10 : ok
+  ok   collateral after paying for the cover = 211000
+  ok   shares still short = 23
+  ok   equity is unchanged by a cover at the mark = 50000
+  ok   excess after the cover = 1700
+  ok   no call is due now
+-- price 8000: equity is negative, covering cannot help --
+  ok   equity = -50000
+  ok   fewest shares to cover = -1
+  ok   deposit needed = 290000
+  ok   invariants hold
+  checks passed=24 failed=0

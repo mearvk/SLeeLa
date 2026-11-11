@@ -1,0 +1,136 @@
+<< lib/advantage/trading-actions-on-verb/23-margin-requirement/TaUse23MarginRequirement.sleela
+   SLeeLa trading-action use case.
+   Definition: Margin arithmetic: the requirement is the exact ceiling of value times percent, computed without a product that could pass the exact-comparison limit. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Use case 23 (style, short margin, illustrative). Required margin = the ceiling >
+< of value * basis points / 10000. The safe form q*bp + ceil(r*bp / 10000) with >
+< q = value / 10000 and r = value mod 10000 never forms value * bp, which could >
+< pass 2^53 at the bounds. Exhaustive: the safe form equals the direct ceiling for >
+< 14,007 small combinations. Edge: 4e15 at 150 percent is exactly 6e15. >
+class TaUse23MarginRequirement {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39323;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  int passed = 0;
+  int failed = 0;
+
+  void expect(String label, int got, int want) {
+    if (got == want) {
+      print("  ok   " + label + " = " + got);
+      passed = passed + 1;
+    } else {
+      print("  FAIL " + label + " got " + got + " want " + want);
+      failed = failed + 1;
+    }
+  }
+
+  void expectTrue(String label, boolean got) {
+    if (got) {
+      print("  ok   " + label);
+      passed = passed + 1;
+    } else {
+      print("  FAIL " + label);
+      failed = failed + 1;
+    }
+  }
+
+  void summary() {
+    print("  checks passed=" + passed + " failed=" + failed);
+  }
+
+  void act(SLLongBook b, String text, int code) {
+    print("  " + text + " : " + b.reason(code));
+  }
+
+
+  int direct(int value, int bp) { return (value * bp + 9999) / 10000; }
+
+  void main() {
+    SLShortMargin m = new SLShortMargin();
+    print("== Use case 23: the margin requirement, rounded up and exact ==");
+    expect("100000 at 150 percent", m.required(100000, 15000), 150000);
+    expect("333 at 150 percent rounds 499.5 up", m.required(333, 15000), 500);
+    expect("1 cent at 1 basis point rounds up to 1", m.required(1, 1), 1);
+    expect("zero value", m.required(0, 15000), 0);
+    expect("zero percent", m.required(123456, 0), 0);
+    expect("100 percent is the value itself", m.required(123457, 10000), 123457);
+    print("-- the largest value --");
+    expect("4e15 at 150 percent", m.required(4000000000000000, 15000), 6000000000000000);
+    expect("4e15 - 1 at 150 percent", m.required(3999999999999999, 15000), 5999999999999999);
+    expect("one above the value bound is refused", m.required(4000000000000001, 15000), 0 - 1);
+    expect("a negative value is refused", m.required(0 - 1, 15000), 0 - 1);
+    expect("one above the percent bound is refused", m.required(100, 15001), 0 - 1);
+    print("-- exhaustive: the safe form equals the direct ceiling, values 0..2000, 7 percents --");
+    int[] bps = new int[7];
+    bps[0] = 0; bps[1] = 1; bps[2] = 3000; bps[3] = 5000; bps[4] = 10000; bps[5] = 12500; bps[6] = 15000;
+    int combos = 0;
+    int bad = 0;
+    int v = 0;
+    while (v <= 2000) {
+      int j = 0;
+      while (j < 7) {
+        if (m.required(v, bps[j]) != direct(v, bps[j])) { bad = bad + 1; }
+        combos = combos + 1;
+        j = j + 1;
+      }
+      v = v + 1;
+    }
+    expect("combinations tested", combos, 14007);
+    expect("combinations where they differ", bad, 0);
+    print("-- steps: below 100 percent one more cent adds at most one cent --");
+    int viol = 0;
+    int w = 0;
+    while (w < 2000) {
+      int a = m.required(w, 3333);
+      int b = m.required(w + 1, 3333);
+      if (b < a || b > a + 1) { viol = viol + 1; }
+      w = w + 1;
+    }
+    expect("steps tested", w, 2000);
+    expect("steps that are not monotone or jump by more than 1", viol, 0);
+    summary();
+  }
+}

@@ -2,11 +2,11 @@
 
 Trading expressed as **verbs** on a long-only book (`buy`, `sell`, `hold`,
 `flatten`) and on its mirror, a short-only book (`shortSell`, `cover`, `hold`,
-`coverAll`). Twenty-two runnable use cases show two families, plus the assurance cases:
+`coverAll`). Twenty-six runnable use cases show two families, plus the assurance cases:
 
-- **Style: Trading Long** (use cases 1 to 7; the short side is 16 to 19): how a long position is built,
+- **Style: Trading Long** (use cases 1 to 7; the short side is 16 to 19, short margin is 23 to 25): how a long position is built,
   trimmed, closed, refused and rebalanced.
-- **Time on Long** (use cases 8 to 13; the short side is 20): how long shares have been held, in whole
+- **Time on Long** (use cases 8 to 13; the short side is 20 and 26): how long shares have been held, in whole
   days, and what that means for FIFO selling, averages, term and time stops.
 
 Use case 13 joins both over a 500-day life. Use cases 14, 15, 21 and 22 are
@@ -31,6 +31,7 @@ Two phrases were interpreted; correct them if they were meant differently.
 |-------|------|
 | [`SLLongBook`](./SLLongBook.sleela) | FIFO lots, the four verbs, money, time-on-long queries and `invariantsHold()` |
 | [`SLShortBook`](./SLShortBook.sleela) | the mirror: short-only FIFO lots, `shortSell`/`cover`/`hold`/`coverAll`, a borrow cost per share-day, `markToMarket`, time queries and `invariantsHold()` |
+| [`SLShortMargin`](./SLShortMargin.sleela) | illustrative short-margin arithmetic: exact ceiling requirement, equity and excess, call amount, fewest shares to cover (binary search), first call day under borrow cost |
 | [`SLEuclid`](./SLEuclid.sleela) | `gcd`, `gcdAll`, `lcm`, `egcd` (Bezout), `canFill` (closed form) and `canFillScan` (reference), `isqrt`, `distSq`, `dist`, `nearestIndex` |
 
 ### Short book
@@ -50,6 +51,26 @@ matches a buy and a cover matches a sell; every status code, the shares held,
 the lot count, the ages and the cost basis equal the sale proceeds are the same,
 and the short profit is exactly minus the long profit. Use case 22 checks this
 after every one of 1,200 random steps.
+
+### Short margin (illustrative)
+
+`SLShortMargin` is stateless arithmetic, not a broker rule: the percentage is a
+parameter in basis points (10000 = 100 percent of the short value, at most
+15000). Collateral is the cash held (proceeds plus any deposit). Equity =
+collateral - shares * price. Required = the **ceiling** of value * bp / 10000,
+computed as `q*bp + ceil(r*bp / 10000)` with `q = value / 10000` and
+`r = value mod 10000`, so no product passes 6e15 and the ceiling is exact.
+Excess = equity - required, and a call is due when excess < 0.
+
+- `callAmount`: the deposit that brings excess back to zero.
+- `sharesToCover`: covering at the current price leaves equity unchanged (fees
+  ignored) and lowers the requirement, so "enough" is monotone in the shares
+  covered. A binary search (invariant: the answer lies in `[lo, hi]`, and
+  `hi - lo` shrinks) finds the fewest; `sharesToCoverScan` is the reference. If
+  equity is negative no cover helps and the answer is -1.
+- `daysToCall`: borrow cost drains `shares * rate` a day, so the first negative
+  day is `floor(excess / burn) + 1` (0 if already due; -2 if nothing drains; -3
+  beyond the day bound). `daysToCallScan` steps day by day.
 
 ### Verbs and status codes
 
@@ -98,6 +119,10 @@ after every one of 1,200 random steps.
 | 20 | short, time | [`20-borrow-cost-and-time-stop`](./20-borrow-cost-and-time-stop/TaUse20BorrowCostAndTimeStop.sleela) | exact borrow accrual per share-day, paid on cover; a time stop for the short side |
 | 21 | short, assurance | [`21-short-differential-stress`](./21-short-differential-stress/TaUse21ShortDifferentialStress.sleela) | 1,200 random verbs against an independent per-share shadow with borrow cost |
 | 22 | both, assurance | [`22-mirror-law-stress`](./22-mirror-law-stress/TaUse22MirrorLawStress.sleela) | the same random verbs drive both books; every code equal, short profit exactly minus long profit |
+| 23 | short margin | [`23-margin-requirement`](./23-margin-requirement/TaUse23MarginRequirement.sleela) | the requirement is the exact ceiling of value times percent, without a product that could pass 2^53; exhaustive against the direct form |
+| 24 | short margin | [`24-margin-call-and-cover`](./24-margin-call-and-cover/TaUse24MarginCallAndCover.sleela) | a call, the deposit that restores margin, the fewest shares to cover; negative equity means a cover cannot help |
+| 25 | margin, assurance | [`25-margin-differential`](./25-margin-differential/TaUse25MarginDifferential.sleela) | binary search and closed form against slow references over full grids, with minimality checks |
+| 26 | short margin, time | [`26-margin-and-time`](./26-margin-and-time/TaUse26MarginAndTime.sleela) | borrow cost drains collateral; first call day 334, confirmed by stepping and by the book accrual |
 
 ## Engineering notes
 
@@ -167,11 +192,11 @@ and year. Treat this as an illustration of the boundary, not as tax advice.
 
 ## Assurance
 
-Five independent layers:
+Six independent layers:
 
 1. **Self-checks.** Every use case prints `ok` or `FAIL` per check and ends with
    `checks passed=N failed=0`.
-2. **Independent oracle.** Expected values for use cases 1 to 13 and 16 to 20 were computed
+2. **Independent oracle.** Expected values for use cases 1 to 13, 16 to 20 and 23 to 26 were computed
    by a separate Python model of the same rules and compared with what SLeeLa
    printed; one wrong expectation of mine (use case 11) was found and fixed that way.
 3. **Differential testing.** Use case 14 runs 1,200 random verbs (four fixed
@@ -184,8 +209,13 @@ Five independent layers:
    proceeds off by one cent with a flipped profit sign, a cover allowed one share
    too many); each was caught (8, 8 and 13 failed checks) and the original
    passes.
-5. **Expected-output gate.** `test-suites/test-trading-actions.sh` runs all
-   twenty-two, compares each with its `.expected.txt`, and fails on any `FAIL` line.
+5. **Mutation checks on the margin class.** Off-by-one in the ceiling and in
+   the first call day were caught (2 and 4 to 5 failed checks). A binary search
+   whose midpoint rounds up never terminates; that mutation was caught as a hang,
+   so the gate runs every case under `timeout` (default 300 seconds) and fails
+   instead of waiting forever.
+6. **Expected-output gate.** `test-suites/test-trading-actions.sh` runs all
+   twenty-six, compares each with its `.expected.txt`, and fails on any `FAIL` line.
 
 ```
 bash test-suites/test-trading-actions.sh
@@ -194,7 +224,8 @@ bash test-suites/test-trading-actions.sh
 Set `UPDATE=1` to rewrite the expected files after reviewing a deliberate change.
 
 Limits of the assurance: the stress cases do not generate code 8 (size bounds) or
-code 9, which use cases 4 and 18 cover by hand; and the VM comparison behaviour above 2^53 was
+code 9, which use cases 4 and 18 cover by hand; the margin model ignores fees and
+price paths and is an illustration, not a broker or regulator rule; and the VM comparison behaviour above 2^53 was
 measured on the committed `working-binaries/sleela`, not proven from its source.
 
 ## Review log (second look)
