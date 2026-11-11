@@ -15,7 +15,7 @@ models return an evaluation.
 
 ---
 
-## 1. the Foundation: the Advantage Model
+## 1. The Foundation: the Advantage Model
 
 ### 1.1 Advantage (the math core)
 
@@ -78,7 +78,7 @@ counsel can rank.
 
 ---
 
-## 2. the Trading Models
+## 2. The Trading Models
 
 All eleven share one result shape (`tm_result`: total cost, expected proceeds,
 expected profit, return on cost, hold days) and one set of conventions:
