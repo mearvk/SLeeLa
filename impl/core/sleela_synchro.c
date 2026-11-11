@@ -44,6 +44,9 @@ struct SLSynchro {
     int64_t sent;
     int64_t received;
     uint32_t seq;                    /* monotonically increasing probe id     */
+#ifdef _WIN32
+    int winsock_started;             /* balanced WSAStartup/WSACleanup lease */
+#endif
     int nsamples;                    /* retained matched RTT samples (us)      */
     int64_t samples[SL_SYNCHRO_MAX_SAMPLES];
 };
@@ -66,6 +69,12 @@ static int64_t mono_ns(void) {
 
 SLSynchro* slsynchro_open(const char* host, uint16_t port) {
     if (!host || !*host) return NULL;
+#ifdef _WIN32
+    /* Standalone callers may not have initialized the runtime network layer.
+     * Hold one balanced Winsock reference for each live Synchro handle. */
+    WSADATA winsock_data;
+    if (WSAStartup(MAKEWORD(2, 2), &winsock_data) != 0) return NULL;
+#endif
     char service[16];
     snprintf(service, sizeof(service), "%u", (unsigned)port);
 
@@ -75,12 +84,24 @@ SLSynchro* slsynchro_open(const char* host, uint16_t port) {
     hints.ai_socktype = SOCK_DGRAM;
     hints.ai_protocol = IPPROTO_UDP;
     struct addrinfo* list = NULL;
-    if (getaddrinfo(host, service, &hints, &list) != 0) return NULL;
+    if (getaddrinfo(host, service, &hints, &list) != 0) {
+#ifdef _WIN32
+        WSACleanup();
+#endif
+        return NULL;
+    }
 
     SLSynchro* s = (SLSynchro*)calloc(1, sizeof(SLSynchro));
-    if (!s) { freeaddrinfo(list); return NULL; }
+    if (!s) {
+        freeaddrinfo(list);
+#ifdef _WIN32
+        WSACleanup();
+#endif
+        return NULL;
+    }
 #ifdef _WIN32
     s->fd = INVALID_SOCKET;
+    s->winsock_started = 1;
 #else
     s->fd = -1;
 #endif
@@ -101,7 +122,11 @@ SLSynchro* slsynchro_open(const char* host, uint16_t port) {
     }
     freeaddrinfo(list);
 #ifdef _WIN32
-    if (s->fd == INVALID_SOCKET) { free(s); return NULL; }
+    if (s->fd == INVALID_SOCKET) {
+        if (s->winsock_started) WSACleanup();
+        free(s);
+        return NULL;
+    }
 #else
     if (s->fd < 0) { free(s); return NULL; }
 #endif
@@ -261,6 +286,7 @@ void slsynchro_close(SLSynchro* s) {
     if (!s) return;
 #ifdef _WIN32
     if (s->fd != INVALID_SOCKET) closesocket(s->fd);
+    if (s->winsock_started) WSACleanup();
 #else
     if (s->fd >= 0) close(s->fd);
 #endif
