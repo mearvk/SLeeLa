@@ -1,0 +1,20 @@
+== Entry 20: short-sold collector chips, a medium-term SHORT trade ==
+  ok   set the borrow rate = 0
+  short 400 @ 1800 on day 0, fee 4 : ok
+  short 300 @ 1750 on day 2, fee 4 : ok
+  cover 700 @ 1700 on day 3, fee 7 : ok
+-- result --
+  ok   lots remaining = 0
+  ok   units still short = 0
+  ok   sale proceeds held, cents = 0
+  ok   proceeds of the units covered, cents = 1245000
+  ok   profit of that cover, cents = 55000
+  ok   realized gross so far, cents = 55000
+  ok   borrow cost paid so far, cents = 1500
+  ok   realized net of fees and borrow, cents = 53485
+  ok   fees paid so far = 15
+  ok   actions recorded on the cover day = 1
+  ok   remaining capacity on that day (of 2000) = 1999
+  ok   the medium-term cap (2000/day) was never approached here
+  ok   invariants hold
+  checks passed=14 failed=0

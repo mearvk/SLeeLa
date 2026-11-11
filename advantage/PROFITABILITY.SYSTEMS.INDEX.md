@@ -92,6 +92,7 @@ and in the folder's own
 | `SLShortMargin` | equity, the ceiling-rounded margin requirement, a call amount, the fewest shares to cover, the first day a call falls due | any broker's or regulator's actual rule — the percentage is a caller-supplied parameter |
 | `SLEuclid` | gcd/lcm/Bezout, exact two-lot order fills, integer square root, nearest-target distance — the arithmetic the books above depend on | anything about trading by itself |
 | `SLDailyCapBook` (courseware) | the same as `SLLongBook`, plus a fixed 2,000-actions-per-day teaching rule | a real exchange's or regulator's throughput limit |
+| `SLBatchReturn` | the exact total return over a stated batch of N trades (idealized win-rate/size inputs, or an explicit per-trade list), with no compounding, plus the exact per-trade average a stated total implies | whether any real trader achieves the stated inputs — see §6.1 |
 
 Checked by 26 use cases (`test-suites/test-trading-actions.sh`) plus 17
 courseware entries (`test-suites/test-long-medium-averages.sh`): self-checks,
@@ -147,6 +148,24 @@ and report the single-trade answer honestly scaled by the capital actually
 deployed). It is not answerable by assuming a city's population, a mayor's
 share, or a multi-decade compounding rate, because none of those quantities
 exist anywhere in this codebase's inputs.
+
+## 6.0 `SLBatchReturn`: a real answer to "what would N trades return"
+
+Built to replace an unverified claim with a checked computation. Given
+stated inputs — either an idealized win-rate and per-trade win/loss size, or
+an explicit list of per-trade percent moves (up to 64) — it computes the
+exact batch total, in basis points, with no compounding (every trade
+re-stakes the same capital, modeling N independent fixed-size trades). It
+also computes the exact per-trade average a stated total implies
+(`averagePerTradeBp`), and cross-checks an explicit batch against real
+`SLLongBook` buy/sell pairs (`crossCheckOutcome`), distinguishing "the sums
+matched" from "a trade could not be represented" (for example a -100% move,
+which `SLLongBook` correctly refuses as a zero-cent sell price) from a
+genuine mismatch. See use case 27
+(`27-batch-return/TaUse27BatchReturn.sleela`) and
+[reading/ages-18-plus/07-batch-vs-per-trade.md](../lib/advantage/learner-vs-professional/courseware/reading/ages-18-plus/07-batch-vs-per-trade.md).
+It computes what a stated assumption implies; it does not and cannot confirm
+the assumption is true of any real trader.
 
 ## 6.1 The estimated-return table that was asked for, and why it stops at one trade
 

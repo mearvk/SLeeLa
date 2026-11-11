@@ -1,0 +1,261 @@
+<< lib/advantage/learner-vs-professional/courseware/long-medium-averages/SLDailyCapShortBook.sleela
+   SLeeLa courseware lesson.
+   Definition: A short-only FIFO position book, the same shape as SLShortBook, with one added rule: a single day may record at most 2,000 actions (shortSell, cover, hold or coverAll calls that reach the quantity/price/fee checks). >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< The short-side mirror of SLDailyCapBook, for medium-term courseware entries >
+< that are short rather than long. This class is SLShortBook with one more >
+< rule: once a day has recorded 2,000 actions, any further action on that >
+< same day is refused with code 10, unchanged, and the caller is told to >
+< wait for the next day. The count resets when the day changes. This is a >
+< teaching bound, not a market rule. >
+< Status codes 0-9 match SLShortBook (see SLShortBook.sleela). 10 = the >
+< daily action cap (2,000) has been reached for the current day. >
+class SLDailyCapShortBook {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39348;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  int maxQty = 100000000;
+  int maxPrice = 10000000;
+  int maxFee = 100000000;
+  int maxTotal = 4000000000000000;
+  int maxDay = 10000000;
+  int maxRate = 1000;
+  int dailyCap = 2000;
+  int[] lotQty = new int[16];
+  int[] lotPrice = new int[16];
+  int[] lotDay = new int[16];
+  int count = 0;
+  int lastDay = 0;
+  int openedQty = 0;
+  int coveredQty = 0;
+  int openedProceeds = 0;
+  int proceedsCovered = 0;
+  int coverCost = 0;
+  int feesPaid = 0;
+  int borrowRate = 0;
+  int borrowPaid = 0;
+  int lastCoverProceeds = 0;
+  int lastCoverPnl = 0;
+  int actionsToday = 0;
+
+  int maxLots() { return 16; }
+
+  String reason(int code) {
+    if (code == 0) { return "ok"; }
+    if (code == 1) { return "refused: quantity must be a whole number above zero"; }
+    if (code == 2) { return "refused: price must be above zero"; }
+    if (code == 3) { return "refused: cover exceeds the shares short (short only, no long)"; }
+    if (code == 4) { return "refused: book is full"; }
+    if (code == 5) { return "refused: day goes backwards"; }
+    if (code == 6) { return "refused: fee must not be negative"; }
+    if (code == 7) { return "refused: nothing is short"; }
+    if (code == 8) { return "refused: a size bound would be passed"; }
+    if (code == 9) { return "refused: the borrow rate cannot change while shares are short"; }
+    return "refused: 2,000 actions already recorded today, wait for the next day";
+  }
+
+  int totalShort() {
+    int sum = 0;
+    int i = 0;
+    while (i < count) { sum = sum + lotQty[i]; i = i + 1; }
+    return sum;
+  }
+
+  int proceedsHeld() {
+    int sum = 0;
+    int i = 0;
+    while (i < count) { sum = sum + lotQty[i] * lotPrice[i]; i = i + 1; }
+    return sum;
+  }
+
+  int avgSaleFloor() {
+    int q = totalShort();
+    if (q == 0) { return 0; }
+    return proceedsHeld() / q;
+  }
+
+  int avgSaleRemainder() {
+    int q = totalShort();
+    if (q == 0) { return 0; }
+    return proceedsHeld() % q;
+  }
+
+  int lotCount() { return count; }
+  int lotQtyAt(int i) { return lotQty[i]; }
+  int lotPriceAt(int i) { return lotPrice[i]; }
+  int lotDayAt(int i) { return lotDay[i]; }
+  int currentDay() { return lastDay; }
+  int actionsOnCurrentDay() { return actionsToday; }
+  int remainingToday() { return dailyCap - actionsToday; }
+
+  boolean admitAction(int day) {
+    if (day != lastDay) { actionsToday = 0; }
+    if (actionsToday >= dailyCap) { return false; }
+    actionsToday = actionsToday + 1;
+    return true;
+  }
+
+  int setBorrowRate(int rate) {
+    if (rate < 0 || rate > maxRate) { return 8; }
+    if (count > 0) { return 9; }
+    borrowRate = rate;
+    return 0;
+  }
+
+  int shortSell(int day, int qty, int price, int fee) {
+    if (qty <= 0) { return 1; }
+    if (price <= 0) { return 2; }
+    if (fee < 0) { return 6; }
+    if (day < lastDay) { return 5; }
+    if (qty > maxQty || price > maxPrice || fee > maxFee || day > maxDay) { return 8; }
+    if (!admitAction(day)) { return 10; }
+    if (count >= 16) { return 4; }
+    if (openedProceeds + qty * price > maxTotal || feesPaid + fee > maxTotal) { return 8; }
+    lotQty[count] = qty;
+    lotPrice[count] = price;
+    lotDay[count] = day;
+    count = count + 1;
+    lastDay = day;
+    openedQty = openedQty + qty;
+    openedProceeds = openedProceeds + qty * price;
+    feesPaid = feesPaid + fee;
+    return 0;
+  }
+
+  int cover(int day, int qty, int price, int fee) {
+    if (qty <= 0) { return 1; }
+    if (price <= 0) { return 2; }
+    if (fee < 0) { return 6; }
+    if (day < lastDay) { return 5; }
+    if (qty > totalShort()) { return 3; }
+    if (price > maxPrice || fee > maxFee || day > maxDay) { return 8; }
+    if (coverCost + qty * price > maxTotal || feesPaid + fee > maxTotal) { return 8; }
+    if (!admitAction(day)) { return 10; }
+    int need = qty;
+    int sale = 0;
+    int shareDays = 0;
+    int i = 0;
+    while (need > 0) {
+      int take = lotQty[i];
+      if (take > need) { take = need; }
+      sale = sale + take * lotPrice[i];
+      shareDays = shareDays + take * (day - lotDay[i]);
+      need = need - take;
+      i = i + 1;
+    }
+    int borrow = shareDays * borrowRate;
+    if (borrowPaid + borrow > maxTotal) { return 8; }
+    need = qty;
+    i = 0;
+    while (need > 0) {
+      int take2 = lotQty[i];
+      if (take2 > need) { take2 = need; }
+      lotQty[i] = lotQty[i] - take2;
+      need = need - take2;
+      i = i + 1;
+    }
+    compact();
+    int cost = qty * price;
+    coveredQty = coveredQty + qty;
+    proceedsCovered = proceedsCovered + sale;
+    coverCost = coverCost + cost;
+    feesPaid = feesPaid + fee;
+    borrowPaid = borrowPaid + borrow;
+    lastCoverProceeds = sale;
+    lastCoverPnl = sale - cost;
+    lastDay = day;
+    return 0;
+  }
+
+  int hold(int day) {
+    if (day < lastDay) { return 5; }
+    if (day > maxDay) { return 8; }
+    if (!admitAction(day)) { return 10; }
+    lastDay = day;
+    return 0;
+  }
+
+  int coverAll(int day, int price, int fee) {
+    int q = totalShort();
+    if (q == 0) { return 7; }
+    return cover(day, q, price, fee);
+  }
+
+  void compact() {
+    int w = 0;
+    int r = 0;
+    while (r < count) {
+      if (lotQty[r] > 0) {
+        lotQty[w] = lotQty[r];
+        lotPrice[w] = lotPrice[r];
+        lotDay[w] = lotDay[r];
+        w = w + 1;
+      }
+      r = r + 1;
+    }
+    count = w;
+  }
+
+  int realizedGross() { return proceedsCovered - coverCost; }
+  int realizedNet() { return proceedsCovered - coverCost - feesPaid - borrowPaid; }
+  int fees() { return feesPaid; }
+  int borrowCostPaid() { return borrowPaid; }
+
+  boolean invariantsHold() {
+    if (count < 0 || count > 16) { return false; }
+    int i = 0;
+    int prev = 0;
+    while (i < count) {
+      if (lotQty[i] <= 0 || lotPrice[i] <= 0) { return false; }
+      if (lotDay[i] < prev || lotDay[i] > lastDay) { return false; }
+      prev = lotDay[i];
+      i = i + 1;
+    }
+    if (totalShort() != openedQty - coveredQty) { return false; }
+    if (proceedsHeld() != openedProceeds - proceedsCovered) { return false; }
+    if (actionsToday < 0 || actionsToday > dailyCap) { return false; }
+    return true;
+  }
+}

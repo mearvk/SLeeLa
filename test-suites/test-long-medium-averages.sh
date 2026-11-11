@@ -15,8 +15,9 @@ bad() { echo "FAIL: $*" >&2; fail=1; }
 filter() { grep -v -e '^\[memory' -e '^\[security' -e '^\[defender' -e '^verification'; }
 
 entries=("$DIR"/[0-9][0-9]-*/)
-[ "${#entries[@]}" -eq 17 ] || bad "expected 17 entries, found ${#entries[@]}"
+[ "${#entries[@]}" -eq 20 ] || bad "expected 20 entries, found ${#entries[@]}"
 [ -f "$DIR/SLDailyCapBook.sleela" ] || bad "missing SLDailyCapBook.sleela"
+[ -f "$DIR/SLDailyCapShortBook.sleela" ] || bad "missing SLDailyCapShortBook.sleela"
 grep -q 'Descriptive metadata (version 1.11 nested-friendly accessors)' "$DIR/SLDailyCapBook.sleela" || bad "SLDailyCapBook lacks the Metadata block"
 
 for e in "${entries[@]}"; do

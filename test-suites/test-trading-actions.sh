@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Assurance gate for lib/advantage/trading-actions-on-verb.
-#   1. twenty-six use-case folders, each with a class that has main(), the
+#   1. twenty-seven use-case folders, each with a class that has main(), the
 #      Metadata block and an .expected.txt;
 #   2. each run reproduces its .expected.txt exactly;
 #   3. no run prints a FAIL line and every run ends with "failed=0".
@@ -17,12 +17,13 @@ bad() { echo "FAIL: $*" >&2; fail=1; }
 filter() { grep -v -e '^\[memory' -e '^\[security' -e '^\[defender' -e '^verification'; }
 
 cases=("$DIR"/[0-9][0-9]-*/)
-[ "${#cases[@]}" -eq 26 ] || bad "expected 26 use cases, found ${#cases[@]}"
+[ "${#cases[@]}" -eq 27 ] || bad "expected 27 use cases, found ${#cases[@]}"
 [ -f "$DIR/SLLongBook.sleela" ] || bad "missing SLLongBook.sleela"
 [ -f "$DIR/SLEuclid.sleela" ] || bad "missing SLEuclid.sleela"
 [ -f "$DIR/SLShortBook.sleela" ] || bad "missing SLShortBook.sleela"
 [ -f "$DIR/SLShortMargin.sleela" ] || bad "missing SLShortMargin.sleela"
-for lib in SLLongBook SLShortBook SLShortMargin SLEuclid; do
+[ -f "$DIR/SLBatchReturn.sleela" ] || bad "missing SLBatchReturn.sleela"
+for lib in SLLongBook SLShortBook SLShortMargin SLEuclid SLBatchReturn; do
   grep -q 'Descriptive metadata (version 1.11 nested-friendly accessors)' "$DIR/$lib.sleela" || bad "$lib lacks the Metadata block"
 done
 

@@ -1,0 +1,20 @@
+== Entry 19: short-sold game tokens, a medium-term SHORT trade ==
+  ok   set the borrow rate = 0
+  short 200 @ 9000 on day 0, fee 10 : ok
+  short 150 @ 9100 on day 1, fee 10 : ok
+  cover 300 @ 9400 on day 2, fee 15 : ok
+-- result --
+  ok   lots remaining = 1
+  ok   units still short = 50
+  ok   sale proceeds held, cents = 455000
+  ok   proceeds of the units covered, cents = 2710000
+  ok   profit of that cover, cents = -110000
+  ok   realized gross so far, cents = -110000
+  ok   borrow cost paid so far, cents = 1500
+  ok   realized net of fees and borrow, cents = -111535
+  ok   fees paid so far = 35
+  ok   actions recorded on the cover day = 1
+  ok   remaining capacity on that day (of 2000) = 1999
+  ok   the medium-term cap (2000/day) was never approached here
+  ok   invariants hold
+  checks passed=14 failed=0

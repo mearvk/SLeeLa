@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 13359
+library-source-files: 13365
 library-packages: 121
 module-facade-symbols: 84
-total-symbol-records: 13443
+total-symbol-records: 13449
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -75,7 +75,11 @@ advantage	TaMed14Obsidiantradingflakes.sleela	lib/advantage/learner-vs-professio
 advantage	TaMed15Granitecounters.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/15-granite-counters/TaMed15Granitecounters.sleela	source
 advantage	TaMed16Slatemarkers.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/16-slate-markers/TaMed16Slatemarkers.sleela	source
 advantage	TaMed17DailyCapBoundary.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/17-daily-cap-boundary/TaMed17DailyCapBoundary.sleela	source
+advantage	TaMed18ShortCoins.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/18-short-coins/TaMed18ShortCoins.sleela	source
+advantage	TaMed19ShortTokens.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/19-short-tokens/TaMed19ShortTokens.sleela	source
+advantage	TaMed20ShortChips.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/20-short-chips/TaMed20ShortChips.sleela	source
 advantage	SLDailyCapBook.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/SLDailyCapBook.sleela	source
+advantage	SLDailyCapShortBook.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/SLDailyCapShortBook.sleela	source
 advantage	DiRegistryIntake.sleela	lib/advantage/learner-vs-professional/series/01-registry-intake/DiRegistryIntake.sleela	source
 advantage	DiStudentInput.sleela	lib/advantage/learner-vs-professional/series/02-student-input-gate/DiStudentInput.sleela	source
 advantage	DiSystemReadiness.sleela	lib/advantage/learner-vs-professional/series/03-system-readiness/DiSystemReadiness.sleela	source
@@ -158,6 +162,8 @@ advantage	TaUse23MarginRequirement.sleela	lib/advantage/trading-actions-on-verb/
 advantage	TaUse24MarginCallAndCover.sleela	lib/advantage/trading-actions-on-verb/24-margin-call-and-cover/TaUse24MarginCallAndCover.sleela	source
 advantage	TaUse25MarginDifferential.sleela	lib/advantage/trading-actions-on-verb/25-margin-differential/TaUse25MarginDifferential.sleela	source
 advantage	TaUse26MarginAndTime.sleela	lib/advantage/trading-actions-on-verb/26-margin-and-time/TaUse26MarginAndTime.sleela	source
+advantage	TaUse27BatchReturn.sleela	lib/advantage/trading-actions-on-verb/27-batch-return/TaUse27BatchReturn.sleela	source
+advantage	SLBatchReturn.sleela	lib/advantage/trading-actions-on-verb/SLBatchReturn.sleela	source
 advantage	SLEuclid.sleela	lib/advantage/trading-actions-on-verb/SLEuclid.sleela	source
 advantage	SLLongBook.sleela	lib/advantage/trading-actions-on-verb/SLLongBook.sleela	source
 advantage	SLShortBook.sleela	lib/advantage/trading-actions-on-verb/SLShortBook.sleela	source

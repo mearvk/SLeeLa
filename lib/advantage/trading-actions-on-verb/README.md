@@ -32,6 +32,7 @@ Two phrases were interpreted; correct them if they were meant differently.
 | [`SLLongBook`](./SLLongBook.sleela) | FIFO lots, the four verbs, money, time-on-long queries and `invariantsHold()` |
 | [`SLShortBook`](./SLShortBook.sleela) | the mirror: short-only FIFO lots, `shortSell`/`cover`/`hold`/`coverAll`, a borrow cost per share-day, `markToMarket`, time queries and `invariantsHold()` |
 | [`SLShortMargin`](./SLShortMargin.sleela) | illustrative short-margin arithmetic: exact ceiling requirement, equity and excess, call amount, fewest shares to cover (binary search), first call day under borrow cost |
+| [`SLBatchReturn`](./SLBatchReturn.sleela) | the exact total return over a batch of N independent trades (idealized win-rate/size, or an explicit per-trade list), no compounding, plus the exact per-trade average a stated total implies, cross-checked against real `SLLongBook` buy/sell pairs |
 | [`SLEuclid`](./SLEuclid.sleela) | `gcd`, `gcdAll`, `lcm`, `egcd` (Bezout), `canFill` (closed form) and `canFillScan` (reference), `isqrt`, `distSq`, `dist`, `nearestIndex` |
 
 ### Short book
@@ -119,6 +120,7 @@ Excess = equity - required, and a call is due when excess < 0.
 | 20 | short, time | [`20-borrow-cost-and-time-stop`](./20-borrow-cost-and-time-stop/TaUse20BorrowCostAndTimeStop.sleela) | exact borrow accrual per share-day, paid on cover; a time stop for the short side |
 | 21 | short, assurance | [`21-short-differential-stress`](./21-short-differential-stress/TaUse21ShortDifferentialStress.sleela) | 1,200 random verbs against an independent per-share shadow with borrow cost |
 | 22 | both, assurance | [`22-mirror-law-stress`](./22-mirror-law-stress/TaUse22MirrorLawStress.sleela) | the same random verbs drive both books; every code equal, short profit exactly minus long profit |
+| 27 | batch, assurance | [`27-batch-return`](./27-batch-return/TaUse27BatchReturn.sleela) | the exact total return over a batch of N trades against an independent Python model and real `SLLongBook` sells; shows a batch total is not a per-trade rate |
 | 23 | short margin | [`23-margin-requirement`](./23-margin-requirement/TaUse23MarginRequirement.sleela) | the requirement is the exact ceiling of value times percent, without a product that could pass 2^53; exhaustive against the direct form |
 | 24 | short margin | [`24-margin-call-and-cover`](./24-margin-call-and-cover/TaUse24MarginCallAndCover.sleela) | a call, the deposit that restores margin, the fewest shares to cover; negative equity means a cover cannot help |
 | 25 | margin, assurance | [`25-margin-differential`](./25-margin-differential/TaUse25MarginDifferential.sleela) | binary search and closed form against slow references over full grids, with minimality checks |

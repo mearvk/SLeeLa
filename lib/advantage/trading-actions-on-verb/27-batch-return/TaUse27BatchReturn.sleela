@@ -1,0 +1,135 @@
+<< lib/advantage/trading-actions-on-verb/27-batch-return/TaUse27BatchReturn.sleela
+   SLeeLa courseware lesson.
+   Definition: Use case 27: the batch return over N independent trades, checked against an independent Python model and against real SLLongBook buy/sell pairs, with an explicit refusal of the confusion between a total batch return and a per-trade rate. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Use case 27 (assurance, batch arithmetic). This exists to give a real, checked >
+< answer to the question 'what would N trades return' instead of an asserted >
+< figure. Every number is computed from STATED inputs (a win rate and win/loss >
+< sizes, or an explicit list of per-trade moves), never from a claim of >
+< confidence. No compounding: every trade re-stakes the same capital, which >
+< models N independent fixed-size trades, not a compounding account. >
+class TaUse27BatchReturn {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39327;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  int passed = 0;
+  int failed = 0;
+  void expect(String label, int got, int want) {
+    if (got == want) { print("  ok   " + label + " = " + got); passed = passed + 1; }
+    else { print("  FAIL " + label + " got " + got + " want " + want); failed = failed + 1; }
+  }
+  void expectTrue(String label, boolean got) {
+    if (got) { print("  ok   " + label); passed = passed + 1; }
+    else { print("  FAIL " + label); failed = failed + 1; }
+  }
+  void summary() { print("  checks passed=" + passed + " failed=" + failed); }
+
+  int fillAndOverflow() {
+    SLBatchReturn d = new SLBatchReturn();
+    d.startExplicitBatch(1000);
+    int i = 0;
+    int lastCode = 0;
+    while (i < 65) {
+      lastCode = d.addTrade(1);
+      i = i + 1;
+    }
+    return lastCode;
+  }
+
+  void main() {
+    SLBatchReturn b = new SLBatchReturn();
+    print("== Use case 27: batch return over N independent trades ==");
+    print("-- idealized batches: winRate/winBp/lossBp, against an independent Python model --");
+    expect("n=2000 cap=1000000 winRateBp=10000 winBp=20 lossBp=0: profit", b.idealBatchProfit(2000, 1000000, 10000, 20, 0), 4000000);
+    expect("  -> return (bp of staked capital)", b.idealBatchReturnBp(2000, 1000000, 10000, 20, 0), 20);
+    expect("n=2000 cap=1000000 winRateBp=5000 winBp=100 lossBp=80: profit", b.idealBatchProfit(2000, 1000000, 5000, 100, 80), 2000000);
+    expect("  -> return (bp of staked capital)", b.idealBatchReturnBp(2000, 1000000, 5000, 100, 80), 10);
+    expect("n=2000 cap=1000000 winRateBp=6000 winBp=50 lossBp=50: profit", b.idealBatchProfit(2000, 1000000, 6000, 50, 50), 2000000);
+    expect("  -> return (bp of staked capital)", b.idealBatchReturnBp(2000, 1000000, 6000, 50, 50), 10);
+    expect("n=100 cap=500000 winRateBp=7000 winBp=200 lossBp=150: profit", b.idealBatchProfit(100, 500000, 7000, 200, 150), 475000);
+    expect("  -> return (bp of staked capital)", b.idealBatchReturnBp(100, 500000, 7000, 200, 150), 95);
+    expect("n=1 cap=1000000 winRateBp=10000 winBp=500 lossBp=0: profit", b.idealBatchProfit(1, 1000000, 10000, 500, 0), 50000);
+    expect("  -> return (bp of staked capital)", b.idealBatchReturnBp(1, 1000000, 10000, 500, 0), 500);
+    expect("n=2000 cap=1000000 winRateBp=0 winBp=0 lossBp=100: profit", b.idealBatchProfit(2000, 1000000, 0, 0, 100), -20000000);
+    expect("  -> return (bp of staked capital)", b.idealBatchReturnBp(2000, 1000000, 0, 0, 100), -100);
+    print("-- average-per-trade is an exact division of the total, never equal to the total --");
+    expect("averagePerTradeBp(2000, 2000)", b.averagePerTradeBp(2000, 2000), 1);
+    expect("averagePerTradeBp(-850, 100)", b.averagePerTradeBp(-850, 100), -8);
+    expect("averagePerTradeBp(9999, 1)", b.averagePerTradeBp(9999, 1), 9999);
+    print("-- explicit batch: 8 stated per-trade moves, summed exactly --");
+    b.startExplicitBatch(1000000);
+    expect("addTrade(100)", b.addTrade(100), 0);
+    expect("addTrade(-50)", b.addTrade(-50), 0);
+    expect("addTrade(200)", b.addTrade(200), 0);
+    expect("addTrade(-300)", b.addTrade(-300), 0);
+    expect("addTrade(1)", b.addTrade(1), 0);
+    expect("addTrade(-1)", b.addTrade(-1), 0);
+    expect("addTrade(5000)", b.addTrade(5000), 0);
+    expect("addTrade(-2500)", b.addTrade(-2500), 0);
+    expect("trades recorded", b.explicitTradeCount(), 8);
+    expect("explicit batch profit", b.explicitBatchProfit(), 245000);
+    expect("explicit batch return (bp)", b.explicitBatchReturnBp(), 306);
+    print("-- cross-check against real SLLongBook buy/sell pairs, one per trade --");
+    expect("cross-check outcome (1 = matched the real book exactly)", b.crossCheckOutcome(), 1);
+    expectTrue("convenience wrapper agrees", b.crossCheckAgainstLongBook());
+    print("-- an impossible trade (-100%) is correctly refused by the real book, not silently wrong --");
+    SLBatchReturn c = new SLBatchReturn();
+    c.startExplicitBatch(1000000);
+    c.addTrade(0 - 10000);
+    expect("crossCheckOutcome when a trade cannot be represented", c.crossCheckOutcome(), 0 - 1);
+    print("-- refusals: out-of-range inputs leave no ambiguous result --");
+    expect("negative trade count", b.idealBatchProfit(0 - 1, 1000000, 5000, 10, 10), 0 - 1000000000001);
+    expect("winRateBp above 10000", b.idealBatchProfit(10, 1000000, 10001, 10, 10), 0 - 1000000000001);
+    expect("addTrade beyond the 64-trade cap", fillAndOverflow(), 1);
+        expect("averagePerTradeBp with n=0 is refused, not a crash", b.averagePerTradeBp(500, 0), 0 - 1 - b.maxBp);
+    print("-- the batch return does NOT mean a repeatable per-trade edge of that size --");
+    print("  (see ../../learner-vs-professional/courseware/ORGANIZED.md and");
+    print("   ../../learner-vs-professional/courseware/reading/ages-18-plus/06-single-trade-sensitivity.md");
+    print("   for why a stated total batch return is not evidence of a sustainable per-trade or");
+    print("   per-day rate; this class computes an exact total, nothing more.)");
+    summary();
+  }
+}

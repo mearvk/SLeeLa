@@ -1218,8 +1218,24 @@
       "sha256": "dd29a2485cd42dd06cef151c3606e98efb884a18916d9c4ebf7a20b6811ae43a"
     },
     {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-medium-averages/18-short-coins/TaMed18ShortCoins.sleela",
+      "sha256": "7489917b3c3d32a9dd4b6ef6079641c24fd029693981c53c7c524fded07908bb"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-medium-averages/19-short-tokens/TaMed19ShortTokens.sleela",
+      "sha256": "abb3c6e9222def447ea599611355b0d3e39d8b93617a7b25df138bfa2a024066"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-medium-averages/20-short-chips/TaMed20ShortChips.sleela",
+      "sha256": "2d625f6f3398a3ad1719de66d2e58e52f974e1efcea5d59332eb6535bd006a34"
+    },
+    {
       "path": "lib/advantage/learner-vs-professional/courseware/long-medium-averages/SLDailyCapBook.sleela",
       "sha256": "55b5976009b18d9ae711cdeff55b8d0666d8bd4280fe816138f31f0cd9b99f2f"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-medium-averages/SLDailyCapShortBook.sleela",
+      "sha256": "6393cf87921b036376539070b10bd61b2ec5f8c006072f90793035d8d0f53190"
     },
     {
       "path": "lib/advantage/learner-vs-professional/series/01-registry-intake/DiRegistryIntake.sleela",
@@ -1548,6 +1564,14 @@
     {
       "path": "lib/advantage/trading-actions-on-verb/26-margin-and-time/TaUse26MarginAndTime.sleela",
       "sha256": "65fb510a59149c558f96971d2aedcccd8fb34d226014e1c52f0f37142740f584"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/27-batch-return/TaUse27BatchReturn.sleela",
+      "sha256": "150364f227fc407301545ca7707fea07a3f049545589cf65dc8ea16346096891"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/SLBatchReturn.sleela",
+      "sha256": "03b9c971a2c1bed4eaec346fe85acb20f28c8e605b4b52f12d91a25e9086c055"
     },
     {
       "path": "lib/advantage/trading-actions-on-verb/SLEuclid.sleela",

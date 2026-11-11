@@ -1,0 +1,20 @@
+== Entry 18: short-sold trading coins, a medium-term SHORT trade ==
+  ok   set the borrow rate = 0
+  short 500 @ 2500 on day 0, fee 5 : ok
+  short 300 @ 2400 on day 2, fee 5 : ok
+  cover 700 @ 2300 on day 3, fee 10 : ok
+-- result --
+  ok   lots remaining = 1
+  ok   units still short = 100
+  ok   sale proceeds held, cents = 240000
+  ok   proceeds of the units covered, cents = 1730000
+  ok   profit of that cover, cents = 120000
+  ok   realized gross so far, cents = 120000
+  ok   borrow cost paid so far, cents = 3400
+  ok   realized net of fees and borrow, cents = 116580
+  ok   fees paid so far = 20
+  ok   actions recorded on the cover day = 1
+  ok   remaining capacity on that day (of 2000) = 1999
+  ok   the medium-term cap (2000/day) was never approached here
+  ok   invariants hold
+  checks passed=14 failed=0

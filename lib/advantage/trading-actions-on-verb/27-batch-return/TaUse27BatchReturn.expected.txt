@@ -1,0 +1,46 @@
+== Use case 27: batch return over N independent trades ==
+-- idealized batches: winRate/winBp/lossBp, against an independent Python model --
+  ok   n=2000 cap=1000000 winRateBp=10000 winBp=20 lossBp=0: profit = 4000000
+  ok     -> return (bp of staked capital) = 20
+  ok   n=2000 cap=1000000 winRateBp=5000 winBp=100 lossBp=80: profit = 2000000
+  ok     -> return (bp of staked capital) = 10
+  ok   n=2000 cap=1000000 winRateBp=6000 winBp=50 lossBp=50: profit = 2000000
+  ok     -> return (bp of staked capital) = 10
+  ok   n=100 cap=500000 winRateBp=7000 winBp=200 lossBp=150: profit = 475000
+  ok     -> return (bp of staked capital) = 95
+  ok   n=1 cap=1000000 winRateBp=10000 winBp=500 lossBp=0: profit = 50000
+  ok     -> return (bp of staked capital) = 500
+  ok   n=2000 cap=1000000 winRateBp=0 winBp=0 lossBp=100: profit = -20000000
+  ok     -> return (bp of staked capital) = -100
+-- average-per-trade is an exact division of the total, never equal to the total --
+  ok   averagePerTradeBp(2000, 2000) = 1
+  ok   averagePerTradeBp(-850, 100) = -8
+  ok   averagePerTradeBp(9999, 1) = 9999
+-- explicit batch: 8 stated per-trade moves, summed exactly --
+  ok   addTrade(100) = 0
+  ok   addTrade(-50) = 0
+  ok   addTrade(200) = 0
+  ok   addTrade(-300) = 0
+  ok   addTrade(1) = 0
+  ok   addTrade(-1) = 0
+  ok   addTrade(5000) = 0
+  ok   addTrade(-2500) = 0
+  ok   trades recorded = 8
+  ok   explicit batch profit = 245000
+  ok   explicit batch return (bp) = 306
+-- cross-check against real SLLongBook buy/sell pairs, one per trade --
+  ok   cross-check outcome (1 = matched the real book exactly) = 1
+  ok   convenience wrapper agrees
+-- an impossible trade (-100%) is correctly refused by the real book, not silently wrong --
+  ok   crossCheckOutcome when a trade cannot be represented = -1
+-- refusals: out-of-range inputs leave no ambiguous result --
+  ok   negative trade count = -1000000000001
+  ok   winRateBp above 10000 = -1000000000001
+  ok   addTrade beyond the 64-trade cap = 1
+  ok   averagePerTradeBp with n=0 is refused, not a crash = -100000001
+-- the batch return does NOT mean a repeatable per-trade edge of that size --
+  (see ../../learner-vs-professional/courseware/ORGANIZED.md and
+   ../../learner-vs-professional/courseware/reading/ages-18-plus/06-single-trade-sensitivity.md
+   for why a stated total batch return is not evidence of a sustainable per-trade or
+   per-day rate; this class computes an exact total, nothing more.)
+  checks passed=33 failed=0
