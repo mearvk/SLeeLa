@@ -24,15 +24,27 @@ duplication." `sleelactl` therefore classifies each module by **nature** and
 offers only the verbs that fit it. An unsupported verb is **refused** with the
 correct verb set — `sleelactl` never fakes an action a module cannot perform.
 
-| Nature | What it is | Legal verbs | Mechanism |
-| --- | --- | --- | --- |
-| **daemon** | long-lived process + systemd unit | `start stop restart reload status enable disable` | `systemctl --system` by default, or `systemctl --user` when `SLEELACTL_SYSTEMCTL_SCOPE=user` |
-| **registry** | closed handler set, load/unload by id (`SLPluginService`) | `load unload enable disable list probe can status` | the `lib/<pkg>` Controller via `sleela run` |
-| **datasource** | open/close/active data surface + pooling (`SLDataSource`) | `open close status available` | reports availability of the `lib/<pkg>` surface |
-| **protocol** | spec / stack / reference model | `negotiate grade simulate validate info` | the module's `make` targets / sim CLI |
-| **tool** | on-demand, one-shot toolchain component | `run build inspect info` | the module's built CLI / `make` |
-| **subject** | native C/C++ subject library compiled into the runtime (`import <name>;`) | `run info` | its reference demo via `sleela run` |
-| **library** | pure library | `info` | informational only |
+<!-- natures:begin -->
+| Nature | Legal verbs | What it is |
+| --- | --- | --- |
+| **daemon** | `start stop restart reload status enable disable` | long-lived process under the host service manager (systemd, launchd, Windows SCM) |
+| **registry** | `list probe status` | closed handler set owned by a process-local Controller (SLPluginService) |
+| **datasource** | `open close status available` | open/close/active data surface + pooling (SLDataSource) |
+| **protocol** | `negotiate grade simulate validate info` | spec / stack / reference model |
+| **tool** | `run build inspect info` | on-demand, one-shot toolchain component |
+| **subject** | `run info` | native C/C++ subject library compiled into the runtime (import <name>;) |
+| **library** | `info` | pure library; informational only |
+<!-- natures:end -->
+
+_Generated from the script's single `NATURE_TABLE` by `sleelactl natures --markdown`;
+`tests/sleelactl_cli_test.sh` fails if this table drifts._
+
+Mechanisms: **daemon** → the host service manager (systemd `unit=`, launchd
+`launchd=`, Windows SCM `winsvc=`); **registry** → `list` reports the declared
+handlers, `probe`/`status` run the reference pipeline (`demo=`) via `sleela run`;
+**datasource** → reports the `dir=` surface; **protocol** → the module's `make`
+targets and registered `sim=`; **tool** → `make -C dir=` + the `bin=` CLI, or a
+`script=` driver; **subject** → its `demo=` via `sleela run`; **library** → info.
 
 The verb vocabulary is drawn directly from the code:
 `start/enable` from the systemd units (`server-edition/.../sleela-server.service`,
@@ -44,7 +56,7 @@ The verb vocabulary is drawn directly from the code:
 ## Examples
 
 ```sh
-sleelactl start server-edition      # start the server daemon (systemd)
+sleelactl start server-edition      # start the server daemon (systemd / launchd)
 sleelactl enable antivirus          # enable the antivirus coordinator at boot
 sleelactl status all                # status of every controllable module (non-zero if any fails)
 sleelactl --dry-run stop all        # preview stopping every daemon; changes nothing
@@ -52,7 +64,10 @@ sleelactl stop all --yes            # mutating daemon verbs with 'all' need --ye
 
 sleelactl probe codecs              # run the codec registry reference pipeline
 sleelactl list registry             # just the registry-nature modules
-sleelactl load codecs 2             # validated, then refused (exit 3): process-local Controller
+sleelactl list codecs               # the codec registry's declared handlers (ids 0..19)
+sleelactl --json status all         # machine-readable status
+sleelactl check-registry --strict   # validate the module registry
+sleelactl where                     # resolved root, registry, runtime, service manager
 
 sleelactl available database        # report the database data-source availability
 sleelactl open ledger               # how to open the ledger data surface
@@ -104,50 +119,110 @@ annotations remain future compiler/runtime work. See
 (e.g. `sleelactl enable all --yes` enables the daemons; `sleelactl build all`
 builds the tools). Mutating daemon verbs (`start stop restart reload enable
 disable`) fanned out with `all` are refused without `--yes`; preview them with
-`--dry-run`. Process-local registry verbs are skipped by `all` and reported.
+`--dry-run`. Fan-out follows registry `after=` dependencies: `start`/`restart`/
+`enable` bring dependencies up first, `stop`/`disable` tear dependents down
+first.
 
 ## Options, help topics, and exit codes
 
 ```
-sleelactl [--dry-run] [--yes|-y] <verb> <module|all> [args]
-sleelactl help [verb|module|nature]
+sleelactl [--dry-run] [--yes|-y] [--json] <verb> <module|all> [args]
+sleelactl list [nature|registry-module]     status [module|all]
+sleelactl natures [--markdown]              help [verb|module|nature]
+sleelactl check-registry [--strict]         where
+sleelactl completion bash|zsh               version
 ```
 
-- `--dry-run` prints the exact action (for daemons, the `systemctl` command)
-  and changes nothing. `--yes` confirms an `all` fan-out of a mutating daemon
-  verb. Both may also follow `all` (`sleelactl stop all --yes`).
+- `--dry-run` prints the exact action (for daemons, the service-manager
+  command, including `sudo` when it would be used) and changes nothing.
+  `--yes` confirms an `all` fan-out of a mutating daemon verb. Both may also
+  follow `all` (`sleelactl stop all --yes`).
+- `--json` gives machine-readable output for `list`, `status`, `natures`, and
+  `where` (other commands reject it with exit 2). `status` entries carry
+  `module`, `nature`, `state` (`ok`, `failed`, `unavailable`, `none`), `exit`.
 - `help <verb>` lists the natures and modules that accept the verb;
   `help <nature>` lists its verbs and modules; an unknown topic exits 2.
-- `SLEELACTL_VERBOSE=1` shows the full `sleela` stderr (verification preamble
-  included). By default it is suppressed on success and, on failure, the last
-  diagnostic lines are printed instead of being discarded.
+- `where` (alias `doctor`) prints the resolved root, registry (and whether it
+  came from beside the script, an installed layout, or `SLEELACTL_REGISTRY`),
+  registry format, runtime and version, Python, and service manager.
+- `completion bash|zsh` prints a completion script generated from the
+  registry: `eval "$(sleelactl completion bash)"` (or `zsh`).
+- Diagnostics go to stderr, results to stdout. `SLEELACTL_VERBOSE=1` shows
+  the full `sleela` stderr (verification preamble included); by default it is
+  suppressed on success and the last diagnostic lines are printed on failure.
 
 | Exit | Meaning |
 | --- | --- |
 | 0 | success |
 | 1 | the operation ran and failed, or the module is not present in this install |
-| 2 | usage error: unknown module/nature/option/topic, bad or out-of-range id, missing `--yes`, missing `SLEELACTL_REGISTRY` file |
-| 3 | mechanism unavailable or not offered from the CLI (no `systemctl`, runtime not built, process-local registry mutation) |
+| 2 | usage error: unknown module/nature/option/topic, bad arguments, missing `--yes`, missing `SLEELACTL_REGISTRY` file, an unsafe registry entry, or an untrusted override asked to escalate with `sudo` |
+| 3 | mechanism unavailable (no service manager or no mapping for it, runtime not built, simulator or CLI not built) |
 | 64 | the verb is not legal for the module's nature |
 
 `status all` returns non-zero when any controllable module fails or cannot be
-checked. Tool `run`/`inspect` resolve the tool's real CLI by name
-(`compiler` → `sleelac`, `decompiler` → `sleela-decompiler`, `debugger` →
-`sleela-debugger`, otherwise `<name>` or `sleela-<name>`) in `build/`,
-`build/Release/`, `build/stage/bin/`, `cli/`, `bin/`, or the tool directory;
-they never run an arbitrary executable. Protocol `validate` prefers a
-`validate` target, then `syntax`, then `test`.
+checked. Protocol `validate` prefers a `validate` target, then `syntax`, then
+`test`. Tool `run`/`inspect` execute only the CLI named by the registry's
+`bin=` (searched in `build/`, `build/Release/`, `build/stage/bin/`, `cli/`,
+`bin/`, or the tool directory) — never "the first executable found".
+
+### Service managers
+
+Daemon verbs go through an adapter selected by `SLEELACTL_SERVICE_MANAGER`
+(`auto` by default: systemd if `systemctl` exists, launchd on macOS, the
+Windows SCM if `sc.exe` exists, else `none`). Each daemon names its service per
+manager in the registry: `unit=` (systemd), `launchd=` (launchd label),
+`winsvc=` (Windows service). A daemon with no mapping for the active manager
+exits 3 instead of guessing.
+
+| Verb | systemd | launchd | Windows SCM |
+| --- | --- | --- | --- |
+| start | `systemctl --<scope> start <unit>` | `launchctl kickstart <domain>/<label>` | `sc.exe start <svc>` |
+| stop | `systemctl --<scope> stop <unit>` | `launchctl kill SIGTERM <domain>/<label>` | `sc.exe stop <svc>` |
+| restart | `systemctl --<scope> restart <unit>` | `launchctl kickstart -k <domain>/<label>` | stop, then start |
+| reload | `systemctl --<scope> reload <unit>` | not supported (exit 3) | not supported (exit 3) |
+| enable / disable | `systemctl --<scope> enable/disable <unit>` | `launchctl enable/disable <domain>/<label>` | `sc.exe config <svc> start= auto/disabled` |
+| status | `systemctl --<scope> --no-pager status <unit>` | `launchctl print <domain>/<label>` | `sc.exe query <svc>` |
+
+`SLEELACTL_SYSTEMCTL_SCOPE` (`system` default, or `user`) selects the systemd
+bus and the launchd domain (`system` or `gui/<uid>`). Non-root system-scope
+mutations go through `sudo`; `status` never does.
 
 ## The module registry
 
-The module → nature map lives in
-[`bin/sleelactl.d/registry.conf`](sleelactl.d/registry.conf) — plain text, one
-module per line (`name  nature  handle  summary`). Adding a module is a one-line
-append; the dispatcher is never edited. `sleelactl` finds the registry beside
-the script, in the installed runtime tree, or via `SLEELACTL_REGISTRY=<path>`.
-An override that names a missing file is an error (exit 2), never silently
-replaced by another registry. A registry summary of the form `(N handlers ...)`
-declares the valid handler id range `0..N-1`.
+The registry ([`bin/sleelactl.d/registry.conf`](sleelactl.d/registry.conf)) is
+the single source of truth: the dispatcher holds no module-specific knowledge.
+Format 2 is versioned and keyed:
+
+```
+format=2
+<name>  nature=<nature>  [key=value ...]  [summary="free text"]
+```
+
+| Nature | Keys (`*` required) |
+| --- | --- |
+| daemon | `unit=` systemd unit (`*.service`), `launchd=` label, `winsvc=` service — at least one; `after=a,b` dependencies |
+| registry | `dir=*`, `demo=*` reference pipeline, `handlers=` count |
+| datasource | `dir=*` |
+| protocol | `dir=*`, `sim=` built simulator |
+| tool | `dir=*` (with `bin=` CLI names) or `script=*` driver; `runsub=` words forwarded as driver subcommands; `sub.<word>=` helper for `inspect <word>`; `doc=` |
+| subject | `demo=*` reference demo |
+| library | `dir=` |
+
+Paths are relative to the SLeeLa root and may not be absolute or contain `..`.
+Legacy format-1 lines (`<name> <nature> <handle> <summary>`, no `format=`
+line) are still read; `check-registry` flags them.
+
+`sleelactl check-registry [--strict]` validates the file: parse errors,
+duplicate names, unknown natures, keys not valid for a nature, missing required
+keys, unsafe paths, malformed unit/label/service names, non-integer
+`handlers=`, unknown or cyclic `after=` references, and (as warnings, errors
+with `--strict`) source paths that do not exist. CI runs it with `--strict`.
+
+The same safety rules are enforced at use time: a module whose paths escape
+the root or whose service name is malformed is refused (exit 2) before any
+command runs. `SLEELACTL_REGISTRY=<path>` replaces the registry; a missing
+file is an error, and a module defined by an override is never escalated with
+`sudo` unless `SLEELACTL_TRUST_REGISTRY=1`.
 
 ## Ordered subject-module catalogue
 
@@ -156,14 +231,13 @@ program can import, together with their implementation shape and API surface.
 The order is dependency-aware: **Math is foundational**; the other quantitative
 subjects that call its kernels require `import math;` as well.
 
-Important distinction: a module being importable by a SLeeLa program does not
-automatically make it a separately addressable `sleelactl` registry entry.
-On this revision, `math` is the only subject listed in
-`bin/sleelactl.d/registry.conf`; therefore `sleelactl run math` and
-`sleelactl info math` are the subject commands currently registered. The other
-modules below are compiler/runtime subject APIs, not yet separate
-`sleelactl` registry handles. The `science` directory is an example grouping,
-not a module name.
+Registered subjects: `math`, `physics`, `chemistry`, `astrophysics`,
+`sociology`, `economics`, `inference`, and `financial` — each with a reference
+demo verified to run, so `sleelactl run <subject>` and `sleelactl info
+<subject>` work for all eight. The `economics` and `inference` demos live under
+`impl/tests/subjects/` and `financial` under `impl/examples/`, so they exist
+only in a source checkout. The `science` directory is an example grouping, not
+a module name.
 
 **Version and date policy.** The subject sources do not declare independent
 module semantic versions. The module version is therefore **not separately
@@ -350,7 +424,8 @@ To expose another subject through `sleelactl`, add a `subject` row to
 `bin/sleelactl.d/registry.conf` with its real reference-demo path, and ensure
 that demo builds and runs with the current `sleela` binary. Do not add a
 registry row merely because an import name is reserved or a native source file
-exists; the registry handle must identify a runnable reference demo.
+exists; its `demo=` must identify a runnable reference demo. Then run
+`sleelactl check-registry --strict`.
 
 
 ## Program and module lifecycle: load, combine, change, unload, stop
@@ -360,11 +435,11 @@ thing being controlled; these operations are not interchangeable.
 
 | Goal | Native subject program | Handler registry | Long-running daemon |
 | --- | --- | --- | --- |
-| Load | Add `import <subject>;` to the program, then run it | `sleelactl load <registry> <id>` | `sleelactl start <daemon>` |
-| Load several | Import several subjects in one source file | Load each handler id separately | Start each daemon separately |
-| Change | Edit imports/calls and rerun; rebuild runtime if native implementation changed | Load/unload the required handler ids | Use `restart` or `reload` where supported |
-| Unload | End the program; subject code is part of the runtime, not dynamically unloaded | `sleelactl unload <registry> <id>` | `sleelactl stop <daemon>` |
-| Inspect | `sleelactl info <subject>`; run the program to exercise it | `sleelactl status/list <registry>` | `sleelactl status <daemon>` |
+| Load | Add `import <subject>;` to the program, then run it | `controller.load(id)` inside the owning SLeeLa program | `sleelactl start <daemon>` |
+| Load several | Import several subjects in one source file | Several `controller.load(id)` calls in that program | Start each daemon (or `start all --yes`) |
+| Change | Edit imports/calls and rerun; rebuild runtime if native implementation changed | Load/unload the required ids in the program | Use `restart` or `reload` where supported |
+| Unload | End the program; subject code is part of the runtime, not dynamically unloaded | `controller.unload(id)` in the program | `sleelactl stop <daemon>` |
+| Inspect | `sleelactl info <subject>`; `sleelactl run <subject>` | `sleelactl list <registry>`; `sleelactl probe <registry>` | `sleelactl status <daemon>` |
 | Stop | Ctrl-C in foreground, or terminate the owning process | Stop the program using the registry; handler operations are process-local | `sleelactl stop <daemon>` |
 
 ### 1. Load and run one native subject
@@ -386,9 +461,8 @@ qualified calls such as `math.sqrt(144.0)`, and run that source:
 sleela run ./my-math-program.sleela
 ```
 
-At this revision, Math is the only subject with a `sleelactl` registry row and
-reference-demo handle. The other catalogue subjects are imported from SLeeLa
-source, but `sleelactl run physics` (for example) is not registered yet.
+All eight catalogue subjects are registered with runnable reference demos, so
+`sleelactl run physics` (for example) works the same way.
 
 ### 2. Multi-load: combine subjects in one program
 
@@ -457,26 +531,25 @@ Do not use `sleelactl unload math` or `sleelactl stop math`: both are invalid
 for a `subject`. The subject nature deliberately exposes only `run` and
 `info`.
 
-### 5. Registry load/unload is a different operation
+### 5. Registry load/unload is in-program API, not a CLI verb
 
-For codec, compression, and video registries, `load` and `unload` refer to
-handler IDs managed by a package Controller. For example:
+For codec, compression, and video registries, `load`, `unload`, `enable`,
+`disable`, and `canProcess` are calls on a package Controller that exists only
+inside one running SLeeLa program; no process holds it between CLI calls. So
+the registry nature's CLI verbs are just the ones that can be honest:
 
 ```sh
-sleelactl list registry
+sleelactl list codecs       # declared handlers (handlers=20 -> ids 0..19), sources, pipeline
 sleelactl probe codecs      # run the reference Controller pipeline
 sleelactl status codecs     # same pipeline; exit status reflects its result
-sleelactl load codecs 2     # id validated (0..19), then refused with exit 3
+sleelactl load codecs 2     # exit 64: not a CLI verb; the error points at controller.load(id)
 ```
 
-The Controller is process-local: its loaded/backend state exists only inside
-one running SLeeLa program, and no daemon holds it between CLI invocations.
-So `list`, `probe`, and `status` run the package's reference pipeline (which
-exercises load/canProcess/decode/unload in its own process) and report its real
-exit status, while `load`, `unload`, `enable`, `disable`, and `can` validate the
-id and are then refused (exit 3) rather than pretending to change state. For
-durable or application-specific handler state, the Controller must be owned by
-the running SLeeLa application.
+The reference pipeline exercises load/canProcess/decode/unload in its own
+process. For durable or application-specific handler state, the Controller must
+be owned by the running SLeeLa application. A resident Controller host (a
+daemon that owns registries so `load`/`unload` could work from the CLI) is a
+possible future addition, not current behavior.
 
 ### 6. Stop, restart, and status for daemons
 
@@ -510,10 +583,8 @@ sleelactl stop server-edition      # stop daemon
 Current limitations:
 - Native subjects are compiled into the runtime; no dynamic subject loader,
   per-subject unload, or live hot-swap is exposed.
-- Only `math` is currently registered as a `sleelactl` subject target.
-- Registry load/unload/enable/disable/can are refused from the CLI (exit 3)
-  because separate CLI calls cannot share a persistent Controller instance;
-  `probe` runs the reference pipeline.
+- Registry load/unload/enable/disable/can are in-program Controller API, not
+  CLI verbs (exit 64); `probe` runs the reference pipeline.
 - `stop` is a daemon verb, not a generic way to stop arbitrary SLeeLa
   programs. Stop a standalone program through its terminal or process
   supervisor.
@@ -537,10 +608,9 @@ do not match that nature. Use this table as the authoritative lifecycle map:
 Examples by family:
 
 ```sh
-# Handler registry: process-local; probe runs the reference flow
-sleelactl list registry
+# Handler registry: process-local; list/probe from the CLI, load/unload in-program
+sleelactl list codecs
 sleelactl probe codecs
-sleelactl load codecs 2        # refused with exit 3 (id validated first)
 
 # Daemon: service lifecycle, not module memory loading
 sleelactl start server-edition
@@ -558,9 +628,9 @@ sleelactl run math
 ```
 
 The `all` fan-out is nature-aware, not a force-load switch. For example,
-`sleelactl stop all --yes` applies only to modules whose nature permits `stop`;
-`sleelactl unload all` reaches only registry modules, where it is skipped as
-process-local. It does not load or unload every subject, tool, protocol,
+`sleelactl stop all --yes` applies only to modules whose nature permits `stop`
+(the daemons), in reverse dependency order; `unload` is not a CLI verb for any
+nature. It does not load or unload every subject, tool, protocol,
 datasource, or library indiscriminately. Check `sleelactl natures` and
 `sleelactl help <module>` before issuing lifecycle commands.
 
@@ -661,12 +731,13 @@ For implementation detail and verification commands, see
 [`@native` and VM dispatch](../pi-generator/AT-NATIVE.md) and
 [Native Drive](../impl/native-drive/README.md).
 
-## systemd scope and honest degradation
+## Service scope and honest degradation
 
-Daemon units use the **system** manager by default. Root invokes `systemctl --system` directly; an unprivileged caller uses `sudo systemctl --system` and therefore needs sudo authorization. For a unit installed in the caller's user manager, set `SLEELACTL_SYSTEMCTL_SCOPE=user`; this invokes `systemctl --user` and never sudo. The registry's daemon handles must match the selected manager's unit scope.
+For systemd, daemon units use the **system** manager by default. Root invokes `systemctl --system` directly; an unprivileged caller uses `sudo systemctl --system` and therefore needs sudo authorization. For a unit installed in the caller's user manager, set `SLEELACTL_SYSTEMCTL_SCOPE=user`; this invokes `systemctl --user` and never sudo. The registry's daemon handles must match the selected manager's unit scope.
 
 - Invalid `SLEELACTL_SYSTEMCTL_SCOPE` values are rejected; only `system` and `user` are accepted.
-- No `systemctl` on the host → daemon verbs report that plainly and exit non-zero (no fake start).
+- No supported service manager, or no `unit=`/`launchd=`/`winsvc=` mapping for the active one → daemon verbs say so and exit 3 (no fake start).
+- A module defined by `SLEELACTL_REGISTRY` is never escalated with `sudo` unless `SLEELACTL_TRUST_REGISTRY=1` (exit 2).
 - Missing `sudo` for system-scope control by a non-root caller is reported before attempting a command.
 - SLeeLa runtime not built → registry verbs say so and point at
   `(cd impl && make build/sleela)` (no fake load/decode).
@@ -702,17 +773,19 @@ The generator defaults to a user unit. Add `--system --user ACCOUNT` for an expl
 
 ## Regression tests
 
-Run from the repository root (both are POSIX sh, use fake `sleela`/`systemctl`
-binaries, and never touch host services):
+Run from the repository root (POSIX sh; fake `sleela`, `systemctl`,
+`launchctl`, `sc.exe`, `sudo`, and caller UID — no real service is touched):
 
 ```sh
-sh tests/sleelactl_cli_test.sh               # honesty/safety contract: registry verbs,
-                                             # exit codes, diagnostics, help, --dry-run/--yes,
-                                             # validation, validate target, tool CLI resolution
-sh tests/sleelactl_systemctl_scope_test.sh   # systemd scope and sudo selection
+bin/sleelactl check-registry --strict        # the real registry is valid
+sh tests/sleelactl_cli_test.sh               # registry-driven dispatch, check-registry and
+                                             # use-time safety, registry verbs, exit codes,
+                                             # diagnostics, help, --dry-run/--yes, after= order,
+                                             # systemd/launchd/windows adapters, --json,
+                                             # script tools, completion, docs-table drift
+sh tests/sleelactl_systemctl_scope_test.sh   # systemd scope, sudo selection, untrusted
+                                             # override refusal, legacy format-1 registry
 ```
 
-CI: `.github/workflows/sleelactl.yml` runs both on Ubuntu (where `/bin/sh` is
-dash, plus an explicit `dash` pass) and macOS.
-
-It stubs `systemctl`, `sudo`, and the caller UID; it does not start or modify a real service.
+CI: `.github/workflows/sleelactl.yml` runs all three on Ubuntu (where `/bin/sh`
+is dash, plus an explicit `dash` pass) and macOS (BWK awk).
