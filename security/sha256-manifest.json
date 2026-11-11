@@ -1387,23 +1387,23 @@
     },
     {
       "path": "lib/advantage/trading-actions-on-verb/04-refuse-short-and-bad-input/TaUse04RefuseShortAndBadInput.sleela",
-      "sha256": "b05f46cfc1f2e249cd5d373bc13e2a1be21c8a135df02d6c84b1fae0c22a4e2c"
+      "sha256": "07a4ac6dac1d7863c09137ebc58f7c90d7272f870ef77386e50da4498b817002"
     },
     {
       "path": "lib/advantage/trading-actions-on-verb/05-lot-ratio-by-euclid/TaUse05LotRatioByEuclid.sleela",
-      "sha256": "ecbe3a826c0c54946228f2c053429f3e785769cf3f540eb1914f41962c1f9ea4"
+      "sha256": "bd35c4b9145420ff03bbd114cbc09776c5a07fb57150107a4b5f59f337da8234"
     },
     {
       "path": "lib/advantage/trading-actions-on-verb/06-round-lot-fill-and-bezout/TaUse06RoundLotFillAndBezout.sleela",
-      "sha256": "7487e07dba443feb98b665bfd808b244528a1ab1926b852076ee9da2bbf530c8"
+      "sha256": "0ffe1b6f6740e4c4498149ee7d798befc6b6587aa4dc1a9c76efb70b40c2c329"
     },
     {
       "path": "lib/advantage/trading-actions-on-verb/07-rebalance-distance/TaUse07RebalanceDistance.sleela",
-      "sha256": "252c05e97e16eaa53ab747db6deef7bdde3155d692ca1e52afd065e8be59b5f1"
+      "sha256": "fab9d9b81a3b0b16c75c6482836787e8e6315f2d5d2ce54211c058f1b3e54204"
     },
     {
       "path": "lib/advantage/trading-actions-on-verb/08-holding-days/TaUse08HoldingDays.sleela",
-      "sha256": "fb5a18a5b6f0b70aacc0494c7ccc3aad9041dbbc7b86674c32a59e190ef03d70"
+      "sha256": "c1d9ded91c3f21a93c2b05fd052f89911d8e9252c831815d4b2d84b52709202c"
     },
     {
       "path": "lib/advantage/trading-actions-on-verb/09-fifo-aging/TaUse09FifoAging.sleela",
@@ -1426,12 +1426,20 @@
       "sha256": "3957332e88e253b4bda5e50fa3a6c1f3ceb6a2fecbad482214d45fa015cfe619"
     },
     {
+      "path": "lib/advantage/trading-actions-on-verb/14-differential-stress/TaUse14DifferentialStress.sleela",
+      "sha256": "a4370ed8e3ef79a5b5d0c6711d8967a3ef7414dfe788ac29cd5f44936f237dde"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/15-euclid-exhaustive/TaUse15EuclidExhaustive.sleela",
+      "sha256": "6e214bc64f5bb8cddb5fde2e8d8daf963e5c9b35560a4747bf76e00537bcb026"
+    },
+    {
       "path": "lib/advantage/trading-actions-on-verb/SLEuclid.sleela",
-      "sha256": "6deea44d076bb1dad2d23e467d238622b9ad14a32e8b1b0ea3979da667b9ace1"
+      "sha256": "38864e285b15c74ddd9c54d683f400a91b640604c1ff93ebbc332f590d043001"
     },
     {
       "path": "lib/advantage/trading-actions-on-verb/SLLongBook.sleela",
-      "sha256": "a57e5727de6de12ee89c5e80c9aa11154bc144cbedf2d5dff7d0e27b0a14592d"
+      "sha256": "77afd43918c835a51bc0a06c7950776a0bb65ffd9ab08c3dc21d68e29bb79a47"
     },
     {
       "path": "lib/advantage/trading/SLTradingAggregation.sleela",

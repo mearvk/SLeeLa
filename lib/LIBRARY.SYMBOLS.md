@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 13325
+library-source-files: 13327
 library-packages: 121
 module-facade-symbols: 84
-total-symbol-records: 13409
+total-symbol-records: 13411
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -127,6 +127,8 @@ advantage	TaUse10WeightedAverageAge.sleela	lib/advantage/trading-actions-on-verb
 advantage	TaUse11TermBoundary.sleela	lib/advantage/trading-actions-on-verb/11-term-boundary/TaUse11TermBoundary.sleela	source
 advantage	TaUse12TimeStop.sleela	lib/advantage/trading-actions-on-verb/12-time-stop/TaUse12TimeStop.sleela	source
 advantage	TaUse13FullLifecycle.sleela	lib/advantage/trading-actions-on-verb/13-full-lifecycle/TaUse13FullLifecycle.sleela	source
+advantage	TaUse14DifferentialStress.sleela	lib/advantage/trading-actions-on-verb/14-differential-stress/TaUse14DifferentialStress.sleela	source
+advantage	TaUse15EuclidExhaustive.sleela	lib/advantage/trading-actions-on-verb/15-euclid-exhaustive/TaUse15EuclidExhaustive.sleela	source
 advantage	SLEuclid.sleela	lib/advantage/trading-actions-on-verb/SLEuclid.sleela	source
 advantage	SLLongBook.sleela	lib/advantage/trading-actions-on-verb/SLLongBook.sleela	source
 advantage	SLTradingAggregation.sleela	lib/advantage/trading/SLTradingAggregation.sleela	source

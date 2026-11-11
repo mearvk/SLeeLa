@@ -10,7 +10,7 @@ gasoline;
 < portfolio is another point. The nearest target needs the fewest shares moved >
 < in the Euclidean sense. Squares are compared (no square root needed to rank). >
 < The integer square root is only for display and is the floor. Inputs with a >
-< difference above 10000 are refused (-1) so no sum can pass the integer range. >
+< difference above 10,000,000 (or more than 64 dimensions) is refused (-1), so no >
 class TaUse07RebalanceDistance {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. A worker-class
@@ -110,6 +110,16 @@ class TaUse07RebalanceDistance {
     expect("distance to target 1 (floor)", e.dist(cur, t1, 3), 50);
     expect("distance to target 3 (floor)", e.dist(cur, t3, 3), 17);
     expectTrue("floor property: 17*17 <= 300 < 18*18", e.isqrt(300) * e.isqrt(300) <= 300 && 300 < (e.isqrt(300) + 1) * (e.isqrt(300) + 1));
+    int[] flat = new int[9];
+    flat[0] = 130; flat[1] = 160; flat[2] = 300;
+    flat[3] = 100; flat[4] = 200; flat[5] = 250;
+    flat[6] = 90; flat[7] = 210; flat[8] = 310;
+    expect("nearestIndex over the three targets (0-based)", e.nearestIndex(cur, flat, 3, 3), 2);
+    int[] tied = new int[6];
+    tied[0] = 130; tied[1] = 160; tied[2] = 300;
+    tied[3] = 100; tied[4] = 200; tied[5] = 250;
+    expect("nearestIndex on a tie keeps the first", e.nearestIndex(cur, tied, 3, 2), 0);
+    expect("nearestIndex with no targets", e.nearestIndex(cur, tied, 3, 0), 0 - 1);
     int best = 1;
     int bestD = e.distSq(cur, t1, 3);
     int d2b = e.distSq(cur, t2, 3);
@@ -123,13 +133,17 @@ class TaUse07RebalanceDistance {
     expect("tie goes to target 1", tieBest, 1);
     print("-- rejected input --");
     int[] far = new int[3];
-    far[0] = 20000;
+    far[0] = 200000000;
     far[1] = 200;
     far[2] = 300;
     expect("distance beyond the bound", e.distSq(cur, far, 3), 0 - 1);
+    expect("dimension beyond the bound", e.distSq(cur, t1, 65), 0 - 1);
     expect("dimension zero", e.distSq(cur, t1, 0), 0 - 1);
     expect("isqrt of a negative", e.isqrt(0 - 4), 0 - 1);
-    expect("isqrt of the largest int", e.isqrt(2147483647), 46340);
+    expect("isqrt of the largest 32-bit int", e.isqrt(2147483647), 46340);
+    expect("isqrt above 32 bits", e.isqrt(5000000000), 70710);
+    expect("isqrt at the exact limit", e.isqrt(9007199254740991), 94906265);
+    expect("isqrt just above the exact limit is refused", e.isqrt(9007199254740992), 0 - 1);
     summary();
   }
 }

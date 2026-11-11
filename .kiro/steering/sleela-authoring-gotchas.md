@@ -93,3 +93,18 @@ verified-build manifest check. After intentional edits, regenerate and confirm:
 Commit the updated `security/sha256-manifest.json` alongside the source. The
 manifest covers `lib/**/*.sleela` (including demos) plus lib C/C++ helpers, but
 **not** `.md` files.
+
+## Integer comparisons are exact only up to 2^53 - 1
+
+Measured with `working-binaries/sleela` (0.3.30-dev / 1.3.2-pro): `int` is a
+64-bit signed integer and `+ - * / %` are exact over the whole range, but the
+comparison operators (`== != < <= > >=`) lose precision above 2^53 - 1
+(9,007,199,254,740,991). For example `9007199254740993 == 9007199254740992` is
+`true`, and `(3037000499 * 3037000499) <= (3037000499 * 3037000499 - 1)` is
+`true`. A search such as an integer square root can therefore return a wrong
+answer silently when values pass that limit.
+
+Rule: keep every value that is ever compared at or below 9007199254740991, and
+refuse (do not clamp or wrap) inputs that could push it past. See
+`lib/advantage/trading-actions-on-verb/SLEuclid.sleela` for the pattern
+(`maxExact`) and `TaUse15EuclidExhaustive` for the edge tests.

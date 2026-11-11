@@ -12,7 +12,16 @@ gasoline;
 < Lots are kept oldest first and sold first in first out. Money is integer >
 < cents, quantity is whole shares, time is whole days that never go backwards. >
 < Status codes: 0 ok, 1 bad quantity, 2 bad price, 3 sell exceeds holding, >
-< 4 book full, 5 day goes backwards, 6 bad fee, 7 nothing held. >
+< 4 book full, 5 day goes backwards, 6 bad fee, 7 nothing held, >
+< 8 a size bound would be passed (quantity, price, fee, day or a running total). >
+< SLeeLa int is 64-bit and + - * / % are exact, but comparisons are exact only >
+< up to 2^53 - 1 (9,007,199,254,740,991). The bounds below keep every product >
+< and running total at or below 5e15, so every comparison here is exact. >
+< Fees are expensed: they are not added to a lot cost. realizedNet is a cash >
+< view: proceeds - cost of shares sold - EVERY fee paid so far, including the >
+< buy fees of shares still held. realizedGross excludes fees. >
+< Time queries need today >= the book day; earlier days answer -1 (false for >
+< isLongTerm), never a negative age. A flat book also answers -1 to oldestAge. >
 < Illustrative only: no order is placed and nothing here is trading advice. >
 class SLLongBook {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
@@ -56,7 +65,13 @@ class SLLongBook {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  int cap = 16;
+  < Largest accepted quantity, price and fee; largest running total. >
+  int maxQty = 100000000;
+  int maxPrice = 10000000;
+  int maxFee = 100000000;
+  int maxTotal = 4000000000000000;
+  < Largest day number accepted (about 27,000 years). >
+  int maxDay = 10000000;
   int[] lotQty = new int[16];
   int[] lotPrice = new int[16];
   int[] lotDay = new int[16];
@@ -72,6 +87,8 @@ class SLLongBook {
   int lastSaleCost = 0;
   int lastSalePnl = 0;
 
+  int maxLots() { return 16; }
+
   String reason(int code) {
     if (code == 0) { return "ok"; }
     if (code == 1) { return "refused: quantity must be a whole number above zero"; }
@@ -80,7 +97,8 @@ class SLLongBook {
     if (code == 4) { return "refused: book is full"; }
     if (code == 5) { return "refused: day goes backwards"; }
     if (code == 6) { return "refused: fee must not be negative"; }
-    return "refused: nothing is held";
+    if (code == 7) { return "refused: nothing is held"; }
+    return "refused: a size bound would be passed";
   }
 
   int totalQty() {
@@ -124,7 +142,10 @@ class SLLongBook {
     if (price <= 0) { return 2; }
     if (fee < 0) { return 6; }
     if (day < lastDay) { return 5; }
-    if (count >= cap) { return 4; }
+    if (qty > maxQty || price > maxPrice || fee > maxFee || day > maxDay) { return 8; }
+    if (count >= 16) { return 4; }
+    if (boughtCost + qty * price > maxTotal || feesPaid + fee > maxTotal) { return 8; }
+    if (boughtQty + qty > maxTotal) { return 8; }
     lotQty[count] = qty;
     lotPrice[count] = price;
     lotDay[count] = day;
@@ -144,6 +165,8 @@ class SLLongBook {
     if (fee < 0) { return 6; }
     if (day < lastDay) { return 5; }
     if (qty > totalQty()) { return 3; }
+    if (price > maxPrice || fee > maxFee || day > maxDay) { return 8; }
+    if (proceedsTotal + qty * price > maxTotal || feesPaid + fee > maxTotal) { return 8; }
     int need = qty;
     int cost = 0;
     int i = 0;
@@ -170,6 +193,7 @@ class SLLongBook {
   < Let time pass with no trade. >
   int hold(int day) {
     if (day < lastDay) { return 5; }
+    if (day > maxDay) { return 8; }
     lastDay = day;
     return 0;
   }
@@ -207,16 +231,24 @@ class SLLongBook {
 
   < ---- Time on long ---- >
 
-  int ageOf(int i, int today) { return today - lotDay[i]; }
+  < True when today is not before the book day, so ages cannot be negative. >
+  boolean validToday(int today) { return today >= lastDay; }
 
-  < Age of the oldest lot in days, or -1 when flat. >
+  int ageOf(int i, int today) {
+    if (!validToday(today)) { return 0 - 1; }
+    return today - lotDay[i];
+  }
+
+  < Age of the oldest lot in days, or -1 when flat or when today is invalid. >
   int oldestAge(int today) {
-    if (count == 0) { return -1; }
+    if (count == 0 || !validToday(today)) { return 0 - 1; }
     return today - lotDay[0];
   }
 
-  < Quantity-weighted average age in whole days, rounded down; 0 when flat. >
+  < Quantity-weighted average age in whole days, rounded down; 0 when flat, >
+  < -1 when today is invalid. >
   int weightedAgeFloor(int today) {
+    if (!validToday(today)) { return 0 - 1; }
     int q = totalQty();
     if (q == 0) { return 0; }
     int sum = 0;
@@ -227,6 +259,7 @@ class SLLongBook {
 
   < Shares held for more than maxAge days. >
   int qtyOlderThan(int today, int maxAge) {
+    if (!validToday(today)) { return 0 - 1; }
     int sum = 0;
     int i = 0;
     while (i < count) {
@@ -238,6 +271,7 @@ class SLLongBook {
 
   < A lot is long term when it is held for MORE than threshold days. >
   boolean isLongTerm(int i, int today, int threshold) {
+    if (!validToday(today)) { return false; }
     return today - lotDay[i] > threshold;
   }
 
@@ -247,10 +281,10 @@ class SLLongBook {
 
   < ---- Invariants ---- >
   < 1 every lot has positive quantity and price; 2 lot days never decrease >
-  < and never pass the book day; 3 count is within the cap; 4 shares held = >
+  < and never pass the book day; 3 count is within the 16-lot capacity; 4 shares held = >
   < shares bought - shares sold; 5 cost held = cost bought - cost sold. >
   boolean invariantsHold() {
-    if (count < 0 || count > cap) { return false; }
+    if (count < 0 || count > 16) { return false; }
     int i = 0;
     int prev = 0;
     while (i < count) {

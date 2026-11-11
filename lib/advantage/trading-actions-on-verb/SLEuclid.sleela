@@ -1,19 +1,27 @@
 << lib/advantage/trading-actions-on-verb/SLEuclid.sleela
    SLeeLa Standard Library Definition.
-   Definition: Careful integer Euclidean toolkit: greatest common divisor by Euclid loop, Bezout coefficients, exact fills by two round lots, and squared Euclidean distance with an integer square root. >>
+   Definition: Careful integer Euclidean toolkit: greatest common divisor by Euclid loop, Bezout coefficients, exact fills by two round lots in logarithmic time, and squared Euclidean distance with an exact integer square root. >>
 #sleela 3.0
 material;
 artifact;
 pure;
 gasoline;
-< Every loop here has a stated invariant and a termination argument, and every >
-< input is checked before it is used. All arithmetic is integer, and bounds >
-< are chosen so no intermediate value passes 2,000,000,000. >
+< SLeeLa int is a 64-bit signed integer: + - * / and % are exact over the full >
+< range. But the comparison operators (== != < <= > >=) were measured to be >
+< exact only up to 2^53 - 1 = 9,007,199,254,740,991; above that, neighbours >
+< such as n and n - 1 compare equal. So every value that is ever compared in >
+< this class is kept at or below that limit (maxExact), by construction. >
+< Every loop has a stated invariant and a termination argument, and every >
+< input is range-checked before use. Out-of-range input is refused with a >
+< sentinel (-1, or false with fillStatus 2); it is never wrapped or clamped. >
 < >
 < gcd: invariant gcd(x, y) = gcd(a, b); y is a non-negative integer that >
 < strictly decreases each pass because x mod y < y, so the loop ends. >
+< egcd: the pairs (oldR, r) carry Bezout rows, so that >
+< a*oldS + b*oldT = oldR holds before and after every pass. >
 < isqrt: invariant lo*lo <= n < (hi+1)*(hi+1); hi - lo strictly shrinks. >
-< canFill: the loop runs at most c / a + 1 times and stops at the first hit. >
+< canFill: closed form through the modular inverse, O(log) time. >
+< canFillScan: the plain scan, kept only as a reference to test against. >
 class SLEuclid {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. A worker-class
@@ -56,10 +64,20 @@ class SLEuclid {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  < Largest absolute value accepted for a coordinate difference. >
-  int maxDiff = 10000;
-  < Largest dimension accepted by distSq. >
-  int maxDim = 20;
+  < Largest absolute coordinate difference accepted by distSq. >
+  int maxDiff = 10000000;
+  < Largest dimension accepted. maxDiff squared times maxDim = 6.4e15 <= maxExact. >
+  int maxDim = 64;
+  < The largest magnitude that every comparison handles exactly (2^53 - 1). >
+  int maxExact = 9007199254740991;
+  < Largest lot size accepted by the fill routines: maxLot squared <= maxExact. >
+  int maxLot = 90000000;
+  < Largest order accepted by the fill routines. >
+  int maxOrder = 1000000000000;
+  < Largest value lcm may return. >
+  int maxMag = 9007199254740991;
+  < Largest k with k*k <= maxExact; the search for a floor root never goes above. >
+  int sqrtCap = 94906265;
   < Number of loop passes taken by the last gcd call. >
   int steps = 0;
   < The remainder trail of the last gcd call, for example 120,180 -> 180,120 >
@@ -67,17 +85,21 @@ class SLEuclid {
   < Bezout coefficients from the last egcd call: a*bx + b*by = g. >
   int bx = 0;
   int by = 0;
-  < The first exact fill found by canFill: fillA lots of a plus fillB of b. >
+  < The fill found by canFill or canFillScan: fillA lots of a plus fillB of b. >
   int fillA = 0;
   int fillB = 0;
+  < 0 = a fill exists, 1 = no fill exists, 2 = input out of range. >
+  int fillStatus = 1;
 
   int abs(int v) {
     if (v < 0) { return 0 - v; }
     return v;
   }
 
-  < Greatest common divisor of |a| and |b|. gcd(0, 0) is 0. >
+  < Greatest common divisor of |a| and |b|. gcd(0, 0) is 0. Returns -1 when >
+  < either magnitude passes maxExact. >
   int gcd(int a, int b) {
+    if (abs(a) > maxExact || abs(b) > maxExact) { return 0 - 1; }
     int x = abs(a);
     int y = abs(b);
     steps = 0;
@@ -103,21 +125,22 @@ class SLEuclid {
     return g;
   }
 
-  < Least common multiple, or -1 when the result would pass 2,000,000,000. >
+  < Least common multiple, or -1 when the result would pass maxMag. >
   int lcm(int a, int b) {
     int x = abs(a);
     int y = abs(b);
+    if (x > maxExact || y > maxExact) { return 0 - 1; }
     if (x == 0 || y == 0) { return 0; }
     int g = gcd(x, y);
     int q = x / g;
-    if (q > 2000000000 / y) { return -1; }
+    if (q > maxMag / y) { return 0 - 1; }
     return q * y;
   }
 
-  < Extended Euclid for a >= 0 and b >= 0. Returns g and sets bx, by so that >
-  < a*bx + b*by = g. Returns -1 for a negative input. >
+  < Extended Euclid for 0 <= a, b <= maxExact. Returns g and sets bx, by so that >
+  < a*bx + b*by = g. Returns -1 for an input outside that range. >
   int egcd(int a, int b) {
-    if (a < 0 || b < 0) { return -1; }
+    if (a < 0 || b < 0 || a > maxExact || b > maxExact) { return 0 - 1; }
     int oldR = a;
     int r = b;
     int oldS = 1;
@@ -145,34 +168,68 @@ class SLEuclid {
     return a * bx + b * by == g;
   }
 
+  boolean fillInRange(int c, int a, int b) {
+    if (a <= 0 || b <= 0 || c < 0) { return false; }
+    if (a > maxLot || b > maxLot || c > maxOrder) { return false; }
+    return true;
+  }
+
   < True when c shares can be filled exactly by whole lots of a and b. >
-  < Needs a > 0, b > 0, c >= 0. Sets fillA and fillB to the solution with the >
-  < fewest a-lots. The gcd test is the necessary condition checked first. >
+  < Solves a*x + b*y = c with x, y >= 0 and the smallest x. With g = gcd(a,b), >
+  < a' = a/g, b' = b/g, c' = c/g: a solution needs g | c, then >
+  < x = (c' mod b') * inverse(a' mod b') mod b', y = (c - a*x) / b, and it >
+  < exists exactly when y >= 0. Every product is at most maxLot^2 = 8.1e15 <= maxExact. >
   boolean canFill(int c, int a, int b) {
     fillA = 0;
     fillB = 0;
-    if (a <= 0 || b <= 0 || c < 0) { return false; }
-    int g = gcd(a, b);
-    if (c % g != 0) { return false; }
+    if (!fillInRange(c, a, b)) { fillStatus = 2; return false; }
+    int g = egcd(a, b);
+    if (c % g != 0) { fillStatus = 1; return false; }
+    int ap = a / g;
+    int bp = b / g;
+    int cp = c / g;
+    int x = 0;
+    if (bp > 1) {
+      egcd(ap, bp);
+      int inv = ((bx % bp) + bp) % bp;
+      x = ((cp % bp) * inv) % bp;
+    }
+    int rest = c - a * x;
+    if (rest < 0) { fillStatus = 1; return false; }
+    fillA = x;
+    fillB = rest / b;
+    fillStatus = 0;
+    return true;
+  }
+
+  < Reference implementation by scanning a-lot counts 0, 1, 2, ... Runs at most >
+  < c / a + 1 passes. Used to cross-check canFill, not for large orders. >
+  boolean canFillScan(int c, int a, int b) {
+    fillA = 0;
+    fillB = 0;
+    if (!fillInRange(c, a, b)) { fillStatus = 2; return false; }
     int i = 0;
     while (i * a <= c) {
       int rest = c - i * a;
       if (rest % b == 0) {
         fillA = i;
         fillB = rest / b;
+        fillStatus = 0;
         return true;
       }
       i = i + 1;
     }
+    fillStatus = 1;
     return false;
   }
 
-  < Floor of the square root of n, or -1 when n is negative. >
+  < Floor of the square root of n for 0 <= n <= maxExact, else -1. sqrtCap^2 <= >
+  < maxExact < (sqrtCap + 1)^2, so mid*mid is always compared exactly. >
   int isqrt(int n) {
-    if (n < 0) { return -1; }
+    if (n < 0 || n > maxExact) { return 0 - 1; }
     int lo = 0;
     int hi = n;
-    if (hi > 46340) { hi = 46340; }
+    if (hi > sqrtCap) { hi = sqrtCap; }
     while (lo < hi) {
       int mid = (lo + hi + 1) / 2;
       if (mid * mid <= n) { lo = mid; }
@@ -181,25 +238,47 @@ class SLEuclid {
     return lo;
   }
 
-  < Squared Euclidean distance between the first dim entries of a and b. >
-  < Returns -1 when dim is out of range or any difference passes maxDiff. >
-  int distSq(int[] a, int[] b, int dim) {
-    if (dim < 1 || dim > maxDim) { return -1; }
+  < Squared Euclidean distance between the first dim entries of a and b >
+  < (a and b start at offsets oa and ob). Returns -1 when dim is out of range >
+  < or any difference passes maxDiff. >
+  int distSqAt(int[] a, int oa, int[] b, int ob, int dim) {
+    if (dim < 1 || dim > maxDim) { return 0 - 1; }
     int sum = 0;
     int i = 0;
     while (i < dim) {
-      int diff = abs(a[i] - b[i]);
-      if (diff > maxDiff) { return -1; }
+      int diff = abs(a[oa + i] - b[ob + i]);
+      if (diff > maxDiff) { return 0 - 1; }
       sum = sum + diff * diff;
       i = i + 1;
     }
     return sum;
   }
 
+  int distSq(int[] a, int[] b, int dim) {
+    return distSqAt(a, 0, b, 0, dim);
+  }
+
   < Floor of the Euclidean distance, or -1 on a rejected input. >
   int dist(int[] a, int[] b, int dim) {
     int s = distSq(a, b, dim);
-    if (s < 0) { return -1; }
+    if (s < 0) { return 0 - 1; }
     return isqrt(s);
+  }
+
+  < Index of the target nearest to cur. Targets are stored one after another >
+  < in a flat array, dim entries each. A tie goes to the earlier target (the >
+  < repo tie norm). Returns -1 when count < 1 or any distance is rejected. >
+  int nearestIndex(int[] cur, int[] targets, int dim, int count) {
+    if (count < 1) { return 0 - 1; }
+    int best = 0 - 1;
+    int bestD = 0;
+    int t = 0;
+    while (t < count) {
+      int dd = distSqAt(cur, 0, targets, t * dim, dim);
+      if (dd < 0) { return 0 - 1; }
+      if (best < 0 || dd < bestD) { best = t; bestD = dd; }
+      t = t + 1;
+    }
+    return best;
   }
 }

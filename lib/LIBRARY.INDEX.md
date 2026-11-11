@@ -1,5 +1,7 @@
 # SLeeLa /lib Library Index
 
+> Revision 0.94 is a second review of `trading-actions-on-verb` (`lib/advantage/trading-actions-on-verb/`). It measured that SLeeLa `int` is 64-bit with exact `+ - * / %` but comparisons exact only up to 2^53 - 1, which exposed a wrong `isqrt` (it assumed a 32-bit word). Fixed: every compared value is bounded by `maxExact` and out-of-range input is refused; `SLLongBook` gains size and day bounds (status 8), -1 answers for a day before the book day, and a fixed 16-lot capacity; `SLEuclid.canFill` is now an O(log) closed form (the scan stays as `canFillScan`) and gains `nearestIndex`; fees and `realizedNet` are documented as a cash view. Two assurance use cases are added: 14, a differential stress test (1,200 random verbs against an independent per-share shadow model, tallies reproduced in Python) and 15, an exhaustive check of every Euclid routine against a slower method. The gate is `test-suites/test-trading-actions.sh` (15 use cases). Steering note added to `.kiro/steering/sleela-authoring-gotchas.md`. Two new source units (counts: 13325 to **13327** sources; 13409 to **13411** total records; 121 packages).
+
 > Revision 0.93 adds a `trading-actions-on-verb/` subject folder to the **`advantage`** package (`lib/advantage/trading-actions-on-verb/`): trading as verbs (`buy`, `sell`, `hold`, `flatten`) on a long-only FIFO position book. `SLLongBook` carries lots, integer-cent money, time-on-long queries (age, weighted age, term, time stop) and checked invariants (conservation of shares and cost); `SLEuclid` carries careful integer Euclid loops (gcd, Bezout, exact fills by two lot sizes, squared Euclidean distance, floor square root) with stated invariants and bounds. Thirteen self-checking use cases (seven on the style of trading long, six on time on long, the last joining both) with `.expected.txt` files are gated by `test-suites/test-trading-actions.sh`; expected values come from an independent Python model. Illustrative only, not trading, tax or legal advice. Fifteen new source units (counts: 13310 to **13325** sources; 13394 to **13409** total records; 121 packages).
 
 > Revision 0.92 extends the Device Instructor series in the **`advantage`** package (`lib/advantage/learner-vs-professional/series/`) from 22 to 32 lessons: ten larger trading decisions (lessons 23 to 32: rice, sugar, aluminum, zinc, nickel, rubber, glass, paper, plastic resin and an eight-way capstone) with five to eight options each. `SLDecisionDesk` now holds up to eight options and adds a sixth slip, a discount filed under the wrong option, caught by comparing the carrier of each entry as well as its value; lessons 7 to 22 output is unchanged. Each lesson has an `.expected.txt` checked by `test-suites/test-device-instructor.sh`, and every outcome was cross-checked against an independent Python oracle. Quotes are illustrative inputs, not market data. Ten new source units (counts: 13300 to **13310** sources; 13384 to **13394** total records; 121 packages).
@@ -57,9 +59,9 @@
 
 **Revision:** 0.82  
 **Packages:** 121  
-**SLeeLa source units:** 13325  
+**SLeeLa source units:** 13327  
 **Module-facade symbols:** 84  
-**Total symbol records:** 13409  
+**Total symbol records:** 13411  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.66 brings three big-number improvements that make a 10,000,000-digit

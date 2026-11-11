@@ -8,8 +8,14 @@
   ok   book day unchanged by the refusal = 25
   hold to day 40 : ok
   ok   oldest age on day 40 = 30
+-- a day before the book day has no answer, never a negative age --
+  ok   age asked for day 30 (book day is 40) = -1
+  ok   oldest age asked for day 30 = -1
+  ok   weighted age asked for day 30 = -1
+  ok   shares older than 5 days asked for day 30 = -1
+  ok   isLongTerm is false for an invalid day
   flatten on day 40 @ 5100 : ok
   ok   oldest age when flat = -1
   ok   weighted age when flat = 0
   ok   invariants hold
-  checks passed=8 failed=0
+  checks passed=13 failed=0

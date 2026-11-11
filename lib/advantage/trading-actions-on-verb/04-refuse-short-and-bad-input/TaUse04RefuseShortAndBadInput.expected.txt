@@ -7,6 +7,11 @@
   ok   code for zero price = 2
   ok   code for negative fee = 6
   ok   code for day going backwards = 5
+  ok   code for a quantity above the size bound = 8
+  ok   code for a price above the size bound = 8
+  ok   code for a fee above the size bound = 8
+  ok   code for a day above the day bound = 8
+  ok   code for a hold above the day bound = 8
   ok   book unchanged after every refusal
   ok   invariants hold
 -- exact sell is fine, then flat means no more sells --
@@ -15,4 +20,4 @@
   ok   code for selling from flat = 3
   ok   code for flatten from flat = 7
   ok   invariants hold
-  checks passed=12 failed=0
+  checks passed=17 failed=0

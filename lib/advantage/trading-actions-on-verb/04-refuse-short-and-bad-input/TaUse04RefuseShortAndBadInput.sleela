@@ -7,8 +7,9 @@ artifact;
 pure;
 gasoline;
 < Use case 4 (style). A long-only book never goes short. Every refusal must leave >
-< the book exactly as it was: shares, cost, fees and day. The snapshot method >
-< below sums those four, so any change would show. >
+< the book exactly as it was. The snapshot code >
+< below keeps five separate values (shares, cost, fees, day, lots) and compares >
+< each one, so no change can hide in a collision. >
 class TaUse04RefuseShortAndBadInput {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. A worker-class
@@ -83,15 +84,29 @@ class TaUse04RefuseShortAndBadInput {
     print("  " + text + " : " + b.reason(code));
   }
 
-  int snap(SLLongBook b) {
-    return b.totalQty() * 1000003 % 1000000007 + b.costBasis() % 99991 + b.fees() * 7 + b.currentDay() * 13;
+  int sQty = 0;
+  int sCost = 0;
+  int sFees = 0;
+  int sDay = 0;
+  int sLots = 0;
+
+  void take(SLLongBook b) {
+    sQty = b.totalQty();
+    sCost = b.costBasis();
+    sFees = b.fees();
+    sDay = b.currentDay();
+    sLots = b.lotCount();
+  }
+
+  boolean same(SLLongBook b) {
+    return sQty == b.totalQty() && sCost == b.costBasis() && sFees == b.fees() && sDay == b.currentDay() && sLots == b.lotCount();
   }
 
   void main() {
     SLLongBook book = new SLLongBook();
     print("== Use case 4: refuse short and bad input ==");
     act(book, "buy 100 @ 5000 on day 10, fee 100", book.buy(10, 100, 5000, 100));
-    int before = snap(book);
+    take(book);
     act(book, "sell 101 @ 5100 (more than held)", book.sell(11, 101, 5100, 100));
     expect("code for sell above holding", book.sell(11, 101, 5100, 100), 3);
     expect("code for zero quantity", book.sell(11, 0, 5100, 100), 1);
@@ -99,7 +114,12 @@ class TaUse04RefuseShortAndBadInput {
     expect("code for zero price", book.sell(11, 10, 0, 100), 2);
     expect("code for negative fee", book.sell(11, 10, 5100, 0 - 1), 6);
     expect("code for day going backwards", book.sell(9, 10, 5100, 100), 5);
-    expectTrue("book unchanged after every refusal", snap(book) == before);
+    expect("code for a quantity above the size bound", book.buy(11, 2000000000, 5100, 0), 8);
+    expect("code for a price above the size bound", book.buy(11, 1, 2000000000, 0), 8);
+    expect("code for a fee above the size bound", book.sell(11, 1, 5100, 2000000000), 8);
+    expect("code for a day above the day bound", book.buy(20000000, 1, 5100, 0), 8);
+    expect("code for a hold above the day bound", book.hold(20000000), 8);
+    expectTrue("book unchanged after every refusal", same(book));
     expectTrue("invariants hold", book.invariantsHold());
     print("-- exact sell is fine, then flat means no more sells --");
     act(book, "sell 100 @ 5100 on day 12, fee 100", book.sell(12, 100, 5100, 100));

@@ -1,0 +1,28 @@
+== Use case 15: Euclid, exhaustively ==
+-- gcd against a brute-force divisor search, all pairs 0..60 --
+  ok   pairs tested = 3721
+  ok   pairs where gcd differs from brute force = 0
+-- lcm * gcd = a * b, all pairs 1..60 --
+  ok   pairs tested = 3600
+  ok   pairs where the identity fails = 0
+-- extended Euclid: a*x + b*y = gcd, all pairs 0..60 --
+  ok   pairs tested = 3721
+  ok   pairs where the certificate fails = 0
+-- isqrt against a linear search, n = 0..3000 --
+  ok   values tested = 3001
+  ok   values where isqrt differs = 0
+-- isqrt at perfect squares and one below, k = 1..3000 --
+  ok   squares where the floor is wrong = 0
+-- isqrt at the exact-comparison ceiling (2^53 - 1) --
+  ok   isqrt(94906265^2) = 94906265
+  ok   isqrt(94906265^2 - 1) = 94906264
+  ok   isqrt(94906266^2 - 1) is above the limit = -1
+  ok   isqrt(9007199254740991) = 94906265
+  ok   isqrt(9007199254740992) is refused = -1
+  ok   a refused value is not a wrong answer = -1
+-- closed-form fill against the scan, a,b = 1..12 and c = 0..150 --
+  ok   combinations tested = 21744
+  ok   combinations where the methods differ = 0
+-- distance is symmetric and zero on itself, 200 pseudo-random vectors --
+  ok   vectors where a property fails = 0
+  checks passed=18 failed=0

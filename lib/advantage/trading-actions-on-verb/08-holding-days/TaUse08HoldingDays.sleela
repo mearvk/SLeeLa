@@ -96,6 +96,12 @@ class TaUse08HoldingDays {
     expect("book day unchanged by the refusal", book.currentDay(), 25);
     act(book, "hold to day 40", book.hold(40));
     expect("oldest age on day 40", book.oldestAge(40), 30);
+    print("-- a day before the book day has no answer, never a negative age --");
+    expect("age asked for day 30 (book day is 40)", book.ageOf(0, 30), 0 - 1);
+    expect("oldest age asked for day 30", book.oldestAge(30), 0 - 1);
+    expect("weighted age asked for day 30", book.weightedAgeFloor(30), 0 - 1);
+    expect("shares older than 5 days asked for day 30", book.qtyOlderThan(30, 5), 0 - 1);
+    expectTrue("isLongTerm is false for an invalid day", !book.isLongTerm(0, 30, 5));
     act(book, "flatten on day 40 @ 5100", book.flatten(40, 5100, 0));
     expect("oldest age when flat", book.oldestAge(40), 0 - 1);
     expect("weighted age when flat", book.weightedAgeFloor(40), 0);

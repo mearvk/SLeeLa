@@ -108,6 +108,34 @@ class TaUse06RoundLotFillAndBezout {
     act(book, "buy the 30-lots on day 5", book.buy(5, fb * 30, 5000, 0));
     expect("shares held", book.totalQty(), 110);
     expectTrue("invariants hold", book.invariantsHold());
+    expect("status when a fill exists", e.fillStatus, 0);
+    expectTrue("75 has no fill", !e.canFill(75, 20, 30));
+    expect("status when none exists", e.fillStatus, 1);
+    expectTrue("a negative order is out of range", !e.canFill(0 - 5, 20, 30));
+    expect("status when out of range", e.fillStatus, 2);
+    print("-- closed form agrees with the plain scan on every order 0..300 --");
+    int agree = 0;
+    int differ = 0;
+    int c = 0;
+    while (c <= 300) {
+      boolean fast = e.canFill(c, 20, 30);
+      int fa2 = e.fillA;
+      int fb2 = e.fillB;
+      boolean slow = e.canFillScan(c, 20, 30);
+      boolean same = (fast == slow);
+      if (same && fast) { same = (fa2 == e.fillA && fb2 == e.fillB && fa2 * 20 + fb2 * 30 == c); }
+      if (same) { agree = agree + 1; } else { differ = differ + 1; }
+      c = c + 1;
+    }
+    expect("orders where the two methods agree", agree, 301);
+    expect("orders where they differ", differ, 0);
+    print("-- a large order is still instant --");
+    boolean big = e.canFill(1000000000000, 89999989, 89999971);
+    expectTrue("one trillion shares by two large lots is answered, not rejected", e.fillStatus != 2);
+    expectTrue("one trillion shares by lots of 89999989 and 89999971 has no fill", !big);
+    expect("status says none exists", e.fillStatus, 1);
+    expectTrue("lots above the lot bound are rejected, not computed", !e.canFill(10, 999999937, 3));
+    expect("rejection status", e.fillStatus, 2);
     print("-- Bezout certificates --");
     int g20 = e.egcd(20, 30);
     expect("egcd(20,30) gcd", g20, 10);

@@ -39,8 +39,9 @@ a self-contained, validated module with its own literature.
   consignment, distressed, virtual, synthetic, momentum), a rate budget, and
   the counsel that ranks them; mirrors the C/C++ module in `/advantage`.
 - [`trading-actions-on-verb/`](./trading-actions-on-verb) — trading as verbs on a
-  long-only FIFO book: thirteen use cases on the style of trading long and on
-  time on long, built on careful Euclid loops and Euclidean distance.
+  long-only FIFO book: fifteen use cases on the style of trading long and on
+  time on long, built on careful Euclid loops and Euclidean distance, with a
+  differential stress test and an exhaustive Euclid check.
 - [`PREONEM.md`](./PREONEM.md) — the preonem standard under which every
   document here is an enacted `artifact; pure; gasoline;` of the Advantage™
   legislature, graded unto time and space.

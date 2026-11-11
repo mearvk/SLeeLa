@@ -16,6 +16,20 @@
   buy the 30-lots on day 5 : ok
   ok   shares held = 110
   ok   invariants hold
+  ok   status when a fill exists = 0
+  ok   75 has no fill
+  ok   status when none exists = 1
+  ok   a negative order is out of range
+  ok   status when out of range = 2
+-- closed form agrees with the plain scan on every order 0..300 --
+  ok   orders where the two methods agree = 301
+  ok   orders where they differ = 0
+-- a large order is still instant --
+  ok   one trillion shares by two large lots is answered, not rejected
+  ok   one trillion shares by lots of 89999989 and 89999971 has no fill
+  ok   status says none exists = 1
+  ok   lots above the lot bound are rejected, not computed
+  ok   rejection status = 2
 -- Bezout certificates --
   ok   egcd(20,30) gcd = 10
   ok   coefficient x = -1
@@ -26,4 +40,4 @@
   ok   coefficient y = 47
   ok   240*x + 46*y = gcd
   ok   egcd refuses a negative input = -1
-  checks passed=24 failed=0
+  checks passed=36 failed=0

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Assurance gate for lib/advantage/trading-actions-on-verb.
-#   1. thirteen use-case folders, each with a class that has main(), the
+#   1. fifteen use-case folders, each with a class that has main(), the
 #      Metadata block and an .expected.txt;
 #   2. each run reproduces its .expected.txt exactly;
 #   3. no run prints a FAIL line and every run ends with "failed=0".
@@ -15,7 +15,7 @@ bad() { echo "FAIL: $*" >&2; fail=1; }
 filter() { grep -v -e '^\[memory' -e '^\[security' -e '^\[defender' -e '^verification'; }
 
 cases=("$DIR"/[0-9][0-9]-*/)
-[ "${#cases[@]}" -eq 13 ] || bad "expected 13 use cases, found ${#cases[@]}"
+[ "${#cases[@]}" -eq 15 ] || bad "expected 15 use cases, found ${#cases[@]}"
 [ -f "$DIR/SLLongBook.sleela" ] || bad "missing SLLongBook.sleela"
 [ -f "$DIR/SLEuclid.sleela" ] || bad "missing SLEuclid.sleela"
 for lib in SLLongBook SLEuclid; do
