@@ -9,6 +9,7 @@ Sequitur onion model.
 |------|----------|
 | `children/` | young learners: play-based, concrete, short steps |
 | `adults/` | adult learners: precise terms, worked problems, applied use |
+| `long-medium-averages/` | adult: 17 medium-term trading entries and the 2,000-actions-per-day cap; see [`ORGANIZED.md`](./ORGANIZED.md) for defined vs. undefined terms |
 
 Reading material for every age, sorted from youngest to oldest, is in
 [`reading/`](./reading/README.md).

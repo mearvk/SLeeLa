@@ -1,0 +1,106 @@
+<< lib/advantage/learner-vs-professional/courseware/long-medium-averages/17-daily-cap-boundary/TaMed17DailyCapBoundary.sleela
+   SLeeLa courseware lesson.
+   Definition: The 2,000-actions-per-day rule proved at its boundary: the 2000th action on a day succeeds, the 2001st is refused unchanged, and a new day resets the count. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Entry 17 of 17, long-medium-averages. This session fixed one concrete rule: >
+< a trading day admits at most 2,000 actions. This entry drives exactly to >
+< that line with holds (the cheapest action to repeat), then one buy, to show >
+< the 2000th action is accepted, the 2001st is refused with code 10 and >
+< changes nothing, and the next day starts a fresh count of 0. >
+class TaMed17DailyCapBoundary {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39347;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  int passed = 0;
+  int failed = 0;
+
+  void expect(String label, int got, int want) {
+    if (got == want) { print("  ok   " + label + " = " + got); passed = passed + 1; }
+    else { print("  FAIL " + label + " got " + got + " want " + want); failed = failed + 1; }
+  }
+
+  void expectTrue(String label, boolean got) {
+    if (got) { print("  ok   " + label); passed = passed + 1; }
+    else { print("  FAIL " + label); failed = failed + 1; }
+  }
+
+  void summary() { print("  checks passed=" + passed + " failed=" + failed); }
+
+  void main() {
+    SLDailyCapBook book = new SLDailyCapBook();
+    print("== Entry 17: the 2,000-actions-per-day boundary ==");
+    expect("the cap itself", book.dailyCap, 2000);
+    int i = 0;
+    int codes0 = 0;
+    while (i < 1999) {
+      if (book.hold(0) == 0) { codes0 = codes0 + 1; }
+      i = i + 1;
+    }
+    expect("holds accepted so far", codes0, 1999);
+    expect("actions recorded today", book.actionsOnCurrentDay(), 1999);
+    expect("capacity remaining before the 2000th", book.remainingToday(), 1);
+    print("-- the 2000th action on this day --");
+    int lastQty = book.totalQty();
+    int c2000 = book.buy(0, 10, 100, 0);
+    expect("the 2000th action (a buy) is accepted", c2000, 0);
+    expect("actions recorded after the 2000th", book.actionsOnCurrentDay(), 2000);
+    expect("capacity remaining now", book.remainingToday(), 0);
+    print("-- the 2001st action on the same day --");
+    int before = book.totalQty();
+    int beforeFees = book.fees();
+    int c2001 = book.buy(0, 10, 100, 0);
+    expect("the 2001st action is refused", c2001, 10);
+    print("  reason: " + book.reason(c2001));
+    expectTrue("the refused buy changed nothing", book.totalQty() == before && book.fees() == beforeFees);
+    expectTrue("a hold is refused too, same day", book.hold(0) == 10);
+    print("-- a new day resets the count --");
+    int c3 = book.hold(1);
+    expect("the first action on day 1 is accepted", c3, 0);
+    expect("actions recorded on day 1", book.actionsOnCurrentDay(), 1);
+    expect("capacity remaining on day 1", book.remainingToday(), 1999);
+    expectTrue("invariants hold", book.invariantsHold());
+    summary();
+  }
+}

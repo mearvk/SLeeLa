@@ -1,0 +1,20 @@
+== Entry 17: the 2,000-actions-per-day boundary ==
+  ok   the cap itself = 2000
+  ok   holds accepted so far = 1999
+  ok   actions recorded today = 1999
+  ok   capacity remaining before the 2000th = 1
+-- the 2000th action on this day --
+  ok   the 2000th action (a buy) is accepted = 0
+  ok   actions recorded after the 2000th = 2000
+  ok   capacity remaining now = 0
+-- the 2001st action on the same day --
+  ok   the 2001st action is refused = 10
+  reason: refused: 2,000 actions already recorded today, wait for the next day
+  ok   the refused buy changed nothing
+  ok   a hold is refused too, same day
+-- a new day resets the count --
+  ok   the first action on day 1 is accepted = 0
+  ok   actions recorded on day 1 = 1
+  ok   capacity remaining on day 1 = 1999
+  ok   invariants hold
+  checks passed=14 failed=0

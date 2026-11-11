@@ -1150,6 +1150,78 @@
       "sha256": "341c46266b9457df52d75da5e78da2e629047aeec8fea8ddd1cb23c22282a6e9"
     },
     {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-medium-averages/01-copper-coins/TaMed01Coppercoins.sleela",
+      "sha256": "acd7a2c0353a4eb76b5b3b226499ffd7cda0019c84899bc6c3a76294b5ef733b"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-medium-averages/02-silver-tokens/TaMed02Silvertradingtokens.sleela",
+      "sha256": "c2563d31c7066edc496f367b1ffabced7bdb00d387c96c96302d94a3db27d0b8"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-medium-averages/03-gold-chips/TaMed03Goldgamechips.sleela",
+      "sha256": "19be1818964467568065ed6a4c46a046d525e82a775e8bdf624d31853dc6907c"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-medium-averages/04-brass-rounds/TaMed04Brassrounds.sleela",
+      "sha256": "ec1ec82a68523f315b33aa8438b5951d88b485a4c0b08bd09bb666d0cc613c79"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-medium-averages/05-bronze-medals/TaMed05Bronzetradingmedals.sleela",
+      "sha256": "7fb1701ab0b43860019045c58c5fcf8e0258f7baf6c60ea89e3b98b79d2e869e"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-medium-averages/06-nickel-blanks/TaMed06Nickelblanks.sleela",
+      "sha256": "c49b84ed70f4bf97b6e2e95863f47548d51a50a95b09401074597f2aba52dcbd"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-medium-averages/07-tin-pucks/TaMed07Tinpucks.sleela",
+      "sha256": "344d86498b794cd3b6454550ef273ce1fe6af023309d533f7ec17ddab95db71a"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-medium-averages/08-zinc-slugs/TaMed08Zincslugs.sleela",
+      "sha256": "262fc1c0796472f01c4ebaec910e0da2c472c176a590e73278d702e3c32a60e2"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-medium-averages/09-steel-washers/TaMed09Steelwashers.sleela",
+      "sha256": "9548f9861eecb2594b7bd73cfdcf54b67d5d383a7dd6de99eb8b82f9a43ca329"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-medium-averages/10-platinum-foils/TaMed10Platinumfoils.sleela",
+      "sha256": "b7e247206160a493ee3d47520ebff7a50e5906a68a18dbd45da34feb99f9b2c8"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-medium-averages/11-titanium-tabs/TaMed11Titaniumtabs.sleela",
+      "sha256": "50b6154822d6dc66901d129007c4ae0f4df219ec80d49b0a2b1ad71811056c30"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-medium-averages/12-iron-tags/TaMed12Irontags.sleela",
+      "sha256": "aab0be497d2031a9497138830ab3eba1d05af373ae494fad36e2273951721964"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-medium-averages/13-quartz-chips/TaMed13Quartzcountingchips.sleela",
+      "sha256": "e6ad4261a1f9ddcac5883341c53d435a317ec3e1465f3db843fcbcbb96cf7882"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-medium-averages/14-obsidian-flakes/TaMed14Obsidiantradingflakes.sleela",
+      "sha256": "c3d963dcba79850ecafe3a7fa865bb13ceb42bf1382e01da8161800739ee7ce2"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-medium-averages/15-granite-counters/TaMed15Granitecounters.sleela",
+      "sha256": "8f75e27fb114afb4b04f89c18c8e3e6e8657b74a645d5806f78355e92b04ed62"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-medium-averages/16-slate-markers/TaMed16Slatemarkers.sleela",
+      "sha256": "5d5ab5e75ebc3a4ec25ab560bb7cc739989c66a7e83434666c487a5d83e378db"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-medium-averages/17-daily-cap-boundary/TaMed17DailyCapBoundary.sleela",
+      "sha256": "dd29a2485cd42dd06cef151c3606e98efb884a18916d9c4ebf7a20b6811ae43a"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-medium-averages/SLDailyCapBook.sleela",
+      "sha256": "c8f157898f707971bc69d69cec0bf022e0244e7bc810d8e3aedf27cc914bdb02"
+    },
+    {
       "path": "lib/advantage/learner-vs-professional/series/01-registry-intake/DiRegistryIntake.sleela",
       "sha256": "6d066b0198c2c49051f8f37d4b187299b01c7e2945259c545ce9676b475616ab"
     },

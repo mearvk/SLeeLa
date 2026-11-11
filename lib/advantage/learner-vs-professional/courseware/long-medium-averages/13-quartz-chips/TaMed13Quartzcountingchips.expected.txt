@@ -1,0 +1,18 @@
+== Entry 13: quartz counting chips, a medium-term trade ==
+  buy 400 @ 1800 on day 0, fee 4 : ok
+  buy 300 @ 1850 on day 3, fee 4 : ok
+  sell 600 @ 1900 on day 5, fee 7 : ok
+-- result --
+  ok   lots remaining = 1
+  ok   shares/units held = 100
+  ok   cost basis of what remains, cents = 185000
+  ok   cost of the units sold, cents = 1090000
+  ok   profit of that sale, cents = 50000
+  ok   realized gross so far, cents = 50000
+  ok   realized net of fees, cents = 49985
+  ok   fees paid so far = 15
+  ok   actions recorded on the sell day = 1
+  ok   remaining capacity on that day (of 2000) = 1999
+  ok   the medium-term cap (2000/day) was never approached here
+  ok   invariants hold
+  checks passed=12 failed=0

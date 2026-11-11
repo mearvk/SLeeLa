@@ -1,0 +1,18 @@
+== Entry 6: nickel blanks, a medium-term trade ==
+  buy 600 @ 1200 on day 0, fee 3 : ok
+  buy 400 @ 1250 on day 1, fee 3 : ok
+  sell 900 @ 1300 on day 3, fee 6 : ok
+-- result --
+  ok   lots remaining = 1
+  ok   shares/units held = 100
+  ok   cost basis of what remains, cents = 125000
+  ok   cost of the units sold, cents = 1095000
+  ok   profit of that sale, cents = 75000
+  ok   realized gross so far, cents = 75000
+  ok   realized net of fees, cents = 74988
+  ok   fees paid so far = 12
+  ok   actions recorded on the sell day = 1
+  ok   remaining capacity on that day (of 2000) = 1999
+  ok   the medium-term cap (2000/day) was never approached here
+  ok   invariants hold
+  checks passed=12 failed=0

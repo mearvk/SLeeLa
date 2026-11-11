@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 13340
+library-source-files: 13358
 library-packages: 121
 module-facade-symbols: 84
-total-symbol-records: 13424
+total-symbol-records: 13442
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -58,6 +58,24 @@ advantage	SLNewtonMedianTray.sleela	lib/advantage/integration/SLNewtonMedianTray
 advantage	SLTrialCompartment.sleela	lib/advantage/integration/SLTrialCompartment.sleela	source
 advantage	SLVerticalIntegration.sleela	lib/advantage/integration/SLVerticalIntegration.sleela	source
 advantage	integration-demo.sleela	lib/advantage/integration/integration-demo.sleela	source
+advantage	TaMed01Coppercoins.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/01-copper-coins/TaMed01Coppercoins.sleela	source
+advantage	TaMed02Silvertradingtokens.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/02-silver-tokens/TaMed02Silvertradingtokens.sleela	source
+advantage	TaMed03Goldgamechips.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/03-gold-chips/TaMed03Goldgamechips.sleela	source
+advantage	TaMed04Brassrounds.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/04-brass-rounds/TaMed04Brassrounds.sleela	source
+advantage	TaMed05Bronzetradingmedals.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/05-bronze-medals/TaMed05Bronzetradingmedals.sleela	source
+advantage	TaMed06Nickelblanks.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/06-nickel-blanks/TaMed06Nickelblanks.sleela	source
+advantage	TaMed07Tinpucks.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/07-tin-pucks/TaMed07Tinpucks.sleela	source
+advantage	TaMed08Zincslugs.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/08-zinc-slugs/TaMed08Zincslugs.sleela	source
+advantage	TaMed09Steelwashers.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/09-steel-washers/TaMed09Steelwashers.sleela	source
+advantage	TaMed10Platinumfoils.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/10-platinum-foils/TaMed10Platinumfoils.sleela	source
+advantage	TaMed11Titaniumtabs.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/11-titanium-tabs/TaMed11Titaniumtabs.sleela	source
+advantage	TaMed12Irontags.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/12-iron-tags/TaMed12Irontags.sleela	source
+advantage	TaMed13Quartzcountingchips.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/13-quartz-chips/TaMed13Quartzcountingchips.sleela	source
+advantage	TaMed14Obsidiantradingflakes.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/14-obsidian-flakes/TaMed14Obsidiantradingflakes.sleela	source
+advantage	TaMed15Granitecounters.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/15-granite-counters/TaMed15Granitecounters.sleela	source
+advantage	TaMed16Slatemarkers.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/16-slate-markers/TaMed16Slatemarkers.sleela	source
+advantage	TaMed17DailyCapBoundary.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/17-daily-cap-boundary/TaMed17DailyCapBoundary.sleela	source
+advantage	SLDailyCapBook.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/SLDailyCapBook.sleela	source
 advantage	DiRegistryIntake.sleela	lib/advantage/learner-vs-professional/series/01-registry-intake/DiRegistryIntake.sleela	source
 advantage	DiStudentInput.sleela	lib/advantage/learner-vs-professional/series/02-student-input-gate/DiStudentInput.sleela	source
 advantage	DiSystemReadiness.sleela	lib/advantage/learner-vs-professional/series/03-system-readiness/DiSystemReadiness.sleela	source
