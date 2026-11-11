@@ -8354,6 +8354,38 @@
       "sha256": "d024e8480096efabc5955f64036ce83f571ae6614048a389854da763dc2917e5"
     },
     {
+      "path": "lib/guidoc/SLGuiDocApp.sleela",
+      "sha256": "d81ea29d30f1c37ba6f92ed72c0952f1caded9965694e62551942f9019c70fd9"
+    },
+    {
+      "path": "lib/guidoc/SLGuiDocFile.sleela",
+      "sha256": "2777e701286b14698e7df3f5bd528a4cda329ee4c7877e100a5c144654e7fb05"
+    },
+    {
+      "path": "lib/guidoc/SLGuiDocListener.sleela",
+      "sha256": "2b8bacabd3f2adad6bda8756d365f1ab124d62d551a089b07f8b6e701a7a365f"
+    },
+    {
+      "path": "lib/guidoc/SLGuiDocSpec.sleela",
+      "sha256": "0d4cf1f1f6100043c13fd17e047542cf5a8b168dd193d560384c9389a83ff0d3"
+    },
+    {
+      "path": "lib/guidoc/SLGuiDocTab.sleela",
+      "sha256": "80c1e7126e1d2cdb9c9692ce514433af6368926dc6561b7ab2aec5c65030bd6e"
+    },
+    {
+      "path": "lib/guidoc/SLGuiDocView.sleela",
+      "sha256": "3cde82681f4edf8ca87d788f1cccc3d5fcac6f45ab32e4a69e589943e1ecd6db"
+    },
+    {
+      "path": "lib/guidoc/SLGuiDocWhite.sleela",
+      "sha256": "c43bccf152b5d0795141d6319ab55141bdfefb3200ed40b646aeb4a14de9a4ec"
+    },
+    {
+      "path": "lib/guidoc/guidoc-demo.sleela",
+      "sha256": "186f40b2ad622a1f2db8b40ce9d0104e334a01c62fd9516646a070e869d18492"
+    },
+    {
       "path": "lib/hotlink/SLHotLinkIntegration.sleela",
       "sha256": "59108a46eadd201cb9ab33a610a7de529bc3ef3df2248eb64c6466593e6d97ee"
     },

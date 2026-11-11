@@ -1,0 +1,101 @@
+<< lib/guidoc/SLGuiDocWhite.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuiDocWhite — the white look of the document GUI. It
+     takes the White flavor of the standard UI themes (lib/ui SLThemeFlavor:
+     off-white background, white surfaces, dark ink, a single blue accent) and
+     answers a style string for each role the GUI draws (window, menubar, tab,
+     editor row, status, dialog ...). Every widget style in the document GUI
+     comes from here, so the whole GUI stays white and consistent. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+import observer;
+import ui;
+< Family: guidoc. Style strings look like bg:#FFFFFF;fg:#16202C; >
+class SLGuiDocWhite {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39242;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  SLStandardTheme theme;
+
+  void configure() {
+    SLThemeFlavor flavors = new SLThemeFlavor();
+    flavors.create();
+    theme = flavors.white();
+  }
+  SLStandardTheme standardTheme() { return theme; }
+  boolean isWhite() { return theme != null && theme.getName() == "White" && !theme.isDark(); }
+  String name() { return theme.getName(); }
+  String accentColor() { return theme.accent; }
+
+  String pair(String bg, String fg) { return "bg:" + bg + ";fg:" + fg + ";"; }
+
+  < The style for a role. Unknown roles fall back to the plain surface. >
+  String style(String role) {
+    if (role == "window") { return pair(theme.bg, theme.text); }
+    if (role == "menubar") { return pair(theme.chrome, theme.text); }
+    if (role == "menu") { return pair(theme.chrome, theme.text); }
+    if (role == "menu-open") { return pair(theme.surfaceHi, theme.text); }
+    if (role == "menu-item") { return pair(theme.surface, theme.text); }
+    if (role == "menu-item-disabled") { return pair(theme.surface, theme.textDim); }
+    if (role == "tabbar") { return pair(theme.bg, theme.text); }
+    if (role == "tab") { return pair(theme.surfaceHi, theme.textDim); }
+    if (role == "tab-active") { return pair(theme.surface, theme.accent); }
+    if (role == "tab-dirty") { return pair(theme.surfaceHi, theme.warning); }
+    if (role == "tab-active-dirty") { return pair(theme.surface, theme.warning); }
+    if (role == "editor") { return pair(theme.surface, theme.text); }
+    if (role == "gutter") { return pair(theme.chrome, theme.textDim); }
+    if (role == "row") { return pair(theme.surface, theme.text); }
+    if (role == "row-selected") { return pair(theme.accent, theme.accentText); }
+    if (role == "row-empty") { return pair(theme.surface, theme.textDim); }
+    if (role == "entry") { return pair(theme.surface, theme.text); }
+    if (role == "status") { return pair(theme.chrome, theme.textDim); }
+    if (role == "status-external") { return pair(theme.chrome, theme.warning); }
+    if (role == "status-error") { return pair(theme.chrome, theme.danger); }
+    if (role == "dialog") { return pair(theme.surfaceHi, theme.text); }
+    if (role == "button") { return pair(theme.surface, theme.text); }
+    if (role == "button-primary") { return pair(theme.accent, theme.accentText); }
+    return pair(theme.surface, theme.text);
+  }
+}

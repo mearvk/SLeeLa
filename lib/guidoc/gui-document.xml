@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  gui-document.xml: the document-editor GUI, in white (instance of gui-document.xsd).
+  Mirrors SLGuiDocSpec.standard() in SLGuiDocSpec.sleela; the validator
+  tools/validate_gui_document.py fails if the two drift apart.
+-->
+<guiDocument xmlns="urn:sleela:guidoc:1.0" version="1.0" revision="1">
+  <provenance author="Kiro Agent" date="2026-11-11" origin="International"
+              scienceRating="8" nationalSchedule="none"/>
+
+  <window title="SLeeLa Document Editor" theme="white"/>
+
+  <commands>
+    <command id="file.new" handler="cmdNew"/>
+    <command id="file.open" handler="cmdOpen"/>
+    <command id="file.save" handler="cmdSave"/>
+    <command id="file.saveAs" handler="cmdSaveAs"/>
+    <command id="file.closeTab" handler="cmdCloseTab" confirmsDiscard="true"/>
+    <command id="app.quit" handler="cmdQuit" confirmsDiscard="true"/>
+    <command id="edit.insertLine" handler="cmdInsertLine"/>
+    <command id="edit.replaceLine" handler="cmdReplaceLine"/>
+    <command id="edit.deleteLine" handler="cmdDeleteLine"/>
+    <command id="view.nextTab" handler="cmdNextTab"/>
+    <command id="view.prevTab" handler="cmdPrevTab"/>
+    <command id="help.about" handler="cmdAbout"/>
+  </commands>
+
+  <menus>
+    <menu id="file" label="File">
+      <item id="new" label="New" command="file.new" accelerator="Ctrl+N" enabledWhen="always"/>
+      <item id="open" label="Open..." command="file.open" accelerator="Ctrl+O" enabledWhen="always"/>
+      <item id="save" label="Save" command="file.save" accelerator="Ctrl+S" enabledWhen="dirty"/>
+      <item id="saveAs" label="Save As..." command="file.saveAs" accelerator="Ctrl+Shift+S" enabledWhen="hasTab"/>
+      <item id="closeTab" label="Close Tab" command="file.closeTab" accelerator="Ctrl+W" enabledWhen="hasTab"/>
+      <item id="quit" label="Quit" command="app.quit" accelerator="Ctrl+Q" enabledWhen="always"/>
+    </menu>
+    <menu id="edit" label="Edit">
+      <item id="insertLine" label="Insert Line" command="edit.insertLine" accelerator="Ctrl+I" enabledWhen="editable"/>
+      <item id="replaceLine" label="Replace Line" command="edit.replaceLine" accelerator="Ctrl+R" enabledWhen="selectionEditable"/>
+      <item id="deleteLine" label="Delete Line" command="edit.deleteLine" accelerator="Ctrl+D" enabledWhen="selectionEditable"/>
+    </menu>
+    <menu id="view" label="View">
+      <item id="nextTab" label="Next Tab" command="view.nextTab" accelerator="Ctrl+Tab" enabledWhen="multipleTabs"/>
+      <item id="prevTab" label="Previous Tab" command="view.prevTab" accelerator="Ctrl+Shift+Tab" enabledWhen="multipleTabs"/>
+    </menu>
+    <menu id="help" label="Help">
+      <item id="about" label="About" command="help.about" accelerator="F1" enabledWhen="always"/>
+    </menu>
+  </menus>
+
+  <tabs maxTabs="14" dirtyMarker="*" newTabTitle="Untitled"/>
+
+  <editor rows="16" lineNumbers="true" readOnlyWhenUnsplit="true"/>
+
+  <fileDialog sidecarSuffix=".lines" maxLines="64" maxBytes="65536"/>
+
+  <listener port="gui-listener" repaintOn="change" flagExternal="true"/>
+</guiDocument>

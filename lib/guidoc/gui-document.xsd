@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  gui-document.xsd: schema for the SLeeLa GUI document (version 1.0).
+
+  Describes the document-editor GUI that sits on a dynamic document listener:
+  the window and its theme, the menus and the commands they run, the tab strip,
+  the editor, the file dialog, and the listener that keeps the screen in step
+  with the standing document. Menu items refer to commands by id (checked by a
+  keyref), and accelerators are unique.
+
+  Backing model: lib/guidoc (SLGuiDocSpec.standard() is the executable copy of
+  gui-document.xml). Cross-field rules XSD 1.0 cannot express are enforced by
+  tools/validate_gui_document.py (see GUIDOC.md).
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="urn:sleela:guidoc:1.0"
+           xmlns="urn:sleela:guidoc:1.0"
+           elementFormDefault="qualified">
+
+  <!-- ===== vocabulary ===================================================== -->
+
+  <xs:simpleType name="Id">
+    <xs:restriction base="xs:token">
+      <xs:pattern value="[a-z][a-zA-Z0-9]*([.-][a-zA-Z0-9]+)*"/>
+      <xs:maxLength value="40"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Flavor">
+    <xs:annotation><xs:documentation>The four standard UI flavors (lib/ui). This GUI ships in white.</xs:documentation></xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="white"/>
+      <xs:enumeration value="blue"/>
+      <xs:enumeration value="gray"/>
+      <xs:enumeration value="black"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="EnabledWhen">
+    <xs:annotation><xs:documentation>
+      always            = the item is always enabled.
+      hasTab            = a document tab is open.
+      dirty             = the active document has unsaved changes.
+      editable          = a tab is open and its document can be edited.
+      selectionEditable = editable and a line is selected.
+      multipleTabs      = more than one tab is open.
+    </xs:documentation></xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="always"/>
+      <xs:enumeration value="hasTab"/>
+      <xs:enumeration value="dirty"/>
+      <xs:enumeration value="editable"/>
+      <xs:enumeration value="selectionEditable"/>
+      <xs:enumeration value="multipleTabs"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Accelerator">
+    <xs:annotation><xs:documentation>Empty, or Ctrl+Key / Ctrl+Shift+Key / a function key.</xs:documentation></xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="|(Ctrl\+)(Shift\+)?[A-Za-z0-9]|(Ctrl\+)(Shift\+)?Tab|F([1-9]|1[0-2])"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="TabCount">
+    <xs:annotation><xs:documentation>1..14, echoing the 1..14 watch bound of lib/gui SLGuiDocumentListener.</xs:documentation></xs:annotation>
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="14"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="RowCount">
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="4"/>
+      <xs:maxInclusive value="32"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- ===== structure ====================================================== -->
+
+  <xs:element name="guiDocument">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="provenance" minOccurs="0">
+          <xs:complexType>
+            <xs:attribute name="author" type="xs:string" use="required"/>
+            <xs:attribute name="date" type="xs:date" use="required"/>
+            <xs:attribute name="origin" type="xs:string" use="required"/>
+            <xs:attribute name="scienceRating" type="xs:integer" use="required"/>
+            <xs:attribute name="nationalSchedule" type="xs:string" use="required"/>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="window">
+          <xs:complexType>
+            <xs:attribute name="title" type="xs:string" use="required"/>
+            <xs:attribute name="theme" type="Flavor" use="required"/>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="commands">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="command" maxOccurs="32">
+                <xs:complexType>
+                  <xs:attribute name="id" type="Id" use="required"/>
+                  <xs:attribute name="handler" type="Id" use="required"/>
+                  <xs:attribute name="confirmsDiscard" type="xs:boolean" default="false"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="menus">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="menu" maxOccurs="8">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="item" maxOccurs="12">
+                      <xs:complexType>
+                        <xs:attribute name="id" type="Id" use="required"/>
+                        <xs:attribute name="label" type="xs:string" use="required"/>
+                        <xs:attribute name="command" type="Id" use="required"/>
+                        <xs:attribute name="accelerator" type="Accelerator" default=""/>
+                        <xs:attribute name="enabledWhen" type="EnabledWhen" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="id" type="Id" use="required"/>
+                  <xs:attribute name="label" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="tabs">
+          <xs:complexType>
+            <xs:attribute name="maxTabs" type="TabCount" use="required"/>
+            <xs:attribute name="dirtyMarker" type="xs:string" use="required"/>
+            <xs:attribute name="newTabTitle" type="xs:string" use="required"/>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="editor">
+          <xs:complexType>
+            <xs:attribute name="rows" type="RowCount" use="required"/>
+            <xs:attribute name="lineNumbers" type="xs:boolean" use="required"/>
+            <xs:attribute name="readOnlyWhenUnsplit" type="xs:boolean" use="required"/>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="fileDialog">
+          <xs:complexType>
+            <xs:attribute name="sidecarSuffix" type="xs:string" use="required"/>
+            <xs:attribute name="maxLines" type="xs:positiveInteger" use="required"/>
+            <xs:attribute name="maxBytes" type="xs:positiveInteger" use="required"/>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="listener">
+          <xs:complexType>
+            <xs:attribute name="port" type="Id" use="required"/>
+            <xs:attribute name="repaintOn" type="xs:token" use="required" fixed="change"/>
+            <xs:attribute name="flagExternal" type="xs:boolean" use="required"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="version" type="xs:token" use="required" fixed="1.0"/>
+      <xs:attribute name="revision" type="xs:positiveInteger" use="required"/>
+    </xs:complexType>
+
+    <xs:key name="commandKey">
+      <xs:selector xpath="commands/command"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="itemCommandRef" refer="commandKey">
+      <xs:selector xpath="menus/menu/item"/>
+      <xs:field xpath="@command"/>
+    </xs:keyref>
+    <xs:unique name="menuIdUnique">
+      <xs:selector xpath="menus/menu"/>
+      <xs:field xpath="@id"/>
+    </xs:unique>
+    <xs:unique name="itemIdUnique">
+      <xs:selector xpath="menus/menu/item"/>
+      <xs:field xpath="@id"/>
+    </xs:unique>
+  </xs:element>
+</xs:schema>

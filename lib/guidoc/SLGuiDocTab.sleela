@@ -1,0 +1,156 @@
+<< lib/guidoc/SLGuiDocTab.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuiDocTab — one open document in the GUI: its standing
+     document, its own dynamic observer, the white GUI listener admitted to
+     that observer, the path it was loaded from or saved to, the saved
+     revision (dirty means the revision moved since), the selected line and the
+     editor scroll position. A tab opened unsplit is read-only. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+import observer;
+import ui;
+< Family: guidoc. Edits go through the observer so every listener sees them. >
+class SLGuiDocTab {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39245;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String title;
+  String path;
+  SLObserverDocument doc;
+  SLDocumentObserver obs;
+  SLGuiDocListener.Responder listener;
+  int savedRevision;
+  int readOnly;
+  int selected;
+  int viewTop;
+
+  void configure(String name, SLGuiDocWhite white, String listenerPort) {
+    title = name; path = "";
+    doc = new SLObserverDocument();
+    doc.configure(name);
+    obs = new SLDocumentObserver();
+    obs.configure(doc);
+    listener = new SLGuiDocListener.Responder();
+    listener.attach(listenerPort, white);
+    obs.admit(listener.portOf());
+    savedRevision = 0; readOnly = 0; selected = -1; viewTop = 0;
+    settle();
+  }
+  String getTitle() { return title; }
+  void setTitle(String t) { title = t; }
+  String getPath() { return path; }
+  void setPath(String p) { path = p; }
+  SLObserverDocument body() { return doc; }
+  SLDocumentObserver observer() { return obs; }
+  SLGuiDocListener.Responder guiListener() { return listener; }
+  boolean isReadOnly() { return readOnly == 1; }
+  void lock() { readOnly = 1; }
+  int selectedLine() { return selected; }
+  int topLine() { return viewTop; }
+  boolean hasSelection() { return selected >= 0 && selected < doc.lineCount(); }
+
+  < The host cycle for this tab: deliver, let the listener read, route. >
+  void settle() {
+    while (obs.beginCycle()) { listener.pump(); obs.endCycle(); }
+  }
+
+  < Edit through the observer. Refused when the tab is read-only. >
+  int edit(int op, int line, String text, String source) {
+    if (readOnly == 1) { return -1; }
+    int r = obs.edit(op, line, text, source);
+    settle();
+    return r;
+  }
+  < Someone else changes the document (used for external changes). >
+  int editAs(int op, int line, String text, String source) {
+    int r = obs.edit(op, line, text, source);
+    settle();
+    return r;
+  }
+
+  boolean isDirty() { return doc.revisionNow() != savedRevision; }
+  void markSaved() { savedRevision = doc.revisionNow(); }
+
+  void select(int line) {
+    if (line >= 0 && line < doc.lineCount()) { selected = line; } else { selected = -1; }
+  }
+  < Keep the selection on a real line after the document changed. >
+  void clampSelection() {
+    if (doc.lineCount() == 0) { selected = -1; return; }
+    if (selected >= doc.lineCount()) { selected = doc.lineCount() - 1; }
+  }
+  < Scroll so the selected line is inside a window of `rows` rows. >
+  void ensureVisible(int rows) {
+    if (selected >= 0) {
+      if (selected < viewTop) { viewTop = selected; }
+      if (selected >= viewTop + rows) { viewTop = selected - rows + 1; }
+    }
+    int maxTop = doc.lineCount() - rows;
+    if (maxTop < 0) { maxTop = 0; }
+    if (viewTop > maxTop) { viewTop = maxTop; }
+    if (viewTop < 0) { viewTop = 0; }
+  }
+
+  < Load a file into this (still empty) tab. Returns the load code. >
+  int loadFrom(SLGuiDocFile file, String filePath, boolean lockUnsplit) {
+    int code = file.load(filePath, doc);
+    if (code == 0 || code == 10) {
+      path = filePath;
+      title = filePath;
+      if (code == 10 && lockUnsplit) { readOnly = 1; }
+      markSaved();
+      selected = -1; viewTop = 0;
+    }
+    return code;
+  }
+
+  < Save to a path. Refused for a read-only tab. Returns the save code. >
+  int saveTo(SLGuiDocFile file, String filePath) {
+    if (readOnly == 1) { return 9; }
+    int code = file.save(filePath, doc);
+    if (code == 0) { path = filePath; title = filePath; markSaved(); }
+    return code;
+  }
+}

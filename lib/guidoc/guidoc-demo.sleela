@@ -1,0 +1,327 @@
+<< lib/guidoc/guidoc-demo.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Runnable, self-checking demonstrator for the document GUI in
+     white: menus and accelerators, tabs, the line editor, the open and
+     save-as dialogs, load and save to real files, the discard confirmations,
+     the 14-tab limit, read-only unsplit files, external changes seen by the
+     GUI document listener, and the white theme. It drives the widget tree with
+     scripted presses (the same calls a host makes from real widgets) and
+     verifies the screen after each step. Prints PASS or FAIL per check and a
+     tally. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+import observer;
+import ui;
+< Family: guidoc. Run: sleela run lib/guidoc/guidoc-demo.sleela >
+class GuiDocDemo {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39248;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  int passed;
+  int failed;
+  SLGuiDocApp app;
+  SLGuiDocView v;
+
+  void check(String label, boolean ok) {
+    if (ok) { passed = passed + 1; print("  PASS  " + label); }
+    else { failed = failed + 1; print("  FAIL  " + label); }
+  }
+  void banner(String t) { print(""); print("== " + t); }
+  String t(String id) { return v.textOf(id); }
+  boolean vis(String id) { return v.isVisible(id); }
+  boolean en(String id) { return v.isEnabled(id); }
+  SLGuiDocTab cur() { return app.activeTab(); }
+
+  < Click a menu then one of its items, the way a user would. >
+  int menuClick(String menu, String item) {
+    app.click("menu-" + menu);
+    return app.click("mi-" + item);
+  }
+  String slurp(String path) {
+    int h = openFile(path, "r");
+    if (h < 0) { return "<unreadable>"; }
+    String s = read(h);
+    close(h);
+    return s;
+  }
+  void dump(String path, String data) {
+    int h = openFile(path, "w");
+    write(h, data);
+    close(h);
+  }
+
+  void main() {
+    passed = 0; failed = 0;
+    String base = osTempDir() + "/guidoc-demo";
+    osMakeDir(base);
+    String notes = base + "/notes.txt";
+    String second = base + "/second.txt";
+    String plain = base + "/plain.txt";
+
+    banner("1. the GUI is built from its spec, in white");
+    app = new SLGuiDocApp();
+    check("the app configures from the spec", app.configure());
+    v = app.widgets();
+    SLGuiDocSpec spec = app.specification();
+    check("the spec seeded without a refusal", spec.refusedCount() == 0);
+    check("4 menus, 12 items, 12 commands", spec.menuTotal() == 4 && spec.itemTotal() == 12 && spec.commandTotal() == 12);
+    check("the theme is the white flavor", app.look().isWhite() && spec.getTheme() == "white");
+    check("the window is the off-white background with dark ink", v.styleOf("win") == "bg:#F7F8FA;fg:#16202C;");
+    check("the editor surface is white", v.styleOf("editor") == "bg:#FFFFFF;fg:#16202C;");
+    check("the widget tree has 76 nodes", v.nodeCount() == 76);
+    check("no tab is open yet", app.tabTotal() == 0 && !vis("tab-0"));
+    check("the editor says there is no document", t("row-0") == "No document open. Use File, New or File, Open.");
+    check("Save is disabled with nothing to save", !en("mi-save") && en("mi-new") && en("mi-open"));
+    check("editing items are disabled with no tab", !en("mi-insertLine") && !en("mi-replaceLine"));
+    SLGuiDocSpec dup = new SLGuiDocSpec();
+    dup.configure();
+    dup.addCommand("c.one", "h", 0);
+    dup.addMenu("m", "M");
+    check("an item is accepted", dup.addItem("m", "i1", "One", "c.one", "Ctrl+X", "always"));
+    check("a duplicate accelerator is refused", !dup.addItem("m", "i2", "Two", "c.one", "Ctrl+X", "always"));
+    check("an unknown enabled-when is refused", !dup.addItem("m", "i3", "Three", "c.one", "", "sometimes"));
+    check("an unknown command is refused", !dup.addItem("m", "i4", "Four", "nope", "", "always"));
+    check("a theme outside the four flavors is refused", !dup.setWindow("x", "neon"));
+
+    banner("2. menus and accelerators");
+    app.click("menu-file");
+    check("opening File shows its items only", vis("mi-new") && vis("mi-quit") && !vis("mi-insertLine"));
+    check("the open menu is highlighted", v.styleOf("menu-file") == app.look().style("menu-open"));
+    check("a disabled item ignores a click", app.click("mi-save") == 0);
+    app.click("menu-file");
+    check("clicking the menu again closes it", !vis("mi-new"));
+    check("Ctrl+N makes a tab", app.accelerate("Ctrl+N") && app.tabTotal() == 1);
+    check("the tab strip shows it", vis("tab-0") && t("tab-0") == "Untitled-1" && !vis("tab-1"));
+    check("the active tab is drawn in the accent style", v.styleOf("tab-0") == app.look().style("tab-active"));
+    check("editing is enabled, saving is not (not dirty)", en("mi-insertLine") && !en("mi-save") && !en("mi-replaceLine"));
+    check("an unknown accelerator does nothing", !app.accelerate("Ctrl+Z"));
+
+    banner("3. the editor");
+    app.type("entry", "alpha");
+    check("Insert Line from the Edit menu", menuClick("edit", "insertLine") == 1);
+    check("the line is in the document and on screen", app.activeTab().body().lineAt(0) == "alpha" && t("row-0") == "alpha" && t("gut-0") == "1");
+    check("the new line is selected (accent style)", v.styleOf("row-0") == app.look().style("row-selected"));
+    check("the entry was cleared", t("entry") == "");
+    check("the tab is dirty and shows the marker", app.activeTab().isDirty() && t("tab-0") == "Untitled-1*");
+    check("the dirty tab is drawn in the warning ink", v.styleOf("tab-0") == app.look().style("tab-active-dirty"));
+    check("Save is now enabled", en("mi-save"));
+    app.type("entry", "beta");
+    app.accelerate("Ctrl+I");
+    app.type("entry", "");
+    app.accelerate("Ctrl+I");
+    app.type("entry", "gamma");
+    app.click("row-1");
+    app.accelerate("Ctrl+R");
+    check("Replace Line changes the selected line", app.activeTab().body().lineAt(1) == "gamma");
+    app.click("row-2");
+    check("the empty line is selected", app.activeTab().selectedLine() == 2);
+    check("Delete Line removes it", app.accelerate("Ctrl+D") && app.activeTab().body().lineCount() == 2);
+    check("the selection stays on a real line", app.activeTab().selectedLine() == 1);
+    app.type("entry", "tail");
+    app.accelerate("Ctrl+I");
+    check("3 lines: alpha, gamma, tail", app.activeTab().body().lineCount() == 3 && t("row-2") == "tail" && t("gut-2") == "3");
+    check("the status line tracks the cursor", t("status-mid") == "Ln 3 of 3  rev 6" && t("status-left") == "inserted line 3");
+    check("GUI edits are not external changes", app.activeTab().guiListener().externalCount() == 0 && app.activeTab().guiListener().changeCount() == 6);
+
+    banner("4. Save, Save As and the dialogs");
+    check("Save with no path opens Save As", app.accelerate("Ctrl+S") && app.dialogMode() == 2 && vis("dlg") && vis("dlg-path"));
+    check("while a dialog is open other commands are refused", !app.accelerate("Ctrl+N") && app.tabTotal() == 1);
+    check("the menus are disabled behind the dialog", !en("menu-file") && !en("mi-quit"));
+    app.click("dlg-cancel");
+    check("Cancel closes the dialog", app.dialogMode() == 0 && !vis("dlg") && t("status-left") == "cancelled");
+    check("nothing was written", osExists(notes) == 0);
+    app.accelerate("Ctrl+Shift+S");
+    app.click("dlg-ok");
+    check("an empty path keeps the dialog and complains", app.dialogMode() == 2 && app.statusIsError());
+    app.type("dlg-path", notes);
+    app.click("dlg-ok");
+    check("saved to disk", app.dialogMode() == 0 && osExists(notes) == 1 && !app.activeTab().isDirty());
+    check("the file is plain text", slurp(notes) == "alpha\ngamma\ntail\n");
+    check("a sidecar holds one file per line", osExists(notes + ".lines/l0000") == 1 && osExists(notes + ".lines/l0002") == 1 && osExists(notes + ".lines/l0003") == 0);
+    check("the tab is titled by the path and clean", t("tab-0") == notes && app.activeTab().getPath() == notes);
+    app.click("row-1");
+    app.accelerate("Ctrl+D");
+    check("deleting makes it dirty again", app.activeTab().isDirty());
+    check("Ctrl+S saves straight to the known path", app.accelerate("Ctrl+S") && !app.activeTab().isDirty() && slurp(notes) == "alpha\ntail\n");
+    check("a shorter save removes the stale sidecar line", osExists(notes + ".lines/l0001") == 1 && osExists(notes + ".lines/l0002") == 0);
+
+    banner("5. Open: exact lines, and files that cannot be split");
+    app.accelerate("Ctrl+N");
+    app.type("entry", "one");
+    app.accelerate("Ctrl+I");
+    app.type("entry", "");
+    app.accelerate("Ctrl+I");
+    app.type("entry", "three");
+    app.accelerate("Ctrl+I");
+    app.accelerate("Ctrl+Shift+S");
+    app.type("dlg-path", second);
+    app.click("dlg-ok");
+    check("a second document saved, with an empty line", slurp(second) == "one\n\nthree\n");
+    check("a clean tab closes at once", app.accelerate("Ctrl+W") && app.tabTotal() == 1);
+    app.accelerate("Ctrl+O");
+    check("Open shows the dialog", app.dialogMode() == 1 && t("dlg-title") == "Open file: type a path");
+    app.type("dlg-path", second);
+    app.click("dlg-ok");
+    check("reopened with the exact lines", app.tabTotal() == 2 && app.activeTab().body().lineCount() == 3 && app.activeTab().body().lineAt(1) == "" && app.activeTab().body().lineAt(2) == "three");
+    check("a loaded document is clean and editable", !app.activeTab().isDirty() && !app.activeTab().isReadOnly());
+    app.accelerate("Ctrl+O");
+    app.type("dlg-path", second);
+    app.click("dlg-ok");
+    check("opening an open file switches to its tab", app.tabTotal() == 2 && t("status-left") == "already open: " + second);
+    dump(plain, "x1\nx2\n");
+    app.accelerate("Ctrl+O");
+    app.type("dlg-path", plain);
+    app.click("dlg-ok");
+    check("a file without a sidecar opens unsplit and read-only", app.tabTotal() == 3 && app.activeTab().isReadOnly() && app.activeTab().body().lineCount() == 1);
+    check("the tab says so", t("tab-2") == plain + " [read-only]");
+    check("editing is disabled for it", !en("mi-insertLine") && !en("mi-replaceLine") && !app.accelerate("Ctrl+I"));
+    check("and Save As is refused", app.accelerate("Ctrl+Shift+S") == false && app.dialogMode() == 0 && app.statusIsError());
+    check("the document itself refuses edits", app.activeTab().edit(0, 0, "x", "gui") < 0);
+    dump(notes, "someone else wrote this\n");
+    app.accelerate("Ctrl+W");
+    app.click("tab-0");
+    app.accelerate("Ctrl+W");
+    check("the stale tab and the unsplit tab are closed", app.tabTotal() == 1);
+    app.accelerate("Ctrl+O");
+    app.type("dlg-path", notes);
+    app.click("dlg-ok");
+    check("a changed file never uses the stale sidecar", app.tabTotal() == 2 && app.activeTab().isReadOnly() && app.activeTab().body().lineAt(0) == "someone else wrote this\n");
+    int tabsBefore = app.tabTotal();
+    app.accelerate("Ctrl+O");
+    app.type("dlg-path", base + "/does-not-exist.txt");
+    app.click("dlg-ok");
+    check("opening a missing file fails closed", app.tabTotal() == tabsBefore && app.statusIsError() && t("status-left") == "open failed (code 4)");
+    app.accelerate("Ctrl+O");
+    app.click("dlg-ok");
+    check("opening an empty path fails closed", app.tabTotal() == tabsBefore && t("status-left") == "no path given");
+
+    banner("6. tabs");
+    int where = app.activeIndex();
+    app.accelerate("Ctrl+Tab");
+    check("Ctrl+Tab goes to the next tab", app.activeIndex() == (where + 1) % 2);
+    app.accelerate("Ctrl+Shift+Tab");
+    check("Ctrl+Shift+Tab goes back", app.activeIndex() == where);
+    app.click("tab-1");
+    check("clicking a tab selects it", app.activeIndex() == 1 && t("row-0") == "someone else wrote this\n");
+    app.click("tab-0");
+    check("and the other", app.activeIndex() == 0 && t("row-0") == "one");
+
+    banner("7. the GUI document listener sees external changes");
+    SLGuiDocTab target = app.tabAt(0);
+    SLGuiDocListener.Responder lis = target.guiListener();
+    int before = lis.changeCount();
+    target.editAs(1, 0, "remote edit", "alice");
+    check("the listener counted the change as external", lis.changeCount() == before + 1 && lis.externalCount() == 1 && lis.latestExternal() == "alice");
+    check("a repaint was latched", app.refresh());
+    check("the editor shows the remote edit", t("row-0") == "remote edit");
+    check("the status line names who changed it", t("status-right") == "White | changed by alice (1 external change(s))");
+    check("in the warning ink", v.styleOf("status-right") == app.look().style("status-external"));
+    check("the tab became dirty", target.isDirty() && t("tab-0") == second + "*");
+    check("nothing else to repaint", !app.refresh());
+    app.click("row-0");
+    check("selecting a line acknowledges it", !lis.hasExternal() && t("status-right") == "White | in step at revision 4");
+
+    banner("8. the listener is an observer listener: pause and resume");
+    SLDocumentObserver ob = target.observer();
+    check("pause the GUI listener", ob.pause("gui-listener"));
+    int seenChanges = lis.changeCount();
+    int notesBefore = lis.noteCount();
+    target.editAs(1, 1, "while paused", "bob");
+    check("a paused listener sees nothing", lis.changeCount() == seenChanges);
+    check("its miss was counted", lis.portOf().missedCount() == 1);
+    check("resume it", ob.resume("gui-listener"));
+    target.settle();
+    check("it is told it resumed", lis.noteCount() == notesBefore + 1);
+    check("the document kept the change", target.body().lineAt(1) == "while paused");
+    check("and a repaint is due", app.refresh() && t("row-1") == "while paused");
+
+    banner("9. discard confirmations");
+    check("Close Tab on a dirty tab asks first", app.accelerate("Ctrl+W") && app.dialogMode() == 3);
+    check("the dialog names the tab", t("dlg-title") == "Discard unsaved changes in " + second + "?");
+    check("the path box is hidden for a confirmation", !vis("dlg-path"));
+    app.click("dlg-cancel");
+    check("Cancel keeps the tab", app.tabTotal() == 2 && app.dialogMode() == 0);
+    app.accelerate("Ctrl+W");
+    app.click("dlg-ok");
+    check("Discard closes it", app.tabTotal() == 1);
+    check("the file on disk was not touched", slurp(second) == "one\n\nthree\n");
+
+    banner("10. the 14-tab limit");
+    while (app.tabTotal() < 14) { app.accelerate("Ctrl+N"); }
+    check("14 tabs open", app.tabTotal() == 14 && vis("tab-13"));
+    check("a 15th is refused", !app.accelerate("Ctrl+N") && app.tabTotal() == 14 && app.statusIsError());
+    check("the status explains", t("status-left") == "tab limit reached (14)");
+
+    banner("11. quit");
+    app.type("entry", "unsaved");
+    app.accelerate("Ctrl+I");
+    check("quit with a dirty tab asks first", app.accelerate("Ctrl+Q") && app.dialogMode() == 4 && !app.quitRequested());
+    app.click("dlg-cancel");
+    check("Cancel keeps the program running", !app.quitRequested());
+    app.accelerate("Ctrl+Q");
+    app.click("dlg-ok");
+    check("Discard quits", app.quitRequested());
+    SLGuiDocApp fresh = new SLGuiDocApp();
+    fresh.configure();
+    fresh.accelerate("Ctrl+N");
+    check("a clean app quits at once", fresh.accelerate("Ctrl+Q") && fresh.quitRequested() && fresh.dialogMode() == 0);
+
+    notesCleanup(base, notes, second, plain);
+
+    banner("result");
+    print("  passed " + passed + ", failed " + failed);
+    print("  commands run " + app.executedCount() + ", refused " + app.refusedCount()
+        + ", nodes " + v.nodeCount());
+  }
+
+  void notesCleanup(String base, String a, String b, String c) {
+    SLGuiDocFile f = new SLGuiDocFile();
+    f.configure(".lines", 65536);
+    f.forget(a);
+    f.forget(b);
+    f.forget(c);
+    osRemove(base);
+  }
+}

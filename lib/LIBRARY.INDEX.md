@@ -1,5 +1,7 @@
 # SLeeLa /lib Library Index
 
+> Revision 0.86 adds the **`guidoc`** package (`lib/guidoc/`): the document GUI, in white. A GUI document listener (`SLGuiDocListener`, an observer module admitted to each tab) keeps the screen in step with a standing document and flags external changes; around it sit tabs (up to 14), menus with accelerators and enabled-when conditions, a line editor, open and save-as dialogs, discard confirmations, and load/save through `SLGuiDocFile` (atomic plain-text save plus a one-file-per-line sidecar; load accepts a split only if it rejoins to the file exactly, otherwise opens unsplit and read-only). The GUI is described by `gui-document.xsd` / `gui-document.xml` and built from `SLGuiDocSpec`; every colour comes from the White flavor via `SLGuiDocWhite`. `SLGuiDocTab`, `SLGuiDocView` (76-node widget tree) and `SLGuiDocApp` (controller) complete it; `guidoc-demo` makes 99 self-checks. `tools/validate_gui_document.py` checks the XML against the schema, the cross-field rules and `SLGuiDocSpec.standard()`. Documentation: `lib/guidoc/GUIDOC.md`. Eight new source units (counts: 13265 to **13273** sources; 13349 to **13357** total records; 120 to **121** packages).
+
 > Revision 0.85 adds the **`softlisten`** package (`lib/softlisten/`): soft offers and soft listeners. People offer document edits, observer modules and vertical-integration tiers; nothing takes effect until the consuming model agrees. While an offer waits, the Malice, Ties and Loader soft listeners (nested in `SLSoftOfferDesk`) ascertain it, plus a use-model check against the live document, and attach findings of severity info/warn/hold/block; holds clear when the world changes, blocks do not. Soft listeners can be paused, altered (level) and retired, and fail closed (an unavailable listener holds every offer). `SLHotLinker` gains `preflight`, a dry run that `attach` itself now uses. `softlisten-demo` makes 81 self-checks. Documentation: `lib/softlisten/SOFTLISTEN.md`. Three new source units (counts: 13262 to **13265** sources; 13346 to **13349** total records; 119 to **120** packages).
 
 > Revision 0.84 adds the **`hotlink`** package (`lib/hotlink/`): the hot-link matrix and its backing model. `hotlink-matrix.xsd` / `hotlink-matrix.xml` declare which types of class may join a running system (code arrival, instance arrival, contract, trust floor, cap, gates) and which types may be connected, in what mode and fan-out; `SLHotLinkRow`, `SLHotLinkMatrix` (validated, sealable), `SLHotLinker` (instance and connection gate: trust floor, caps, cycle guard, native authorizer plus host-pinned digest, audit trail) and `SLHotLinkIntegration` (grows a vertical-integration stack and moves value only along approved connections) enforce it; `hotlink-demo` makes 80 self-checks. `tools/validate_hotlink_matrix.py` checks the XML against the schema, the cross-field rules and `standard()`. Documentation: `lib/hotlink/HOTLINK.md`. Five new source units (counts: 13257 to **13262** sources; 13341 to **13346** total records; 118 to **119** packages).
@@ -40,10 +42,10 @@
 
 
 **Revision:** 0.82  
-**Packages:** 120  
-**SLeeLa source units:** 13265  
+**Packages:** 121  
+**SLeeLa source units:** 13273  
 **Module-facade symbols:** 84  
-**Total symbol records:** 13349  
+**Total symbol records:** 13357  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.66 brings three big-number improvements that make a 10,000,000-digit
