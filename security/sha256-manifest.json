@@ -1151,11 +1151,11 @@
     },
     {
       "path": "lib/advantage/learner-vs-professional/series/01-registry-intake/DiRegistryIntake.sleela",
-      "sha256": "f41384e78755fd1dbb851dde379f098acf48ee0fdd37df9fc848b33c1c47e638"
+      "sha256": "6d066b0198c2c49051f8f37d4b187299b01c7e2945259c545ce9676b475616ab"
     },
     {
       "path": "lib/advantage/learner-vs-professional/series/02-student-input-gate/DiStudentInput.sleela",
-      "sha256": "342fcc8d5c22f1cfa072d13c903890e32a0c8da4fbb7730b10d9346c2912cc6c"
+      "sha256": "6cdb684d4d4361ef946d300ef80947b0a7fddefaf22b7da423a44767c9a6061b"
     },
     {
       "path": "lib/advantage/learner-vs-professional/series/03-system-readiness/DiSystemReadiness.sleela",
@@ -1163,7 +1163,19 @@
     },
     {
       "path": "lib/advantage/learner-vs-professional/series/04-agreement/DiAgreement.sleela",
-      "sha256": "0f039330c867ee1e24da7d0ba915d876ff5ef69338d892befe4a413891998e54"
+      "sha256": "0553d2497ac19b507da53dbc8bd179c56d6ffc10ec91274c5dc2df4893f2111f"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/05-nested-carriers/DiNestedCarriers.sleela",
+      "sha256": "1745e5b541aadb60049be146194db5fdd7b08a4ad98e11f3b87d1fb3caae7475"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/06-purchase-onion/DiPurchaseOnion.sleela",
+      "sha256": "4ff1f9353b768c88f86fa37bf23b4c7990835644d49167fc0568cac7222773b1"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/series/SLNounRegistry.sleela",
+      "sha256": "fb48637681d1069f5af101e634218bdb533082b50f544122a11fcad06edfc208"
     },
     {
       "path": "lib/advantage/math/SLBilateralNewsvendor.sleela",

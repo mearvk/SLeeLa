@@ -1,0 +1,18 @@
+== Lesson 6: purchase onion ==
+-- master (onion) from the true quotes --
+  supplier A total = 11650 cents
+  supplier B total = 12400 cents
+  master picks supplier A
+-- student, first pass: the discount entry was missed --
+  supplier A total = 12450 cents
+  supplier B total = 12400 cents
+  student picks supplier B
+  verdict: totals differ, supplier A is off by 800 cents -> re-observe supplier A
+-- student, second pass: A discount observed and registered --
+  supplier A total = 11650 cents
+  supplier B total = 12400 cents
+  student picks supplier A
+  verdict: AGREE, work accepted
+-- concerns: a quote outside the field --
+  not observed (not in field purchase of one item)
+  supplier C is not observed, so it is not compared

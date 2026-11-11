@@ -1,6 +1,6 @@
 # SLeeLa /lib Library Index
 
-> Revision 0.90 adds the Device Instructor series to the **`advantage`** package (`lib/advantage/learner-vs-professional/series/`): four runnable courseware lessons (`DiRegistryIntake`, `DiStudentInput`, `DiSystemReadiness`, `DiAgreement`) showing that the Device Instructor accepts good input about the system and about students, plus `MANUAL.md` for user concerns. Four new source units (counts: 13276 to **13280** sources; 13360 to **13364** total records; 121 packages).
+> Revision 0.90 adds the Device Instructor series to the **`advantage`** package (`lib/advantage/learner-vs-professional/series/`): six runnable courseware lessons (`DiRegistryIntake`, `DiStudentInput`, `DiSystemReadiness`, `DiAgreement`, `DiNestedCarriers`, `DiPurchaseOnion`) on a shared `SLNounRegistry` (a carrier is the field or a registered noun; chains lead back to the field), each with an `.expected.txt` checked by `test-suites/test-device-instructor.sh`, plus `MANUAL.md` for user concerns and unit 1 of the children and adults courseware. Seven new source units (counts: 13276 to **13283** sources; 13360 to **13367** total records; 121 packages).
 
 > Revision 0.89 completes the wiring of the `guidoc` document GUI (release 1.2.0). An audit found settings the XML declared that nothing read (`fileDialog maxLines`, `listener flagExternal`, `command confirmsDiscard`) and gaps in the editor: no way to move the selection or scroll past the visible rows, no Enter/Esc in dialogs and menus, no window-close handling, no single entry point for a host. Now: Previous/Next Line and Page Up/Down (the editor scrolls with the selection), Edit Line (F2) loads the selected line into the entry, a `<keys>` section binds Enter/Esc, `requestClose()` handles the window close button, `SLGuiDocHost.event()` is the one host entry (press, type, key, close, tick), the three settings are wired and `applySettings()` re-reads them, and a twelfth readiness check (`wiring`) proves every widget command and key reaches a handler. Painting now serves latched repaints so a tick only repaints for outside changes. The demo makes 275 self-checks (each setting is changed and its effect observed); 19/19 commands and menu items covered. No new source units (counts unchanged: 13276 sources, 13360 total records, 121 packages).
 
@@ -51,9 +51,9 @@
 
 **Revision:** 0.82  
 **Packages:** 121  
-**SLeeLa source units:** 13280  
+**SLeeLa source units:** 13283  
 **Module-facade symbols:** 84  
-**Total symbol records:** 13364  
+**Total symbol records:** 13367  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.66 brings three big-number improvements that make a 10,000,000-digit

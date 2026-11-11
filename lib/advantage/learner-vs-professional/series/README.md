@@ -1,16 +1,25 @@
 # Device Instructor Series
 
-Four runnable SLeeLa lessons for people who want to see that the **Device
+Six runnable SLeeLa lessons for people who want to see that the **Device
 Instructor** is ready to receive good input about the **System** and about
-**Students**. Each lesson is one class with a `main()`, in its own folder, and
-prints a short transcript you can check against this page.
+**Students**. Each lesson is one class with a `main()`, in its own folder, with
+an `.expected.txt` file holding its exact output. Lessons 1, 2 and 4 to 6 build
+on the shared [`SLNounRegistry`](./SLNounRegistry.sleela).
 
 | # | lesson | the Instructor shows that it... |
 |---|--------|---------------------------------|
-| 1 | [`01-registry-intake`](./01-registry-intake/DiRegistryIntake.sleela) | refuses input until a field of observation is declared, keeps one carrier per noun, and answers "not observed" for anything unregistered |
+| 1 | [`01-registry-intake`](./01-registry-intake/DiRegistryIntake.sleela) | refuses input until a field of observation is declared, keeps one carrier per noun, accepts a carrier only if it is the field or a registered noun, and answers "not observed" for anything unregistered |
 | 2 | [`02-student-input-gate`](./02-student-input-gate/DiStudentInput.sleela) | accepts only a claim with registered evidence in sequitur order, and says exactly why it refuses anything else |
 | 3 | [`03-system-readiness`](./03-system-readiness/DiSystemReadiness.sleela) | checks system readings for presence, plausibility and sufficiency before declaring itself ready |
-| 4 | [`04-agreement`](./04-agreement/DiAgreement.sleela) | compares the student and the Purchase Master entry by entry and points at what to re-observe |
+| 4 | [`04-agreement`](./04-agreement/DiAgreement.sleela) | compares the student and the Purchase Master registries entry by entry and points at what to re-observe |
+| 5 | [`05-nested-carriers`](./05-nested-carriers/DiNestedCarriers.sleela) | handles a carrier that is itself carried: prints the chain back to the field, counts what a carrier holds, and refuses a second place, an unregistered carrier or a self-carrier |
+| 6 | [`06-purchase-onion`](./06-purchase-onion/DiPurchaseOnion.sleela) | takes registry to onion: the student totals registered quotes by hand, the Purchase Master runs the Sequitur onion, and the two are compared until they agree |
+
+Courseware that uses these lessons:
+[children, unit 1](../courseware/children/unit-01-true-or-false.md) (lessons 1
+and 2) and
+[adults, unit 1](../courseware/adults/unit-01-propositional-logic.md) (lessons
+1, 2, 4 and 5).
 
 ## Running
 
@@ -20,14 +29,30 @@ From the repository root, with the verified-build manifest in place:
 working-binaries/sleela run lib/advantage/learner-vs-professional/series/01-registry-intake/DiRegistryIntake.sleela
 ```
 
-Do the same for the other three. Lessons are independent; the suggested order
-is 1 to 4. See [`MANUAL.md`](./MANUAL.md) for user concerns and troubleshooting.
+Do the same for the others. A lesson finds `SLNounRegistry` (and, for lesson
+6, the `lib/advantage` onion classes) in the folders above it. Lessons are
+independent; the suggested order is 1 to 6. See [`MANUAL.md`](./MANUAL.md) for
+user concerns and troubleshooting.
 
-## Expected transcripts (key lines)
+## Assurance
+
+`test-suites/test-device-instructor.sh` runs every lesson and compares its
+output with the lesson `.expected.txt`, line for line. It also checks that
+every lesson has a `main()`, the Metadata block and an expected file.
+
+```
+bash test-suites/test-device-instructor.sh
+```
+
+If a lesson is changed on purpose, review the new output and regenerate its
+expected file with `UPDATE=1 bash test-suites/test-device-instructor.sh`.
+
+## What each transcript proves (key lines)
 
 1. Lesson 1: the first `register` is refused with "declare the field of
-   observation first"; the second `ball` is refused as a duplicate; `kite` is
-   "not observed". Tally: `accepted=3 refused=2 registered=3`.
+   observation first"; the second `ball` is refused as a duplicate; `kite` in
+   the unregistered `green box` is refused; `kite` is "not observed".
+   Tally: `accepted=5 refused=3 registered=5`.
 2. Lesson 2: three of six submissions are refused, one each for an empty claim,
    unregistered evidence and wrong step order. Tally:
    `good=3 refused=3 last accepted step=3`.
@@ -35,8 +60,15 @@ is 1 to 4. See [`MANUAL.md`](./MANUAL.md) for user concerns and troubleshooting.
    to "the instructor is ready to receive input".
 4. Lesson 4: first comparison has 2 differences; after the student
    re-observes, the verdict is "AGREE, work accepted".
+5. Lesson 5: `order 2 -> order list -> customer-17 -> customer file` at depth
+   3; three refusals. Tally: `accepted=7 refused=3 registered=7`.
+6. Lesson 6: the master picks supplier A at 11650 cents; the student first
+   misses an 800-cent discount and picks supplier B (12450 vs 12400), is told
+   to re-observe supplier A, then agrees.
 
 ## Conventions
 
 - Every class carries the Metadata Class metapattern (baseline identity).
-- A reading of `-1` means "not observed". It is never guessed or counted as ready.
+- A reading of `-1`, or a noun the registry has not seen, is "not observed". It
+  is never guessed and never counted as ready.
+- Money is integer cents.

@@ -1,0 +1,9 @@
+== Lesson 2: student input gate ==
+  step 1 [the ball is in the red box] evidence=red box : good input
+  step 2 [] evidence=blue box : refused: say what you claim
+  step 2 [the book is in the blue box] evidence=green box : refused: evidence is not an entry in the registry
+  step 3 [the ball is a noun] evidence=ball : refused: this step does not follow the last accepted step
+  step 2 [the blue box is on the shelf] evidence=blue box : good input
+  step 3 [the ball is a noun] evidence=ball : good input
+-- instructor tally --
+  good=3 refused=3 last accepted step=3

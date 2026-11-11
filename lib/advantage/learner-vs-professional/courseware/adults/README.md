@@ -3,9 +3,9 @@
 Precise lessons on logic and processes, with worked problems that end in the
 Advantage(TM) Sequitur onion model.
 
-Planned units (outline only, to be written):
+Units (unit 1 is written with exercises and an answer key; 2 to 5 are outlines):
 
-1. Propositional logic: connectives, truth tables, equivalences.
+1. Propositional logic: connectives, truth tables, equivalences. **Written:** [unit-01-propositional-logic.md](./unit-01-propositional-logic.md)
 2. Predicates and reasoning: quantifiers, valid and invalid inference.
 3. Processes and algorithms: sequence, selection, iteration, correctness.
 4. Complexity basics: cost of a procedure as input grows.

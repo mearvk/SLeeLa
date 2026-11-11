@@ -1,6 +1,6 @@
 << lib/advantage/learner-vs-professional/series/02-student-input-gate/DiStudentInput.sleela
-   SLeeLa courseware lesson.
-   Definition: Device Instructor gate that accepts only good student input: a claim, registered evidence, and the next step in sequitur order. >>
+   SLeeLa courseware.
+   Definition: Device Instructor gate that accepts only good student input: a claim, evidence registered in the shared registry, and the next step in sequitur order. >>
 #sleela 3.0
 material;
 artifact;
@@ -51,31 +51,16 @@ class DiStudentInput {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  String[] registry = new String[8];
-  int regCount = 0;
+  SLNounRegistry reg = new SLNounRegistry();
   int lastStep = 0;
   int good = 0;
   int refused = 0;
-
-  void addEntry(String id) {
-    registry[regCount] = id;
-    regCount = regCount + 1;
-  }
-
-  boolean registered(String id) {
-    int i = 0;
-    while (i < regCount) {
-      if (registry[i] == id) { return true; }
-      i = i + 1;
-    }
-    return false;
-  }
 
   < Result codes: 0 good, 1 empty claim, 2 evidence not registered, 3 step out of order. >
   int submit(int step, String claim, String evidence) {
     int code = 0;
     if (claim == "") { code = 1; }
-    else if (!registered(evidence)) { code = 2; }
+    else if (!reg.has(evidence)) { code = 2; }
     else if (step != lastStep + 1) { code = 3; }
     if (code == 0) {
       lastStep = step;
@@ -100,16 +85,17 @@ class DiStudentInput {
 
   void main() {
     print("== Lesson 2: student input gate ==");
-    addEntry("red box");
-    addEntry("blue box");
-    addEntry("shelf");
+    reg.declareField("toy shelf");
+    reg.register("red box", "toy shelf");
+    reg.register("blue box", "toy shelf");
+    reg.register("ball", "red box");
 
     show(1, "the ball is in the red box", "red box");
     show(2, "", "blue box");
     show(2, "the book is in the blue box", "green box");
-    show(3, "the block is on the shelf", "shelf");
-    show(2, "the book is in the blue box", "blue box");
-    show(3, "the block is on the shelf", "shelf");
+    show(3, "the ball is a noun", "ball");
+    show(2, "the blue box is on the shelf", "blue box");
+    show(3, "the ball is a noun", "ball");
 
     print("-- instructor tally --");
     print("  good=" + good + " refused=" + refused + " last accepted step=" + lastStep);

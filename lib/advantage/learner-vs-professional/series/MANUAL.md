@@ -25,7 +25,8 @@ The Instructor always states the reason.
 |---------|-------|-----|
 | declare the field of observation first | no field was declared | declare the field, then register |
 | noun already has a carrier (one place only) | the noun is registered under another carrier | keep one carrier; correct the earlier entry if it was wrong |
-| registry is full | the lesson registry holds 16 entries | start a new registry |
+| registry is full | the shared registry holds 32 entries | start a new registry |
+| carrier is not the field and not a registered noun | the carrier is unknown (or the noun names itself) | register the carrier first, under the field or another registered noun |
 | say what you claim | the claim was empty | write the claim in words |
 | evidence is not an entry in the registry | the evidence names something unregistered | register it first, or cite the right entry |
 | this step does not follow the last accepted step | steps must go 1, 2, 3 in order | submit the next step number |
@@ -38,7 +39,7 @@ supply the reading.
 
 ## 4. My result and the Purchase Master's result differ.
 
-Run lesson 4. Each difference names one noun and says whether it is a
+Run lesson 4 (or lesson 6 for money). Each difference names one noun and says whether it is a
 mismatch ("re-observe") or seen by only one side. Look again at that entry
 only, correct it, and compare again. The work is accepted when the verdict
 is AGREE. Do not change entries to match without looking.
@@ -49,13 +50,22 @@ The lessons hold everything in memory for the run and write nothing to disk
 or the network. Closing the program discards it. Use only invented or
 non-sensitive names in lessons.
 
+## 5a. How do I read a nested chain?
+
+Run lesson 5. A chain such as `order 2 -> order list -> customer-17 -> customer
+file` reads "order 2 is carried by order list, which is carried by customer-17,
+which is in the customer file". Each noun has one place; the last name is
+always the field. If the chain says "not observed", the noun is not in the
+field.
+
 ## 6. Running problems
 
 | symptom | cause | fix |
 |---------|-------|-----|
 | "SHA-256 verification required" or "mismatch" | the verified-build manifest does not match the files | regenerate it: `python3 tools/generate-sha256-manifest.py --root . --output security/sha256-manifest.json` |
 | "verification tool not found" | the toolchain root is not found | set `SLEELA_HOME` to the repository root |
-| "no 'main' method found" | a library class was checked alone | run a lesson that has a `main()` |
+| "no 'main' method found" | a library class (such as `SLNounRegistry`) was checked alone | run a lesson that has a `main()` |
+| a lesson prints the wrong thing after an edit | the output no longer matches `.expected.txt` | run `bash test-suites/test-device-instructor.sh` to see the first difference |
 | "unexpected token '<'" after editing | a `<` comment shares a line with code | put the comment on its own line |
 | "unexpected character" in a comment | an apostrophe in a comment | reword without it |
 

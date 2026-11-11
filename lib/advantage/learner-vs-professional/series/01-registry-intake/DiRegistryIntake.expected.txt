@@ -1,0 +1,19 @@
+== Lesson 1: registry intake ==
+-- before the field is declared --
+  register red box -> toy shelf : refused: declare the field of observation first
+-- declare the field, then register carriers and nouns --
+  register red box -> toy shelf : accepted
+  register blue box -> toy shelf : accepted
+  register ball -> red box : accepted
+  register book -> blue box : accepted
+  register block -> toy shelf : accepted
+-- placement check: a second carrier for ball --
+  register ball -> blue box : refused: noun already has a carrier (one place only)
+-- carrier check: a carrier nobody has registered --
+  register kite -> green box : refused: carrier is not the field and not a registered noun
+-- direct observation --
+  ball -> red box -> toy shelf
+  block -> toy shelf
+  not observed (not in field toy shelf)
+-- instructor tally --
+  accepted=5 refused=3 registered=5

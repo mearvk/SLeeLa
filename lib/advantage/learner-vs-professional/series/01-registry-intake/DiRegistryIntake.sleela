@@ -1,14 +1,15 @@
 << lib/advantage/learner-vs-professional/series/01-registry-intake/DiRegistryIntake.sleela
-   SLeeLa courseware lesson.
-   Definition: Device Instructor intake: a registry of nouns and noun-carriers inside a declared field of observation. >>
+   SLeeLa courseware.
+   Definition: Device Instructor intake: the shared registry refuses input until a field of observation is declared and keeps one carrier per noun. >>
 #sleela 3.0
 material;
 artifact;
 pure;
 gasoline;
 < Lesson 1. The Device Instructor accepts registry input only after the >
-< field of observation is declared, and only if each noun has exactly one >
-< carrier. Anything not registered is answered as not observed. >
+< field of observation is declared, only if each noun has one carrier, and >
+< only if that carrier is the field or a noun already registered. Anything >
+< not registered is answered as not observed. >
 class DiRegistryIntake {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. A worker-class
@@ -51,75 +52,38 @@ class DiRegistryIntake {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  String field = "";
-  String[] nouns = new String[16];
-  String[] carriers = new String[16];
-  int count = 0;
-  int accepted = 0;
-  int refused = 0;
-
-  void declareField(String name) { field = name; }
-
-  < Returns the index of a noun, or -1 when it is not registered. >
-  int indexOf(String noun) {
-    int i = 0;
-    while (i < count) {
-      if (nouns[i] == noun) { return i; }
-      i = i + 1;
-    }
-    return -1;
-  }
-
-  < Result codes: 0 accepted, 1 field not declared, 2 noun already placed, 3 registry full. >
-  int register(String noun, String carrier) {
-    if (field == "") { refused = refused + 1; return 1; }
-    if (indexOf(noun) >= 0) { refused = refused + 1; return 2; }
-    if (count >= 16) { refused = refused + 1; return 3; }
-    nouns[count] = noun;
-    carriers[count] = carrier;
-    count = count + 1;
-    accepted = accepted + 1;
-    return 0;
-  }
-
-  String reason(int code) {
-    if (code == 0) { return "accepted"; }
-    if (code == 1) { return "refused: declare the field of observation first"; }
-    if (code == 2) { return "refused: noun already has a carrier (one place only)"; }
-    return "refused: registry is full";
-  }
-
-  String observe(String noun) {
-    int i = indexOf(noun);
-    if (i < 0) { return "not observed (not in field " + field + ")"; }
-    return noun + " is carried by " + carriers[i];
-  }
+  SLNounRegistry reg = new SLNounRegistry();
 
   void tryRegister(String noun, String carrier) {
-    int code = register(noun, carrier);
-    print("  register " + noun + " -> " + carrier + " : " + reason(code));
+    int code = reg.register(noun, carrier);
+    print("  register " + noun + " -> " + carrier + " : " + reg.reason(code));
   }
 
   void main() {
     print("== Lesson 1: registry intake ==");
     print("-- before the field is declared --");
-    tryRegister("ball", "red box");
+    tryRegister("red box", "toy shelf");
 
-    print("-- declare the field, then register --");
-    declareField("toy shelf");
+    print("-- declare the field, then register carriers and nouns --");
+    reg.declareField("toy shelf");
+    tryRegister("red box", "toy shelf");
+    tryRegister("blue box", "toy shelf");
     tryRegister("ball", "red box");
     tryRegister("book", "blue box");
-    tryRegister("block", "shelf");
+    tryRegister("block", "toy shelf");
 
     print("-- placement check: a second carrier for ball --");
     tryRegister("ball", "blue box");
 
+    print("-- carrier check: a carrier nobody has registered --");
+    tryRegister("kite", "green box");
+
     print("-- direct observation --");
-    print("  " + observe("ball"));
-    print("  " + observe("block"));
-    print("  " + observe("kite"));
+    print("  " + reg.chain("ball"));
+    print("  " + reg.chain("block"));
+    print("  " + reg.chain("kite"));
 
     print("-- instructor tally --");
-    print("  accepted=" + accepted + " refused=" + refused + " registered=" + count);
+    print("  accepted=" + reg.acceptedCount() + " refused=" + reg.refusedCount() + " registered=" + reg.size());
   }
 }

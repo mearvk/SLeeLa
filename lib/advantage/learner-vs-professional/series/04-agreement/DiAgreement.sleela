@@ -1,6 +1,6 @@
 << lib/advantage/learner-vs-professional/series/04-agreement/DiAgreement.sleela
-   SLeeLa courseware lesson.
-   Definition: Device Instructor agreement test: the student and the Purchase Master observe the same field independently and the instructor points at exactly what differs. >>
+   SLeeLa courseware.
+   Definition: Device Instructor agreement test: the student and the Purchase Master each build a registry of the same field and the instructor points at exactly what differs. >>
 #sleela 3.0
 material;
 artifact;
@@ -51,66 +51,28 @@ class DiAgreement {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  String[] sNouns = new String[8];
-  String[] sCarriers = new String[8];
-  int sCount = 0;
-  String[] mNouns = new String[8];
-  String[] mCarriers = new String[8];
-  int mCount = 0;
-
-  void studentAdd(String noun, String carrier) {
-    sNouns[sCount] = noun; sCarriers[sCount] = carrier; sCount = sCount + 1;
-  }
-
-  void masterAdd(String noun, String carrier) {
-    mNouns[mCount] = noun; mCarriers[mCount] = carrier; mCount = mCount + 1;
-  }
-
-  void studentSet(String noun, String carrier) {
-    int i = 0;
-    while (i < sCount) {
-      if (sNouns[i] == noun) { sCarriers[i] = carrier; }
-      i = i + 1;
-    }
-  }
-
-  int masterIndex(String noun) {
-    int i = 0;
-    while (i < mCount) {
-      if (mNouns[i] == noun) { return i; }
-      i = i + 1;
-    }
-    return -1;
-  }
-
-  int studentIndex(String noun) {
-    int i = 0;
-    while (i < sCount) {
-      if (sNouns[i] == noun) { return i; }
-      i = i + 1;
-    }
-    return -1;
-  }
+  SLNounRegistry student = new SLNounRegistry();
+  SLNounRegistry master = new SLNounRegistry();
 
   < Prints each difference and returns the number of differences. >
   int compare() {
     int diffs = 0;
     int i = 0;
-    while (i < sCount) {
-      int j = masterIndex(sNouns[i]);
-      if (j < 0) {
-        print("  " + sNouns[i] + ": student only, master did not observe it");
+    while (i < student.size()) {
+      String noun = student.nounAt(i);
+      if (!master.has(noun)) {
+        print("  " + noun + ": student only, master did not observe it");
         diffs = diffs + 1;
-      } else if (mCarriers[j] != sCarriers[i]) {
-        print("  " + sNouns[i] + ": student says " + sCarriers[i] + ", master says " + mCarriers[j] + " -> re-observe");
+      } else if (master.carrierOf(noun) != student.carrierAt(i)) {
+        print("  " + noun + ": student says " + student.carrierAt(i) + ", master says " + master.carrierOf(noun) + " -> re-observe");
         diffs = diffs + 1;
       }
       i = i + 1;
     }
     int k = 0;
-    while (k < mCount) {
-      if (studentIndex(mNouns[k]) < 0) {
-        print("  " + mNouns[k] + ": master only, student did not observe it");
+    while (k < master.size()) {
+      if (!student.has(master.nounAt(k))) {
+        print("  " + master.nounAt(k) + ": master only, student did not observe it");
         diffs = diffs + 1;
       }
       k = k + 1;
@@ -125,19 +87,31 @@ class DiAgreement {
 
   void main() {
     print("== Lesson 4: agreement ==");
-    masterAdd("ball", "red box");
-    masterAdd("book", "blue box");
-    masterAdd("block", "shelf");
+    master.declareField("toy shelf");
+    master.register("red box", "toy shelf");
+    master.register("blue box", "toy shelf");
+    master.register("ball", "red box");
+    master.register("book", "blue box");
+    master.register("block", "toy shelf");
 
-    studentAdd("ball", "blue box");
-    studentAdd("book", "blue box");
+    student.declareField("toy shelf");
+    student.register("red box", "toy shelf");
+    student.register("blue box", "toy shelf");
+    student.register("ball", "blue box");
+    student.register("book", "blue box");
 
     print("-- first comparison --");
     verdict(compare());
 
-    print("-- student re-observes ball and adds block --");
-    studentSet("ball", "red box");
-    studentAdd("block", "shelf");
+    print("-- student starts over: re-observes ball and adds block --");
+    SLNounRegistry again = new SLNounRegistry();
+    again.declareField("toy shelf");
+    again.register("red box", "toy shelf");
+    again.register("blue box", "toy shelf");
+    again.register("ball", "red box");
+    again.register("book", "blue box");
+    again.register("block", "toy shelf");
+    student = again;
     print("-- second comparison --");
     verdict(compare());
   }

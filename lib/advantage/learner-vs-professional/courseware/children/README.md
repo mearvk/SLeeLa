@@ -3,9 +3,9 @@
 Play-based lessons on logic and processes, built around the onion idea:
 peel one layer at a time, and each layer follows the one before it.
 
-Planned units (outline only, to be written):
+Units (unit 1 is written with exercises and an answer key; 2 to 5 are outlines):
 
-1. True or false: yes/no questions and simple rules.
+1. True or false: yes/no questions and simple rules. **Written:** [unit-01-true-or-false.md](./unit-01-true-or-false.md)
 2. And, or, not: combining two facts.
 3. If this, then that: following rules.
 4. Steps in order: making a recipe, then repeating steps.
