@@ -9,12 +9,18 @@ Three layers, all fail-closed with exact locations:
      command that can discard work (closing a tab, quitting) asks for
      confirmation; each handler exists as a method of SLGuiDocApp; the window
      theme equals --require-theme (default: white).
-  3. Drift check: the window, commands, menus, items, tabs, editor, file dialog
-     and listener must match SLGuiDocSpec.standard() exactly.
+  3. Drift check: the window, commands, menus, items, tabs, editor, file dialog,
+     listener and readiness must match SLGuiDocSpec.standard() exactly.
+  4. Readiness gate (--gate): run guidoc-demo with the sleela binary and require
+     a clean run (no FAIL, "failed 0"), a READY lifecycle with no failed check,
+     and COVERAGE >= 1 for every command and every menu item in the XML. A
+     document that claims <readiness status="ready"> is INVALID unless the gate
+     passes; --require-ready additionally demands the claim itself.
 
 Stdlib only. Exit status 0 = valid, 1 = invalid, 2 = usage / missing file.
 """
 import argparse
+import os
 import re
 import shutil
 import subprocess
@@ -64,6 +70,8 @@ def model_of(root):
     m["editor"] = (int(e.get("rows")), tf(e.get("lineNumbers")), tf(e.get("readOnlyWhenUnsplit"))) if e is not None else None
     f = root.find(NS + "fileDialog")
     m["file"] = (f.get("sidecarSuffix"), int(f.get("maxLines")), int(f.get("maxBytes"))) if f is not None else None
+    r = root.find(NS + "readiness")
+    m["readiness"] = (r.get("status"), r.get("release")) if r is not None else None
     l = root.find(NS + "listener")
     m["listener"] = (l.get("port"), tf(l.get("flagExternal"))) if l is not None else None
     return m
@@ -114,6 +122,7 @@ RE_TABS = re.compile(r"setTabs\(\s*(\d+)\s*,\s*%s\s*,\s*%s\s*\)\s*;" % (S, S))
 RE_EDITOR = re.compile(r"setEditor\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*;")
 RE_FILE = re.compile(r"setFileDialog\(\s*%s\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*;" % S)
 RE_LIST = re.compile(r"setListener\(\s*%s\s*,\s*(\d+)\s*\)\s*;" % S)
+RE_READY = re.compile(r"setReadiness\(\s*%s\s*,\s*%s\s*\)\s*;" % (S, S))
 RE_CMD = re.compile(r"addCommand\(\s*%s\s*,\s*%s\s*,\s*(\d+)\s*\)\s*;" % (S, S))
 RE_MENU = re.compile(r"addMenu\(\s*%s\s*,\s*%s\s*\)\s*;" % (S, S))
 RE_ITEM = re.compile(r"addItem\(\s*%s\s*,\s*%s\s*,\s*%s\s*,\s*%s\s*,\s*%s\s*,\s*%s\s*\)\s*;" % ((S,) * 6))
@@ -144,6 +153,8 @@ def drift(m, spec_source, errors):
         one(RE_FILE, m["file"], "setFileDialog")
     if m["listener"]:
         one(RE_LIST, m["listener"], "setListener")
+    if m["readiness"]:
+        one(RE_READY, m["readiness"], "setReadiness")
     src_cmds = [(a, b, int(c)) for a, b, c in RE_CMD.findall(body)]
     xml_cmds = [(a, b, c) for a, b, c, _ in m["commands"]]
     if src_cmds != xml_cmds:
@@ -169,6 +180,56 @@ def drift(m, spec_source, errors):
             fail(errors, "drift", "items are the same but in a different order")
 
 
+def gate(m, sleela, demo, errors):
+    """Run the demo and verify the readiness claim. Returns (ok, summary)."""
+    if not os.path.exists(sleela):
+        fail(errors, "gate", "sleela binary not found: %s (use --sleela)" % sleela)
+        return False, ""
+    try:
+        proc = subprocess.run([sleela, "run", demo], capture_output=True, text=True, timeout=600)
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        fail(errors, "gate", "could not run the demo: %s" % exc)
+        return False, ""
+    out = proc.stdout
+    problems = len(errors)
+    if proc.returncode != 0:
+        fail(errors, "gate", "demo exited with status %d" % proc.returncode)
+    fails = [ln.strip() for ln in out.splitlines() if ln.startswith("  FAIL")]
+    for ln in fails:
+        fail(errors, "gate", "demo check failed: %s" % ln)
+    res = re.search(r"^RESULT passed (\d+) failed (\d+)$", out, re.M)
+    if not res:
+        fail(errors, "gate", "demo printed no RESULT line (did it crash?)")
+    elif int(res.group(2)) != 0:
+        fail(errors, "gate", "demo reports %s failed check(s)" % res.group(2))
+    rd = re.search(r"^READY state (\w+) checks (\d+) failures (\d+)", out, re.M)
+    if not rd or rd.group(1) != "ready" or rd.group(3) != "0":
+        fail(errors, "gate", "the GUI lifecycle did not reach ready with zero failures")
+    cov = {"command": {}, "item": {}}
+    for kind, ident, n in re.findall(r"^COVERAGE (command|item) (\S+) (\d+)$", out, re.M):
+        cov[kind][ident] = int(n)
+    want_cmds = [c[0] for c in m["commands"]]
+    want_items = [i[1] for i in m["items"]]
+    for c in want_cmds:
+        if cov["command"].get(c, 0) < 1:
+            fail(errors, "gate", "command %s was never exercised by the demo" % c)
+    for i in want_items:
+        if cov["item"].get(i, 0) < 1:
+            fail(errors, "gate", "menu item %s was never clicked by the demo" % i)
+    for kind, known in (("command", want_cmds), ("item", want_items)):
+        for ident in cov[kind]:
+            if ident not in known:
+                fail(errors, "gate", "coverage names %s %s which is not in the XML" % (kind, ident))
+    ok = len(errors) == problems
+    summary = ""
+    if res and rd:
+        summary = "demo %s checks, lifecycle %s checks, coverage commands %d/%d items %d/%d" % (
+            res.group(1), rd.group(2),
+            sum(1 for c in want_cmds if cov["command"].get(c, 0) >= 1), len(want_cmds),
+            sum(1 for i in want_items if cov["item"].get(i, 0) >= 1), len(want_items))
+    return ok, summary
+
+
 def read(path, errors):
     try:
         return open(path, encoding="utf-8").read()
@@ -184,6 +245,10 @@ def main():
     ap.add_argument("--spec", default="lib/guidoc/SLGuiDocSpec.sleela")
     ap.add_argument("--app", default="lib/guidoc/SLGuiDocApp.sleela")
     ap.add_argument("--require-theme", default="white")
+    ap.add_argument("--gate", action="store_true", help="run the demo and verify the readiness claim")
+    ap.add_argument("--require-ready", action="store_true", help="demand status=ready and a passing gate")
+    ap.add_argument("--sleela", default="working-binaries/sleela")
+    ap.add_argument("--demo", default="lib/guidoc/guidoc-demo.sleela")
     args = ap.parse_args()
     for p in (args.xml, args.xsd, args.spec, args.app):
         try:
@@ -201,6 +266,16 @@ def main():
     m = model_of(root)
     cross_field(m, read(args.app, errors), args.require_theme, errors)
     drift(m, read(args.spec, errors), errors)
+    claim = m["readiness"][0] if m["readiness"] else "draft"
+    summary = ""
+    gate_ok = None
+    if args.gate or args.require_ready:
+        gate_ok, summary = gate(m, args.sleela, args.demo, errors)
+        if claim == "ready" and not gate_ok:
+            fail(errors, "readiness", "the document claims status=ready but the gate fails")
+    if args.require_ready:
+        if claim != "ready":
+            fail(errors, "readiness", "status is %r, required 'ready'" % claim)
     if errors:
         for e in errors:
             print("INVALID  " + e)
@@ -208,6 +283,13 @@ def main():
         return 1
     print("OK  %d commands, %d menus, %d items; schema, cross-field rules and standard() agree"
           % (len(m["commands"]), len(m["menus"]), len(m["items"])))
+    if gate_ok:
+        print("GATE OK  %s" % summary)
+        if claim == "draft":
+            print("note: the gate passes, so this document may be marked status=\"ready\"")
+    elif claim == "ready":
+        print("note: status=ready is not verified here; run with --gate")
+    print("readiness: %s %s" % (claim, m["readiness"][1] if m["readiness"] else ""))
     return 0
 
 

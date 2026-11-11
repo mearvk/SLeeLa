@@ -1,0 +1,42 @@
+name: SLeeLa GUI Document CI
+
+# Release gate for the document GUI (lib/guidoc): the XML must validate against
+# its schema, match SLGuiDocSpec.standard(), and -- because it claims
+# status="ready" -- the claim is verified by running guidoc-demo (no failed check,
+# READY lifecycle, every command run and every menu item clicked).
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - 'lib/guidoc/**'
+      - 'lib/observer/**'
+      - 'lib/ui/**'
+      - 'tools/validate_gui_document.py'
+      - 'test-suites/test-guidoc.sh'
+      - 'working-binaries/sleela'
+      - 'security/sha256-manifest.json'
+      - '.github/workflows/guidoc-ci.yml'
+  pull_request:
+    paths:
+      - 'lib/guidoc/**'
+      - 'lib/observer/**'
+      - 'lib/ui/**'
+      - 'tools/validate_gui_document.py'
+      - 'test-suites/test-guidoc.sh'
+      - 'working-binaries/sleela'
+      - 'security/sha256-manifest.json'
+      - '.github/workflows/guidoc-ci.yml'
+  workflow_dispatch:
+
+jobs:
+  release-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install xmllint
+        run: sudo apt-get update && sudo apt-get install -y libxml2-utils
+      - name: Make the committed toolchain executable
+        run: chmod +x working-binaries/sleela
+      - name: Document GUI release gate
+        run: bash test-suites/test-guidoc.sh

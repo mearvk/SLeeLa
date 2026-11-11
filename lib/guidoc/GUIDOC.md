@@ -6,10 +6,20 @@ dynamic observer, and a white GUI listener admitted to that observer keeps the
 screen in step with the document, telling edits made through the GUI apart from
 edits made by someone else.
 
+## Quick start
+
 ```
-sleela run lib/guidoc/guidoc-demo.sleela        # 99 self-checks, headless
-python3 tools/validate_gui_document.py          # XML schema + rules + drift
+sleela run lib/guidoc/guidoc.sleela                  # build, check, print the screen
+SLEELA_GUIDOC_OPEN=notes.txt sleela run lib/guidoc/guidoc.sleela     # open a file first
+SLEELA_GUIDOC_PLAN=1 sleela run lib/guidoc/guidoc.sleela             # also print the mount plan
+sleela run lib/guidoc/guidoc-demo.sleela             # 152 self-checks, headless
+bash test-suites/test-guidoc.sh                      # the release gate (CI runs this)
 ```
+
+The launcher ends with `GUIDOC READY 1.0.0 certified (...)` or `GUIDOC NOT READY: ...`.
+(SLeeLa 3.0 `main` cannot set an exit status and `sleela run` treats extra
+arguments as source files, so the launcher takes its file from the environment
+and scripts match the final line.)
 
 ## What it looks like (white)
 
@@ -48,6 +58,7 @@ in the warning ink, external changes in the status line, errors in the danger in
 | `<editor rows lineNumbers readOnlyWhenUnsplit>` | the editor |
 | `<fileDialog sidecarSuffix maxLines maxBytes>` | load and save limits |
 | `<listener port repaintOn flagExternal>` | the GUI document listener |
+| `<readiness status release>` | the readiness claim and the release version |
 
 `SLGuiDocSpec.standard()` is the executable copy; the GUI is **built from it**.
 SLeeLa cannot parse XML at run time (no string access), so
@@ -75,6 +86,47 @@ the XML and `standard()` differ.
 
 While a dialog is open, every other command is refused and the menus are disabled.
 
+## Ready
+
+The GUI is **ready** only after it has proved itself. `configure()` builds it;
+`start()` runs ten named self-checks (`SLGuiDocReady`):
+
+`spec` · `white-theme` · `widget-tree` (node count equals what the spec implies) ·
+`commands-handled` (every spec command has a handler) · `menu-items-bound` (every
+item exists and is bound to its command) · `accelerators-live` · `file-layer` ·
+`listener-port` · `first-paint` · `no-open-dialog`
+
+| State | Meaning |
+|---|---|
+| created | built, not checked: every command, click and accelerator is **refused** |
+| checking | the self-checks are running |
+| ready | every check passed; subscribers are notified |
+| failed | a check failed; the first failure is kept; nothing is notified; `start()` can be retried once fixed |
+
+Like a document-ready event, subscribers register by name with `whenReady()`
+(before or after) and take a one-shot latch with `takeReady()`; a failed gate
+never fires one. A gate with no checks, or with more than 24, does not pass.
+
+### The readiness claim in the XML
+
+`<readiness status="draft|ready" release="1.0.0"/>` is a **claim**, and
+`tools/validate_gui_document.py --gate` verifies it by running `guidoc-demo`:
+no failed check, a READY lifecycle with zero failures, and **coverage** - every
+command in the XML run at least once and every menu item clicked at least once
+(`COVERAGE command|item <id> <n>` lines printed by the demo). A document that
+claims `ready` while the gate fails is INVALID; `--require-ready` also demands the
+claim. `status="ready"` here means exactly that, and no more.
+
+## Host and launcher
+
+* `SLGuiDocHost.outline()` renders the visible GUI as plain text lines (the
+  terminal and headless view).
+* `SLGuiDocHost.mountPlan()` lists every visible node in tree order, with tag,
+  parent, **white role**, background and foreground colour tokens, enabled flag,
+  command and text. That is what a windowing host needs to create real widgets;
+  it never parses a style string (each node carries its role).
+* `guidoc.sleela` is the launcher described under Quick start.
+
 ## The classes
 
 | Class | Role |
@@ -85,7 +137,11 @@ While a dialog is open, every other command is refused and the menus are disable
 | `SLGuiDocListener` | the GUI document listener; nested `Responder` is an observer module |
 | `SLGuiDocTab` | one open document: its observer, its listener, path, dirty state, selection, scroll |
 | `SLGuiDocView` | the widget tree (76 nodes): tag, text, style, visible, enabled, command; press latches |
-| `SLGuiDocApp` | the controller: builds the view from the spec, runs commands, dialogs and tabs, repaints |
+| `SLGuiDocApp` | the controller: builds the view from the spec, runs commands, dialogs and tabs, repaints; `start()` runs the ready gate; counts coverage |
+| `SLGuiDocReady` | the ready lifecycle and gate (named checks, one-shot subscribers) |
+| `SLGuiDocHost` | the host side: text outline and mount plan |
+| `guidoc.sleela` | the launcher |
+| `guidoc-demo.sleela` | 152 self-checks and the coverage sweep |
 
 ## The GUI document listener
 
@@ -123,6 +179,9 @@ until the user acknowledges it by selecting a line or editing. A host loop calls
 
 ## Honest limits
 
+* **The launcher stops at the text outline.** There is no windowing host in
+  this repo that links; the mount plan is the contract for one. `ready` certifies
+  the model, its commands and its screen description, not pixels on a display.
 * **Not mounted on a real window here.** `SLGuiApp`/`SLGuiDom` do not link under
   the committed binary (see `lib/observer/OBSERVER.md`), so the view is a
   self-contained retained widget tree, like `SLObserverView`. A host walks
@@ -139,3 +198,16 @@ until the user acknowledges it by selecting a line or editing. A host loop calls
   host decides which paths a user may reach.
 * The display name of a tab opened from a file is its full path (no basename
   without string access).
+* An unsplit (read-only) file is shown as a one-line notice with its size, not
+  its text: a String cannot be cut into lines, and raw newlines would break the
+  one-line-per-node outline. A windowing host can show the whole blob through
+  `SLGuiDocTab.body().lineAt(0)`.
+
+## Release
+
+* `release` in the XML and `SLGuiDocSpec.standard()` is `1.0.0`; the launcher,
+  About and the status line show it, with `certified` when the claim is `ready`.
+* `test-suites/test-guidoc.sh` is the release gate and
+  `.github/workflows/guidoc-ci.yml` runs it on every change to `lib/guidoc`,
+  the observer, the UI themes, the validator, the committed `sleela` binary or
+  the security manifest.

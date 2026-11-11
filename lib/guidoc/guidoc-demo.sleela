@@ -79,6 +79,18 @@ class GuiDocDemo {
     app.click("menu-" + menu);
     return app.click("mi-" + item);
   }
+  int menuClickOn(SLGuiDocApp a, String menu, String item) {
+    a.click("menu-" + menu);
+    return a.click("mi-" + item);
+  }
+  boolean outlineHas(String line) {
+    SLGuiDocHost host = new SLGuiDocHost();
+    String[] out = new String[96];
+    int n = host.outline(app, out, 96);
+    int i = 0;
+    while (i < n) { if (out[i] == line) { return true; } i = i + 1; }
+    return false;
+  }
   String slurp(String path) {
     int h = openFile(path, "r");
     if (h < 0) { return "<unreadable>"; }
@@ -100,17 +112,82 @@ class GuiDocDemo {
     String second = base + "/second.txt";
     String plain = base + "/plain.txt";
 
-    banner("1. the GUI is built from its spec, in white");
+    banner("0. the ready lifecycle");
     app = new SLGuiDocApp();
     check("the app configures from the spec", app.configure());
     v = app.widgets();
+
+    check("a configured GUI is not ready yet", !app.isReady() && app.lifecycle().getState() == 0 && app.lifecycle().stateName() == "created");
+    check("commands are refused before ready", !app.accelerate("Ctrl+N") && app.tabTotal() == 0);
+    app.click("menu-file");
+    check("clicks do nothing before ready", app.menuOpen() == "" && app.tabTotal() == 0);
+    check("subscribers can register early", app.whenReady("early") && app.whenReady("logger"));
+    check("a duplicate subscriber is refused", !app.whenReady("early"));
+    check("nothing fires before ready", !app.takeReady("early"));
+    check("the gate passes", app.start());
+    check("the state is ready with no failures", app.isReady() && app.lifecycle().stateName() == "ready" && app.lifecycle().failureTotal() == 0);
+    check("ten named checks ran", app.lifecycle().checkTotal() == 10);
+    check("each early subscriber fires exactly once", app.takeReady("early") && !app.takeReady("early") && app.takeReady("logger"));
+    check("a late subscriber still fires", app.whenReady("late") && app.takeReady("late"));
+    check("start is idempotent once ready", app.start() && app.lifecycle().checkTotal() == 10);
+    check("the status line says so", t("status-left") == "ready (draft 1.0.0)" || t("status-left") == "ready (certified 1.0.0)");
+    SLGuiDocApp broken = new SLGuiDocApp();
+    broken.configure();
+    broken.whenReady("watcher");
+    broken.widgets().bind("mi-save", "file.new", 5);
+    check("a miswired menu item fails the gate", !broken.start() && broken.lifecycle().hasFailed());
+    check("the failure names the check", broken.lifecycle().firstFailureText() == "menu-items-bound: 1 menu item(s) missing or bound to the wrong command");
+    check("a failed GUI refuses commands", !broken.accelerate("Ctrl+N") && broken.tabTotal() == 0 && !broken.isReady());
+    check("a failed gate never fires a subscriber", !broken.takeReady("watcher"));
+    check("the failure shows in the status line", broken.statusIsError());
+    broken.widgets().bind("mi-save", "file.save", broken.specification().itemIndex("save"));
+    check("the gate can be retried after the fault is fixed", broken.start() && broken.isReady());
+    check("the retry fires the subscriber", broken.takeReady("watcher"));
+    check("and the GUI now works", broken.accelerate("Ctrl+N") && broken.tabTotal() == 1);
+    SLGuiDocReady gate = new SLGuiDocReady();
+    gate.configure();
+    check("checks cannot be noted before the gate opens", !gate.noteCheck("a", true, ""));
+    gate.begin();
+    gate.noteCheck("a", true, "fine");
+    gate.noteCheck("b", false, "why");
+    check("one failing check fails the gate", !gate.finish() && gate.hasFailed() && gate.firstFailureText() == "b: why");
+    SLGuiDocReady empty = new SLGuiDocReady();
+    empty.configure();
+    empty.begin();
+    check("a gate with no checks does not pass", !empty.finish());
+    SLGuiDocReady flood = new SLGuiDocReady();
+    flood.configure();
+    flood.begin();
+    int c = 0;
+    while (c < 25) { flood.noteCheck("c" + c, true, ""); c = c + 1; }
+    check("an overflowing gate is a failure", !flood.finish() && flood.firstFailureText() == "too many checks");
+
+    banner("1. the GUI is built from its spec, in white");
     SLGuiDocSpec spec = app.specification();
     check("the spec seeded without a refusal", spec.refusedCount() == 0);
     check("4 menus, 12 items, 12 commands", spec.menuTotal() == 4 && spec.itemTotal() == 12 && spec.commandTotal() == 12);
     check("the theme is the white flavor", app.look().isWhite() && spec.getTheme() == "white");
     check("the window is the off-white background with dark ink", v.styleOf("win") == "bg:#F7F8FA;fg:#16202C;");
     check("the editor surface is white", v.styleOf("editor") == "bg:#FFFFFF;fg:#16202C;");
-    check("the widget tree has 76 nodes", v.nodeCount() == 76);
+    check("the widget tree has 76 nodes", v.nodeCount() == 76 && app.expectedNodes() == 76);
+    int whiteNodes = 0;
+    int ni = 0;
+    while (ni < v.nodeCount()) {
+      if (v.roleAt(ni) != "" && v.styleAt(ni) == app.look().style(v.roleAt(ni))) { whiteNodes = whiteNodes + 1; }
+      ni = ni + 1;
+    }
+    check("every node has a white role and takes its style from it", whiteNodes == 76);
+    check("a style maps back to a role, and bg/fg resolve by role", app.look().roleOfStyle("bg:#F7F8FA;fg:#16202C;") == "window" && app.look().bgOf("row-selected") == "#1F6FEB" && app.look().fgOf("row-selected") == "#FFFFFF");
+    check("the editor is a different role from the menu bar", v.roleOf("editor") == "editor" && v.roleOf("menubar") == "menubar");
+    SLGuiDocHost host = new SLGuiDocHost();
+    String[] plan = new String[160];
+    int planned = host.mountPlan(app, plan, 160);
+    check("the mount plan lists the visible nodes", planned == host.visibleNodes(app) && planned > 30);
+    check("the plan names each node role", plan[2] == "mount menu menu-file in menubar role menu bg #FFFFFF fg #16202C cmd menu.toggle text File");
+    check("the plan starts with the window in white", plan[0] == "mount window win in - role window bg #F7F8FA fg #16202C text SLeeLa Document Editor");
+    String[] tiny = new String[4];
+    check("a short output array stops the listing", host.mountPlan(app, tiny, 4) == 4);
+    check("the outline starts with the window and menus", outlineHas("window: SLeeLa Document Editor") && outlineHas("menus: File Edit View Help") && outlineHas("tabs: (none)"));
     check("no tab is open yet", app.tabTotal() == 0 && !vis("tab-0"));
     check("the editor says there is no document", t("row-0") == "No document open. Use File, New or File, Open.");
     check("Save is disabled with nothing to save", !en("mi-save") && en("mi-new") && en("mi-open"));
@@ -163,6 +240,7 @@ class GuiDocDemo {
     app.accelerate("Ctrl+I");
     check("3 lines: alpha, gamma, tail", app.activeTab().body().lineCount() == 3 && t("row-2") == "tail" && t("gut-2") == "3");
     check("the status line tracks the cursor", t("status-mid") == "Ln 3 of 3  rev 6" && t("status-left") == "inserted line 3");
+    check("the outline shows the rows and marks the selected one", outlineHas("  1 | alpha") && outlineHas("  3 | tail    <"));
     check("GUI edits are not external changes", app.activeTab().guiListener().externalCount() == 0 && app.activeTab().guiListener().changeCount() == 6);
 
     banner("4. Save, Save As and the dialogs");
@@ -206,6 +284,7 @@ class GuiDocDemo {
     app.click("dlg-ok");
     check("reopened with the exact lines", app.tabTotal() == 2 && app.activeTab().body().lineCount() == 3 && app.activeTab().body().lineAt(1) == "" && app.activeTab().body().lineAt(2) == "three");
     check("a loaded document is clean and editable", !app.activeTab().isDirty() && !app.activeTab().isReadOnly());
+    check("the listener starts level with the loaded revision", app.activeTab().guiListener().revisionSeen() == app.activeTab().body().revisionNow() && t("status-right") == "White | in step at revision 3");
     app.accelerate("Ctrl+O");
     app.type("dlg-path", second);
     app.click("dlg-ok");
@@ -244,7 +323,7 @@ class GuiDocDemo {
     app.accelerate("Ctrl+Shift+Tab");
     check("Ctrl+Shift+Tab goes back", app.activeIndex() == where);
     app.click("tab-1");
-    check("clicking a tab selects it", app.activeIndex() == 1 && t("row-0") == "someone else wrote this\n");
+    check("clicking a tab selects it", app.activeIndex() == 1 && t("row-0") == "(unsplit file, " + osFileSize(notes) + " bytes, read-only)");
     app.click("tab-0");
     check("and the other", app.activeIndex() == 0 && t("row-0") == "one");
 
@@ -305,8 +384,43 @@ class GuiDocDemo {
     check("Discard quits", app.quitRequested());
     SLGuiDocApp fresh = new SLGuiDocApp();
     fresh.configure();
+    fresh.start();
     fresh.accelerate("Ctrl+N");
     check("a clean app quits at once", fresh.accelerate("Ctrl+Q") && fresh.quitRequested() && fresh.dialogMode() == 0);
+
+    banner("12. coverage sweep: every menu item is clicked, every command runs");
+    SLGuiDocApp cov = new SLGuiDocApp();
+    cov.configure();
+    cov.start();
+    String sweep = base + "/sweep.txt";
+    check("File > New", menuClickOn(cov, "file", "new") == 1);
+    cov.type("entry", "x");
+    check("Edit > Insert Line", menuClickOn(cov, "edit", "insertLine") == 1);
+    cov.type("entry", "y");
+    check("Edit > Replace Line", menuClickOn(cov, "edit", "replaceLine") == 1);
+    check("Edit > Delete Line", menuClickOn(cov, "edit", "deleteLine") == 1);
+    check("File > Save (opens Save As: no path yet)", menuClickOn(cov, "file", "save") == 1 && cov.dialogMode() == 2);
+    cov.click("dlg-cancel");
+    check("File > Save As", menuClickOn(cov, "file", "saveAs") == 1 && cov.dialogMode() == 2);
+    cov.type("dlg-path", sweep);
+    cov.click("dlg-ok");
+    check("it saved", osExists(sweep) == 1 && !cov.activeTab().isDirty());
+    check("File > Open", menuClickOn(cov, "file", "open") == 1);
+    cov.type("dlg-path", sweep);
+    cov.click("dlg-ok");
+    check("File > New again", menuClickOn(cov, "file", "new") == 1 && cov.tabTotal() == 2);
+    check("View > Next Tab", menuClickOn(cov, "view", "nextTab") == 1);
+    check("View > Previous Tab", menuClickOn(cov, "view", "prevTab") == 1);
+    check("Help > About", menuClickOn(cov, "help", "about") == 1);
+    check("File > Close Tab", menuClickOn(cov, "file", "closeTab") == 1 && cov.tabTotal() == 1);
+    check("File > Quit", menuClickOn(cov, "file", "quit") == 1 && cov.quitRequested());
+    check("all 12 commands ran", cov.commandsCovered() == 12);
+    check("all 12 menu items were clicked", cov.itemsCovered() == 12);
+    check("the coverage is complete", cov.coverageComplete());
+    check("no item click was counted twice by accident", cov.itemClickCount("new") == 2 && cov.commandRunCount("file.new") == 2);
+    SLGuiDocFile sweepFile = new SLGuiDocFile();
+    sweepFile.configure(".lines", 65536);
+    sweepFile.forget(sweep);
 
     notesCleanup(base, notes, second, plain);
 
@@ -314,6 +428,10 @@ class GuiDocDemo {
     print("  passed " + passed + ", failed " + failed);
     print("  commands run " + app.executedCount() + ", refused " + app.refusedCount()
         + ", nodes " + v.nodeCount());
+    print("READY state " + app.lifecycle().stateName() + " checks " + app.lifecycle().checkTotal()
+        + " failures " + app.lifecycle().failureTotal() + " certified " + app.isCertified());
+    print("RESULT passed " + passed + " failed " + failed);
+    cov.printCoverage();
   }
 
   void notesCleanup(String base, String a, String b, String c) {

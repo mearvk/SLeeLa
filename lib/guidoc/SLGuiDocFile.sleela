@@ -72,6 +72,7 @@ class SLGuiDocFile {
     suffix = sidecarSuffix; maxBytes = byteLimit; lastCode = 0;
   }
   int getLastCode() { return lastCode; }
+  String getSidecarSuffixValue() { return suffix; }
   String sidecarDir(String path) { return path + suffix; }
 
   String pad4(int i) {

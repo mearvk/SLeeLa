@@ -69,33 +69,67 @@ class SLGuiDocWhite {
   String name() { return theme.getName(); }
   String accentColor() { return theme.accent; }
 
-  String pair(String bg, String fg) { return "bg:" + bg + ";fg:" + fg + ";"; }
+  < Every role the GUI draws, in a fixed order. >
+  String roleAt(int i) {
+    if (i == 0) { return "window"; }
+    if (i == 1) { return "menubar"; }
+    if (i == 2) { return "menu"; }
+    if (i == 3) { return "menu-open"; }
+    if (i == 4) { return "menu-item"; }
+    if (i == 5) { return "menu-item-disabled"; }
+    if (i == 6) { return "tabbar"; }
+    if (i == 7) { return "tab"; }
+    if (i == 8) { return "tab-active"; }
+    if (i == 9) { return "tab-dirty"; }
+    if (i == 10) { return "tab-active-dirty"; }
+    if (i == 11) { return "editor"; }
+    if (i == 12) { return "gutter"; }
+    if (i == 13) { return "row"; }
+    if (i == 14) { return "row-selected"; }
+    if (i == 15) { return "row-empty"; }
+    if (i == 16) { return "entry"; }
+    if (i == 17) { return "status"; }
+    if (i == 18) { return "status-external"; }
+    if (i == 19) { return "status-error"; }
+    if (i == 20) { return "dialog"; }
+    if (i == 21) { return "button"; }
+    if (i == 22) { return "button-primary"; }
+    return "";
+  }
+  int roleTotal() { return 23; }
 
-  < The style for a role. Unknown roles fall back to the plain surface. >
-  String style(String role) {
-    if (role == "window") { return pair(theme.bg, theme.text); }
-    if (role == "menubar") { return pair(theme.chrome, theme.text); }
-    if (role == "menu") { return pair(theme.chrome, theme.text); }
-    if (role == "menu-open") { return pair(theme.surfaceHi, theme.text); }
-    if (role == "menu-item") { return pair(theme.surface, theme.text); }
-    if (role == "menu-item-disabled") { return pair(theme.surface, theme.textDim); }
-    if (role == "tabbar") { return pair(theme.bg, theme.text); }
-    if (role == "tab") { return pair(theme.surfaceHi, theme.textDim); }
-    if (role == "tab-active") { return pair(theme.surface, theme.accent); }
-    if (role == "tab-dirty") { return pair(theme.surfaceHi, theme.warning); }
-    if (role == "tab-active-dirty") { return pair(theme.surface, theme.warning); }
-    if (role == "editor") { return pair(theme.surface, theme.text); }
-    if (role == "gutter") { return pair(theme.chrome, theme.textDim); }
-    if (role == "row") { return pair(theme.surface, theme.text); }
-    if (role == "row-selected") { return pair(theme.accent, theme.accentText); }
-    if (role == "row-empty") { return pair(theme.surface, theme.textDim); }
-    if (role == "entry") { return pair(theme.surface, theme.text); }
-    if (role == "status") { return pair(theme.chrome, theme.textDim); }
-    if (role == "status-external") { return pair(theme.chrome, theme.warning); }
-    if (role == "status-error") { return pair(theme.chrome, theme.danger); }
-    if (role == "dialog") { return pair(theme.surfaceHi, theme.text); }
-    if (role == "button") { return pair(theme.surface, theme.text); }
-    if (role == "button-primary") { return pair(theme.accent, theme.accentText); }
-    return pair(theme.surface, theme.text);
+  < The background colour token of a role. Unknown roles use the surface. >
+  String bgOf(String role) {
+    if (role == "window") { return theme.bg; }
+    if (role == "menubar" || role == "menu" || role == "gutter") { return theme.chrome; }
+    if (role == "status" || role == "status-external" || role == "status-error") { return theme.chrome; }
+    if (role == "menu-open" || role == "tab" || role == "tab-dirty" || role == "dialog") { return theme.surfaceHi; }
+    if (role == "tabbar") { return theme.bg; }
+    if (role == "row-selected" || role == "button-primary") { return theme.accent; }
+    return theme.surface;
+  }
+  < The foreground (ink) colour token of a role. >
+  String fgOf(String role) {
+    if (role == "menu-item-disabled" || role == "tab" || role == "gutter" || role == "row-empty") { return theme.textDim; }
+    if (role == "status") { return theme.textDim; }
+    if (role == "tab-active") { return theme.accent; }
+    if (role == "tab-dirty" || role == "tab-active-dirty" || role == "status-external") { return theme.warning; }
+    if (role == "status-error") { return theme.danger; }
+    if (role == "row-selected" || role == "button-primary") { return theme.accentText; }
+    return theme.text;
+  }
+
+  < The style for a role: bg:#RRGGBB;fg:#RRGGBB; >
+  String style(String role) { return "bg:" + bgOf(role) + ";fg:" + fgOf(role) + ";"; }
+
+  < The role a style string was made from, or "" if it is none of ours. A host >
+  < uses this with bgOf and fgOf to get colour tokens without parsing text. >
+  String roleOfStyle(String s) {
+    int i = 0;
+    while (i < roleTotal()) {
+      if (style(roleAt(i)) == s) { return roleAt(i); }
+      i = i + 1;
+    }
+    return "";
   }
 }

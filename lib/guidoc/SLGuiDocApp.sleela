@@ -76,6 +76,9 @@ class SLGuiDocApp {
   String openMenu;
   int executed;
   int refusedCommands;
+  SLGuiDocReady ready;
+  int[] cmdRuns;
+  int[] itemClicks;
 
   < Build everything from the spec. False if the spec or the white theme is >
   < inconsistent (nothing is half-built). >
@@ -89,13 +92,83 @@ class SLGuiDocApp {
     file = new SLGuiDocFile();
     file.configure(spec.getSidecarSuffix(), spec.getMaxBytes());
     view = new SLGuiDocView();
-    view.configure();
+    view.configure(white);
     tabs = new SLGuiDocTab[14];
     tabCount = 0; active = -1; untitled = 0; dialog = 0; pendingTab = -1; quitFlag = 0;
-    status = "ready"; statusError = 0; openMenu = ""; executed = 0; refusedCommands = 0;
+    status = "starting"; statusError = 0; openMenu = ""; executed = 0; refusedCommands = 0;
+    ready = new SLGuiDocReady();
+    ready.configure();
+    cmdRuns = new int[32]; itemClicks = new int[48];
+    int z = 0;
+    while (z < 32) { cmdRuns[z] = 0; z = z + 1; }
+    int y = 0;
+    while (y < 48) { itemClicks[y] = 0; y = y + 1; }
     buildView();
     paint();
     return true;
+  }
+
+  < ---- the ready lifecycle ------------------------------------------------ >
+  < configure() builds the GUI; start() runs the self-checks and, if every >
+  < one passes, makes it READY. Until then every command is refused. >
+
+  SLGuiDocReady lifecycle() { return ready; }
+  boolean isReady() { return ready.isReady(); }
+  boolean isCertified() { return spec.isCertified(); }
+  boolean whenReady(String subscriber) { return ready.whenReady(subscriber); }
+  boolean takeReady(String subscriber) { return ready.takeReady(subscriber); }
+
+  < The node count the spec implies: window, menubar, menus, items, tab bar, >
+  < tabs, new-tab button, editor, two nodes per row, entry, three status >
+  < labels and the five dialog nodes. >
+  int expectedNodes() {
+    return 1 + 1 + spec.menuTotal() + spec.itemTotal() + 1 + spec.getMaxTabs() + 1 + 1
+        + 2 * spec.getEditorRows() + 1 + 3 + 5;
+  }
+
+  < Run the self-checks. Returns true when the GUI is READY. Can be retried >
+  < after a failure. >
+  boolean start() {
+    if (!ready.begin()) { return ready.isReady(); }
+    ready.noteCheck("spec", spec.refusedCount() == 0 && spec.commandTotal() > 0, "the spec seeded without a refusal");
+    ready.noteCheck("white-theme", white.isWhite() && spec.getTheme() == "white", "the GUI is white");
+    ready.noteCheck("widget-tree", view.nodeCount() == expectedNodes(),
+        "the view has " + view.nodeCount() + " nodes, the spec implies " + expectedNodes());
+    int unhandled = 0;
+    int c = 0;
+    while (c < spec.commandTotal()) {
+      if (dispatch(spec.commandIdAt(c), false) < 0) { unhandled = unhandled + 1; }
+      c = c + 1;
+    }
+    ready.noteCheck("commands-handled", unhandled == 0, unhandled + " command(s) have no handler");
+    int unbound = 0;
+    int i = 0;
+    while (i < spec.itemTotal()) {
+      int n = view.indexOf("mi-" + spec.itemIdAt(i));
+      if (n < 0 || view.commandAt(n) != spec.itemCommandAt(i) || view.argAt(n) != i) { unbound = unbound + 1; }
+      i = i + 1;
+    }
+    ready.noteCheck("menu-items-bound", unbound == 0, unbound + " menu item(s) missing or bound to the wrong command");
+    int dead = 0;
+    int k = 0;
+    while (k < spec.itemTotal()) {
+      String a = spec.itemAccelAt(k);
+      if (a != "" && dispatch(spec.commandForAccel(a), false) < 0) { dead = dead + 1; }
+      k = k + 1;
+    }
+    ready.noteCheck("accelerators-live", dead == 0, dead + " accelerator(s) reach no handler");
+    ready.noteCheck("file-layer", file.getSidecarSuffixValue() == spec.getSidecarSuffix(), "the file layer uses the spec sidecar suffix");
+    ready.noteCheck("listener-port", spec.getListenerPort() != "" && spec.flagsExternal(), "the GUI document listener is configured");
+    ready.noteCheck("first-paint", view.textOf("win") == spec.getTitle() && tabCount == 0 && dialog == 0, "the first paint matches the spec");
+    ready.noteCheck("no-open-dialog", !view.isVisible("dlg") && !view.isVisible("mi-new"), "no dialog or menu is open at start");
+    boolean ok = ready.finish();
+    if (ok) {
+      say("ready" + (spec.isCertified() ? " (certified " + spec.getRelease() + ")" : " (draft " + spec.getRelease() + ")"));
+    } else {
+      complain("not ready: " + ready.firstFailureText());
+    }
+    paint();
+    return ok;
   }
 
   SLGuiDocSpec specification() { return spec; }
@@ -120,12 +193,12 @@ class SLGuiDocApp {
   < ---- building the widget tree ----------------------------------------- >
 
   void buildView() {
-    view.add("", "window", "win", spec.getTitle(), white.style("window"));
-    view.add("win", "menubar", "menubar", "", white.style("menubar"));
+    view.add("", "window", "win", spec.getTitle(), "window");
+    view.add("win", "menubar", "menubar", "", "menubar");
     int m = 0;
     while (m < spec.menuTotal()) {
       String mid = "menu-" + spec.menuIdAt(m);
-      view.add("menubar", "menu", mid, spec.menuLabelAt(m), white.style("menu"));
+      view.add("menubar", "menu", mid, spec.menuLabelAt(m), "menu");
       view.bind(mid, "menu.toggle", m);
       m = m + 1;
     }
@@ -134,39 +207,39 @@ class SLGuiDocApp {
       String nid = "mi-" + spec.itemIdAt(i);
       String label = spec.itemLabelAt(i);
       if (spec.itemAccelAt(i) != "") { label = label + "   " + spec.itemAccelAt(i); }
-      view.add("menu-" + spec.itemMenuAt(i), "menuitem", nid, label, white.style("menu-item"));
+      view.add("menu-" + spec.itemMenuAt(i), "menuitem", nid, label, "menu-item");
       view.bind(nid, spec.itemCommandAt(i), i);
       view.setVisible(nid, false);
       i = i + 1;
     }
-    view.add("win", "tabbar", "tabbar", "", white.style("tabbar"));
+    view.add("win", "tabbar", "tabbar", "", "tabbar");
     int t = 0;
     while (t < spec.getMaxTabs()) {
-      view.add("tabbar", "tab", "tab-" + t, "", white.style("tab"));
+      view.add("tabbar", "tab", "tab-" + t, "", "tab");
       view.bind("tab-" + t, "view.gotoTab", t);
       view.setVisible("tab-" + t, false);
       t = t + 1;
     }
-    view.add("tabbar", "button", "tab-new", "+", white.style("button"));
-    view.bind("tab-new", "file.new", 0);
-    view.add("win", "editor", "editor", "", white.style("editor"));
+    view.add("tabbar", "button", "tab-new", "+", "button");
+    view.bind("tab-new", "file.new", -1);
+    view.add("win", "editor", "editor", "", "editor");
     int r = 0;
     while (r < spec.getEditorRows()) {
-      view.add("editor", "gutter", "gut-" + r, "", white.style("gutter"));
-      view.add("editor", "row", "row-" + r, "", white.style("row"));
+      view.add("editor", "gutter", "gut-" + r, "", "gutter");
+      view.add("editor", "row", "row-" + r, "", "row");
       view.bind("row-" + r, "editor.select", r);
       r = r + 1;
     }
-    view.add("win", "entry", "entry", "", white.style("entry"));
-    view.add("win", "label", "status-left", "", white.style("status"));
-    view.add("win", "label", "status-mid", "", white.style("status"));
-    view.add("win", "label", "status-right", "", white.style("status"));
-    view.add("win", "dialog", "dlg", "", white.style("dialog"));
-    view.add("dlg", "label", "dlg-title", "", white.style("dialog"));
-    view.add("dlg", "entry", "dlg-path", "", white.style("entry"));
-    view.add("dlg", "button", "dlg-ok", "OK", white.style("button-primary"));
+    view.add("win", "entry", "entry", "", "entry");
+    view.add("win", "label", "status-left", "", "status");
+    view.add("win", "label", "status-mid", "", "status");
+    view.add("win", "label", "status-right", "", "status");
+    view.add("win", "dialog", "dlg", "", "dialog");
+    view.add("dlg", "label", "dlg-title", "", "dialog");
+    view.add("dlg", "entry", "dlg-path", "", "entry");
+    view.add("dlg", "button", "dlg-ok", "OK", "button-primary");
     view.bind("dlg-ok", "dialog.ok", 0);
-    view.add("dlg", "button", "dlg-cancel", "Cancel", white.style("button"));
+    view.add("dlg", "button", "dlg-cancel", "Cancel", "button");
     view.bind("dlg-cancel", "dialog.cancel", 0);
   }
 
@@ -204,7 +277,7 @@ class SLGuiDocApp {
     int m = 0;
     while (m < spec.menuTotal()) {
       String mid = "menu-" + spec.menuIdAt(m);
-      view.setStyle(mid, (spec.menuIdAt(m) == openMenu) ? white.style("menu-open") : white.style("menu"));
+      view.setStyle(mid, (spec.menuIdAt(m) == openMenu) ? "menu-open" : "menu");
       view.setEnabled(mid, !modal);
       m = m + 1;
     }
@@ -214,7 +287,7 @@ class SLGuiDocApp {
       boolean ok = whenHolds(spec.itemWhenAt(i)) && !modal;
       view.setVisible(nid, spec.itemMenuAt(i) == openMenu);
       view.setEnabled(nid, ok);
-      view.setStyle(nid, ok ? white.style("menu-item") : white.style("menu-item-disabled"));
+      view.setStyle(nid, ok ? "menu-item" : "menu-item-disabled");
       i = i + 1;
     }
     int t = 0;
@@ -227,7 +300,7 @@ class SLGuiDocApp {
         String role = "tab";
         if (t == active) { role = tb.isDirty() ? "tab-active-dirty" : "tab-active"; }
         else if (tb.isDirty()) { role = "tab-dirty"; }
-        view.setStyle(nid, white.style(role));
+        view.setStyle(nid, role);
       } else {
         view.setVisible(nid, false);
         view.setText(nid, "");
@@ -249,7 +322,17 @@ class SLGuiDocApp {
       while (r < rows) {
         view.setText("gut-" + r, "");
         view.setText("row-" + r, (r == 0) ? "No document open. Use File, New or File, Open." : "");
-        view.setStyle("row-" + r, white.style("row-empty"));
+        view.setStyle("row-" + r, "row-empty");
+        view.setEnabled("row-" + r, false);
+        r = r + 1;
+      }
+      return;
+    }
+    if (cur.isReadOnly()) {
+      while (r < rows) {
+        view.setText("gut-" + r, "");
+        view.setText("row-" + r, (r == 0) ? ("(unsplit file, " + osFileSize(cur.getPath()) + " bytes, read-only)") : "");
+        view.setStyle("row-" + r, "row-empty");
         view.setEnabled("row-" + r, false);
         r = r + 1;
       }
@@ -264,19 +347,19 @@ class SLGuiDocApp {
       view.setText("gut-" + r, (real && spec.showsLineNumbers()) ? ("" + (line + 1)) : "");
       view.setText("row-" + r, real ? d.lineAt(line) : "");
       view.setEnabled("row-" + r, real && dialog == 0);
-      if (real && line == cur.selectedLine()) { view.setStyle("row-" + r, white.style("row-selected")); }
-      else { view.setStyle("row-" + r, white.style("row")); }
+      if (real && line == cur.selectedLine()) { view.setStyle("row-" + r, "row-selected"); }
+      else { view.setStyle("row-" + r, "row"); }
       r = r + 1;
     }
   }
 
   void paintStatus(SLGuiDocTab cur) {
     view.setText("status-left", status);
-    view.setStyle("status-left", (statusError == 1) ? white.style("status-error") : white.style("status"));
+    view.setStyle("status-left", (statusError == 1) ? "status-error" : "status");
     if (cur == null) {
       view.setText("status-mid", "");
       view.setText("status-right", white.name());
-      view.setStyle("status-right", white.style("status"));
+      view.setStyle("status-right", "status");
       return;
     }
     SLObserverDocument d = cur.body();
@@ -284,7 +367,7 @@ class SLGuiDocApp {
     view.setText("status-mid", where + d.lineCount() + "  rev " + d.revisionNow());
     SLGuiDocListener.Responder lis = cur.guiListener();
     view.setText("status-right", white.name() + " | " + lis.statusText());
-    view.setStyle("status-right", lis.statusStyle());
+    view.setStyle("status-right", lis.statusRole());
   }
 
   void paintDialog(SLGuiDocTab cur) {
@@ -341,6 +424,11 @@ class SLGuiDocApp {
   }
 
   void handle(String command, int arg) {
+    if (!ready.isReady()) {
+      refusedCommands = refusedCommands + 1;
+      complain("the GUI is not ready");
+      return;
+    }
     if (command == "menu.toggle") {
       String mid = spec.menuIdAt(arg);
       openMenu = (mid == openMenu) ? "" : mid;
@@ -352,7 +440,10 @@ class SLGuiDocApp {
     if (command == "editor.select") { selectRow(arg); return; }
     if (command == "dialog.ok") { dialogOk(); return; }
     if (command == "dialog.cancel") { dialogCancel(); return; }
-    execute(command);
+    boolean ran = execute(command);
+    if (ran && arg >= 0 && arg < spec.itemTotal() && spec.itemCommandAt(arg) == command) {
+      itemClicks[arg] = itemClicks[arg] + 1;
+    }
   }
 
   < A keyboard accelerator such as Ctrl+S. >
@@ -366,6 +457,7 @@ class SLGuiDocApp {
   < ---- commands ------------------------------------------------------------- >
 
   boolean execute(String command) {
+    if (!ready.isReady()) { refusedCommands = refusedCommands + 1; return false; }
     if (spec.commandIndex(command) < 0) { refusedCommands = refusedCommands + 1; return false; }
     if (dialog != 0) {
       refusedCommands = refusedCommands + 1;
@@ -379,22 +471,74 @@ class SLGuiDocApp {
       paint();
       return false;
     }
-    boolean ok = false;
-    if (command == "file.new") { ok = cmdNew(); }
-    else if (command == "file.open") { ok = cmdOpen(); }
-    else if (command == "file.save") { ok = cmdSave(); }
-    else if (command == "file.saveAs") { ok = cmdSaveAs(); }
-    else if (command == "file.closeTab") { ok = cmdCloseTab(); }
-    else if (command == "app.quit") { ok = cmdQuit(); }
-    else if (command == "edit.insertLine") { ok = cmdInsertLine(); }
-    else if (command == "edit.replaceLine") { ok = cmdReplaceLine(); }
-    else if (command == "edit.deleteLine") { ok = cmdDeleteLine(); }
-    else if (command == "view.nextTab") { ok = cmdNextTab(); }
-    else if (command == "view.prevTab") { ok = cmdPrevTab(); }
-    else if (command == "help.about") { ok = cmdAbout(); }
-    if (ok) { executed = executed + 1; } else { refusedCommands = refusedCommands + 1; }
+    boolean ok = dispatch(command, true) == 1;
+    if (ok) {
+      executed = executed + 1;
+      int ci = spec.commandIndex(command);
+      cmdRuns[ci] = cmdRuns[ci] + 1;
+    } else {
+      refusedCommands = refusedCommands + 1;
+    }
     paint();
     return ok;
+  }
+
+  < The one command table. run=false only asks whether the command has a >
+  < handler. Returns 1 ran and succeeded, 0 ran and was refused, -1 unknown. >
+  int dispatch(String command, boolean run) {
+    if (command == "file.new") { if (run) { return flag(cmdNew()); } return 1; }
+    if (command == "file.open") { if (run) { return flag(cmdOpen()); } return 1; }
+    if (command == "file.save") { if (run) { return flag(cmdSave()); } return 1; }
+    if (command == "file.saveAs") { if (run) { return flag(cmdSaveAs()); } return 1; }
+    if (command == "file.closeTab") { if (run) { return flag(cmdCloseTab()); } return 1; }
+    if (command == "app.quit") { if (run) { return flag(cmdQuit()); } return 1; }
+    if (command == "edit.insertLine") { if (run) { return flag(cmdInsertLine()); } return 1; }
+    if (command == "edit.replaceLine") { if (run) { return flag(cmdReplaceLine()); } return 1; }
+    if (command == "edit.deleteLine") { if (run) { return flag(cmdDeleteLine()); } return 1; }
+    if (command == "view.nextTab") { if (run) { return flag(cmdNextTab()); } return 1; }
+    if (command == "view.prevTab") { if (run) { return flag(cmdPrevTab()); } return 1; }
+    if (command == "help.about") { if (run) { return flag(cmdAbout()); } return 1; }
+    return -1;
+  }
+  int flag(boolean b) { return b ? 1 : 0; }
+
+  < ---- coverage: what has actually been exercised --------------------------- >
+
+  int commandRunCount(String command) {
+    int i = spec.commandIndex(command);
+    return (i >= 0) ? cmdRuns[i] : 0;
+  }
+  int itemClickCount(String itemId) {
+    int i = spec.itemIndex(itemId);
+    return (i >= 0) ? itemClicks[i] : 0;
+  }
+  int commandsCovered() {
+    int n = 0;
+    int i = 0;
+    while (i < spec.commandTotal()) { if (cmdRuns[i] > 0) { n = n + 1; } i = i + 1; }
+    return n;
+  }
+  int itemsCovered() {
+    int n = 0;
+    int i = 0;
+    while (i < spec.itemTotal()) { if (itemClicks[i] > 0) { n = n + 1; } i = i + 1; }
+    return n;
+  }
+  boolean coverageComplete() {
+    return commandsCovered() == spec.commandTotal() && itemsCovered() == spec.itemTotal();
+  }
+  < Machine-readable coverage lines, one per command and per item. >
+  void printCoverage() {
+    int i = 0;
+    while (i < spec.commandTotal()) {
+      print("COVERAGE command " + spec.commandIdAt(i) + " " + cmdRuns[i]);
+      i = i + 1;
+    }
+    int j = 0;
+    while (j < spec.itemTotal()) {
+      print("COVERAGE item " + spec.itemIdAt(j) + " " + itemClicks[j]);
+      j = j + 1;
+    }
   }
 
   boolean addTab(SLGuiDocTab t) {
@@ -479,7 +623,10 @@ class SLGuiDocApp {
   }
   boolean cmdNextTab() { gotoTab((active + 1) % tabCount); return true; }
   boolean cmdPrevTab() { gotoTab((active + tabCount - 1) % tabCount); return true; }
-  boolean cmdAbout() { say(spec.getTitle() + " 1.0 (" + white.name() + ")"); return true; }
+  boolean cmdAbout() {
+    say(spec.getTitle() + " " + spec.getRelease() + " (" + white.name() + (spec.isCertified() ? ", certified" : ", draft") + ")");
+    return true;
+  }
 
   < ---- tab, file and dialog operations ------------------------------------ >
 

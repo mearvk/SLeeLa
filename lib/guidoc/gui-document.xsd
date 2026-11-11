@@ -62,6 +62,25 @@
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="Readiness">
+    <xs:annotation><xs:documentation>
+      draft = under construction; the gate is not claimed.
+      ready = every command and menu item has been exercised by a passing run of
+              guidoc-demo, and all self-checks passed. tools/validate_gui_document.py
+              --gate verifies the claim and fails if it is false.
+    </xs:documentation></xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="draft"/>
+      <xs:enumeration value="ready"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Release">
+    <xs:restriction base="xs:token">
+      <xs:pattern value="[0-9]+\.[0-9]+\.[0-9]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:simpleType name="TabCount">
     <xs:annotation><xs:documentation>1..14, echoing the 1..14 watch bound of lib/gui SLGuiDocumentListener.</xs:documentation></xs:annotation>
     <xs:restriction base="xs:integer">
@@ -166,6 +185,13 @@
             <xs:attribute name="port" type="Id" use="required"/>
             <xs:attribute name="repaintOn" type="xs:token" use="required" fixed="change"/>
             <xs:attribute name="flagExternal" type="xs:boolean" use="required"/>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="readiness">
+          <xs:complexType>
+            <xs:attribute name="status" type="Readiness" use="required"/>
+            <xs:attribute name="release" type="Release" use="required"/>
           </xs:complexType>
         </xs:element>
       </xs:sequence>

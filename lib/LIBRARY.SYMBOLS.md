@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 13273
+library-source-files: 13276
 library-packages: 121
 module-facade-symbols: 84
-total-symbol-records: 13357
+total-symbol-records: 13360
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -1794,12 +1794,15 @@ gui	gui-scroll-screenfit-demo.sleela	lib/gui/version-thual/gui-scroll-screenfit-
 gui	gui-transitions-demo.sleela	lib/gui/version-thual/gui-transitions-demo.sleela	source
 guidoc	SLGuiDocApp.sleela	lib/guidoc/SLGuiDocApp.sleela	source
 guidoc	SLGuiDocFile.sleela	lib/guidoc/SLGuiDocFile.sleela	source
+guidoc	SLGuiDocHost.sleela	lib/guidoc/SLGuiDocHost.sleela	source
 guidoc	SLGuiDocListener.sleela	lib/guidoc/SLGuiDocListener.sleela	source
+guidoc	SLGuiDocReady.sleela	lib/guidoc/SLGuiDocReady.sleela	source
 guidoc	SLGuiDocSpec.sleela	lib/guidoc/SLGuiDocSpec.sleela	source
 guidoc	SLGuiDocTab.sleela	lib/guidoc/SLGuiDocTab.sleela	source
 guidoc	SLGuiDocView.sleela	lib/guidoc/SLGuiDocView.sleela	source
 guidoc	SLGuiDocWhite.sleela	lib/guidoc/SLGuiDocWhite.sleela	source
 guidoc	guidoc-demo.sleela	lib/guidoc/guidoc-demo.sleela	source
+guidoc	guidoc.sleela	lib/guidoc/guidoc.sleela	source
 hotlink	SLHotLinkIntegration.sleela	lib/hotlink/SLHotLinkIntegration.sleela	source
 hotlink	SLHotLinkMatrix.sleela	lib/hotlink/SLHotLinkMatrix.sleela	source
 hotlink	SLHotLinkRow.sleela	lib/hotlink/SLHotLinkRow.sleela	source

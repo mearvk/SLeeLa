@@ -141,6 +141,7 @@ class SLGuiDocTab {
       title = filePath;
       if (code == 10 && lockUnsplit) { readOnly = 1; }
       markSaved();
+      listener.syncTo(doc.revisionNow());
       selected = -1; viewTop = 0;
     }
     return code;

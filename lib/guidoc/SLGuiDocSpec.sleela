@@ -71,6 +71,8 @@ class SLGuiDocSpec {
   int maxBytes;
   String listenerPort;
   int flagExternal;
+  String readiness;
+  String release;
   String[] mId;
   String[] mLabel;
   int mCount;
@@ -105,6 +107,7 @@ class SLGuiDocSpec {
     winTitle = ""; winTheme = ""; maxTabs = 0; dirtyMarker = ""; newTabTitle = "";
     editorRows = 0; lineNumbers = 0; readOnlyWhenUnsplit = 0; sidecarSuffix = "";
     maxLines = 0; maxBytes = 0; listenerPort = ""; flagExternal = 0;
+    readiness = "draft"; release = "0.0.0";
   }
 
   int refusedCount() { return refused; }
@@ -142,6 +145,17 @@ class SLGuiDocSpec {
     listenerPort = port; flagExternal = external;
     return true;
   }
+
+  < The document is draft or ready. Ready is a claim that tools/ >
+  < validate_gui_document.py --gate checks against the demo. >
+  boolean setReadiness(String status, String version) {
+    if ((status != "draft" && status != "ready") || version == null || version == "") { return no(); }
+    readiness = status; release = version;
+    return true;
+  }
+  String getReadiness() { return readiness; }
+  String getRelease() { return release; }
+  boolean isCertified() { return readiness == "ready"; }
 
   int commandIndex(String id) {
     int i = 0;
@@ -239,6 +253,7 @@ class SLGuiDocSpec {
     setEditor(16, 1, 1);
     setFileDialog(".lines", 64, 65536);
     setListener("gui-listener", 1);
+    setReadiness("ready", "1.0.0");
     addCommand("file.new", "cmdNew", 0);
     addCommand("file.open", "cmdOpen", 0);
     addCommand("file.save", "cmdSave", 0);

@@ -112,9 +112,13 @@ class SLGuiDocListener {
       if (repaint == 1) { repaint = 0; return true; }
       return false;
     }
+    < After a load fills the document directly, bring the listener level >
+    < with its revision (no change message was sent for the load). >
+    void syncTo(int revision) { lastRevision = revision; repaint = 1; }
     boolean hasExternal() { return externalChanges > 0; }
     < Forget the external flag (the user has seen it). >
     void acknowledgeExternal() { lastExternal = ""; externalChanges = 0; }
+    String statusRole() { return (externalChanges > 0) ? "status-external" : "status"; }
     String statusStyle() {
       return (externalChanges > 0) ? white.style("status-external") : white.style("status");
     }

@@ -55,4 +55,6 @@
   <fileDialog sidecarSuffix=".lines" maxLines="64" maxBytes="65536"/>
 
   <listener port="gui-listener" repaintOn="change" flagExternal="true"/>
+
+  <readiness status="ready" release="1.0.0"/>
 </guiDocument>

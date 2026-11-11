@@ -2,7 +2,7 @@
    SLeeLa Standard Library Definition.
    Definition: Defines SLGuiDocView — the widget tree of the document GUI: the
      window, menu bar and menus, tab strip, editor (line gutter and rows),
-     entry, status line and file dialog. Each node has a tag, text, style,
+     entry, status line and file dialog. Each node has a tag, text, white role (and so a style),
      visibility, enabled flag and a command; pressing a node latches it and the
      controller takes the latch. It is self-contained on purpose: a host walks
      nodeCount() / idAt() / tagAt() / textAt() / styleAt() to mount it on real
@@ -63,7 +63,7 @@ class SLGuiDocView {
   String[] ids;
   String[] tags;
   String[] texts;
-  String[] styles;
+  String[] roles;
   String[] parents;
   String[] cmds;
   int[] args;
@@ -71,14 +71,16 @@ class SLGuiDocView {
   int[] visible;
   int[] latch;
   int count;
+  SLGuiDocWhite white;
 
-  void configure() {
+  void configure(SLGuiDocWhite look) {
+    white = look;
     ids = new String[128]; tags = new String[128]; texts = new String[128];
-    styles = new String[128]; parents = new String[128]; cmds = new String[128];
+    roles = new String[128]; parents = new String[128]; cmds = new String[128];
     args = new int[128]; enabled = new int[128]; visible = new int[128]; latch = new int[128];
     int i = 0;
     while (i < 128) {
-      ids[i] = ""; tags[i] = ""; texts[i] = ""; styles[i] = ""; parents[i] = ""; cmds[i] = "";
+      ids[i] = ""; tags[i] = ""; texts[i] = ""; roles[i] = ""; parents[i] = ""; cmds[i] = "";
       args[i] = 0; enabled[i] = 1; visible[i] = 1; latch[i] = 0;
       i = i + 1;
     }
@@ -89,7 +91,9 @@ class SLGuiDocView {
   String idAt(int i) { return (i >= 0 && i < count) ? ids[i] : ""; }
   String tagAt(int i) { return (i >= 0 && i < count) ? tags[i] : ""; }
   String textAt(int i) { return (i >= 0 && i < count) ? texts[i] : ""; }
-  String styleAt(int i) { return (i >= 0 && i < count) ? styles[i] : ""; }
+  < The white role of a node and the style string made from it. >
+  String roleAt(int i) { return (i >= 0 && i < count) ? roles[i] : ""; }
+  String styleAt(int i) { return (i >= 0 && i < count) ? white.style(roles[i]) : ""; }
   String parentAt(int i) { return (i >= 0 && i < count) ? parents[i] : ""; }
   String commandAt(int i) { return (i >= 0 && i < count) ? cmds[i] : ""; }
   int argAt(int i) { return (i >= 0 && i < count) ? args[i] : 0; }
@@ -101,9 +105,9 @@ class SLGuiDocView {
     while (i < count) { if (ids[i] == id) { return i; } i = i + 1; }
     return -1;
   }
-  boolean add(String parent, String tag, String id, String text, String style) {
+  boolean add(String parent, String tag, String id, String text, String role) {
     if (count >= 128 || indexOf(id) >= 0) { return false; }
-    ids[count] = id; tags[count] = tag; texts[count] = text; styles[count] = style;
+    ids[count] = id; tags[count] = tag; texts[count] = text; roles[count] = role;
     parents[count] = parent; cmds[count] = ""; args[count] = 0;
     enabled[count] = 1; visible[count] = 1; latch[count] = 0;
     count = count + 1;
@@ -121,13 +125,18 @@ class SLGuiDocView {
     int i = indexOf(id);
     return (i >= 0) ? texts[i] : "";
   }
-  void setStyle(String id, String s) {
+  < Give a node a white role (its style follows). >
+  void setStyle(String id, String role) {
     int i = indexOf(id);
-    if (i >= 0) { styles[i] = s; }
+    if (i >= 0) { roles[i] = role; }
+  }
+  String roleOf(String id) {
+    int i = indexOf(id);
+    return (i >= 0) ? roles[i] : "";
   }
   String styleOf(String id) {
     int i = indexOf(id);
-    return (i >= 0) ? styles[i] : "";
+    return (i >= 0) ? white.style(roles[i]) : "";
   }
   void setVisible(String id, boolean on) {
     int i = indexOf(id);
