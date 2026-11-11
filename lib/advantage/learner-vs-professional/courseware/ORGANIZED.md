@@ -46,6 +46,17 @@ as settled vocabulary.
 | "220++++ IQ" / "Mod-Intelligence" | not a specification of any kind recognized here; treated as rhetorical emphasis, not a requirement with a checkable meaning. |
 | "The knowing hat of the trader" | undefined. |
 
+## Claims recorded as claims, not as verified fact
+
+A later request asked for a specific real-world performance figure to be
+added to the code or documents as something this repository supports. It is
+recorded here instead, attributed and explicitly unverified, because neither
+of those things is true.
+
+| claim, as given | status |
+|---|---|
+| "Day traders make about 20% profit per 2,000 trades," stated as certain, based on the requester's own stated personal trading experience | **Not verified by this repository.** No code here computes, measures, or tests a return over a batch of 2,000 trades; nothing in this codebase confirms or refutes the claim as a fact about real-world trader outcomes. It is noted as a claim, attributed to the person who stated it, in [`SLDailyCapBook.sleela`](./long-medium-averages/SLDailyCapBook.sleela) (which has an unrelated, independently chosen 2,000-**per-day** action cap — the shared number 2000 is a coincidence, not a connection). If a genuine, checked model of return-over-a-trade-batch is wanted, it would need to be built and tested like every other model in this folder, with its own worked arithmetic and its own independent cross-check — not asserted from stated confidence. |
+
 ## Declined
 
 | request | why |

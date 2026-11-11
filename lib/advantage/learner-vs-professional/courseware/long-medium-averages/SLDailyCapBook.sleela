@@ -14,6 +14,18 @@ gasoline;
 < changes. This is a teaching bound, not a market rule. >
 < Status codes 0-8 match SLLongBook (see SLLongBook.sleela). 10 = the daily >
 < action cap (2,000) has been reached for the current day. >
+< >
+< UNVERIFIED CLAIM, recorded as a claim and not as a tested fact: during >
+< planning, a requester stated they were sure, based on their own stated >
+< personal trading experience, that day traders make roughly 20 percent >
+< profit per 2,000 trades. This class does not compute, check, or support >
+< that figure. The 2,000 here is an unrelated, independently chosen teaching >
+< bound on actions PER DAY (see above), not a batch size over which any >
+< return is measured. No method below returns a profit figure tied to a >
+< count of 2,000 trades, and no test in this codebase verifies the 20 >
+< percent claim. If a real, checked model of return-per-batch-of-N-trades is >
+< wanted, it would be a new, separate addition -- see the discussion of this >
+< exact claim in ../ORGANIZED.md. >
 class SLDailyCapBook {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. A worker-class
