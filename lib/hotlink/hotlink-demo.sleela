@@ -194,6 +194,34 @@ class HotLinkDemo {
     check("revoking the authorizer detaches native code", !linker.isLinked("plug"));
     check("and removes its links", !linker.isConnected("plug", "summary"));
 
+    banner("7b. listener lifecycle through the linker");
+    SLObserverSummaryModule.Responder life = new SLObserverSummaryModule.Responder();
+    life.attach("life");
+    check("attach a lifecycle listener", linker.attachModule("observer.responder", "life", 1, life.portOf()) >= 0);
+    check("pause below the trust floor is refused", !linker.pauseModule("life", 0));
+    check("pause a non-module instance is refused", !linker.pauseModule("tier5", 2));
+    check("pause an unknown instance is refused", !linker.pauseModule("nobody", 2));
+    check("pause the listener", linker.pauseModule("life", 1));
+    check("the observer shows it paused", obs.portStateAt(obs.indexOfPort("life")) == 3);
+    check("pause twice is refused by the observer", !linker.pauseModule("life", 1));
+    check("alter below the trust floor is refused", !linker.alterModule("life", 0, 1, 0, 0, -1, -1));
+    check("alter the paused listener", linker.alterModule("life", 1, 1, 0, 0, 0, 10));
+    check("a deaf filter is refused", !linker.alterModule("life", 1, 0, 0, 0, -1, -1));
+    check("resume the listener", linker.resumeModule("life", 1));
+    check("resume a running listener is refused", !linker.resumeModule("life", 1));
+    check("reinstate an active listener is refused", !linker.reinstateModule("life", 1));
+    SLObserverSummaryModule.Responder life2 = new SLObserverSummaryModule.Responder();
+    life2.attach("life");
+    check("link the listener before the swap", linker.linkPair("life", "tier6"));
+    check("replace below the trust floor is refused", !linker.replaceModule("life", 0, life2.portOf()));
+    check("hot-swap the listener behind the same instance", linker.replaceModule("life", 1, life2.portOf()));
+    check("the instance kept its name and type", linker.isLinked("life") && linker.typeOfName("life") == "observer.responder");
+    check("the new port is live in the observer", obs.portStateAt(obs.indexOfPort("life")) == 0);
+    check("the old port is retired", life.portOf().getState() == 2);
+    check("links survive a swap", linker.isConnected("life", "tier6"));
+    check("detach retires the listener", linker.detach("life"));
+    check("lifecycle verbs are refused after detach", !linker.pauseModule("life", 1) && !linker.resumeModule("life", 1) && !linker.replaceModule("life", 1, life2.portOf()));
+
     banner("8. detach");
     check("detach a module", linker.detach("summary"));
     check("its port is retired in the observer", obs.portStateAt(obs.indexOfPort("summary")) == 2);

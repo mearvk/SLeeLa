@@ -8,7 +8,7 @@ in this folder. A connection that the matrix does not declare is refused.
 
 ```
 tools/validate_hotlink_matrix.py          # schema + cross-field rules + drift check
-sleela run lib/hotlink/hotlink-demo.sleela  # 80 self-checks of the backing model
+sleela run lib/hotlink/hotlink-demo.sleela  # 102 self-checks of the backing model
 ```
 
 ## Reading the schema
@@ -79,6 +79,7 @@ extends.module   (cold: no links; refused while running)
 * **Native code:** the host must have granted the authorizer **and** pinned the expected digest (once, immutable), and the presented digest must equal it. Revoking the authorizer detaches every native instance.
 * **Connections:** the type pair must be declared · both ends linked · no self-link · no duplicate · fan-out under the limit · no instance-level cycle.
 * **Value:** `deposit` needs a live connection; `feed` needs a live **`feed`**-mode connection between **adjacent** tiers. A `contain` link moves no value.
+* **Listener lifecycle:** `pauseModule`, `resumeModule`, `alterModule`, `replaceModule` and `reinstateModule` need a linked observer-module instance and the trust floor of its type, then delegate to the observer (see `lib/observer/OBSERVER.md`). A hot-swap keeps the instance name, type and links.
 * **Detach:** drops the instance's links and retires an observer module's port.
 
 ### Matrix rules enforced when a row or link is added

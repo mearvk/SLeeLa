@@ -253,6 +253,54 @@ class SLHotLinker {
     return true;
   }
 
+  < ---- listener lifecycle through the linker ---------------------------- >
+  < Each verb needs a linked observer-module instance and the trust floor of >
+  < its type, then delegates to the observer. Refusals are audited. >
+
+  boolean mayControl(String name, int trust, String verb) {
+    int i = indexOfName(name);
+    if (i < 0 || states[i] != 1) { refuse(verb + " " + name + " (not linked)"); return false; }
+    SLHotLinkRow r = matrix.find(types[i]);
+    if (r == null || r.getContract() != "port" || observer == null) {
+      refuse(verb + " " + name + " (not an observer module)");
+      return false;
+    }
+    if (trust < r.getMinTrust()) { refuse(verb + " " + name + " (trust " + trust + " below floor)"); return false; }
+    return true;
+  }
+  boolean pauseModule(String name, int trust) {
+    if (!mayControl(name, trust, "pause")) { return false; }
+    if (!observer.pause(name)) { refuse("pause " + name + " (observer refused)"); return false; }
+    audit("paused " + name);
+    return true;
+  }
+  boolean resumeModule(String name, int trust) {
+    if (!mayControl(name, trust, "resume")) { return false; }
+    if (!observer.resume(name)) { refuse("resume " + name + " (observer refused)"); return false; }
+    audit("resumed " + name);
+    return true;
+  }
+  boolean alterModule(String name, int trust, int ins, int rep, int del, int first, int last) {
+    if (!mayControl(name, trust, "alter")) { return false; }
+    if (!observer.alter(name, ins, rep, del, first, last)) { refuse("alter " + name + " (observer refused)"); return false; }
+    audit("altered " + name);
+    return true;
+  }
+  < Hot-swap: the instance keeps its name, type, links and slot; only the port >
+  < behind it changes. >
+  boolean replaceModule(String name, int trust, SLObserverPort fresh) {
+    if (!mayControl(name, trust, "replace")) { return false; }
+    if (!observer.replace(name, fresh)) { refuse("replace " + name + " (observer refused)"); return false; }
+    audit("replaced " + name);
+    return true;
+  }
+  boolean reinstateModule(String name, int trust) {
+    if (!mayControl(name, trust, "reinstate")) { return false; }
+    if (!observer.reinstate(name)) { refuse("reinstate " + name + " (observer refused)"); return false; }
+    audit("reinstated " + name);
+    return true;
+  }
+
   < ---- connections ------------------------------------------------------ >
 
   int linkIndex(int a, int b) {

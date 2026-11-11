@@ -8,7 +8,7 @@
 #sleela 2.5
 material;
 < Family: observer. Capacity is fixed: 16 inbound, 8 outbound per cycle. >
-< State: 0 admitted, 1 quarantined, 2 retired. >
+< State: 0 admitted, 1 quarantined, 2 retired, 3 paused. >
 class SLObserverPort {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
@@ -65,17 +65,50 @@ class SLObserverPort {
   int received;
   int sent;
   int dropped;
+  < what this listener wants: which edit ops, and which line range >
+  int wantInsert;
+  int wantReplace;
+  int wantDelete;
+  int lineFirst;
+  int lineLast;
+  int missed;
+  int filtered;
 
   void configure(String portName) {
     name = portName; state = 0; faults = 0; lastFault = "";
     inbox = new SLObserverMessage[16];
     outbox = new SLObserverMessage[8];
     inCount = 0; outCount = 0; received = 0; sent = 0; dropped = 0;
+    wantInsert = 1; wantReplace = 1; wantDelete = 1; lineFirst = -1; lineLast = -1;
+    missed = 0; filtered = 0;
   }
   String getName() { return name; }
   int getState() { return state; }
   void setState(int s) { state = s; if (s != 0) { inCount = 0; outCount = 0; } }
   boolean isActive() { return state == 0; }
+  boolean isPaused() { return state == 3; }
+  int missedCount() { return missed; }
+  int filteredCount() { return filtered; }
+  void noteMissed() { missed = missed + 1; }
+  void noteFiltered() { filtered = filtered + 1; }
+  void clearMissed() { missed = 0; }
+  void clearFaults() { faults = 0; lastFault = ""; }
+  < Set what this listener wants. Both line bounds -1 means every line. >
+  void setWant(int ins, int rep, int del, int first, int last) {
+    wantInsert = ins; wantReplace = rep; wantDelete = del; lineFirst = first; lineLast = last;
+  }
+  < Does this listener want a CHANGE message? Other kinds always pass. >
+  boolean wantsChange(SLObserverMessage m) {
+    if (m.getKind() != 5) { return true; }
+    int op = m.getOp();
+    if (op == 0 && wantInsert == 0) { return false; }
+    if (op == 1 && wantReplace == 0) { return false; }
+    if (op == 2 && wantDelete == 0) { return false; }
+    if (lineFirst >= 0) {
+      if (m.getLine() < lineFirst || m.getLine() > lineLast) { return false; }
+    }
+    return true;
+  }
   int faultCount() { return faults; }
   String faultText() { return lastFault; }
   void fault(String why) { faults = faults + 1; lastFault = why; }

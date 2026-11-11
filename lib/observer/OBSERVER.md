@@ -17,7 +17,7 @@ active module is told, and may answer, converse with other modules, or
 | `SLObserverGuardModule` | Drop-in; nested `Responder` proposes redacting a forbidden line. |
 | `SLObserverReviewModule` | Drop-in; nested `Responder` opens a conversation with the auditor. |
 | `SLObserverView` | The modest GUI: a retained widget tree (labels, entry, buttons) with take-the-latch button presses. |
-| `observer-demo` | Self-checking scenario (39 checks). |
+| `observer-demo` | Self-checking scenario (81 checks). |
 | `observer-gui-demo` | Scripted presses through the view. |
 
 ```
@@ -57,6 +57,22 @@ The language also does not accept a subclass where its base is expected
 (`extends` does not widen types), so there is no shared `Responder` interface.
 Instead each module exposes `portOf()` and `pump()`, and the host's cycle calls
 `pump()` on the modules it holds.
+
+## Listener lifecycle
+
+| Operation | Method | Effect |
+|---|---|---|
+| add | `admit(port)` | Joins the roster; told the revision it joined at. |
+| pause | `pause(name)` | Active only. Changes are counted as *missed* instead of queued; pending mail is discarded. |
+| resume | `resume(name)` | Paused only. The listener is told how many changes it missed so it can resynchronise. |
+| alter | `alter(name, ins, rep, del, first, last)` | Choose which edit ops (1/0) and which line range (`-1,-1` = all) the listener wants. Unwanted changes are counted as *filtered*. Works while paused. A deaf filter, bad flag or bad range is refused. |
+| replace | `replace(name, freshPort)` | Hot-swap: a fresh port with the same name takes the slot; the old port is retired. The roster does not grow. |
+| reinstate | `reinstate(name)` | Host decision: a quarantined listener returns with its faults cleared. |
+| delete | `retire(name)` | Final. A retired listener cannot be paused, resumed, altered, replaced or reinstated, and its name stays reserved. |
+
+All of these are refused mid-cycle and for unknown names, are audited, and touch
+only the one named listener. Document edits and the other listeners carry on
+unchanged. `SLObserverView` shows the paused state in the roster.
 
 ## Safety envelope (all enforced by the observer)
 

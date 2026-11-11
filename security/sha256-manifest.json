@@ -8367,11 +8367,11 @@
     },
     {
       "path": "lib/hotlink/SLHotLinker.sleela",
-      "sha256": "d559dad0037bb745d92bb0f3a64e2a9c0b01baf1509b821ee53890c6ba3e992a"
+      "sha256": "e825f7aa0b5dde3b1cd8475217d7b5c44c19b3caa44d0f52fbe61892fc489e7a"
     },
     {
       "path": "lib/hotlink/hotlink-demo.sleela",
-      "sha256": "e362f6837275acf42998c41fd677c4f2691a87753af729cdd08d65aa46cc74f3"
+      "sha256": "8172f1619f10a48a82efa7b684eaed63932f8a3fdae18d403ecf2474a2a827f1"
     },
     {
       "path": "lib/html/SLPackage.sleela",
@@ -51055,7 +51055,7 @@
     },
     {
       "path": "lib/observer/SLDocumentObserver.sleela",
-      "sha256": "7a8feeb31368be47189d228a1d05f69859359739c7213de76f8cd2f3a1b862e0"
+      "sha256": "010a242acf85cb4551eaa7524cb5796b9a781c90e8408cc4d2ba57043a56555a"
     },
     {
       "path": "lib/observer/SLObserverDocument.sleela",
@@ -51071,7 +51071,7 @@
     },
     {
       "path": "lib/observer/SLObserverPort.sleela",
-      "sha256": "b4b72c08c6b0877d62330a1ad0f824a5ccd3a46ddff09a9869b32e928f7c2376"
+      "sha256": "9970619ae20732e65b922e83a55016005f73d823cc088b0f290a002b01f91d03"
     },
     {
       "path": "lib/observer/SLObserverReviewModule.sleela",
@@ -51083,11 +51083,11 @@
     },
     {
       "path": "lib/observer/SLObserverView.sleela",
-      "sha256": "07977eae2131c3a57fea851e2728e1e23e0fe34733f8482584daa3d584d8984d"
+      "sha256": "fabe048a6d3dd0e83444ade42ebe4cfe04b3701d483ff3a0959084116c6c1721"
     },
     {
       "path": "lib/observer/observer-demo.sleela",
-      "sha256": "55aa00659931a25c8e4edc0d7bd9c2b949cea36523f276df00acaf06ceef8686"
+      "sha256": "58cf8ddecad36159e2f15e9c540e164d2b6c45781eefc299e3ef60348b4a121d"
     },
     {
       "path": "lib/observer/observer-gui-demo.sleela",

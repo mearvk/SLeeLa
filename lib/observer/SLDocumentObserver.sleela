@@ -14,7 +14,8 @@
      said. beginCycle() is false when nobody has mail or the cycle cap is hit. >>
 #sleela 2.5
 material;
-< Family: observer. Safety limits: 14 ports, 4 hops, 16 cycles per edit, >
+< Family: observer. Listener lifecycle: admit, pause, resume, alter, replace, >
+< reinstate, retire. Safety limits: 14 ports, 4 hops, 16 cycles per edit, >
 < 2 proposals per cycle, proposal depth 3, 3 faults to quarantine. >
 < A nested class (Auditor) ships built in; further modules are dropped in as >
 < their own nested classes and admitted through a port at any time. >
@@ -222,6 +223,103 @@ class SLDocumentObserver {
     return true;
   }
 
+  < ---- listener lifecycle: pause, resume, alter, replace, reinstate ------ >
+  < All are refused mid-cycle and for unknown or retired modules, audited, and >
+  < change only the one named listener. Retired is final. >
+
+  < Pause a listener: changes are counted as missed instead of queued, and >
+  < its pending mail is discarded. Only an active listener can be paused. >
+  boolean pause(String portName) {
+    if (busy == 1) { audit("pause refused (mid-cycle): " + portName); return false; }
+    int i = indexOfPort(portName);
+    if (i < 0) { audit("pause refused (unknown): " + portName); return false; }
+    SLObserverPort p = ports[i];
+    if (p.getState() != 0) { audit("pause refused (not active): " + portName); return false; }
+    p.setState(3);
+    audit("paused " + portName);
+    return true;
+  }
+
+  < Resume a paused listener. It is told how many changes it missed, so it >
+  < can resynchronise from the document. >
+  boolean resume(String portName) {
+    if (busy == 1) { audit("resume refused (mid-cycle): " + portName); return false; }
+    int i = indexOfPort(portName);
+    if (i < 0) { audit("resume refused (unknown): " + portName); return false; }
+    SLObserverPort p = ports[i];
+    if (p.getState() != 3) { audit("resume refused (not paused): " + portName); return false; }
+    int gone = p.missedCount();
+    p.clearMissed();
+    p.setState(0);
+    SLObserverMessage w = new SLObserverMessage();
+    w.configure(0, "observer", portName,
+        "resumed at revision " + doc.revisionNow() + "; missed " + gone + " change(s)");
+    w.setRevision(doc.revisionNow());
+    if (p.deliver(w)) { delivered = delivered + 1; }
+    audit("resumed " + portName + " (missed " + gone + ")");
+    return true;
+  }
+
+  < Alter what a listener wants: which edit ops (1 yes, 0 no) and which line >
+  < range (both -1 = every line). Refused for a deaf filter (want at least one >
+  < op; pause instead), bad flags, or a bad range. Works while paused too. >
+  boolean alter(String portName, int ins, int rep, int del, int first, int last) {
+    if (busy == 1) { audit("alter refused (mid-cycle): " + portName); return false; }
+    int i = indexOfPort(portName);
+    if (i < 0) { audit("alter refused (unknown): " + portName); return false; }
+    SLObserverPort p = ports[i];
+    if (p.getState() != 0 && p.getState() != 3) { audit("alter refused (closed): " + portName); return false; }
+    boolean flags = (ins == 0 || ins == 1) && (rep == 0 || rep == 1) && (del == 0 || del == 1);
+    if (!flags || ins + rep + del == 0) { audit("alter refused (bad filter): " + portName); return false; }
+    boolean whole = first == -1 && last == -1;
+    boolean range = first >= 0 && last >= first && last < 64;
+    if (!whole && !range) { audit("alter refused (bad range): " + portName); return false; }
+    p.setWant(ins, rep, del, first, last);
+    audit("altered " + portName);
+    return true;
+  }
+
+  < Hot-swap a listener: a fresh port with the SAME name takes the slot, the >
+  < old port is retired. Refused if the new port is not fresh or is named >
+  < differently, or if the old one is already retired. >
+  boolean replace(String portName, SLObserverPort fresh) {
+    if (busy == 1) { audit("replace refused (mid-cycle): " + portName); return false; }
+    int i = indexOfPort(portName);
+    if (i < 0 || fresh == null) { audit("replace refused (unknown): " + portName); return false; }
+    SLObserverPort old = ports[i];
+    if (old.getState() == 2) { audit("replace refused (retired): " + portName); return false; }
+    if (fresh.getName() != portName || fresh.getState() != 0 || fresh == old) {
+      audit("replace refused (bad port): " + portName); return false;
+    }
+    old.setState(2);
+    ports[i] = fresh;
+    SLObserverMessage w = new SLObserverMessage();
+    w.configure(0, "observer", portName,
+        "admitted at revision " + doc.revisionNow() + " with " + doc.lineCount() + " line(s)");
+    w.setRevision(doc.revisionNow());
+    if (fresh.deliver(w)) { delivered = delivered + 1; }
+    audit("replaced " + portName);
+    return true;
+  }
+
+  < Bring a quarantined listener back (a host decision): faults are cleared. >
+  boolean reinstate(String portName) {
+    if (busy == 1) { audit("reinstate refused (mid-cycle): " + portName); return false; }
+    int i = indexOfPort(portName);
+    if (i < 0) { audit("reinstate refused (unknown): " + portName); return false; }
+    SLObserverPort p = ports[i];
+    if (p.getState() != 1) { audit("reinstate refused (not quarantined): " + portName); return false; }
+    p.clearFaults();
+    p.setState(0);
+    SLObserverMessage w = new SLObserverMessage();
+    w.configure(0, "observer", portName,
+        "reinstated at revision " + doc.revisionNow() + " with " + doc.lineCount() + " line(s)");
+    w.setRevision(doc.revisionNow());
+    if (p.deliver(w)) { delivered = delivered + 1; }
+    audit("reinstated " + portName);
+    return true;
+  }
+
   < ---- the host edits the document ---------------------------------------- >
 
   < Returns the new revision, or -1 if refused (busy or the document refused). >
@@ -255,8 +353,16 @@ class SLDocumentObserver {
     int i = 0;
     while (i < portCount) {
       SLObserverPort p = ports[i];
-      if (p.isActive()) {
-        if (p.deliver(m)) { delivered = delivered + 1; } else { dropped = dropped + 1; }
+      if (p.isPaused()) {
+        p.noteMissed();
+      } else if (p.isActive()) {
+        if (!p.wantsChange(m)) {
+          p.noteFiltered();
+        } else if (p.deliver(m)) {
+          delivered = delivered + 1;
+        } else {
+          dropped = dropped + 1;
+        }
       }
       i = i + 1;
     }
