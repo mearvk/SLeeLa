@@ -1,5 +1,7 @@
 # advantage
 
+> Every supported model, what it does, and why it follows from the last: see [SUPPORTED,MODELS.md](SUPPORTED,MODELS.md).
+
 A small module that connects **advantage math** to a **store of knowledge**,
 so it can answer: *which advantage should I draw on, and what must I check
 before I do?*
