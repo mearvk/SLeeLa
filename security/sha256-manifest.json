@@ -38119,7 +38119,7 @@
     },
     {
       "path": "lib/java/java/util/concurrent/CountDownLatch.sleela",
-      "sha256": "de516339b9312b4e653e05f99c5bf5904f1acaa2c32a489d405f9185fca93c89"
+      "sha256": "88e60ff11e04ba7347d14a3b7b0d5c79bca2ea910cd9aa467f190a7076d59787"
     },
     {
       "path": "lib/java/java/util/concurrent/CountedCompleter.sleela",
@@ -38283,7 +38283,7 @@
     },
     {
       "path": "lib/java/java/util/concurrent/Semaphore.sleela",
-      "sha256": "7369718e748901d62cee1eaccdd8109cb28cded3f6666057590eebea4be4c8c4"
+      "sha256": "c121b0fe09dae8b7e58aa661fb9a0de8f7d46e37a6e1345b551787835a0c2ca1"
     },
     {
       "path": "lib/java/java/util/concurrent/StructureViolationException.sleela",
@@ -38363,7 +38363,7 @@
     },
     {
       "path": "lib/java/java/util/concurrent/TimeUnit.sleela",
-      "sha256": "f60e13a981fb0997c77032f4a66c8057f181dfe828fd7d87e6df08a6cdfdbf76"
+      "sha256": "f7002baed1e666e8673ba342c9fe36202b57b2db7d116baa0c49d48136430ea0"
     },
     {
       "path": "lib/java/java/util/concurrent/TimeoutException.sleela",
