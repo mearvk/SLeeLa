@@ -40,6 +40,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 API = ROOT / "api" / "jdk-api.jsonl"
 BLOCK = re.compile(r"< ---- BEGIN java implementation.*?---- >\n(.*?)  < ---- END java implementation ---- >", re.S)
+SIG = re.compile(r"< ---- BEGIN java signatures.*?---- >\n(.*?)  < ---- END java signatures ---- >", re.S)
 DECL = re.compile(r"< ---- BEGIN java declarations.*?---- >\n(.*?)  < ---- END java declarations ---- >", re.S)
 METHOD = re.compile(r"^  (?:static )?(?:final )?[A-Za-z_][\w\[\]<>]* +(\w+)\s*\(", re.M)
 CTOR = re.compile(r"^  ([A-Z]\w*)\s*\([^)]*\)\s*\{", re.M)
@@ -60,7 +61,9 @@ def analyse(path: Path):
     d = DECL.search(src)
     impl = m.group(1) if m else ""
     decl = d.group(1) if d else ""
-    return {"implemented": bool(m) or bool(d), "behavior": bool(m),
+    sg = SIG.search(src)
+    sig_count = len(METHOD.findall(sg.group(1))) if sg else 0
+    return {"implemented": bool(m) or bool(d), "behavior": bool(m), "signatures": sig_count,
             "methods": collections.Counter(METHOD.findall(impl + decl)),
             "impl_methods": collections.Counter(METHOD.findall(impl)),
             "ctors": set(CTOR.findall(impl + decl)),
@@ -99,6 +102,7 @@ def main() -> int:
         row["members"] += n_members
         if info is not None:
             row["present"] += 1
+            row["signatures"] += info["signatures"]
         if info is not None and info["implemented"]:
             row["implemented"] += 1
             if info["behavior"]:
@@ -123,7 +127,8 @@ def main() -> int:
     summary = (f"types {tot['types']}, present {tot['present']}, with SLeeLa members {tot['implemented']} "
                f"({pct(tot['implemented'], tot['types'])}), hand-implemented {tot['behavior_types']}; "
                f"members {tot['members']}, covered {tot['covered']} ({pct(tot['covered'], tot['members'])}), "
-               f"of which hand-implemented behavior {tot['behavior']} ({pct(tot['behavior'], tot['members'])})")
+               f"of which hand-implemented behavior {tot['behavior']} ({pct(tot['behavior'], tot['members'])}); "
+               f"transcribed signature stubs awaiting logic {tot['signatures']} (not counted)")
     print(summary)
     by_module = collections.defaultdict(collections.Counter)
     for (mod, pkg), row in pkg_rows.items():

@@ -363,8 +363,15 @@ def process(t, check: bool, stats):
     decl = declarations(t, cls, fields, methods, inst, has_impl)
     new = base
     if decl:
-        b = base.rstrip()
-        new = b[:-1].rstrip("\n") + "\n\n" + BEGIN + "\n" + "\n".join(decl) + "\n" + END + "\n}\n"
+        block = BEGIN + "\n" + "\n".join(decl) + "\n" + END + "\n"
+        sig = "  < ---- BEGIN java signatures"
+        if sig in base:
+            # keep the declarations ahead of the transcribed signature stubs
+            i = base.index(sig)
+            new = base[:i].rstrip("\n") + "\n\n" + block + "\n" + base[i:]
+        else:
+            b = base.rstrip()
+            new = b[:-1].rstrip("\n") + "\n\n" + block + "}\n"
         new = re.sub(r"^#sleela \d+\.\d+$", "#sleela 3.0", new, count=1, flags=re.M)
     if new != src or created:
         stats["created" if created else "changed"] += 1

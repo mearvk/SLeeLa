@@ -19,8 +19,30 @@ constants). Two numbers are reported:
 
 - **Covered.** Members that exist in SLeeLa with their Java meaning. This
   includes the API-declared part below plus hand-implemented behavior.
-  Currently **40.7%**.
-- **Behavior.** Only hand-written method bodies. Currently **5.2%**.
+  Currently **41.4%**.
+- **Behavior.** Only hand-written method bodies. Currently **5.9%**.
+
+### Transcribed signatures (`tools/jdk_api_signatures.py`)
+
+Every remaining public method of every JDK type is transcribed into a
+`BEGIN/END java signatures` block: **24,970 method stubs**. Each has its
+Java name, and its parameters and return type mapped to the SLeeLa types
+(`int`, `long`, `double`, `boolean`, `String`, primitive arrays, `Any`). Each
+stub throws `UnsupportedOperationException` naming the exact Java signature,
+for example
+`not yet implemented in SLeeLa: int java.lang.StringBuilder.indexOf(String)`.
+This is the to-do list for the logic, laid out in place.
+
+Stubs are **not** counted as coverage. Some methods are not transcribed:
+
+- a method whose name the type, or a SLeeLa ancestor with an implementation
+  block, already declares, so a stub never shadows working behavior;
+- constructors, since a class admits one;
+- methods named with SLeeLa reserved words;
+- `java.lang.String`, which waits for the String bridge.
+
+When a method gets real logic, write it in an implementation block and
+re-run `jdk_api_signatures.py`; the stub for that name disappears.
 
 ### API-declared part (`tools/jdk_api_declare.py`)
 
@@ -185,6 +207,7 @@ and re-running them.
 # refresh the reflected API (needs a JDK), then the declarations and the report
 javac -d /tmp/apid lib/java/tools/ApiDump.java && java -cp /tmp/apid ApiDump > lib/java/api/jdk-api.jsonl
 python3 lib/java/tools/jdk_api_declare.py                 # constants, fields, abstract methods, enums, records
+python3 lib/java/tools/jdk_api_signatures.py              # remaining method signatures as stubs (run last)
 python3 lib/java/tools/jdk_api_coverage.py --markdown lib/java/COVERAGE.md
 
 python3 lib/java/tools/jdk28_implement_throwables.py      # 290 Throwable types

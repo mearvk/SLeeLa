@@ -7,9 +7,9 @@ on each compile.
 
 | Keyword | Hash | Source | Enclosing | # |
 |---------|------|--------|-----------|---|
-| `try` | [`5b057fb5cfcee358`](try/5b057fb5cfcee358/SUPPORT.md) | `ConcurrentCollections.sleela` | `ConcurrentCollections::main` | 0 |
-| `catch` | [`6be93e2e0ad13480`](catch/6be93e2e0ad13480/SUPPORT.md) | `ConcurrentCollections.sleela` | `ConcurrentCollections::main` | 0 |
-| `try` | [`adbf546ef0c0a9e6`](try/adbf546ef0c0a9e6/SUPPORT.md) | `ConcurrentCollections.sleela` | `ConcurrentCollections::main` | 1 |
-| `catch` | [`a74783a59808827f`](catch/a74783a59808827f/SUPPORT.md) | `ConcurrentCollections.sleela` | `ConcurrentCollections::main` | 1 |
-| `try` | [`a83518c2d2298401`](try/a83518c2d2298401/SUPPORT.md) | `ConcurrentCollections.sleela` | `ConcurrentCollections::main` | 2 |
-| `catch` | [`939dbaf6ad023d80`](catch/939dbaf6ad023d80/SUPPORT.md) | `ConcurrentCollections.sleela` | `ConcurrentCollections::main` | 2 |
+| `try` | [`ee3b4d7f57dc2cdf`](try/ee3b4d7f57dc2cdf/SUPPORT.md) | `TimeCore.sleela` | `TimeCore::main` | 0 |
+| `catch` | [`2e6d53ab22ffb5e2`](catch/2e6d53ab22ffb5e2/SUPPORT.md) | `TimeCore.sleela` | `TimeCore::main` | 0 |
+| `try` | [`6abc4816d7156ceb`](try/6abc4816d7156ceb/SUPPORT.md) | `TimeCore.sleela` | `TimeCore::main` | 1 |
+| `catch` | [`f6d3a51d1d8bb3b6`](catch/f6d3a51d1d8bb3b6/SUPPORT.md) | `TimeCore.sleela` | `TimeCore::main` | 1 |
+| `try` | [`e1148311594d5080`](try/e1148311594d5080/SUPPORT.md) | `TimeCore.sleela` | `TimeCore::main` | 2 |
+| `catch` | [`706012411021edaf`](catch/706012411021edaf/SUPPORT.md) | `TimeCore.sleela` | `TimeCore::main` | 2 |

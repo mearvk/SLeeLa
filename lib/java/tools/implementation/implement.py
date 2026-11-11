@@ -44,10 +44,10 @@ def apply_file(bf):
     src = src[:mo.start()] + header + src[mo.end():]
     src = re.sub(re.escape(BEGIN) + r".*?" + re.escape(END) + r"\n", "", src, flags=re.S)
     block = BEGIN + "\n" + body + END + "\n"
-    decl = "  < ---- BEGIN java declarations"
-    if decl in src:
-        # keep the hand-written implementation ahead of the generated declarations
-        i = src.index(decl)
+    marks = [m for m in ("  < ---- BEGIN java declarations", "  < ---- BEGIN java signatures") if m in src]
+    if marks:
+        # keep the hand-written implementation ahead of the generated blocks
+        i = min(src.index(m) for m in marks)
         src = src[:i].rstrip("\n") + "\n\n" + block + src[i:]
     else:
         b = src.rstrip()

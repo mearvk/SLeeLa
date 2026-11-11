@@ -751,9 +751,10 @@ DECL_MARK = "  < ---- BEGIN java declarations"
 
 def place_block(src: str, block: str) -> str:
     """Insert block ahead of the generated declarations (or the final brace)."""
-    if DECL_MARK in src:
-        i = src.index(DECL_MARK)
-        return src[:i].rstrip("\n") + "\n\n" + block + "\n" + src[i:]
+    for mark in (DECL_MARK, "  < ---- BEGIN java signatures"):
+        if mark in src:
+            i = src.index(mark)
+            return src[:i].rstrip("\n") + "\n\n" + block + "\n" + src[i:]
     b = src.rstrip()
     return b[:-1].rstrip("\n") + "\n\n" + block + "}\n"
 

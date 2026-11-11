@@ -24,9 +24,14 @@ LOCKED = [
 ]
 
 
-def locked(text):
+def locked(text, skip=()):
+    """Wrap the core mutation primitives in lock/unlock. Primitives that call
+    another locked primitive are listed in skip (the VM mutex is not
+    reentrant)."""
     hits = 0
     for a, b in LOCKED:
+        if any(a.startswith(x) for x in skip):
+            continue
         if ("  " + a) in text:
             text = text.replace("  " + a, "  " + b.replace("{L}", str(CLOCK)), 1)
             hits = hits + 1
@@ -209,7 +214,9 @@ def skiplist_map():
     t = gc.TREEMAP.replace("TreeMap", "ConcurrentSkipListMap").replace("java.util.ConcurrentSkipListMap", "java.util.concurrent.ConcurrentSkipListMap")
     api = gc.map_api("ConcurrentSkipListMap", "java.util.concurrent.ConcurrentSkipListMap", "ConcurrentSkipListSet")
     body = t + api + gc.SORTED + gc.VALUE
-    return locked(noted(body, f"Thread-safe sorted map: structural changes run under VM lock {CLOCK}."))
+    # putEntry / removeEntry of the sorted map call insertSorted / deleteSorted
+    return locked(noted(body, f"Thread-safe sorted map: structural changes run under VM lock {CLOCK}."),
+                  skip=("Any putEntry", "Any removeEntry"))
 
 
 def skiplist_set():
