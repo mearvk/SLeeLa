@@ -1,0 +1,276 @@
+<< lib/observer/observer-demo.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Runnable, self-checking demonstrator for the dynamic document
+     observer (lib/observer). It starts a standing document, then drops
+     modules in (as nested classes) while the program is running, and verifies
+     the safety envelope: proposals not mutations, optimistic concurrency, the
+     proposal depth cap, hop-limited conversations, fault quarantine, sender
+     stamping, admission refusals, and the cycle cap. Prints PASS/FAIL per
+     check and a final tally. >>
+#sleela 2.5
+material;
+< Family: observer. Run: sleela run lib/observer/observer-demo.sleela >
+class ObserverDemo {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39209;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  class Stubborn {
+    SLObserverPort port;
+    int tried;
+    void attach(String portName) {
+      port = new SLObserverPort();
+      port.configure(portName);
+      tried = 0;
+    }
+    SLObserverPort portOf() { return port; }
+    int pump() {
+      int n = 0;
+      while (port.hasMail()) {
+        SLObserverMessage m = port.next();
+        n = n + 1;
+        if (m.getKind() == 5) {
+          tried = tried + 1;
+          port.propose(0, 0, "echo " + tried, m.getRevision());
+        }
+      }
+      return n;
+    }
+  }
+  class Faulty {
+    SLObserverPort port;
+    void attach(String portName) {
+      port = new SLObserverPort();
+      port.configure(portName);
+    }
+    SLObserverPort portOf() { return port; }
+    int pump() {
+      int n = 0;
+      while (port.hasMail()) {
+        SLObserverMessage m = port.next();
+        n = n + 1;
+        if (m.getKind() == 5) { port.reportFault("cannot cope with revision " + m.getRevision()); }
+      }
+      return n;
+    }
+  }
+
+  SLObserverDocument doc;
+  SLDocumentObserver obs;
+  SLDocumentObserver.Auditor auditor;
+  SLObserverSummaryModule.Responder summary;
+  SLObserverGuardModule.Responder guard;
+  SLObserverReviewModule.Responder review;
+  ObserverDemo.Stubborn stubborn;
+  ObserverDemo.Faulty faulty;
+  int passed;
+  int failed;
+
+  void check(String label, boolean ok) {
+    if (ok) { passed = passed + 1; print("  PASS  " + label); }
+    else { failed = failed + 1; print("  FAIL  " + label); }
+  }
+  void banner(String t) { print(""); print("== " + t); }
+
+  < One full conversation with the observer: deliver, pump every present >
+  < module, route; repeat until quiet or the observer caps the cycles. >
+  int settle() {
+    int rounds = 0;
+    while (obs.beginCycle()) {
+      auditor.pump();
+      if (summary != null) { summary.pump(); }
+      if (guard != null) { guard.pump(); }
+      if (review != null) { review.pump(); }
+      if (stubborn != null) { stubborn.pump(); }
+      if (faulty != null) { faulty.pump(); }
+      obs.endCycle();
+      rounds = rounds + 1;
+    }
+    return rounds;
+  }
+
+  void main() {
+    passed = 0; failed = 0;
+    doc = new SLObserverDocument();
+    doc.configure("standing-document.txt");
+    obs = new SLDocumentObserver();
+    obs.configure(doc);
+
+    banner("1. built-in nested Auditor watches the standing document");
+    auditor = new SLDocumentObserver.Auditor();
+    auditor.attach("auditor");
+    check("auditor admitted", obs.admit(auditor.portOf()));
+    int r1 = obs.edit(0, 0, "hello world", "host");
+    settle();
+    check("append -> revision 1", r1 == 1);
+    check("auditor saw 1 change", auditor.changeCount() == 1);
+
+    banner("2. drop in a nested module while running");
+    summary = new SLObserverSummaryModule.Responder();
+    summary.attach("summary");
+    check("summary admitted mid-run", obs.admit(summary.portOf()));
+    settle();
+    obs.edit(0, 1, "second line", "host");
+    settle();
+    check("summary tracked revision 2", summary.latestRevision() == 2);
+    check("summary answers its own summary text", summary.summary() == "rev 2, +1 ~0 -0");
+
+    banner("3. guard responds safely: it proposes, the observer decides");
+    guard = new SLObserverGuardModule.Responder();
+    guard.attach("guard", "rm -rf /");
+    check("guard admitted", obs.admit(guard.portOf()));
+    settle();
+    obs.edit(0, 2, "rm -rf /", "host");
+    settle();
+    check("forbidden line was redacted", doc.lineAt(2) == "[redacted]");
+    check("document is at revision 4", doc.revisionNow() == 4);
+    check("guard saw its proposal accepted", guard.redactionCount() == 1);
+    check("auditor counted the proposal change too", auditor.changeCount() == 4);
+
+    banner("4. module-to-module conversation, bounded by the hop limit");
+    int droppedBefore = obs.droppedCount();
+    review = new SLObserverReviewModule.Responder();
+    review.attach("review", "auditor", 4);
+    check("review admitted", obs.admit(review.portOf()));
+    settle();
+    check("review got two answers", review.answeredCount() == 2);
+    check("review heard the auditor", review.latestAnswer() == "auditor has seen 4 change(s)");
+    check("third question died at the hop limit", obs.droppedCount() > droppedBefore);
+
+    banner("5. a stubborn module cannot loop the document forever");
+    stubborn = new ObserverDemo.Stubborn();
+    stubborn.attach("stubborn");
+    obs.admit(stubborn.portOf());
+    settle();
+    int linesBefore = doc.lineCount();
+    int declinedBefore = obs.declinedCount();
+    obs.edit(0, 0, "trigger", "host");
+    settle();
+    check("exactly 3 proposals applied (depth cap)", obs.proposalDepth() == 3);
+    check("the 4th proposal was declined", obs.declinedCount() == declinedBefore + 1);
+    check("document grew by 1 host + 3 proposed lines", doc.lineCount() == linesBefore + 4);
+    check("newest stubborn proposal sits on top", doc.lineAt(0) == "echo 3");
+    check("retire stubborn", obs.retire("stubborn"));
+    stubborn = null;
+
+    banner("6. a faulty module is quarantined; the others carry on");
+    faulty = new ObserverDemo.Faulty();
+    faulty.attach("faulty");
+    obs.admit(faulty.portOf());
+    settle();
+    obs.edit(1, 0, "edit A", "host"); settle();
+    obs.edit(1, 0, "edit B", "host"); settle();
+    check("still active after 2 faults", faulty.portOf().isActive());
+    obs.edit(1, 0, "edit C", "host"); settle();
+    check("quarantined at the 3rd fault", !faulty.portOf().isActive());
+    check("quarantine counted", obs.quarantinedCount() == 1);
+    int seen = faulty.portOf().receivedCount();
+    obs.edit(1, 0, "edit D", "host"); settle();
+    check("quarantined module receives nothing more", faulty.portOf().receivedCount() == seen);
+    check("other modules kept observing", summary.latestRevision() == doc.revisionNow());
+
+    banner("7. the document and the observer fail closed");
+    int rev = doc.revisionNow();
+    check("out-of-range replace refused", obs.edit(1, 999, "x", "host") == -1);
+    check("out-of-range delete refused", obs.edit(2, -1, "", "host") == -1);
+    check("unknown op refused", obs.edit(7, 0, "x", "host") == -1);
+    check("null text refused", obs.edit(1, 0, null, "host") == -1);
+    check("refused edits changed nothing", doc.revisionNow() == rev);
+
+    banner("8. admission refusals and sender stamping");
+    SLObserverPort dup = new SLObserverPort();
+    dup.configure("summary");
+    check("duplicate name refused", !obs.admit(dup));
+    SLObserverPort bad = new SLObserverPort();
+    bad.configure("observer");
+    check("reserved name refused", !obs.admit(bad));
+    SLObserverPort spoofer = new SLObserverPort();
+    spoofer.configure("spoofer");
+    SLObserverPort probe = new SLObserverPort();
+    probe.configure("probe");
+    obs.admit(spoofer);
+    obs.admit(probe);
+    obs.edit(0, 0, "poke", "host");
+    SLObserverMessage lie = new SLObserverMessage();
+    lie.configure(0, "auditor", "probe", "I am the auditor");
+    spoofer.say(lie);
+    SLObserverMessage drain = null;
+    boolean began = obs.beginCycle();
+    check("cycle began", began);
+    check("admit mid-cycle refused", !obs.admit(new SLObserverPort()));
+    auditor.pump(); summary.pump(); guard.pump(); review.pump();
+    obs.endCycle();
+    SLObserverMessage got = null;
+    while (probe.hasMail()) {
+      SLObserverMessage mm = probe.next();
+      if (mm.getKind() == 0 && mm.getText() == "I am the auditor") { got = mm; }
+    }
+    check("probe received the spoofed note", got != null);
+    check("observer stamped the real sender", got != null && got.getFrom() == "spoofer");
+    settle();
+
+    banner("9. capacity and the cycle cap");
+    int f = 0;
+    int admitted = 0;
+    while (f < 8) {
+      SLObserverPort fp = new SLObserverPort();
+      fp.configure("filler" + f);
+      if (obs.admit(fp)) { admitted = admitted + 1; }
+      f = f + 1;
+    }
+    check("roster is capped at 14 ports", obs.portTotal() == 14);
+    check("admission beyond the cap was refused", admitted < 8);
+    obs.edit(0, 0, "flood", "host");
+    int rounds = settle();
+    check("unpumped ports cannot spin the observer forever", rounds <= 16);
+
+    banner("audit trail (tail)");
+    int total = obs.trailSize();
+    int from = (total > 10) ? (total - 10) : 0;
+    int t = from;
+    while (t < total) { print("  " + obs.trailAt(t)); t = t + 1; }
+
+    banner("result");
+    print("  passed " + passed + ", failed " + failed);
+    print("  document: " + doc.getTitle() + " at revision " + doc.revisionNow()
+        + " with " + doc.lineCount() + " line(s)");
+  }
+}

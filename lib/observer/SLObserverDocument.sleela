@@ -1,0 +1,112 @@
+<< lib/observer/SLObserverDocument.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLObserverDocument — the standing document a dynamic
+     observer watches: up to 64 text lines and a revision counter that moves by
+     exactly one on every accepted edit. Every edit is validated first and a
+     refused edit changes nothing (fail closed). >>
+#sleela 2.5
+material;
+< Family: observer. Ops: 0 INSERT before line, 1 REPLACE line, 2 DELETE line. >
+class SLObserverDocument {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39203;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  int MAX_LINES = 64;
+  String title;
+  String[] lines;
+  int count;
+  int revision;
+  int lastOp;
+  int lastLine;
+  String lastOld;
+  String lastNew;
+
+  void configure(String docTitle) {
+    title = docTitle;
+    lines = new String[64];
+    int i = 0;
+    while (i < 64) { lines[i] = ""; i = i + 1; }
+    count = 0; revision = 0; lastOp = -1; lastLine = 0; lastOld = ""; lastNew = "";
+  }
+  String getTitle() { return title; }
+  int revisionNow() { return revision; }
+  int lineCount() { return count; }
+  int capacity() { return 64; }
+  String lineAt(int i) { return (i >= 0 && i < count) ? lines[i] : ""; }
+  int getLastOp() { return lastOp; }
+  int getLastLine() { return lastLine; }
+  String getLastOld() { return lastOld; }
+  String getLastNew() { return lastNew; }
+
+  boolean canApply(int op, int line) {
+    if (op == 0) { return line >= 0 && line <= count && count < 64; }
+    if (op == 1 || op == 2) { return line >= 0 && line < count; }
+    return false;
+  }
+
+  < Apply one edit. Returns the new revision, or -1 with NO change made. >
+  int apply(int op, int line, String text) {
+    if (!canApply(op, line)) { return -1; }
+    if (op != 2 && text == null) { return -1; }
+    if (op == 0) {
+      int i = count;
+      while (i > line) { lines[i] = lines[i - 1]; i = i - 1; }
+      lines[line] = text;
+      count = count + 1;
+      lastOld = ""; lastNew = text;
+    } else if (op == 1) {
+      lastOld = lines[line];
+      lines[line] = text;
+      lastNew = text;
+    } else {
+      lastOld = lines[line];
+      int j = line;
+      while (j + 1 < count) { lines[j] = lines[j + 1]; j = j + 1; }
+      count = count - 1;
+      lines[count] = "";
+      lastNew = "";
+    }
+    lastOp = op; lastLine = line;
+    revision = revision + 1;
+    return revision;
+  }
+}

@@ -1,0 +1,394 @@
+<< lib/observer/SLDocumentObserver.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLDocumentObserver — a dynamic document observer. Modules
+     are admitted through bounded ports WHILE THE PROGRAM IS RUNNING; when the
+     standing document changes every active module is told, and may answer,
+     converse with the others, or PROPOSE an edit. The observer is the only
+     writer of the document, and it applies a proposal only if it is based on
+     the current revision, within the per-cycle and depth budgets, and accepted
+     by the document. Hop limits bound conversations, repeated faults
+     quarantine a module, and everything is written to a bounded audit trail.
+
+     Drive it as a cycle: edit(...) delivers the change; then while
+     beginCycle() is true, pump every module, then endCycle() routes what they
+     said. beginCycle() is false when nobody has mail or the cycle cap is hit. >>
+#sleela 2.5
+material;
+< Family: observer. Safety limits: 14 ports, 4 hops, 16 cycles per edit, >
+< 2 proposals per cycle, proposal depth 3, 3 faults to quarantine. >
+< A nested class (Auditor) ships built in; further modules are dropped in as >
+< their own nested classes and admitted through a port at any time. >
+class SLDocumentObserver {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39204;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  int MAX_PORTS = 14;
+  int MAX_HOPS = 4;
+  int MAX_CYCLES = 16;
+  int MAX_PROPOSALS = 2;
+  int MAX_DEPTH = 3;
+  int MAX_FAULTS = 3;
+  int MAX_TRAIL = 64;
+
+  SLObserverDocument doc;
+  SLObserverPort[] ports;
+  int portCount;
+  int busy;
+  int cycles;
+  int proposals;
+  int depth;
+  int applied;
+  int declined;
+  int dropped;
+  int quarantined;
+  int delivered;
+  String[] trail;
+  int trailCount;
+  int trailLost;
+
+  < The built-in nested module: counts changes and answers questions. >
+  class Auditor {
+    SLObserverPort port;
+    int changes;
+    int questions;
+    void attach(String portName) {
+      port = new SLObserverPort();
+      port.configure(portName);
+      changes = 0; questions = 0;
+    }
+    SLObserverPort portOf() { return port; }
+    int changeCount() { return changes; }
+    int pump() {
+      int n = 0;
+      while (port.hasMail()) {
+        SLObserverMessage m = port.next();
+        n = n + 1;
+        if (m.getKind() == 5) {
+          changes = changes + 1;
+        } else if (m.getKind() == 1) {
+          questions = questions + 1;
+          port.reply(m, "auditor has seen " + changes + " change(s)");
+        }
+      }
+      return n;
+    }
+  }
+
+  void configure(SLObserverDocument d) {
+    doc = d;
+    ports = new SLObserverPort[14];
+    portCount = 0; busy = 0; cycles = 0; proposals = 0; depth = 0;
+    applied = 0; declined = 0; dropped = 0; quarantined = 0; delivered = 0;
+    trail = new String[64];
+    int i = 0;
+    while (i < 64) { trail[i] = ""; i = i + 1; }
+    trailCount = 0; trailLost = 0;
+  }
+
+  SLObserverDocument document() { return doc; }
+  int portTotal() { return portCount; }
+  int appliedCount() { return applied; }
+  int declinedCount() { return declined; }
+  int droppedCount() { return dropped; }
+  int quarantinedCount() { return quarantined; }
+  int deliveredCount() { return delivered; }
+  int cycleCount() { return cycles; }
+  int proposalDepth() { return depth; }
+  boolean isBusy() { return busy == 1; }
+
+  void audit(String entry) {
+    if (trailCount < 64) {
+      trail[trailCount] = entry;
+      trailCount = trailCount + 1;
+    } else {
+      trailLost = trailLost + 1;
+    }
+  }
+  int trailSize() { return trailCount; }
+  int trailOverflow() { return trailLost; }
+  String trailAt(int i) { return (i >= 0 && i < trailCount) ? trail[i] : ""; }
+
+  int indexOfPort(String portName) {
+    int i = 0;
+    while (i < portCount) {
+      SLObserverPort p = ports[i];
+      if (p.getName() == portName) { return i; }
+      i = i + 1;
+    }
+    return -1;
+  }
+  String portNameAt(int i) {
+    if (i < 0 || i >= portCount) { return ""; }
+    SLObserverPort p = ports[i];
+    return p.getName();
+  }
+  int portStateAt(int i) {
+    if (i < 0 || i >= portCount) { return -1; }
+    SLObserverPort p = ports[i];
+    return p.getState();
+  }
+  int activeCount() {
+    int n = 0;
+    int i = 0;
+    while (i < portCount) {
+      SLObserverPort p = ports[i];
+      if (p.isActive()) { n = n + 1; }
+      i = i + 1;
+    }
+    return n;
+  }
+  int pendingMail() {
+    int n = 0;
+    int i = 0;
+    while (i < portCount) {
+      SLObserverPort p = ports[i];
+      n = n + p.mailCount();
+      i = i + 1;
+    }
+    return n;
+  }
+
+  < ---- admission: drop a module in while running ----------------------- >
+
+  < Admit a module port. Refused (and audited) mid-cycle, when full, when the >
+  < name is empty/reserved/duplicate, or when the port is not fresh. >
+  boolean admit(SLObserverPort p) {
+    if (p == null) { return false; }
+    String nm = p.getName();
+    if (busy == 1) { audit("admit refused (mid-cycle): " + nm); return false; }
+    if (nm == null || nm == "" || nm == "*" || nm == "observer") {
+      audit("admit refused (bad name)"); return false;
+    }
+    if (portCount >= 14) { audit("admit refused (full): " + nm); return false; }
+    if (p.getState() != 0) { audit("admit refused (not fresh): " + nm); return false; }
+    if (indexOfPort(nm) >= 0) { audit("admit refused (duplicate): " + nm); return false; }
+    ports[portCount] = p;
+    portCount = portCount + 1;
+    SLObserverMessage w = new SLObserverMessage();
+    w.configure(0, "observer", nm,
+        "admitted at revision " + doc.revisionNow() + " with " + doc.lineCount() + " line(s)");
+    w.setRevision(doc.revisionNow());
+    if (p.deliver(w)) { delivered = delivered + 1; }
+    audit("admitted " + nm + " at revision " + doc.revisionNow());
+    return true;
+  }
+
+  boolean retire(String portName) {
+    if (busy == 1) { return false; }
+    int i = indexOfPort(portName);
+    if (i < 0) { return false; }
+    SLObserverPort p = ports[i];
+    p.setState(2);
+    audit("retired " + portName);
+    return true;
+  }
+
+  < ---- the host edits the document ---------------------------------------- >
+
+  < Returns the new revision, or -1 if refused (busy or the document refused). >
+  int edit(int op, int line, String text, String source) {
+    if (busy == 1) {
+      declined = declined + 1;
+      audit("edit refused (mid-cycle) from " + source);
+      return -1;
+    }
+    int r = doc.apply(op, line, text);
+    if (r < 0) {
+      declined = declined + 1;
+      audit("edit refused by document from " + source);
+      return -1;
+    }
+    applied = applied + 1;
+    cycles = 0; depth = 0; proposals = 0;
+    audit("rev " + r + " by " + source);
+    broadcastChange(source);
+    return r;
+  }
+
+  void broadcastChange(String source) {
+    SLObserverMessage m = new SLObserverMessage();
+    m.configure(5, "observer", "*", doc.getLastNew());
+    m.setOp(doc.getLastOp());
+    m.setLine(doc.getLastLine());
+    m.setExtra(doc.getLastOld());
+    m.setTag(source);
+    m.setRevision(doc.revisionNow());
+    int i = 0;
+    while (i < portCount) {
+      SLObserverPort p = ports[i];
+      if (p.isActive()) {
+        if (p.deliver(m)) { delivered = delivered + 1; } else { dropped = dropped + 1; }
+      }
+      i = i + 1;
+    }
+  }
+
+  < ---- the cycle ---------------------------------------------------------- >
+
+  boolean beginCycle() {
+    if (busy == 1) { return false; }
+    if (pendingMail() == 0) { return false; }
+    if (cycles >= 16) {
+      audit("cycle cap reached; pending mail discarded");
+      discardMail();
+      return false;
+    }
+    cycles = cycles + 1;
+    proposals = 0;
+    busy = 1;
+    return true;
+  }
+
+  void discardMail() {
+    int i = 0;
+    while (i < portCount) {
+      SLObserverPort p = ports[i];
+      while (p.hasMail()) { SLObserverMessage x = p.next(); dropped = dropped + 1; }
+      i = i + 1;
+    }
+  }
+
+  void endCycle() {
+    if (busy == 0) { return; }
+    int i = 0;
+    while (i < portCount) {
+      SLObserverPort p = ports[i];
+      int guard = 0;
+      while (p.outPending() > 0 && guard < 8) {
+        SLObserverMessage m = p.takeOut();
+        guard = guard + 1;
+        if (m != null) { deliverMessage(p, m); }
+      }
+      i = i + 1;
+    }
+    int k = 0;
+    while (k < portCount) {
+      SLObserverPort q = ports[k];
+      if (q.isActive() && q.faultCount() >= 3) {
+        q.setState(1);
+        quarantined = quarantined + 1;
+        audit("quarantined " + q.getName() + " after " + q.faultCount() + " fault(s)");
+      }
+      k = k + 1;
+    }
+    busy = 0;
+  }
+
+  void deliverMessage(SLObserverPort sender, SLObserverMessage m) {
+    < the observer stamps the sender; a module cannot impersonate another >
+    m.setFrom(sender.getName());
+    int k = m.getKind();
+    if (k == 4) {
+      sender.fault(m.getText());
+      audit("fault from " + sender.getName() + ": " + m.getText());
+      return;
+    }
+    if (k == 3) { handlePropose(sender, m); return; }
+    if (k == 0 || k == 1 || k == 2) {
+      if (m.getHops() + 1 > 4) {
+        dropped = dropped + 1;
+        audit("dropped over hop limit: " + sender.getName() + " -> " + m.getTo());
+        return;
+      }
+      m.setHops(m.getHops() + 1);
+      if (m.getTo() == "*") {
+        int i = 0;
+        while (i < portCount) {
+          SLObserverPort p = ports[i];
+          if (p.isActive() && p.getName() != sender.getName()) {
+            if (p.deliver(m)) { delivered = delivered + 1; } else { dropped = dropped + 1; }
+          }
+          i = i + 1;
+        }
+        return;
+      }
+      int idx = indexOfPort(m.getTo());
+      if (idx < 0) {
+        dropped = dropped + 1;
+        audit("dropped (no such module): " + sender.getName() + " -> " + m.getTo());
+        return;
+      }
+      SLObserverPort target = ports[idx];
+      if (target.isActive() && target.deliver(m)) {
+        delivered = delivered + 1;
+      } else {
+        dropped = dropped + 1;
+        audit("dropped (closed or full): " + sender.getName() + " -> " + m.getTo());
+      }
+      return;
+    }
+    dropped = dropped + 1;
+    audit("dropped (unknown kind) from " + sender.getName());
+  }
+
+  void handlePropose(SLObserverPort sender, SLObserverMessage m) {
+    proposals = proposals + 1;
+    if (proposals > 2) { decline(sender, "too many proposals this cycle"); return; }
+    if (depth >= 3) { decline(sender, "proposal depth limit reached"); return; }
+    if (m.getRevision() != doc.revisionNow()) {
+      decline(sender, "stale: based on revision " + m.getRevision()
+          + ", document is at " + doc.revisionNow());
+      return;
+    }
+    int r = doc.apply(m.getOp(), m.getLine(), m.getText());
+    if (r < 0) { decline(sender, "the document refused the edit"); return; }
+    depth = depth + 1;
+    applied = applied + 1;
+    audit("rev " + r + " by " + sender.getName() + " (proposal)");
+    SLObserverMessage a = new SLObserverMessage();
+    a.configure(2, "observer", sender.getName(), "accepted: now revision " + r);
+    a.setRevision(r);
+    a.setExtra("accepted");
+    if (sender.deliver(a)) { delivered = delivered + 1; }
+    broadcastChange(sender.getName());
+  }
+
+  void decline(SLObserverPort sender, String why) {
+    declined = declined + 1;
+    audit("declined proposal from " + sender.getName() + ": " + why);
+    SLObserverMessage a = new SLObserverMessage();
+    a.configure(2, "observer", sender.getName(), "declined: " + why);
+    a.setRevision(doc.revisionNow());
+    a.setExtra("declined");
+    if (sender.deliver(a)) { delivered = delivered + 1; }
+  }
+}

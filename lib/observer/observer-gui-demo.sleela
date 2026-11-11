@@ -1,0 +1,185 @@
+<< lib/observer/observer-gui-demo.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Runnable GUI demonstrator for the dynamic document observer. It
+     drives SLObserverView, a retained widget tree, with scripted
+     button clicks (append, replace, drop in a module, quit) and prints the
+     rendered nodes, so the behavior is checkable without a display. The same
+     view can be mounted on real widgets by any host. >>
+#sleela 2.5
+material;
+< Family: observer. Run: sleela run lib/observer/observer-gui-demo.sleela >
+class ObserverGuiDemo {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39210;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  SLObserverDocument doc;
+  SLDocumentObserver obs;
+  SLDocumentObserver.Auditor auditor;
+  SLObserverSummaryModule.Responder summary;
+  SLObserverGuardModule.Responder guard;
+  SLObserverReviewModule.Responder review;
+  SLObserverView view;
+  int dropStage;
+  int edits;
+
+  void banner(String t) { print(""); print("== " + t); }
+
+  void pumpAll() {
+    auditor.pump();
+    if (summary != null) { summary.pump(); }
+    if (guard != null) { guard.pump(); }
+    if (review != null) { review.pump(); }
+  }
+  int settle() {
+    int rounds = 0;
+    while (obs.beginCycle()) { pumpAll(); obs.endCycle(); rounds = rounds + 1; }
+    return rounds;
+  }
+
+  void setup() {
+    doc = new SLObserverDocument();
+    doc.configure("standing-document.txt");
+    obs = new SLDocumentObserver();
+    obs.configure(doc);
+    auditor = new SLDocumentObserver.Auditor();
+    auditor.attach("auditor");
+    obs.admit(auditor.portOf());
+    dropStage = 0;
+    edits = 0;
+    obs.edit(0, 0, "a standing document", "host");
+    settle();
+  }
+
+  < Each press of Drop in module admits the next module, mid-run. >
+  void dropInNext() {
+    if (dropStage == 0) {
+      summary = new SLObserverSummaryModule.Responder();
+      summary.attach("summary");
+      obs.admit(summary.portOf());
+    } else if (dropStage == 1) {
+      guard = new SLObserverGuardModule.Responder();
+      guard.attach("guard", "rm -rf /");
+      obs.admit(guard.portOf());
+    } else if (dropStage == 2) {
+      review = new SLObserverReviewModule.Responder();
+      review.attach("review", "auditor", 2);
+      obs.admit(review.portOf());
+    } else {
+      obs.audit("no more modules to drop in");
+    }
+    dropStage = dropStage + 1;
+    settle();
+  }
+
+  < Turn one view action into the matching observer operation. >
+  boolean act(int action) {
+    String typed = view.entryText();
+    String text = (typed == "") ? ("line " + edits) : typed;
+    int last = doc.lineCount() - 1;
+    if (action == 1) {
+      obs.edit(0, doc.lineCount(), text, "gui"); edits = edits + 1;
+    } else if (action == 2) {
+      obs.edit(1, last, text, "gui");
+    } else if (action == 3) {
+      obs.edit(2, last, "", "gui");
+    } else if (action == 4) {
+      dropInNext();
+    } else if (action == 5) {
+      return false;
+    }
+    settle();
+    view.clearEntry();
+    view.paint();
+    return true;
+  }
+
+  void dump() {
+    print("  " + view.textOf("ob-title"));
+    int i = 0;
+    while (i < 12) {
+      String t = view.textOf("ob-line" + i);
+      if (t != "") { print("    " + t); }
+      i = i + 1;
+    }
+    print("  " + view.textOf("ob-status"));
+    print("  " + view.textOf("ob-ports"));
+  }
+
+  < Scripted clicks on a bare DOM through the view. >
+  void scripted() {
+    banner("driving SLObserverView with scripted presses");
+    view = new SLObserverView();
+    view.configure(obs);
+    view.build();
+    print("  nodes built: " + view.nodeCount());
+
+    view.type("second line");
+    view.press("ob-append");
+    act(view.service());
+    view.press("ob-dropin");
+    act(view.service());
+    view.press("ob-dropin");
+    act(view.service());
+    view.type("rm -rf /");
+    view.press("ob-append");
+    act(view.service());
+    view.press("ob-dropin");
+    act(view.service());
+    view.type("a final, edited line");
+    view.press("ob-replace");
+    act(view.service());
+    view.press("ob-quit");
+    boolean keep = act(view.service());
+    print("  quit pressed -> keep running: " + (keep ? "yes" : "no"));
+    dump();
+    print("  audit trail:");
+    int i = 0;
+    while (i < obs.trailSize()) { print("    " + obs.trailAt(i)); i = i + 1; }
+    if (review != null) { print("  review heard: " + review.latestAnswer()); }
+  }
+
+  void main() {
+    banner("SLeeLa dynamic document observer - GUI");
+    setup();
+    scripted();
+  }
+}

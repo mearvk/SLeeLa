@@ -1,0 +1,193 @@
+<< lib/observer/SLObserverView.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLObserverView — the modest GUI for the dynamic document
+     observer. It is a small retained widget tree (labels, an entry, buttons)
+     that mirrors the standing document, the module roster and the audit trail,
+     and turns button presses into latched actions the host loop services with
+     the same take-the-latch discipline as the gui package. It is self-contained
+     on purpose: a host walks nodeCount()/tagAt()/textAt() to mount it on real
+     widgets and calls press(id) when a button is activated. >>
+#sleela 2.5
+material;
+< Family: observer. Actions: 0 none, 1 append, 2 replace, 3 delete, 4 drop-in, 5 quit. >
+class SLObserverView {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39208;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  int MAX_NODES = 48;
+  SLDocumentObserver observer;
+  String[] ids;
+  String[] tags;
+  String[] texts;
+  String[] parents;
+  int[] latch;
+  int count;
+
+  void configure(SLDocumentObserver o) {
+    observer = o;
+    ids = new String[48]; tags = new String[48]; texts = new String[48];
+    parents = new String[48]; latch = new int[48];
+    int i = 0;
+    while (i < 48) {
+      ids[i] = ""; tags[i] = ""; texts[i] = ""; parents[i] = ""; latch[i] = 0;
+      i = i + 1;
+    }
+    count = 0;
+  }
+
+  < ---- the retained node tree ---------------------------------------------- >
+
+  int nodeCount() { return count; }
+  String idAt(int i) { return (i >= 0 && i < count) ? ids[i] : ""; }
+  String tagAt(int i) { return (i >= 0 && i < count) ? tags[i] : ""; }
+  String textAt(int i) { return (i >= 0 && i < count) ? texts[i] : ""; }
+  String parentAt(int i) { return (i >= 0 && i < count) ? parents[i] : ""; }
+  int indexOf(String id) {
+    int i = 0;
+    while (i < count) { if (ids[i] == id) { return i; } i = i + 1; }
+    return -1;
+  }
+  boolean add(String parent, String tag, String id) {
+    if (count >= 48 || indexOf(id) >= 0) { return false; }
+    ids[count] = id; tags[count] = tag; parents[count] = parent;
+    texts[count] = ""; latch[count] = 0;
+    count = count + 1;
+    return true;
+  }
+  void setText(String id, String t) {
+    int i = indexOf(id);
+    if (i >= 0) { texts[i] = (t == null) ? "" : t; }
+  }
+  String textOf(String id) {
+    int i = indexOf(id);
+    return (i >= 0) ? texts[i] : "";
+  }
+
+  < A host reports the user typed into the entry, or activated a button. >
+  void type(String t) { setText("ob-entry", t); }
+  boolean press(String id) {
+    int i = indexOf(id);
+    if (i < 0 || tags[i] != "button") { return false; }
+    latch[i] = 1;
+    return true;
+  }
+  boolean taken(String id) {
+    int i = indexOf(id);
+    if (i < 0 || latch[i] == 0) { return false; }
+    latch[i] = 0;
+    return true;
+  }
+
+  void build() {
+    add("", "window", "root");
+    add("root", "label", "ob-title");
+    add("root", "box", "ob-doc");
+    int i = 0;
+    while (i < 12) { add("ob-doc", "label", "ob-line" + i); i = i + 1; }
+    add("root", "label", "ob-status");
+    add("root", "label", "ob-ports");
+    add("root", "box", "ob-trail");
+    int j = 0;
+    while (j < 6) { add("ob-trail", "label", "ob-trail" + j); j = j + 1; }
+    add("root", "entry", "ob-entry");
+    add("root", "box", "ob-bar");
+    add("ob-bar", "button", "ob-append");
+    setText("ob-append", "Append line");
+    add("ob-bar", "button", "ob-replace");
+    setText("ob-replace", "Replace last");
+    add("ob-bar", "button", "ob-delete");
+    setText("ob-delete", "Delete last");
+    add("ob-bar", "button", "ob-dropin");
+    setText("ob-dropin", "Drop in module");
+    add("ob-bar", "button", "ob-quit");
+    setText("ob-quit", "Quit");
+    paint();
+  }
+
+  String entryText() { return textOf("ob-entry"); }
+  void clearEntry() { setText("ob-entry", ""); }
+
+  String stateName(int s) {
+    if (s == 0) { return "active"; }
+    if (s == 1) { return "quarantined"; }
+    return "retired";
+  }
+
+  < Mirror observer state into the nodes. >
+  void paint() {
+    SLObserverDocument doc = observer.document();
+    setText("ob-title", doc.getTitle() + "  (revision " + doc.revisionNow() + ")");
+    int i = 0;
+    while (i < 12) {
+      setText("ob-line" + i, (i < doc.lineCount()) ? (i + ": " + doc.lineAt(i)) : "");
+      i = i + 1;
+    }
+    setText("ob-status", "lines " + doc.lineCount() + "/" + doc.capacity()
+        + " | applied " + observer.appliedCount()
+        + " declined " + observer.declinedCount()
+        + " dropped " + observer.droppedCount());
+    String roster = "modules:";
+    int p = 0;
+    while (p < observer.portTotal()) {
+      roster = roster + " " + observer.portNameAt(p) + "[" + stateName(observer.portStateAt(p)) + "]";
+      p = p + 1;
+    }
+    setText("ob-ports", roster);
+    int total = observer.trailSize();
+    int first = (total > 6) ? (total - 6) : 0;
+    int t = 0;
+    while (t < 6) {
+      setText("ob-trail" + t, (first + t < total) ? observer.trailAt(first + t) : "");
+      t = t + 1;
+    }
+  }
+
+  < Take one latched press: returns the action code, or 0 when idle. >
+  int service() {
+    if (taken("ob-append")) { return 1; }
+    if (taken("ob-replace")) { return 2; }
+    if (taken("ob-delete")) { return 3; }
+    if (taken("ob-dropin")) { return 4; }
+    if (taken("ob-quit")) { return 5; }
+    return 0;
+  }
+}

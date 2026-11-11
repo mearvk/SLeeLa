@@ -1,5 +1,7 @@
 # SLeeLa /lib Library Index
 
+> Revision 0.83 adds the **`observer`** package (`lib/observer/`): a dynamic document observer. Modules are admitted through bounded ports while the program runs; on each document change they may answer, converse (hop-limited), or propose edits that the observer alone applies (revision-checked, depth- and rate-capped), with fault quarantine, sender stamping and an audit trail. Ships `SLObserverDocument`, `SLObserverMessage`, `SLObserverPort`, `SLDocumentObserver` (nested `Auditor`), drop-in nested-class modules `SLObserverSummaryModule`, `SLObserverGuardModule`, `SLObserverReviewModule`, the modest GUI `SLObserverView`, and runnable `observer-demo` (39 self-checks) and `observer-gui-demo`. Documentation: `lib/observer/OBSERVER.md`. Ten new source units (counts: 13247 to **13257** sources; 13331 to **13341** total records; 117 to **118** packages).
+
 > Revision 0.82 adds a `trading/` subject subfolder to the **`advantage`** package (`lib/advantage/trading/`): the SLeeLa port of the eleven cross-asset trading models from the C/C++ `advantage` module. Classes: `SLTradingResult` (the common result with the advantage bridge: baseline and advantage net of the opportunity cost of capital), `SLTradingCheck` (shared fail-closed validation and finite bounds), the eleven models `SLTradingArbitrage`, `SLTradingMarketMaking`, `SLTradingRefurbishment`, `SLTradingRegional`, `SLTradingAggregation`, `SLTradingAsymmetry`, `SLTradingConsignment`, `SLTradingDistressed`, `SLTradingVirtual`, `SLTradingSynthetic` and `SLTradingMomentum`, `SLTradingRateBudget` (a wait before the next request from rate-limit numbers; honors Retry-After, cites RFC 9110), and counsel (`SLTradingApproach` scoring mean x confidence x trust, `SLTradingCounsel` ranking best-first). A runnable `trading-demo` makes 93 self-checks against hand-computed anchors and matches the C++ counsel scores. Pure computation: no prices fetched, no orders placed. Honest limits: illustrative inputs only, per-trade not per-year, and the SLeeLa `String` type has no character access so header text is parsed by the caller or the C layer. New documentation: `lib/advantage/TRADING.md`. Seventeen new source units (counts: 13230 to **13247** sources; 13314 to **13331** total records).
 
 > Revision 0.81 completes the **`java`** package type inventory against the reflected public JDK API (OpenJDK 25.0.2; JDK 28 envelope format): 1,235 previously missing public types gain source units (every one of the 4,801 public types now has a file), and every type carries a generated `java declarations` block (constants with real values, fields, abstract methods, complete enums and records) from `lib/java/tools/jdk_api_declare.py`. Measured coverage is in `lib/java/COVERAGE.md`. Counts also absorb five units of earlier drift.
@@ -34,10 +36,10 @@
 
 
 **Revision:** 0.82  
-**Packages:** 117  
-**SLeeLa source units:** 13247  
+**Packages:** 118  
+**SLeeLa source units:** 13257  
 **Module-facade symbols:** 84  
-**Total symbol records:** 13331  
+**Total symbol records:** 13341  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.66 brings three big-number improvements that make a 10,000,000-digit

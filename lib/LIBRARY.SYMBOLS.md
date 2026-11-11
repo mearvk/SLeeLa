@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 13247
-library-packages: 117
+library-source-files: 13257
+library-packages: 118
 module-facade-symbols: 84
-total-symbol-records: 13331
+total-symbol-records: 13341
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -12455,6 +12455,16 @@ nordshrift	PermissibleConnector.sleela	lib/nordshrift/PermissibleConnector.sleel
 nordshrift	PostgreSQLConnector.sleela	lib/nordshrift/PostgreSQLConnector.sleela	source
 nordshrift	SLPackage.sleela	lib/nordshrift/SLPackage.sleela	facade
 nordshrift	SQLConnector.sleela	lib/nordshrift/SQLConnector.sleela	source
+observer	SLDocumentObserver.sleela	lib/observer/SLDocumentObserver.sleela	source
+observer	SLObserverDocument.sleela	lib/observer/SLObserverDocument.sleela	source
+observer	SLObserverGuardModule.sleela	lib/observer/SLObserverGuardModule.sleela	source
+observer	SLObserverMessage.sleela	lib/observer/SLObserverMessage.sleela	source
+observer	SLObserverPort.sleela	lib/observer/SLObserverPort.sleela	source
+observer	SLObserverReviewModule.sleela	lib/observer/SLObserverReviewModule.sleela	source
+observer	SLObserverSummaryModule.sleela	lib/observer/SLObserverSummaryModule.sleela	source
+observer	SLObserverView.sleela	lib/observer/SLObserverView.sleela	source
+observer	observer-demo.sleela	lib/observer/observer-demo.sleela	source
+observer	observer-gui-demo.sleela	lib/observer/observer-gui-demo.sleela	source
 opcodes	SLOpAccept.sleela	lib/opcodes/SLOpAccept.sleela	source
 opcodes	SLOpAdd.sleela	lib/opcodes/SLOpAdd.sleela	source
 opcodes	SLOpAnd.sleela	lib/opcodes/SLOpAnd.sleela	source
