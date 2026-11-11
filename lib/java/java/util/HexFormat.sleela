@@ -62,11 +62,14 @@ class HexFormat {
      plain SLeeLa Strings built by concatenation. The long, int, short, byte
      and char forms of toHexDigits(value) cannot be told apart by the VM, so
      only toHexDigits(value, digits) is implemented; the one-argument form
-     throws and says why. The
-     parse side (parseHex, fromHexDigits*) needs character access to a String,
-     which SLeeLa does not have, and keeps its exact-signature stubs, as does
-     the Appendable form of formatHex and hashCode. fromHexDigit reports a bad
-     digit by its code number. >>
+     throws and says why.  The
+     parse side reads its text as UTF-16 code units (through javaStringFromUtf8)
+     and follows the JDK algorithm: no-delimiter strings must have an even
+     length, delimited strings must match the prefix, digits, suffix and
+     delimiter stride exactly, and digit values wrap to 32 or 64 bits as Java
+     does. Error messages quote the offending text for ASCII characters (via
+     JavaText). The Appendable forms of formatHex and hashCode keep their
+     stubs. >>
   boolean upper = false;
   String delim = "";
   String pfx = "";
@@ -167,7 +170,144 @@ class HexFormat {
     if (ch >= 48 && ch <= 57) { return ch - 48; }
     if (ch >= 65 && ch <= 70) { return ch - 55; }
     if (ch >= 97 && ch <= 102) { return ch - 87; }
+    if (ch >= 32 && ch <= 126) { throw new NumberFormatException("not a hexadecimal digit: \"" + JavaText.charString(ch) + "\" = " + ch); }
     throw new NumberFormatException("not a hexadecimal digit: code " + ch);
+  }
+
+
+  < ---- parse side ---- >
+  public byte[] parseHex(java.lang.CharSequence string) {
+    int[] u = unitsOf(string);
+    return parseUnits(u, 0, arrayLength(u));
+  }
+  public byte[] parseHex(java.lang.CharSequence string, int fromIndex, int toIndex) {
+    int[] u = unitsOf(string);
+    checkFromTo(fromIndex, toIndex, arrayLength(u));
+    return parseUnits(u, fromIndex, toIndex);
+  }
+  public byte[] parseHex(char[] chars, int fromIndex, int toIndex) {
+    checkFromTo(fromIndex, toIndex, arrayLength(chars));
+    int[] u = new int[arrayLength(chars)];
+    int i = 0;
+    while (i < arrayLength(chars)) { u[i] = chars[i]; i = i + 1; }
+    return parseUnits(u, fromIndex, toIndex);
+  }
+  public static int fromHexDigits(java.lang.CharSequence string) {
+    int[] u = unitsOf(string);
+    return fromHexDigitsRange(u, 0, arrayLength(u));
+  }
+  public static int fromHexDigits(java.lang.CharSequence string, int fromIndex, int toIndex) {
+    int[] u = unitsOf(string);
+    checkFromTo(fromIndex, toIndex, arrayLength(u));
+    return fromHexDigitsRange(u, fromIndex, toIndex);
+  }
+  public static long fromHexDigitsToLong(java.lang.CharSequence string) {
+    int[] u = unitsOf(string);
+    return fromHexDigitsToLongRange(u, 0, arrayLength(u));
+  }
+  public static long fromHexDigitsToLong(java.lang.CharSequence string, int fromIndex, int toIndex) {
+    int[] u = unitsOf(string);
+    checkFromTo(fromIndex, toIndex, arrayLength(u));
+    return fromHexDigitsToLongRange(u, fromIndex, toIndex);
+  }
+
+  < parse helpers, over UTF-16 code units >
+  static int[] unitsOf(Any text) {
+    if (text == null) { throw new NullPointerException(); }
+    String u = javaStringFromUtf8("" + text);
+    int n = javaStringLength(u);
+    int[] out = new int[n];
+    int i = 0;
+    while (i < n) { out[i] = javaStringCharAt(u, i); i = i + 1; }
+    return out;
+  }
+  static void checkFromTo(int fromIndex, int toIndex, int n) {
+    if (fromIndex < 0 || fromIndex > toIndex || toIndex > n) {
+      throw new IndexOutOfBoundsException("Range [" + fromIndex + ", " + toIndex + ") out of bounds for length " + n);
+    }
+  }
+  static int fromHexDigitsRange(int[] u, int from, int to) {
+    int len = to - from;
+    if (len > 8) { throw new IllegalArgumentException("string length greater than 8: " + len); }
+    long v = 0;
+    int i = from;
+    while (i < to) { v = v * 16 + fromHexDigit(u[i]); i = i + 1; }
+    if (v >= 2147483648) { v = v - 4294967296; }
+    return (int) v;
+  }
+  static long fromHexDigitsToLongRange(int[] u, int from, int to) {
+    int len = to - from;
+    if (len > 16) { throw new IllegalArgumentException("string length greater than 16: " + len); }
+    long v = 0;
+    int i = from;
+    while (i < to) {
+      int d = fromHexDigit(u[i]);
+      if (v >= 576460752303423488) { v = v - 1152921504606846976; }
+      v = v * 16 + d;
+      i = i + 1;
+    }
+    return v;
+  }
+  static int pairByte(int[] u, int at) {
+    int v = fromHexDigit(u[at]) * 16 + fromHexDigit(u[at + 1]);
+    if (v > 127) { v = v - 256; }
+    return v;
+  }
+  int[] literalUnits(String s) {
+    String u = javaStringFromUtf8(s);
+    int n = javaStringLength(u);
+    int[] out = new int[n];
+    int i = 0;
+    while (i < n) { out[i] = javaStringCharAt(u, i); i = i + 1; }
+    return out;
+  }
+  void checkLiteral(int[] u, int base, int index, int[] lit, String litText) {
+    int n = arrayLength(lit);
+    int i = 0;
+    while (i < n) {
+      if (u[base + index + i] != lit[i]) {
+        String found = "";
+        int k = 0;
+        while (k < n) { found = found + JavaText.charString(u[base + index + k]); k = k + 1; }
+        throw new IllegalArgumentException("found: \"" + found + "\", expected: \"" + litText + "\", index: " + index + " ch: " + u[base + index + i]);
+      }
+      i = i + 1;
+    }
+  }
+  byte[] parseUnits(int[] u, int from, int to) {
+    int len = to - from;
+    if (len == 0) { return new byte[0]; }
+    if (this.delim == "" && this.pfx == "" && this.sfx == "") {
+      if (len % 2 != 0) { throw new IllegalArgumentException("string length not even: " + len); }
+      byte[] out = new byte[len / 2];
+      int i = 0;
+      while (i < len / 2) { out[i] = pairByte(u, from + 2 * i); i = i + 1; }
+      return out;
+    }
+    int[] p = literalUnits(this.pfx);
+    int[] s = literalUnits(this.sfx);
+    int[] dl = literalUnits(this.delim);
+    int valueChars = arrayLength(p) + 2 + arrayLength(s);
+    int stride = valueChars + arrayLength(dl);
+    if (len < valueChars || (len - valueChars) % stride != 0) {
+      throw new IllegalArgumentException("extra or missing delimiters or values consisting of prefix, two hexadecimal digits, and suffix");
+    }
+    checkLiteral(u, from, 0, p, this.pfx);
+    checkLiteral(u, from, len - arrayLength(s), s, this.sfx);
+    String betweenText = this.sfx + this.delim + this.pfx;
+    int[] between = literalUnits(betweenText);
+    int count = (len - valueChars) / stride + 1;
+    byte[] out = new byte[count];
+    int i = 0;
+    int offset = arrayLength(p);
+    while (i < count - 1) {
+      out[i] = pairByte(u, from + offset);
+      checkLiteral(u, from, offset + 2, between, betweenText);
+      i = i + 1;
+      offset = offset + 2 + arrayLength(between);
+    }
+    out[i] = pairByte(u, from + offset);
+    return out;
   }
 
   < ---- helpers ---- >
@@ -213,12 +353,5 @@ class HexFormat {
      UnsupportedOperationException naming the Java signature. >>
   public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.toString()"); }
   public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.hashCode()"); }
-  public byte[] parseHex(java.lang.CharSequence string) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.parseHex(java.lang.CharSequence)"); }
-  public byte[] parseHex(char[] chars, int fromIndex, int toIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.parseHex(char[], int, int)"); }
-  public byte[] parseHex(java.lang.CharSequence string, int fromIndex, int toIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.parseHex(java.lang.CharSequence, int, int)"); }
-  public static int fromHexDigits(java.lang.CharSequence string) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.fromHexDigits(java.lang.CharSequence)"); }
-  public static int fromHexDigits(java.lang.CharSequence string, int fromIndex, int toIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.fromHexDigits(java.lang.CharSequence, int, int)"); }
-  public static long fromHexDigitsToLong(java.lang.CharSequence string, int fromIndex, int toIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.fromHexDigitsToLong(java.lang.CharSequence, int, int)"); }
-  public static long fromHexDigitsToLong(java.lang.CharSequence string) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.fromHexDigitsToLong(java.lang.CharSequence)"); }
   < ---- END java signatures ---- >
 }
