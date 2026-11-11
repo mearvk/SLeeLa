@@ -58,10 +58,10 @@ class CharArrayWriter {
   < ---- BEGIN java implementation ---- >
   < ---- java.io.CharArrayWriter members (procedural implementation in SLeeLa) ---- >
   << java.io.CharArrayWriter over the declared buf / count fields; a char is
-     an int UTF-16 code unit. toString needs a String built from run-time code
-     units, which the VM does not offer yet, and the String / CharSequence
-     forms of write and append need character access to a String; those and
-     writeTo keep their stubs. close is a reserved SLeeLa built-in. >>
+     an int UTF-16 code unit. String and CharSequence arguments are read as
+     UTF-16 code units; toString rebuilds a plain String through JavaText and
+     so covers printable ASCII plus tab, newline and carriage return. writeTo
+     keeps its stub. close is a reserved SLeeLa built-in. >>
   public CharArrayWriter() { initBuffer(32); }
   public CharArrayWriter(int initialSize) {
     if (initialSize < 0) { throw new IllegalArgumentException("Negative initial size: " + initialSize); }
@@ -110,6 +110,38 @@ class CharArrayWriter {
   public void reset() { this.count = 0; }
   public void flush() { }
 
+  public void write(java.lang.String str) { this.write(str, 0, JavaText.length("" + str)); }
+  public void write(java.lang.String str, int off, int len) {
+    String u = str;
+    if (str instanceof string) { u = javaStringFromUtf8(str); }
+    int n = javaStringLength(u);
+    if (off < 0 || len < 0 || off > n - len) { throw new StringIndexOutOfBoundsException("Range [" + off + ", " + (off + len) + ") out of bounds for length " + n); }
+    ensureCapacity(this.count + len);
+    int i = 0;
+    while (i < len) { this.buf[this.count + i] = javaStringCharAt(u, off + i); i = i + 1; }
+    this.count = this.count + len;
+  }
+  public CharArrayWriter append(java.lang.CharSequence csq) {
+    String s = "null";
+    if (csq != null) { s = "" + csq; }
+    this.write(s, 0, JavaText.length(s));
+    return this;
+  }
+  public CharArrayWriter append(java.lang.CharSequence csq, int start, int end) {
+    String s = "null";
+    if (csq != null) { s = "" + csq; }
+    int n = JavaText.length(s);
+    if (start < 0 || start > end || end > n) { throw new StringIndexOutOfBoundsException("Range [" + start + ", " + end + ") out of bounds for length " + n); }
+    this.write(s, start, end - start);
+    return this;
+  }
+  public java.lang.String toString() {
+    String out = "";
+    int i = 0;
+    while (i < this.count) { out = out + JavaText.charString(this.buf[i]); i = i + 1; }
+    return out;
+  }
+
   int codeUnit(int c) {
     int v = c % 65536;
     if (v < 0) { v = v + 65536; }
@@ -124,7 +156,6 @@ class CharArrayWriter {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.CharArrayWriter.toString()"); }
   public void writeTo(java.io.Writer out) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.CharArrayWriter.writeTo(java.io.Writer)"); }
   < ---- END java signatures ---- >
 }

@@ -60,12 +60,16 @@ class StringBuilder {
   << StringBuilder over a Java UTF-16 String value (buf). Text goes in
      through javaStringFromUtf8 and is spliced with javaStringSubstring and
      javaStringConcat, so every index counts UTF-16 code units, as in Java.
-     Exceptions carry the JDK 25 messages. The VM has no char primitive, so
-     char is an int code unit. append(char) / insert(int, char) accept the
-     ASCII range 0..126 plus tab, newline and carriage return handled
-     explicitly; larger code units throw UnsupportedOperationException until
-     the VM can build a String from a runtime code unit. float / double /
-     char[] / CharSequence overloads keep their exact-signature stubs. >>
+     Exceptions carry the JDK 25 messages. String arguments may be plain SLeeLa
+     Strings or Java UTF-16 Strings. toString() returns a plain String when every
+     code unit has a plain form (printable ASCII, tab, newline, carriage
+     return), so the result concatenates and compares like any SLeeLa String,
+     and the UTF-16 String otherwise. CharSequence arguments may be plain
+     Strings, StringBuilder or StringBuffer. The VM has no char primitive, so a
+     char is an int code unit; building text from a run-time code unit covers
+     printable ASCII plus tab, newline and carriage return and throws
+     UnsupportedOperationException otherwise. append(char) cannot be told apart
+     from append(int) and keeps its stub, as do the float and double forms. >>
   String buf = javaStringFromCodeUnits();
   String asciiTable = javaStringFromUtf8(" !?#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[?]^_`abcdefghijklmnopqrstuvwxyz{|}~");
 
@@ -76,13 +80,13 @@ class StringBuilder {
   }
   public StringBuilder(java.lang.String str) {
     if (str == null) { throw new NullPointerException(); }
-    this.buf = javaStringFromUtf8(str);
+    this.buf = toU(str);
   }
 
   public int length() { return javaStringLength(this.buf); }
   public int capacity() { return javaStringLength(this.buf) + 16; }
   public boolean isEmpty() { return javaStringLength(this.buf) == 0; }
-  public java.lang.String toString() { return this.buf; }
+  public java.lang.String toString() { return JavaText.plainIfRepresentable(this.buf); }
   public char charAt(int index) {
     checkIndex(index, length());
     return javaStringCharAt(this.buf, index);
@@ -121,7 +125,7 @@ class StringBuilder {
     checkOffset(offset, length());
     String t = "null";
     if (str != null) { t = str; }
-    return spliceIn(offset, javaStringFromUtf8(t));
+    return spliceIn(offset, toU(t));
   }
   public StringBuilder insert(int offset, int i) { return insert(offset, "" + i); }
   public StringBuilder insert(int offset, long l) { return insert(offset, "" + l); }
@@ -147,7 +151,7 @@ class StringBuilder {
     int e = end;
     if (e > n) { e = n; }
     checkRange(start, e, n);
-    String mid = javaStringFromUtf8(str);
+    String mid = toU(str);
     this.buf = javaStringConcat(javaStringConcat(javaStringSubstring(this.buf, 0, start), mid), javaStringSubstring(this.buf, e, n));
     return this;
   }
@@ -184,7 +188,7 @@ class StringBuilder {
 
   public int indexOf(java.lang.String str) { return indexOf(str, 0); }
   public int indexOf(java.lang.String str, int fromIndex) {
-    String t = javaStringFromUtf8(str);
+    String t = toU(str);
     int n = length();
     int m = javaStringLength(t);
     int i = fromIndex;
@@ -201,7 +205,7 @@ class StringBuilder {
   }
   public int lastIndexOf(java.lang.String str) { return lastIndexOf(str, length()); }
   public int lastIndexOf(java.lang.String str, int fromIndex) {
-    String t = javaStringFromUtf8(str);
+    String t = toU(str);
     int n = length();
     int m = javaStringLength(t);
     int i = fromIndex;
@@ -214,9 +218,81 @@ class StringBuilder {
     return 0 - 1;
   }
 
+  public StringBuilder append(java.lang.CharSequence s) {
+    if (s == null) { return appendText("null"); }
+    this.buf = javaStringConcat(this.buf, seqU(s));
+    return this;
+  }
+  public StringBuilder append(java.lang.CharSequence s, int start, int end) {
+    String u = javaStringFromUtf8("null");
+    if (s != null) { u = seqU(s); }
+    int n = javaStringLength(u);
+    if (start < 0 || start > end || end > n) { throw new IndexOutOfBoundsException("Range [" + start + ", " + end + ") out of bounds for length " + n); }
+    this.buf = javaStringConcat(this.buf, javaStringSubstring(u, start, end));
+    return this;
+  }
+  public StringBuilder append(char[] str) { return append(str, 0, arrayLength(str)); }
+  public StringBuilder append(char[] str, int offset, int len) {
+    int n = arrayLength(str);
+    if (offset < 0 || len < 0 || offset > n - len) { throw new IndexOutOfBoundsException("Range [" + offset + ", " + (offset + len) + ") out of bounds for length " + n); }
+    this.buf = javaStringConcat(this.buf, unitsU(str, offset, len));
+    return this;
+  }
+  public StringBuilder insert(int offset, char[] str) {
+    checkOffset(offset, length());
+    return spliceIn(offset, unitsU(str, 0, arrayLength(str)));
+  }
+  public StringBuilder insert(int index, char[] str, int offset, int len) {
+    checkOffset(index, length());
+    int n = arrayLength(str);
+    if (offset < 0 || len < 0 || offset > n - len) { throw new StringIndexOutOfBoundsException("Range [" + offset + ", " + (offset + len) + ") out of bounds for length " + n); }
+    return spliceIn(index, unitsU(str, offset, len));
+  }
+  public StringBuilder insert(int dstOffset, java.lang.CharSequence s) {
+    checkOffset(dstOffset, length());
+    if (s == null) { return spliceIn(dstOffset, javaStringFromUtf8("null")); }
+    return spliceIn(dstOffset, seqU(s));
+  }
+  public StringBuilder insert(int dstOffset, java.lang.CharSequence s, int start, int end) {
+    checkOffset(dstOffset, length());
+    String u = javaStringFromUtf8("null");
+    if (s != null) { u = seqU(s); }
+    int n = javaStringLength(u);
+    if (start < 0 || start > end || end > n) { throw new IndexOutOfBoundsException("Range [" + start + ", " + end + ") out of bounds for length " + n); }
+    return spliceIn(dstOffset, javaStringSubstring(u, start, end));
+  }
+  public StringBuilder repeat(java.lang.CharSequence cs, int count) {
+    if (count < 0) { throw new IllegalArgumentException("count is negative: " + count); }
+    String u = javaStringFromUtf8("null");
+    if (cs != null) { u = seqU(cs); }
+    int k = count;
+    while (k > 0) { this.buf = javaStringConcat(this.buf, u); k = k - 1; }
+    return this;
+  }
+
+  < text of either String kind as UTF-16 >
+  java.lang.String toU(java.lang.String s) {
+    if (s instanceof string) { return javaStringFromUtf8(s); }
+    return s;
+  }
+  < a CharSequence argument as UTF-16: a plain String, a StringBuilder or a StringBuffer >
+  java.lang.String seqU(Any s) {
+    if (s instanceof string) { return javaStringFromUtf8("" + s); }
+    if (s instanceof StringBuilder) { StringBuilder b = (StringBuilder) s; return b.buf; }
+    if (s instanceof StringBuffer) { StringBuffer f = (StringBuffer) s; return f.buf; }
+    throw new UnsupportedOperationException("java.lang.StringBuilder: this CharSequence kind is not supported yet; pass a String, StringBuilder or StringBuffer");
+  }
+  < a run of char code units as UTF-16 >
+  java.lang.String unitsU(char[] str, int offset, int len) {
+    String out = javaStringFromCodeUnits();
+    int i = 0;
+    while (i < len) { out = javaStringConcat(out, codeUnitString(str[offset + i])); i = i + 1; }
+    return out;
+  }
+
   < internal helpers >
   StringBuilder appendText(java.lang.String text) {
-    this.buf = javaStringConcat(this.buf, javaStringFromUtf8(text));
+    this.buf = javaStringConcat(this.buf, toU(text));
     return this;
   }
   StringBuilder spliceIn(int offset, java.lang.String utf16) {
@@ -250,20 +326,11 @@ class StringBuilder {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
-  public java.lang.StringBuilder append(java.lang.CharSequence s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(java.lang.CharSequence)"); }
-  public java.lang.StringBuilder append(java.lang.CharSequence s, int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(java.lang.CharSequence, int, int)"); }
-  public java.lang.StringBuilder append(char[] str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(char[])"); }
-  public java.lang.StringBuilder append(char[] str, int offset, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(char[], int, int)"); }
   public java.lang.StringBuilder append(float f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(float)"); }
   public java.lang.StringBuilder append(double d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(double)"); }
   public java.lang.StringBuilder append(char c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(char)"); }
-  public java.lang.StringBuilder insert(int dstOffset, java.lang.CharSequence s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, java.lang.CharSequence)"); }
-  public java.lang.StringBuilder insert(int offset, char[] str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, char[])"); }
   public java.lang.StringBuilder insert(int offset, double d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, double)"); }
   public java.lang.StringBuilder insert(int offset, float f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, float)"); }
   public java.lang.StringBuilder insert(int offset, char c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, char)"); }
-  public java.lang.StringBuilder insert(int dstOffset, java.lang.CharSequence s, int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, java.lang.CharSequence, int, int)"); }
-  public java.lang.StringBuilder insert(int index, char[] str, int offset, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, char[], int, int)"); }
-  public java.lang.StringBuilder repeat(java.lang.CharSequence cs, int count) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.repeat(java.lang.CharSequence, int)"); }
   < ---- END java signatures ---- >
 }

@@ -183,6 +183,18 @@ class JavaText {
     return out;
   }
 
+  < the plain form of a UTF-16 String when every code unit has one, else the UTF-16 String itself >
+  static String plainIfRepresentable(String u) {
+    int n = javaStringLength(u);
+    int i = 0;
+    while (i < n) {
+      int c = javaStringCharAt(u, i);
+      if (!(c == 9 || c == 10 || c == 13 || (c >= 32 && c <= 126))) { return u; }
+      i = i + 1;
+    }
+    return plainOf(u);
+  }
+
   < character access on a plain String, counted in UTF-16 code units as Java does >
   static int length(String s) { return javaStringLength(javaStringFromUtf8(s)); }
   static int charAt(String s, int index) {
