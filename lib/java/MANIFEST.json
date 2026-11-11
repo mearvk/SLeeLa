@@ -2,7 +2,7 @@
   "schema": "sleela-java-library-manifest-v1",
   "root": "/lib/java",
   "inventory": {
-    "count": 10252,
+    "count": 10253,
     "count_type": "library-source-baseline",
     "count_source": "git-index excluding declared control metadata",
     "control_files": [
