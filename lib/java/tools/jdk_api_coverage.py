@@ -15,6 +15,8 @@ envelope helpers (typeName, invoke, ...) never inflate coverage.
 
 Counting rules (deliberately conservative where it matters):
   * a constructor is covered when the type declares a constructor;
+  * an abstract method is covered when its exact Java signature is declared
+    (signatures block, body throws AbstractMethodError, as on the JVM);
   * a method entry is covered when the implementation declares a method with
     the Java name or the Java name plus an overload suffix (absInt, addAt,
     toStringRadix); each Java overload counts once, but no more overloads of a
@@ -42,7 +44,8 @@ API = ROOT / "api" / "jdk-api.jsonl"
 BLOCK = re.compile(r"< ---- BEGIN java implementation.*?---- >\n(.*?)  < ---- END java implementation ---- >", re.S)
 SIG = re.compile(r"< ---- BEGIN java signatures.*?---- >\n(.*?)  < ---- END java signatures ---- >", re.S)
 DECL = re.compile(r"< ---- BEGIN java declarations.*?---- >\n(.*?)  < ---- END java declarations ---- >", re.S)
-METHOD = re.compile(r"^  (?:static )?(?:final )?[A-Za-z_][\w\[\]<>]* +(\w+)\s*\(", re.M)
+METHOD = re.compile(r"^  (?:@\w+\s+)?(?:(?:public|protected|private|static|final|abstract|default|synchronized|native|strictfp) )*(?:<[^()]*> )?[A-Za-z_][\w.]*(?:<[^()]*>)?(?:\[\])* +(\w+)\s*\(", re.M)
+ABSTRACT = re.compile(r"^  (?:public |protected )?abstract [^\n]*? (\w+)\s*\([^\n]*AbstractMethodError", re.M)
 CTOR = re.compile(r"^  ([A-Z]\w*)\s*\([^)]*\)\s*\{", re.M)
 FIELD = re.compile(r"^  (?:static )?(?:final )?[A-Za-z_][\w\[\]<>]* +(\w+)\s*(?:=|;)", re.M)
 
@@ -62,9 +65,11 @@ def analyse(path: Path):
     impl = m.group(1) if m else ""
     decl = d.group(1) if d else ""
     sg = SIG.search(src)
-    sig_count = len(METHOD.findall(sg.group(1))) if sg else 0
-    return {"implemented": bool(m) or bool(d), "behavior": bool(m), "signatures": sig_count,
-            "methods": collections.Counter(METHOD.findall(impl + decl)),
+    sig_text = sg.group(1) if sg else ""
+    abstract_names = collections.Counter(ABSTRACT.findall(sig_text))
+    sig_count = len(METHOD.findall(sig_text)) - sum(abstract_names.values())
+    return {"implemented": bool(m) or bool(d) or bool(abstract_names), "behavior": bool(m), "signatures": sig_count,
+            "methods": collections.Counter(METHOD.findall(impl + decl)) + abstract_names,
             "impl_methods": collections.Counter(METHOD.findall(impl)),
             "ctors": set(CTOR.findall(impl + decl)),
             "impl_ctors": set(CTOR.findall(impl)),
@@ -128,7 +133,7 @@ def main() -> int:
                f"({pct(tot['implemented'], tot['types'])}), hand-implemented {tot['behavior_types']}; "
                f"members {tot['members']}, covered {tot['covered']} ({pct(tot['covered'], tot['members'])}), "
                f"of which hand-implemented behavior {tot['behavior']} ({pct(tot['behavior'], tot['members'])}); "
-               f"transcribed signature stubs awaiting logic {tot['signatures']} (not counted)")
+               f"exact-signature stubs awaiting logic {tot['signatures']} (not counted)")
     print(summary)
     by_module = collections.defaultdict(collections.Counter)
     for (mod, pkg), row in pkg_rows.items():

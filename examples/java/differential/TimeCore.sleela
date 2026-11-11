@@ -65,8 +65,6 @@ class TimeCore {
     print(ym.toString() + " " + ym.plusMonths(3).toString() + " " + ym.minusMonths(23).toString() + " " + ym.lengthOfMonth() + " " + ym.atDay(5).toString() + " " + ym.hashCode() + " " + ym.parse("0999-01").toString());
     MonthDay md = new MonthDay(2, 29);
     print(md.toString() + " " + md.isValidYear(2023) + " " + md.atYear(2023).toString() + " " + md.atYear(2024).toString() + " " + md.hashCode() + " " + md.parse("--12-03").compareTo(md));
-    DayOfWeek dow = new DayOfWeek(null, -1);
-    Month mo = new Month(null, -1);
-    print(dow.valueOf("MONDAY").plus(-1).toString() + " " + dow.of(3).toString() + " " + dow.valueOf("SUNDAY").getValue() + " " + mo.of(2).length(true) + " " + mo.valueOf("MARCH").firstDayOfYear(true) + " " + mo.valueOf("NOVEMBER").firstMonthOfQuarter().toString() + " " + mo.valueOf("JANUARY").minus(13).toString());
+    print(DayOfWeek.MONDAY.plus(-1).toString() + " " + DayOfWeek.of(3).toString() + " " + DayOfWeek.SUNDAY.getValue() + " " + Month.of(2).length(true) + " " + Month.MARCH.firstDayOfYear(true) + " " + Month.NOVEMBER.firstMonthOfQuarter().toString() + " " + Month.JANUARY.minus(13).toString());
   }
 }

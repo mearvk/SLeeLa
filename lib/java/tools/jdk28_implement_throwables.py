@@ -743,7 +743,7 @@ def members_for(key: str, name: str) -> str:
     return m
 
 
-CLASS_RE = re.compile(r"^class (\w+)(?: extends \w+)? \{$", re.M)
+CLASS_RE = re.compile(r"^class (\w+)(<[^{}]*>)?(?: extends \w+)? \{$", re.M)
 
 
 DECL_MARK = "  < ---- BEGIN java declarations"
@@ -858,7 +858,7 @@ def transform_api(path, t, types, idx):
     pkg = t["binary"].rsplit(".", 1)[0]
     psimple = parent["binary"].rsplit(".", 1)[1]
     ppkg = parent["binary"].rsplit(".", 1)[0]
-    header = f"class {cls} extends {psimple} {{"
+    header = f"class {cls}{mo.group(2) or ''} extends {psimple} {{"
     src = src[:mo.start()] + header + src[mo.end():]
     src = re.sub(re.escape(BEGIN) + r".*?" + re.escape(END) + r"\n", "", src, flags=re.S)
     block = BEGIN + "\n" + api_member_block(t, types, cls) + END + "\n"
@@ -908,7 +908,8 @@ def transform(path: Path, key: str) -> str:
     if not mo or mo.group(1) != name:
         raise SystemExit(f"unexpected class header in {path}")
     parent = PARENT.get(key)
-    header = f"class {name} extends {parent} {{" if parent else f"class {name} {{"
+    tp = mo.group(2) or ""
+    header = f"class {name}{tp} extends {parent} {{" if parent else f"class {name}{tp} {{"
     src = src[:mo.start()] + header + src[mo.end():]
     # Drop any previous generated block, then insert the fresh one before the final brace.
     src = re.sub(re.escape(BEGIN) + r".*?" + re.escape(END) + r"\n", "", src, flags=re.S)

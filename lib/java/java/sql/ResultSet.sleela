@@ -66,182 +66,191 @@ class ResultSet {
   static final int CONCUR_UPDATABLE = 1008;
   static final int HOLD_CURSORS_OVER_COMMIT = 1;
   static final int CLOSE_CURSORS_AT_COMMIT = 2;
-  < abstract methods: implemented by a concrete subtype; a direct call throws AbstractMethodError as on the JVM >
-  void updateBytes(int p0, int[] p1) { throw new AbstractMethodError("java.sql.ResultSet.updateBytes(int,byte[])"); }
-  void updateBytes(String p0, int[] p1) { throw new AbstractMethodError("java.sql.ResultSet.updateBytes(String,byte[])"); }
-  boolean getBoolean(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getBoolean(String)"); }
-  boolean getBoolean(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getBoolean(int)"); }
-  int getByte(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getByte(String)"); }
-  int getByte(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getByte(int)"); }
-  int getShort(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getShort(String)"); }
-  int getShort(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getShort(int)"); }
-  int getInt(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getInt(int)"); }
-  int getInt(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getInt(String)"); }
-  long getLong(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getLong(String)"); }
-  long getLong(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getLong(int)"); }
-  double getFloat(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getFloat(String)"); }
-  double getFloat(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getFloat(int)"); }
-  double getDouble(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getDouble(int)"); }
-  double getDouble(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getDouble(String)"); }
-  int[] getBytes(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getBytes(String)"); }
-  int[] getBytes(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getBytes(int)"); }
-  boolean next() { throw new AbstractMethodError("java.sql.ResultSet.next()"); }
-  boolean last() { throw new AbstractMethodError("java.sql.ResultSet.last()"); }
-  boolean first() { throw new AbstractMethodError("java.sql.ResultSet.first()"); }
-  int getType() { throw new AbstractMethodError("java.sql.ResultSet.getType()"); }
-  Any getRef(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getRef(int)"); }
-  Any getRef(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getRef(String)"); }
-  boolean previous() { throw new AbstractMethodError("java.sql.ResultSet.previous()"); }
-  Any getArray(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getArray(int)"); }
-  Any getArray(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getArray(String)"); }
-  boolean absolute(int p0) { throw new AbstractMethodError("java.sql.ResultSet.absolute(int)"); }
-  String getString(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getString(String)"); }
-  String getString(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getString(int)"); }
-  Any getBigDecimal(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getBigDecimal(String)"); }
-  Any getBigDecimal(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getBigDecimal(int)"); }
-  Any getBigDecimal(int p0, int p1) { throw new AbstractMethodError("java.sql.ResultSet.getBigDecimal(int,int)"); }
-  Any getBigDecimal(String p0, int p1) { throw new AbstractMethodError("java.sql.ResultSet.getBigDecimal(String,int)"); }
-  Any getTime(int p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.getTime(int,Calendar)"); }
-  Any getTime(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getTime(String)"); }
-  Any getTime(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getTime(int)"); }
-  Any getTime(String p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.getTime(String,Calendar)"); }
-  Any getObject(String p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.getObject(String,Class)"); }
-  Any getObject(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getObject(String)"); }
-  Any getObject(int p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.getObject(int,Map)"); }
-  Any getObject(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getObject(int)"); }
-  void updateTime(int p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateTime(int,Time)"); }
-  void updateTime(String p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateTime(String,Time)"); }
-  void updateArray(int p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateArray(int,Array)"); }
-  void updateArray(String p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateArray(String,Array)"); }
-  Any getURL(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getURL(String)"); }
-  Any getURL(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getURL(int)"); }
-  Any getTimestamp(String p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.getTimestamp(String,Calendar)"); }
-  Any getTimestamp(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getTimestamp(String)"); }
-  Any getTimestamp(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getTimestamp(int)"); }
-  Any getTimestamp(int p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.getTimestamp(int,Calendar)"); }
-  boolean relative(int p0) { throw new AbstractMethodError("java.sql.ResultSet.relative(int)"); }
-  boolean isFirst() { throw new AbstractMethodError("java.sql.ResultSet.isFirst()"); }
-  boolean isLast() { throw new AbstractMethodError("java.sql.ResultSet.isLast()"); }
-  Any getCharacterStream(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getCharacterStream(String)"); }
-  Any getCharacterStream(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getCharacterStream(int)"); }
-  int getRow() { throw new AbstractMethodError("java.sql.ResultSet.getRow()"); }
-  int findColumn(String p0) { throw new AbstractMethodError("java.sql.ResultSet.findColumn(String)"); }
-  void insertRow() { throw new AbstractMethodError("java.sql.ResultSet.insertRow()"); }
-  boolean isClosed() { throw new AbstractMethodError("java.sql.ResultSet.isClosed()"); }
-  boolean wasNull() { throw new AbstractMethodError("java.sql.ResultSet.wasNull()"); }
-  Any getAsciiStream(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getAsciiStream(int)"); }
-  Any getAsciiStream(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getAsciiStream(String)"); }
-  Any getUnicodeStream(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getUnicodeStream(int)"); }
-  Any getUnicodeStream(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getUnicodeStream(String)"); }
-  Any getBinaryStream(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getBinaryStream(String)"); }
-  Any getBinaryStream(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getBinaryStream(int)"); }
-  Any getWarnings() { throw new AbstractMethodError("java.sql.ResultSet.getWarnings()"); }
-  void clearWarnings() { throw new AbstractMethodError("java.sql.ResultSet.clearWarnings()"); }
-  String getCursorName() { throw new AbstractMethodError("java.sql.ResultSet.getCursorName()"); }
-  Any getMetaData() { throw new AbstractMethodError("java.sql.ResultSet.getMetaData()"); }
-  boolean isBeforeFirst() { throw new AbstractMethodError("java.sql.ResultSet.isBeforeFirst()"); }
-  boolean isAfterLast() { throw new AbstractMethodError("java.sql.ResultSet.isAfterLast()"); }
-  void beforeFirst() { throw new AbstractMethodError("java.sql.ResultSet.beforeFirst()"); }
-  void afterLast() { throw new AbstractMethodError("java.sql.ResultSet.afterLast()"); }
-  void setFetchDirection(int p0) { throw new AbstractMethodError("java.sql.ResultSet.setFetchDirection(int)"); }
-  int getFetchDirection() { throw new AbstractMethodError("java.sql.ResultSet.getFetchDirection()"); }
-  void setFetchSize(int p0) { throw new AbstractMethodError("java.sql.ResultSet.setFetchSize(int)"); }
-  int getFetchSize() { throw new AbstractMethodError("java.sql.ResultSet.getFetchSize()"); }
-  int getConcurrency() { throw new AbstractMethodError("java.sql.ResultSet.getConcurrency()"); }
-  boolean rowUpdated() { throw new AbstractMethodError("java.sql.ResultSet.rowUpdated()"); }
-  boolean rowInserted() { throw new AbstractMethodError("java.sql.ResultSet.rowInserted()"); }
-  boolean rowDeleted() { throw new AbstractMethodError("java.sql.ResultSet.rowDeleted()"); }
-  void updateNull(String p0) { throw new AbstractMethodError("java.sql.ResultSet.updateNull(String)"); }
-  void updateNull(int p0) { throw new AbstractMethodError("java.sql.ResultSet.updateNull(int)"); }
-  void updateBoolean(String p0, boolean p1) { throw new AbstractMethodError("java.sql.ResultSet.updateBoolean(String,boolean)"); }
-  void updateBoolean(int p0, boolean p1) { throw new AbstractMethodError("java.sql.ResultSet.updateBoolean(int,boolean)"); }
-  void updateByte(String p0, int p1) { throw new AbstractMethodError("java.sql.ResultSet.updateByte(String,byte)"); }
-  void updateByte(int p0, int p1) { throw new AbstractMethodError("java.sql.ResultSet.updateByte(int,byte)"); }
-  void updateShort(int p0, int p1) { throw new AbstractMethodError("java.sql.ResultSet.updateShort(int,short)"); }
-  void updateShort(String p0, int p1) { throw new AbstractMethodError("java.sql.ResultSet.updateShort(String,short)"); }
-  void updateInt(int p0, int p1) { throw new AbstractMethodError("java.sql.ResultSet.updateInt(int,int)"); }
-  void updateInt(String p0, int p1) { throw new AbstractMethodError("java.sql.ResultSet.updateInt(String,int)"); }
-  void updateLong(int p0, long p1) { throw new AbstractMethodError("java.sql.ResultSet.updateLong(int,long)"); }
-  void updateLong(String p0, long p1) { throw new AbstractMethodError("java.sql.ResultSet.updateLong(String,long)"); }
-  void updateFloat(String p0, double p1) { throw new AbstractMethodError("java.sql.ResultSet.updateFloat(String,float)"); }
-  void updateFloat(int p0, double p1) { throw new AbstractMethodError("java.sql.ResultSet.updateFloat(int,float)"); }
-  void updateDouble(String p0, double p1) { throw new AbstractMethodError("java.sql.ResultSet.updateDouble(String,double)"); }
-  void updateDouble(int p0, double p1) { throw new AbstractMethodError("java.sql.ResultSet.updateDouble(int,double)"); }
-  void updateBigDecimal(String p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateBigDecimal(String,BigDecimal)"); }
-  void updateBigDecimal(int p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateBigDecimal(int,BigDecimal)"); }
-  void updateString(int p0, String p1) { throw new AbstractMethodError("java.sql.ResultSet.updateString(int,String)"); }
-  void updateString(String p0, String p1) { throw new AbstractMethodError("java.sql.ResultSet.updateString(String,String)"); }
-  void updateDate(int p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateDate(int,Date)"); }
-  void updateDate(String p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateDate(String,Date)"); }
-  void updateTimestamp(String p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateTimestamp(String,Timestamp)"); }
-  void updateTimestamp(int p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateTimestamp(int,Timestamp)"); }
-  void updateAsciiStream(int p0, Any p1, long p2) { throw new AbstractMethodError("java.sql.ResultSet.updateAsciiStream(int,InputStream,long)"); }
-  void updateAsciiStream(String p0, Any p1, long p2) { throw new AbstractMethodError("java.sql.ResultSet.updateAsciiStream(String,InputStream,long)"); }
-  void updateAsciiStream(String p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateAsciiStream(String,InputStream)"); }
-  void updateAsciiStream(String p0, Any p1, int p2) { throw new AbstractMethodError("java.sql.ResultSet.updateAsciiStream(String,InputStream,int)"); }
-  void updateAsciiStream(int p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateAsciiStream(int,InputStream)"); }
-  void updateAsciiStream(int p0, Any p1, int p2) { throw new AbstractMethodError("java.sql.ResultSet.updateAsciiStream(int,InputStream,int)"); }
-  void updateBinaryStream(String p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateBinaryStream(String,InputStream)"); }
-  void updateBinaryStream(String p0, Any p1, int p2) { throw new AbstractMethodError("java.sql.ResultSet.updateBinaryStream(String,InputStream,int)"); }
-  void updateBinaryStream(int p0, Any p1, int p2) { throw new AbstractMethodError("java.sql.ResultSet.updateBinaryStream(int,InputStream,int)"); }
-  void updateBinaryStream(int p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateBinaryStream(int,InputStream)"); }
-  void updateBinaryStream(int p0, Any p1, long p2) { throw new AbstractMethodError("java.sql.ResultSet.updateBinaryStream(int,InputStream,long)"); }
-  void updateBinaryStream(String p0, Any p1, long p2) { throw new AbstractMethodError("java.sql.ResultSet.updateBinaryStream(String,InputStream,long)"); }
-  void updateCharacterStream(String p0, Any p1, int p2) { throw new AbstractMethodError("java.sql.ResultSet.updateCharacterStream(String,Reader,int)"); }
-  void updateCharacterStream(String p0, Any p1, long p2) { throw new AbstractMethodError("java.sql.ResultSet.updateCharacterStream(String,Reader,long)"); }
-  void updateCharacterStream(int p0, Any p1, long p2) { throw new AbstractMethodError("java.sql.ResultSet.updateCharacterStream(int,Reader,long)"); }
-  void updateCharacterStream(int p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateCharacterStream(int,Reader)"); }
-  void updateCharacterStream(String p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateCharacterStream(String,Reader)"); }
-  void updateCharacterStream(int p0, Any p1, int p2) { throw new AbstractMethodError("java.sql.ResultSet.updateCharacterStream(int,Reader,int)"); }
-  void updateObject(String p0, Any p1, int p2) { throw new AbstractMethodError("java.sql.ResultSet.updateObject(String,Object,int)"); }
-  void updateObject(int p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateObject(int,Object)"); }
-  void updateObject(int p0, Any p1, int p2) { throw new AbstractMethodError("java.sql.ResultSet.updateObject(int,Object,int)"); }
-  void updateObject(String p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateObject(String,Object)"); }
-  void updateRow() { throw new AbstractMethodError("java.sql.ResultSet.updateRow()"); }
-  void deleteRow() { throw new AbstractMethodError("java.sql.ResultSet.deleteRow()"); }
-  void refreshRow() { throw new AbstractMethodError("java.sql.ResultSet.refreshRow()"); }
-  void cancelRowUpdates() { throw new AbstractMethodError("java.sql.ResultSet.cancelRowUpdates()"); }
-  void moveToInsertRow() { throw new AbstractMethodError("java.sql.ResultSet.moveToInsertRow()"); }
-  void moveToCurrentRow() { throw new AbstractMethodError("java.sql.ResultSet.moveToCurrentRow()"); }
-  Any getStatement() { throw new AbstractMethodError("java.sql.ResultSet.getStatement()"); }
-  Any getBlob(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getBlob(int)"); }
-  Any getBlob(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getBlob(String)"); }
-  Any getClob(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getClob(int)"); }
-  Any getClob(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getClob(String)"); }
-  void updateRef(String p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateRef(String,Ref)"); }
-  void updateRef(int p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateRef(int,Ref)"); }
-  void updateBlob(String p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateBlob(String,Blob)"); }
-  void updateBlob(int p0, Any p1, long p2) { throw new AbstractMethodError("java.sql.ResultSet.updateBlob(int,InputStream,long)"); }
-  void updateBlob(int p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateBlob(int,Blob)"); }
-  void updateBlob(String p0, Any p1, long p2) { throw new AbstractMethodError("java.sql.ResultSet.updateBlob(String,InputStream,long)"); }
-  void updateClob(int p0, Any p1, long p2) { throw new AbstractMethodError("java.sql.ResultSet.updateClob(int,Reader,long)"); }
-  void updateClob(String p0, Any p1, long p2) { throw new AbstractMethodError("java.sql.ResultSet.updateClob(String,Reader,long)"); }
-  void updateClob(String p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateClob(String,Clob)"); }
-  void updateClob(int p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateClob(int,Clob)"); }
-  Any getRowId(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getRowId(int)"); }
-  Any getRowId(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getRowId(String)"); }
-  void updateRowId(int p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateRowId(int,RowId)"); }
-  void updateRowId(String p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateRowId(String,RowId)"); }
-  int getHoldability() { throw new AbstractMethodError("java.sql.ResultSet.getHoldability()"); }
-  void updateNString(String p0, String p1) { throw new AbstractMethodError("java.sql.ResultSet.updateNString(String,String)"); }
-  void updateNString(int p0, String p1) { throw new AbstractMethodError("java.sql.ResultSet.updateNString(int,String)"); }
-  void updateNClob(int p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateNClob(int,NClob)"); }
-  void updateNClob(String p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateNClob(String,Reader)"); }
-  void updateNClob(int p0, Any p1, long p2) { throw new AbstractMethodError("java.sql.ResultSet.updateNClob(int,Reader,long)"); }
-  void updateNClob(String p0, Any p1, long p2) { throw new AbstractMethodError("java.sql.ResultSet.updateNClob(String,Reader,long)"); }
-  Any getNClob(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getNClob(int)"); }
-  Any getNClob(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getNClob(String)"); }
-  Any getSQLXML(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getSQLXML(String)"); }
-  Any getSQLXML(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getSQLXML(int)"); }
-  void updateSQLXML(String p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateSQLXML(String,SQLXML)"); }
-  void updateSQLXML(int p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateSQLXML(int,SQLXML)"); }
-  String getNString(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getNString(int)"); }
-  String getNString(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getNString(String)"); }
-  Any getNCharacterStream(int p0) { throw new AbstractMethodError("java.sql.ResultSet.getNCharacterStream(int)"); }
-  Any getNCharacterStream(String p0) { throw new AbstractMethodError("java.sql.ResultSet.getNCharacterStream(String)"); }
-  void updateNCharacterStream(int p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateNCharacterStream(int,Reader)"); }
-  void updateNCharacterStream(String p0, Any p1) { throw new AbstractMethodError("java.sql.ResultSet.updateNCharacterStream(String,Reader)"); }
-  void updateNCharacterStream(String p0, Any p1, long p2) { throw new AbstractMethodError("java.sql.ResultSet.updateNCharacterStream(String,Reader,long)"); }
-  void updateNCharacterStream(int p0, Any p1, long p2) { throw new AbstractMethodError("java.sql.ResultSet.updateNCharacterStream(int,Reader,long)"); }
   < ---- END java declarations ---- >
+
+  < ---- BEGIN java signatures (generated by tools/jdk_api_signatures.py) ---- >
+  << Exact Java signatures (from the JDK). A method body that is not yet
+     SLeeLa logic throws: AbstractMethodError for an abstract method, else
+     UnsupportedOperationException naming the Java signature. >>
+  public abstract void updateBytes(int columnIndex, byte[] x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateBytes(int, byte[])"); }
+  public abstract void updateBytes(java.lang.String columnLabel, byte[] x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateBytes(java.lang.String, byte[])"); }
+  public abstract boolean getBoolean(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getBoolean(java.lang.String)"); }
+  public abstract boolean getBoolean(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getBoolean(int)"); }
+  public abstract byte getByte(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getByte(java.lang.String)"); }
+  public abstract byte getByte(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getByte(int)"); }
+  public abstract short getShort(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getShort(java.lang.String)"); }
+  public abstract short getShort(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getShort(int)"); }
+  public abstract int getInt(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getInt(int)"); }
+  public abstract int getInt(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getInt(java.lang.String)"); }
+  public abstract long getLong(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getLong(java.lang.String)"); }
+  public abstract long getLong(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getLong(int)"); }
+  public abstract float getFloat(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getFloat(java.lang.String)"); }
+  public abstract float getFloat(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getFloat(int)"); }
+  public abstract double getDouble(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getDouble(int)"); }
+  public abstract double getDouble(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getDouble(java.lang.String)"); }
+  public abstract byte[] getBytes(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getBytes(java.lang.String)"); }
+  public abstract byte[] getBytes(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getBytes(int)"); }
+  public abstract boolean next() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.next()"); }
+  public abstract boolean last() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.last()"); }
+  public abstract boolean first() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.first()"); }
+  public abstract int getType() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getType()"); }
+  public abstract java.sql.Ref getRef(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getRef(int)"); }
+  public abstract java.sql.Ref getRef(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getRef(java.lang.String)"); }
+  public abstract boolean previous() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.previous()"); }
+  public abstract java.sql.Array getArray(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getArray(int)"); }
+  public abstract java.sql.Array getArray(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getArray(java.lang.String)"); }
+  public abstract boolean absolute(int row) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.absolute(int)"); }
+  public abstract java.lang.String getString(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getString(java.lang.String)"); }
+  public abstract java.lang.String getString(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getString(int)"); }
+  public abstract java.math.BigDecimal getBigDecimal(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getBigDecimal(java.lang.String)"); }
+  public abstract java.math.BigDecimal getBigDecimal(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getBigDecimal(int)"); }
+  public abstract java.math.BigDecimal getBigDecimal(int columnIndex, int scale) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getBigDecimal(int, int)"); }
+  public abstract java.math.BigDecimal getBigDecimal(java.lang.String columnLabel, int scale) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getBigDecimal(java.lang.String, int)"); }
+  public abstract java.sql.Time getTime(int columnIndex, java.util.Calendar cal) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getTime(int, java.util.Calendar)"); }
+  public abstract java.sql.Time getTime(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getTime(java.lang.String)"); }
+  public abstract java.sql.Time getTime(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getTime(int)"); }
+  public abstract java.sql.Time getTime(java.lang.String columnLabel, java.util.Calendar cal) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getTime(java.lang.String, java.util.Calendar)"); }
+  public abstract <T> T getObject(java.lang.String columnLabel, java.lang.Class<T> type) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getObject(java.lang.String, java.lang.Class<T>)"); }
+  public abstract java.lang.Object getObject(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getObject(java.lang.String)"); }
+  public abstract java.lang.Object getObject(int columnIndex, java.util.Map<java.lang.String, java.lang.Class<?>> map) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getObject(int, java.util.Map<java.lang.String, java.lang.Class<?>>)"); }
+  public abstract java.lang.Object getObject(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getObject(int)"); }
+  public abstract void updateTime(int columnIndex, java.sql.Time x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateTime(int, java.sql.Time)"); }
+  public abstract void updateTime(java.lang.String columnLabel, java.sql.Time x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateTime(java.lang.String, java.sql.Time)"); }
+  public abstract void updateArray(int columnIndex, java.sql.Array x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateArray(int, java.sql.Array)"); }
+  public abstract void updateArray(java.lang.String columnLabel, java.sql.Array x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateArray(java.lang.String, java.sql.Array)"); }
+  public abstract java.net.URL getURL(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getURL(java.lang.String)"); }
+  public abstract java.net.URL getURL(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getURL(int)"); }
+  public abstract java.sql.Timestamp getTimestamp(int columnIndex, java.util.Calendar cal) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getTimestamp(int, java.util.Calendar)"); }
+  public abstract java.sql.Timestamp getTimestamp(java.lang.String columnLabel, java.util.Calendar cal) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getTimestamp(java.lang.String, java.util.Calendar)"); }
+  public abstract java.sql.Timestamp getTimestamp(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getTimestamp(java.lang.String)"); }
+  public abstract java.sql.Timestamp getTimestamp(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getTimestamp(int)"); }
+  public abstract boolean relative(int rows) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.relative(int)"); }
+  public abstract java.sql.Statement getStatement() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getStatement()"); }
+  public abstract boolean isFirst() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.isFirst()"); }
+  public abstract boolean isLast() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.isLast()"); }
+  public abstract void insertRow() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.insertRow()"); }
+  public abstract int findColumn(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.findColumn(java.lang.String)"); }
+  public abstract int getRow() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getRow()"); }
+  public abstract boolean isClosed() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.isClosed()"); }
+  public abstract java.io.Reader getCharacterStream(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getCharacterStream(int)"); }
+  public abstract java.io.Reader getCharacterStream(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getCharacterStream(java.lang.String)"); }
+  public abstract boolean wasNull() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.wasNull()"); }
+  public abstract java.io.InputStream getAsciiStream(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getAsciiStream(java.lang.String)"); }
+  public abstract java.io.InputStream getAsciiStream(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getAsciiStream(int)"); }
+  public abstract java.io.InputStream getUnicodeStream(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getUnicodeStream(int)"); }
+  public abstract java.io.InputStream getUnicodeStream(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getUnicodeStream(java.lang.String)"); }
+  public abstract java.io.InputStream getBinaryStream(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getBinaryStream(int)"); }
+  public abstract java.io.InputStream getBinaryStream(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getBinaryStream(java.lang.String)"); }
+  public abstract java.sql.SQLWarning getWarnings() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getWarnings()"); }
+  public abstract void clearWarnings() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.clearWarnings()"); }
+  public abstract java.lang.String getCursorName() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getCursorName()"); }
+  public abstract java.sql.ResultSetMetaData getMetaData() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getMetaData()"); }
+  public abstract boolean isBeforeFirst() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.isBeforeFirst()"); }
+  public abstract boolean isAfterLast() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.isAfterLast()"); }
+  public abstract void beforeFirst() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.beforeFirst()"); }
+  public abstract void afterLast() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.afterLast()"); }
+  public abstract void setFetchDirection(int direction) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.setFetchDirection(int)"); }
+  public abstract int getFetchDirection() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getFetchDirection()"); }
+  public abstract void setFetchSize(int rows) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.setFetchSize(int)"); }
+  public abstract int getFetchSize() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getFetchSize()"); }
+  public abstract int getConcurrency() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getConcurrency()"); }
+  public abstract boolean rowUpdated() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.rowUpdated()"); }
+  public abstract boolean rowInserted() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.rowInserted()"); }
+  public abstract boolean rowDeleted() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.rowDeleted()"); }
+  public abstract void updateNull(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateNull(java.lang.String)"); }
+  public abstract void updateNull(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateNull(int)"); }
+  public abstract void updateBoolean(java.lang.String columnLabel, boolean x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateBoolean(java.lang.String, boolean)"); }
+  public abstract void updateBoolean(int columnIndex, boolean x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateBoolean(int, boolean)"); }
+  public abstract void updateByte(int columnIndex, byte x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateByte(int, byte)"); }
+  public abstract void updateByte(java.lang.String columnLabel, byte x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateByte(java.lang.String, byte)"); }
+  public abstract void updateShort(int columnIndex, short x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateShort(int, short)"); }
+  public abstract void updateShort(java.lang.String columnLabel, short x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateShort(java.lang.String, short)"); }
+  public abstract void updateInt(int columnIndex, int x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateInt(int, int)"); }
+  public abstract void updateInt(java.lang.String columnLabel, int x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateInt(java.lang.String, int)"); }
+  public abstract void updateLong(int columnIndex, long x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateLong(int, long)"); }
+  public abstract void updateLong(java.lang.String columnLabel, long x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateLong(java.lang.String, long)"); }
+  public abstract void updateFloat(java.lang.String columnLabel, float x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateFloat(java.lang.String, float)"); }
+  public abstract void updateFloat(int columnIndex, float x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateFloat(int, float)"); }
+  public abstract void updateDouble(int columnIndex, double x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateDouble(int, double)"); }
+  public abstract void updateDouble(java.lang.String columnLabel, double x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateDouble(java.lang.String, double)"); }
+  public abstract void updateBigDecimal(java.lang.String columnLabel, java.math.BigDecimal x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateBigDecimal(java.lang.String, java.math.BigDecimal)"); }
+  public abstract void updateBigDecimal(int columnIndex, java.math.BigDecimal x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateBigDecimal(int, java.math.BigDecimal)"); }
+  public abstract void updateString(java.lang.String columnLabel, java.lang.String x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateString(java.lang.String, java.lang.String)"); }
+  public abstract void updateString(int columnIndex, java.lang.String x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateString(int, java.lang.String)"); }
+  public abstract void updateDate(int columnIndex, java.sql.Date x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateDate(int, java.sql.Date)"); }
+  public abstract void updateDate(java.lang.String columnLabel, java.sql.Date x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateDate(java.lang.String, java.sql.Date)"); }
+  public abstract void updateTimestamp(int columnIndex, java.sql.Timestamp x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateTimestamp(int, java.sql.Timestamp)"); }
+  public abstract void updateTimestamp(java.lang.String columnLabel, java.sql.Timestamp x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateTimestamp(java.lang.String, java.sql.Timestamp)"); }
+  public abstract void updateAsciiStream(int columnIndex, java.io.InputStream x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateAsciiStream(int, java.io.InputStream)"); }
+  public abstract void updateAsciiStream(java.lang.String columnLabel, java.io.InputStream x, long length) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateAsciiStream(java.lang.String, java.io.InputStream, long)"); }
+  public abstract void updateAsciiStream(int columnIndex, java.io.InputStream x, int length) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateAsciiStream(int, java.io.InputStream, int)"); }
+  public abstract void updateAsciiStream(java.lang.String columnLabel, java.io.InputStream x, int length) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateAsciiStream(java.lang.String, java.io.InputStream, int)"); }
+  public abstract void updateAsciiStream(int columnIndex, java.io.InputStream x, long length) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateAsciiStream(int, java.io.InputStream, long)"); }
+  public abstract void updateAsciiStream(java.lang.String columnLabel, java.io.InputStream x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateAsciiStream(java.lang.String, java.io.InputStream)"); }
+  public abstract void updateBinaryStream(int columnIndex, java.io.InputStream x, long length) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateBinaryStream(int, java.io.InputStream, long)"); }
+  public abstract void updateBinaryStream(java.lang.String columnLabel, java.io.InputStream x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateBinaryStream(java.lang.String, java.io.InputStream)"); }
+  public abstract void updateBinaryStream(int columnIndex, java.io.InputStream x, int length) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateBinaryStream(int, java.io.InputStream, int)"); }
+  public abstract void updateBinaryStream(java.lang.String columnLabel, java.io.InputStream x, int length) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateBinaryStream(java.lang.String, java.io.InputStream, int)"); }
+  public abstract void updateBinaryStream(java.lang.String columnLabel, java.io.InputStream x, long length) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateBinaryStream(java.lang.String, java.io.InputStream, long)"); }
+  public abstract void updateBinaryStream(int columnIndex, java.io.InputStream x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateBinaryStream(int, java.io.InputStream)"); }
+  public abstract void updateCharacterStream(int columnIndex, java.io.Reader x, long length) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateCharacterStream(int, java.io.Reader, long)"); }
+  public abstract void updateCharacterStream(java.lang.String columnLabel, java.io.Reader reader, long length) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateCharacterStream(java.lang.String, java.io.Reader, long)"); }
+  public abstract void updateCharacterStream(java.lang.String columnLabel, java.io.Reader reader, int length) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateCharacterStream(java.lang.String, java.io.Reader, int)"); }
+  public abstract void updateCharacterStream(java.lang.String columnLabel, java.io.Reader reader) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateCharacterStream(java.lang.String, java.io.Reader)"); }
+  public abstract void updateCharacterStream(int columnIndex, java.io.Reader x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateCharacterStream(int, java.io.Reader)"); }
+  public abstract void updateCharacterStream(int columnIndex, java.io.Reader x, int length) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateCharacterStream(int, java.io.Reader, int)"); }
+  public default void updateObject(java.lang.String columnLabel, java.lang.Object x, java.sql.SQLType targetSqlType, int scaleOrLength) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.ResultSet.updateObject(java.lang.String, java.lang.Object, java.sql.SQLType, int)"); }
+  public default void updateObject(int columnIndex, java.lang.Object x, java.sql.SQLType targetSqlType, int scaleOrLength) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.ResultSet.updateObject(int, java.lang.Object, java.sql.SQLType, int)"); }
+  public default void updateObject(int columnIndex, java.lang.Object x, java.sql.SQLType targetSqlType) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.ResultSet.updateObject(int, java.lang.Object, java.sql.SQLType)"); }
+  public abstract void updateObject(java.lang.String columnLabel, java.lang.Object x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateObject(java.lang.String, java.lang.Object)"); }
+  public default void updateObject(java.lang.String columnLabel, java.lang.Object x, java.sql.SQLType targetSqlType) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.ResultSet.updateObject(java.lang.String, java.lang.Object, java.sql.SQLType)"); }
+  public abstract void updateObject(int columnIndex, java.lang.Object x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateObject(int, java.lang.Object)"); }
+  public abstract void updateObject(int columnIndex, java.lang.Object x, int scaleOrLength) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateObject(int, java.lang.Object, int)"); }
+  public abstract void updateObject(java.lang.String columnLabel, java.lang.Object x, int scaleOrLength) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateObject(java.lang.String, java.lang.Object, int)"); }
+  public abstract void updateRow() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateRow()"); }
+  public abstract void deleteRow() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.deleteRow()"); }
+  public abstract void refreshRow() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.refreshRow()"); }
+  public abstract void cancelRowUpdates() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.cancelRowUpdates()"); }
+  public abstract void moveToInsertRow() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.moveToInsertRow()"); }
+  public abstract void moveToCurrentRow() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.moveToCurrentRow()"); }
+  public abstract java.sql.Blob getBlob(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getBlob(int)"); }
+  public abstract java.sql.Blob getBlob(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getBlob(java.lang.String)"); }
+  public abstract java.sql.Clob getClob(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getClob(java.lang.String)"); }
+  public abstract java.sql.Clob getClob(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getClob(int)"); }
+  public abstract void updateRef(java.lang.String columnLabel, java.sql.Ref x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateRef(java.lang.String, java.sql.Ref)"); }
+  public abstract void updateRef(int columnIndex, java.sql.Ref x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateRef(int, java.sql.Ref)"); }
+  public abstract void updateBlob(int columnIndex, java.io.InputStream inputStream) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateBlob(int, java.io.InputStream)"); }
+  public abstract void updateBlob(java.lang.String columnLabel, java.sql.Blob x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateBlob(java.lang.String, java.sql.Blob)"); }
+  public abstract void updateBlob(int columnIndex, java.io.InputStream inputStream, long length) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateBlob(int, java.io.InputStream, long)"); }
+  public abstract void updateBlob(java.lang.String columnLabel, java.io.InputStream inputStream, long length) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateBlob(java.lang.String, java.io.InputStream, long)"); }
+  public abstract void updateClob(java.lang.String columnLabel, java.io.Reader reader, long length) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateClob(java.lang.String, java.io.Reader, long)"); }
+  public abstract void updateClob(int columnIndex, java.io.Reader reader, long length) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateClob(int, java.io.Reader, long)"); }
+  public abstract void updateClob(java.lang.String columnLabel, java.sql.Clob x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateClob(java.lang.String, java.sql.Clob)"); }
+  public abstract void updateClob(int columnIndex, java.sql.Clob x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateClob(int, java.sql.Clob)"); }
+  public abstract java.sql.RowId getRowId(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getRowId(int)"); }
+  public abstract java.sql.RowId getRowId(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getRowId(java.lang.String)"); }
+  public abstract void updateRowId(int columnIndex, java.sql.RowId x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateRowId(int, java.sql.RowId)"); }
+  public abstract void updateRowId(java.lang.String columnLabel, java.sql.RowId x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateRowId(java.lang.String, java.sql.RowId)"); }
+  public abstract int getHoldability() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getHoldability()"); }
+  public abstract void updateNString(java.lang.String columnLabel, java.lang.String nString) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateNString(java.lang.String, java.lang.String)"); }
+  public abstract void updateNString(int columnIndex, java.lang.String nString) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateNString(int, java.lang.String)"); }
+  public abstract void updateNClob(int columnIndex, java.sql.NClob nClob) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateNClob(int, java.sql.NClob)"); }
+  public abstract void updateNClob(java.lang.String columnLabel, java.io.Reader reader) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateNClob(java.lang.String, java.io.Reader)"); }
+  public abstract void updateNClob(java.lang.String columnLabel, java.io.Reader reader, long length) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateNClob(java.lang.String, java.io.Reader, long)"); }
+  public abstract void updateNClob(int columnIndex, java.io.Reader reader, long length) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateNClob(int, java.io.Reader, long)"); }
+  public abstract java.sql.NClob getNClob(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getNClob(java.lang.String)"); }
+  public abstract java.sql.NClob getNClob(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getNClob(int)"); }
+  public abstract java.sql.SQLXML getSQLXML(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getSQLXML(java.lang.String)"); }
+  public abstract java.sql.SQLXML getSQLXML(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getSQLXML(int)"); }
+  public abstract void updateSQLXML(java.lang.String columnLabel, java.sql.SQLXML xmlObject) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateSQLXML(java.lang.String, java.sql.SQLXML)"); }
+  public abstract void updateSQLXML(int columnIndex, java.sql.SQLXML xmlObject) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateSQLXML(int, java.sql.SQLXML)"); }
+  public abstract java.lang.String getNString(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getNString(java.lang.String)"); }
+  public abstract java.lang.String getNString(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getNString(int)"); }
+  public abstract java.io.Reader getNCharacterStream(java.lang.String columnLabel) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getNCharacterStream(java.lang.String)"); }
+  public abstract java.io.Reader getNCharacterStream(int columnIndex) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.getNCharacterStream(int)"); }
+  public abstract void updateNCharacterStream(int columnIndex, java.io.Reader x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateNCharacterStream(int, java.io.Reader)"); }
+  public abstract void updateNCharacterStream(java.lang.String columnLabel, java.io.Reader reader, long length) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateNCharacterStream(java.lang.String, java.io.Reader, long)"); }
+  public abstract void updateNCharacterStream(int columnIndex, java.io.Reader x, long length) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateNCharacterStream(int, java.io.Reader, long)"); }
+  public abstract void updateNCharacterStream(java.lang.String columnLabel, java.io.Reader reader) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ResultSet.updateNCharacterStream(java.lang.String, java.io.Reader)"); }
+  < ---- END java signatures ---- >
 }

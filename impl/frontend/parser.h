@@ -22,6 +22,12 @@ private:
     // flagged isNested. parseProgram appends these to Program.classes and
     // enforces the per-document cap of 42.
     std::vector<ClassDecl> hoistedNested_;
+    // Java signature surface (syntax 3.0): the type variables of the enclosing
+    // generic class / method declarations, erased to Any in parsed types.
+    std::vector<std::vector<std::string>> typeVars_;
+    std::string javaErase(const std::string& source);
+    bool acceptEllipsis();
+    void splitAngleClosers();
     void collectStructNames();
     const Token& peek(int off=0) const; const Token& cur() const { return toks_[i_]; }
     bool check(Tok k) const { return cur().kind==k; } bool accept(Tok k);
@@ -34,6 +40,7 @@ private:
     std::vector<std::string> parseTypeList(Tok terminator);
     std::vector<std::string> parseTypeParameters();
     std::string parseGenericType();
+    std::string parseTypeArgument();
     void parseThrows(std::vector<std::string>& out);
     StructDecl parseStruct();
     ClassDecl parseClass(unsigned classModifiers=0, std::vector<annotation::Annotation> annotations={}, int depth=1);

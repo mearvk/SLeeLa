@@ -5,7 +5,7 @@
 #sleela 2.5
 material;
 
-class TypeKindVisitor14 {
+class TypeKindVisitor14<R, P> {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
      or catalog can read and (where appropriate) override this record.

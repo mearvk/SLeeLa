@@ -63,8 +63,9 @@ class Kind {
   String extension;
   << Complete enum: one static final instance per constant (so identity
      and == hold for values / valueOf / the constants), with the
-     java.lang.Enum behavior. Obtain the type handle as
-     new Kind(null, -1) and call values() / valueOf(name) on it. >>
+     java.lang.Enum behavior. values() and valueOf(name) are static, as
+     in Java: Kind.valueOf(...), Kind.values(), and the constants are
+     static final fields. >>
   static final Kind SOURCE = new Kind("SOURCE", 0);
   static final Kind CLASS = new Kind("CLASS", 1);
   static final Kind HTML = new Kind("HTML", 2);
@@ -78,7 +79,7 @@ class Kind {
   int compareTo(Kind o) { return this.enumOrdinal - o.enumOrdinal; }
   boolean equals(Any other) { return this == other; }
   int hashCode() { return this.enumOrdinal * 31 + 17; }
-  Kind[] values() {
+  public static Kind[] values() {
     Kind[] v = new Kind[4];
     v[0] = SOURCE;
     v[1] = CLASS;
@@ -86,7 +87,7 @@ class Kind {
     v[3] = OTHER;
     return v;
   }
-  Kind valueOf(String name) {
+  public static Kind valueOf(String name) {
     if (name == null) { throw new NullPointerException("Name is null"); }
     if (name == "SOURCE") { return SOURCE; }
     if (name == "CLASS") { return CLASS; }

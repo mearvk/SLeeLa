@@ -2042,6 +2042,13 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
         const std::string scanSource = dependencyScanText(source);
         for(std::sregex_iterator it(scanSource.begin(),scanSource.end(),identifier),end;it!=end;++it){
             const std::string name=it->str();
+            // A name that follows '.' is a member or the tail of a qualified
+            // name (java.util.List): it is not a library unit reference. The
+            // Java signature surface erases package-qualified types to Any.
+            const auto pos=static_cast<std::size_t>(it->position());
+            std::size_t back=pos;
+            while(back>0 && (scanSource[back-1]==' '||scanSource[back-1]=='\t')) --back;
+            if(back>0 && scanSource[back-1]=='.') continue;
             if(!name.empty() && std::isupper(static_cast<unsigned char>(name[0]))) names.insert(name);
         }
         bool changed=false;

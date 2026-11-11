@@ -6,7 +6,7 @@
 material;
 import java.java.util;
 
-class Stack extends Vector {
+class Stack<E> extends Vector {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
      or catalog can read and (where appropriate) override this record.

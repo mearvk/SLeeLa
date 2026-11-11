@@ -61,8 +61,9 @@ class AclEntryPermission {
   static Any ADD_SUBDIRECTORY = null;
   << Complete enum: one static final instance per constant (so identity
      and == hold for values / valueOf / the constants), with the
-     java.lang.Enum behavior. Obtain the type handle as
-     new AclEntryPermission(null, -1) and call values() / valueOf(name) on it. >>
+     java.lang.Enum behavior. values() and valueOf(name) are static, as
+     in Java: AclEntryPermission.valueOf(...), AclEntryPermission.values(), and the constants are
+     static final fields. >>
   static final AclEntryPermission READ_DATA = new AclEntryPermission("READ_DATA", 0);
   static final AclEntryPermission WRITE_DATA = new AclEntryPermission("WRITE_DATA", 1);
   static final AclEntryPermission APPEND_DATA = new AclEntryPermission("APPEND_DATA", 2);
@@ -86,7 +87,7 @@ class AclEntryPermission {
   int compareTo(AclEntryPermission o) { return this.enumOrdinal - o.enumOrdinal; }
   boolean equals(Any other) { return this == other; }
   int hashCode() { return this.enumOrdinal * 31 + 17; }
-  AclEntryPermission[] values() {
+  public static AclEntryPermission[] values() {
     AclEntryPermission[] v = new AclEntryPermission[14];
     v[0] = READ_DATA;
     v[1] = WRITE_DATA;
@@ -104,7 +105,7 @@ class AclEntryPermission {
     v[13] = SYNCHRONIZE;
     return v;
   }
-  AclEntryPermission valueOf(String name) {
+  public static AclEntryPermission valueOf(String name) {
     if (name == null) { throw new NullPointerException("Name is null"); }
     if (name == "READ_DATA") { return READ_DATA; }
     if (name == "WRITE_DATA") { return WRITE_DATA; }

@@ -2793,3 +2793,43 @@ new opcodes instead of interpreting them as existing instructions. Typed
 exception classes, rethrow semantics, selected language-fault conversion,
 and finally/abrupt completion remain future work.
 
+
+
+## 38. Syntax 3.0 — the Java signature surface and static member access
+
+This section is **normative**. It lets a SLeeLa class declare members with
+the exact spelling of their Java API signatures (as `/lib/java` does), and
+lets source reach static members through the class name.
+
+### 38.1 Java signature types
+
+- `char`, `byte` and `short` are accepted as types and use the integer slot.
+  `float` is accepted and uses the double slot.
+- A type variable declared by the enclosing class (`class HashMap<K, V>`) or
+  by the method (`<T> T[] toArray(T[] a)`) erases to `Any`.
+- A package-qualified reference type (`java.util.Collection<? extends E>`,
+  `java.lang.Object`, `java.util.Map.Entry<K, V>`) erases to `Any`.
+  `java.lang.String` erases to `String`. Array suffixes are kept.
+- Type-argument lists accept keyword types (`Map<String, int[]>`), array
+  type arguments, and `>>` / `>>>` closers of nested lists.
+- `T... name` declares an array parameter (varargs).
+- A method may declare type parameters (`public static <T> java.util.List<T>
+  asList(T... a)`).
+- A qualified-name segment may spell a keyword (`java.lang.String`,
+  `javax.print.Doc`).
+- A value of any type is assignable to `Object`.
+
+### 38.2 Static access through the class name
+
+`Class.member` reads, and `Class.member = value` writes, a static field.
+`Class.method(args)` calls a static method. This applies when `Class` names a
+class and is not a local variable or a field in scope. An instance method
+reached this way is rejected (`instance method 'C::m' must be called on an
+instance`).
+
+### 38.3 Library unit references
+
+An identifier that follows `.` is a member name or the tail of a qualified
+name. It does not cause a `/lib` unit with that simple name to be loaded, so
+package-qualified signature types never trigger an ambiguous simple-name
+resolution.

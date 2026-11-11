@@ -64,8 +64,9 @@ class Kind {
   boolean isInterface;
   << Complete enum: one static final instance per constant (so identity
      and == hold for values / valueOf / the constants), with the
-     java.lang.Enum behavior. Obtain the type handle as
-     new Kind(null, -1) and call values() / valueOf(name) on it. >>
+     java.lang.Enum behavior. values() and valueOf(name) are static, as
+     in Java: Kind.valueOf(...), Kind.values(), and the constants are
+     static final fields. >>
   static final Kind STATIC = new Kind("STATIC", 0);
   static final Kind INTERFACE_STATIC = new Kind("INTERFACE_STATIC", 1);
   static final Kind VIRTUAL = new Kind("VIRTUAL", 2);
@@ -86,7 +87,7 @@ class Kind {
   int compareTo(Kind o) { return this.enumOrdinal - o.enumOrdinal; }
   boolean equals(Any other) { return this == other; }
   int hashCode() { return this.enumOrdinal * 31 + 17; }
-  Kind[] values() {
+  public static Kind[] values() {
     Kind[] v = new Kind[11];
     v[0] = STATIC;
     v[1] = INTERFACE_STATIC;
@@ -101,7 +102,7 @@ class Kind {
     v[10] = STATIC_SETTER;
     return v;
   }
-  Kind valueOf(String name) {
+  public static Kind valueOf(String name) {
     if (name == null) { throw new NullPointerException("Name is null"); }
     if (name == "STATIC") { return STATIC; }
     if (name == "INTERFACE_STATIC") { return INTERFACE_STATIC; }

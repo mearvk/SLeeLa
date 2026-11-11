@@ -19,30 +19,51 @@ constants). Two numbers are reported:
 
 - **Covered.** Members that exist in SLeeLa with their Java meaning. This
   includes the API-declared part below plus hand-implemented behavior.
-  Currently **41.4%**.
+  Currently **41.5%**.
 - **Behavior.** Only hand-written method bodies. Currently **5.9%**.
 
-### Transcribed signatures (`tools/jdk_api_signatures.py`)
+### Exact Java signatures (`tools/jdk_api_signatures.py`)
 
-Every remaining public method of every JDK type is transcribed into a
-`BEGIN/END java signatures` block: **24,970 method stubs**. Each has its
-Java name, and its parameters and return type mapped to the SLeeLa types
-(`int`, `long`, `double`, `boolean`, `String`, primitive arrays, `Any`). Each
-stub throws `UnsupportedOperationException` naming the exact Java signature,
-for example
-`not yet implemented in SLeeLa: int java.lang.StringBuilder.indexOf(String)`.
-This is the to-do list for the logic, laid out in place.
+Every public method of every JDK type that SLeeLa does not implement yet is
+written with its **exact Java signature**. That is 35,157 methods: 9,732
+abstract and 25,425 awaiting logic. The modifiers, type parameters and
+generic types come from `api/jdk-signatures.jsonl`, which
+`tools/ApiSignatures.java` writes from reflection on a real JDK, with
+parameter names read from the JDK source declarations. For example:
 
-Stubs are **not** counted as coverage. Some methods are not transcribed:
+```
+class ArrayList<E> extends AbstractList {
+  public <T> T[] toArray(T[] a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.toArray(T[])"); }
+  public static <T> java.util.List<T> asList(T... a) { ... }
+  public abstract E get(int index) { throw new AbstractMethodError("java.util.AbstractList.get(int)"); }
+```
 
-- a method whose name the type, or a SLeeLa ancestor with an implementation
-  block, already declares, so a stub never shadows working behavior;
-- constructors, since a class admits one;
-- methods named with SLeeLa reserved words;
-- `java.lang.String`, which waits for the String bridge.
+Generic classes carry their Java type parameters (`class HashMap<K, V>`).
+The SLeeLa front end reads this Java surface (SLEELA.syntax section 38).
+Static members are reached through the class name, as in Java:
+`DayOfWeek.MONDAY`, `DayOfWeek.valueOf("FRIDAY")`, `Integer.MAX_VALUE`.
+
+Bodies that are not yet SLeeLa logic throw. An abstract method throws
+`AbstractMethodError`, which is what the JVM does; abstract methods count as
+covered. Any other method throws `UnsupportedOperationException` naming the
+Java signature; those stubs are not counted as coverage.
+
+Two adaptations are named in the source:
+
+- a Java *protected instance* member carries `@JavaProtected`, because
+  SLeeLa reserves `protected` for static members;
+- a parameter whose Java name is a SLeeLa reserved word gets a trailing `_`.
+
+Not written:
+
+- methods whose name the type, or a SLeeLa ancestor with an implementation
+  block, already implements (calls resolve by name until overload resolution
+  lands);
+- constructors (one per class);
+- `java.lang.String`.
 
 When a method gets real logic, write it in an implementation block and
-re-run `jdk_api_signatures.py`; the stub for that name disappears.
+re-run `jdk_api_signatures.py`.
 
 ### API-declared part (`tools/jdk_api_declare.py`)
 
@@ -162,7 +183,10 @@ generators in [`tools/implementation/`](tools/implementation/) and
 [`tools/jdk28_implement_throwables.py`](tools/jdk28_implement_throwables.py)
 and re-running them.
 
-1. **Static member access across classes.** `Math.abs(x)`, `Integer.MAX_VALUE`.
+1. **Static member access across classes.** *Done:* `Class.member` and
+   `Class.method(...)` now work (SLEELA.syntax section 38). The
+   hand-implemented classes still expose their static API as instance
+   methods; they are converted class by class.
 2. **Overload resolution** by parameter types, and more than one constructor per class.
 3. **Virtual dispatch.** An override is not reached through a base-typed
    receiver or an implicit-`this` call. That is why exceptions compose their
@@ -183,7 +207,8 @@ and re-running them.
    only by a collection, so the collections issue a periodic `gc` hint.
 9. **New `int[]`/`boolean[]` elements read as `null`**, not 0/false. The
    implementation clears them explicitly.
-10. **`byte`, `short`, `char`, `float` primitives**, `L`/`f` literal suffixes,
+10. **`byte`, `short`, `char`, `float` primitives** (*now accepted* as types,
+    on the int / double slots), `L`/`f` literal suffixes,
     and the bitwise operators `& | ^ ~ << >> >>>`. Bit operations are
     implemented arithmetically.
 11. **Lambdas and functional interfaces.** `Comparator`, `Function`,
@@ -207,7 +232,8 @@ and re-running them.
 # refresh the reflected API (needs a JDK), then the declarations and the report
 javac -d /tmp/apid lib/java/tools/ApiDump.java && java -cp /tmp/apid ApiDump > lib/java/api/jdk-api.jsonl
 python3 lib/java/tools/jdk_api_declare.py                 # constants, fields, abstract methods, enums, records
-python3 lib/java/tools/jdk_api_signatures.py              # remaining method signatures as stubs (run last)
+javac -d /tmp/sigs lib/java/tools/ApiSignatures.java && java -cp /tmp/sigs ApiSignatures > lib/java/api/jdk-signatures.jsonl
+python3 lib/java/tools/jdk_api_signatures.py              # exact Java signatures (run last)
 python3 lib/java/tools/jdk_api_coverage.py --markdown lib/java/COVERAGE.md
 
 python3 lib/java/tools/jdk28_implement_throwables.py      # 290 Throwable types

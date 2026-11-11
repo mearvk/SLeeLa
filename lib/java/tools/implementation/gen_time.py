@@ -172,7 +172,7 @@ def enum_core(name):
 DAYOFWEEK = enum_core("DayOfWeek") + r'''
   < java.time.DayOfWeek behavior (ISO: Monday = 1 .. Sunday = 7) >
   int getValue() { return this.enumOrdinal + 1; }
-  DayOfWeek of(int dayOfWeek) {
+  public static DayOfWeek of(int dayOfWeek) {
     if (dayOfWeek < 1 || dayOfWeek > 7) { throw new DateTimeException("Invalid value for DayOfWeek: " + dayOfWeek); }
     DayOfWeek[] v = values();
     return v[dayOfWeek - 1];
@@ -189,7 +189,7 @@ DAYOFWEEK = enum_core("DayOfWeek") + r'''
 MONTH = enum_core("Month") + r'''
   < java.time.Month behavior >
   int getValue() { return this.enumOrdinal + 1; }
-  Month of(int month) {
+  public static Month of(int month) {
     if (month < 1 || month > 12) { throw new DateTimeException("Invalid value for MonthOfYear: " + month); }
     Month[] v = values();
     return v[month - 1];
@@ -308,15 +308,14 @@ LOCALDATE = r'''  < ---- java.time.LocalDate members (procedural implementation 
   < fields >
   int getYear() { return this.year; }
   int getMonthValue() { return this.month; }
-  Month getMonth() { Month h = new Month(null, -1); return h.of(this.month); }
+  Month getMonth() { return Month.of(this.month); }
   int getDayOfMonth() { return this.day; }
   int getDayOfYear() {
     Month mo = getMonth();
     return mo.firstDayOfYear(isLeapYear()) + this.day - 1;
   }
   DayOfWeek getDayOfWeek() {
-    DayOfWeek h = new DayOfWeek(null, -1);
-    return h.of((int) floorMod(toEpochDay() + 3, 7) + 1);
+    return DayOfWeek.of((int) floorMod(toEpochDay() + 3, 7) + 1);
   }
   boolean isLeapYear() { return leap(this.year); }
   int lengthOfMonth() { return monthLength(this.month, isLeapYear()); }
@@ -1084,7 +1083,7 @@ YEARMONTH = r'''  < ---- java.time.YearMonth members (procedural implementation 
   }
   int getYear() { return this.year; }
   int getMonthValue() { return this.month; }
-  Month getMonth() { Month h = new Month(null, -1); return h.of(this.month); }
+  Month getMonth() { return Month.of(this.month); }
   boolean isLeapYear() { return leap(this.year); }
   boolean isValidDay(int dayOfMonth) { return dayOfMonth >= 1 && dayOfMonth <= lengthOfMonth(); }
   int lengthOfMonth() { return monthLength(this.month, isLeapYear()); }
@@ -1144,7 +1143,7 @@ MONTHDAY = r'''  < ---- java.time.MonthDay members (procedural implementation in
     return new MonthDay((int) m, (int) d);
   }
   int getMonthValue() { return this.month; }
-  Month getMonth() { Month h = new Month(null, -1); return h.of(this.month); }
+  Month getMonth() { return Month.of(this.month); }
   int getDayOfMonth() { return this.day; }
   boolean isValidYear(int year) { return !(this.day == 29 && this.month == 2 && !leap(year)); }
   LocalDate atYear(int year) {

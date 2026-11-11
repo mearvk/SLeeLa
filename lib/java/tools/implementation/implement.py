@@ -38,9 +38,10 @@ def apply_file(bf):
             imports.append(d.split()[1])
     body = "\n".join(lines).strip("\n") + "\n"
     src = target.read_text()
-    mo = re.search(r"^class (\w+)(?: extends \w+)? \{$", src, re.M)
+    mo = re.search(r"^class (\w+)(<[^{}]*>)?(?: extends \w+)? \{$", src, re.M)
     assert mo and mo.group(1) == name, target
-    header = f"class {name} extends {ext} {{" if ext else f"class {name} {{"
+    tp = mo.group(2) or ""
+    header = f"class {name}{tp} extends {ext} {{" if ext else f"class {name}{tp} {{"
     src = src[:mo.start()] + header + src[mo.end():]
     src = re.sub(re.escape(BEGIN) + r".*?" + re.escape(END) + r"\n", "", src, flags=re.S)
     block = BEGIN + "\n" + body + END + "\n"

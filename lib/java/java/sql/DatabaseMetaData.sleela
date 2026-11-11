@@ -117,189 +117,188 @@ class DatabaseMetaData {
   static final int functionResultUnknown = 0;
   static final int functionNoTable = 1;
   static final int functionReturnsTable = 2;
-  < abstract methods: implemented by a concrete subtype; a direct call throws AbstractMethodError as on the JVM >
-  Any getAttributes(String p0, String p1, String p2, String p3) { throw new AbstractMethodError("java.sql.DatabaseMetaData.getAttributes(String,String,String,String)"); }
-  boolean isReadOnly() { throw new AbstractMethodError("java.sql.DatabaseMetaData.isReadOnly()"); }
-  String getURL() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getURL()"); }
-  Any getTables(String p0, String p1, String p2, String[] p3) { throw new AbstractMethodError("java.sql.DatabaseMetaData.getTables(String,String,String,String[])"); }
-  String getUserName() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getUserName()"); }
-  Any getConnection() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getConnection()"); }
-  Any getColumns(String p0, String p1, String p2, String p3) { throw new AbstractMethodError("java.sql.DatabaseMetaData.getColumns(String,String,String,String)"); }
-  boolean supportsMultipleOpenResults() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsMultipleOpenResults()"); }
-  boolean storesMixedCaseQuotedIdentifiers() { throw new AbstractMethodError("java.sql.DatabaseMetaData.storesMixedCaseQuotedIdentifiers()"); }
-  boolean storesUpperCaseQuotedIdentifiers() { throw new AbstractMethodError("java.sql.DatabaseMetaData.storesUpperCaseQuotedIdentifiers()"); }
-  boolean supportsDataDefinitionAndDataManipulationTransactions() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsDataDefinitionAndDataManipulationTransactions()"); }
-  boolean storesLowerCaseQuotedIdentifiers() { throw new AbstractMethodError("java.sql.DatabaseMetaData.storesLowerCaseQuotedIdentifiers()"); }
-  boolean supportsMixedCaseQuotedIdentifiers() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsMixedCaseQuotedIdentifiers()"); }
-  boolean supportsMixedCaseIdentifiers() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsMixedCaseIdentifiers()"); }
-  int getResultSetHoldability() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getResultSetHoldability()"); }
-  boolean allProceduresAreCallable() { throw new AbstractMethodError("java.sql.DatabaseMetaData.allProceduresAreCallable()"); }
-  boolean allTablesAreSelectable() { throw new AbstractMethodError("java.sql.DatabaseMetaData.allTablesAreSelectable()"); }
-  boolean nullsAreSortedHigh() { throw new AbstractMethodError("java.sql.DatabaseMetaData.nullsAreSortedHigh()"); }
-  boolean nullsAreSortedLow() { throw new AbstractMethodError("java.sql.DatabaseMetaData.nullsAreSortedLow()"); }
-  boolean nullsAreSortedAtStart() { throw new AbstractMethodError("java.sql.DatabaseMetaData.nullsAreSortedAtStart()"); }
-  boolean nullsAreSortedAtEnd() { throw new AbstractMethodError("java.sql.DatabaseMetaData.nullsAreSortedAtEnd()"); }
-  String getDatabaseProductName() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDatabaseProductName()"); }
-  String getDatabaseProductVersion() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDatabaseProductVersion()"); }
-  String getDriverName() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDriverName()"); }
-  String getDriverVersion() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDriverVersion()"); }
-  int getDriverMajorVersion() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDriverMajorVersion()"); }
-  int getDriverMinorVersion() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDriverMinorVersion()"); }
-  boolean usesLocalFiles() { throw new AbstractMethodError("java.sql.DatabaseMetaData.usesLocalFiles()"); }
-  boolean usesLocalFilePerTable() { throw new AbstractMethodError("java.sql.DatabaseMetaData.usesLocalFilePerTable()"); }
-  boolean storesUpperCaseIdentifiers() { throw new AbstractMethodError("java.sql.DatabaseMetaData.storesUpperCaseIdentifiers()"); }
-  boolean storesLowerCaseIdentifiers() { throw new AbstractMethodError("java.sql.DatabaseMetaData.storesLowerCaseIdentifiers()"); }
-  boolean storesMixedCaseIdentifiers() { throw new AbstractMethodError("java.sql.DatabaseMetaData.storesMixedCaseIdentifiers()"); }
-  String getIdentifierQuoteString() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getIdentifierQuoteString()"); }
-  String getSQLKeywords() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSQLKeywords()"); }
-  String getNumericFunctions() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getNumericFunctions()"); }
-  String getStringFunctions() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getStringFunctions()"); }
-  String getSystemFunctions() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSystemFunctions()"); }
-  String getTimeDateFunctions() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getTimeDateFunctions()"); }
-  String getSearchStringEscape() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSearchStringEscape()"); }
-  String getExtraNameCharacters() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getExtraNameCharacters()"); }
-  boolean supportsAlterTableWithAddColumn() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsAlterTableWithAddColumn()"); }
-  boolean supportsAlterTableWithDropColumn() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsAlterTableWithDropColumn()"); }
-  boolean supportsColumnAliasing() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsColumnAliasing()"); }
-  boolean nullPlusNonNullIsNull() { throw new AbstractMethodError("java.sql.DatabaseMetaData.nullPlusNonNullIsNull()"); }
-  boolean supportsConvert(int p0, int p1) { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsConvert(int,int)"); }
-  boolean supportsConvert() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsConvert()"); }
-  boolean supportsTableCorrelationNames() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsTableCorrelationNames()"); }
-  boolean supportsDifferentTableCorrelationNames() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsDifferentTableCorrelationNames()"); }
-  boolean supportsExpressionsInOrderBy() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsExpressionsInOrderBy()"); }
-  boolean supportsOrderByUnrelated() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsOrderByUnrelated()"); }
-  boolean supportsGroupBy() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsGroupBy()"); }
-  boolean supportsGroupByUnrelated() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsGroupByUnrelated()"); }
-  boolean supportsGroupByBeyondSelect() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsGroupByBeyondSelect()"); }
-  boolean supportsLikeEscapeClause() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsLikeEscapeClause()"); }
-  boolean supportsMultipleResultSets() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsMultipleResultSets()"); }
-  boolean supportsMultipleTransactions() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsMultipleTransactions()"); }
-  boolean supportsNonNullableColumns() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsNonNullableColumns()"); }
-  boolean supportsMinimumSQLGrammar() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsMinimumSQLGrammar()"); }
-  boolean supportsCoreSQLGrammar() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsCoreSQLGrammar()"); }
-  boolean supportsExtendedSQLGrammar() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsExtendedSQLGrammar()"); }
-  boolean supportsANSI92EntryLevelSQL() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsANSI92EntryLevelSQL()"); }
-  boolean supportsANSI92IntermediateSQL() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsANSI92IntermediateSQL()"); }
-  boolean supportsANSI92FullSQL() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsANSI92FullSQL()"); }
-  boolean supportsIntegrityEnhancementFacility() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsIntegrityEnhancementFacility()"); }
-  boolean supportsOuterJoins() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsOuterJoins()"); }
-  boolean supportsFullOuterJoins() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsFullOuterJoins()"); }
-  boolean supportsLimitedOuterJoins() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsLimitedOuterJoins()"); }
-  String getSchemaTerm() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSchemaTerm()"); }
-  String getProcedureTerm() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getProcedureTerm()"); }
-  String getCatalogTerm() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getCatalogTerm()"); }
-  boolean isCatalogAtStart() { throw new AbstractMethodError("java.sql.DatabaseMetaData.isCatalogAtStart()"); }
-  String getCatalogSeparator() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getCatalogSeparator()"); }
-  boolean supportsSchemasInDataManipulation() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSchemasInDataManipulation()"); }
-  boolean supportsSchemasInProcedureCalls() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSchemasInProcedureCalls()"); }
-  boolean supportsSchemasInTableDefinitions() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSchemasInTableDefinitions()"); }
-  boolean supportsSchemasInIndexDefinitions() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSchemasInIndexDefinitions()"); }
-  boolean supportsSchemasInPrivilegeDefinitions() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSchemasInPrivilegeDefinitions()"); }
-  boolean supportsCatalogsInDataManipulation() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsCatalogsInDataManipulation()"); }
-  boolean supportsCatalogsInProcedureCalls() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsCatalogsInProcedureCalls()"); }
-  boolean supportsCatalogsInTableDefinitions() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsCatalogsInTableDefinitions()"); }
-  boolean supportsCatalogsInIndexDefinitions() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsCatalogsInIndexDefinitions()"); }
-  boolean supportsCatalogsInPrivilegeDefinitions() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsCatalogsInPrivilegeDefinitions()"); }
-  boolean supportsPositionedDelete() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsPositionedDelete()"); }
-  boolean supportsPositionedUpdate() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsPositionedUpdate()"); }
-  boolean supportsSelectForUpdate() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSelectForUpdate()"); }
-  boolean supportsStoredProcedures() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsStoredProcedures()"); }
-  boolean supportsSubqueriesInComparisons() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSubqueriesInComparisons()"); }
-  boolean supportsSubqueriesInExists() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSubqueriesInExists()"); }
-  boolean supportsSubqueriesInIns() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSubqueriesInIns()"); }
-  boolean supportsSubqueriesInQuantifieds() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSubqueriesInQuantifieds()"); }
-  boolean supportsCorrelatedSubqueries() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsCorrelatedSubqueries()"); }
-  boolean supportsUnion() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsUnion()"); }
-  boolean supportsUnionAll() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsUnionAll()"); }
-  boolean supportsOpenCursorsAcrossCommit() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsOpenCursorsAcrossCommit()"); }
-  boolean supportsOpenCursorsAcrossRollback() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsOpenCursorsAcrossRollback()"); }
-  boolean supportsOpenStatementsAcrossCommit() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsOpenStatementsAcrossCommit()"); }
-  boolean supportsOpenStatementsAcrossRollback() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsOpenStatementsAcrossRollback()"); }
-  int getMaxBinaryLiteralLength() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxBinaryLiteralLength()"); }
-  int getMaxCharLiteralLength() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxCharLiteralLength()"); }
-  int getMaxColumnNameLength() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxColumnNameLength()"); }
-  int getMaxColumnsInGroupBy() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxColumnsInGroupBy()"); }
-  int getMaxColumnsInIndex() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxColumnsInIndex()"); }
-  int getMaxColumnsInOrderBy() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxColumnsInOrderBy()"); }
-  int getMaxColumnsInSelect() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxColumnsInSelect()"); }
-  int getMaxColumnsInTable() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxColumnsInTable()"); }
-  int getMaxConnections() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxConnections()"); }
-  int getMaxCursorNameLength() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxCursorNameLength()"); }
-  int getMaxIndexLength() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxIndexLength()"); }
-  int getMaxSchemaNameLength() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxSchemaNameLength()"); }
-  int getMaxProcedureNameLength() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxProcedureNameLength()"); }
-  int getMaxCatalogNameLength() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxCatalogNameLength()"); }
-  int getMaxRowSize() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxRowSize()"); }
-  boolean doesMaxRowSizeIncludeBlobs() { throw new AbstractMethodError("java.sql.DatabaseMetaData.doesMaxRowSizeIncludeBlobs()"); }
-  int getMaxStatementLength() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxStatementLength()"); }
-  int getMaxStatements() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxStatements()"); }
-  int getMaxTableNameLength() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxTableNameLength()"); }
-  int getMaxTablesInSelect() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxTablesInSelect()"); }
-  int getMaxUserNameLength() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxUserNameLength()"); }
-  int getDefaultTransactionIsolation() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDefaultTransactionIsolation()"); }
-  boolean supportsTransactions() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsTransactions()"); }
-  boolean supportsTransactionIsolationLevel(int p0) { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsTransactionIsolationLevel(int)"); }
-  boolean supportsDataManipulationTransactionsOnly() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsDataManipulationTransactionsOnly()"); }
-  boolean dataDefinitionCausesTransactionCommit() { throw new AbstractMethodError("java.sql.DatabaseMetaData.dataDefinitionCausesTransactionCommit()"); }
-  boolean dataDefinitionIgnoredInTransactions() { throw new AbstractMethodError("java.sql.DatabaseMetaData.dataDefinitionIgnoredInTransactions()"); }
-  Any getProcedures(String p0, String p1, String p2) { throw new AbstractMethodError("java.sql.DatabaseMetaData.getProcedures(String,String,String)"); }
-  Any getProcedureColumns(String p0, String p1, String p2, String p3) { throw new AbstractMethodError("java.sql.DatabaseMetaData.getProcedureColumns(String,String,String,String)"); }
-  Any getSchemas(String p0, String p1) { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSchemas(String,String)"); }
-  Any getSchemas() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSchemas()"); }
-  Any getCatalogs() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getCatalogs()"); }
-  Any getTableTypes() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getTableTypes()"); }
-  Any getColumnPrivileges(String p0, String p1, String p2, String p3) { throw new AbstractMethodError("java.sql.DatabaseMetaData.getColumnPrivileges(String,String,String,String)"); }
-  Any getTablePrivileges(String p0, String p1, String p2) { throw new AbstractMethodError("java.sql.DatabaseMetaData.getTablePrivileges(String,String,String)"); }
-  Any getBestRowIdentifier(String p0, String p1, String p2, int p3, boolean p4) { throw new AbstractMethodError("java.sql.DatabaseMetaData.getBestRowIdentifier(String,String,String,int,boolean)"); }
-  Any getVersionColumns(String p0, String p1, String p2) { throw new AbstractMethodError("java.sql.DatabaseMetaData.getVersionColumns(String,String,String)"); }
-  Any getPrimaryKeys(String p0, String p1, String p2) { throw new AbstractMethodError("java.sql.DatabaseMetaData.getPrimaryKeys(String,String,String)"); }
-  Any getImportedKeys(String p0, String p1, String p2) { throw new AbstractMethodError("java.sql.DatabaseMetaData.getImportedKeys(String,String,String)"); }
-  Any getExportedKeys(String p0, String p1, String p2) { throw new AbstractMethodError("java.sql.DatabaseMetaData.getExportedKeys(String,String,String)"); }
-  Any getCrossReference(String p0, String p1, String p2, String p3, String p4, String p5) { throw new AbstractMethodError("java.sql.DatabaseMetaData.getCrossReference(String,String,String,String,String,String)"); }
-  Any getTypeInfo() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getTypeInfo()"); }
-  Any getIndexInfo(String p0, String p1, String p2, boolean p3, boolean p4) { throw new AbstractMethodError("java.sql.DatabaseMetaData.getIndexInfo(String,String,String,boolean,boolean)"); }
-  boolean supportsResultSetType(int p0) { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsResultSetType(int)"); }
-  boolean supportsResultSetConcurrency(int p0, int p1) { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsResultSetConcurrency(int,int)"); }
-  boolean ownUpdatesAreVisible(int p0) { throw new AbstractMethodError("java.sql.DatabaseMetaData.ownUpdatesAreVisible(int)"); }
-  boolean ownDeletesAreVisible(int p0) { throw new AbstractMethodError("java.sql.DatabaseMetaData.ownDeletesAreVisible(int)"); }
-  boolean ownInsertsAreVisible(int p0) { throw new AbstractMethodError("java.sql.DatabaseMetaData.ownInsertsAreVisible(int)"); }
-  boolean othersUpdatesAreVisible(int p0) { throw new AbstractMethodError("java.sql.DatabaseMetaData.othersUpdatesAreVisible(int)"); }
-  boolean othersDeletesAreVisible(int p0) { throw new AbstractMethodError("java.sql.DatabaseMetaData.othersDeletesAreVisible(int)"); }
-  boolean othersInsertsAreVisible(int p0) { throw new AbstractMethodError("java.sql.DatabaseMetaData.othersInsertsAreVisible(int)"); }
-  boolean updatesAreDetected(int p0) { throw new AbstractMethodError("java.sql.DatabaseMetaData.updatesAreDetected(int)"); }
-  boolean deletesAreDetected(int p0) { throw new AbstractMethodError("java.sql.DatabaseMetaData.deletesAreDetected(int)"); }
-  boolean insertsAreDetected(int p0) { throw new AbstractMethodError("java.sql.DatabaseMetaData.insertsAreDetected(int)"); }
-  boolean supportsBatchUpdates() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsBatchUpdates()"); }
-  Any getUDTs(String p0, String p1, String p2, int[] p3) { throw new AbstractMethodError("java.sql.DatabaseMetaData.getUDTs(String,String,String,int[])"); }
-  boolean supportsSavepoints() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSavepoints()"); }
-  boolean supportsNamedParameters() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsNamedParameters()"); }
-  boolean supportsGetGeneratedKeys() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsGetGeneratedKeys()"); }
-  Any getSuperTypes(String p0, String p1, String p2) { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSuperTypes(String,String,String)"); }
-  Any getSuperTables(String p0, String p1, String p2) { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSuperTables(String,String,String)"); }
-  boolean supportsResultSetHoldability(int p0) { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsResultSetHoldability(int)"); }
-  int getDatabaseMajorVersion() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDatabaseMajorVersion()"); }
-  int getDatabaseMinorVersion() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDatabaseMinorVersion()"); }
-  int getJDBCMajorVersion() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getJDBCMajorVersion()"); }
-  int getJDBCMinorVersion() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getJDBCMinorVersion()"); }
-  int getSQLStateType() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSQLStateType()"); }
-  boolean locatorsUpdateCopy() { throw new AbstractMethodError("java.sql.DatabaseMetaData.locatorsUpdateCopy()"); }
-  boolean supportsStatementPooling() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsStatementPooling()"); }
-  Any getRowIdLifetime() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getRowIdLifetime()"); }
-  boolean supportsStoredFunctionsUsingCallSyntax() { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsStoredFunctionsUsingCallSyntax()"); }
-  boolean autoCommitFailureClosesAllResultSets() { throw new AbstractMethodError("java.sql.DatabaseMetaData.autoCommitFailureClosesAllResultSets()"); }
-  Any getClientInfoProperties() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getClientInfoProperties()"); }
-  Any getFunctions(String p0, String p1, String p2) { throw new AbstractMethodError("java.sql.DatabaseMetaData.getFunctions(String,String,String)"); }
-  Any getFunctionColumns(String p0, String p1, String p2, String p3) { throw new AbstractMethodError("java.sql.DatabaseMetaData.getFunctionColumns(String,String,String,String)"); }
-  Any getPseudoColumns(String p0, String p1, String p2, String p3) { throw new AbstractMethodError("java.sql.DatabaseMetaData.getPseudoColumns(String,String,String,String)"); }
-  boolean generatedKeyAlwaysReturned() { throw new AbstractMethodError("java.sql.DatabaseMetaData.generatedKeyAlwaysReturned()"); }
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (generated by tools/jdk_api_signatures.py) ---- >
-  << Transcribed Java signatures awaiting their SLeeLa logic (static methods
-     are instance methods, as everywhere in lib/java). Each stub throws
+  << Exact Java signatures (from the JDK). A method body that is not yet
+     SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
-  long getMaxLogicalLobSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: long java.sql.DatabaseMetaData.getMaxLogicalLobSize()"); }
-  boolean supportsRefCursors() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: boolean java.sql.DatabaseMetaData.supportsRefCursors()"); }
-  boolean supportsSharding() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: boolean java.sql.DatabaseMetaData.supportsSharding()"); }
+  public abstract java.sql.ResultSet getAttributes(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String typeNamePattern, java.lang.String attributeNamePattern) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getAttributes(java.lang.String, java.lang.String, java.lang.String, java.lang.String)"); }
+  public abstract boolean isReadOnly() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.isReadOnly()"); }
+  public abstract java.lang.String getURL() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getURL()"); }
+  public abstract boolean storesLowerCaseQuotedIdentifiers() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.storesLowerCaseQuotedIdentifiers()"); }
+  public abstract java.sql.ResultSet getTables(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String tableNamePattern, java.lang.String[] types) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getTables(java.lang.String, java.lang.String, java.lang.String, java.lang.String[])"); }
+  public abstract java.lang.String getUserName() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getUserName()"); }
+  public abstract java.sql.ResultSet getColumns(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String tableNamePattern, java.lang.String columnNamePattern) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getColumns(java.lang.String, java.lang.String, java.lang.String, java.lang.String)"); }
+  public abstract java.sql.Connection getConnection() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getConnection()"); }
+  public abstract boolean supportsMultipleOpenResults() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsMultipleOpenResults()"); }
+  public abstract boolean storesUpperCaseQuotedIdentifiers() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.storesUpperCaseQuotedIdentifiers()"); }
+  public abstract int getResultSetHoldability() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getResultSetHoldability()"); }
+  public abstract boolean allProceduresAreCallable() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.allProceduresAreCallable()"); }
+  public abstract boolean allTablesAreSelectable() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.allTablesAreSelectable()"); }
+  public abstract boolean nullsAreSortedHigh() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.nullsAreSortedHigh()"); }
+  public abstract boolean nullsAreSortedLow() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.nullsAreSortedLow()"); }
+  public abstract boolean nullsAreSortedAtStart() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.nullsAreSortedAtStart()"); }
+  public abstract boolean nullsAreSortedAtEnd() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.nullsAreSortedAtEnd()"); }
+  public abstract java.lang.String getDatabaseProductName() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDatabaseProductName()"); }
+  public abstract java.lang.String getDatabaseProductVersion() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDatabaseProductVersion()"); }
+  public abstract java.lang.String getDriverName() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDriverName()"); }
+  public abstract java.lang.String getDriverVersion() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDriverVersion()"); }
+  public abstract int getDriverMajorVersion() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDriverMajorVersion()"); }
+  public abstract int getDriverMinorVersion() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDriverMinorVersion()"); }
+  public abstract boolean usesLocalFiles() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.usesLocalFiles()"); }
+  public abstract boolean usesLocalFilePerTable() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.usesLocalFilePerTable()"); }
+  public abstract boolean storesUpperCaseIdentifiers() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.storesUpperCaseIdentifiers()"); }
+  public abstract boolean storesLowerCaseIdentifiers() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.storesLowerCaseIdentifiers()"); }
+  public abstract boolean storesMixedCaseIdentifiers() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.storesMixedCaseIdentifiers()"); }
+  public abstract java.lang.String getIdentifierQuoteString() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getIdentifierQuoteString()"); }
+  public abstract java.lang.String getSQLKeywords() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSQLKeywords()"); }
+  public abstract java.lang.String getNumericFunctions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getNumericFunctions()"); }
+  public abstract java.lang.String getStringFunctions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getStringFunctions()"); }
+  public abstract java.lang.String getSystemFunctions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSystemFunctions()"); }
+  public abstract java.lang.String getTimeDateFunctions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getTimeDateFunctions()"); }
+  public abstract java.lang.String getSearchStringEscape() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSearchStringEscape()"); }
+  public abstract java.lang.String getExtraNameCharacters() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getExtraNameCharacters()"); }
+  public abstract boolean supportsAlterTableWithAddColumn() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsAlterTableWithAddColumn()"); }
+  public abstract boolean supportsAlterTableWithDropColumn() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsAlterTableWithDropColumn()"); }
+  public abstract boolean supportsColumnAliasing() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsColumnAliasing()"); }
+  public abstract boolean nullPlusNonNullIsNull() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.nullPlusNonNullIsNull()"); }
+  public abstract boolean supportsConvert(int fromType, int toType) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsConvert(int, int)"); }
+  public abstract boolean supportsConvert() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsConvert()"); }
+  public abstract boolean supportsTableCorrelationNames() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsTableCorrelationNames()"); }
+  public abstract boolean supportsDifferentTableCorrelationNames() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsDifferentTableCorrelationNames()"); }
+  public abstract boolean supportsExpressionsInOrderBy() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsExpressionsInOrderBy()"); }
+  public abstract boolean supportsOrderByUnrelated() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsOrderByUnrelated()"); }
+  public abstract boolean supportsGroupBy() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsGroupBy()"); }
+  public abstract boolean supportsGroupByUnrelated() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsGroupByUnrelated()"); }
+  public abstract boolean supportsGroupByBeyondSelect() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsGroupByBeyondSelect()"); }
+  public abstract boolean supportsLikeEscapeClause() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsLikeEscapeClause()"); }
+  public abstract boolean supportsMultipleResultSets() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsMultipleResultSets()"); }
+  public abstract boolean supportsMultipleTransactions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsMultipleTransactions()"); }
+  public abstract boolean supportsNonNullableColumns() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsNonNullableColumns()"); }
+  public abstract boolean supportsMinimumSQLGrammar() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsMinimumSQLGrammar()"); }
+  public abstract boolean supportsCoreSQLGrammar() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsCoreSQLGrammar()"); }
+  public abstract boolean supportsExtendedSQLGrammar() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsExtendedSQLGrammar()"); }
+  public abstract boolean supportsANSI92EntryLevelSQL() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsANSI92EntryLevelSQL()"); }
+  public abstract boolean supportsANSI92IntermediateSQL() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsANSI92IntermediateSQL()"); }
+  public abstract boolean supportsANSI92FullSQL() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsANSI92FullSQL()"); }
+  public abstract boolean supportsIntegrityEnhancementFacility() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsIntegrityEnhancementFacility()"); }
+  public abstract boolean supportsOuterJoins() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsOuterJoins()"); }
+  public abstract boolean supportsFullOuterJoins() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsFullOuterJoins()"); }
+  public abstract boolean supportsLimitedOuterJoins() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsLimitedOuterJoins()"); }
+  public abstract java.lang.String getSchemaTerm() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSchemaTerm()"); }
+  public abstract java.lang.String getProcedureTerm() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getProcedureTerm()"); }
+  public abstract java.lang.String getCatalogTerm() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getCatalogTerm()"); }
+  public abstract boolean isCatalogAtStart() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.isCatalogAtStart()"); }
+  public abstract java.lang.String getCatalogSeparator() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getCatalogSeparator()"); }
+  public abstract boolean supportsSchemasInDataManipulation() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSchemasInDataManipulation()"); }
+  public abstract boolean supportsSchemasInProcedureCalls() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSchemasInProcedureCalls()"); }
+  public abstract boolean supportsSchemasInTableDefinitions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSchemasInTableDefinitions()"); }
+  public abstract boolean supportsSchemasInIndexDefinitions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSchemasInIndexDefinitions()"); }
+  public abstract boolean supportsSchemasInPrivilegeDefinitions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSchemasInPrivilegeDefinitions()"); }
+  public abstract boolean supportsCatalogsInDataManipulation() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsCatalogsInDataManipulation()"); }
+  public abstract boolean supportsCatalogsInProcedureCalls() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsCatalogsInProcedureCalls()"); }
+  public abstract boolean supportsCatalogsInTableDefinitions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsCatalogsInTableDefinitions()"); }
+  public abstract boolean supportsCatalogsInIndexDefinitions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsCatalogsInIndexDefinitions()"); }
+  public abstract boolean supportsCatalogsInPrivilegeDefinitions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsCatalogsInPrivilegeDefinitions()"); }
+  public abstract boolean supportsPositionedDelete() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsPositionedDelete()"); }
+  public abstract boolean supportsPositionedUpdate() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsPositionedUpdate()"); }
+  public abstract boolean supportsSelectForUpdate() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSelectForUpdate()"); }
+  public abstract boolean supportsStoredProcedures() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsStoredProcedures()"); }
+  public abstract boolean supportsSubqueriesInComparisons() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSubqueriesInComparisons()"); }
+  public abstract boolean supportsSubqueriesInExists() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSubqueriesInExists()"); }
+  public abstract boolean supportsSubqueriesInIns() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSubqueriesInIns()"); }
+  public abstract boolean supportsSubqueriesInQuantifieds() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSubqueriesInQuantifieds()"); }
+  public abstract boolean supportsCorrelatedSubqueries() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsCorrelatedSubqueries()"); }
+  public abstract boolean supportsUnion() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsUnion()"); }
+  public abstract boolean supportsUnionAll() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsUnionAll()"); }
+  public abstract boolean supportsOpenCursorsAcrossCommit() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsOpenCursorsAcrossCommit()"); }
+  public abstract boolean supportsOpenCursorsAcrossRollback() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsOpenCursorsAcrossRollback()"); }
+  public abstract boolean supportsOpenStatementsAcrossCommit() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsOpenStatementsAcrossCommit()"); }
+  public abstract boolean supportsOpenStatementsAcrossRollback() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsOpenStatementsAcrossRollback()"); }
+  public abstract int getMaxBinaryLiteralLength() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxBinaryLiteralLength()"); }
+  public abstract int getMaxCharLiteralLength() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxCharLiteralLength()"); }
+  public abstract int getMaxColumnNameLength() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxColumnNameLength()"); }
+  public abstract int getMaxColumnsInGroupBy() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxColumnsInGroupBy()"); }
+  public abstract int getMaxColumnsInIndex() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxColumnsInIndex()"); }
+  public abstract int getMaxColumnsInOrderBy() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxColumnsInOrderBy()"); }
+  public abstract int getMaxColumnsInSelect() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxColumnsInSelect()"); }
+  public abstract int getMaxColumnsInTable() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxColumnsInTable()"); }
+  public abstract int getMaxConnections() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxConnections()"); }
+  public abstract int getMaxCursorNameLength() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxCursorNameLength()"); }
+  public abstract int getMaxIndexLength() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxIndexLength()"); }
+  public abstract int getMaxSchemaNameLength() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxSchemaNameLength()"); }
+  public abstract int getMaxProcedureNameLength() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxProcedureNameLength()"); }
+  public abstract int getMaxCatalogNameLength() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxCatalogNameLength()"); }
+  public abstract int getMaxRowSize() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxRowSize()"); }
+  public abstract boolean doesMaxRowSizeIncludeBlobs() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.doesMaxRowSizeIncludeBlobs()"); }
+  public abstract int getMaxStatementLength() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxStatementLength()"); }
+  public abstract int getMaxStatements() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxStatements()"); }
+  public abstract int getMaxTableNameLength() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxTableNameLength()"); }
+  public abstract int getMaxTablesInSelect() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxTablesInSelect()"); }
+  public abstract int getMaxUserNameLength() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxUserNameLength()"); }
+  public abstract int getDefaultTransactionIsolation() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDefaultTransactionIsolation()"); }
+  public abstract boolean supportsTransactions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsTransactions()"); }
+  public abstract boolean supportsTransactionIsolationLevel(int level) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsTransactionIsolationLevel(int)"); }
+  public abstract boolean supportsDataManipulationTransactionsOnly() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsDataManipulationTransactionsOnly()"); }
+  public abstract boolean dataDefinitionCausesTransactionCommit() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.dataDefinitionCausesTransactionCommit()"); }
+  public abstract boolean dataDefinitionIgnoredInTransactions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.dataDefinitionIgnoredInTransactions()"); }
+  public abstract java.sql.ResultSet getProcedures(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String procedureNamePattern) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getProcedures(java.lang.String, java.lang.String, java.lang.String)"); }
+  public abstract java.sql.ResultSet getProcedureColumns(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String procedureNamePattern, java.lang.String columnNamePattern) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getProcedureColumns(java.lang.String, java.lang.String, java.lang.String, java.lang.String)"); }
+  public abstract java.sql.ResultSet getSchemas(java.lang.String catalog, java.lang.String schemaPattern) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSchemas(java.lang.String, java.lang.String)"); }
+  public abstract java.sql.ResultSet getSchemas() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSchemas()"); }
+  public abstract java.sql.ResultSet getCatalogs() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getCatalogs()"); }
+  public abstract java.sql.ResultSet getTableTypes() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getTableTypes()"); }
+  public abstract java.sql.ResultSet getColumnPrivileges(java.lang.String catalog, java.lang.String schema, java.lang.String table, java.lang.String columnNamePattern) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getColumnPrivileges(java.lang.String, java.lang.String, java.lang.String, java.lang.String)"); }
+  public abstract java.sql.ResultSet getTablePrivileges(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String tableNamePattern) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getTablePrivileges(java.lang.String, java.lang.String, java.lang.String)"); }
+  public abstract java.sql.ResultSet getBestRowIdentifier(java.lang.String catalog, java.lang.String schema, java.lang.String table, int scope, boolean nullable) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getBestRowIdentifier(java.lang.String, java.lang.String, java.lang.String, int, boolean)"); }
+  public abstract java.sql.ResultSet getVersionColumns(java.lang.String catalog, java.lang.String schema, java.lang.String table) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getVersionColumns(java.lang.String, java.lang.String, java.lang.String)"); }
+  public abstract java.sql.ResultSet getPrimaryKeys(java.lang.String catalog, java.lang.String schema, java.lang.String table) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getPrimaryKeys(java.lang.String, java.lang.String, java.lang.String)"); }
+  public abstract java.sql.ResultSet getImportedKeys(java.lang.String catalog, java.lang.String schema, java.lang.String table) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getImportedKeys(java.lang.String, java.lang.String, java.lang.String)"); }
+  public abstract java.sql.ResultSet getExportedKeys(java.lang.String catalog, java.lang.String schema, java.lang.String table) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getExportedKeys(java.lang.String, java.lang.String, java.lang.String)"); }
+  public abstract java.sql.ResultSet getCrossReference(java.lang.String parentCatalog, java.lang.String parentSchema, java.lang.String parentTable, java.lang.String foreignCatalog, java.lang.String foreignSchema, java.lang.String foreignTable) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getCrossReference(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)"); }
+  public abstract java.sql.ResultSet getTypeInfo() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getTypeInfo()"); }
+  public abstract java.sql.ResultSet getIndexInfo(java.lang.String catalog, java.lang.String schema, java.lang.String table, boolean unique, boolean approximate) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getIndexInfo(java.lang.String, java.lang.String, java.lang.String, boolean, boolean)"); }
+  public abstract boolean supportsResultSetType(int type) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsResultSetType(int)"); }
+  public abstract boolean supportsResultSetConcurrency(int type, int concurrency) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsResultSetConcurrency(int, int)"); }
+  public abstract boolean ownUpdatesAreVisible(int type) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.ownUpdatesAreVisible(int)"); }
+  public abstract boolean ownDeletesAreVisible(int type) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.ownDeletesAreVisible(int)"); }
+  public abstract boolean ownInsertsAreVisible(int type) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.ownInsertsAreVisible(int)"); }
+  public abstract boolean othersUpdatesAreVisible(int type) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.othersUpdatesAreVisible(int)"); }
+  public abstract boolean othersDeletesAreVisible(int type) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.othersDeletesAreVisible(int)"); }
+  public abstract boolean othersInsertsAreVisible(int type) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.othersInsertsAreVisible(int)"); }
+  public abstract boolean updatesAreDetected(int type) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.updatesAreDetected(int)"); }
+  public abstract boolean deletesAreDetected(int type) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.deletesAreDetected(int)"); }
+  public abstract boolean insertsAreDetected(int type) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.insertsAreDetected(int)"); }
+  public abstract boolean supportsBatchUpdates() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsBatchUpdates()"); }
+  public abstract java.sql.ResultSet getUDTs(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String typeNamePattern, int[] types) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getUDTs(java.lang.String, java.lang.String, java.lang.String, int[])"); }
+  public abstract boolean supportsSavepoints() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSavepoints()"); }
+  public abstract boolean supportsNamedParameters() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsNamedParameters()"); }
+  public abstract boolean supportsGetGeneratedKeys() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsGetGeneratedKeys()"); }
+  public abstract java.sql.ResultSet getSuperTypes(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String typeNamePattern) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSuperTypes(java.lang.String, java.lang.String, java.lang.String)"); }
+  public abstract java.sql.ResultSet getSuperTables(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String tableNamePattern) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSuperTables(java.lang.String, java.lang.String, java.lang.String)"); }
+  public abstract boolean supportsResultSetHoldability(int holdability) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsResultSetHoldability(int)"); }
+  public abstract int getDatabaseMajorVersion() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDatabaseMajorVersion()"); }
+  public abstract int getDatabaseMinorVersion() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDatabaseMinorVersion()"); }
+  public abstract int getJDBCMajorVersion() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getJDBCMajorVersion()"); }
+  public abstract int getJDBCMinorVersion() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getJDBCMinorVersion()"); }
+  public abstract int getSQLStateType() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSQLStateType()"); }
+  public abstract boolean locatorsUpdateCopy() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.locatorsUpdateCopy()"); }
+  public abstract boolean supportsStatementPooling() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsStatementPooling()"); }
+  public abstract java.sql.RowIdLifetime getRowIdLifetime() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getRowIdLifetime()"); }
+  public abstract boolean supportsStoredFunctionsUsingCallSyntax() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsStoredFunctionsUsingCallSyntax()"); }
+  public abstract boolean autoCommitFailureClosesAllResultSets() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.autoCommitFailureClosesAllResultSets()"); }
+  public abstract java.sql.ResultSet getClientInfoProperties() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getClientInfoProperties()"); }
+  public abstract java.sql.ResultSet getFunctions(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String functionNamePattern) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getFunctions(java.lang.String, java.lang.String, java.lang.String)"); }
+  public abstract java.sql.ResultSet getFunctionColumns(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String functionNamePattern, java.lang.String columnNamePattern) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getFunctionColumns(java.lang.String, java.lang.String, java.lang.String, java.lang.String)"); }
+  public abstract java.sql.ResultSet getPseudoColumns(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String tableNamePattern, java.lang.String columnNamePattern) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getPseudoColumns(java.lang.String, java.lang.String, java.lang.String, java.lang.String)"); }
+  public abstract boolean generatedKeyAlwaysReturned() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.generatedKeyAlwaysReturned()"); }
+  public default long getMaxLogicalLobSize() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.DatabaseMetaData.getMaxLogicalLobSize()"); }
+  public default boolean supportsRefCursors() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.DatabaseMetaData.supportsRefCursors()"); }
+  public default boolean supportsSharding() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.DatabaseMetaData.supportsSharding()"); }
+  public abstract boolean storesMixedCaseQuotedIdentifiers() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.storesMixedCaseQuotedIdentifiers()"); }
+  public abstract boolean supportsMixedCaseQuotedIdentifiers() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsMixedCaseQuotedIdentifiers()"); }
+  public abstract boolean supportsMixedCaseIdentifiers() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsMixedCaseIdentifiers()"); }
+  public abstract boolean supportsDataDefinitionAndDataManipulationTransactions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsDataDefinitionAndDataManipulationTransactions()"); }
   < ---- END java signatures ---- >
 }

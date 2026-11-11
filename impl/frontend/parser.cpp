@@ -47,7 +47,16 @@ JavaTypeKind Parser::tokenTypeKind(Tok k) const {
 }
 std::string Parser::parseQualifiedName(){
     std::string n=expect(Tok::Ident,"qualified name").text;
-    while(accept(Tok::Dot)) n+="."+expect(Tok::Ident,"identifier after '.'").text;
+    // Stop before "..." (varargs) so java.lang.Object... parses as a type.
+    while(check(Tok::Dot) && !(peek(1).kind==Tok::Dot)){
+        ++i_;
+        // A segment of a qualified name may spell a SLeeLa keyword
+        // (java.lang.String, javax.print.Doc): accept any word token here.
+        const Token& seg=cur();
+        bool word=!seg.text.empty() && (std::isalpha(static_cast<unsigned char>(seg.text[0]))||seg.text[0]=='_');
+        if(seg.kind!=Tok::Ident && word){ n+="."+seg.text; ++i_; continue; }
+        n+="."+expect(Tok::Ident,"identifier after '.'").text;
+    }
     return n;
 }
 // Nested-class name mangling (syntax 1.11). The source spells a nested class
@@ -71,17 +80,65 @@ std::vector<std::string> Parser::parseTypeList(Tok terminator){
 std::vector<std::string> Parser::parseTypeParameters(){
     std::vector<std::string> out; if(!accept(Tok::Lt)) return out;
     do { std::string p=expect(Tok::Ident,"type parameter name").text;
-        if(accept(Tok::KwExtends)){ p += " extends "; p += parseGenericType(); while(accept(Tok::AndAnd)) p += " & " + parseGenericType(); }
+        if(accept(Tok::KwExtends)){ p += " extends "; p += parseGenericType(); while(accept(Tok::AndAnd)||accept(Tok::BitAnd)) p += " & " + parseGenericType(); }
         out.push_back(p);
-    } while(accept(Tok::Comma)); expect(Tok::Gt,"'>'"); return out;
+    } while(accept(Tok::Comma));
+    splitAngleClosers();
+    expect(Tok::Gt,"'>'");
+    return out;
 }
 std::string Parser::parseGenericType(){
     std::string t=parseQualifiedName();
     if(accept(Tok::Lt)){ t += "<"; do {
-        if(accept(Tok::Question)){ t += "?"; if(accept(Tok::KwExtends)) t += " extends " + parseGenericType(); else if(accept(Tok::KwSuper)) t += " super " + parseGenericType(); }
-        else t += parseGenericType();
-    } while(accept(Tok::Comma)); expect(Tok::Gt,"'>'"); t += ">"; }
+        if(accept(Tok::Question)){ t += "?"; if(accept(Tok::KwExtends)) t += " extends " + parseTypeArgument(); else if(accept(Tok::KwSuper)) t += " super " + parseTypeArgument(); }
+        else t += parseTypeArgument();
+    } while(accept(Tok::Comma));
+    // A nested type-argument list may close with '>>' or '>>>' (Java lexes them
+    // as shift operators); consume one '>' and leave the rest for the caller.
+    splitAngleClosers();
+    expect(Tok::Gt,"'>'"); t += ">"; }
     return t;
+}
+// Java lexes '>>' / '>>>' as shift operators; in a type-argument list they
+// close nested lists. Split the token into single '>' tokens (permanently, so
+// a lookahead rewind re-reads the same tokens).
+void Parser::splitAngleClosers(){
+    int n = check(Tok::ShiftRight) ? 2 : (check(Tok::UnsignedShiftRight) ? 3 : 0);
+    if(n==0) return;
+    Token gt=toks_[i_]; gt.kind=Tok::Gt; gt.text=">";
+    toks_[i_]=gt;
+    for(int k=1;k<n;++k) toks_.insert(toks_.begin()+static_cast<std::ptrdiff_t>(i_)+k, gt);
+}
+// One type argument: a reference type (possibly generic), a keyword type
+// (String, int, ...), each optionally followed by array brackets.
+std::string Parser::parseTypeArgument(){
+    std::string t;
+    if(check(Tok::Ident)) t=parseGenericType();
+    else if(isTypeStart()){ t=cur().text; ++i_; }
+    else t=parseGenericType();
+    while(check(Tok::LBracket) && peek(1).kind==Tok::RBracket){ i_+=2; t+="[]"; }
+    return t;
+}
+// Varargs (T... name) is the Java spelling of an array parameter.
+bool Parser::acceptEllipsis(){
+    if(check(Tok::Dot) && peek(1).kind==Tok::Dot && peek(2).kind==Tok::Dot){ i_+=3; return true; }
+    return false;
+}
+// Java signature types are erased to the VM types SLeeLa supports, while the
+// source keeps the Java spelling: a declared type variable (E, T, K ...) and
+// any package-qualified reference type (java.util.List<E>) erase to Any,
+// java.lang.String to String. Array suffixes are preserved.
+std::string Parser::javaErase(const std::string& source){
+    std::string base=source; std::string dims;
+    while(base.size()>=2 && base.compare(base.size()-2,2,"[]")==0){ dims+="[]"; base.resize(base.size()-2); }
+    std::string raw=base.substr(0,base.find('<'));
+    for(auto it=typeVars_.rbegin(); it!=typeVars_.rend(); ++it)
+        for(const auto& v:*it) if(v==raw) return "Any"+dims;
+    if(raw.find('.')!=std::string::npos && !raw.empty() && raw[0]>='a' && raw[0]<='z'){
+        if(raw=="java.lang.String") return "String"+dims;
+        return "Any"+dims;
+    }
+    return source;
 }
 void Parser::parseThrows(std::vector<std::string>& out){
     if(!accept(Tok::KwThrows)) return;
@@ -515,6 +572,7 @@ ClassDecl Parser::parseClass(unsigned classModifiers,std::vector<annotation::Ann
     Tok kind=cur().kind; ClassDecl c; c.java.kind=tokenTypeKind(kind); c.java.modifiers=classModifiers; c.java.annotations=std::move(annotations);
     if(kind!=Tok::KwClass&&kind!=Tok::KwInterface&&kind!=Tok::KwEnum&&kind!=Tok::KwRecord) error("expected Java type declaration");
     i_++; if(check(Tok::KwStringT)){ c.name=cur().text; ++i_; } else c.name=expect(Tok::Ident,"type name").text; c.java.qualifiedName=c.name; c.java.typeParameters=parseTypeParameters();
+    { std::vector<std::string> vars; for(const auto& tp:c.java.typeParameters) vars.push_back(tp.substr(0,tp.find(' '))); typeVars_.push_back(vars); }
     if(accept(Tok::KwExtends)) c.java.superclass=parseQualifiedName();
     if(accept(Tok::KwImplements)) c.java.interfaces=parseTypeList(Tok::LBrace);
     expect(Tok::LBrace,"'{'");
@@ -537,11 +595,17 @@ ClassDecl Parser::parseClass(unsigned classModifiers,std::vector<annotation::Ann
             hoistedNested_.push_back(std::move(nested));
             continue;
         }
+        if(check(Tok::Lt)){
+            // Generic method (Java): <T> T[] toArray(T[] a)
+            bool stat=(mods&JavaStatic)!=0, prot=(mods&JavaProtected)!=0;
+            c.methods.push_back(parseMethod(stat,prot,mods,std::move(annotations)));
+            continue;
+        }
         if(!isTypeStart() && !(check(Tok::Ident)&&peek(1).kind==Tok::LParen)) error("expected a type/member declaration");
         if(check(Tok::Ident)&&peek(1).kind==Tok::LParen&&cur().text==c.name){
             Method m; m.isStatic=false; m.isProtected=(mods&JavaProtected)!=0; m.java.modifiers=mods; m.java.constructor=true; m.java.annotations=std::move(annotations);
             m.retType=c.name; m.name=expect(Tok::Ident,"constructor name").text; expect(Tok::LParen,"'('");
-            if(!check(Tok::RParen)){do{Param p; p.annotations=parseAnnotations(annotation::UseSite::Parameter); p.type=parseType(&p.typeAnnotations); p.name=expect(Tok::Ident,"parameter name").text; m.params.push_back(std::move(p));}while(accept(Tok::Comma));}
+            if(!check(Tok::RParen)){do{Param p; p.annotations=parseAnnotations(annotation::UseSite::Parameter); p.type=parseType(&p.typeAnnotations); if(acceptEllipsis()) p.type+="[]"; p.name=expect(Tok::Ident,"parameter name").text; m.params.push_back(std::move(p));}while(accept(Tok::Comma));}
             expect(Tok::RParen,"')'"); parseThrows(m.java.thrownTypes); m.body=parseBlock(); c.methods.push_back(std::move(m)); continue;
         }
         if(!isTypeStart()) error("expected a field or method type");
@@ -551,7 +615,7 @@ ClassDecl Parser::parseClass(unsigned classModifiers,std::vector<annotation::Ann
         if(after==Tok::LParen)c.methods.push_back(parseMethod(stat,prot,mods,std::move(annotations)));
         else c.fields.push_back(parseField(stat,prot,mods,std::move(annotations)));
     }
-    expect(Tok::RBrace,"'}'"); return c;
+    expect(Tok::RBrace,"'}'"); typeVars_.pop_back(); return c;
 }
 Field Parser::parseField(bool isStatic,bool isProtected,unsigned modifiers,std::vector<annotation::Annotation> annotations){Field f;f.isStatic=isStatic;f.isProtected=isProtected;f.java.modifiers=modifiers;f.annotations=std::move(annotations);f.type=parseType(&f.typeAnnotations);f.name=expect(Tok::Ident,"field name").text;if(accept(Tok::Assign))f.init=parseExpr();expect(Tok::Semicolon,"';'");return f;}
 // A type is one of the scalar keywords, or an identifier naming a declared struct.
@@ -560,16 +624,18 @@ std::string Parser::parseType(std::vector<annotation::Annotation>* typeAnnotatio
     if(typeAnnotations){auto a=parseTypeAnnotations(); typeAnnotations->insert(typeAnnotations->end(),a.begin(),a.end());}
     if(!isTypeStart()) error("expected a type");
     std::string t;
-    if(check(Tok::Ident)) t=mangleTypeName(parseGenericType()); else { t=cur().text; i_++; }
+    if(check(Tok::Ident)){ std::string g=parseGenericType(); std::string e=javaErase(g); t = (e==g) ? mangleTypeName(g) : e; } else { t=cur().text; i_++; }
     while(accept(Tok::LBracket)){ if(typeAnnotations){auto a=parseTypeAnnotations(); typeAnnotations->insert(typeAnnotations->end(),a.begin(),a.end());} expect(Tok::RBracket,"']'");t+="[]"; }
     return t;
 }
 Method Parser::parseMethod(bool isStatic,bool isProtected,unsigned modifiers,std::vector<annotation::Annotation> annotations){
     Method m;m.isStatic=isStatic;m.isProtected=isProtected;m.java.modifiers=modifiers;m.java.annotations=std::move(annotations);
-    m.java.typeParameters=parseTypeParameters();m.retType=parseType(&m.java.typeAnnotations);m.name=expect(Tok::Ident,"method name").text;expect(Tok::LParen,"'('");
-    if(!check(Tok::RParen)){do{Param p;p.annotations=parseAnnotations(annotation::UseSite::Parameter);p.type=parseType(&p.typeAnnotations);p.name=expect(Tok::Ident,"parameter name").text;m.params.push_back(std::move(p));}while(accept(Tok::Comma));}
+    m.java.typeParameters=parseTypeParameters();
+    { std::vector<std::string> vars; for(const auto& tp:m.java.typeParameters) vars.push_back(tp.substr(0,tp.find(' '))); typeVars_.push_back(vars); }
+    m.retType=parseType(&m.java.typeAnnotations);m.name=expect(Tok::Ident,"method name").text;expect(Tok::LParen,"'('");
+    if(!check(Tok::RParen)){do{Param p;p.annotations=parseAnnotations(annotation::UseSite::Parameter);p.type=parseType(&p.typeAnnotations);if(acceptEllipsis())p.type+="[]";p.name=expect(Tok::Ident,"parameter name").text;m.params.push_back(std::move(p));}while(accept(Tok::Comma));}
     expect(Tok::RParen,"')'");parseThrows(m.java.thrownTypes);
-    m.body=parseBlock();return m;
+    m.body=parseBlock();typeVars_.pop_back();return m;
 }
 // Parse one "simple statement" without its trailing ';': a local variable
 // declaration (`Type name [= expr]`), an assignment to a variable or struct

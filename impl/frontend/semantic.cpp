@@ -51,6 +51,10 @@ static Type typeOf(const std::string& n){
  // 64-bit (true 128-bit arithmetic is a documented follow-up).
  if(n=="long"||n=="int64"||n=="int128"){return{Kind::Int,{},{}};}
  if(n=="double"){return{Kind::Double,{},{}};}
+ // Java primitives without a distinct VM slot (syntax 3.0 Java signature
+ // surface): char, byte and short ride the integer slot, float the double slot.
+ if(n=="char"||n=="byte"||n=="short"){return{Kind::Int,{},{}};}
+ if(n=="float"){return{Kind::Double,{},{}};}
  if(n=="bool"||n=="boolean"){return{Kind::Bool,{},{}};}
  if(n=="string"||n=="String"){return{Kind::String,{},{}};}
   if(n=="Any"){return{Kind::Any,"Any",{}};}
@@ -62,6 +66,7 @@ static std::string nameOf(const Type&t){
 static bool same(const Type&a,const Type&b){return a.kind==b.kind&&((a.kind!=Kind::Struct&&a.kind!=Kind::Array&&a.kind!=Kind::Unsigned)||a.name==b.name);}
 static bool numeric(const Type&t){return t.kind==Kind::Int||t.kind==Kind::Double||t.kind==Kind::Unsigned;}
 static bool assignable(const Type&to,const Type&from){
+ if(to.kind==Kind::Struct&&to.name=="Object") return true;
  return to.kind==Kind::Unknown||from.kind==Kind::Unknown||to.kind==Kind::Any||(to.kind==Kind::Double&&from.kind==Kind::Int)||(from.kind==Kind::Null&&(to.kind==Kind::Any||to.kind==Kind::Struct||to.kind==Kind::String||to.kind==Kind::Array))||same(to,from);
 }
 static bool builtin(const std::string&n){
@@ -114,6 +119,7 @@ class Analyzer{
    if(syntax<SyntaxVersion{2,2} || t.empty() || t.back()!='>') return false;
    return known(t.substr(0,generic));
   }
+  if(t=="char"||t=="byte"||t=="short"||t=="float") return true;
   return t=="void"||t=="int"||t=="long"||t=="int64"||t=="int128"||unsignedTypeName(t)||signedWideTypeName(t)||t=="double"||t=="bool"||t=="boolean"||t=="string"||t=="String"||t=="Any"||structs.count(t)||classNames.count(t);
  }
  Type tn(const std::string&t)const{return known(t)?typeOf(t):Type{Kind::Error,t};}
@@ -420,7 +426,15 @@ class Analyzer{
   if(auto m=dynamic_cast<const MemberAccess*>(&e))return m->field=="next"&&isNextChain(*m->base);
   return false;
  }
- Type member(const Expr&e,const std::string&f){Type b=expr(e);if(b.kind==Kind::Unknown)return b;if(b.kind!=Kind::Struct){err("member '"+f+"' requires a struct value, got "+nameOf(b));return{Kind::Error,{}};}auto s=fields.find(b.name);if(s==fields.end()){err("unknown struct '"+b.name+"'");return{Kind::Error,{}};}auto x=s->second.find(f);if(x==s->second.end()){err("struct '"+b.name+"' has no field '"+f+"'");return{Kind::Error,{}};}return x->second;}
+ Type member(const Expr&e,const std::string&f){
+  if(auto rv=dynamic_cast<const VarExpr*>(&e)){
+   if(classNames.count(rv->name) && lookup(rv->name).kind==Kind::Error){
+    auto g=globals.find(rv->name+"::"+f);
+    if(g!=globals.end()) return g->second;
+    err("class '"+rv->name+"' has no static field '"+f+"'");return{Kind::Error,{}};
+   }
+  }
+  Type b=expr(e);if(b.kind==Kind::Unknown)return b;if(b.kind!=Kind::Struct){err("member '"+f+"' requires a struct value, got "+nameOf(b));return{Kind::Error,{}};}auto s=fields.find(b.name);if(s==fields.end()){err("unknown struct '"+b.name+"'");return{Kind::Error,{}};}auto x=s->second.find(f);if(x==s->second.end()){err("struct '"+b.name+"' has no field '"+f+"'");return{Kind::Error,{}};}return x->second;}
  Type expr(const Expr&e){
   if(dynamic_cast<const IntLit*>(&e)){return{Kind::Int,{}};}
   if(dynamic_cast<const DoubleLit*>(&e)){return{Kind::Double,{}};}
@@ -611,6 +625,20 @@ class Analyzer{
  }
  Type fluent(const MethodCall&m){
   if(m.method=="start"){if(auto r=dynamic_cast<const VarExpr*>(m.receiver.get())){if(r->name=="Munction"){if(m.args.size()!=1)err("Munction.start(name) takes one argument");else{Type t=expr(*m.args[0]);if(t.kind!=Kind::String&&t.kind!=Kind::Unknown)err("Munction.start name must be string");}return{Kind::Unknown,{}};}}}
+  // Static access through the class name (Java): Class.method(args), when the
+  // receiver names a class and is not a variable in scope.
+  if(auto rv=dynamic_cast<const VarExpr*>(m.receiver.get())){
+   if(classNames.count(rv->name) && lookup(rv->name).kind==Kind::Error){
+    auto st=methods.find(rv->name+"::"+m.method);
+    if(st==methods.end()){err("class '"+rv->name+"' has no method '"+m.method+"'");return{Kind::Error,{}};}
+    const Method& target=*st->second.m;
+    if(!target.isStatic){err("instance method '"+rv->name+"::"+m.method+"' must be called on an instance");return{Kind::Error,{}};}
+    if(m.args.size()!=target.params.size())err("method '"+m.method+"' expects "+std::to_string(target.params.size())+" argument(s), got "+std::to_string(m.args.size()));
+    for(size_t i=0;i<m.args.size()&&i<target.params.size();++i){Type g=expr(*m.args[i]),w=tn(target.params[i].type);if(!assignable(w,g))err("argument to '"+m.method+"' has type "+nameOf(g)+", expected "+nameOf(w));}
+    if(target.isProtected&&st->second.owner!=cls)err("protected method access denied for '"+m.method+"'");
+    return tn(target.retType);
+   }
+  }
   Type rcv=expr(*m.receiver);
   static const std::set<std::string> v={"connect","enable","send","thatch","consume","latch","closeWithReceipt","close","reception"};
   if(v.count(m.method)){if(m.method=="consume"||m.method=="latch"||m.method=="close"||m.method=="reception"||m.method=="closeWithReceipt"){if(!m.args.empty())err("Munction "+m.method+"() takes no arguments");}else{if(m.args.size()!=1)err("Munction "+m.method+"() takes exactly one argument");if(!m.args.empty()){Type t=expr(*m.args[0]);if(t.kind!=Kind::String&&t.kind!=Kind::Unknown)err("Munction "+m.method+" argument must be string");}}return m.method=="closeWithReceipt"?Type{Kind::String,{}}:rcv;}

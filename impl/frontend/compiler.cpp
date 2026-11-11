@@ -203,7 +203,7 @@ public:
         }
         for(const auto& cls:prog_.classes) for(const auto& f:cls.fields) if(f.isStatic){
             const std::string key=cls.name+"::"+f.name;
-            fieldGlobal_[key]=slvm_declare_global(vm_,key.c_str()); fieldProtected_[key]=f.isProtected; fieldOwner_[key]=cls.name; fields_.push_back(&f);
+            fieldGlobal_[key]=slvm_declare_global(vm_,key.c_str()); staticFieldType_[key]=f.type; fieldProtected_[key]=f.isProtected; fieldOwner_[key]=cls.name; fields_.push_back(&f);
             if(structLayout_.count(f.type)) varType_[key]=f.type;
         }
         for(const auto& cls:prog_.classes) for(const auto& m:cls.methods){
@@ -261,7 +261,7 @@ private:
     struct StructLayout { std::string name; int typeIndex=-1; std::map<std::string,int> fieldOffset; std::vector<std::string> fieldType; };
     const Program& prog_; SLVM* vm_; const catalog::Catalog* cat_; SyntaxVersion syntax_;
     std::map<std::string,int> funcIndex_; std::map<std::string,std::string> methodOwner_; std::map<const Method*,std::string> methodKeyByPtr_; std::set<std::string> protectedMethods_; std::vector<MethodInfo> methods_;
-    std::map<std::string,int> fieldGlobal_; std::map<std::string,bool> fieldProtected_; std::map<std::string,std::string> fieldOwner_; std::vector<const Field*> fields_; MethodCtx* ctx_=nullptr;
+    std::map<std::string,int> fieldGlobal_; std::map<std::string,std::string> staticFieldType_; std::map<std::string,bool> fieldProtected_; std::map<std::string,std::string> fieldOwner_; std::vector<const Field*> fields_; MethodCtx* ctx_=nullptr;
     std::string currentClass_;
     std::map<std::string,StructLayout> structLayout_;
     // Track the declared type of each in-scope local/global so member access
@@ -289,7 +289,8 @@ private:
         if(name=="int128") return -(SL_INT128+1);
         // The arbitrary-width U<width> family rides the 64-bit slot.
         if(name=="int" || name=="long" || name=="int64" || UnsignedInteger::isValidTypeName(name)) return -(SL_INT+1);
-        if(name=="double") return -(SL_DOUBLE+1);
+        if(name=="double" || name=="float") return -(SL_DOUBLE+1);
+        if(name=="char" || name=="byte" || name=="short") return -(SL_INT+1);
         if(name=="bool" || name=="boolean") return -(SL_BOOL+1);
         if(name=="String" || name=="string") return -(SL_STR+1);
         if(name.size()>=2 && name.compare(name.size()-2,2,"[]")==0) return -(SL_ARRAY+1);
@@ -311,7 +312,7 @@ private:
         const bool wide128 = declType=="int128"
             || (SignedWideInteger::isValidTypeName(declType) && !SignedWideInteger::fitsNativeNarrow(declType))
             || (UnsignedWideInteger::isValidTypeName(declType) && !UnsignedWideInteger::fitsNativeNarrow(declType));
-        if(declType=="double"||wide128)
+        if(declType=="double"||declType=="float"||wide128)
             emit(OP_CHECKCAST,runtimeTypeOperand(declType));
     }
     // Emit call arguments, widening each integer argument to a declared double
@@ -624,6 +625,12 @@ private:
             throw std::runtime_error("Semantic error: assignment to undeclared variable '"+v->name+"'");
         }
         if(auto m=dynamic_cast<const MemberAccess*>(a.target.get())){
+            { std::string sc; if(isStaticClassRef(m->base.get(),sc)){ auto g=fieldGlobal_.find(sc+"::"+m->field);
+                if(g!=fieldGlobal_.end()){
+                    if(!bin.empty()){emit(OP_LOADG,g->second);emitExpr(a.value.get());emitBinOp(bin);}
+                    else emitExpr(a.value.get());
+                    emit(OP_STOREG,g->second);emit(OP_LOADG,g->second);return;
+                } } }
             int off=-1;const StructLayout& ml=memberLayout(m->base.get(),m->field,off);
             std::string ft=(off>=0&&off<(int)ml.fieldType.size())?ml.fieldType[(size_t)off]:"";
             // SETFIELD expects [struct, newval] and leaves newval on the stack.
@@ -684,7 +691,9 @@ private:
             return "";
         }
         if(dynamic_cast<const ThisExpr*>(e))return currentClass_;
-        if(auto m=dynamic_cast<const MemberAccess*>(e)){std::string bt=exprStructType(m->base.get());if(bt.empty())return "";auto lit=structLayout_.find(bt);if(lit==structLayout_.end())return "";int idx=-1;auto oit=lit->second.fieldOffset.find(m->field);if(oit!=lit->second.fieldOffset.end())idx=oit->second;if(idx<0)return "";return lit->second.fieldType[idx];}
+        if(auto m=dynamic_cast<const MemberAccess*>(e)){
+            { std::string sc; if(isStaticClassRef(m->base.get(),sc)){ auto ft=staticFieldType_.find(sc+"::"+m->field); if(ft!=staticFieldType_.end()) return structLayout_.count(ft->second)?ft->second:std::string(); } }
+            std::string bt=exprStructType(m->base.get());if(bt.empty())return "";auto lit=structLayout_.find(bt);if(lit==structLayout_.end())return "";int idx=-1;auto oit=lit->second.fieldOffset.find(m->field);if(oit!=lit->second.fieldOffset.end())idx=oit->second;if(idx<0)return "";return lit->second.fieldType[idx];}
         if(auto ca=dynamic_cast<const CastExpr*>(e))return ca->typeName;
         if(auto n=dynamic_cast<const NewExpr*>(e))return n->typeName;
         // A Guide chain evaluates to its constructed head instance, so its
@@ -697,7 +706,9 @@ private:
         // method's return type when it names a known struct/class. Empty when
         // the return type is scalar or the method cannot be resolved.
         if(auto mc=dynamic_cast<const MethodCall*>(e)){
-            std::string rt=exprStructType(mc->receiver.get());
+            std::string rt;
+            { std::string sc; if(isStaticClassRef(mc->receiver.get(),sc)) rt=sc; }
+            if(rt.empty()) rt=exprStructType(mc->receiver.get());
             if(rt.empty()) return "";
             auto fi=funcIndex_.find(rt+"::"+mc->method);
             if(fi==funcIndex_.end()) return "";
@@ -790,6 +801,19 @@ private:
             emit(OP_POP);                 // [instance]            -- discard the Guide's return
         }
     }
+    // Static access through a class name (Java Class.member): the name is not
+    // a local, an instance field or a static of the current class, and the
+    // class declares the member.
+    bool isStaticClassRef(const Expr* e, std::string& cls) const {
+        auto v=dynamic_cast<const VarExpr*>(e);
+        if(!v) return false;
+        if(ctx_ && ctx_->slotOf(v->name)>=0) return false;
+        if(instanceFieldOffset(v->name)>=0) return false;
+        if(fieldGlobal_.count(currentClass_+"::"+v->name)) return false;
+        if(!structLayout_.count(v->name)) return false;
+        cls=v->name;
+        return true;
+    }
     void emitMember(const MemberAccess& m){
         // Back-propagate the terminal degree requirement to the origin.
         // next.next is the Degree-2 proposal. When that proposal is itself
@@ -812,6 +836,8 @@ private:
                 }
             }
         }
+        { std::string sc; if(isStaticClassRef(m.base.get(),sc)){ auto g=fieldGlobal_.find(sc+"::"+m.field);
+            if(g!=fieldGlobal_.end()){ emit(OP_LOADG,g->second); return; } } }
         int off=-1;memberLayout(m.base.get(),m.field,off);emitExpr(m.base.get());emit(OP_GETFIELD,off);
     }
     // Lower a fluent `.method(args)` call. Munction reach verbs consume the
@@ -846,6 +872,13 @@ private:
             if(m=="reception"){noArg("reception");emit(OP_MUN_RECEPTION);return;}
             /* close / closeWithReceipt */ noArg(m.c_str());emit(OP_MUN_CLOSE);return;
         }
+        { std::string sc; if(isStaticClassRef(mc.receiver.get(),sc)){
+            auto st=funcIndex_.find(sc+"::"+m);
+            if(st!=funcIndex_.end() && methods_[st->second].method->isStatic){
+                const Method* sm=methods_[st->second].method;
+                if((int)mc.args.size()!=(int)sm->params.size())throw std::runtime_error("Semantic error: method '"+sc+"::"+m+"' expects "+std::to_string(sm->params.size())+" argument(s), got "+std::to_string(mc.args.size()));
+                emitArgsCoerced(mc.args,sm);emit(OP_CALL,st->second);return;
+            } } }
         const std::string receiverType=exprStructType(mc.receiver.get());
         auto target=funcIndex_.find(receiverType+"::"+m);
         if(target==funcIndex_.end())throw std::runtime_error("Semantic error: class '"+(receiverType.empty()?std::string("<unknown>"):receiverType)+"' has no method '"+m+"'");

@@ -60,46 +60,51 @@ class GSSContext {
   < constants and static fields (values reflected from the JDK) >
   static final int DEFAULT_LIFETIME = 0;
   static final int INDEFINITE_LIFETIME = 2147483647;
-  < abstract methods: implemented by a concrete subtype; a direct call throws AbstractMethodError as on the JVM >
-  void wrap(Any p0, Any p1, Any p2) { throw new AbstractMethodError("org.ietf.jgss.GSSContext.wrap(InputStream,OutputStream,MessageProp)"); }
-  int[] wrap(int[] p0, int p1, int p2, Any p3) { throw new AbstractMethodError("org.ietf.jgss.GSSContext.wrap(byte[],int,int,MessageProp)"); }
-  void unwrap(Any p0, Any p1, Any p2) { throw new AbstractMethodError("org.ietf.jgss.GSSContext.unwrap(InputStream,OutputStream,MessageProp)"); }
-  int[] unwrap(int[] p0, int p1, int p2, Any p3) { throw new AbstractMethodError("org.ietf.jgss.GSSContext.unwrap(byte[],int,int,MessageProp)"); }
-  int[] export() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.export()"); }
-  void dispose() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.dispose()"); }
-  int[] initSecContext(int[] p0, int p1, int p2) { throw new AbstractMethodError("org.ietf.jgss.GSSContext.initSecContext(byte[],int,int)"); }
-  int initSecContext(Any p0, Any p1) { throw new AbstractMethodError("org.ietf.jgss.GSSContext.initSecContext(InputStream,OutputStream)"); }
-  int[] acceptSecContext(int[] p0, int p1, int p2) { throw new AbstractMethodError("org.ietf.jgss.GSSContext.acceptSecContext(byte[],int,int)"); }
-  void acceptSecContext(Any p0, Any p1) { throw new AbstractMethodError("org.ietf.jgss.GSSContext.acceptSecContext(InputStream,OutputStream)"); }
-  boolean isEstablished() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.isEstablished()"); }
-  int getWrapSizeLimit(int p0, boolean p1, int p2) { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getWrapSizeLimit(int,boolean,int)"); }
-  void getMIC(Any p0, Any p1, Any p2) { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getMIC(InputStream,OutputStream,MessageProp)"); }
-  int[] getMIC(int[] p0, int p1, int p2, Any p3) { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getMIC(byte[],int,int,MessageProp)"); }
-  void verifyMIC(Any p0, Any p1, Any p2) { throw new AbstractMethodError("org.ietf.jgss.GSSContext.verifyMIC(InputStream,InputStream,MessageProp)"); }
-  void verifyMIC(int[] p0, int p1, int p2, int[] p3, int p4, int p5, Any p6) { throw new AbstractMethodError("org.ietf.jgss.GSSContext.verifyMIC(byte[],int,int,byte[],int,int,MessageProp)"); }
-  void requestMutualAuth(boolean p0) { throw new AbstractMethodError("org.ietf.jgss.GSSContext.requestMutualAuth(boolean)"); }
-  void requestReplayDet(boolean p0) { throw new AbstractMethodError("org.ietf.jgss.GSSContext.requestReplayDet(boolean)"); }
-  void requestSequenceDet(boolean p0) { throw new AbstractMethodError("org.ietf.jgss.GSSContext.requestSequenceDet(boolean)"); }
-  void requestCredDeleg(boolean p0) { throw new AbstractMethodError("org.ietf.jgss.GSSContext.requestCredDeleg(boolean)"); }
-  void requestAnonymity(boolean p0) { throw new AbstractMethodError("org.ietf.jgss.GSSContext.requestAnonymity(boolean)"); }
-  void requestConf(boolean p0) { throw new AbstractMethodError("org.ietf.jgss.GSSContext.requestConf(boolean)"); }
-  void requestInteg(boolean p0) { throw new AbstractMethodError("org.ietf.jgss.GSSContext.requestInteg(boolean)"); }
-  void requestLifetime(int p0) { throw new AbstractMethodError("org.ietf.jgss.GSSContext.requestLifetime(int)"); }
-  void setChannelBinding(Any p0) { throw new AbstractMethodError("org.ietf.jgss.GSSContext.setChannelBinding(ChannelBinding)"); }
-  boolean getCredDelegState() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getCredDelegState()"); }
-  boolean getMutualAuthState() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getMutualAuthState()"); }
-  boolean getReplayDetState() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getReplayDetState()"); }
-  boolean getSequenceDetState() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getSequenceDetState()"); }
-  boolean getAnonymityState() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getAnonymityState()"); }
-  boolean isTransferable() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.isTransferable()"); }
-  boolean isProtReady() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.isProtReady()"); }
-  boolean getConfState() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getConfState()"); }
-  boolean getIntegState() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getIntegState()"); }
-  int getLifetime() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getLifetime()"); }
-  Any getSrcName() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getSrcName()"); }
-  Any getTargName() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getTargName()"); }
-  Any getMech() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getMech()"); }
-  Any getDelegCred() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getDelegCred()"); }
-  boolean isInitiator() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.isInitiator()"); }
   < ---- END java declarations ---- >
+
+  < ---- BEGIN java signatures (generated by tools/jdk_api_signatures.py) ---- >
+  << Exact Java signatures (from the JDK). A method body that is not yet
+     SLeeLa logic throws: AbstractMethodError for an abstract method, else
+     UnsupportedOperationException naming the Java signature. >>
+  public abstract void wrap(java.io.InputStream inStream, java.io.OutputStream outStream, org.ietf.jgss.MessageProp msgProp) throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.wrap(java.io.InputStream, java.io.OutputStream, org.ietf.jgss.MessageProp)"); }
+  public abstract byte[] wrap(byte[] inBuf, int offset, int len, org.ietf.jgss.MessageProp msgProp) throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.wrap(byte[], int, int, org.ietf.jgss.MessageProp)"); }
+  public abstract void unwrap(java.io.InputStream inStream, java.io.OutputStream outStream, org.ietf.jgss.MessageProp msgProp) throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.unwrap(java.io.InputStream, java.io.OutputStream, org.ietf.jgss.MessageProp)"); }
+  public abstract byte[] unwrap(byte[] inBuf, int offset, int len, org.ietf.jgss.MessageProp msgProp) throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.unwrap(byte[], int, int, org.ietf.jgss.MessageProp)"); }
+  public abstract byte[] export() throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.export()"); }
+  public abstract void dispose() throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.dispose()"); }
+  public abstract byte[] initSecContext(byte[] inputBuf, int offset, int len) throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.initSecContext(byte[], int, int)"); }
+  public abstract int initSecContext(java.io.InputStream inStream, java.io.OutputStream outStream) throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.initSecContext(java.io.InputStream, java.io.OutputStream)"); }
+  public abstract byte[] acceptSecContext(byte[] inToken, int offset, int len) throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.acceptSecContext(byte[], int, int)"); }
+  public abstract void acceptSecContext(java.io.InputStream inStream, java.io.OutputStream outStream) throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.acceptSecContext(java.io.InputStream, java.io.OutputStream)"); }
+  public abstract boolean isEstablished() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.isEstablished()"); }
+  public abstract int getWrapSizeLimit(int qop, boolean confReq, int maxTokenSize) throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getWrapSizeLimit(int, boolean, int)"); }
+  public abstract void getMIC(java.io.InputStream inStream, java.io.OutputStream outStream, org.ietf.jgss.MessageProp msgProp) throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getMIC(java.io.InputStream, java.io.OutputStream, org.ietf.jgss.MessageProp)"); }
+  public abstract byte[] getMIC(byte[] inMsg, int offset, int len, org.ietf.jgss.MessageProp msgProp) throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getMIC(byte[], int, int, org.ietf.jgss.MessageProp)"); }
+  public abstract void verifyMIC(java.io.InputStream tokStream, java.io.InputStream msgStream, org.ietf.jgss.MessageProp msgProp) throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.verifyMIC(java.io.InputStream, java.io.InputStream, org.ietf.jgss.MessageProp)"); }
+  public abstract void verifyMIC(byte[] inToken, int tokOffset, int tokLen, byte[] inMsg, int msgOffset, int msgLen, org.ietf.jgss.MessageProp msgProp) throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.verifyMIC(byte[], int, int, byte[], int, int, org.ietf.jgss.MessageProp)"); }
+  public abstract void requestMutualAuth(boolean state) throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.requestMutualAuth(boolean)"); }
+  public abstract void requestReplayDet(boolean state) throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.requestReplayDet(boolean)"); }
+  public abstract void requestSequenceDet(boolean state) throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.requestSequenceDet(boolean)"); }
+  public abstract void requestCredDeleg(boolean state) throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.requestCredDeleg(boolean)"); }
+  public abstract void requestAnonymity(boolean state) throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.requestAnonymity(boolean)"); }
+  public abstract void requestConf(boolean state) throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.requestConf(boolean)"); }
+  public abstract void requestInteg(boolean state) throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.requestInteg(boolean)"); }
+  public abstract void requestLifetime(int lifetime) throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.requestLifetime(int)"); }
+  public abstract void setChannelBinding(org.ietf.jgss.ChannelBinding cb) throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.setChannelBinding(org.ietf.jgss.ChannelBinding)"); }
+  public abstract boolean getCredDelegState() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getCredDelegState()"); }
+  public abstract boolean getMutualAuthState() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getMutualAuthState()"); }
+  public abstract boolean getReplayDetState() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getReplayDetState()"); }
+  public abstract boolean getSequenceDetState() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getSequenceDetState()"); }
+  public abstract boolean getAnonymityState() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getAnonymityState()"); }
+  public abstract boolean isTransferable() throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.isTransferable()"); }
+  public abstract boolean isProtReady() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.isProtReady()"); }
+  public abstract boolean getConfState() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getConfState()"); }
+  public abstract boolean getIntegState() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getIntegState()"); }
+  public abstract int getLifetime() { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getLifetime()"); }
+  public abstract org.ietf.jgss.GSSName getSrcName() throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getSrcName()"); }
+  public abstract org.ietf.jgss.GSSName getTargName() throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getTargName()"); }
+  public abstract org.ietf.jgss.Oid getMech() throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getMech()"); }
+  public abstract org.ietf.jgss.GSSCredential getDelegCred() throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.getDelegCred()"); }
+  public abstract boolean isInitiator() throws org.ietf.jgss.GSSException { throw new AbstractMethodError("org.ietf.jgss.GSSContext.isInitiator()"); }
+  < ---- END java signatures ---- >
 }

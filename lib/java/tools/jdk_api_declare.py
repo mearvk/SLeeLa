@@ -15,10 +15,8 @@ by the API itself, with no behavior to invent:
     type, with their real values read from the JDK;
   * fields -- the remaining public/protected fields (declared with their Java
     names; instance fields start at the SLeeLa default);
-  * abstract methods -- every abstract method of an interface, abstract class
-    or annotation type, declared with its Java name and SLeeLa-mapped
-    signature. Calling one throws java.lang.AbstractMethodError, which is
-    what the JVM does for an abstract method without an implementation;
+  (abstract methods are written, with their exact Java signatures, by
+    jdk_api_signatures.py);
   * enum types -- complete: one static final instance per constant (identity
     preserved), name, ordinal, toString, values, valueOf (with the Java
     IllegalArgumentException / NullPointerException), compareTo, equals,
@@ -256,27 +254,8 @@ def declarations(t, cls: str, existing_fields: set, existing_methods: set, insta
         out += enum_members(t, cls, taken)
     elif kind == "record" and not has_impl:
         out += record_members(t, cls, taken)
-    if not has_impl:
-        stubs = []
-        # Overloads that erase to the same SLeeLa signature are declared once.
-        seen_sigs = set()
-        for m in t["methods"]:
-            name, ret, params, is_static, is_abstract = m[0], m[1], m[2], m[3], m[4]
-            if name == "<init>" or not is_abstract or not usable(name, cls) or name in existing_fields:
-                continue
-            if name in taken and name not in {s[0] for s in stubs}:
-                continue
-            key = (name, tuple(sl_type(p) for p in params))
-            if key in seen_sigs:
-                continue
-            seen_sigs.add(key)
-            ps = ", ".join(f"{sl_type(p)} p{i}" for i, p in enumerate(params))
-            sig = f"{fq}.{name}(" + ",".join(p.rsplit(".", 1)[-1] for p in params) + ")"
-            stubs.append((name, f'  {sl_type(ret)} {name}({ps}) {{ throw new AbstractMethodError("{sig}"); }}'))
-            taken.add(name)
-        if stubs:
-            out.append("  < abstract methods: implemented by a concrete subtype; a direct call throws AbstractMethodError as on the JVM >")
-            out += [s[1] for s in stubs]
+    # Abstract methods are written with their exact Java signatures by
+    # jdk_api_signatures.py (java signatures block).
     return out
 
 
@@ -285,8 +264,9 @@ def enum_members(t, cls, taken):
     consts = [c for c in t.get("constants", [])]
     lines = ["  << Complete enum: one static final instance per constant (so identity",
              "     and == hold for values / valueOf / the constants), with the",
-             "     java.lang.Enum behavior. Obtain the type handle as",
-             f"     new {cls}(null, -1) and call values() / valueOf(name) on it. >>"]
+             "     java.lang.Enum behavior. values() and valueOf(name) are static, as",
+             f"     in Java: {cls}.valueOf(...), {cls}.values(), and the constants are",
+             f"     static final fields. >>"]
     for i, c in enumerate(consts):
         if usable(c, cls) and c not in taken:
             lines.append(f'  static final {cls} {c} = new {cls}("{c}", {i});')
@@ -300,14 +280,14 @@ def enum_members(t, cls, taken):
         f"  int compareTo({cls} o) {{ return this.enumOrdinal - o.enumOrdinal; }}",
         "  boolean equals(Any other) { return this == other; }",
         "  int hashCode() { return this.enumOrdinal * 31 + 17; }",
-        f"  {cls}[] values() {{",
+        f"  public static {cls}[] values() {{",
         f"    {cls}[] v = new {cls}[{len(consts)}];",
     ]
     for i, c in enumerate(consts):
         if usable(c, cls) and c not in taken:
             lines.append(f"    v[{i}] = {c};")
     lines += ["    return v;", "  }",
-              f"  {cls} valueOf(String name) {{",
+              f"  public static {cls} valueOf(String name) {{",
               '    if (name == null) { throw new NullPointerException("Name is null"); }']
     for c in consts:
         if usable(c, cls) and c not in taken:
@@ -349,7 +329,7 @@ def process(t, check: bool, stats):
         created = True
     else:
         src = path.read_text(encoding="utf-8", errors="replace")
-    mo = re.search(r"^class (\w+)(?: extends \w+)? \{$", src, re.M)
+    mo = re.search(r"^class (\w+)(<[^{}]*>)?(?: extends \w+)? \{$", src, re.M)
     if not mo:
         stats["skipped"] += 1
         return False
