@@ -81,6 +81,7 @@ class StreamSource {
   public java.io.InputStream getInputStream() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.stream.StreamSource.getInputStream()"); }
   public void setInputStream(java.io.InputStream inputStream) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.stream.StreamSource.setInputStream(java.io.InputStream)"); }
   public java.io.Reader getReader() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.stream.StreamSource.getReader()"); }
+  public void setSystemId(java.io.File f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.stream.StreamSource.setSystemId(java.io.File)"); }
   public void setPublicId(java.lang.String publicId) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.stream.StreamSource.setPublicId(java.lang.String)"); }
   public java.lang.String getPublicId() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.stream.StreamSource.getPublicId()"); }
   public void setReader(java.io.Reader reader) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.stream.StreamSource.setReader(java.io.Reader)"); }

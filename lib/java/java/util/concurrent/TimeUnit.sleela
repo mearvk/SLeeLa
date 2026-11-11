@@ -146,6 +146,7 @@ class TimeUnit {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public long convert(java.time.Duration duration) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.TimeUnit.convert(java.time.Duration)"); }
   public static java.util.concurrent.TimeUnit of(java.time.temporal.ChronoUnit chronoUnit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.TimeUnit.of(java.time.temporal.ChronoUnit)"); }
   public void timedWait(java.lang.Object obj, long timeout) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.TimeUnit.timedWait(java.lang.Object, long)"); }
   public void timedJoin(java.lang.Thread thread, long timeout) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.TimeUnit.timedJoin(java.lang.Thread, long)"); }

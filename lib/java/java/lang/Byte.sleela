@@ -253,6 +253,11 @@ class Byte extends Number {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public static java.lang.String toString(byte b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.toString(byte)"); }
+  public static int hashCode(byte value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.hashCode(byte)"); }
+  public static java.lang.Byte valueOf(java.lang.String s) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.valueOf(java.lang.String)"); }
+  public static java.lang.Byte valueOf(java.lang.String s, int radix) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.valueOf(java.lang.String, int)"); }
   public java.util.Optional<java.lang.constant.DynamicConstantDesc<java.lang.Byte>> describeConstable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.describeConstable()"); }
+  public static byte parseByte(java.lang.String s, int radix) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.parseByte(java.lang.String, int)"); }
   < ---- END java signatures ---- >
 }

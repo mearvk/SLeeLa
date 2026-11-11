@@ -148,6 +148,8 @@ class Thread {
   @JavaProtected
   java.lang.Object clone() throws java.lang.CloneNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.clone()"); }
   public static native java.lang.Thread currentThread() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.currentThread()"); }
+  public final boolean join(java.time.Duration duration) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.join(java.time.Duration)"); }
+  public final void join(long millis, int nanos) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.join(long, int)"); }
   public void setContextClassLoader(java.lang.ClassLoader cl) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.setContextClassLoader(java.lang.ClassLoader)"); }
   public static native boolean holdsLock(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.holdsLock(java.lang.Object)"); }
   public void start() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.start()"); }
@@ -157,6 +159,8 @@ class Thread {
   public static int activeCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.activeCount()"); }
   public static int enumerate(java.lang.Thread[] tarray) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.enumerate(java.lang.Thread[])"); }
   public java.lang.Thread.UncaughtExceptionHandler getUncaughtExceptionHandler() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.getUncaughtExceptionHandler()"); }
+  public static void sleep(long millis, int nanos) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.sleep(long, int)"); }
+  public static void sleep(java.time.Duration duration) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.sleep(java.time.Duration)"); }
   public static java.lang.Thread.Builder.OfPlatform ofPlatform() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.ofPlatform()"); }
   public static java.lang.Thread.Builder.OfVirtual ofVirtual() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.ofVirtual()"); }
   public static java.lang.Thread startVirtualThread(java.lang.Runnable task) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.startVirtualThread(java.lang.Runnable)"); }

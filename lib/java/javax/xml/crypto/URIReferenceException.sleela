@@ -70,6 +70,7 @@ class URIReferenceException extends Exception {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public void printStackTrace(java.io.PrintStream s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.URIReferenceException.printStackTrace(java.io.PrintStream)"); }
   public javax.xml.crypto.URIReference getURIReference() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.URIReferenceException.getURIReference()"); }
   < ---- END java signatures ---- >
 

@@ -134,7 +134,10 @@ class Objects {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public static java.lang.String toString(java.lang.Object o, java.lang.String nullDefault) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Objects.toString(java.lang.Object, java.lang.String)"); }
   public static <T> int compare(T a, T b, java.util.Comparator<? super T> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Objects.compare(T, T, java.util.Comparator<? super T>)"); }
+  public static <T> T requireNonNull(T obj, java.util.function.Supplier<java.lang.String> messageSupplier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Objects.requireNonNull(T, java.util.function.Supplier<java.lang.String>)"); }
+  public static <T> T requireNonNull(T obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Objects.requireNonNull(T)"); }
   public static <T> T requireNonNullElseGet(T obj, java.util.function.Supplier<? extends T> supplier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Objects.requireNonNullElseGet(T, java.util.function.Supplier<? extends T>)"); }
   < ---- END java signatures ---- >
 }

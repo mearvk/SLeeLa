@@ -59,6 +59,10 @@ class ThreadLocalRandom {
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
   public static java.util.concurrent.ThreadLocalRandom current() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadLocalRandom.current()"); }
+  public double nextDouble(double origin, double bound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadLocalRandom.nextDouble(double, double)"); }
+  public double nextDouble(double bound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadLocalRandom.nextDouble(double)"); }
+  public int nextInt(int bound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadLocalRandom.nextInt(int)"); }
+  public int nextInt(int origin, int bound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadLocalRandom.nextInt(int, int)"); }
   public java.util.stream.LongStream longs() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadLocalRandom.longs()"); }
   public java.util.stream.LongStream longs(long streamSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadLocalRandom.longs(long)"); }
   public java.util.stream.LongStream longs(long randomNumberOrigin, long randomNumberBound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadLocalRandom.longs(long, long)"); }
@@ -71,5 +75,9 @@ class ThreadLocalRandom {
   public java.util.stream.DoubleStream doubles() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadLocalRandom.doubles()"); }
   public java.util.stream.DoubleStream doubles(double randomNumberOrigin, double randomNumberBound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadLocalRandom.doubles(double, double)"); }
   public java.util.stream.DoubleStream doubles(long streamSize, double randomNumberOrigin, double randomNumberBound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadLocalRandom.doubles(long, double, double)"); }
+  public long nextLong(long origin, long bound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadLocalRandom.nextLong(long, long)"); }
+  public long nextLong(long bound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadLocalRandom.nextLong(long)"); }
+  public float nextFloat(float origin, float bound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadLocalRandom.nextFloat(float, float)"); }
+  public float nextFloat(float bound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadLocalRandom.nextFloat(float)"); }
   < ---- END java signatures ---- >
 }

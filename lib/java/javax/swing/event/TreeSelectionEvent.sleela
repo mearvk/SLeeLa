@@ -80,6 +80,8 @@ class TreeSelectionEvent {
      UnsupportedOperationException naming the Java signature. >>
   public javax.swing.tree.TreePath getPath() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.TreeSelectionEvent.getPath()"); }
   public javax.swing.tree.TreePath[] getPaths() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.TreeSelectionEvent.getPaths()"); }
+  public boolean isAddedPath(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.TreeSelectionEvent.isAddedPath(int)"); }
+  public boolean isAddedPath(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.TreeSelectionEvent.isAddedPath(javax.swing.tree.TreePath)"); }
   public javax.swing.tree.TreePath getOldLeadSelectionPath() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.TreeSelectionEvent.getOldLeadSelectionPath()"); }
   public javax.swing.tree.TreePath getNewLeadSelectionPath() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.TreeSelectionEvent.getNewLeadSelectionPath()"); }
   public java.lang.Object cloneWithSource(java.lang.Object newSource) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.TreeSelectionEvent.cloneWithSource(java.lang.Object)"); }

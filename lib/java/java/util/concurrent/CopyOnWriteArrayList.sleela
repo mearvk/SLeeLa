@@ -421,9 +421,15 @@ class CopyOnWriteArrayList<E> {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public boolean remove(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CopyOnWriteArrayList.remove(java.lang.Object)"); }
   public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CopyOnWriteArrayList.clone()"); }
+  public int indexOf(E e, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CopyOnWriteArrayList.indexOf(E, int)"); }
+  public int lastIndexOf(E e, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CopyOnWriteArrayList.lastIndexOf(E, int)"); }
   public void replaceAll(java.util.function.UnaryOperator<E> operator) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CopyOnWriteArrayList.replaceAll(java.util.function.UnaryOperator<E>)"); }
+  public void add(int index, E element) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CopyOnWriteArrayList.add(int, E)"); }
+  public <T> T[] toArray(T[] a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CopyOnWriteArrayList.toArray(T[])"); }
   public java.util.Spliterator<E> spliterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CopyOnWriteArrayList.spliterator()"); }
+  public boolean addAll(int index, java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CopyOnWriteArrayList.addAll(int, java.util.Collection<? extends E>)"); }
   public void forEach(java.util.function.Consumer<? super E> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CopyOnWriteArrayList.forEach(java.util.function.Consumer<? super E>)"); }
   public boolean removeIf(java.util.function.Predicate<? super E> filter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CopyOnWriteArrayList.removeIf(java.util.function.Predicate<? super E>)"); }
   public java.util.ListIterator<E> listIterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CopyOnWriteArrayList.listIterator()"); }

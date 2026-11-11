@@ -320,6 +320,11 @@ class ByteBuffer {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public java.nio.ByteBuffer get(int index, byte[] dst) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.get(int, byte[])"); }
+  public java.nio.ByteBuffer get(int index, byte[] dst, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.get(int, byte[], int, int)"); }
+  public java.nio.ByteBuffer put(int index, java.nio.ByteBuffer src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.put(int, java.nio.ByteBuffer, int, int)"); }
+  public java.nio.ByteBuffer put(int index, byte[] src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.put(int, byte[])"); }
+  public java.nio.ByteBuffer put(int index, byte[] src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.put(int, byte[], int, int)"); }
   public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.hashCode()"); }
   public abstract short getShort() { throw new AbstractMethodError("java.nio.ByteBuffer.getShort()"); }
   public abstract short getShort(int index) { throw new AbstractMethodError("java.nio.ByteBuffer.getShort(int)"); }
@@ -345,6 +350,7 @@ class ByteBuffer {
   public abstract double getDouble() { throw new AbstractMethodError("java.nio.ByteBuffer.getDouble()"); }
   public abstract java.nio.ByteBuffer putDouble(int index, double value) { throw new AbstractMethodError("java.nio.ByteBuffer.putDouble(int, double)"); }
   public abstract java.nio.ByteBuffer putDouble(double value) { throw new AbstractMethodError("java.nio.ByteBuffer.putDouble(double)"); }
+  public abstract java.nio.ByteBuffer slice(int index, int length) { throw new AbstractMethodError("java.nio.ByteBuffer.slice(int, int)"); }
   public final int alignmentOffset(int index, int unitSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.alignmentOffset(int, int)"); }
   public static java.nio.ByteBuffer allocateDirect(int capacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.allocateDirect(int)"); }
   public final java.nio.ByteBuffer order(java.nio.ByteOrder bo) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.order(java.nio.ByteOrder)"); }

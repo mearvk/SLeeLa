@@ -81,5 +81,6 @@ class AccessibilityListenerList {
   public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AccessibilityListenerList.toString()"); }
   public synchronized void add(java.lang.Class<? extends java.util.EventListener> t, java.util.EventListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AccessibilityListenerList.add(java.lang.Class<? extends java.util.EventListener>, java.util.EventListener)"); }
   public java.lang.Object[] getListenerList() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AccessibilityListenerList.getListenerList()"); }
+  public int getListenerCount(java.lang.Class<? extends java.util.EventListener> t) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AccessibilityListenerList.getListenerCount(java.lang.Class<? extends java.util.EventListener>)"); }
   < ---- END java signatures ---- >
 }

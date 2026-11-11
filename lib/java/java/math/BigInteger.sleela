@@ -834,6 +834,7 @@ class BigInteger extends Number {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public java.lang.String toString(int radix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigInteger.toString(int)"); }
   public static java.math.BigInteger probablePrime(int bitLength, java.util.Random rnd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigInteger.probablePrime(int, java.util.Random)"); }
   public java.math.BigInteger parallelMultiply(java.math.BigInteger val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigInteger.parallelMultiply(java.math.BigInteger)"); }
   < ---- END java signatures ---- >

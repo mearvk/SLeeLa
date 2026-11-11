@@ -76,6 +76,7 @@ class NamingException extends Exception {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public java.lang.String toString(boolean detail) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.NamingException.toString(boolean)"); }
   public java.lang.Throwable getRootCause() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.NamingException.getRootCause()"); }
   public void setRootCause(java.lang.Throwable e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.NamingException.setRootCause(java.lang.Throwable)"); }
   public javax.naming.Name getResolvedName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.NamingException.getResolvedName()"); }

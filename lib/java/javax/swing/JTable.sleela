@@ -164,6 +164,7 @@ class JTable {
   boolean processKeyBinding(javax.swing.KeyStroke ks, java.awt.event.KeyEvent e, int condition, boolean pressed) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTable.processKeyBinding(javax.swing.KeyStroke, java.awt.event.KeyEvent, int, boolean)"); }
   public java.lang.String getToolTipText(java.awt.event.MouseEvent event) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTable.getToolTipText(java.awt.event.MouseEvent)"); }
   public void valueChanged(javax.swing.event.ListSelectionEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTable.valueChanged(javax.swing.event.ListSelectionEvent)"); }
+  public int getRowHeight(int row) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTable.getRowHeight(int)"); }
   public void setRowHeight(int rowHeight) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTable.setRowHeight(int)"); }
   public void setRowHeight(int row, int rowHeight) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTable.setRowHeight(int, int)"); }
   public void setCellEditor(javax.swing.table.TableCellEditor anEditor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTable.setCellEditor(javax.swing.table.TableCellEditor)"); }

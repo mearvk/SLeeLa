@@ -65,7 +65,9 @@ class SecureRandom {
   public static java.security.SecureRandom getInstance(java.lang.String algorithm, java.lang.String provider) throws java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.getInstance(java.lang.String, java.lang.String)"); }
   public static java.security.SecureRandom getInstance(java.lang.String algorithm) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.getInstance(java.lang.String)"); }
   public java.security.SecureRandomParameters getParameters() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.getParameters()"); }
+  public void nextBytes(byte[] bytes, java.security.SecureRandomParameters params) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.nextBytes(byte[], java.security.SecureRandomParameters)"); }
   public final java.security.Provider getProvider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.getProvider()"); }
+  public void setSeed(byte[] seed) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.setSeed(byte[])"); }
   public static byte[] getSeed(int numBytes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.getSeed(int)"); }
   public java.lang.String getAlgorithm() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.getAlgorithm()"); }
   public byte[] generateSeed(int numBytes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.generateSeed(int)"); }

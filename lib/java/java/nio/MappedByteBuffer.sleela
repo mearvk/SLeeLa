@@ -59,6 +59,7 @@ class MappedByteBuffer {
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
   public final java.nio.MappedByteBuffer load() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.MappedByteBuffer.load()"); }
+  public abstract java.nio.MappedByteBuffer slice(int index, int length) { throw new AbstractMethodError("java.nio.MappedByteBuffer.slice(int, int)"); }
   public final boolean isLoaded() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.MappedByteBuffer.isLoaded()"); }
   public final java.nio.MappedByteBuffer force() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.MappedByteBuffer.force()"); }
   public final java.nio.MappedByteBuffer force(int index, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.MappedByteBuffer.force(int, int)"); }

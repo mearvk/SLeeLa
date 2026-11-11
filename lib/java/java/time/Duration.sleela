@@ -432,7 +432,12 @@ class Duration {
   public long get(java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Duration.get(java.time.temporal.TemporalUnit)"); }
   public static java.time.Duration of(long amount, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Duration.of(long, java.time.temporal.TemporalUnit)"); }
   public static java.time.Duration from(java.time.temporal.TemporalAmount amount) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Duration.from(java.time.temporal.TemporalAmount)"); }
+  public static java.time.Duration parse(java.lang.CharSequence text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Duration.parse(java.lang.CharSequence)"); }
+  public java.time.Duration minus(long amountToSubtract, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Duration.minus(long, java.time.temporal.TemporalUnit)"); }
+  public java.time.Duration plus(long amountToAdd, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Duration.plus(long, java.time.temporal.TemporalUnit)"); }
   public java.util.List<java.time.temporal.TemporalUnit> getUnits() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Duration.getUnits()"); }
+  public static java.time.Duration ofSeconds(long seconds, long nanoAdjustment) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Duration.ofSeconds(long, long)"); }
+  public long dividedBy(java.time.Duration divisor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Duration.dividedBy(java.time.Duration)"); }
   public java.time.temporal.Temporal addTo(java.time.temporal.Temporal temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Duration.addTo(java.time.temporal.Temporal)"); }
   public java.time.temporal.Temporal subtractFrom(java.time.temporal.Temporal temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Duration.subtractFrom(java.time.temporal.Temporal)"); }
   public java.time.Duration truncatedTo(java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Duration.truncatedTo(java.time.temporal.TemporalUnit)"); }

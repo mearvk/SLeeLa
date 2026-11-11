@@ -79,6 +79,7 @@ class StreamResult {
   public void setWriter(java.io.Writer writer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.stream.StreamResult.setWriter(java.io.Writer)"); }
   public java.io.OutputStream getOutputStream() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.stream.StreamResult.getOutputStream()"); }
   public java.io.Writer getWriter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.stream.StreamResult.getWriter()"); }
+  public void setSystemId(java.io.File f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.stream.StreamResult.setSystemId(java.io.File)"); }
   public void setOutputStream(java.io.OutputStream outputStream) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.stream.StreamResult.setOutputStream(java.io.OutputStream)"); }
   < ---- END java signatures ---- >
 

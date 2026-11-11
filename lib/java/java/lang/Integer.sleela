@@ -351,10 +351,20 @@ class Integer extends Number {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public static java.lang.String toString(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Integer.toString(int)"); }
+  public static java.lang.String toString(int i, int radix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Integer.toString(int, int)"); }
+  public static int hashCode(int value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Integer.hashCode(int)"); }
   public static int expand(int i, int mask) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Integer.expand(int, int)"); }
   public static int compress(int i, int mask) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Integer.compress(int, int)"); }
+  public static java.lang.Integer valueOf(java.lang.String s) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Integer.valueOf(java.lang.String)"); }
+  public static java.lang.Integer valueOf(java.lang.String s, int radix) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Integer.valueOf(java.lang.String, int)"); }
   public java.lang.Integer resolveConstantDesc(java.lang.invoke.MethodHandles.Lookup lookup) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Integer.resolveConstantDesc(java.lang.invoke.MethodHandles.Lookup)"); }
   public java.util.Optional<java.lang.Integer> describeConstable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Integer.describeConstable()"); }
+  public static int parseInt(java.lang.CharSequence s, int beginIndex, int endIndex, int radix) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Integer.parseInt(java.lang.CharSequence, int, int, int)"); }
+  public static int parseInt(java.lang.String s, int radix) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Integer.parseInt(java.lang.String, int)"); }
+  public static java.lang.String toUnsignedString(int i, int radix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Integer.toUnsignedString(int, int)"); }
+  public static int parseUnsignedInt(java.lang.String s, int radix) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Integer.parseUnsignedInt(java.lang.String, int)"); }
+  public static int parseUnsignedInt(java.lang.CharSequence s, int beginIndex, int endIndex, int radix) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Integer.parseUnsignedInt(java.lang.CharSequence, int, int, int)"); }
   public static java.lang.Integer getInteger(java.lang.String nm, java.lang.Integer val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Integer.getInteger(java.lang.String, java.lang.Integer)"); }
   public static java.lang.Integer getInteger(java.lang.String nm) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Integer.getInteger(java.lang.String)"); }
   public static java.lang.Integer getInteger(java.lang.String nm, int val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Integer.getInteger(java.lang.String, int)"); }

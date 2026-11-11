@@ -96,6 +96,7 @@ class OptionalDouble {
      UnsupportedOperationException naming the Java signature. >>
   public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalDouble.hashCode()"); }
   public java.util.stream.DoubleStream stream() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalDouble.stream()"); }
+  public <X extends java.lang.Throwable> double orElseThrow(java.util.function.Supplier<? extends X> exceptionSupplier) throws X { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalDouble.orElseThrow(java.util.function.Supplier<? extends X>)"); }
   public void ifPresent(java.util.function.DoubleConsumer action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalDouble.ifPresent(java.util.function.DoubleConsumer)"); }
   public void ifPresentOrElse(java.util.function.DoubleConsumer action, java.lang.Runnable emptyAction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalDouble.ifPresentOrElse(java.util.function.DoubleConsumer, java.lang.Runnable)"); }
   public double orElseGet(java.util.function.DoubleSupplier supplier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalDouble.orElseGet(java.util.function.DoubleSupplier)"); }

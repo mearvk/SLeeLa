@@ -289,6 +289,7 @@ class File {
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
   public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.hashCode()"); }
+  public java.lang.String[] list(java.io.FilenameFilter filter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.list(java.io.FilenameFilter)"); }
   public boolean setReadOnly() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.setReadOnly()"); }
   public java.net.URI toURI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.toURI()"); }
   public java.net.URL toURL() throws java.net.MalformedURLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.toURL()"); }
@@ -307,6 +308,7 @@ class File {
   public boolean canWrite() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.canWrite()"); }
   public long lastModified() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.lastModified()"); }
   public void deleteOnExit() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.deleteOnExit()"); }
+  public java.io.File[] listFiles(java.io.FileFilter filter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.listFiles(java.io.FileFilter)"); }
   public boolean setLastModified(long time) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.setLastModified(long)"); }
   public boolean canExecute() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.canExecute()"); }
   public long getTotalSpace() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.File.getTotalSpace()"); }

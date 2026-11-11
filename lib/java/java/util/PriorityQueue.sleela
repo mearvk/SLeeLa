@@ -275,6 +275,7 @@ class PriorityQueue<E> extends AbstractQueue {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public <T> T[] toArray(T[] a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.PriorityQueue.toArray(T[])"); }
   public final java.util.Spliterator<E> spliterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.PriorityQueue.spliterator()"); }
   public void forEach(java.util.function.Consumer<? super E> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.PriorityQueue.forEach(java.util.function.Consumer<? super E>)"); }
   public boolean removeIf(java.util.function.Predicate<? super E> filter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.PriorityQueue.removeIf(java.util.function.Predicate<? super E>)"); }

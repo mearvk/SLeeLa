@@ -58,6 +58,7 @@ class UIDefaults {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public java.lang.Object get(java.lang.Object key, java.util.Locale l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.get(java.lang.Object, java.util.Locale)"); }
   public boolean getBoolean(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getBoolean(java.lang.Object)"); }
   public boolean getBoolean(java.lang.Object key, java.util.Locale l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getBoolean(java.lang.Object, java.util.Locale)"); }
   public int getInt(java.lang.Object key, java.util.Locale l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getInt(java.lang.Object, java.util.Locale)"); }

@@ -87,5 +87,6 @@ class GaugeMonitor {
   public javax.management.MBeanNotificationInfo[] getNotificationInfo() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.monitor.GaugeMonitor.getNotificationInfo()"); }
   public synchronized java.lang.Number getDerivedGauge() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.monitor.GaugeMonitor.getDerivedGauge()"); }
   public synchronized java.lang.Number getDerivedGauge(javax.management.ObjectName object) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.monitor.GaugeMonitor.getDerivedGauge(javax.management.ObjectName)"); }
+  public synchronized long getDerivedGaugeTimeStamp(javax.management.ObjectName object) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.monitor.GaugeMonitor.getDerivedGaugeTimeStamp(javax.management.ObjectName)"); }
   < ---- END java signatures ---- >
 }

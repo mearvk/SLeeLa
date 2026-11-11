@@ -238,6 +238,8 @@ class Year {
   public java.lang.String format(java.time.format.DateTimeFormatter formatter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Year.format(java.time.format.DateTimeFormatter)"); }
   public static java.time.Year from(java.time.temporal.TemporalAccessor temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Year.from(java.time.temporal.TemporalAccessor)"); }
   public boolean isSupported(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Year.isSupported(java.time.temporal.TemporalField)"); }
+  public static java.time.Year parse(java.lang.CharSequence text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Year.parse(java.lang.CharSequence)"); }
+  public static java.time.Year parse(java.lang.CharSequence text, java.time.format.DateTimeFormatter formatter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Year.parse(java.lang.CharSequence, java.time.format.DateTimeFormatter)"); }
   public java.time.Year with(java.time.temporal.TemporalAdjuster adjuster) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Year.with(java.time.temporal.TemporalAdjuster)"); }
   public java.time.Year with(java.time.temporal.TemporalField field, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Year.with(java.time.temporal.TemporalField, long)"); }
   public <R> R query(java.time.temporal.TemporalQuery<R> query) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Year.query(java.time.temporal.TemporalQuery<R>)"); }
@@ -250,5 +252,7 @@ class Year {
   public java.time.Year plus(long amountToAdd, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Year.plus(long, java.time.temporal.TemporalUnit)"); }
   public long until(java.time.temporal.Temporal endExclusive, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Year.until(java.time.temporal.Temporal, java.time.temporal.TemporalUnit)"); }
   public java.time.temporal.Temporal adjustInto(java.time.temporal.Temporal temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Year.adjustInto(java.time.temporal.Temporal)"); }
+  public static boolean isLeap(long year) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Year.isLeap(long)"); }
+  public java.time.YearMonth atMonth(java.time.Month month) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Year.atMonth(java.time.Month)"); }
   < ---- END java signatures ---- >
 }

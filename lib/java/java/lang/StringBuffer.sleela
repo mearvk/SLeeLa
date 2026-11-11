@@ -334,7 +334,11 @@ class StringBuffer {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public synchronized java.lang.StringBuffer append(float f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.append(float)"); }
+  public synchronized java.lang.StringBuffer append(double d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.append(double)"); }
   public synchronized void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.getChars(int, int, char[], int)"); }
+  public java.lang.StringBuffer insert(int offset, float f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.insert(int, float)"); }
+  public java.lang.StringBuffer insert(int offset, double d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.insert(int, double)"); }
   public synchronized int codePointBefore(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.codePointBefore(int)"); }
   public synchronized int codePointCount(int beginIndex, int endIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.codePointCount(int, int)"); }
   public synchronized int offsetByCodePoints(int index, int codePointOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.offsetByCodePoints(int, int)"); }

@@ -320,6 +320,9 @@ class Collections {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public static <T> T min(java.util.Collection<? extends T> coll, java.util.Comparator<? super T> comp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.min(java.util.Collection<? extends T>, java.util.Comparator<? super T>)"); }
+  public static <T> T max(java.util.Collection<? extends T> coll, java.util.Comparator<? super T> comp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.max(java.util.Collection<? extends T>, java.util.Comparator<? super T>)"); }
+  public static <T> void sort(java.util.List<T> list, java.util.Comparator<? super T> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.sort(java.util.List<T>, java.util.Comparator<? super T>)"); }
   public static <T> void copy(java.util.List<? super T> dest, java.util.List<? extends T> src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.copy(java.util.List<? super T>, java.util.List<? extends T>)"); }
   public static <T> boolean replaceAll(java.util.List<T> list, T oldVal, T newVal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.replaceAll(java.util.List<T>, T, T)"); }
   public static <T> java.util.Enumeration<T> emptyEnumeration() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.emptyEnumeration()"); }
@@ -333,6 +336,8 @@ class Collections {
   public static <T> java.util.Comparator<T> reverseOrder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.reverseOrder()"); }
   public static <K, V> java.util.Map<K, V> unmodifiableMap(java.util.Map<? extends K, ? extends V> m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.unmodifiableMap(java.util.Map<? extends K, ? extends V>)"); }
   public static <K, V> java.util.SortedMap<K, V> unmodifiableSortedMap(java.util.SortedMap<K, ? extends V> m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.unmodifiableSortedMap(java.util.SortedMap<K, ? extends V>)"); }
+  public static <T> int binarySearch(java.util.List<? extends T> list, T key, java.util.Comparator<? super T> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.binarySearch(java.util.List<? extends T>, T, java.util.Comparator<? super T>)"); }
+  public static void shuffle(java.util.List<?> list) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.shuffle(java.util.List<?>)"); }
   public static int lastIndexOfSubList(java.util.List<?> source, java.util.List<?> target) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.lastIndexOfSubList(java.util.List<?>, java.util.List<?>)"); }
   public static <T> java.util.Collection<T> unmodifiableCollection(java.util.Collection<? extends T> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.unmodifiableCollection(java.util.Collection<? extends T>)"); }
   public static <T> java.util.SequencedCollection<T> unmodifiableSequencedCollection(java.util.SequencedCollection<? extends T> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.unmodifiableSequencedCollection(java.util.SequencedCollection<? extends T>)"); }

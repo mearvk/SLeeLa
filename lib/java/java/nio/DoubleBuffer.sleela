@@ -320,7 +320,13 @@ class DoubleBuffer {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public java.nio.DoubleBuffer get(int index, double[] dst) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.DoubleBuffer.get(int, double[])"); }
+  public java.nio.DoubleBuffer get(int index, double[] dst, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.DoubleBuffer.get(int, double[], int, int)"); }
+  public java.nio.DoubleBuffer put(int index, java.nio.DoubleBuffer src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.DoubleBuffer.put(int, java.nio.DoubleBuffer, int, int)"); }
+  public java.nio.DoubleBuffer put(int index, double[] src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.DoubleBuffer.put(int, double[])"); }
+  public java.nio.DoubleBuffer put(int index, double[] src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.DoubleBuffer.put(int, double[], int, int)"); }
   public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.DoubleBuffer.hashCode()"); }
+  public abstract java.nio.DoubleBuffer slice(int index, int length) { throw new AbstractMethodError("java.nio.DoubleBuffer.slice(int, int)"); }
   public abstract java.nio.ByteOrder order() { throw new AbstractMethodError("java.nio.DoubleBuffer.order()"); }
   < ---- END java signatures ---- >
 }

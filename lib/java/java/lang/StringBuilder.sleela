@@ -328,9 +328,7 @@ class StringBuilder {
      UnsupportedOperationException naming the Java signature. >>
   public java.lang.StringBuilder append(float f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(float)"); }
   public java.lang.StringBuilder append(double d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(double)"); }
-  public java.lang.StringBuilder append(char c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(char)"); }
   public java.lang.StringBuilder insert(int offset, double d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, double)"); }
   public java.lang.StringBuilder insert(int offset, float f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, float)"); }
-  public java.lang.StringBuilder insert(int offset, char c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, char)"); }
   < ---- END java signatures ---- >
 }

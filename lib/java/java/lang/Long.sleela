@@ -316,6 +316,9 @@ class Long extends Number {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public static java.lang.String toString(long i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.toString(long)"); }
+  public static java.lang.String toString(long i, int radix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.toString(long, int)"); }
+  public static int hashCode(long value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.hashCode(long)"); }
   public static long expand(long i, long mask) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.expand(long, long)"); }
   public static long divideUnsigned(long dividend, long divisor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.divideUnsigned(long, long)"); }
   public static long remainderUnsigned(long dividend, long divisor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.remainderUnsigned(long, long)"); }
@@ -325,10 +328,15 @@ class Long extends Number {
   public static java.lang.Long getLong(java.lang.String nm, java.lang.Long val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.getLong(java.lang.String, java.lang.Long)"); }
   public static java.lang.Long getLong(java.lang.String nm) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.getLong(java.lang.String)"); }
   public static java.lang.Long getLong(java.lang.String nm, long val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.getLong(java.lang.String, long)"); }
+  public static java.lang.Long valueOf(java.lang.String s) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.valueOf(java.lang.String)"); }
+  public static java.lang.Long valueOf(java.lang.String s, int radix) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.valueOf(java.lang.String, int)"); }
   public java.lang.Long resolveConstantDesc(java.lang.invoke.MethodHandles.Lookup lookup) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.resolveConstantDesc(java.lang.invoke.MethodHandles.Lookup)"); }
   public java.util.Optional<java.lang.Long> describeConstable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.describeConstable()"); }
+  public static java.lang.String toUnsignedString(long i, int radix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.toUnsignedString(long, int)"); }
   public static long rotateLeft(long i, int distance) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.rotateLeft(long, int)"); }
   public static long rotateRight(long i, int distance) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.rotateRight(long, int)"); }
+  public static long parseLong(java.lang.String s, int radix) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.parseLong(java.lang.String, int)"); }
+  public static long parseLong(java.lang.CharSequence s, int beginIndex, int endIndex, int radix) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.parseLong(java.lang.CharSequence, int, int, int)"); }
   public static long parseUnsignedLong(java.lang.String s) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.parseUnsignedLong(java.lang.String)"); }
   public static long parseUnsignedLong(java.lang.String s, int radix) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.parseUnsignedLong(java.lang.String, int)"); }
   public static long parseUnsignedLong(java.lang.CharSequence s, int beginIndex, int endIndex, int radix) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.parseUnsignedLong(java.lang.CharSequence, int, int, int)"); }

@@ -35,10 +35,18 @@ Two adaptations remain, both named in the source:
     degree-2 safety rule);
   * a parameter whose Java name is a SLeeLa reserved word gets a trailing _.
 
-A method is NOT written when the type (or a SLeeLa ancestor with an
-implementation block) already declares that name -- calls still resolve by
-name, so a stub must never shadow working behavior -- or when an earlier
-overload erases to the same SLeeLa signature. Constructors are written into a
+A Java overload is NOT written when an implemented method of the type (or
+of a SLeeLa ancestor with an implementation block) with the same name and
+number of parameters already accepts its arguments -- a stub must never take
+a call away from working behavior, and under overload resolution an exact
+match beats an assignable one. Acceptance compares the kinds the VM can tell
+apart: int, long, short, byte and char share one integer kind, float and
+double one floating kind, then boolean, String, arrays, and references; an
+implemented parameter declared Any, Object or a type variable accepts
+anything, one declared with a class type accepts any reference, and a
+floating parameter accepts an integer. Envelope helpers outside the implementation
+block (available, invoke, ...) and fields still block by name. A stub is also
+skipped when an earlier overload erases to the same SLeeLa signature. Constructors are written into a
 separate "java constructors" block (overload resolution, SLEELA.syntax section 40),
 skipping any arity the type already declares.
 java.lang.String is left for the String bridge.
@@ -164,6 +172,66 @@ def render_ctor(type_name: str, cls: str, m: dict) -> str:
     return "\n".join(lines)
 
 
+IMPL_SIG = re.compile(r"^  (?:@\w+\s+)?(?:(?:public|protected|private|static|final|abstract|default|synchronized|native|strictfp) )*(?:<[^()]*> )?[A-Za-z_][\w.]*(?:<[^()]*>)?(?:\[\])* +(\w+)\s*\(([^)]*)\)", re.M)
+INT_KIND = {"int", "long", "short", "byte", "char"}
+FLOAT_KIND = {"float", "double"}
+
+
+def kind(t: str, tvars: set) -> str:
+    """The parameter kind the VM tells apart (see the module docstring)."""
+    t = t.strip()
+    if t.startswith("final "):
+        t = t[6:].strip()
+    if t.endswith("..."):
+        t = t[:-3] + "[]"
+    if t.endswith("[]"):
+        return "[" + kind(t[:-2], tvars)
+    raw = t.split("<", 1)[0].strip()
+    if raw in INT_KIND:
+        return "I"
+    if raw in FLOAT_KIND:
+        return "D"
+    if raw == "boolean":
+        return "Z"
+    if raw in ("String", "string", "java.lang.String"):
+        return "S"
+    if raw in ("Any", "Object", "java.lang.Object") or raw in tvars or (len(raw) == 1 and raw.isupper()):
+        return "A"
+    return "R"
+
+
+def param_types(params: str) -> list:
+    out = []
+    for p in split_top(params):
+        p = p.strip()
+        if not p:
+            continue
+        out.append(p.rsplit(" ", 1)[0] if " " in p else p)
+    return out
+
+
+def impl_sigs(text: str) -> dict:
+    """name -> list of parameter-kind tuples of the methods declared in text."""
+    out = {}
+    for name, params in IMPL_SIG.findall(text):
+        out.setdefault(name, []).append(tuple(kind(t, set()) for t in param_types(params)))
+    return out
+
+
+def accepts(impl_kinds: tuple, java_kinds: tuple) -> bool:
+    if len(impl_kinds) != len(java_kinds):
+        return False
+    for have, want in zip(impl_kinds, java_kinds):
+        if have == want or have == "A":
+            continue
+        if have == "R" and want == "A":
+            continue
+        if have == "D" and want == "I":
+            continue
+        return False
+    return True
+
+
 def renderable_text(text: str) -> bool:
     return "@" not in text and "$" not in text
 
@@ -188,14 +256,15 @@ def main() -> int:
             src = p.read_text(encoding="utf-8", errors="replace")
             texts[name] = (p, src)
             mo = IMPL.search(src)
-            impl_names[name] = set(METHOD.findall(mo.group(1))) if mo else set()
+            impl_names[name] = impl_sigs(mo.group(1)) if mo else {}
 
     def inherited(name):
-        out, n = set(), api[name].get("super")
+        out, n = {}, api[name].get("super")
         for _ in range(40):
             if not n or n not in api:
                 break
-            out |= impl_names.get(n, set())
+            for k, v in impl_names.get(n, {}).items():
+                out.setdefault(k, []).extend(v)
             n = api[n].get("super")
         return out
 
@@ -215,14 +284,24 @@ def main() -> int:
         if tps and not mo.group(2) and renderable_text(tps):
             hdr = mo.group(0)
             base = base.replace(hdr, hdr.replace("class " + cls, "class " + cls + tps, 1), 1)
-        present = set(METHOD.findall(base)) | set(dec.FIELD_DECL.findall(base))
-        blocked = present | inherited(name)
+        mo_impl = IMPL.search(base)
+        outside = IMPL.sub("", base) if mo_impl else base
+        blocked = set(METHOD.findall(outside)) | set(dec.FIELD_DECL.findall(base))
+        own = impl_sigs(mo_impl.group(1)) if mo_impl else {}
+        for k, v in inherited(name).items():
+            own.setdefault(k, []).extend(v)
+
+        def taken(m, tv):
+            want = tuple(kind(p[0], tv) for p in m["params"])
+            return any(accepts(have, want) for have in own.get(m["name"], []))
         class_tvars = tvar_names(sigs[name]["tparams"])
         seen, lines = set(), []
         for m in sigs[name]["members"]:
             if m["name"] == "<init>" or m["name"] in blocked or not dec.usable(m["name"], cls) or not renderable(m):
                 continue
             tv = class_tvars | tvar_names(m["tparams"])
+            if taken(m, tv):
+                continue
             key = (m["name"], tuple(erased(p[0], tv) for p in m["params"]))
             if key in seen:
                 continue

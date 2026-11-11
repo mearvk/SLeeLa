@@ -155,6 +155,7 @@ class System {
   public static void loadLibrary(java.lang.String libname) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.System.loadLibrary(java.lang.String)"); }
   public static java.io.Console console() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.System.console()"); }
   public static java.nio.channels.Channel inheritedChannel() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.System.inheritedChannel()"); }
+  public static java.util.Map<java.lang.String, java.lang.String> getenv() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.System.getenv()"); }
   public static java.lang.System.Logger getLogger(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.System.getLogger(java.lang.String)"); }
   public static java.lang.System.Logger getLogger(java.lang.String name, java.util.ResourceBundle bundle) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.System.getLogger(java.lang.String, java.util.ResourceBundle)"); }
   public static void setIn(java.io.InputStream in) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.System.setIn(java.io.InputStream)"); }

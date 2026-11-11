@@ -320,7 +320,13 @@ class ShortBuffer {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public java.nio.ShortBuffer get(int index, short[] dst) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.get(int, short[])"); }
+  public java.nio.ShortBuffer get(int index, short[] dst, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.get(int, short[], int, int)"); }
+  public java.nio.ShortBuffer put(int index, java.nio.ShortBuffer src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.put(int, java.nio.ShortBuffer, int, int)"); }
+  public java.nio.ShortBuffer put(int index, short[] src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.put(int, short[])"); }
+  public java.nio.ShortBuffer put(int index, short[] src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.put(int, short[], int, int)"); }
   public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.hashCode()"); }
+  public abstract java.nio.ShortBuffer slice(int index, int length) { throw new AbstractMethodError("java.nio.ShortBuffer.slice(int, int)"); }
   public abstract java.nio.ByteOrder order() { throw new AbstractMethodError("java.nio.ShortBuffer.order()"); }
   < ---- END java signatures ---- >
 }

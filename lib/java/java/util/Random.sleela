@@ -202,6 +202,7 @@ class Random {
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
   public static java.util.Random from(java.util.random.RandomGenerator generator) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Random.from(java.util.random.RandomGenerator)"); }
+  public int nextInt(int bound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Random.nextInt(int)"); }
   public java.util.stream.LongStream longs(long streamSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Random.longs(long)"); }
   public java.util.stream.LongStream longs(long streamSize, long randomNumberOrigin, long randomNumberBound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Random.longs(long, long, long)"); }
   public java.util.stream.LongStream longs(long randomNumberOrigin, long randomNumberBound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Random.longs(long, long)"); }

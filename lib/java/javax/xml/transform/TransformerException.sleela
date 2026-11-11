@@ -69,6 +69,7 @@ class TransformerException extends Exception {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public void printStackTrace(java.io.PrintStream s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.TransformerException.printStackTrace(java.io.PrintStream)"); }
   public java.lang.Throwable getException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.TransformerException.getException()"); }
   public java.lang.String getLocationAsString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.TransformerException.getLocationAsString()"); }
   public javax.xml.transform.SourceLocator getLocator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.TransformerException.getLocator()"); }

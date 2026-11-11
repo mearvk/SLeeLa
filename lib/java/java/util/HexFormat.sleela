@@ -353,5 +353,8 @@ class HexFormat {
      UnsupportedOperationException naming the Java signature. >>
   public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.toString()"); }
   public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.hashCode()"); }
+  public <A extends java.lang.Appendable> A toHexDigits(A out, byte value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.toHexDigits(A, byte)"); }
+  public <A extends java.lang.Appendable> A formatHex(A out, byte[] bytes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.formatHex(A, byte[])"); }
+  public <A extends java.lang.Appendable> A formatHex(A out, byte[] bytes, int fromIndex, int toIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.formatHex(A, byte[], int, int)"); }
   < ---- END java signatures ---- >
 }

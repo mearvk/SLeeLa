@@ -100,6 +100,7 @@ class ObjectName {
   public java.lang.String getKeyPropertyListString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.getKeyPropertyListString()"); }
   public void setMBeanServer(javax.management.MBeanServer mbs) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.setMBeanServer(javax.management.MBeanServer)"); }
   public java.lang.String getKeyProperty(java.lang.String property) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.getKeyProperty(java.lang.String)"); }
+  public boolean isPropertyValuePattern(java.lang.String property) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.isPropertyValuePattern(java.lang.String)"); }
   public java.lang.String getCanonicalKeyPropertyListString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.getCanonicalKeyPropertyListString()"); }
   public static java.lang.String unquote(java.lang.String q) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.unquote(java.lang.String)"); }
   < ---- END java signatures ---- >

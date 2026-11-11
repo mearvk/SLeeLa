@@ -58,6 +58,8 @@ class RoleList {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public void add(int index, javax.management.relation.Role role) throws java.lang.IllegalArgumentException, java.lang.IndexOutOfBoundsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RoleList.add(int, javax.management.relation.Role)"); }
+  public boolean addAll(int index, java.util.Collection<?> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RoleList.addAll(int, java.util.Collection<?>)"); }
   public java.util.List<javax.management.relation.Role> asList() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RoleList.asList()"); }
   < ---- END java signatures ---- >
 

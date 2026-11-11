@@ -76,6 +76,7 @@ class LinkException extends NamingException {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public java.lang.String toString(boolean detail) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.LinkException.toString(boolean)"); }
   public javax.naming.Name getLinkResolvedName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.LinkException.getLinkResolvedName()"); }
   public javax.naming.Name getLinkRemainingName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.LinkException.getLinkRemainingName()"); }
   public java.lang.Object getLinkResolvedObj() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.LinkException.getLinkResolvedObj()"); }

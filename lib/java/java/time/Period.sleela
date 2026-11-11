@@ -305,6 +305,7 @@ class Period {
      UnsupportedOperationException naming the Java signature. >>
   public long get(java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.get(java.time.temporal.TemporalUnit)"); }
   public static java.time.Period from(java.time.temporal.TemporalAmount amount) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.from(java.time.temporal.TemporalAmount)"); }
+  public static java.time.Period parse(java.lang.CharSequence text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.parse(java.lang.CharSequence)"); }
   public java.util.List<java.time.temporal.TemporalUnit> getUnits() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.getUnits()"); }
   public java.time.temporal.Temporal addTo(java.time.temporal.Temporal temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.addTo(java.time.temporal.Temporal)"); }
   public java.time.temporal.Temporal subtractFrom(java.time.temporal.Temporal temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.subtractFrom(java.time.temporal.Temporal)"); }

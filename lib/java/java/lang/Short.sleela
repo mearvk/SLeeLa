@@ -257,6 +257,11 @@ class Short extends Number {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public static java.lang.String toString(short s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Short.toString(short)"); }
+  public static int hashCode(short value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Short.hashCode(short)"); }
+  public static java.lang.Short valueOf(java.lang.String s, int radix) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Short.valueOf(java.lang.String, int)"); }
+  public static java.lang.Short valueOf(java.lang.String s) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Short.valueOf(java.lang.String)"); }
   public java.util.Optional<java.lang.constant.DynamicConstantDesc<java.lang.Short>> describeConstable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Short.describeConstable()"); }
+  public static short parseShort(java.lang.String s, int radix) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Short.parseShort(java.lang.String, int)"); }
   < ---- END java signatures ---- >
 }

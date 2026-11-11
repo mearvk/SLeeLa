@@ -258,9 +258,12 @@ class MonthDay {
      UnsupportedOperationException naming the Java signature. >>
   public int get(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.get(java.time.temporal.TemporalField)"); }
   public long getLong(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.getLong(java.time.temporal.TemporalField)"); }
+  public static java.time.MonthDay of(java.time.Month month, int dayOfMonth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.of(java.time.Month, int)"); }
   public java.lang.String format(java.time.format.DateTimeFormatter formatter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.format(java.time.format.DateTimeFormatter)"); }
   public static java.time.MonthDay from(java.time.temporal.TemporalAccessor temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.from(java.time.temporal.TemporalAccessor)"); }
   public boolean isSupported(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.isSupported(java.time.temporal.TemporalField)"); }
+  public static java.time.MonthDay parse(java.lang.CharSequence text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.parse(java.lang.CharSequence)"); }
+  public static java.time.MonthDay parse(java.lang.CharSequence text, java.time.format.DateTimeFormatter formatter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.parse(java.lang.CharSequence, java.time.format.DateTimeFormatter)"); }
   public java.time.MonthDay with(java.time.Month month) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.with(java.time.Month)"); }
   public <R> R query(java.time.temporal.TemporalQuery<R> query) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.query(java.time.temporal.TemporalQuery<R>)"); }
   public java.time.temporal.ValueRange range(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.range(java.time.temporal.TemporalField)"); }

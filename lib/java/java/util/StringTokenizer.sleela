@@ -75,6 +75,7 @@ class StringTokenizer {
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
   public int countTokens() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.StringTokenizer.countTokens()"); }
+  public java.lang.String nextToken(java.lang.String delim) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.StringTokenizer.nextToken(java.lang.String)"); }
   public java.lang.Object nextElement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.StringTokenizer.nextElement()"); }
   < ---- END java signatures ---- >
 

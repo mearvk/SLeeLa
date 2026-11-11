@@ -1517,6 +1517,10 @@ class Character {
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
   public static java.lang.String getName(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.getName(int)"); }
+  public static java.lang.String toString(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.toString(int)"); }
+  public static java.lang.String toString(char c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.toString(char)"); }
+  public static int hashCode(char value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.hashCode(char)"); }
+  public static int toChars(int codePoint, char[] dst, int dstIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.toChars(int, char[], int)"); }
   public static int codePointAt(java.lang.CharSequence seq, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.codePointAt(java.lang.CharSequence, int)"); }
   public static int codePointAt(char[] a, int index, int limit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.codePointAt(char[], int, int)"); }
   public static int codePointAt(char[] a, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.codePointAt(char[], int)"); }

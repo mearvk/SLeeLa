@@ -441,7 +441,9 @@ class HashMap<K, V> extends AbstractMap {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public boolean remove(java.lang.Object key, java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.remove(java.lang.Object, java.lang.Object)"); }
   public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.clone()"); }
+  public boolean replace(K key, V oldValue, V newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.replace(K, V, V)"); }
   public void replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V> function) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V>)"); }
   public V merge(K key, V value, java.util.function.BiFunction<? super V, ? super V, ? extends V> remappingFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.merge(K, V, java.util.function.BiFunction<? super V, ? super V, ? extends V>)"); }
   public static <K, V> java.util.HashMap<K, V> newHashMap(int numMappings) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.newHashMap(int)"); }

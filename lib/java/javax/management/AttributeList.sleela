@@ -58,6 +58,8 @@ class AttributeList {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public void add(int index, java.lang.Object element) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.AttributeList.add(int, java.lang.Object)"); }
+  public boolean addAll(int index, java.util.Collection<?> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.AttributeList.addAll(int, java.util.Collection<?>)"); }
   public java.util.List<javax.management.Attribute> asList() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.AttributeList.asList()"); }
   < ---- END java signatures ---- >
 

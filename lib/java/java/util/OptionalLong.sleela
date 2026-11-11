@@ -96,6 +96,7 @@ class OptionalLong {
      UnsupportedOperationException naming the Java signature. >>
   public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalLong.hashCode()"); }
   public java.util.stream.LongStream stream() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalLong.stream()"); }
+  public <X extends java.lang.Throwable> long orElseThrow(java.util.function.Supplier<? extends X> exceptionSupplier) throws X { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalLong.orElseThrow(java.util.function.Supplier<? extends X>)"); }
   public void ifPresent(java.util.function.LongConsumer action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalLong.ifPresent(java.util.function.LongConsumer)"); }
   public void ifPresentOrElse(java.util.function.LongConsumer action, java.lang.Runnable emptyAction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalLong.ifPresentOrElse(java.util.function.LongConsumer, java.lang.Runnable)"); }
   public long orElseGet(java.util.function.LongSupplier supplier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalLong.orElseGet(java.util.function.LongSupplier)"); }

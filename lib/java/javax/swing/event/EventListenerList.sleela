@@ -79,6 +79,7 @@ class EventListenerList {
   public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.EventListenerList.toString()"); }
   public synchronized <T extends java.util.EventListener> void add(java.lang.Class<T> t, T l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.EventListenerList.add(java.lang.Class<T>, T)"); }
   public java.lang.Object[] getListenerList() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.EventListenerList.getListenerList()"); }
+  public int getListenerCount(java.lang.Class<?> t) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.EventListenerList.getListenerCount(java.lang.Class<?>)"); }
   public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> t) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.EventListenerList.getListeners(java.lang.Class<T>)"); }
   < ---- END java signatures ---- >
 }

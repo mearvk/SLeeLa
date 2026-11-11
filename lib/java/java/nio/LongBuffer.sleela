@@ -320,7 +320,13 @@ class LongBuffer {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public java.nio.LongBuffer get(int index, long[] dst) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.get(int, long[])"); }
+  public java.nio.LongBuffer get(int index, long[] dst, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.get(int, long[], int, int)"); }
+  public java.nio.LongBuffer put(int index, java.nio.LongBuffer src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.put(int, java.nio.LongBuffer, int, int)"); }
+  public java.nio.LongBuffer put(int index, long[] src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.put(int, long[])"); }
+  public java.nio.LongBuffer put(int index, long[] src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.put(int, long[], int, int)"); }
   public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.hashCode()"); }
+  public abstract java.nio.LongBuffer slice(int index, int length) { throw new AbstractMethodError("java.nio.LongBuffer.slice(int, int)"); }
   public abstract java.nio.ByteOrder order() { throw new AbstractMethodError("java.nio.LongBuffer.order()"); }
   < ---- END java signatures ---- >
 }

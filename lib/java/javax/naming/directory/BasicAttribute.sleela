@@ -85,6 +85,7 @@ class BasicAttribute {
   public boolean remove(java.lang.Object attrval) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.remove(java.lang.Object)"); }
   public java.lang.Object remove(int ix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.remove(int)"); }
   public int size() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.size()"); }
+  public java.lang.Object get(int ix) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.get(int)"); }
   public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.equals(java.lang.Object)"); }
   public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.toString()"); }
   public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.hashCode()"); }

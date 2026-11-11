@@ -406,9 +406,13 @@ class ArrayList<E> extends AbstractList {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public boolean remove(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.remove(java.lang.Object)"); }
   public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.clone()"); }
   public void replaceAll(java.util.function.UnaryOperator<E> operator) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.replaceAll(java.util.function.UnaryOperator<E>)"); }
+  public void add(int index, E element) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.add(int, E)"); }
+  public <T> T[] toArray(T[] a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.toArray(T[])"); }
   public java.util.Spliterator<E> spliterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.spliterator()"); }
+  public boolean addAll(int index, java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.addAll(int, java.util.Collection<? extends E>)"); }
   public void forEach(java.util.function.Consumer<? super E> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.forEach(java.util.function.Consumer<? super E>)"); }
   public boolean removeIf(java.util.function.Predicate<? super E> filter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.removeIf(java.util.function.Predicate<? super E>)"); }
   @JavaProtected

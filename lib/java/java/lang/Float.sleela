@@ -557,10 +557,15 @@ class Float extends Number {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public static java.lang.String toString(float f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Float.toString(float)"); }
+  public static int hashCode(float value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Float.hashCode(float)"); }
+  public boolean isInfinite() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Float.isInfinite()"); }
   public static float float16ToFloat(short floatBinary16) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Float.float16ToFloat(short)"); }
   public static short floatToFloat16(float f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Float.floatToFloat16(float)"); }
+  public static java.lang.Float valueOf(java.lang.String s) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Float.valueOf(java.lang.String)"); }
   public static java.lang.String toHexString(float f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Float.toHexString(float)"); }
   public java.lang.Float resolveConstantDesc(java.lang.invoke.MethodHandles.Lookup lookup) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Float.resolveConstantDesc(java.lang.invoke.MethodHandles.Lookup)"); }
   public java.util.Optional<java.lang.Float> describeConstable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Float.describeConstable()"); }
+  public boolean isNaN() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Float.isNaN()"); }
   < ---- END java signatures ---- >
 }

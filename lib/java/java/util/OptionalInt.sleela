@@ -96,6 +96,7 @@ class OptionalInt {
      UnsupportedOperationException naming the Java signature. >>
   public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalInt.hashCode()"); }
   public java.util.stream.IntStream stream() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalInt.stream()"); }
+  public <X extends java.lang.Throwable> int orElseThrow(java.util.function.Supplier<? extends X> exceptionSupplier) throws X { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalInt.orElseThrow(java.util.function.Supplier<? extends X>)"); }
   public void ifPresent(java.util.function.IntConsumer action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalInt.ifPresent(java.util.function.IntConsumer)"); }
   public void ifPresentOrElse(java.util.function.IntConsumer action, java.lang.Runnable emptyAction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalInt.ifPresentOrElse(java.util.function.IntConsumer, java.lang.Runnable)"); }
   public int orElseGet(java.util.function.IntSupplier supplier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalInt.orElseGet(java.util.function.IntSupplier)"); }

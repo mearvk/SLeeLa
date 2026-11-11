@@ -445,7 +445,9 @@ class IdentityHashMap<K, V> {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public boolean remove(java.lang.Object key, java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.IdentityHashMap.remove(java.lang.Object, java.lang.Object)"); }
   public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.IdentityHashMap.clone()"); }
+  public boolean replace(K key, V oldValue, V newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.IdentityHashMap.replace(K, V, V)"); }
   public void replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V> function) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.IdentityHashMap.replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V>)"); }
   public void forEach(java.util.function.BiConsumer<? super K, ? super V> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.IdentityHashMap.forEach(java.util.function.BiConsumer<? super K, ? super V>)"); }
   < ---- END java signatures ---- >

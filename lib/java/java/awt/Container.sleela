@@ -131,6 +131,7 @@ class Container {
   void addImpl(java.awt.Component comp, java.lang.Object constraints, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.addImpl(java.awt.Component, java.lang.Object, int)"); }
   public int getComponentZOrder(java.awt.Component comp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.getComponentZOrder(java.awt.Component)"); }
   public void removeNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.removeNotify()"); }
+  public boolean isFocusCycleRoot(java.awt.Container container) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.isFocusCycleRoot(java.awt.Container)"); }
   public java.awt.FocusTraversalPolicy getFocusTraversalPolicy() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.getFocusTraversalPolicy()"); }
   public void doLayout() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.doLayout()"); }
   public void setFont(java.awt.Font f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.setFont(java.awt.Font)"); }

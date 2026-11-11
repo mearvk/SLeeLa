@@ -105,7 +105,9 @@ class JScrollBar {
   public void setMinimum(int minimum) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.setMinimum(int)"); }
   public void setMaximum(int maximum) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.setMaximum(int)"); }
   public void setUnitIncrement(int unitIncrement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.setUnitIncrement(int)"); }
+  public int getUnitIncrement(int direction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.getUnitIncrement(int)"); }
   public void setBlockIncrement(int blockIncrement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.setBlockIncrement(int)"); }
+  public int getBlockIncrement(int direction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.getBlockIncrement(int)"); }
   public void setVisibleAmount(int extent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.setVisibleAmount(int)"); }
   public void addAdjustmentListener(java.awt.event.AdjustmentListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.addAdjustmentListener(java.awt.event.AdjustmentListener)"); }
   public void removeAdjustmentListener(java.awt.event.AdjustmentListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.removeAdjustmentListener(java.awt.event.AdjustmentListener)"); }

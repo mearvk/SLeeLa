@@ -435,6 +435,9 @@ class ConcurrentLinkedDeque<E> extends AbstractCollection {
   << Exact Java signatures (from the JDK). A method body that is not yet
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
+  public E remove() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedDeque.remove()"); }
+  public boolean remove(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedDeque.remove(java.lang.Object)"); }
+  public <T> T[] toArray(T[] a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedDeque.toArray(T[])"); }
   public java.util.Spliterator<E> spliterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedDeque.spliterator()"); }
   public void forEach(java.util.function.Consumer<? super E> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedDeque.forEach(java.util.function.Consumer<? super E>)"); }
   public boolean removeIf(java.util.function.Predicate<? super E> filter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedDeque.removeIf(java.util.function.Predicate<? super E>)"); }

@@ -309,9 +309,13 @@ class LocalTime {
      UnsupportedOperationException naming the Java signature. >>
   public int get(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalTime.get(java.time.temporal.TemporalField)"); }
   public long getLong(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalTime.getLong(java.time.temporal.TemporalField)"); }
+  public static java.time.LocalTime of(int hour, int minute) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalTime.of(int, int)"); }
+  public static java.time.LocalTime of(int hour, int minute, int second) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalTime.of(int, int, int)"); }
   public java.lang.String format(java.time.format.DateTimeFormatter formatter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalTime.format(java.time.format.DateTimeFormatter)"); }
   public static java.time.LocalTime from(java.time.temporal.TemporalAccessor temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalTime.from(java.time.temporal.TemporalAccessor)"); }
   public boolean isSupported(java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalTime.isSupported(java.time.temporal.TemporalUnit)"); }
+  public static java.time.LocalTime parse(java.lang.CharSequence text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalTime.parse(java.lang.CharSequence)"); }
+  public static java.time.LocalTime parse(java.lang.CharSequence text, java.time.format.DateTimeFormatter formatter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalTime.parse(java.lang.CharSequence, java.time.format.DateTimeFormatter)"); }
   public java.time.LocalTime with(java.time.temporal.TemporalAdjuster adjuster) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalTime.with(java.time.temporal.TemporalAdjuster)"); }
   public java.time.LocalTime with(java.time.temporal.TemporalField field, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalTime.with(java.time.temporal.TemporalField, long)"); }
   public <R> R query(java.time.temporal.TemporalQuery<R> query) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalTime.query(java.time.temporal.TemporalQuery<R>)"); }

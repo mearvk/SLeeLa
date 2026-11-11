@@ -397,6 +397,7 @@ class HashSet<E> extends AbstractSet {
      SLeeLa logic throws: AbstractMethodError for an abstract method, else
      UnsupportedOperationException naming the Java signature. >>
   public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashSet.clone()"); }
+  public <T> T[] toArray(T[] a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashSet.toArray(T[])"); }
   public java.util.Spliterator<E> spliterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashSet.spliterator()"); }
   public static <T> java.util.HashSet<T> newHashSet(int numElements) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashSet.newHashSet(int)"); }
   < ---- END java signatures ---- >
