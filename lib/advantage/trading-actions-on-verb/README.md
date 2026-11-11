@@ -124,120 +124,13 @@ Excess = equity - required, and a call is due when excess < 0.
 | 25 | margin, assurance | [`25-margin-differential`](./25-margin-differential/TaUse25MarginDifferential.sleela) | binary search and closed form against slow references over full grids, with minimality checks |
 | 26 | short margin, time | [`26-margin-and-time`](./26-margin-and-time/TaUse26MarginAndTime.sleela) | borrow cost drains collateral; first call day 334, confirmed by stepping and by the book accrual |
 
-## Engineering notes
+## More
 
-**Invariants.** `invariantsHold()` is asserted by the use cases after actions:
-every lot has positive quantity and price; lot days never decrease and never
-pass the book day; at most 16 lots; shares held = shares bought - shares sold;
-cost held = cost bought - cost sold. The last two are conservation laws, so a
-lost or invented share or cent is caught.
-
-**Refusal is atomic.** A refused verb returns its code before changing any
-field. Use case 4 sums shares, cost, fees and day before and after every
-refusal.
-
-**Integer only, with measured limits.** Money is integer cents, quantity whole
-shares, time whole days. Average cost is rounded down and the remainder is
-reported, so `average * shares + remainder = cost` exactly.
-
-SLeeLa `int` is 64-bit and `+ - * / %` are exact over the whole range. The
-comparison operators, however, were measured to be exact only up to
-2^53 - 1 = 9,007,199,254,740,991: above that, `n` and `n - 1` compare equal. A
-first version of `isqrt` assumed a 32-bit word and was therefore wrong in two
-ways; after the review every value that is ever compared is held at or below
-that limit by explicit bounds, and out-of-range input is **refused**, never
-clamped or wrapped:
-
-| bound | value | why |
-|-------|-------|-----|
-| quantity | 100,000,000 | with price, keeps a product at 1e15 |
-| price | 10,000,000 cents | |
-| fee | 100,000,000 cents | |
-| running totals | 4e15 | leaves room for one more product below 2^53 |
-| day | 10,000,000 | keeps share-day sums exact |
-| gcd/lcm/egcd input | 2^53 - 1 | comparison limit |
-| fill lot size | 90,000,000 | lot squared is 8.1e15 |
-| distance difference / dimension | 10,000,000 / 64 | 64 * 1e14 = 6.4e15 |
-| isqrt input | 2^53 - 1 | `sqrtCap` 94,906,265 squared fits |
-
-**Fees.** Fees are expensed and are not added to a lot cost. `realizedNet` is a
-cash view: proceeds - cost of shares sold - every fee paid so far, including the
-buy fees of shares still held. `realizedGross` excludes fees.
-
-**Time queries.** A query for a day before the book day answers -1 (false for
-`isLongTerm`) instead of a negative age. A flat book also answers -1 to
-`oldestAge`.
-
-**Euclid loops.**
-- `gcd`: invariant gcd(x, y) = gcd(a, b); the remainder strictly falls, so the
-  loop ends. `steps` and `trail` expose every pass.
-- `egcd`: keeps two Bezout rows; `bezoutHolds` verifies `a*x + b*y = g` with
-  one multiplication.
-- `canFill`: closed form in O(log) time. With g = gcd(a, b), a solution needs
-  g | c; then x = (c/g mod b/g) * inverse(a/g mod b/g) mod b/g is the smallest
-  number of a-lots, and y = (c - a*x) / b must be at least 0. `canFillScan`
-  (the plain loop, at most c/a + 1 passes) is kept only as a reference; use
-  cases 6 and 15 prove the two agree on every tested case. Use case 6 also
-  shows 10 shares passing the gcd test but failing the fill.
-- `isqrt`: binary search with invariant `lo*lo <= n < (hi+1)*(hi+1)`, capped at
-  `sqrtCap`, so `mid*mid` is always compared exactly.
-- `distSq`: refuses any difference above 10,000,000 or more than 64 dimensions.
-- `nearestIndex`: nearest of several targets; a tie goes to the earlier one
-  (the repo tie norm, `.kiro/steering/advantage-tie-norm.md`).
-
-**Term rule.** Long term means held strictly more than the threshold. The
-model counts days only. Real tax rules (for example 26 U.S.C. 1222 uses a
-holding period of more than one year) count calendar dates and vary by country
-and year. Treat this as an illustration of the boundary, not as tax advice.
-
-## Assurance
-
-Six independent layers:
-
-1. **Self-checks.** Every use case prints `ok` or `FAIL` per check and ends with
-   `checks passed=N failed=0`.
-2. **Independent oracle.** Expected values for use cases 1 to 13, 16 to 20 and 23 to 26 were computed
-   by a separate Python model of the same rules and compared with what SLeeLa
-   printed; one wrong expectation of mine (use case 11) was found and fixed that way.
-3. **Differential testing.** Use case 14 runs 1,200 random verbs (four fixed
-   seeds, one buy-heavy so the 16-lot capacity is reached) against a shadow
-   model that stores one entry per share and shares no code with the lot-based
-   book, and the outcome tallies were also reproduced in Python. Use case 15
-   checks every Euclid routine against a slower method over all small cases.
-4. **Mutation checks.** The short-side stress cases were run against three
-   deliberately broken copies of `SLShortBook` (borrow off by one day, sale
-   proceeds off by one cent with a flipped profit sign, a cover allowed one share
-   too many); each was caught (8, 8 and 13 failed checks) and the original
-   passes.
-5. **Mutation checks on the margin class.** Off-by-one in the ceiling and in
-   the first call day were caught (2 and 4 to 5 failed checks). A binary search
-   whose midpoint rounds up never terminates; that mutation was caught as a hang,
-   so the gate runs every case under `timeout` (default 300 seconds) and fails
-   instead of waiting forever.
-6. **Expected-output gate.** `test-suites/test-trading-actions.sh` runs all
-   twenty-six, compares each with its `.expected.txt`, and fails on any `FAIL` line.
+- [`ENGINEERING.md`](./ENGINEERING.md): invariants, the measured integer limits
+  and every bound, fees, time queries, the Euclid loops, ties and the term rule.
+- [`ASSURANCE.md`](./ASSURANCE.md): the six layers of checking, their limits, how
+  to run the gate, and the review log.
 
 ```
 bash test-suites/test-trading-actions.sh
 ```
-
-Set `UPDATE=1` to rewrite the expected files after reviewing a deliberate change.
-
-Limits of the assurance: the stress cases do not generate code 8 (size bounds) or
-code 9, which use cases 4 and 18 cover by hand; the margin model ignores fees and
-price paths and is an illustration, not a broker or regulator rule; and the VM comparison behaviour above 2^53 was
-measured on the committed `working-binaries/sleela`, not proven from its source.
-
-## Review log (second look)
-
-| finding | severity | fix |
-|---------|----------|-----|
-| `isqrt` assumed a 32-bit word and returned 46340 for large inputs | wrong answer | bounds rebuilt for the measured 64-bit arithmetic |
-| VM comparisons are inexact above 2^53; `isqrt` returned 3037000499 for 3037000499^2 - 1 | wrong answer | every compared value bounded by `maxExact`; out-of-range refused; steering note added |
-| no size bounds on quantity, price, fee, day or running totals | silent overflow risk | new code 8 and bounds |
-| time queries accepted a day before the book day | negative ages | -1 answer |
-| `canFill` scanned up to c/a times | cost grows with order size | O(log) closed form; scan kept as the reference |
-| use case 4 compared a hash of the book | collision could hide a change | five values compared separately |
-| `cap` was a mutable field beside fixed 16-slot arrays | out-of-bounds risk | fixed `maxLots()` |
-| `realizedNet` meaning was implicit | misreading | documented as a cash view |
-| README said "no sum can pass 2,000,000,000" | false claim | corrected |

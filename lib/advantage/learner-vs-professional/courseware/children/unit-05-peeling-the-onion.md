@@ -1,7 +1,7 @@
 # Unit 5 (Children): Peeling the Onion
 
 **You will learn:** to work a problem one layer at a time, and to check your
-answer with a helper. **Use with:** [lessons 5 and 6](../series/README.md).
+answer with a helper. **Use with:** [lessons 5 and 6](../../series/README.md).
 
 ## Layers
 

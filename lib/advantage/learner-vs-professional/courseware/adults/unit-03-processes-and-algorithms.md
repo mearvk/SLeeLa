@@ -2,7 +2,7 @@
 
 **Outcomes:** read an algorithm as sequence, selection and iteration; state a
 loop invariant; argue termination and correctness.
-**Companions:** [lessons 1, 2 and 5](../series/README.md).
+**Companions:** [lessons 1, 2 and 5](../../series/README.md).
 
 ## Part 1: The three structures
 

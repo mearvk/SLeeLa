@@ -1,7 +1,7 @@
 # Unit 3 (Children): If This, Then That
 
 **You will learn:** what a rule is, when it is broken, and when you cannot tell.
-**Use with:** [lesson 1, registry intake](../series/README.md).
+**Use with:** [lesson 1, registry intake](../../series/README.md).
 
 ## Rules
 

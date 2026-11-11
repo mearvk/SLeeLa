@@ -2,7 +2,7 @@
 
 **Outcomes:** write registry rules with predicates and quantifiers; negate them
 correctly; tell valid from invalid inference; state what "not observed" licenses.
-**Companions:** [lessons 1, 4 and 5](../series/README.md). Prerequisite: Unit 1.
+**Companions:** [lessons 1, 4 and 5](../../series/README.md). Prerequisite: Unit 1.
 
 ## Part 1: Predicates over the registry
 

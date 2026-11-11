@@ -5,7 +5,7 @@ by looking. You will also learn to say "I did not look there" when you have not
 looked.
 
 **You will need:** the toy shelf picture below, or a real shelf with two boxes.
-Then run the [Device Instructor lessons 1 and 2](../series/README.md) with a
+Then run the [Device Instructor lessons 1 and 2](../../series/README.md) with a
 grown-up.
 
 ## The toy shelf

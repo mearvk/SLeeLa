@@ -4,7 +4,7 @@
 standard equivalences; read the Device Instructor's input gate as a logical
 formula; and say precisely what a refusal does and does not prove.
 
-**Companions:** [lessons 1, 2 and 4](../series/README.md). Run lesson 2 before
+**Companions:** [lessons 1, 2 and 4](../../series/README.md). Run lesson 2 before
 Part 4.
 
 ## Part 1: Statements and connectives

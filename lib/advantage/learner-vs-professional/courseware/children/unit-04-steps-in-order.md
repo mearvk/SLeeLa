@@ -1,7 +1,7 @@
 # Unit 4 (Children): Steps in Order
 
 **You will learn:** that some jobs must be done in order, and how to repeat a
-step. **Use with:** [lesson 2, the student input gate](../series/README.md).
+step. **Use with:** [lesson 2, the student input gate](../../series/README.md).
 
 ## Recipes need order
 

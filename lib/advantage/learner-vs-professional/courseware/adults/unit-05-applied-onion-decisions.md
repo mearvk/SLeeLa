@@ -2,7 +2,7 @@
 
 **Outcomes:** model a decision as onion layers; register the evidence first;
 compare your result with an independent one; handle gaps honestly.
-**Companions:** [lesson 6](../series/README.md) and the
+**Companions:** [lesson 6](../../series/README.md) and the
 [Advantage library](../../../README.md).
 
 ## Part 1: The method

@@ -2,7 +2,7 @@
 
 **Outcomes:** count the work of a procedure as input grows; read O-notation;
 choose between a simple scan and a better structure.
-**Companions:** [lessons 1, 4 and 5](../series/README.md).
+**Companions:** [lessons 1, 4 and 5](../../series/README.md).
 
 ## Part 1: Counting steps
 

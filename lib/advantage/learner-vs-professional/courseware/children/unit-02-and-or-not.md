@@ -1,7 +1,7 @@
 # Unit 2 (Children): AND, OR, NOT, Together
 
 **You will learn:** to combine facts with AND, OR and NOT, and to check your
-answer against a friend. **Use with:** [lesson 4, agreement](../series/README.md).
+answer against a friend. **Use with:** [lesson 4, agreement](../../series/README.md).
 
 ## The play table
 

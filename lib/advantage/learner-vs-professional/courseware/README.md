@@ -10,6 +10,9 @@ Sequitur onion model.
 | `children/` | young learners: play-based, concrete, short steps |
 | `adults/` | adult learners: precise terms, worked problems, applied use |
 
+Reading material for every age, sorted from youngest to oldest, is in
+[`reading/`](./reading/README.md).
+
 Both tracks cover the same ground and differ in presentation, not in accuracy:
 
 1. Logic: true/false, and/or/not, if-then.
