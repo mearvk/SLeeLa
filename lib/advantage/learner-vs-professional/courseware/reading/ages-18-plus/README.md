@@ -11,3 +11,4 @@ tax, legal or regulatory advice, and no order is ever placed.
 | 3 | [Margin, Exactly](./03-margin-exactly.md) | ceiling arithmetic and the search for the fewest shares | use cases 23 to 26 |
 | 4 | [Correctness and Cost](./04-correctness-and-cost.md) | invariants, termination, growth | adults units 3 and 4 |
 | 5 | [Assurance and What Went Wrong](./05-assurance-and-what-went-wrong.md) | the layers of checking and the review log | `ASSURANCE.md` |
+| 6 | [Single-Trade Sensitivity, and Why Daily Rates Like These Are Not Real](./06-single-trade-sensitivity.md) | honest arithmetic on a hypothetical "good day" return and "microtrade advantage" multiple, and why compounding either one shows the assumption cannot be sustained | `SLLongBook` |
