@@ -45728,20 +45728,34 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.Date&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fastTime</code></td><td><span class="sig">long fastTime = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>getMetaDate</code></td><td><span class="sig">String getMetaDate()</span></td><td class="desc">java.util.Date declares getDate and setDate (day of month), so the metadata date accessors are named getMetaDate and setMetaDate here</td></tr>
+<tr><td><code>setMetaDate</code></td><td><span class="sig">void setMetaDate(String v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>typeName</code></td><td><span class="sig">String typeName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>available</code></td><td><span class="sig">boolean available()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>Date</code></td><td><span class="sig">public Date(java.lang.String s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>Date</code></td><td><span class="sig">public Date(int year, int month, int date, int hrs, int min, int sec)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>Date</code></td><td><span class="sig">public Date(int year, int month, int date, int hrs, int min)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>Date</code></td><td><span class="sig">public Date()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>Date</code></td><td><span class="sig">public Date(long date)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>Date</code></td><td><span class="sig">public Date(int year, int month, int date)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>Date</code></td><td><span class="sig">public Date(int year, int month, int date, int hrs, int min)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>Date</code></td><td><span class="sig">public Date(int year, int month, int date, int hrs, int min, int sec)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fdiv</code></td><td><span class="sig">static long fdiv(long a, long b)</span></td><td class="desc">---- helpers: floor arithmetic and civil calendar (Hinnant days algorithms) ----</td></tr>
+<tr><td><code>fmod</code></td><td><span class="sig">static long fmod(long a, long b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>dayNumber</code></td><td><span class="sig">long dayNumber()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>daysFromCivil</code></td><td><span class="sig">static long daysFromCivil(long yIn, long m, long d)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>civilDoy</code></td><td><span class="sig">static long civilDoy(long days)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>civilYear</code></td><td><span class="sig">static int civilYear(long days)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>civilMonth</code></td><td><span class="sig">static int civilMonth(long days)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>civilDay</code></td><td><span class="sig">static int civilDay(long days)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>assemble</code></td><td><span class="sig">void assemble(long year, long month0, long day, long millisOfDayBase)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pad2</code></td><td><span class="sig">static String pad2(int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>dowName</code></td><td><span class="sig">static String dowName(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>monName</code></td><td><span class="sig">static String monName(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="date">Date <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/java/sql/Date.sleela)</span></h2>
@@ -66991,6 +67005,7 @@
 <tr><td><code>separator</code></td><td><span class="sig">static final String separator = &quot;/&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>pathSeparatorChar</code></td><td><span class="sig">static final int pathSeparatorChar = 58</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>pathSeparator</code></td><td><span class="sig">static final String pathSeparator = &quot;:&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>path</code></td><td><span class="sig">String path</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -67001,8 +67016,7 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>File</code></td><td><span class="sig">public File(java.lang.String pathname)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>File</code></td><td><span class="sig">public File(java.lang.String parent, java.lang.String child)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>File</code></td><td><span class="sig">public File(java.net.URI uri)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>File</code></td><td><span class="sig">public File(java.io.File parent, java.lang.String child)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>File</code></td><td><span class="sig">public File(File parent, java.lang.String child)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="filealreadyexistsexception">FileAlreadyExistsException <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.base/java/nio/file/FileAlreadyExistsException.sleela)</span></h2>
@@ -178474,6 +178488,9 @@
 <tr><td><code>in</code></td><td><span class="sig">static Any in = null</span></td><td class="desc">---- BEGIN java declarations (generated by tools/jdk_api_declare.py) ---- constants and static fields (values reflected from the JDK)</td></tr>
 <tr><td><code>out</code></td><td><span class="sig">static Any out = null</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>err</code></td><td><span class="sig">static Any err = null</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>propKeys</code></td><td><span class="sig">static String[] propKeys = new String[64]</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>propVals</code></td><td><span class="sig">static String[] propVals = new String[64]</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>propCount</code></td><td><span class="sig">static int propCount = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -182159,6 +182176,14 @@
 <tr><td><code>MIN_PRIORITY</code></td><td><span class="sig">static final int MIN_PRIORITY = 1</span></td><td class="desc">---- BEGIN java declarations (generated by tools/jdk_api_declare.py) ---- constants and static fields (values reflected from the JDK)</td></tr>
 <tr><td><code>NORM_PRIORITY</code></td><td><span class="sig">static final int NORM_PRIORITY = 5</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>MAX_PRIORITY</code></td><td><span class="sig">static final int MAX_PRIORITY = 10</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>threadCounter</code></td><td><span class="sig">static int threadCounter = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>idCounter</code></td><td><span class="sig">static int idCounter = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tName</code></td><td><span class="sig">String tName</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tPriority</code></td><td><span class="sig">int tPriority = 5</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tDaemon</code></td><td><span class="sig">boolean tDaemon = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tInterrupted</code></td><td><span class="sig">boolean tInterrupted = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tId</code></td><td><span class="sig">long tId = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tTarget</code></td><td><span class="sig">Runnable tTarget = null</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -182167,12 +182192,12 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>Thread</code></td><td><span class="sig">public Thread(java.lang.ThreadGroup group, java.lang.String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>Thread</code></td><td><span class="sig">public Thread(java.lang.String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>Thread</code></td><td><span class="sig">public Thread(java.lang.ThreadGroup group, java.lang.Runnable task, java.lang.String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>Thread</code></td><td><span class="sig">public Thread()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>Thread</code></td><td><span class="sig">public Thread(java.lang.Runnable task)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>Thread</code></td><td><span class="sig">public Thread(java.lang.ThreadGroup group, java.lang.Runnable task)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>Thread</code></td><td><span class="sig">public Thread(Runnable task)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>Thread</code></td><td><span class="sig">public Thread(java.lang.String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>Thread</code></td><td><span class="sig">public Thread(Runnable task, java.lang.String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>initThread</code></td><td><span class="sig">void initThread(Runnable task, String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>Thread</code></td><td><span class="sig">public Thread(java.lang.ThreadGroup group, java.lang.Runnable task, java.lang.String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>Thread</code></td><td><span class="sig">public Thread(java.lang.ThreadGroup group, java.lang.Runnable task, java.lang.String name, long stackSize, boolean inheritInheritableThreadLocals)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>Thread</code></td><td><span class="sig">public Thread(java.lang.ThreadGroup group, java.lang.Runnable task, java.lang.String name, long stackSize)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
@@ -202814,7 +202839,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-11 20:08 UTC.
+<code>/lib</code> tree on 2026-11-11 20:58 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
