@@ -8,7 +8,7 @@
 # with fake sleela/systemctl/launchctl/sc.exe, so it never touches the host.
 # POSIX sh; needs python3 only to validate JSON and run fake tool drivers.
 set -eu
-REPO=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+REPO=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT HUP INT TERM
 
@@ -46,6 +46,8 @@ if [ "${FAKE_SLEELA_FAIL:-0}" = 1 ]; then echo "boom: real pipeline error" >&2; 
 echo "pipeline-ran"
 EOF
 for tool in systemctl launchctl sc.exe; do
+  # the fake script must expand $* at ITS runtime
+  # shellcheck disable=SC2016
   printf '#!/bin/sh\nprintf "%%s\\n" "%s $*" >>"$SCTL_LOG"\n' "$tool" >"$TMP/fake/$tool"
 done
 printf '#!/bin/sh\necho 0\n' >"$TMP/fake/id"

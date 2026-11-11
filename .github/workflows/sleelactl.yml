@@ -50,8 +50,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: ShellCheck sleelactl and its tests (POSIX sh)
-        continue-on-error: true
+      - name: ShellCheck sleelactl and its tests (POSIX sh, all severities)
         run: |
           shellcheck --version
           shellcheck -s sh -f gcc bin/sleelactl tests/sleelactl_cli_test.sh tests/sleelactl_systemctl_scope_test.sh

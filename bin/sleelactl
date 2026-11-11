@@ -48,8 +48,8 @@ VERSION=2.0
 TAB=$(printf '\t')
 
 # --- layout ------------------------------------------------------------------
-SELF=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-ROOT=$(CDPATH= cd -- "$SELF/.." && pwd)
+SELF=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
+ROOT=$(CDPATH='' cd -- "$SELF/.." && pwd)
 
 REGISTRY="$SELF/sleelactl.d/registry.conf"; REGISTRY_SOURCE=beside
 if [ ! -f "$REGISTRY" ]; then
@@ -302,6 +302,11 @@ run_python() {
   else err "Python 3 is required (python3, py -3, or python not found)"; return 3; fi
 }
 python_name() { for _p in python3 py python; do command -v "$_p" >/dev/null 2>&1 && { printf '%s\n' "$_p"; return 0; }; done; printf 'none\n'; }
+count_glob() { # dir ext -> number of regular files dir/*.ext
+  _cg=0
+  for _cg_f in "$1"/*."$2"; do [ -f "$_cg_f" ] && _cg=$((_cg + 1)); done
+  printf '%s\n' "$_cg"
+}
 in_list() { # word comma-list
   _il=",$2,"; case "$_il" in *",$1,"*) return 0 ;; *) return 1 ;; esac
 }
@@ -364,7 +369,11 @@ svc_exec() { # manager scope verb id
   _sx_mgr=$1; _sx_scope=$2; _sx_verb=$3
   _sx_argv=$(svc_argv "$1" "$2" "$3" "$4") || return 3
   # Ids are validated (unit_ok/label_ok) so plain word splitting is safe here.
-  set -f; set -- $_sx_argv; set +f
+  set -f
+  # intentional split of a validated argv (no globbing: set -f)
+  # shellcheck disable=SC2086
+  set -- $_sx_argv
+  set +f
   command -v "$1" >/dev/null 2>&1 || { err "$1 is not available on this host."; return 3; }
   if svc_needs_priv "$_sx_mgr" "$_sx_scope" "$_sx_verb"; then
     if [ "$REGISTRY_SOURCE" = override ] && [ "${SLEELACTL_TRUST_REGISTRY:-0}" != 1 ]; then
@@ -418,7 +427,7 @@ registry_cmd() { # module verb [args]
     list)
       okay "$1 — $(summary_of "$1")"
       if [ -n "$_rg_n" ]; then info "handlers: $_rg_n (ids 0..$((_rg_n - 1)))"; else info "handlers: not declared (handlers= unset)"; fi
-      if [ -n "$_rg_dir" ] && [ -d "$_rg_dir" ]; then info "sources:  $(rel "$_rg_dir")/ ($(ls "$_rg_dir"/*.sleela 2>/dev/null | wc -l | tr -d ' ') .sleela files)"
+      if [ -n "$_rg_dir" ] && [ -d "$_rg_dir" ]; then info "sources:  $(rel "$_rg_dir")/ ($(count_glob "$_rg_dir" sleela) .sleela files)"
       elif [ -n "$_rg_dir" ]; then warn "sources:  $(field "$1" dir)/ not present in this install"; fi
       [ -n "$_rg_demo" ] && info "pipeline: $(rel "$_rg_demo")   (run it: $PROG probe $1)"
       info "load/unload/enable/disable/canProcess are Controller calls inside a SLeeLa program." ;;
@@ -462,7 +471,12 @@ protocol_cmd() { # module verb [args]
     info)
       okay "$1 — $(summary_of "$1")"; info "location: $(rel "$_pr_dir")"
       [ -f "$_pr_dir/README.md" ] && info "see: $(rel "$_pr_dir")/README.md"
-      ls "$_pr_dir"/*.md 2>/dev/null | head -3 | sed 's|.*/|    doc: |' ;;
+      _pr_k=0
+      for _pr_md in "$_pr_dir"/*.md; do
+        [ -f "$_pr_md" ] || continue
+        _pr_k=$((_pr_k + 1)); [ "$_pr_k" -le 3 ] || break
+        say "    doc: ${_pr_md##*/}"
+      done ;;
     validate)
       _pr_t=""
       if [ -f "$_pr_dir/Makefile" ]; then
@@ -851,7 +865,11 @@ cmd_check_registry() { # [--strict]
   IFS='
 '
   for _c_rec in $_c_tmp; do
-    IFS=$TAB; set -- $_c_rec; IFS='
+    IFS=$TAB
+    # intentional split on TAB of a check record (set -f is active)
+    # shellcheck disable=SC2086
+    set -- $_c_rec
+    IFS='
 '
     case "$1" in
       error)   err "line $2: $3"; _c_err=$((_c_err + 1)) ;;
@@ -874,10 +892,12 @@ cmd_check_registry() { # [--strict]
   return 0
 }
 
+# The generated completion is bash code: its $ expansions must stay literal.
+# shellcheck disable=SC2016
 cmd_completion() { # bash|zsh
   case "${1:-}" in bash|zsh) ;; *) usage_die "completion needs 'bash' or 'zsh'" ;; esac
   reg_require
-  _cp_verbs=$(printf '%s ' $(all_verbs) list status natures keys help check-registry where completion version | tr ' ' '\n' | awk 'NF && !s[$0]++' | tr '\n' ' ')
+  _cp_verbs=$({ all_verbs; echo list status natures keys help check-registry where completion version; } | tr ' ' '\n' | awk 'NF && !s[$0]++' | tr '\n' ' ')
   _cp_mods=$(reg_names | tr '\n' ' ')
   [ "$1" = zsh ] && printf 'autoload -U +X bashcompinit && bashcompinit\n'
   printf '# sleelactl %s completion (generated from %s)\n' "$VERSION" "$REGISTRY"

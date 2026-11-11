@@ -72,6 +72,11 @@ writes completions to `<prefix>/share/sleela/completions/`; `sleelactl` is in
 
 ## Portability
 
+The script and its tests must be **ShellCheck-clean at all severities**
+(`shellcheck -s sh`; blocking CI job). Suppress only intentional patterns,
+with a one-line reason ABOVE a bare `# shellcheck disable=SCxxxx`, placed
+directly before the single command it covers.
+
 POSIX sh and POSIX awk only (dash, bash --posix, mawk/BWK awk, `gawk --posix`):
 no `local`, `[[`, arrays, process substitution, `gensub`, or `length(array)`.
 Prefix function-scoped variables (`_rs_`, `_a_`, `_dm_`, ...) because POSIX
