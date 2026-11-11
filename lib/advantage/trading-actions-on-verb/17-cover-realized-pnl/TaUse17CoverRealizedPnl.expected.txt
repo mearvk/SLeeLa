@@ -1,0 +1,19 @@
+== Use case 17: cover and realized profit ==
+  ok   set the borrow rate while flat = 0
+  short 100 @ 5000 on day 0, fee 100 : ok
+  short 50 @ 4800 on day 30, fee 100 : ok
+  cover 80 @ 4500 on day 60, fee 100 : ok
+-- the cover --
+  ok   sale proceeds of the 80 shares covered = 400000
+  ok   profit of that cover = 40000
+  ok   borrow cost paid (80 shares * 60 days * 2) = 9600
+-- what remains --
+  ok   shares short = 70
+  ok   lots = 2
+  ok   first lot shares = 20
+  ok   first lot price = 5000
+  ok   sale proceeds held = 340000
+  ok   realized gross = 40000
+  ok   realized net of fees and borrow = 30100
+  ok   invariants hold
+  checks passed=12 failed=0

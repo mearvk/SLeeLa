@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 13327
+library-source-files: 13335
 library-packages: 121
 module-facade-symbols: 84
-total-symbol-records: 13411
+total-symbol-records: 13419
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -129,8 +129,16 @@ advantage	TaUse12TimeStop.sleela	lib/advantage/trading-actions-on-verb/12-time-s
 advantage	TaUse13FullLifecycle.sleela	lib/advantage/trading-actions-on-verb/13-full-lifecycle/TaUse13FullLifecycle.sleela	source
 advantage	TaUse14DifferentialStress.sleela	lib/advantage/trading-actions-on-verb/14-differential-stress/TaUse14DifferentialStress.sleela	source
 advantage	TaUse15EuclidExhaustive.sleela	lib/advantage/trading-actions-on-verb/15-euclid-exhaustive/TaUse15EuclidExhaustive.sleela	source
+advantage	TaUse16ShortOpenAndAdd.sleela	lib/advantage/trading-actions-on-verb/16-short-open-and-add/TaUse16ShortOpenAndAdd.sleela	source
+advantage	TaUse17CoverRealizedPnl.sleela	lib/advantage/trading-actions-on-verb/17-cover-realized-pnl/TaUse17CoverRealizedPnl.sleela	source
+advantage	TaUse18RefuseLongAndBadInput.sleela	lib/advantage/trading-actions-on-verb/18-refuse-long-and-bad-input/TaUse18RefuseLongAndBadInput.sleela	source
+advantage	TaUse19LossAsymmetry.sleela	lib/advantage/trading-actions-on-verb/19-loss-asymmetry/TaUse19LossAsymmetry.sleela	source
+advantage	TaUse20BorrowCostAndTimeStop.sleela	lib/advantage/trading-actions-on-verb/20-borrow-cost-and-time-stop/TaUse20BorrowCostAndTimeStop.sleela	source
+advantage	TaUse21ShortDifferentialStress.sleela	lib/advantage/trading-actions-on-verb/21-short-differential-stress/TaUse21ShortDifferentialStress.sleela	source
+advantage	TaUse22MirrorLawStress.sleela	lib/advantage/trading-actions-on-verb/22-mirror-law-stress/TaUse22MirrorLawStress.sleela	source
 advantage	SLEuclid.sleela	lib/advantage/trading-actions-on-verb/SLEuclid.sleela	source
 advantage	SLLongBook.sleela	lib/advantage/trading-actions-on-verb/SLLongBook.sleela	source
+advantage	SLShortBook.sleela	lib/advantage/trading-actions-on-verb/SLShortBook.sleela	source
 advantage	SLTradingAggregation.sleela	lib/advantage/trading/SLTradingAggregation.sleela	source
 advantage	SLTradingApproach.sleela	lib/advantage/trading/SLTradingApproach.sleela	source
 advantage	SLTradingArbitrage.sleela	lib/advantage/trading/SLTradingArbitrage.sleela	source

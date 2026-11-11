@@ -1,16 +1,17 @@
 # Trading Actions on Verb
 
-Trading expressed as **verbs** on a long-only position book: `buy`, `sell`,
-`hold` and `flatten`. Fifteen runnable use cases show two families, plus two stress cases:
+Trading expressed as **verbs** on a long-only book (`buy`, `sell`, `hold`,
+`flatten`) and on its mirror, a short-only book (`shortSell`, `cover`, `hold`,
+`coverAll`). Twenty-two runnable use cases show two families, plus the assurance cases:
 
-- **Style: Trading Long** (use cases 1 to 7): how a long position is built,
+- **Style: Trading Long** (use cases 1 to 7; the short side is 16 to 19): how a long position is built,
   trimmed, closed, refused and rebalanced.
-- **Time on Long** (use cases 8 to 13): how long shares have been held, in whole
+- **Time on Long** (use cases 8 to 13; the short side is 20): how long shares have been held, in whole
   days, and what that means for FIFO selling, averages, term and time stops.
 
-Use case 13 joins both over a 500-day life. Use cases 14 and 15 are the
-assurance cases: a differential stress test of the book and an exhaustive test
-of the Euclid routines.
+Use case 13 joins both over a 500-day life. Use cases 14, 15, 21 and 22 are
+the assurance cases: differential stress tests of both books, an exhaustive
+test of the Euclid routines, and the long/short mirror law.
 
 > Illustrative only. Nothing here places an order, reads a market or gives
 > trading, tax or legal advice. All prices are invented integer cents.
@@ -29,7 +30,26 @@ Two phrases were interpreted; correct them if they were meant differently.
 | class | role |
 |-------|------|
 | [`SLLongBook`](./SLLongBook.sleela) | FIFO lots, the four verbs, money, time-on-long queries and `invariantsHold()` |
+| [`SLShortBook`](./SLShortBook.sleela) | the mirror: short-only FIFO lots, `shortSell`/`cover`/`hold`/`coverAll`, a borrow cost per share-day, `markToMarket`, time queries and `invariantsHold()` |
 | [`SLEuclid`](./SLEuclid.sleela) | `gcd`, `gcdAll`, `lcm`, `egcd` (Bezout), `canFill` (closed form) and `canFillScan` (reference), `isqrt`, `distSq`, `dist`, `nearestIndex` |
+
+### Short book
+
+`SLShortBook` is the mirror: it sells first and covers later, profit is sale price
+minus cover price, and it is short only (a cover above the shares short is
+refused, code 3). Codes 0 to 8 mean the same as below with `cover` for `sell`;
+code 9 means the borrow rate cannot change while any share is short. Borrow cost
+is `borrowRate` cents per share per day, charged on covered shares for the days
+they were short; `borrowAccrued(today)` shows what is owed on open lots.
+`realizedNet` for the short book is proceeds covered - cover cost - fees - borrow
+cost paid. `markToMarket(price)` is proceeds held - shares short * price, which
+can be below minus the proceeds, because a rising price has no upper limit.
+
+**Mirror law.** For the same days, quantities, prices and fees, a short sale
+matches a buy and a cover matches a sell; every status code, the shares held,
+the lot count, the ages and the cost basis equal the sale proceeds are the same,
+and the short profit is exactly minus the long profit. Use case 22 checks this
+after every one of 1,200 random steps.
 
 ### Verbs and status codes
 
@@ -71,6 +91,13 @@ Two phrases were interpreted; correct them if they were meant differently.
 | 13 | both | [`13-full-lifecycle`](./13-full-lifecycle/TaUse13FullLifecycle.sleela) | 500 days, invariants after every action, independent reconciliation |
 | 14 | both, assurance | [`14-differential-stress`](./14-differential-stress/TaUse14DifferentialStress.sleela) | 1,200 random verbs against an independent per-share shadow model; every observable agrees after every step, refusals change nothing |
 | 15 | Euclid, assurance | [`15-euclid-exhaustive`](./15-euclid-exhaustive/TaUse15EuclidExhaustive.sleela) | each fast routine against a slower method over every small case, plus the exact-comparison ceiling |
+| 16 | short, style | [`16-short-open-and-add`](./16-short-open-and-add/TaUse16ShortOpenAndAdd.sleela) | short lots, exact average sale price with its remainder |
+| 17 | short, style | [`17-cover-realized-pnl`](./17-cover-realized-pnl/TaUse17CoverRealizedPnl.sleela) | FIFO cover, profit = sale price - cover price, borrow cost paid on cover |
+| 18 | short, style | [`18-refuse-long-and-bad-input`](./18-refuse-long-and-bad-input/TaUse18RefuseLongAndBadInput.sleela) | a short-only book never goes long; refusals change nothing; the rate is frozen while short |
+| 19 | both, style | [`19-loss-asymmetry`](./19-loss-asymmetry/TaUse19LossAsymmetry.sleela) | a long loss is capped by its cost, a short loss is not capped by its proceeds; the mirror law in one example |
+| 20 | short, time | [`20-borrow-cost-and-time-stop`](./20-borrow-cost-and-time-stop/TaUse20BorrowCostAndTimeStop.sleela) | exact borrow accrual per share-day, paid on cover; a time stop for the short side |
+| 21 | short, assurance | [`21-short-differential-stress`](./21-short-differential-stress/TaUse21ShortDifferentialStress.sleela) | 1,200 random verbs against an independent per-share shadow with borrow cost |
+| 22 | both, assurance | [`22-mirror-law-stress`](./22-mirror-law-stress/TaUse22MirrorLawStress.sleela) | the same random verbs drive both books; every code equal, short profit exactly minus long profit |
 
 ## Engineering notes
 
@@ -140,11 +167,11 @@ and year. Treat this as an illustration of the boundary, not as tax advice.
 
 ## Assurance
 
-Four independent layers:
+Five independent layers:
 
 1. **Self-checks.** Every use case prints `ok` or `FAIL` per check and ends with
    `checks passed=N failed=0`.
-2. **Independent oracle.** Expected values for use cases 1 to 13 were computed
+2. **Independent oracle.** Expected values for use cases 1 to 13 and 16 to 20 were computed
    by a separate Python model of the same rules and compared with what SLeeLa
    printed; one wrong expectation of mine (use case 11) was found and fixed that way.
 3. **Differential testing.** Use case 14 runs 1,200 random verbs (four fixed
@@ -152,8 +179,13 @@ Four independent layers:
    model that stores one entry per share and shares no code with the lot-based
    book, and the outcome tallies were also reproduced in Python. Use case 15
    checks every Euclid routine against a slower method over all small cases.
-4. **Expected-output gate.** `test-suites/test-trading-actions.sh` runs all
-   fifteen, compares each with its `.expected.txt`, and fails on any `FAIL` line.
+4. **Mutation checks.** The short-side stress cases were run against three
+   deliberately broken copies of `SLShortBook` (borrow off by one day, sale
+   proceeds off by one cent with a flipped profit sign, a cover allowed one share
+   too many); each was caught (8, 8 and 13 failed checks) and the original
+   passes.
+5. **Expected-output gate.** `test-suites/test-trading-actions.sh` runs all
+   twenty-two, compares each with its `.expected.txt`, and fails on any `FAIL` line.
 
 ```
 bash test-suites/test-trading-actions.sh
@@ -161,8 +193,8 @@ bash test-suites/test-trading-actions.sh
 
 Set `UPDATE=1` to rewrite the expected files after reviewing a deliberate change.
 
-Limits of the assurance: the stress cases do not generate code 8 (size bounds),
-which use case 4 covers by hand; and the VM comparison behaviour above 2^53 was
+Limits of the assurance: the stress cases do not generate code 8 (size bounds) or
+code 9, which use cases 4 and 18 cover by hand; and the VM comparison behaviour above 2^53 was
 measured on the committed `working-binaries/sleela`, not proven from its source.
 
 ## Review log (second look)

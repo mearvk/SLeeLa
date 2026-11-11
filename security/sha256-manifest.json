@@ -1434,12 +1434,44 @@
       "sha256": "6e214bc64f5bb8cddb5fde2e8d8daf963e5c9b35560a4747bf76e00537bcb026"
     },
     {
+      "path": "lib/advantage/trading-actions-on-verb/16-short-open-and-add/TaUse16ShortOpenAndAdd.sleela",
+      "sha256": "5378475fd222c2a358102fef7d7ec109221cd4365c7c61de177b0ab757e22822"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/17-cover-realized-pnl/TaUse17CoverRealizedPnl.sleela",
+      "sha256": "209ff58e34a41c1712351d6f2cfec88379a77d4c2a3675d0b41ad5bb8b96f59f"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/18-refuse-long-and-bad-input/TaUse18RefuseLongAndBadInput.sleela",
+      "sha256": "b6d19c719c5ab2a690a490db6bc544f7206e0968a6d30d3046e5b6b069842373"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/19-loss-asymmetry/TaUse19LossAsymmetry.sleela",
+      "sha256": "c70c0f982b4b1dcaa596019fffd6993374f82ee6178afe3ec643be20b8ec7da1"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/20-borrow-cost-and-time-stop/TaUse20BorrowCostAndTimeStop.sleela",
+      "sha256": "cabafe78c7a081fb61253a7db3efc90ef0be47acbcd0c0f2be7670bba67395ae"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/21-short-differential-stress/TaUse21ShortDifferentialStress.sleela",
+      "sha256": "26f89c9c2a0f1e3b3c75770d6ffa52fc6c55f466a2e005ed58194a373986d53d"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/22-mirror-law-stress/TaUse22MirrorLawStress.sleela",
+      "sha256": "e1ddb83fcf0e4f065bdcf1e69e157df86a00720d639c42165256ceb144bac741"
+    },
+    {
       "path": "lib/advantage/trading-actions-on-verb/SLEuclid.sleela",
       "sha256": "38864e285b15c74ddd9c54d683f400a91b640604c1ff93ebbc332f590d043001"
     },
     {
       "path": "lib/advantage/trading-actions-on-verb/SLLongBook.sleela",
       "sha256": "77afd43918c835a51bc0a06c7950776a0bb65ffd9ab08c3dc21d68e29bb79a47"
+    },
+    {
+      "path": "lib/advantage/trading-actions-on-verb/SLShortBook.sleela",
+      "sha256": "b623ae75c71ac67b8989bfd53a5bc497abef7e57629ea0e89932569a23107e7a"
     },
     {
       "path": "lib/advantage/trading/SLTradingAggregation.sleela",
