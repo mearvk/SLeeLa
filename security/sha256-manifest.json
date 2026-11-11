@@ -31739,19 +31739,19 @@
     },
     {
       "path": "lib/java/java/io/ByteArrayInputStream.sleela",
-      "sha256": "f428be6c760e7d44997822c562ff46afbfaf852b07b3da9588169704d36c55fb"
+      "sha256": "0585d82c3b8b3404dce98b6dbc54038fedf51be3af944194200e2cdabe2f34cb"
     },
     {
       "path": "lib/java/java/io/ByteArrayOutputStream.sleela",
-      "sha256": "f9d6c1e553047ecfd824643bb7bc13a09ce1079668ac40e5d46b41984b5a91ff"
+      "sha256": "8bee846ebba64e978e2423bc672456387ec041562dedba7f6b904026af378844"
     },
     {
       "path": "lib/java/java/io/CharArrayReader.sleela",
-      "sha256": "ba6efede11af91e22a360a0e9a10432ae19fe90e1111cf04989145c53523a04f"
+      "sha256": "1101d5ea48c63981878d31a7a349ff422bdccba4ec62bc6a72f6a63a8f8af510"
     },
     {
       "path": "lib/java/java/io/CharArrayWriter.sleela",
-      "sha256": "6d2acc27a2988be8c0c1567be776839692d0056e68986ccdeb4c7332bf50570b"
+      "sha256": "b2dc475c66a5578f586075d7258fcbac7248519b5c22fd52a5007404e07b471d"
     },
     {
       "path": "lib/java/java/io/CharConversionException.sleela",
