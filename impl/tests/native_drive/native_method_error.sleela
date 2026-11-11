@@ -5,7 +5,13 @@ class NativeErrorFixture {
         return value + 1;
     }
 
-    static int main() {
+    static int check() {
         return fail(16);
+    }
+
+    // Syntax 3.0 requires void main; the smoke harness selects check() as
+    // its entry with slvm_find_func() so it can assert the returned value.
+    static void main() {
+        int result = check();
     }
 }

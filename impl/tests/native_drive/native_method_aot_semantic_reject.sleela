@@ -31,10 +31,9 @@ class NativeAotSemanticReject {
         return 0;
     }
 
-    static int main() {
+    static void main() {
         if (1) {
-            return 1;
+            return;
         }
-        return 0;
     }
 }

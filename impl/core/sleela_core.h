@@ -523,6 +523,13 @@ int slvm_emit0(SLVM* vm, SLOp op);
 void slvm_patch(SLVM* vm, int at, int32_t a);
 int slvm_here(SLVM* vm);
 void slvm_set_entry(SLVM* vm, int func_index);
+/* Returns the index of the function whose qualified name (e.g. "Class::method")
+ * matches name exactly, or -1 when absent or arguments are invalid. Intended
+ * for embedders/tests that select a non-main entry with slvm_set_entry(). */
+int slvm_find_func(const SLVM* vm, const char* name);
+/* Load an artifact and select the named function as its entry. Returns NULL
+ * (freeing any partial VM) when the load fails or the function is absent. */
+SLVM* slvm_load_file_with_entry(const char* path, const char* entry_name);
 SLResult slvm_run(SLVM* vm);
 SLValue slvm_result(SLVM* vm);
 /* Returns 1 and copies the last uncaught language exception payload when one

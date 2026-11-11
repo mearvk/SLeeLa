@@ -157,7 +157,9 @@ class MethodBodyEmitter {
         if (auto f=dynamic_cast<const ForStmt*>(s)) {
             ind(); out << "for ("; if (f->init) inlineStmt(f->init.get()); out << "; ";
             if (f->cond && typeOf(f->cond.get())=="String") throw std::runtime_error("String for-condition is not supported");
-            if (f->cond) expr(f->cond.get()); out << "; "; if (f->update) inlineStmt(f->update.get());
+            if (f->cond) expr(f->cond.get());
+            out << "; ";
+            if (f->update) inlineStmt(f->update.get());
             out << ")\n"; stmt(f->body.get()); return;
         }
         throw std::runtime_error("native emitter encountered an unsupported statement");

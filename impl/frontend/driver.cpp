@@ -167,7 +167,9 @@ static std::string shellQuote(const std::string&s){
     std::string q="'";for(char c:s){if(c=='\'')q+="'\\''";else q+=c;}return q+"'";
 #endif
 }
-static int runCommand(const std::string&cmd){std::cout<<"[defender] $ "<<cmd<<"\n";return std::system(cmd.c_str())==0?0:1;}
+// The command echo is a diagnostic: keep it on stderr so stdout stays clean for
+// machine-consumed output (e.g. `sleela aot --emit` C source piped to a compiler).
+static int runCommand(const std::string&cmd){std::cerr<<"[defender] $ "<<cmd<<"\n";return std::system(cmd.c_str())==0?0:1;}
 // ---------------------------------------------------------------------------
 // Defender opt-in / safety gates.
 //

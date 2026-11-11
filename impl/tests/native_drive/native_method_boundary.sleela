@@ -15,7 +15,7 @@ class NativeBoundaryFixture {
         return point.x + point.y;
     }
 
-    static int main() {
+    static int check() {
         int[] values = new int[2];
         values[0] = 10;
         values[1] = 20;
@@ -23,5 +23,11 @@ class NativeBoundaryFixture {
         point.x = 5;
         point.y = 7;
         return arrayTotal(values) + pointTotal(point);
+    }
+
+    // Syntax 3.0 requires void main; the smoke harness selects check() as
+    // its entry with slvm_find_func() so it can assert the returned value.
+    static void main() {
+        int result = check();
     }
 }

@@ -20,11 +20,17 @@ class NativeAotFixture {
         return value;
     }
 
-    static int main() {
+    static int check() {
         echo("native");
         if (positive(sum(20, 22)) && scale(1.0) > 0.0) {
             return sum(20, 22);
         }
         return 0;
+    }
+
+    // Syntax 3.0 requires void main; the smoke harness selects check() as
+    // its entry with slvm_find_func() so it can assert the returned value.
+    static void main() {
+        int result = check();
     }
 }

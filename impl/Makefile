@@ -915,7 +915,7 @@ int main(int argc, char **argv) {
         fprintf(stderr, "usage: native_method_not_handled_smoke <artifact> <plugin>\n");
         return 2;
     }
-    vm = slvm_load_file(argv[1]);
+    vm = slvm_load_file_with_entry(argv[1], "NativeDeclineFixture::check");
     if (!vm) goto done;
     if (slvm_get_func_native_metadata(vm, 0, &flags, &abi,
                                       &identity, &signature) != 1 ||
@@ -962,9 +962,9 @@ test-native-method-aot: $(SLEELA_BIN) $(NATIVE_METHOD_AOT_SMOKE) $(NATIVE_METHOD
 	$(NATIVE_METHOD_AOT_SMOKE) $(NATIVE_METHOD_AOT_ARTIFACT) $(abspath $(NATIVE_METHOD_AOT_PLUGIN))
 	$(NATIVE_METHOD_NOT_HANDLED_SMOKE) $(NATIVE_METHOD_NOT_HANDLED_ARTIFACT) $(abspath $(NATIVE_METHOD_AOT_PLUGIN))
 	$(NATIVE_METHOD_BOUNDARY_SMOKE) $(NATIVE_METHOD_BOUNDARY_ARTIFACT) $(NATIVE_METHOD_ERROR_ARTIFACT) $(abspath $(NATIVE_METHOD_BOUNDARY_PLUGIN))
-	@cd $(CURDIR)/.. && export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; log="$(CURDIR)/$(BUILD)/native_method_aot_semantic_reject.log"; if $(CURDIR)/$(SLEELA_BIN) aot --list impl/$(NATIVE_METHOD_AOT_SEMANTIC_REJECT_SOURCE) > "$log" 2>&1; then echo "native-method-aot: semantic-invalid source was incorrectly accepted" >&2; cat "$log" >&2; exit 1; fi; grep -q "must be bool" "$log" || { echo "native-method-aot: rejection did not come from semantic boolean-condition validation" >&2; cat "$log" >&2; exit 1; }; echo "native-method-aot: semantic-invalid source correctly refused"
+	@cd $(CURDIR)/.. && export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; log="$(CURDIR)/$(BUILD)/native_method_aot_semantic_reject.log"; if $(CURDIR)/$(SLEELA_BIN) aot --list impl/$(NATIVE_METHOD_AOT_SEMANTIC_REJECT_SOURCE) > "$$log" 2>&1; then echo "native-method-aot: semantic-invalid source was incorrectly accepted" >&2; cat "$$log" >&2; exit 1; fi; grep -q "must be bool" "$$log" || { echo "native-method-aot: rejection did not come from semantic boolean-condition validation" >&2; cat "$$log" >&2; exit 1; }; echo "native-method-aot: semantic-invalid source correctly refused"
 	@cd $(CURDIR)/.. && export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; log="$(CURDIR)/$(BUILD)/native_method_aot_library.log"; $(CURDIR)/$(SLEELA_BIN) aot --list impl/$(NATIVE_METHOD_AOT_LIBRARY_SOURCE) > "$$log" 2>&1 || { cat "$$log" >&2; exit 1; }; grep -q "all 1 @native method(s) are translatable" "$$log" || { echo "native-method-aot: library unit without main was not accepted" >&2; cat "$$log" >&2; exit 1; }; echo "native-method-aot: library unit without main correctly accepted"
-# Explicit opt-in regression target; it remains outside default and CI aggregates.
+# Native call/close concurrency regression; part of `make test` and the Native Drive CI workflow.
 $(NATIVE_CONCURRENCY_FIXTURE): $(NATIVE_CONCURRENCY_FIXTURE_SOURCE) ../os-level-support/loader/native_loader.h | $(BUILD)
 	$(CC) $(CFLAGS) $(NATIVE_CONCURRENCY_FIXTURE_CFLAGS) -DSL_NATIVE_PLUGIN_BUILD $(NATIVE_CONCURRENCY_FIXTURE_FLAGS) -I../os-level-support/loader $< -o $@
 $(NATIVE_CONCURRENCY_SMOKE_OBJ): $(NATIVE_CONCURRENCY_SOURCE) core/sleela_core.h | $(BUILD)
@@ -1096,7 +1096,7 @@ $(BUILD)/driver_sleelvac.o: frontend/driver.cpp frontend/compiler.h frontend/art
 $(BUILD):
 	mkdir -p $(BUILD)
 
-test: verify-security test-osls-isa test-osls-vm test-java-runtime test-java-authorship test-system-monitor test-sleela test-class-dispatch test-design-activity test-regex test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-common-rails test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-astrophysics test-sociology test-unsigned-integer test-runtime test-memmgr
+test: verify-security test-osls-isa test-osls-vm test-java-runtime test-java-authorship test-system-monitor test-sleela test-class-dispatch test-design-activity test-regex test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-common-rails test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-astrophysics test-sociology test-unsigned-integer test-runtime test-memmgr test-native-ipc-handles test-native-call test-native-method-metadata test-native-method-aot test-native-concurrency
 test-osls-isa:
 	@cd $(CURDIR)/.. && $(PYTHON) tools/verify-osls-isa-extension.py
 

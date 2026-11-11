@@ -188,7 +188,7 @@ static int authorize_exact_path(const char *path, void *context) {
 }
 
 static int check_ordinary_native_dispatch(const char *artifact, const char *plugin) {
-    SLVM *vm = slvm_load_file(artifact);
+    SLVM *vm = slvm_load_file_with_entry(artifact, "MathEngine::check");
     SLNativeHandle handle = SL_NATIVE_HANDLE_INVALID;
     SLValue result;
     int ok = 0;
@@ -219,7 +219,7 @@ done:
 }
 
 static int check_interpreted_fallback(const char *artifact) {
-    SLVM *vm = slvm_load_file(artifact);
+    SLVM *vm = slvm_load_file_with_entry(artifact, "MathEngine::check");
     SLValue result;
     int ok = 0;
     if (!vm) return 0;

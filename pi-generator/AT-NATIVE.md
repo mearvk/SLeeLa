@@ -17,8 +17,12 @@ sleela aot --emit source.sleela
 
 The AOT subset is deliberately narrow and fail-closed. It accepts only the
 constructs explicitly supported by the emitter; unsupported constructs are
-refused. The emitter is whole-program, not an independent per-method ABI
-emitter. `@native` is not an IPC or process-launch annotation.
+refused. The emitter produces a typed-ABI v1 plugin with one independently
+addressable entry point per `@native` method, keyed by the canonical method
+signature persisted in artifact v4. `sleelactl build native-drive file.sleela
+-o file.so` compiles that plugin; a host binds it explicitly with
+`slvm_bind_native_method()`. `@native` is not an IPC or process-launch
+annotation.
 
 ## 2. Existing syntax-3.0 in-process native dispatch
 

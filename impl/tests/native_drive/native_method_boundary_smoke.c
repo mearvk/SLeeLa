@@ -19,7 +19,7 @@ static int bind_plugin(SLVM *vm, const char *plugin, SLNativeHandle *handle) {
 }
 
 static int check_composite_fallback(const char *artifact, const char *plugin) {
-    SLVM *vm = slvm_load_file(artifact);
+    SLVM *vm = slvm_load_file_with_entry(artifact, "NativeBoundaryFixture::check");
     SLNativeHandle handle = SL_NATIVE_HANDLE_INVALID;
     SLValue result;
     uint32_t flags = 0, abi = 0;
@@ -60,7 +60,7 @@ done:
 }
 
 static int check_plugin_error_is_not_fallback(const char *artifact, const char *plugin) {
-    SLVM *vm = slvm_load_file(artifact);
+    SLVM *vm = slvm_load_file_with_entry(artifact, "NativeErrorFixture::check");
     SLNativeHandle handle = SL_NATIVE_HANDLE_INVALID;
     int bound = 0, ok = 0;
     if (!vm) return 0;
@@ -83,7 +83,7 @@ done:
 }
 
 static int check_denied_path_cannot_bind(const char *artifact, const char *plugin) {
-    SLVM *vm = slvm_load_file(artifact);
+    SLVM *vm = slvm_load_file_with_entry(artifact, "NativeErrorFixture::check");
     SLNativeHandle handle = SL_NATIVE_HANDLE_INVALID;
     SLValue result;
     int ok = 0;

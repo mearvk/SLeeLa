@@ -3,7 +3,13 @@ class Callback {
     static int receive(int value) { return value + 1; }
 }
 class NativeDriveCompile {
-    static int main() {
+    // Bytecode fallback for nativeCall(module, "fallback", 7): the plugin
+    // exports no "fallback", so the VM must run this method (7 * 3 = 21).
+    static int fallback(int value) {
+        return value * 3;
+    }
+
+    static int check() {
         int module = nativeOpen("@NATIVE_PLUGIN_PATH@");
         int nativeResult = nativeCall(module, "twice", 21);
         int fallbackResult = nativeCall(module, "fallback", 7);
@@ -20,5 +26,11 @@ class NativeDriveCompile {
             highSurrogate != 0xd83d || lowSurrogate != 0xde00 || unitZ != 0x005a)
             return -1;
         return nativeResult + fallbackResult + callbackResult;
+    }
+
+    // Syntax 3.0 requires void main; the smoke harness selects check() as
+    // its entry with slvm_find_func() so it can assert the returned value.
+    static void main() {
+        int result = check();
     }
 }

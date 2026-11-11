@@ -718,6 +718,21 @@ int slvm_emit0(SLVM* vm, SLOp op) { return slvm_emit(vm, op, 0); }
 void slvm_patch(SLVM* vm, int at, int32_t a) { if (at >= 0 && at < vm->codelen) vm->code[at].a = a; }
 int slvm_here(SLVM* vm) { return vm->codelen; }
 void slvm_set_entry(SLVM* vm, int fi) { vm->entry = fi; }
+int slvm_find_func(const SLVM* vm, const char* name) {
+    if (!vm || !name) return -1;
+    for (int i = 0; i < vm->nfunc; i++)
+        if (vm->funcs[i].name && strcmp(vm->funcs[i].name, name) == 0) return i;
+    return -1;
+}
+SLVM* slvm_load_file_with_entry(const char* path, const char* entry_name) {
+    SLVM* vm = slvm_load_file(path);
+    int fi;
+    if (!vm) return NULL;
+    fi = slvm_find_func(vm, entry_name);
+    if (fi < 0) { slvm_free(vm); return NULL; }
+    slvm_set_entry(vm, fi);
+    return vm;
+}
 SLValue slvm_result(SLVM* vm) { return vm->last_result; }
 int slvm_uncaught_exception(SLVM* vm, SLValue* out_exception) {
     if (!vm || !out_exception || !vm->has_last_exception) return 0;

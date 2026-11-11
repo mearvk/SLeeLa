@@ -23,14 +23,14 @@ int main(int argc, char **argv) {
     }
     /* First execute the same artifact without a native binding. OP_CALL must
      * retain its bytecode path when no plugin method is bound. */
-    fallback_vm = slvm_load_file(argv[1]);
+    fallback_vm = slvm_load_file_with_entry(argv[1], "NativeAotFixture::check");
     if (!fallback_vm || slvm_run(fallback_vm) != SLR_OK) goto done;
     fallback_result = slvm_result(fallback_vm);
     if (fallback_result.type != SL_INT || fallback_result.as.i != 42) goto done;
     slvm_free(fallback_vm);
     fallback_vm = NULL;
 
-    vm = slvm_load_file(argv[1]);
+    vm = slvm_load_file_with_entry(argv[1], "NativeAotFixture::check");
     if (!vm) goto done;
     if (slvm_get_func_native_metadata(vm, 0, &flags, &abi,
                                       &identity, &signature) != 1 ||

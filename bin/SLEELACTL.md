@@ -66,6 +66,7 @@ sleelactl info math                 # how the math subject is reached (import ma
 sleelactl info native-drive
 sleelactl build native-drive main.c helper.c -o build/app
 sleelactl build native-drive plugin.cpp --kind shared --require-sleela-abi -o build/plugin.so
+sleelactl build native-drive hot.sleela --require-sleela-abi -o build/hot.so   # @native methods -> typed-ABI plugin
 sleelactl run native-drive --capture -- build/app
 sleelactl inspect native-drive xclass --mode info Example.xclass
 sleelactl inspect native-drive service --name worker --executable /opt/worker --working-directory /var/lib/worker
@@ -82,13 +83,20 @@ not load the SHEET-registered native subjects, so `run` is the one faithful
 execution verb. The first registered subject is `math`.
 
 The `native-drive` tool builds multi-unit C/C++ executables and shared
-libraries, compiles the supported SLeeLa AOT subset, executes processes without
-an implicit shell, and routes XClass operations through the production loader.
-Use `sleelactl inspect native-drive service ...` to render or explicitly install
-a hardened systemd unit. The VM owns an authorized, bounded native-module
-lifecycle API; bytecode dispatch, typed SLeeLa values, interpreter fallback,
-and parser-enforced process annotations remain future compiler/runtime work. See
-[Native Drive](../impl/native-drive/README.md).
+libraries, compiles the `@native` methods of a `.sleela` file into a typed-ABI
+v1 plugin (one entry point per method; `--kind shared` is the default for
+`.sleela`), executes processes without an implicit shell, and routes XClass
+operations through the production loader. `sleelactl` passes its resolved
+`sleela` CLI to the driver, so a fresh `impl/build/sleela` works without PATH
+setup. Use `sleelactl inspect native-drive service ...` to render or explicitly
+install a hardened systemd unit.
+
+The VM owns an authorized, bounded native-module lifecycle API with typed
+scalar/UTF-8 dispatch and bytecode fallback, and a host may bind `@native`
+methods explicitly (`slvm_bind_native_method()`). Parser-enforced process
+annotations remain future compiler/runtime work. See
+[Native Drive](../impl/native-drive/README.md) and
+[`@native` dispatch](../impl/native-drive/AT-NATIVE-DISPATCH.md).
 
 `sleelactl <verb> all` applies the verb to every module whose nature accepts it
 (e.g. `sleelactl enable all` enables the daemons; `sleelactl build all` builds

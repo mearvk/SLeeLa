@@ -299,7 +299,7 @@ int main(int argc, char **argv) {
 
     /* This test intentionally loads compiler-produced bytecode rather than
      * assembling opcodes in C. It exercises source -> artifact -> VM -> plugin. */
-    vm = slvm_load_file(argv[1]);
+    vm = slvm_load_file_with_entry(argv[1], "NativeDriveCompile::check");
     if (!vm) {
         fprintf(stderr, "could not load compiled Native Drive artifact: %s\\n", argv[1]);
         return 2;
@@ -331,7 +331,7 @@ int main(int argc, char **argv) {
     /* Re-load the same compiler-produced artifact with a deliberately
      * mismatched allowlist. Source-level nativeOpen must fail closed before
      * any plugin code is entered. */
-    vm = slvm_load_file(argv[1]);
+    vm = slvm_load_file_with_entry(argv[1], "NativeDriveCompile::check");
     if (!vm) {
         fprintf(stderr, "could not reload artifact for authorization-denial check\\n");
         return 2;
@@ -352,7 +352,7 @@ int main(int argc, char **argv) {
 
     /* A trusted module path is not enough to authorize callback execution.
      * The host must separately allow the exact SLeeLa callback name. */
-    vm = slvm_load_file(argv[1]);
+    vm = slvm_load_file_with_entry(argv[1], "NativeDriveCompile::check");
     if (!vm) {
         fprintf(stderr, "could not reload artifact for callback-policy denial check\\n");
         return 2;

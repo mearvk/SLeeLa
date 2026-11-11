@@ -1,6 +1,6 @@
 # Automatic VM dispatch for `@native` methods
 
-**Status: Per-method ABI-v1 C source emission is implemented on branch `feat/native-method-aot-emitter-2026-11-10`; local compile/load conformance remains pending.**
+**Status (2026-11-11, `master`): per-method ABI-v1 plugin emission, artifact-v4 method metadata, explicit host binding, and ordinary-call dispatch are on `master`. The generated plugin is compiled, loaded, bound, and dispatched by `make -C impl test-native-method-aot`, which runs with the other native targets in `make test` and in the Native Drive CI workflow on Linux. macOS/Windows execution of these VM targets is still outstanding.**
 
 The compiler now persists method-level `@native` identity in artifact format
 v4. The VM records annotation/static-or-instance flags, the method ABI version,
@@ -14,8 +14,8 @@ The public metadata registration/readback API is
 The local regression target is `make -C impl test-native-method-metadata`;
 it checks compiler-emitted static method metadata, v4 save/load,
 ordinary-function zero metadata, digest corruption rejection, and v3
-interpreted-only compatibility. No CI workflow is needed or
-invoked for this test.
+interpreted-only compatibility. It runs in `make test` and in the
+Native Drive CI workflow (Linux).
 
 Authorized host binding and ordinary-call dispatch now use the explicit APIs
 `slvm_bind_native_method()` and `slvm_unbind_native_method()`. A binding is
@@ -27,15 +27,25 @@ binding exists and the arguments fit the scalar/UTF-8 ABI; NOT_HANDLED and
 unsupported VM-owned arguments retain the original bytecode path. Plugin,
 stale-handle, and ABI failures remain errors.
 
-The focused opt-in test verifies unbound bytecode behavior and ordinary
-source-level calls reaching an authorized plugin export. The new AOT emitter
-generates per-method C entry points, but a generated-plugin build/load test and
-broader platform/concurrency conformance remain outstanding. No CI workflow is
-required or invoked.
+The metadata test verifies unbound bytecode behavior and ordinary
+source-level calls reaching an authorized plugin export. `test-native-method-aot`
+compiles the emitter output into a shared library, loads it under an exact-path
+authorizer, binds every annotated method, and checks int64, double, bool, and
+UTF-8 dispatch plus NOT_HANDLED, composite-argument, handled-error, and
+denied-path behavior. `test-native-concurrency` covers call/close ordering.
+Cross-platform (macOS/Windows) VM execution and race stress remain outstanding.
 
-This document specifies the missing connection between the source-level
-`@native` annotation and the existing VM native-module dispatcher. It does not
-claim that annotated methods are automatically compiled, loaded, or dispatched.
+The fixtures declare `static void main()` (required by the semantic checker)
+and put the asserted value in `static int check()`; harnesses select that entry
+with `slvm_load_file_with_entry(path, "Class::check")`. Static field
+initialisers are emitted into `main`, so a fixture that relies on static state
+initialises it inside `check()`.
+
+This document specifies the connection between the source-level `@native`
+annotation and the VM native-module dispatcher. Annotated methods are not
+automatically compiled, loaded, or bound by `sleela run`; the host does that
+explicitly (for example `sleelactl build native-drive file.sleela -o file.so`
+followed by an authorized open and `slvm_bind_native_method()`).
 
 ## 1. Existing mechanisms (keep them distinct)
 
@@ -207,8 +217,9 @@ argument shape is outside the negotiated ABI before native execution begins.
    VM-owned composite reaches the typed ABI. A separate handled-error case
    requires the plugin failure to propagate rather than invoke bytecode, and
    a deny-all authorizer verifies that an annotated method cannot open or bind
-   a denied module and still executes its unbound bytecode body. Cross-platform
-   execution, race stress, and the remaining failure matrix still need to run.
+   a denied module and still executes its unbound bytecode body. These targets
+   pass on Linux and are gated in CI; macOS/Windows execution, race stress, and
+   the remaining failure matrix still need to run.
 
 ## 6. Acceptance tests
 
@@ -240,10 +251,9 @@ argument shape is outside the negotiated ABI before native execution begins.
 The existing `OP_NATIVE_CALL` path is a foundation to reuse, not the missing
 feature itself. Versioned method metadata, per-method native C source emission,
 host-owned authorized binding, and ordinary `OP_CALL` dispatch are now present.
-The source emitter and generated C compilation target are implemented, but the
-target has not yet been run and generated-plugin load/dispatch conformance is
-still outstanding. Until those checks pass, normal SLeeLa bytecode remains the
-verified baseline and native code must be explicitly compiled, authorized, and
-bound by the host.
+The source emitter, generated-plugin compile/load, and bound dispatch are
+verified on Linux by `test-native-method-aot`. Normal SLeeLa bytecode remains
+the default: native code runs only after it is explicitly compiled, authorized,
+and bound by the host, and macOS/Windows conformance is still to be run.
 
 *MEARVK LLC — 2026.*

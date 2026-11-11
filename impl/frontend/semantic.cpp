@@ -84,7 +84,8 @@ static bool builtin(const std::string&n){
  "ideaCanvasIntensityAt","ideaCanvasHasRenderer","ideaCanvasOpenWindow","ideaCanvasShouldClose",
  "ideaCanvasPresent","ideaCanvasRun",
  "ideaCanvasSetBackendPolicy","ideaCanvasPolicy","ideaCanvasActiveBackend","ideaCanvasGpuAvailable","ideaCanvasMeasuredHz","ideaCanvasMigrate",
- "bigmul","bigadd","bigdivmod","bigsub","bigdiv","bigisqrt"};
+ "bigmul","bigadd","bigdivmod","bigsub","bigdiv","bigisqrt",
+ "nativeOpen","nativeCall","nativeClose"};
  if(s.count(n)!=0) return true;
  // SleelaUI (ui*) bridge built-ins: any ui<Capital>... name is a native UI
  // call lowered by the compiler to OP_UI_CALL (see sleela_ui_ids.h / the
@@ -559,6 +560,24 @@ class Analyzer{
      n=="javaStringHashCode"||n=="javaStringCompareTo") return{Kind::Int,{}};
   if(n=="javaStringSubstring"||n=="javaStringConcat") return{Kind::String,{}};
   if(n=="arrayNew")return{Kind::Array,"array",{}};
+  // Native Drive (syntax 3.0): host-authorized in-process native modules. The
+  // compiler lowers these to OP_NATIVE_OPEN/CALL/CLOSE; the checker validates
+  // version and shape so check/run agree with compile.
+  if(n=="nativeOpen"||n=="nativeCall"||n=="nativeClose"){
+   if(syntax<SyntaxVersion{3,0})err("Native Drive requires #sleela 3.0");
+   if(n=="nativeOpen"){
+    if(argTypes.size()!=1)err("nativeOpen(path) takes exactly one String argument");
+    else if(argTypes[0].kind!=Kind::String&&argTypes[0].kind!=Kind::Unknown)err("nativeOpen(path) requires a String path");
+    return{Kind::Int,{}};
+   }
+   if(n=="nativeClose"){
+    if(argTypes.size()!=1)err("nativeClose(handle) takes exactly one argument");
+    return{Kind::Int,{}};
+   }
+   if(argTypes.size()<2||argTypes.size()>4096)err("nativeCall(handle, method, ...args) requires a handle, method String, and at most 4094 arguments");
+   else if(argTypes[1].kind!=Kind::String&&argTypes[1].kind!=Kind::Unknown)err("nativeCall method name must be a String");
+   return{Kind::Unknown,{}};
+  }
   if(n=="arrayLength")return{Kind::Int,{}};
   if(n=="arrayPush" || n=="arraySet"){
    const size_t valueArg=(n=="arrayPush"?1:2);

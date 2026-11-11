@@ -324,6 +324,9 @@ tool_cmd() { # module verb [args]
   if [ "$1" = "native-drive" ]; then
     script=$(runtime_file "$(handle_of "$1")") || { warn "native-drive script not present in repository or installed runtime"; return 1; }
     : # run_python selects python3, py -3, or a verified Python 3 interpreter
+    # Hand the driver the same sleela CLI sleelactl resolved, so .sleela builds
+    # and xclass inspection work from a fresh repository build without PATH setup.
+    SLEELA="${SLEELA:-$SLEELA_BIN}"; export SLEELA
     verb="$2"
     case "$verb" in
       info) okay "native-drive — $(summary_of "$1")"; info "location: ${script#$ROOT/}"; if [ -f "$ROOT/impl/native-drive/README.md" ]; then info "see: $ROOT/impl/native-drive/README.md"; else info "documentation: impl/native-drive/README.md in the source repository"; fi ;;

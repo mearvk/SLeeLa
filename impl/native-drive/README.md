@@ -14,9 +14,14 @@ tools/sleela-native-drive.py provides:
 - Optional shared-library export validation (both sl_native_abi_version and
   sl_native_run symbols present) before an artifact is published. The loader
   checks the ABI version value when a trusted module is actually opened.
-- SLeeLa @native AOT input through the existing sleela aot --emit contract,
-  followed by a host C compiler. The current emitter covers the whole program
-  when its C backend can translate it; it is not yet a method-only ABI emitter.
+- SLeeLa @native AOT input through sleela aot --emit, followed by a host C
+  compiler. The emitter produces a typed-ABI v1 plugin with one independently
+  addressable entry point per @native method (exact canonical-signature
+  dispatch), so .sleela input builds as a shared library (`--kind shared`, the
+  default for .sleela). The plugin is compiled against native_loader.h, found
+  via `--native-include`, `SLEELA_NATIVE_INCLUDE`, the repository loader tree,
+  or the installed runtime `include/` directory. The sleela CLI is found via
+  `--sleela`, `SLEELA`, `SLEELA_BIN`, PATH, or the repository build.
 - Argument-vector process execution without an implicit shell.
 - Optional stdin-file input, stdout/stderr capture, multi-stage process piping, timeouts,
   and exit-code propagation. Captured output is capped at 16 MiB by default
@@ -40,8 +45,8 @@ argv elements using repeatable --compiler-arg.
     python3 tools/sleela-native-drive.py build plugin.c --kind shared \
       --require-sleela-abi -o build/plugin.so
 
-    # Supported @native SLeeLa AOT subset
-    python3 tools/sleela-native-drive.py build hot.sleela --language sleela -o build/hot
+    # Supported @native SLeeLa AOT subset -> typed-ABI plugin
+    python3 tools/sleela-native-drive.py build hot.sleela --require-sleela-abi -o build/hot.so
 
     # Existing XClass loader; structural reconstruction is not native-code emission
     python3 tools/sleela-native-drive.py xclass --mode info Example.xclass
@@ -61,12 +66,11 @@ for those languages, but it does not lower their full language grammars into
 SLeeLa SLIR. The lib/cpu/SLFrontendC.sleela and SLFrontendCpp.sleela classes
 remain limited architecture/lowering models.
 
-SLeeLa source uses the current sleela aot --emit implementation. The command
-fails closed when annotated methods exceed its supported subset, but the current
-emitter still translates a whole program rather than emitting independent
-method entry points. Native Drive bytecode dispatch is now separate from that
-AOT limitation: syntax 3.0 exposes host-authorized `nativeOpen`, typed
-`nativeCall`, and `nativeClose` built-ins.
+SLeeLa source uses sleela aot --emit. The command fails closed when annotated
+methods exceed its supported subset; otherwise it emits independent per-method
+entry points keyed by canonical signature. Separately, syntax 3.0 exposes
+host-authorized `nativeOpen`, typed `nativeCall`, and `nativeClose` built-ins;
+these are accepted by `sleela check`/`run` as well as `compile`.
 
 XClass is a structural class interchange format. sleela xclass validates and
 reconstructs its represented class structure into the SLeeLa AST; method bodies
@@ -109,13 +113,12 @@ null, bool, int64, double, and UTF-8 String values; it never passes its internal
 a plugin. Returned strings are copied while the module-call lock is held and
 validated before entering the VM String store.
 
-This explicit `nativeCall` route is not yet automatic dispatch for ordinary
-calls to methods annotated `@native`. The annotation currently requests AOT
-handling, while the AOT emitter still produces whole-program C output rather
-than independently addressable method entry points. Automatic dispatch needs
-compiler-emitted method identities, a per-method ABI, and an explicit host-owned
-binding table before the VM can safely select native code for an ordinary
-method call. The required contract and staged implementation plan are in
+Ordinary calls to `@native` methods can also reach native code: the compiler
+persists method identity (artifact v4), the emitter produces per-method entry
+points, and a host that has opened an authorized module binds methods
+explicitly with `slvm_bind_native_method()`. Unbound methods, NOT_HANDLED, and
+VM-composite arguments keep the bytecode path. Nothing is bound automatically
+by `sleela run`; binding remains a host decision. See
 [`AT-NATIVE-DISPATCH.md`](AT-NATIVE-DISPATCH.md).
 
 ### Native-to-SLeeLa callbacks
@@ -211,12 +214,12 @@ it does not automatically restart the workload.
 | Workstream | Current result | Still required |
 |---|---|---|
 | 1. C/C++ frontends | Production system compiler integration, multi-unit builds | Native SLeeLa frontend adapters and SLIR conformance, not a replacement C++ compiler |
-| 2. SLeeLa/XClass translation | Existing @native AOT + XClass loader delegated; syntax 3.0 native built-ins compile to bytecode | Per-method AOT emission, XClass method-body fidelity where encoded |
+| 2. SLeeLa/XClass translation | Per-method @native AOT plugin emission (typed ABI v1) built by native-drive; XClass loader delegated; syntax 3.0 native built-ins checked and compiled to bytecode | XClass method-body fidelity where encoded; automatic host binding policy for `sleela run` |
 | 3. Native build/link/load | Executable/shared builds, legacy and versioned typed ABI validation, VM-owned authorized handle registry | Deployment signature/integrity policy and compiler-generated native method metadata |
 | 4. Process piping | argv execution, stdin file, bounded capture, multi-stage pipe, timeout, exit propagation | Annotation parser/runtime policy and richer stream-routing semantics |
 | 5. systemd | Hardened unit rendering, explicit install/enable/start, status/restart/stop/disable, transactional failed-install recovery, one-level replacement rollback | Generated service manifests and integration tests against a real systemd host |
 | 6. VM dispatch | Appended open/call/close opcodes, scalar/String marshalling, host authorization, stale-handle checks, NOT_HANDLED and VM-composite interpreter fallback | Explicit composite object/array ownership ABI, output parity, concurrency stress tests |
-| 7. Conformance | Loader fixtures, versioned typed ABI, native-to-SLeeLa callback fixture, source compile fixture, opt-in VM dispatch/fallback/callback smoke target, service recovery coverage | Run local test suites and complete compiler/VM/loader/process/systemd matrix, sanitizer and cross-ABI coverage |
+| 7. Conformance | Loader fixtures, versioned typed ABI, native-to-SLeeLa callback fixture, source compile fixture, VM dispatch/fallback/callback, method metadata, generated-plugin AOT, and concurrency targets (in `make test` and Linux CI), service recovery coverage | Run local test suites and complete compiler/VM/loader/process/systemd matrix, sanitizer and cross-ABI coverage |
 
 ## Security invariants
 
