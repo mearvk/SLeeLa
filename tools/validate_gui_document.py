@@ -8,7 +8,11 @@ Three layers, all fail-closed with exact locations:
      commands; accelerators are unique; no declared command is orphaned; every
      command that can discard work (closing a tab, quitting) asks for
      confirmation; each handler exists as a method of SLGuiDocApp; the window
-     theme equals --require-theme (default: white).
+     theme equals --require-theme (default: white); the lock rules: every
+     command that adds content (new, open, save as, insert, replace, delete) has
+     a lockPolicy other than "allowed", only editing commands use "choice", the
+     lock and editor-choice commands stay "allowed" (an admin must be able to
+     unlock), and each toggle item has an activeLabel and the matching command.
   3. Drift check: the window, commands, menus, items, tabs, editor, file dialog,
      listener and readiness must match SLGuiDocSpec.standard() exactly.
   4. Readiness gate (--gate): run guidoc-demo with the sleela binary and require
@@ -29,7 +33,10 @@ import xml.etree.ElementTree as ET
 
 NS = "{urn:sleela:guidoc:1.0}"
 DISCARDING = {"file.closeTab", "app.quit"}
-WHEN = {"always", "hasTab", "dirty", "editable", "selectionEditable", "multipleTabs"}
+WHEN = {"always", "hasTab", "dirty", "editable", "selectionEditable", "multipleTabs", "admin", "choiceReady"}
+ADDS_CONTENT = {"file.new", "file.open", "file.saveAs", "edit.insertLine", "edit.replaceLine", "edit.deleteLine"}
+EDITING = {"edit.insertLine", "edit.replaceLine", "edit.deleteLine"}
+TOGGLE_COMMAND = {"lock": "system.lock", "choice": "system.choice"}
 ACCEL = re.compile(r"^$|^Ctrl\+(Shift\+)?[A-Za-z0-9]$|^Ctrl\+(Shift\+)?Tab$|^F([1-9]|1[0-2])$")
 
 
@@ -56,12 +63,14 @@ def model_of(root):
     for i, c in enumerate(root.findall("%scommands/%scommand" % (NS, NS))):
         m["commands"].append((c.get("id"), c.get("handler"),
                               1 if c.get("confirmsDiscard", "false") in ("true", "1") else 0,
+                              c.get("lockPolicy", "allowed"),
                               "commands/command[%d](%s)" % (i + 1, c.get("id"))))
     for mi, menu in enumerate(root.findall("%smenus/%smenu" % (NS, NS))):
         m["menus"].append((menu.get("id"), menu.get("label")))
         for ii, it in enumerate(menu.findall(NS + "item")):
             m["items"].append((menu.get("id"), it.get("id"), it.get("label"), it.get("command"),
                                it.get("accelerator", ""), it.get("enabledWhen"),
+                               it.get("toggle", ""), it.get("activeLabel", ""),
                                "menus/menu[%d]/item[%d](%s)" % (mi + 1, ii + 1, it.get("id"))))
     t = root.find(NS + "tabs")
     m["tabs"] = (int(t.get("maxTabs")), t.get("dirtyMarker"), t.get("newTabTitle")) if t is not None else None
@@ -70,6 +79,8 @@ def model_of(root):
     m["editor"] = (int(e.get("rows")), tf(e.get("lineNumbers")), tf(e.get("readOnlyWhenUnsplit"))) if e is not None else None
     f = root.find(NS + "fileDialog")
     m["file"] = (f.get("sidecarSuffix"), int(f.get("maxLines")), int(f.get("maxBytes"))) if f is not None else None
+    lk = root.find(NS + "lock")
+    m["lock"] = (lk.get("choiceEdits"),) if lk is not None else None
     r = root.find(NS + "readiness")
     m["readiness"] = (r.get("status"), r.get("release")) if r is not None else None
     l = root.find(NS + "listener")
@@ -79,16 +90,33 @@ def model_of(root):
 
 def cross_field(m, app_source, require_theme, errors):
     cmd_ids = {}
-    for cid, handler, confirms, where in m["commands"]:
+    for cid, handler, confirms, lockp, where in m["commands"]:
         if cid in cmd_ids:
             fail(errors, where, "duplicate command id")
         cmd_ids[cid] = (handler, confirms, where)
+        if cid in ADDS_CONTENT and lockp == "allowed":
+            fail(errors, where, "%s adds content and must not be lockPolicy=allowed" % cid)
+        if lockp == "choice" and cid not in EDITING:
+            fail(errors, where, "only editing commands may use lockPolicy=choice (%s)" % cid)
+        if cid in TOGGLE_COMMAND.values() and lockp != "allowed":
+            fail(errors, where, "%s must stay lockPolicy=allowed so an admin can always unlock" % cid)
         if re.search(r"boolean\s+%s\s*\(" % re.escape(handler), app_source) is None:
             fail(errors, where, "handler %s is not a method of SLGuiDocApp" % handler)
         if cid in DISCARDING and not confirms:
             fail(errors, where, "%s can discard work and must set confirmsDiscard=true" % cid)
     used, accels = set(), {}
-    for menu, iid, label, command, accel, when, where in m["items"]:
+    seen_toggle = {}
+    for menu, iid, label, command, accel, when, toggle, active, where in m["items"]:
+        if toggle:
+            if toggle in seen_toggle:
+                fail(errors, where, "a second %s toggle (first on item %s)" % (toggle, seen_toggle[toggle]))
+            seen_toggle[toggle] = iid
+            if command != TOGGLE_COMMAND[toggle]:
+                fail(errors, where, "a %s toggle must run %s, not %s" % (toggle, TOGGLE_COMMAND[toggle], command))
+            if not active:
+                fail(errors, where, "a toggle item needs an activeLabel")
+        elif active:
+            fail(errors, where, "activeLabel without a toggle")
         if command not in cmd_ids:
             fail(errors, where, "command %s is not declared" % command)
         used.add(command)
@@ -103,6 +131,9 @@ def cross_field(m, app_source, require_theme, errors):
     for cid, (_, _, where) in cmd_ids.items():
         if cid not in used:
             fail(errors, where, "command %s is not reachable from any menu item" % cid)
+    for kind, cmd in TOGGLE_COMMAND.items():
+        if cmd in cmd_ids and kind not in seen_toggle:
+            fail(errors, "menus", "command %s exists but no item toggles it" % cmd)
     ids = [i[1] for i in m["items"]]
     for x in set(ids):
         if ids.count(x) > 1:
@@ -123,7 +154,9 @@ RE_EDITOR = re.compile(r"setEditor\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*;")
 RE_FILE = re.compile(r"setFileDialog\(\s*%s\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*;" % S)
 RE_LIST = re.compile(r"setListener\(\s*%s\s*,\s*(\d+)\s*\)\s*;" % S)
 RE_READY = re.compile(r"setReadiness\(\s*%s\s*,\s*%s\s*\)\s*;" % (S, S))
-RE_CMD = re.compile(r"addCommand\(\s*%s\s*,\s*%s\s*,\s*(\d+)\s*\)\s*;" % (S, S))
+RE_CMD = re.compile(r"addCommand\(\s*%s\s*,\s*%s\s*,\s*(\d+)\s*,\s*%s\s*\)\s*;" % (S, S, S))
+RE_TOGGLE = re.compile(r"addToggle\(\s*%s\s*,\s*%s\s*,\s*%s\s*\)\s*;" % (S, S, S))
+RE_LOCK = re.compile(r"setLock\(\s*%s\s*\)\s*;" % S)
 RE_MENU = re.compile(r"addMenu\(\s*%s\s*,\s*%s\s*\)\s*;" % (S, S))
 RE_ITEM = re.compile(r"addItem\(\s*%s\s*,\s*%s\s*,\s*%s\s*,\s*%s\s*,\s*%s\s*,\s*%s\s*\)\s*;" % ((S,) * 6))
 
@@ -140,7 +173,8 @@ def drift(m, spec_source, errors):
         if len(found) != 1:
             fail(errors, "drift", "standard() must call %s exactly once (found %d)" % (label, len(found)))
             return
-        got = tuple(int(x) if x.isdigit() else x for x in found[0])
+        first = found[0] if isinstance(found[0], tuple) else (found[0],)
+        got = tuple(int(x) if x.isdigit() else x for x in first)
         if got != want:
             fail(errors, "drift", "%s differs: source=%s xml=%s" % (label, got, want))
     if m["window"]:
@@ -155,8 +189,14 @@ def drift(m, spec_source, errors):
         one(RE_LIST, m["listener"], "setListener")
     if m["readiness"]:
         one(RE_READY, m["readiness"], "setReadiness")
-    src_cmds = [(a, b, int(c)) for a, b, c in RE_CMD.findall(body)]
-    xml_cmds = [(a, b, c) for a, b, c, _ in m["commands"]]
+    if m["lock"]:
+        one(RE_LOCK, m["lock"], "setLock")
+    src_toggles = RE_TOGGLE.findall(body)
+    xml_toggles = [(i[1], i[6], i[7]) for i in m["items"] if i[6]]
+    if src_toggles != xml_toggles:
+        fail(errors, "drift", "toggles differ: source=%s xml=%s" % (src_toggles, xml_toggles))
+    src_cmds = [(a, b, int(c), d) for a, b, c, d in RE_CMD.findall(body)]
+    xml_cmds = [(a, b, c, d) for a, b, c, d, _ in m["commands"]]
     if src_cmds != xml_cmds:
         for x in xml_cmds:
             if x not in src_cmds:

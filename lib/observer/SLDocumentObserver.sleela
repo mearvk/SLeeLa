@@ -82,6 +82,8 @@ class SLDocumentObserver {
   int dropped;
   int quarantined;
   int delivered;
+  < 1 while frozen: no content may be added by edit() or by a proposal >
+  int frozen;
   String[] trail;
   int trailCount;
   int trailLost;
@@ -118,7 +120,7 @@ class SLDocumentObserver {
     doc = d;
     ports = new SLObserverPort[14];
     portCount = 0; busy = 0; cycles = 0; proposals = 0; depth = 0;
-    applied = 0; declined = 0; dropped = 0; quarantined = 0; delivered = 0;
+    applied = 0; declined = 0; dropped = 0; quarantined = 0; delivered = 0; frozen = 0;
     trail = new String[64];
     int i = 0;
     while (i < 64) { trail[i] = ""; i = i + 1; }
@@ -322,8 +324,35 @@ class SLDocumentObserver {
 
   < ---- the host edits the document ---------------------------------------- >
 
+  < Freeze the document: edit() and module proposals are refused until thaw(). >
+  < Listeners keep listening; only the writing stops. editAdmin() still works, >
+  < for a host that holds the key (an admin override). >
+  void freeze() {
+    if (frozen == 0) { frozen = 1; audit("frozen"); }
+  }
+  void thaw() {
+    if (frozen == 1) { frozen = 0; audit("thawed"); }
+  }
+  boolean isFrozen() { return frozen == 1; }
+
+  < The admin override of a frozen document. It is the same edit as edit(), >
+  < audited as an override, and it changes nothing about the freeze. >
+  int editAdmin(int op, int line, String text, String source) {
+    int was = frozen;
+    frozen = 0;
+    int r = edit(op, line, text, source);
+    frozen = was;
+    if (r >= 0) { audit("override edit accepted from " + source); }
+    return r;
+  }
+
   < Returns the new revision, or -1 if refused (busy or the document refused). >
   int edit(int op, int line, String text, String source) {
+    if (frozen == 1) {
+      declined = declined + 1;
+      audit("edit refused (frozen) from " + source);
+      return -1;
+    }
     if (busy == 1) {
       declined = declined + 1;
       audit("edit refused (mid-cycle) from " + source);
@@ -468,6 +497,7 @@ class SLDocumentObserver {
 
   void handlePropose(SLObserverPort sender, SLObserverMessage m) {
     proposals = proposals + 1;
+    if (frozen == 1) { decline(sender, "the document is frozen"); return; }
     if (proposals > 2) { decline(sender, "too many proposals this cycle"); return; }
     if (depth >= 3) { decline(sender, "proposal depth limit reached"); return; }
     if (m.getRevision() != doc.revisionNow()) {

@@ -77,6 +77,23 @@ class SLObserverDocument {
   String getLastOld() { return lastOld; }
   String getLastNew() { return lastNew; }
 
+  < Put back a saved state exactly: the lines, their count and the revision >
+  < counter. Used by a host that rolls a session back (it bypasses the >
+  < observer, so the host must tell its own listeners). Refused when the >
+  < saved state does not fit. >
+  boolean restore(String[] saved, int savedCount, int savedRevision) {
+    if (saved == null || savedCount < 0 || savedCount > 64 || savedRevision < 0) { return false; }
+    int i = 0;
+    while (i < 64) {
+      lines[i] = (i < savedCount) ? saved[i] : "";
+      i = i + 1;
+    }
+    count = savedCount;
+    revision = savedRevision;
+    lastOp = -1; lastLine = 0; lastOld = ""; lastNew = "";
+    return true;
+  }
+
   boolean canApply(int op, int line) {
     if (op == 0) { return line >= 0 && line <= count && count < 64; }
     if (op == 1 || op == 2) { return line >= 0 && line < count; }

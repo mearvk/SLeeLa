@@ -8355,7 +8355,7 @@
     },
     {
       "path": "lib/guidoc/SLGuiDocApp.sleela",
-      "sha256": "d39af564e0891a2326a94aeaebe67eaa907fd8bfe1cc21c5bf2acf9324bb9151"
+      "sha256": "16fb00a5b757eaf93e08e2ccdaab9cf87f918a4fd4b132248f36eaa43ae227bb"
     },
     {
       "path": "lib/guidoc/SLGuiDocFile.sleela",
@@ -8375,11 +8375,11 @@
     },
     {
       "path": "lib/guidoc/SLGuiDocSpec.sleela",
-      "sha256": "18dd3406a71a5b79cec48c493aee1486028848f8a4be08c5b56beedf13fef12d"
+      "sha256": "64ed65ce862ba3b1915f2a54f245abbe52f6eb267f93a0b9a7b713fafa7ec1a7"
     },
     {
       "path": "lib/guidoc/SLGuiDocTab.sleela",
-      "sha256": "98e1b1bab2744ec3a62ae114d1b2ce6d2c8a6d45bb221160ac0d238ea7cc2aee"
+      "sha256": "e90d1d783764c691571bc04c463e8dfed3585fc920890aa047faca609ba29b3f"
     },
     {
       "path": "lib/guidoc/SLGuiDocView.sleela",
@@ -8387,15 +8387,15 @@
     },
     {
       "path": "lib/guidoc/SLGuiDocWhite.sleela",
-      "sha256": "f0840e3558fec0ce6f29347ccef275a6192a4015b676fd6b61f5b59901cd45d7"
+      "sha256": "722d01a9846c3a5a9a50f953d2ddb0feb27ddf6146d0c8f5ed514e16acfdd38f"
     },
     {
       "path": "lib/guidoc/guidoc-demo.sleela",
-      "sha256": "ed568fc3543eeebc38f81c82cd47fe0643b2fc79c458d31877037a1bbe8dde3f"
+      "sha256": "bd119451d1d522186bfcae8bafbe2f9968a2061b32c0e9ede090953e91ba1fe2"
     },
     {
       "path": "lib/guidoc/guidoc.sleela",
-      "sha256": "fb696c3d55bdc0d6269cea71208ff8c2b328643d46e0fbeb901b28d8e7370073"
+      "sha256": "da4a021301e13e9c2d715b2528b28526291d1ef44a32a3f9049751654a04bfd0"
     },
     {
       "path": "lib/hotlink/SLHotLinkIntegration.sleela",
@@ -51099,11 +51099,11 @@
     },
     {
       "path": "lib/observer/SLDocumentObserver.sleela",
-      "sha256": "010a242acf85cb4551eaa7524cb5796b9a781c90e8408cc4d2ba57043a56555a"
+      "sha256": "651a611c7fef6fa8c1dde3a6932feb2c91a544db91ac05e1170148605d5c284f"
     },
     {
       "path": "lib/observer/SLObserverDocument.sleela",
-      "sha256": "9c59bf457c5cdf4b326469c86f4518adcf9d265360d0bf97aae42894636b01a3"
+      "sha256": "fe6c2fa006c85fc38d015e431cb3d6414aeedf3cb20b00ce823f7e21dd59f1d1"
     },
     {
       "path": "lib/observer/SLObserverGuardModule.sleela",
@@ -51131,7 +51131,7 @@
     },
     {
       "path": "lib/observer/observer-demo.sleela",
-      "sha256": "58cf8ddecad36159e2f15e9c540e164d2b6c45781eefc299e3ef60348b4a121d"
+      "sha256": "4c2fc9b48920ddb4e27b86777606986a7f82484193a038b7f08aee44826c69ca"
     },
     {
       "path": "lib/observer/observer-gui-demo.sleela",

@@ -3,7 +3,9 @@
    Definition: The launcher of the document GUI. It builds the GUI from its spec,
      runs the readiness gate, optionally opens the file named by the environment
      variable SLEELA_GUIDOC_OPEN, prints the screen as a text outline and says
-     whether the GUI is ready. With SLEELA_GUIDOC_PLAN=1 it also prints the
+     whether the GUI is ready. SLEELA_GUIDOC_ADMIN=1 makes the session an admin
+     and SLEELA_GUIDOC_LOCK=1 (admin only) locks the system before the screen is
+     printed. With SLEELA_GUIDOC_PLAN=1 it also prints the
      mount plan a windowing host consumes. On a host with no display it stops
      there; a windowing host drives the same SLGuiDocApp through click(),
      type() and accelerate(). Output ends with GUIDOC READY or GUIDOC NOT READY
@@ -77,11 +79,15 @@ class GuiDoc {
       print("GUIDOC NOT READY: " + life.firstFailureText());
       return;
     }
+    if (osGetEnv("SLEELA_GUIDOC_ADMIN") == "1") { app.setAdmin(true); }
     String path = osGetEnv("SLEELA_GUIDOC_OPEN");
     if (path != "") {
       if (!app.openPath(path)) { print("could not open " + path + ": " + app.statusText()); }
       app.refresh();
       app.paint();
+    }
+    if (osGetEnv("SLEELA_GUIDOC_LOCK") == "1") {
+      if (!app.accelerate("Ctrl+L")) { print("could not lock the system: " + app.statusText()); }
     }
     SLGuiDocHost host = new SLGuiDocHost();
     String[] lines = new String[96];
@@ -100,6 +106,7 @@ class GuiDoc {
     print("launcher notified ready: " + app.takeReady("launcher"));
     print("GUIDOC READY " + app.specification().getRelease()
         + (app.isCertified() ? " certified" : " draft")
+        + (app.isLocked() ? " LOCKED" : "")
         + " (" + life.checkTotal() + " checks, " + app.widgets().nodeCount() + " nodes, "
         + app.look().name() + ")");
   }

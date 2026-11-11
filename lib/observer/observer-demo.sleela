@@ -324,7 +324,24 @@ class ObserverDemo {
     check("reinstating an active listener is refused", !obs.reinstate("faulty"));
     check("a retired listener is final", obs.retire("probe") && !obs.reinstate("probe") && !obs.resume("probe") && !obs.pause("probe") && !obs.alter("probe", 1, 1, 1, -1, -1));
 
-    banner("10. capacity and the cycle cap");
+    banner("10. freeze: the lock at the observer");
+    int revF = doc.revisionNow();
+    int declinedF = obs.declinedCount();
+    obs.freeze();
+    check("a frozen observer reports it", obs.isFrozen());
+    check("edits are refused while frozen", obs.edit(0, 0, "frozen insert", "host") == -1 && doc.revisionNow() == revF);
+    check("the refusal is counted", obs.declinedCount() == declinedF + 1);
+    check("the admin override still works", obs.editAdmin(0, 0, "override", "admin") == revF + 1 && doc.lineAt(0) == "override");
+    check("and leaves the freeze in place", obs.isFrozen() && obs.edit(0, 0, "again", "host") == -1);
+    int declinedP = obs.declinedCount();
+    spoofer.propose(0, 0, "proposed", doc.revisionNow());
+    settle();
+    check("a module proposal is declined while frozen", doc.lineAt(0) == "override" && obs.declinedCount() > declinedP);
+    obs.thaw();
+    check("thaw restores ordinary edits", !obs.isFrozen() && obs.edit(0, 0, "thawed", "host") >= 0 && doc.lineAt(0) == "thawed");
+    settle();
+
+    banner("11. capacity and the cycle cap");
     int f = 0;
     int admitted = 0;
     while (f < 8) {

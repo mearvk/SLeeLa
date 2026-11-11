@@ -79,6 +79,12 @@ class SLGuiDocApp {
   SLGuiDocReady ready;
   int[] cmdRuns;
   int[] itemClicks;
+  int admin;
+  int locked;
+  int choiceTab;
+  String[] trail;
+  int trailCount;
+  int trailLost;
 
   < Build everything from the spec. False if the spec or the white theme is >
   < inconsistent (nothing is half-built). >
@@ -99,6 +105,10 @@ class SLGuiDocApp {
     ready = new SLGuiDocReady();
     ready.configure();
     cmdRuns = new int[32]; itemClicks = new int[48];
+    admin = 0; locked = 0; choiceTab = -1; trailCount = 0; trailLost = 0;
+    trail = new String[64];
+    int w = 0;
+    while (w < 64) { trail[w] = ""; w = w + 1; }
     int z = 0;
     while (z < 32) { cmdRuns[z] = 0; z = z + 1; }
     int y = 0;
@@ -117,6 +127,60 @@ class SLGuiDocApp {
   boolean isCertified() { return spec.isCertified(); }
   boolean whenReady(String subscriber) { return ready.whenReady(subscriber); }
   boolean takeReady(String subscriber) { return ready.takeReady(subscriber); }
+
+  < ---- roles, the system lock and the editor choice ----------------------- >
+  < Who is an admin is the host decision (there is no login in the GUI). The >
+  < admin can lock the system, which refuses commands that add content, and >
+  < can open an editor choice session on one tab: edits to that tab are then >
+  < allowed although the system stays locked. The session is bound to that >
+  < one tab and ends on its own when the admin ends it, switches or closes the >
+  < tab, unlocks, quits or loses admin. It leaves no mark on the document: no >
+  < flag, no exemption, no change to the lock. With choiceEdits=revert in the >
+  < spec the document is also put back exactly as it was when it began. >
+
+  void audit(String entry) {
+    if (trailCount < 64) { trail[trailCount] = entry; trailCount = trailCount + 1; }
+    else { trailLost = trailLost + 1; }
+  }
+  int auditSize() { return trailCount; }
+  String auditAt(int i) { return (i >= 0 && i < trailCount) ? trail[i] : ""; }
+
+  boolean isAdmin() { return admin == 1; }
+  boolean isLocked() { return locked == 1; }
+  int choiceIndex() { return choiceTab; }
+  boolean inChoice() { return choiceTab >= 0; }
+
+  void setAdmin(boolean on) {
+    if (!on && admin == 1) { endChoice("admin revoked"); }
+    admin = on ? 1 : 0;
+    audit(on ? "admin granted by host" : "admin revoked by host");
+    paint();
+  }
+
+  < Does the lock let this command run right now? >
+  boolean lockAllows(String command) {
+    String policy = spec.lockPolicyOf(command);
+    if (policy == "allowed" || locked == 0) { return true; }
+    if (policy == "blocked") { return false; }
+    SLGuiDocTab t = activeTab();
+    return t != null && t.inChoice();
+  }
+
+  void lockAllTabs(boolean on) {
+    int i = 0;
+    while (i < tabCount) { SLGuiDocTab t = tabs[i]; t.setLocked(on); i = i + 1; }
+  }
+
+  < End the editor choice session, if any. Returns true when edits were >
+  < reverted. Callers set their own status text. >
+  boolean endChoice(String reason) {
+    if (choiceTab < 0) { return false; }
+    SLGuiDocTab t = tabs[choiceTab];
+    boolean reverted = t.endChoice(spec.choiceReverts());
+    audit("editor choice ended on " + t.getTitle() + " (" + reason + ")" + (reverted ? ", edits reverted" : ", edits kept"));
+    choiceTab = -1;
+    return reverted;
+  }
 
   < The node count the spec implies: window, menubar, menus, items, tab bar, >
   < tabs, new-tab button, editor, two nodes per row, entry, three status >
@@ -160,6 +224,19 @@ class SLGuiDocApp {
     ready.noteCheck("file-layer", file.getSidecarSuffixValue() == spec.getSidecarSuffix(), "the file layer uses the spec sidecar suffix");
     ready.noteCheck("listener-port", spec.getListenerPort() != "" && spec.flagsExternal(), "the GUI document listener is configured");
     ready.noteCheck("first-paint", view.textOf("win") == spec.getTitle() && tabCount == 0 && dialog == 0, "the first paint matches the spec");
+    int lockBad = 0;
+    int lk = 0;
+    while (lk < spec.commandTotal()) {
+      String cid = spec.commandIdAt(lk);
+      boolean adds = cid == "file.new" || cid == "file.open" || cid == "file.saveAs"
+          || cid == "edit.insertLine" || cid == "edit.replaceLine" || cid == "edit.deleteLine";
+      if (adds && spec.lockPolicyOf(cid) == "allowed") { lockBad = lockBad + 1; }
+      if ((cid == "system.lock" || cid == "system.choice") && spec.lockPolicyOf(cid) != "allowed") { lockBad = lockBad + 1; }
+      lk = lk + 1;
+    }
+    if (spec.toggleTotal() != 2) { lockBad = lockBad + 1; }
+    ready.noteCheck("lock-policy", lockBad == 0 && locked == 0 && choiceTab < 0,
+        lockBad + " lock-policy problem(s); starts unlocked with no editor choice session");
     ready.noteCheck("no-open-dialog", !view.isVisible("dlg") && !view.isVisible("mi-new"), "no dialog or menu is open at start");
     boolean ok = ready.finish();
     if (ok) {
@@ -192,6 +269,20 @@ class SLGuiDocApp {
 
   < ---- building the widget tree ----------------------------------------- >
 
+  < The text of a menu item: its label (or, for a toggle that is on, its >
+  < active label) and its accelerator. >
+  String itemText(int i, boolean paintedState) {
+    String label = spec.itemLabelAt(i);
+    String kind = spec.toggleKindOf(spec.itemIdAt(i));
+    if (paintedState && kind == "lock" && locked == 1) { label = spec.toggleLabelOf(spec.itemIdAt(i)); }
+    if (paintedState && kind == "choice") {
+      SLGuiDocTab t = activeTab();
+      if (t != null && t.inChoice()) { label = spec.toggleLabelOf(spec.itemIdAt(i)); }
+    }
+    if (spec.itemAccelAt(i) != "") { label = label + "   " + spec.itemAccelAt(i); }
+    return label;
+  }
+
   void buildView() {
     view.add("", "window", "win", spec.getTitle(), "window");
     view.add("win", "menubar", "menubar", "", "menubar");
@@ -205,9 +296,7 @@ class SLGuiDocApp {
     int i = 0;
     while (i < spec.itemTotal()) {
       String nid = "mi-" + spec.itemIdAt(i);
-      String label = spec.itemLabelAt(i);
-      if (spec.itemAccelAt(i) != "") { label = label + "   " + spec.itemAccelAt(i); }
-      view.add("menu-" + spec.itemMenuAt(i), "menuitem", nid, label, "menu-item");
+      view.add("menu-" + spec.itemMenuAt(i), "menuitem", nid, itemText(i, false), "menu-item");
       view.bind(nid, spec.itemCommandAt(i), i);
       view.setVisible(nid, false);
       i = i + 1;
@@ -253,6 +342,10 @@ class SLGuiDocApp {
     if (when == "editable") { return t != null && !t.isReadOnly(); }
     if (when == "selectionEditable") { return t != null && !t.isReadOnly() && t.hasSelection(); }
     if (when == "multipleTabs") { return tabCount > 1; }
+    if (when == "admin") { return admin == 1; }
+    if (when == "choiceReady") {
+      return admin == 1 && locked == 1 && t != null && (t.inChoice() || !t.isReadOnly());
+    }
     return false;
   }
 
@@ -265,6 +358,7 @@ class SLGuiDocApp {
     String s = t.getTitle();
     if (t.isDirty()) { s = s + spec.getDirtyMarker(); }
     if (t.isReadOnly()) { s = s + " [read-only]"; }
+    if (t.inChoice()) { s = s + " (editor's choice)"; }
     return s;
   }
 
@@ -272,6 +366,7 @@ class SLGuiDocApp {
     SLGuiDocTab cur = activeTab();
     String head = spec.getTitle();
     if (cur != null) { head = head + " - " + tabLabel(cur); }
+    if (locked == 1) { head = head + " [locked]"; }
     view.setText("win", head);
     boolean modal = dialog != 0;
     int m = 0;
@@ -284,7 +379,8 @@ class SLGuiDocApp {
     int i = 0;
     while (i < spec.itemTotal()) {
       String nid = "mi-" + spec.itemIdAt(i);
-      boolean ok = whenHolds(spec.itemWhenAt(i)) && !modal;
+      boolean ok = whenHolds(spec.itemWhenAt(i)) && lockAllows(spec.itemCommandAt(i)) && !modal;
+      view.setText(nid, itemText(i, true));
       view.setVisible(nid, spec.itemMenuAt(i) == openMenu);
       view.setEnabled(nid, ok);
       view.setStyle(nid, ok ? "menu-item" : "menu-item-disabled");
@@ -308,9 +404,9 @@ class SLGuiDocApp {
       view.setEnabled(nid, !modal);
       t = t + 1;
     }
-    view.setEnabled("tab-new", !modal);
+    view.setEnabled("tab-new", !modal && lockAllows("file.new"));
     paintEditor(cur);
-    view.setEnabled("entry", !modal && cur != null && !cur.isReadOnly());
+    view.setEnabled("entry", !modal && cur != null && !cur.isReadOnly() && (locked == 0 || cur.inChoice()));
     paintStatus(cur);
     paintDialog(cur);
   }
@@ -358,16 +454,19 @@ class SLGuiDocApp {
     view.setStyle("status-left", (statusError == 1) ? "status-error" : "status");
     if (cur == null) {
       view.setText("status-mid", "");
-      view.setText("status-right", white.name());
-      view.setStyle("status-right", "status");
+      view.setText("status-right", white.name() + ((locked == 1) ? " | LOCKED" : ""));
+      view.setStyle("status-right", (locked == 1) ? "status-locked" : "status");
       return;
     }
     SLObserverDocument d = cur.body();
     String where = (cur.selectedLine() >= 0) ? ("Ln " + (cur.selectedLine() + 1) + " of ") : "Lines: ";
     view.setText("status-mid", where + d.lineCount() + "  rev " + d.revisionNow());
     SLGuiDocListener.Responder lis = cur.guiListener();
-    view.setText("status-right", white.name() + " | " + lis.statusText());
-    view.setStyle("status-right", lis.statusRole());
+    String right = white.name() + " | " + lis.statusText();
+    if (locked == 1) { right = right + " | LOCKED"; }
+    if (cur.inChoice()) { right = right + " | editor's choice"; }
+    view.setText("status-right", right);
+    view.setStyle("status-right", lis.hasExternal() ? "status-external" : ((locked == 1) ? "status-locked" : "status"));
   }
 
   void paintDialog(SLGuiDocTab cur) {
@@ -471,6 +570,13 @@ class SLGuiDocApp {
       paint();
       return false;
     }
+    if (!lockAllows(command)) {
+      refusedCommands = refusedCommands + 1;
+      complain("locked: " + command + " is disabled while the system is locked");
+      audit("refused while locked: " + command);
+      paint();
+      return false;
+    }
     boolean ok = dispatch(command, true) == 1;
     if (ok) {
       executed = executed + 1;
@@ -497,6 +603,8 @@ class SLGuiDocApp {
     if (command == "edit.deleteLine") { if (run) { return flag(cmdDeleteLine()); } return 1; }
     if (command == "view.nextTab") { if (run) { return flag(cmdNextTab()); } return 1; }
     if (command == "view.prevTab") { if (run) { return flag(cmdPrevTab()); } return 1; }
+    if (command == "system.lock") { if (run) { return flag(cmdLock()); } return 1; }
+    if (command == "system.choice") { if (run) { return flag(cmdChoice()); } return 1; }
     if (command == "help.about") { if (run) { return flag(cmdAbout()); } return 1; }
     return -1;
   }
@@ -542,6 +650,7 @@ class SLGuiDocApp {
   }
 
   boolean addTab(SLGuiDocTab t) {
+    if (locked == 1) { complain("locked: new documents are disallowed"); return false; }
     if (tabCount >= spec.getMaxTabs()) { complain("tab limit reached (" + spec.getMaxTabs() + ")"); return false; }
     tabs[tabCount] = t;
     active = tabCount;
@@ -575,11 +684,13 @@ class SLGuiDocApp {
     return saveActiveTo(t.getPath());
   }
   boolean cmdCloseTab() {
+    endChoice("tab closed");
     SLGuiDocTab t = activeTab();
     if (t.isDirty()) { dialog = 3; pendingTab = active; return true; }
     return closeTab(active);
   }
   boolean cmdQuit() {
+    endChoice("quit");
     int i = 0;
     while (i < tabCount) {
       SLGuiDocTab t = tabs[i];
@@ -621,6 +732,40 @@ class SLGuiDocApp {
     say("deleted line " + (at + 1));
     return true;
   }
+  < Admin only (the menu item is enabled only for an admin). Locking refuses >
+  < every command that adds content; unlocking ends any editor choice session. >
+  boolean cmdLock() {
+    if (admin == 0) { complain("only an admin can change the lock"); return false; }
+    if (locked == 1) {
+      endChoice("system unlocked");
+      locked = 0;
+      lockAllTabs(false);
+      audit("system unlocked");
+      say("system unlocked");
+      return true;
+    }
+    locked = 1;
+    lockAllTabs(true);
+    audit("system locked");
+    say("system locked: new content is disallowed");
+    return true;
+  }
+  < Admin only, and only while the system is locked: start an editor choice >
+  < session on the active tab, or end the one that is running. >
+  boolean cmdChoice() {
+    if (admin == 0 || locked == 0) { complain("editor's choice needs an admin and a locked system"); return false; }
+    SLGuiDocTab t = activeTab();
+    if (t.inChoice()) {
+      boolean reverted = endChoice("ended by the admin");
+      say(reverted ? "editor's choice ended: edits reverted" : "editor's choice ended: edits kept");
+      return true;
+    }
+    if (!t.beginChoice()) { complain("this tab cannot take an editor's choice"); return false; }
+    choiceTab = active;
+    audit("editor choice began on " + t.getTitle());
+    say("editor's choice on " + t.getTitle() + ": editing allowed, the system stays locked");
+    return true;
+  }
   boolean cmdNextTab() { gotoTab((active + 1) % tabCount); return true; }
   boolean cmdPrevTab() { gotoTab((active + tabCount - 1) % tabCount); return true; }
   boolean cmdAbout() {
@@ -632,6 +777,7 @@ class SLGuiDocApp {
 
   void gotoTab(int i) {
     if (dialog != 0 || i < 0 || i >= tabCount) { return; }
+    if (choiceTab >= 0 && choiceTab != i) { endChoice("switched tab"); }
     active = i;
     SLGuiDocTab shown = tabs[i];
     say("tab " + shown.getTitle());
@@ -658,6 +804,7 @@ class SLGuiDocApp {
   < Open a path in a new tab (or switch to the tab that already has it). >
   boolean openPath(String path) {
     if (path == "") { complain("no path given"); return false; }
+    if (locked == 1) { complain("locked: new documents are disallowed"); return false; }
     int i = 0;
     while (i < tabCount) {
       SLGuiDocTab seen = tabs[i];
@@ -677,6 +824,7 @@ class SLGuiDocApp {
 
   boolean closeTab(int idx) {
     if (idx < 0 || idx >= tabCount) { return false; }
+    if (choiceTab >= 0) { endChoice("tab closed"); }
     SLGuiDocTab gone = tabs[idx];
     gone.observer().retire(gone.guiListener().portOf().getName());
     int i = idx;

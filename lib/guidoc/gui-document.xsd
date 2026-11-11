@@ -44,6 +44,9 @@
       editable          = a tab is open and its document can be edited.
       selectionEditable = editable and a line is selected.
       multipleTabs      = more than one tab is open.
+      admin             = the host has granted admin (there is no login in the GUI).
+      choiceReady       = admin, the system is locked, and the active tab can take an
+                          editor's choice session (or already has one, to end it).
     </xs:documentation></xs:annotation>
     <xs:restriction base="xs:token">
       <xs:enumeration value="always"/>
@@ -52,6 +55,50 @@
       <xs:enumeration value="editable"/>
       <xs:enumeration value="selectionEditable"/>
       <xs:enumeration value="multipleTabs"/>
+      <xs:enumeration value="admin"/>
+      <xs:enumeration value="choiceReady"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="LockPolicy">
+    <xs:annotation><xs:documentation>
+      What the system lock does to a command.
+      allowed = runs while the system is locked.
+      blocked = refused while locked, with no exception.
+      choice  = refused while locked unless the active tab is in an editor's choice
+                session (an admin editing one tab despite the lock).
+      A command that adds content (new, open, save as, insert, replace, delete) must
+      not be allowed; tools/validate_gui_document.py enforces that.
+    </xs:documentation></xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="allowed"/>
+      <xs:enumeration value="blocked"/>
+      <xs:enumeration value="choice"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ToggleKind">
+    <xs:annotation><xs:documentation>
+      lock   = the item locks and unlocks the system; its activeLabel shows while locked.
+      choice = the item starts and ends an editor's choice session; its activeLabel
+               shows while a session is running on the active tab.
+    </xs:documentation></xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="lock"/>
+      <xs:enumeration value="choice"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ChoiceEdits">
+    <xs:annotation><xs:documentation>
+      keep   = edits made in an editor's choice session stay as ordinary edits.
+      revert = when the session ends the document is put back exactly as it was when
+               it began (lines, revision, saved state).
+      Either way the session leaves no mark on the document or the lock.
+    </xs:documentation></xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="keep"/>
+      <xs:enumeration value="revert"/>
     </xs:restriction>
   </xs:simpleType>
 
@@ -126,6 +173,7 @@
                   <xs:attribute name="id" type="Id" use="required"/>
                   <xs:attribute name="handler" type="Id" use="required"/>
                   <xs:attribute name="confirmsDiscard" type="xs:boolean" default="false"/>
+                  <xs:attribute name="lockPolicy" type="LockPolicy" default="allowed"/>
                 </xs:complexType>
               </xs:element>
             </xs:sequence>
@@ -145,6 +193,8 @@
                         <xs:attribute name="command" type="Id" use="required"/>
                         <xs:attribute name="accelerator" type="Accelerator" default=""/>
                         <xs:attribute name="enabledWhen" type="EnabledWhen" use="required"/>
+                        <xs:attribute name="toggle" type="ToggleKind" use="optional"/>
+                        <xs:attribute name="activeLabel" type="xs:string" use="optional"/>
                       </xs:complexType>
                     </xs:element>
                   </xs:sequence>
@@ -185,6 +235,12 @@
             <xs:attribute name="port" type="Id" use="required"/>
             <xs:attribute name="repaintOn" type="xs:token" use="required" fixed="change"/>
             <xs:attribute name="flagExternal" type="xs:boolean" use="required"/>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="lock">
+          <xs:complexType>
+            <xs:attribute name="choiceEdits" type="ChoiceEdits" use="required"/>
           </xs:complexType>
         </xs:element>
 

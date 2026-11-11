@@ -12,7 +12,7 @@ edits made by someone else.
 sleela run lib/guidoc/guidoc.sleela                  # build, check, print the screen
 SLEELA_GUIDOC_OPEN=notes.txt sleela run lib/guidoc/guidoc.sleela     # open a file first
 SLEELA_GUIDOC_PLAN=1 sleela run lib/guidoc/guidoc.sleela             # also print the mount plan
-sleela run lib/guidoc/guidoc-demo.sleela             # 152 self-checks, headless
+sleela run lib/guidoc/guidoc-demo.sleela             # 212 self-checks, headless
 bash test-suites/test-guidoc.sh                      # the release gate (CI runs this)
 ```
 
@@ -58,7 +58,12 @@ in the warning ink, external changes in the status line, errors in the danger in
 | `<editor rows lineNumbers readOnlyWhenUnsplit>` | the editor |
 | `<fileDialog sidecarSuffix maxLines maxBytes>` | load and save limits |
 | `<listener port repaintOn flagExternal>` | the GUI document listener |
+| `<lock choiceEdits>` | whether an editor's choice session keeps (`keep`) or reverts (`revert`) its edits |
 | `<readiness status release>` | the readiness claim and the release version |
+
+Commands also carry `lockPolicy` (`allowed` · `blocked` · `choice`) and menu items
+may be toggles (`toggle="lock|choice"` with an `activeLabel`); `enabledWhen` gains
+`admin` and `choiceReady`.
 
 `SLGuiDocSpec.standard()` is the executable copy; the GUI is **built from it**.
 SLeeLa cannot parse XML at run time (no string access), so
@@ -82,19 +87,66 @@ the XML and `standard()` differ.
 | Edit | Replace Line | Ctrl+R | selectionEditable | replaces the selected line |
 | Edit | Delete Line | Ctrl+D | selectionEditable | deletes the selected line |
 | View | Next / Previous Tab | Ctrl+Tab / Ctrl+Shift+Tab | multipleTabs | cycles tabs |
+| System | Lock System / Unlock System | Ctrl+L | admin | the system lock (below) |
+| System | Editor's Choice / End Editor's Choice | Ctrl+E | choiceReady | an admin session on one tab (below) |
 | Help | About | F1 | always | status line |
 
 While a dialog is open, every other command is refused and the menus are disabled.
 
+## The system lock and editor's choice
+
+**Lock System** (admin only) disallows new content. **Editor's Choice** (admin
+only, while locked) lets the admin edit one document anyway, with no lasting
+consequence for that document or for the system.
+
+### What the lock does
+
+Each command declares a `lockPolicy` in the XML:
+
+| Policy | Commands | While locked |
+|---|---|---|
+| `allowed` | Save, Close Tab, Quit, Next/Previous Tab, Lock/Unlock, Editor's Choice, About | run normally (Save writes an existing file; nothing is added) |
+| `blocked` | New, Open, Save As | refused, no exception: a new document or a new file would be new content |
+| `choice` | Insert, Replace, Delete Line | refused unless the active tab has an editor's choice session |
+
+The menu items, the **+** button and the entry box are disabled to match, and the
+status shows `LOCKED` in the lock ink. The lock is enforced below the menu too:
+`SLGuiDocTab` refuses edits, and locking **freezes each tab's observer**
+(`SLDocumentObserver.freeze()`), so an outside writer or a module proposal is
+refused as well. Delete is under the lock because the lock freezes the document;
+change its policy to `allowed` in the XML (and `standard()`) if removing content
+should stay open. The validator insists that every content-adding command is not
+`allowed`, and that the lock and choice commands stay `allowed` so an admin can
+always unlock.
+
+### Editor's choice
+
+* **Who:** an admin, which the host grants with `app.setAdmin(true)` (there is no
+  login in the GUI; `SLEELA_GUIDOC_ADMIN=1` for the launcher).
+* **What it allows:** Insert, Replace and Delete Line **through the GUI**, on the
+  **one tab** it was started on. An outside writer stays refused during a
+  session. New, Open and Save As stay refused: the system is still locked.
+* **It ends** when the admin ends it (Ctrl+E again), switches or closes the tab,
+  unlocks, quits, or loses admin. It never lingers.
+* **No lasting consequence.** A session is not a flag or an exemption stored
+  anywhere: it adds nothing to the document, the tab, the lock or the saved file
+  (Save writes an ordinary file); when it ends the tab is exactly as locked as the
+  others. Only an in-memory audit trail notes that it happened.
+* **`<lock choiceEdits>`** decides what happens to the edits:
+  `keep` (default) leaves them as ordinary unsaved edits;
+  `revert` puts the document back **exactly** as it was when the session began:
+  lines, revision, saved state, selection, and the GUI listener level again.
+  A revert is the strict reading of "no long-term consequences".
+
 ## Ready
 
 The GUI is **ready** only after it has proved itself. `configure()` builds it;
-`start()` runs ten named self-checks (`SLGuiDocReady`):
+`start()` runs eleven named self-checks (`SLGuiDocReady`):
 
 `spec` · `white-theme` · `widget-tree` (node count equals what the spec implies) ·
 `commands-handled` (every spec command has a handler) · `menu-items-bound` (every
 item exists and is bound to its command) · `accelerators-live` · `file-layer` ·
-`listener-port` · `first-paint` · `no-open-dialog`
+`listener-port` · `lock-policy` (no content-adding command is allowed while locked; the lock commands stay allowed; it starts unlocked) · `first-paint` · `no-open-dialog`
 
 | State | Meaning |
 |---|---|
@@ -136,12 +188,12 @@ claim. `status="ready"` here means exactly that, and no more.
 | `SLGuiDocFile` | load and save |
 | `SLGuiDocListener` | the GUI document listener; nested `Responder` is an observer module |
 | `SLGuiDocTab` | one open document: its observer, its listener, path, dirty state, selection, scroll |
-| `SLGuiDocView` | the widget tree (76 nodes): tag, text, style, visible, enabled, command; press latches |
+| `SLGuiDocView` | the widget tree (79 nodes): tag, text, style, visible, enabled, command; press latches |
 | `SLGuiDocApp` | the controller: builds the view from the spec, runs commands, dialogs and tabs, repaints; `start()` runs the ready gate; counts coverage |
 | `SLGuiDocReady` | the ready lifecycle and gate (named checks, one-shot subscribers) |
 | `SLGuiDocHost` | the host side: text outline and mount plan |
 | `guidoc.sleela` | the launcher |
-| `guidoc-demo.sleela` | 152 self-checks and the coverage sweep |
+| `guidoc-demo.sleela` | 212 self-checks and the coverage sweep |
 
 ## The GUI document listener
 
@@ -188,6 +240,12 @@ until the user acknowledges it by selecting a line or editing. A host loop calls
   `nodeCount()` / `idAt()` / `tagAt()` / `textAt()` / `styleAt()` / `visibleAt()` /
   `enabledAt()` to mount it, and calls `app.click(id)` / `app.type(id, text)` /
   `app.accelerate(key)`. The demo verifies the screen model, not pixels.
+* **The lock lives in memory.** It is not saved: a new run starts unlocked, and it
+  does not stop another program from writing the file on disk. Admin is a host
+  decision, not a credential the GUI checks.
+* **A revert cannot unsay messages.** Other listeners on a tab's observer (not the
+  GUI listener) saw the transient edits of a `revert` session; the document and the
+  GUI are restored, but those listeners were told. Use `keep` if that matters.
 * **Plain-text files from elsewhere open read-only.** Splitting a foreign file
   into lines needs string access the committed binary lacks. The source tree has
   `javaString*` built-ins; a splitter built on them can feed `SLGuiDocFile` safely
@@ -205,7 +263,7 @@ until the user acknowledges it by selecting a line or editing. A host loop calls
 
 ## Release
 
-* `release` in the XML and `SLGuiDocSpec.standard()` is `1.0.0`; the launcher,
+* `release` in the XML and `SLGuiDocSpec.standard()` is `1.1.0` (1.0.0 was the GUI itself; 1.1.0 adds the system lock and editor's choice); the launcher,
   About and the status line show it, with `certified` when the claim is `ready`.
 * `test-suites/test-guidoc.sh` is the release gate and
   `.github/workflows/guidoc-ci.yml` runs it on every change to `lib/guidoc`,

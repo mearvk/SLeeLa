@@ -11,17 +11,19 @@
   <window title="SLeeLa Document Editor" theme="white"/>
 
   <commands>
-    <command id="file.new" handler="cmdNew"/>
-    <command id="file.open" handler="cmdOpen"/>
+    <command id="file.new" handler="cmdNew" lockPolicy="blocked"/>
+    <command id="file.open" handler="cmdOpen" lockPolicy="blocked"/>
     <command id="file.save" handler="cmdSave"/>
-    <command id="file.saveAs" handler="cmdSaveAs"/>
+    <command id="file.saveAs" handler="cmdSaveAs" lockPolicy="blocked"/>
     <command id="file.closeTab" handler="cmdCloseTab" confirmsDiscard="true"/>
     <command id="app.quit" handler="cmdQuit" confirmsDiscard="true"/>
-    <command id="edit.insertLine" handler="cmdInsertLine"/>
-    <command id="edit.replaceLine" handler="cmdReplaceLine"/>
-    <command id="edit.deleteLine" handler="cmdDeleteLine"/>
+    <command id="edit.insertLine" handler="cmdInsertLine" lockPolicy="choice"/>
+    <command id="edit.replaceLine" handler="cmdReplaceLine" lockPolicy="choice"/>
+    <command id="edit.deleteLine" handler="cmdDeleteLine" lockPolicy="choice"/>
     <command id="view.nextTab" handler="cmdNextTab"/>
     <command id="view.prevTab" handler="cmdPrevTab"/>
+    <command id="system.lock" handler="cmdLock"/>
+    <command id="system.choice" handler="cmdChoice"/>
     <command id="help.about" handler="cmdAbout"/>
   </commands>
 
@@ -43,6 +45,12 @@
       <item id="nextTab" label="Next Tab" command="view.nextTab" accelerator="Ctrl+Tab" enabledWhen="multipleTabs"/>
       <item id="prevTab" label="Previous Tab" command="view.prevTab" accelerator="Ctrl+Shift+Tab" enabledWhen="multipleTabs"/>
     </menu>
+    <menu id="system" label="System">
+      <item id="lock" label="Lock System" command="system.lock" accelerator="Ctrl+L" enabledWhen="admin"
+            toggle="lock" activeLabel="Unlock System"/>
+      <item id="choice" label="Editor's Choice" command="system.choice" accelerator="Ctrl+E" enabledWhen="choiceReady"
+            toggle="choice" activeLabel="End Editor's Choice"/>
+    </menu>
     <menu id="help" label="Help">
       <item id="about" label="About" command="help.about" accelerator="F1" enabledWhen="always"/>
     </menu>
@@ -56,5 +64,7 @@
 
   <listener port="gui-listener" repaintOn="change" flagExternal="true"/>
 
-  <readiness status="ready" release="1.0.0"/>
+  <lock choiceEdits="keep"/>
+
+  <readiness status="ready" release="1.1.0"/>
 </guiDocument>

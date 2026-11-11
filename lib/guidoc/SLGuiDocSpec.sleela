@@ -86,14 +86,21 @@ class SLGuiDocSpec {
   String[] cId;
   String[] cHandler;
   int[] cConfirm;
+  String[] cLock;
   int cCount;
+  String[] tItem;
+  String[] tKind;
+  String[] tActive;
+  int tCount;
+  String choiceEdits;
   int refused;
 
   void configure() {
     mId = new String[8]; mLabel = new String[8];
     iMenu = new String[48]; iId = new String[48]; iLabel = new String[48];
     iCommand = new String[48]; iAccel = new String[48]; iWhen = new String[48];
-    cId = new String[32]; cHandler = new String[32]; cConfirm = new int[32];
+    cId = new String[32]; cHandler = new String[32]; cConfirm = new int[32]; cLock = new String[32];
+    tItem = new String[8]; tKind = new String[8]; tActive = new String[8];
     int i = 0;
     while (i < 48) {
       iMenu[i] = ""; iId[i] = ""; iLabel[i] = ""; iCommand[i] = ""; iAccel[i] = ""; iWhen[i] = "";
@@ -102,7 +109,10 @@ class SLGuiDocSpec {
     int j = 0;
     while (j < 8) { mId[j] = ""; mLabel[j] = ""; j = j + 1; }
     int k = 0;
-    while (k < 32) { cId[k] = ""; cHandler[k] = ""; cConfirm[k] = 0; k = k + 1; }
+    while (k < 32) { cId[k] = ""; cHandler[k] = ""; cConfirm[k] = 0; cLock[k] = "allowed"; k = k + 1; }
+    int q = 0;
+    while (q < 8) { tItem[q] = ""; tKind[q] = ""; tActive[q] = ""; q = q + 1; }
+    tCount = 0; choiceEdits = "keep";
     mCount = 0; iCount = 0; cCount = 0; refused = 0;
     winTitle = ""; winTheme = ""; maxTabs = 0; dirtyMarker = ""; newTabTitle = "";
     editorRows = 0; lineNumbers = 0; readOnlyWhenUnsplit = 0; sidecarSuffix = "";
@@ -116,7 +126,7 @@ class SLGuiDocSpec {
   boolean knownTheme(String t) { return t == "white" || t == "blue" || t == "gray" || t == "black"; }
   boolean knownWhen(String w) {
     return w == "always" || w == "hasTab" || w == "dirty" || w == "editable"
-        || w == "selectionEditable" || w == "multipleTabs";
+        || w == "selectionEditable" || w == "multipleTabs" || w == "admin" || w == "choiceReady";
   }
 
   boolean setWindow(String title, String theme) {
@@ -173,12 +183,59 @@ class SLGuiDocSpec {
     return -1;
   }
 
-  boolean addCommand(String id, String handler, int confirms) {
+  < lockPolicy: allowed (runs while the system is locked), blocked (refused >
+  < while locked), choice (refused while locked unless the active tab is in an >
+  < editor choice session). >
+  boolean addCommand(String id, String handler, int confirms, String lockPolicy) {
     if (id == "" || handler == "" || cCount >= 32 || commandIndex(id) >= 0) { return no(); }
     if (confirms != 0 && confirms != 1) { return no(); }
-    cId[cCount] = id; cHandler[cCount] = handler; cConfirm[cCount] = confirms;
+    if (lockPolicy != "allowed" && lockPolicy != "blocked" && lockPolicy != "choice") { return no(); }
+    cId[cCount] = id; cHandler[cCount] = handler; cConfirm[cCount] = confirms; cLock[cCount] = lockPolicy;
     cCount = cCount + 1;
     return true;
+  }
+  < A toggle item shows its label when the state is off and activeLabel when >
+  < on. kind is lock (the system lock) or choice (an editor choice session). >
+  boolean addToggle(String itemId, String kind, String activeLabel) {
+    if (itemIndex(itemId) < 0 || tCount >= 8 || activeLabel == "") { return no(); }
+    if (kind != "lock" && kind != "choice") { return no(); }
+    int k = 0;
+    while (k < tCount) { if (tItem[k] == itemId) { return no(); } k = k + 1; }
+    tItem[tCount] = itemId; tKind[tCount] = kind; tActive[tCount] = activeLabel;
+    tCount = tCount + 1;
+    return true;
+  }
+  boolean setLock(String choiceEditsPolicy) {
+    if (choiceEditsPolicy != "keep" && choiceEditsPolicy != "revert") { return no(); }
+    choiceEdits = choiceEditsPolicy;
+    return true;
+  }
+  String lockPolicyOf(String command) {
+    int i = commandIndex(command);
+    return (i >= 0) ? cLock[i] : "blocked";
+  }
+  int toggleTotal() { return tCount; }
+  String toggleItemAt(int i) { return (i >= 0 && i < tCount) ? tItem[i] : ""; }
+  String toggleKindAt(int i) { return (i >= 0 && i < tCount) ? tKind[i] : ""; }
+  String toggleActiveLabelAt(int i) { return (i >= 0 && i < tCount) ? tActive[i] : ""; }
+  < The toggle kind of an item ("" if it is not a toggle). >
+  String toggleKindOf(String itemId) {
+    int k = 0;
+    while (k < tCount) { if (tItem[k] == itemId) { return tKind[k]; } k = k + 1; }
+    return "";
+  }
+  String toggleLabelOf(String itemId) {
+    int k = 0;
+    while (k < tCount) { if (tItem[k] == itemId) { return tActive[k]; } k = k + 1; }
+    return "";
+  }
+  String getChoiceEdits() { return choiceEdits; }
+  boolean choiceReverts() { return choiceEdits == "revert"; }
+  int commandsWithPolicy(String policy) {
+    int n = 0;
+    int i = 0;
+    while (i < cCount) { if (cLock[i] == policy) { n = n + 1; } i = i + 1; }
+    return n;
   }
   boolean addMenu(String id, String label) {
     if (id == "" || label == "" || mCount >= 8 || menuIndex(id) >= 0) { return no(); }
@@ -253,22 +310,26 @@ class SLGuiDocSpec {
     setEditor(16, 1, 1);
     setFileDialog(".lines", 64, 65536);
     setListener("gui-listener", 1);
-    setReadiness("ready", "1.0.0");
-    addCommand("file.new", "cmdNew", 0);
-    addCommand("file.open", "cmdOpen", 0);
-    addCommand("file.save", "cmdSave", 0);
-    addCommand("file.saveAs", "cmdSaveAs", 0);
-    addCommand("file.closeTab", "cmdCloseTab", 1);
-    addCommand("app.quit", "cmdQuit", 1);
-    addCommand("edit.insertLine", "cmdInsertLine", 0);
-    addCommand("edit.replaceLine", "cmdReplaceLine", 0);
-    addCommand("edit.deleteLine", "cmdDeleteLine", 0);
-    addCommand("view.nextTab", "cmdNextTab", 0);
-    addCommand("view.prevTab", "cmdPrevTab", 0);
-    addCommand("help.about", "cmdAbout", 0);
+    setReadiness("ready", "1.1.0");
+    setLock("keep");
+    addCommand("file.new", "cmdNew", 0, "blocked");
+    addCommand("file.open", "cmdOpen", 0, "blocked");
+    addCommand("file.save", "cmdSave", 0, "allowed");
+    addCommand("file.saveAs", "cmdSaveAs", 0, "blocked");
+    addCommand("file.closeTab", "cmdCloseTab", 1, "allowed");
+    addCommand("app.quit", "cmdQuit", 1, "allowed");
+    addCommand("edit.insertLine", "cmdInsertLine", 0, "choice");
+    addCommand("edit.replaceLine", "cmdReplaceLine", 0, "choice");
+    addCommand("edit.deleteLine", "cmdDeleteLine", 0, "choice");
+    addCommand("view.nextTab", "cmdNextTab", 0, "allowed");
+    addCommand("view.prevTab", "cmdPrevTab", 0, "allowed");
+    addCommand("system.lock", "cmdLock", 0, "allowed");
+    addCommand("system.choice", "cmdChoice", 0, "allowed");
+    addCommand("help.about", "cmdAbout", 0, "allowed");
     addMenu("file", "File");
     addMenu("edit", "Edit");
     addMenu("view", "View");
+    addMenu("system", "System");
     addMenu("help", "Help");
     addItem("file", "new", "New", "file.new", "Ctrl+N", "always");
     addItem("file", "open", "Open...", "file.open", "Ctrl+O", "always");
@@ -281,7 +342,11 @@ class SLGuiDocSpec {
     addItem("edit", "deleteLine", "Delete Line", "edit.deleteLine", "Ctrl+D", "selectionEditable");
     addItem("view", "nextTab", "Next Tab", "view.nextTab", "Ctrl+Tab", "multipleTabs");
     addItem("view", "prevTab", "Previous Tab", "view.prevTab", "Ctrl+Shift+Tab", "multipleTabs");
+    addItem("system", "lock", "Lock System", "system.lock", "Ctrl+L", "admin");
+    addItem("system", "choice", "Editor's Choice", "system.choice", "Ctrl+E", "choiceReady");
     addItem("help", "about", "About", "help.about", "F1", "always");
+    addToggle("lock", "lock", "Unlock System");
+    addToggle("choice", "choice", "End Editor's Choice");
     return refused;
   }
 }

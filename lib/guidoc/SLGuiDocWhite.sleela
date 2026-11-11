@@ -94,15 +94,16 @@ class SLGuiDocWhite {
     if (i == 20) { return "dialog"; }
     if (i == 21) { return "button"; }
     if (i == 22) { return "button-primary"; }
+    if (i == 23) { return "status-locked"; }
     return "";
   }
-  int roleTotal() { return 23; }
+  int roleTotal() { return 24; }
 
   < The background colour token of a role. Unknown roles use the surface. >
   String bgOf(String role) {
     if (role == "window") { return theme.bg; }
     if (role == "menubar" || role == "menu" || role == "gutter") { return theme.chrome; }
-    if (role == "status" || role == "status-external" || role == "status-error") { return theme.chrome; }
+    if (role == "status" || role == "status-external" || role == "status-error" || role == "status-locked") { return theme.chrome; }
     if (role == "menu-open" || role == "tab" || role == "tab-dirty" || role == "dialog") { return theme.surfaceHi; }
     if (role == "tabbar") { return theme.bg; }
     if (role == "row-selected" || role == "button-primary") { return theme.accent; }
@@ -113,7 +114,7 @@ class SLGuiDocWhite {
     if (role == "menu-item-disabled" || role == "tab" || role == "gutter" || role == "row-empty") { return theme.textDim; }
     if (role == "status") { return theme.textDim; }
     if (role == "tab-active") { return theme.accent; }
-    if (role == "tab-dirty" || role == "tab-active-dirty" || role == "status-external") { return theme.warning; }
+    if (role == "tab-dirty" || role == "tab-active-dirty" || role == "status-external" || role == "status-locked") { return theme.warning; }
     if (role == "status-error") { return theme.danger; }
     if (role == "row-selected" || role == "button-primary") { return theme.accentText; }
     return theme.text;

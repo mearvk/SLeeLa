@@ -65,6 +65,17 @@ class SLGuiDocTab {
   int readOnly;
   int selected;
   int viewTop;
+  < system lock: 1 while the system is locked >
+  int locked;
+  < editor choice: 1 while an admin session may edit this tab despite the lock >
+  int choice;
+  String[] snapLines;
+  int snapCount;
+  int snapRevision;
+  int snapSaved;
+  int snapSelected;
+  int snapTop;
+  int snapTaken;
 
   void configure(String name, SLGuiDocWhite white, String listenerPort) {
     title = name; path = "";
@@ -76,6 +87,11 @@ class SLGuiDocTab {
     listener.attach(listenerPort, white);
     obs.admit(listener.portOf());
     savedRevision = 0; readOnly = 0; selected = -1; viewTop = 0;
+    locked = 0; choice = 0; snapTaken = 0; snapCount = 0; snapRevision = 0; snapSaved = 0;
+    snapSelected = -1; snapTop = 0;
+    snapLines = new String[64];
+    int z = 0;
+    while (z < 64) { snapLines[z] = ""; z = z + 1; }
     settle();
   }
   String getTitle() { return title; }
@@ -96,18 +112,70 @@ class SLGuiDocTab {
     while (obs.beginCycle()) { listener.pump(); obs.endCycle(); }
   }
 
-  < Edit through the observer. Refused when the tab is read-only. >
+  boolean isLocked() { return locked == 1; }
+  boolean inChoice() { return choice == 1; }
+  < Locking the tab freezes its observer, so the lock holds against any other >
+  < writer too, not just the menu. >
+  void setLocked(boolean on) {
+    locked = on ? 1 : 0;
+    if (on) { obs.freeze(); } else { obs.thaw(); }
+  }
+
+  < Edit through the observer. Refused when the tab is read-only, and refused >
+  < while the system is locked unless an editor choice session is running on >
+  < this tab (checked here as well as in the menu, so no path around the lock). >
   int edit(int op, int line, String text, String source) {
     if (readOnly == 1) { return -1; }
+    if (locked == 1 && choice == 0) { return -1; }
+    int r = (locked == 1) ? obs.editAdmin(op, line, text, source) : obs.edit(op, line, text, source);
+    settle();
+    return r;
+  }
+  < Someone else changes the document (used for external changes). While the >
+  < system is locked this is refused even during an editor choice session: >
+  < the exemption is for the admin editing through the GUI only. >
+  int editAs(int op, int line, String text, String source) {
+    if (locked == 1) { return -1; }
     int r = obs.edit(op, line, text, source);
     settle();
     return r;
   }
-  < Someone else changes the document (used for external changes). >
-  int editAs(int op, int line, String text, String source) {
-    int r = obs.edit(op, line, text, source);
-    settle();
-    return r;
+
+  < ---- editor choice session ------------------------------------------- >
+  < begin remembers the document exactly (lines, revision, saved state, >
+  < selection); end either keeps the edits or restores that state. Neither >
+  < leaves any mark on the tab: no flag, no exemption, no changed lock state. >
+
+  boolean beginChoice() {
+    if (readOnly == 1 || choice == 1) { return false; }
+    int i = 0;
+    while (i < doc.lineCount()) { snapLines[i] = doc.lineAt(i); i = i + 1; }
+    snapCount = doc.lineCount();
+    snapRevision = doc.revisionNow();
+    snapSaved = savedRevision;
+    snapSelected = selected;
+    snapTop = viewTop;
+    snapTaken = 1;
+    choice = 1;
+    return true;
+  }
+  < End the session. With revert=true the document is put back exactly as it >
+  < was when the session began. Returns true when something was reverted. >
+  boolean endChoice(boolean revert) {
+    if (choice == 0) { return false; }
+    choice = 0;
+    boolean reverted = false;
+    if (revert && snapTaken == 1) {
+      if (doc.restore(snapLines, snapCount, snapRevision)) {
+        savedRevision = snapSaved;
+        selected = snapSelected;
+        viewTop = snapTop;
+        listener.syncTo(snapRevision);
+        reverted = true;
+      }
+    }
+    snapTaken = 0;
+    return reverted;
   }
 
   boolean isDirty() { return doc.revisionNow() != savedRevision; }

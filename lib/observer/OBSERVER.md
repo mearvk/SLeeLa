@@ -17,7 +17,7 @@ active module is told, and may answer, converse with other modules, or
 | `SLObserverGuardModule` | Drop-in; nested `Responder` proposes redacting a forbidden line. |
 | `SLObserverReviewModule` | Drop-in; nested `Responder` opens a conversation with the auditor. |
 | `SLObserverView` | The modest GUI: a retained widget tree (labels, entry, buttons) with take-the-latch button presses. |
-| `observer-demo` | Self-checking scenario (81 checks). |
+| `observer-demo` | Self-checking scenario (88 checks). |
 | `observer-gui-demo` | Scripted presses through the view. |
 
 ```
@@ -73,6 +73,14 @@ Instead each module exposes `portOf()` and `pump()`, and the host's cycle calls
 All of these are refused mid-cycle and for unknown names, are audited, and touch
 only the one named listener. Document edits and the other listeners carry on
 unchanged. `SLObserverView` shows the paused state in the roster.
+
+## Freeze (the system lock)
+
+`freeze()` makes the observer refuse `edit()` and module proposals (declined with
+"the document is frozen") until `thaw()`. Listeners keep listening; only writing
+stops. `editAdmin(...)` is the override for a host that holds the key: the same
+edit, audited as an override, and the freeze stays in place. The document GUI's
+system lock (`lib/guidoc`) uses this so the lock holds against every writer.
 
 ## Safety envelope (all enforced by the observer)
 
