@@ -92,7 +92,8 @@ and in the folder's own
 | `SLShortMargin` | equity, the ceiling-rounded margin requirement, a call amount, the fewest shares to cover, the first day a call falls due | any broker's or regulator's actual rule — the percentage is a caller-supplied parameter |
 | `SLEuclid` | gcd/lcm/Bezout, exact two-lot order fills, integer square root, nearest-target distance — the arithmetic the books above depend on | anything about trading by itself |
 | `SLDailyCapBook` (courseware) | the same as `SLLongBook`, plus a fixed 2,000-actions-per-day teaching rule | a real exchange's or regulator's throughput limit |
-| `SLBatchReturn` | the exact total return over a stated batch of N trades (idealized win-rate/size inputs, or an explicit per-trade list), with no compounding, plus the exact per-trade average a stated total implies | whether any real trader achieves the stated inputs — see §6.1 |
+| `SLDailyCapShortBook` (courseware) | the short-side mirror of `SLDailyCapBook`: `SLShortBook`'s behavior plus the same 2,000-actions-per-day rule | a real exchange's or regulator's throughput limit |
+| `SLBatchReturn` | the exact total return over a stated batch of N trades (idealized win-rate/size inputs, or an explicit per-trade list), with no compounding, plus the exact per-trade average a stated total implies | whether any real trader achieves the stated inputs — see §6.1 below, in this document |
 
 Checked by 27 use cases (`test-suites/test-trading-actions.sh`) plus 20
 courseware entries in `long-medium-averages`
@@ -178,7 +179,7 @@ deployed). It is not answerable by assuming a city's population, a mayor's
 share, or a multi-decade compounding rate, because none of those quantities
 exist anywhere in this codebase's inputs.
 
-## 6.0 `SLBatchReturn`: a real answer to "what would N trades return"
+### 6.1 `SLBatchReturn`: a real answer to "what would N trades return"
 
 Built to replace an unverified claim with a checked computation. Given
 stated inputs — either an idealized win-rate and per-trade win/loss size, or
@@ -196,7 +197,7 @@ genuine mismatch. See use case 27
 It computes what a stated assumption implies; it does not and cannot confirm
 the assumption is true of any real trader.
 
-## 6.1 The estimated-return table that was asked for, and why it stops at one trade
+### 6.2 The estimated-return table that was asked for, and why it stops at one trade
 
 A chart of hypothetical trading percentages was requested during planning:
 a trader's "good day" return of 2% to 17%, and a "microtrade advantage"
