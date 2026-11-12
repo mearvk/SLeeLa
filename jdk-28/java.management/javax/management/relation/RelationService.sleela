@@ -1,0 +1,109 @@
+<< jdk-28/java.management/javax/management/relation/RelationService.sleela
+   SLeeLa file for the Java type javax.management.relation.RelationService (module java.management). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.management/javax/management/relation/RelationService.html
+   Java kind: class; extends javax.management.NotificationBroadcasterSupport; implements javax.management.relation.RelationServiceMBean, javax.management.MBeanRegistration, javax.management.NotificationListener
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class RelationService {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 7592;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.management.relation.RelationService";
+  String javaModule = "java.management";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.management/javax/management/relation/RelationService.html";
+  String javaKind = "class";
+  String javaSuper = "javax.management.NotificationBroadcasterSupport";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public RelationService(boolean immediatePurgeFlag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.<init>(boolean)"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public void isActive() throws javax.management.relation.RelationServiceNotRegisteredException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.isActive()"); }
+  public void postRegister(java.lang.Boolean registrationDone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.postRegister(java.lang.Boolean)"); }
+  public void preDeregister() throws java.lang.Exception { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.preDeregister()"); }
+  public void postDeregister() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.postDeregister()"); }
+  public java.util.List<javax.management.ObjectName> getRole(java.lang.String relationId, java.lang.String roleName) throws javax.management.relation.RelationServiceNotRegisteredException, java.lang.IllegalArgumentException, javax.management.relation.RelationNotFoundException, javax.management.relation.RoleNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.getRole(java.lang.String, java.lang.String)"); }
+  public javax.management.relation.RoleResult getRoles(java.lang.String relationId, java.lang.String[] roleNameArray) throws javax.management.relation.RelationServiceNotRegisteredException, java.lang.IllegalArgumentException, javax.management.relation.RelationNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.getRoles(java.lang.String, java.lang.String[])"); }
+  public java.lang.Integer getRoleCardinality(java.lang.String relationId, java.lang.String roleName) throws java.lang.IllegalArgumentException, javax.management.relation.RelationNotFoundException, javax.management.relation.RoleNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.getRoleCardinality(java.lang.String, java.lang.String)"); }
+  public javax.management.relation.RoleResult getAllRoles(java.lang.String relationId) throws java.lang.IllegalArgumentException, javax.management.relation.RelationNotFoundException, javax.management.relation.RelationServiceNotRegisteredException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.getAllRoles(java.lang.String)"); }
+  public void setRole(java.lang.String relationId, javax.management.relation.Role role) throws javax.management.relation.RelationServiceNotRegisteredException, java.lang.IllegalArgumentException, javax.management.relation.RelationNotFoundException, javax.management.relation.RoleNotFoundException, javax.management.relation.InvalidRoleValueException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.setRole(java.lang.String, javax.management.relation.Role)"); }
+  public javax.management.relation.RoleResult setRoles(java.lang.String relationId, javax.management.relation.RoleList roleList) throws javax.management.relation.RelationServiceNotRegisteredException, java.lang.IllegalArgumentException, javax.management.relation.RelationNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.setRoles(java.lang.String, javax.management.relation.RoleList)"); }
+  public java.util.Map<javax.management.ObjectName, java.util.List<java.lang.String>> getReferencedMBeans(java.lang.String relationId) throws java.lang.IllegalArgumentException, javax.management.relation.RelationNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.getReferencedMBeans(java.lang.String)"); }
+  public java.lang.String getRelationTypeName(java.lang.String relationId) throws java.lang.IllegalArgumentException, javax.management.relation.RelationNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.getRelationTypeName(java.lang.String)"); }
+  public void setPurgeFlag(boolean purgeFlag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.setPurgeFlag(boolean)"); }
+  public java.util.List<javax.management.relation.RoleInfo> getRoleInfos(java.lang.String relationTypeName) throws java.lang.IllegalArgumentException, javax.management.relation.RelationTypeNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.getRoleInfos(java.lang.String)"); }
+  public javax.management.relation.RoleInfo getRoleInfo(java.lang.String relationTypeName, java.lang.String roleInfoName) throws java.lang.IllegalArgumentException, javax.management.relation.RelationTypeNotFoundException, javax.management.relation.RoleInfoNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.getRoleInfo(java.lang.String, java.lang.String)"); }
+  public void removeRelation(java.lang.String relationId) throws javax.management.relation.RelationServiceNotRegisteredException, java.lang.IllegalArgumentException, javax.management.relation.RelationNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.removeRelation(java.lang.String)"); }
+  public void sendRelationRemovalNotification(java.lang.String relationId, java.util.List<javax.management.ObjectName> unregMBeanList) throws java.lang.IllegalArgumentException, javax.management.relation.RelationNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.sendRelationRemovalNotification(java.lang.String, java.util.List<javax.management.ObjectName>)"); }
+  public java.util.Map<java.lang.String, java.util.List<java.lang.String>> findReferencingRelations(javax.management.ObjectName mbeanName, java.lang.String relationTypeName, java.lang.String roleName) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.findReferencingRelations(javax.management.ObjectName, java.lang.String, java.lang.String)"); }
+  public void purgeRelations() throws javax.management.relation.RelationServiceNotRegisteredException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.purgeRelations()"); }
+  public void updateRoleMap(java.lang.String relationId, javax.management.relation.Role newRole, java.util.List<javax.management.ObjectName> oldValue) throws java.lang.IllegalArgumentException, javax.management.relation.RelationServiceNotRegisteredException, javax.management.relation.RelationNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.updateRoleMap(java.lang.String, javax.management.relation.Role, java.util.List<javax.management.ObjectName>)"); }
+  public void sendRelationCreationNotification(java.lang.String relationId) throws java.lang.IllegalArgumentException, javax.management.relation.RelationNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.sendRelationCreationNotification(java.lang.String)"); }
+  public javax.management.ObjectName isRelationMBean(java.lang.String relationId) throws java.lang.IllegalArgumentException, javax.management.relation.RelationNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.isRelationMBean(java.lang.String)"); }
+  public boolean getPurgeFlag() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.getPurgeFlag()"); }
+  public void createRelationType(java.lang.String relationTypeName, javax.management.relation.RoleInfo[] roleInfoArray) throws java.lang.IllegalArgumentException, javax.management.relation.InvalidRelationTypeException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.createRelationType(java.lang.String, javax.management.relation.RoleInfo[])"); }
+  public void addRelationType(javax.management.relation.RelationType relationTypeObj) throws java.lang.IllegalArgumentException, javax.management.relation.InvalidRelationTypeException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.addRelationType(javax.management.relation.RelationType)"); }
+  public java.util.List<java.lang.String> getAllRelationTypeNames() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.getAllRelationTypeNames()"); }
+  public void removeRelationType(java.lang.String relationTypeName) throws javax.management.relation.RelationServiceNotRegisteredException, java.lang.IllegalArgumentException, javax.management.relation.RelationTypeNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.removeRelationType(java.lang.String)"); }
+  public void createRelation(java.lang.String relationId, java.lang.String relationTypeName, javax.management.relation.RoleList roleList) throws javax.management.relation.RelationServiceNotRegisteredException, java.lang.IllegalArgumentException, javax.management.relation.RoleNotFoundException, javax.management.relation.InvalidRelationIdException, javax.management.relation.RelationTypeNotFoundException, javax.management.relation.InvalidRoleValueException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.createRelation(java.lang.String, java.lang.String, javax.management.relation.RoleList)"); }
+  public void addRelation(javax.management.ObjectName relationObjectName) throws java.lang.IllegalArgumentException, javax.management.relation.RelationServiceNotRegisteredException, java.lang.NoSuchMethodException, javax.management.relation.InvalidRelationIdException, javax.management.InstanceNotFoundException, javax.management.relation.InvalidRelationServiceException, javax.management.relation.RelationTypeNotFoundException, javax.management.relation.RoleNotFoundException, javax.management.relation.InvalidRoleValueException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.addRelation(javax.management.ObjectName)"); }
+  public java.lang.String isRelation(javax.management.ObjectName objectName) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.isRelation(javax.management.ObjectName)"); }
+  public java.lang.Boolean hasRelation(java.lang.String relationId) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.hasRelation(java.lang.String)"); }
+  public java.util.List<java.lang.String> getAllRelationIds() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.getAllRelationIds()"); }
+  public java.lang.Integer checkRoleReading(java.lang.String roleName, java.lang.String relationTypeName) throws java.lang.IllegalArgumentException, javax.management.relation.RelationTypeNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.checkRoleReading(java.lang.String, java.lang.String)"); }
+  public java.lang.Integer checkRoleWriting(javax.management.relation.Role role, java.lang.String relationTypeName, java.lang.Boolean initFlag) throws java.lang.IllegalArgumentException, javax.management.relation.RelationTypeNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.checkRoleWriting(javax.management.relation.Role, java.lang.String, java.lang.Boolean)"); }
+  public void sendRoleUpdateNotification(java.lang.String relationId, javax.management.relation.Role newRole, java.util.List<javax.management.ObjectName> oldValue) throws java.lang.IllegalArgumentException, javax.management.relation.RelationNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.sendRoleUpdateNotification(java.lang.String, javax.management.relation.Role, java.util.List<javax.management.ObjectName>)"); }
+  public java.util.Map<javax.management.ObjectName, java.util.List<java.lang.String>> findAssociatedMBeans(javax.management.ObjectName mbeanName, java.lang.String relationTypeName, java.lang.String roleName) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.findAssociatedMBeans(javax.management.ObjectName, java.lang.String, java.lang.String)"); }
+  public java.util.List<java.lang.String> findRelationsOfType(java.lang.String relationTypeName) throws java.lang.IllegalArgumentException, javax.management.relation.RelationTypeNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.findRelationsOfType(java.lang.String)"); }
+  public void handleNotification(javax.management.Notification notif, java.lang.Object handback) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.handleNotification(javax.management.Notification, java.lang.Object)"); }
+  public javax.management.MBeanNotificationInfo[] getNotificationInfo() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.getNotificationInfo()"); }
+  public javax.management.ObjectName preRegister(javax.management.MBeanServer server, javax.management.ObjectName name) throws java.lang.Exception { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationService.preRegister(javax.management.MBeanServer, javax.management.ObjectName)"); }
+  < ---- END java signatures ---- >
+}

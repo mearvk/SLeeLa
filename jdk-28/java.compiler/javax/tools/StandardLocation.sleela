@@ -1,0 +1,132 @@
+<< jdk-28/java.compiler/javax/tools/StandardLocation.sleela
+   SLeeLa file for the Java type javax.tools.StandardLocation (module java.compiler). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.compiler/javax/tools/StandardLocation.html
+   Java kind: enum; extends java.lang.Enum; implements javax.tools.JavaFileManager.Location
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class StandardLocation {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 8549;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.tools.StandardLocation";
+  String javaModule = "java.compiler";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.compiler/javax/tools/StandardLocation.html";
+  String javaKind = "enum";
+  String javaSuper = "java.lang.Enum";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  << Complete enum: one static final instance per constant (so identity
+     and == hold for values / valueOf / the constants), with the
+     java.lang.Enum behavior. values() and valueOf(name) are static, as
+     in Java: StandardLocation.valueOf(...), StandardLocation.values(), and the constants are
+     static final fields. >>
+  static final StandardLocation CLASS_OUTPUT = new StandardLocation("CLASS_OUTPUT", 0);
+  static final StandardLocation SOURCE_OUTPUT = new StandardLocation("SOURCE_OUTPUT", 1);
+  static final StandardLocation CLASS_PATH = new StandardLocation("CLASS_PATH", 2);
+  static final StandardLocation SOURCE_PATH = new StandardLocation("SOURCE_PATH", 3);
+  static final StandardLocation ANNOTATION_PROCESSOR_PATH = new StandardLocation("ANNOTATION_PROCESSOR_PATH", 4);
+  static final StandardLocation ANNOTATION_PROCESSOR_MODULE_PATH = new StandardLocation("ANNOTATION_PROCESSOR_MODULE_PATH", 5);
+  static final StandardLocation PLATFORM_CLASS_PATH = new StandardLocation("PLATFORM_CLASS_PATH", 6);
+  static final StandardLocation NATIVE_HEADER_OUTPUT = new StandardLocation("NATIVE_HEADER_OUTPUT", 7);
+  static final StandardLocation MODULE_SOURCE_PATH = new StandardLocation("MODULE_SOURCE_PATH", 8);
+  static final StandardLocation UPGRADE_MODULE_PATH = new StandardLocation("UPGRADE_MODULE_PATH", 9);
+  static final StandardLocation SYSTEM_MODULES = new StandardLocation("SYSTEM_MODULES", 10);
+  static final StandardLocation MODULE_PATH = new StandardLocation("MODULE_PATH", 11);
+  static final StandardLocation PATCH_MODULE_PATH = new StandardLocation("PATCH_MODULE_PATH", 12);
+  String enumName;
+  int enumOrdinal;
+  StandardLocation(String name, int ordinal) { this.enumName = name; this.enumOrdinal = ordinal; }
+  String name() { return this.enumName; }
+  int ordinal() { return this.enumOrdinal; }
+  String toString() { return this.enumName; }
+  int compareTo(StandardLocation o) { return this.enumOrdinal - o.enumOrdinal; }
+  boolean equals(Any other) { return this == other; }
+  int hashCode() { return this.enumOrdinal * 31 + 17; }
+  public static StandardLocation[] values() {
+    StandardLocation[] v = new StandardLocation[13];
+    v[0] = CLASS_OUTPUT;
+    v[1] = SOURCE_OUTPUT;
+    v[2] = CLASS_PATH;
+    v[3] = SOURCE_PATH;
+    v[4] = ANNOTATION_PROCESSOR_PATH;
+    v[5] = ANNOTATION_PROCESSOR_MODULE_PATH;
+    v[6] = PLATFORM_CLASS_PATH;
+    v[7] = NATIVE_HEADER_OUTPUT;
+    v[8] = MODULE_SOURCE_PATH;
+    v[9] = UPGRADE_MODULE_PATH;
+    v[10] = SYSTEM_MODULES;
+    v[11] = MODULE_PATH;
+    v[12] = PATCH_MODULE_PATH;
+    return v;
+  }
+  public static StandardLocation valueOf(String name) {
+    if (name == null) { throw new NullPointerException("Name is null"); }
+    if (name == "CLASS_OUTPUT") { return CLASS_OUTPUT; }
+    if (name == "SOURCE_OUTPUT") { return SOURCE_OUTPUT; }
+    if (name == "CLASS_PATH") { return CLASS_PATH; }
+    if (name == "SOURCE_PATH") { return SOURCE_PATH; }
+    if (name == "ANNOTATION_PROCESSOR_PATH") { return ANNOTATION_PROCESSOR_PATH; }
+    if (name == "ANNOTATION_PROCESSOR_MODULE_PATH") { return ANNOTATION_PROCESSOR_MODULE_PATH; }
+    if (name == "PLATFORM_CLASS_PATH") { return PLATFORM_CLASS_PATH; }
+    if (name == "NATIVE_HEADER_OUTPUT") { return NATIVE_HEADER_OUTPUT; }
+    if (name == "MODULE_SOURCE_PATH") { return MODULE_SOURCE_PATH; }
+    if (name == "UPGRADE_MODULE_PATH") { return UPGRADE_MODULE_PATH; }
+    if (name == "SYSTEM_MODULES") { return SYSTEM_MODULES; }
+    if (name == "MODULE_PATH") { return MODULE_PATH; }
+    if (name == "PATCH_MODULE_PATH") { return PATCH_MODULE_PATH; }
+    throw new IllegalArgumentException("No enum constant javax.tools.StandardLocation." + name);
+  }
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.tools.StandardLocation.getName()"); }
+  public static javax.tools.JavaFileManager.Location locationFor(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.tools.StandardLocation.locationFor(java.lang.String)"); }
+  public boolean isModuleOrientedLocation() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.tools.StandardLocation.isModuleOrientedLocation()"); }
+  public boolean isOutputLocation() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.tools.StandardLocation.isOutputLocation()"); }
+  < ---- END java signatures ---- >
+}

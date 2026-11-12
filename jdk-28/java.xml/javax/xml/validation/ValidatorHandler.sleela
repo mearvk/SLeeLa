@@ -1,0 +1,81 @@
+<< jdk-28/java.xml/javax/xml/validation/ValidatorHandler.sleela
+   SLeeLa file for the Java type javax.xml.validation.ValidatorHandler (module java.xml). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.xml/javax/xml/validation/ValidatorHandler.html
+   Java kind: class; extends java.lang.Object; implements org.xml.sax.ContentHandler
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class ValidatorHandler {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9614;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.xml.validation.ValidatorHandler";
+  String javaModule = "java.xml";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.xml/javax/xml/validation/ValidatorHandler.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  @JavaProtected
+  ValidatorHandler() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.ValidatorHandler.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public java.lang.Object getProperty(java.lang.String name) throws org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.ValidatorHandler.getProperty(java.lang.String)"); }
+  public void setProperty(java.lang.String name, java.lang.Object object) throws org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.ValidatorHandler.setProperty(java.lang.String, java.lang.Object)"); }
+  public abstract void setResourceResolver(org.w3c.dom.ls.LSResourceResolver resourceResolver) { throw new AbstractMethodError("javax.xml.validation.ValidatorHandler.setResourceResolver(org.w3c.dom.ls.LSResourceResolver)"); }
+  public abstract org.w3c.dom.ls.LSResourceResolver getResourceResolver() { throw new AbstractMethodError("javax.xml.validation.ValidatorHandler.getResourceResolver()"); }
+  public abstract javax.xml.validation.TypeInfoProvider getTypeInfoProvider() { throw new AbstractMethodError("javax.xml.validation.ValidatorHandler.getTypeInfoProvider()"); }
+  public abstract void setContentHandler(org.xml.sax.ContentHandler receiver) { throw new AbstractMethodError("javax.xml.validation.ValidatorHandler.setContentHandler(org.xml.sax.ContentHandler)"); }
+  public abstract org.xml.sax.ErrorHandler getErrorHandler() { throw new AbstractMethodError("javax.xml.validation.ValidatorHandler.getErrorHandler()"); }
+  public abstract void setErrorHandler(org.xml.sax.ErrorHandler errorHandler) { throw new AbstractMethodError("javax.xml.validation.ValidatorHandler.setErrorHandler(org.xml.sax.ErrorHandler)"); }
+  public boolean getFeature(java.lang.String name) throws org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.ValidatorHandler.getFeature(java.lang.String)"); }
+  public void setFeature(java.lang.String name, boolean value) throws org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.ValidatorHandler.setFeature(java.lang.String, boolean)"); }
+  public abstract org.xml.sax.ContentHandler getContentHandler() { throw new AbstractMethodError("javax.xml.validation.ValidatorHandler.getContentHandler()"); }
+  < ---- END java signatures ---- >
+}

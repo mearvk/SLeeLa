@@ -1,0 +1,83 @@
+<< jdk-28/jdk.jfr/jdk/jfr/consumer/EventStream.sleela
+   SLeeLa file for the Java type jdk.jfr.consumer.EventStream (module jdk.jfr). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/jdk.jfr/jdk/jfr/consumer/EventStream.html
+   Java kind: interface; implements java.lang.AutoCloseable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class EventStream {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 3707;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "jdk.jfr.consumer.EventStream";
+  String javaModule = "jdk.jfr";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/jdk.jfr/jdk/jfr/consumer/EventStream.html";
+  String javaKind = "interface";
+  String javaSuper = "";
+
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public abstract boolean remove(java.lang.Object action) { throw new AbstractMethodError("jdk.jfr.consumer.EventStream.remove(java.lang.Object)"); }
+  public abstract void start() { throw new AbstractMethodError("jdk.jfr.consumer.EventStream.start()"); }
+  public abstract void onClose(java.lang.Runnable action) { throw new AbstractMethodError("jdk.jfr.consumer.EventStream.onClose(java.lang.Runnable)"); }
+  public abstract void awaitTermination() throws java.lang.InterruptedException { throw new AbstractMethodError("jdk.jfr.consumer.EventStream.awaitTermination()"); }
+  public abstract void awaitTermination(java.time.Duration timeout) throws java.lang.InterruptedException { throw new AbstractMethodError("jdk.jfr.consumer.EventStream.awaitTermination(java.time.Duration)"); }
+  public abstract void setStartTime(java.time.Instant startTime) { throw new AbstractMethodError("jdk.jfr.consumer.EventStream.setStartTime(java.time.Instant)"); }
+  public static jdk.jfr.consumer.EventStream openRepository() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.EventStream.openRepository()"); }
+  public static jdk.jfr.consumer.EventStream openRepository(java.nio.file.Path directory) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.EventStream.openRepository(java.nio.file.Path)"); }
+  public static jdk.jfr.consumer.EventStream openFile(java.nio.file.Path file) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.EventStream.openFile(java.nio.file.Path)"); }
+  public default void onMetadata(java.util.function.Consumer<jdk.jfr.consumer.MetadataEvent> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.EventStream.onMetadata(java.util.function.Consumer<jdk.jfr.consumer.MetadataEvent>)"); }
+  public abstract void onEvent(java.util.function.Consumer<jdk.jfr.consumer.RecordedEvent> action) { throw new AbstractMethodError("jdk.jfr.consumer.EventStream.onEvent(java.util.function.Consumer<jdk.jfr.consumer.RecordedEvent>)"); }
+  public abstract void onEvent(java.lang.String eventName, java.util.function.Consumer<jdk.jfr.consumer.RecordedEvent> action) { throw new AbstractMethodError("jdk.jfr.consumer.EventStream.onEvent(java.lang.String, java.util.function.Consumer<jdk.jfr.consumer.RecordedEvent>)"); }
+  public abstract void onFlush(java.lang.Runnable action) { throw new AbstractMethodError("jdk.jfr.consumer.EventStream.onFlush(java.lang.Runnable)"); }
+  public abstract void setReuse(boolean reuse) { throw new AbstractMethodError("jdk.jfr.consumer.EventStream.setReuse(boolean)"); }
+  public abstract void setOrdered(boolean ordered) { throw new AbstractMethodError("jdk.jfr.consumer.EventStream.setOrdered(boolean)"); }
+  public abstract void setEndTime(java.time.Instant endTime) { throw new AbstractMethodError("jdk.jfr.consumer.EventStream.setEndTime(java.time.Instant)"); }
+  public abstract void startAsync() { throw new AbstractMethodError("jdk.jfr.consumer.EventStream.startAsync()"); }
+  public abstract void onError(java.util.function.Consumer<java.lang.Throwable> action) { throw new AbstractMethodError("jdk.jfr.consumer.EventStream.onError(java.util.function.Consumer<java.lang.Throwable>)"); }
+  < ---- END java signatures ---- >
+}

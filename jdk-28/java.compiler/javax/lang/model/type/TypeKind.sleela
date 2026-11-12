@@ -1,0 +1,156 @@
+<< jdk-28/java.compiler/javax/lang/model/type/TypeKind.sleela
+   SLeeLa file for the Java type javax.lang.model.type.TypeKind (module java.compiler). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.compiler/javax/lang/model/type/TypeKind.html
+   Java kind: enum; extends java.lang.Enum
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class TypeKind {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9343;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.lang.model.type.TypeKind";
+  String javaModule = "java.compiler";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.compiler/javax/lang/model/type/TypeKind.html";
+  String javaKind = "enum";
+  String javaSuper = "java.lang.Enum";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  << Complete enum: one static final instance per constant (so identity
+     and == hold for values / valueOf / the constants), with the
+     java.lang.Enum behavior. values() and valueOf(name) are static, as
+     in Java: TypeKind.valueOf(...), TypeKind.values(), and the constants are
+     static final fields. >>
+  static final TypeKind BOOLEAN = new TypeKind("BOOLEAN", 0);
+  static final TypeKind BYTE = new TypeKind("BYTE", 1);
+  static final TypeKind SHORT = new TypeKind("SHORT", 2);
+  static final TypeKind INT = new TypeKind("INT", 3);
+  static final TypeKind LONG = new TypeKind("LONG", 4);
+  static final TypeKind CHAR = new TypeKind("CHAR", 5);
+  static final TypeKind FLOAT = new TypeKind("FLOAT", 6);
+  static final TypeKind DOUBLE = new TypeKind("DOUBLE", 7);
+  static final TypeKind VOID = new TypeKind("VOID", 8);
+  static final TypeKind NONE = new TypeKind("NONE", 9);
+  static final TypeKind NULL = new TypeKind("NULL", 10);
+  static final TypeKind ARRAY = new TypeKind("ARRAY", 11);
+  static final TypeKind DECLARED = new TypeKind("DECLARED", 12);
+  static final TypeKind ERROR = new TypeKind("ERROR", 13);
+  static final TypeKind TYPEVAR = new TypeKind("TYPEVAR", 14);
+  static final TypeKind WILDCARD = new TypeKind("WILDCARD", 15);
+  static final TypeKind PACKAGE = new TypeKind("PACKAGE", 16);
+  static final TypeKind EXECUTABLE = new TypeKind("EXECUTABLE", 17);
+  static final TypeKind OTHER = new TypeKind("OTHER", 18);
+  static final TypeKind UNION = new TypeKind("UNION", 19);
+  static final TypeKind INTERSECTION = new TypeKind("INTERSECTION", 20);
+  static final TypeKind MODULE = new TypeKind("MODULE", 21);
+  String enumName;
+  int enumOrdinal;
+  TypeKind(String name, int ordinal) { this.enumName = name; this.enumOrdinal = ordinal; }
+  String name() { return this.enumName; }
+  int ordinal() { return this.enumOrdinal; }
+  String toString() { return this.enumName; }
+  int compareTo(TypeKind o) { return this.enumOrdinal - o.enumOrdinal; }
+  boolean equals(Any other) { return this == other; }
+  int hashCode() { return this.enumOrdinal * 31 + 17; }
+  public static TypeKind[] values() {
+    TypeKind[] v = new TypeKind[22];
+    v[0] = BOOLEAN;
+    v[1] = BYTE;
+    v[2] = SHORT;
+    v[3] = INT;
+    v[4] = LONG;
+    v[5] = CHAR;
+    v[6] = FLOAT;
+    v[7] = DOUBLE;
+    v[8] = VOID;
+    v[9] = NONE;
+    v[10] = NULL;
+    v[11] = ARRAY;
+    v[12] = DECLARED;
+    v[13] = ERROR;
+    v[14] = TYPEVAR;
+    v[15] = WILDCARD;
+    v[16] = PACKAGE;
+    v[17] = EXECUTABLE;
+    v[18] = OTHER;
+    v[19] = UNION;
+    v[20] = INTERSECTION;
+    v[21] = MODULE;
+    return v;
+  }
+  public static TypeKind valueOf(String name) {
+    if (name == null) { throw new NullPointerException("Name is null"); }
+    if (name == "BOOLEAN") { return BOOLEAN; }
+    if (name == "BYTE") { return BYTE; }
+    if (name == "SHORT") { return SHORT; }
+    if (name == "INT") { return INT; }
+    if (name == "LONG") { return LONG; }
+    if (name == "CHAR") { return CHAR; }
+    if (name == "FLOAT") { return FLOAT; }
+    if (name == "DOUBLE") { return DOUBLE; }
+    if (name == "VOID") { return VOID; }
+    if (name == "NONE") { return NONE; }
+    if (name == "NULL") { return NULL; }
+    if (name == "ARRAY") { return ARRAY; }
+    if (name == "DECLARED") { return DECLARED; }
+    if (name == "ERROR") { return ERROR; }
+    if (name == "TYPEVAR") { return TYPEVAR; }
+    if (name == "WILDCARD") { return WILDCARD; }
+    if (name == "PACKAGE") { return PACKAGE; }
+    if (name == "EXECUTABLE") { return EXECUTABLE; }
+    if (name == "OTHER") { return OTHER; }
+    if (name == "UNION") { return UNION; }
+    if (name == "INTERSECTION") { return INTERSECTION; }
+    if (name == "MODULE") { return MODULE; }
+    throw new IllegalArgumentException("No enum constant javax.lang.model.type.TypeKind." + name);
+  }
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public boolean isPrimitive() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.type.TypeKind.isPrimitive()"); }
+  < ---- END java signatures ---- >
+}

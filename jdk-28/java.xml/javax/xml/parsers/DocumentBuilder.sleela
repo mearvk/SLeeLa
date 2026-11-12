@@ -1,0 +1,82 @@
+<< jdk-28/java.xml/javax/xml/parsers/DocumentBuilder.sleela
+   SLeeLa file for the Java type javax.xml.parsers.DocumentBuilder (module java.xml). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.xml/javax/xml/parsers/DocumentBuilder.html
+   Java kind: class; extends java.lang.Object
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class DocumentBuilder {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 3305;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.xml.parsers.DocumentBuilder";
+  String javaModule = "java.xml";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.xml/javax/xml/parsers/DocumentBuilder.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  @JavaProtected
+  DocumentBuilder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilder.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public void reset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilder.reset()"); }
+  public org.w3c.dom.Document parse(java.io.File f) throws org.xml.sax.SAXException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilder.parse(java.io.File)"); }
+  public org.w3c.dom.Document parse(java.lang.String uri) throws org.xml.sax.SAXException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilder.parse(java.lang.String)"); }
+  public org.w3c.dom.Document parse(java.io.InputStream is, java.lang.String systemId) throws org.xml.sax.SAXException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilder.parse(java.io.InputStream, java.lang.String)"); }
+  public javax.xml.validation.Schema getSchema() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilder.getSchema()"); }
+  public abstract boolean isNamespaceAware() { throw new AbstractMethodError("javax.xml.parsers.DocumentBuilder.isNamespaceAware()"); }
+  public abstract boolean isValidating() { throw new AbstractMethodError("javax.xml.parsers.DocumentBuilder.isValidating()"); }
+  public abstract org.w3c.dom.Document newDocument() { throw new AbstractMethodError("javax.xml.parsers.DocumentBuilder.newDocument()"); }
+  public boolean isXIncludeAware() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilder.isXIncludeAware()"); }
+  public abstract org.w3c.dom.DOMImplementation getDOMImplementation() { throw new AbstractMethodError("javax.xml.parsers.DocumentBuilder.getDOMImplementation()"); }
+  public abstract void setEntityResolver(org.xml.sax.EntityResolver er) { throw new AbstractMethodError("javax.xml.parsers.DocumentBuilder.setEntityResolver(org.xml.sax.EntityResolver)"); }
+  public abstract void setErrorHandler(org.xml.sax.ErrorHandler eh) { throw new AbstractMethodError("javax.xml.parsers.DocumentBuilder.setErrorHandler(org.xml.sax.ErrorHandler)"); }
+  < ---- END java signatures ---- >
+}

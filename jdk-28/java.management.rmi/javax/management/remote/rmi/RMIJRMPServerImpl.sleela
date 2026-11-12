@@ -1,0 +1,80 @@
+<< jdk-28/java.management.rmi/javax/management/remote/rmi/RMIJRMPServerImpl.sleela
+   SLeeLa file for the Java type javax.management.remote.rmi.RMIJRMPServerImpl (module java.management.rmi). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.management.rmi/javax/management/remote/rmi/RMIJRMPServerImpl.html
+   Java kind: class; extends javax.management.remote.rmi.RMIServerImpl
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class RMIJRMPServerImpl {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 7380;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.management.remote.rmi.RMIJRMPServerImpl";
+  String javaModule = "java.management.rmi";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.management.rmi/javax/management/remote/rmi/RMIJRMPServerImpl.html";
+  String javaKind = "class";
+  String javaSuper = "javax.management.remote.rmi.RMIServerImpl";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public RMIJRMPServerImpl(int port, java.rmi.server.RMIClientSocketFactory csf, java.rmi.server.RMIServerSocketFactory ssf, java.util.Map<java.lang.String, ?> env) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIJRMPServerImpl.<init>(int, java.rmi.server.RMIClientSocketFactory, java.rmi.server.RMIServerSocketFactory, java.util.Map<java.lang.String, ?>)"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  @JavaProtected
+  java.lang.String getProtocol() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIJRMPServerImpl.getProtocol()"); }
+  @JavaProtected
+  void export() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIJRMPServerImpl.export()"); }
+  @JavaProtected
+  javax.management.remote.rmi.RMIConnection makeClient(java.lang.String connectionId, javax.security.auth.Subject subject) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIJRMPServerImpl.makeClient(java.lang.String, javax.security.auth.Subject)"); }
+  @JavaProtected
+  void closeClient(javax.management.remote.rmi.RMIConnection client) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIJRMPServerImpl.closeClient(javax.management.remote.rmi.RMIConnection)"); }
+  @JavaProtected
+  void closeServer() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIJRMPServerImpl.closeServer()"); }
+  public java.rmi.Remote toStub() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIJRMPServerImpl.toStub()"); }
+  < ---- END java signatures ---- >
+}
