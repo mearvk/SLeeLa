@@ -145,8 +145,33 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; security</div>
 <h1>Package <code>security</code></h1>
-<div class="lead">This package contains <strong>6</strong> source unit(s) defining <strong>6</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>7</strong> source unit(s) defining <strong>7</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
+<h2 class="section" data-u="security2">Security2 <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/security/Security2.sleela)</span></h2>
+<div data-u="security2 security2">
+<h3 id="Security2">Security2 <span class="pill">class</span></h3>
+<p class="desc">Security2 sits above the VM in colocated memory. It is placed when the VM boots and follows the VM through init and start. Until the VM has fully initialized, the Sleela.home lineage references (parent, child, parents) point to Security2 instead of the VM (SLEELA.syntax section 42.6). Phases are small integers: 0 = off, 1 = booting, 2 = initializing, 3 = started, 4 = ready (fully initialized).</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>PHASE_OFF</code></td><td><span class="sig">static final int PHASE_OFF = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>PHASE_BOOTING</code></td><td><span class="sig">static final int PHASE_BOOTING = 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>PHASE_INITIALIZING</code></td><td><span class="sig">static final int PHASE_INITIALIZING = 2</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>PHASE_STARTED</code></td><td><span class="sig">static final int PHASE_STARTED = 3</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>PHASE_READY</code></td><td><span class="sig">static final int PHASE_READY = 4</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>Security2</code></td><td><span class="sig">public Security2()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>onBoot</code></td><td><span class="sig">void onBoot(Any vmReference)</span></td><td class="desc">The VM boots: Security2 is placed above it in colocated memory.</td></tr>
+<tr><td><code>onInit</code></td><td><span class="sig">void onInit()</span></td><td class="desc">The VM initializes. 2 = initializing.</td></tr>
+<tr><td><code>onStart</code></td><td><span class="sig">void onStart()</span></td><td class="desc">The VM starts. 3 = started.</td></tr>
+<tr><td><code>onReady</code></td><td><span class="sig">void onReady()</span></td><td class="desc">The VM is fully initialized. 4 = ready. Lineage references now point to the VM.</td></tr>
+<tr><td><code>isReady</code></td><td><span class="sig">boolean isReady()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lineageTarget</code></td><td><span class="sig">Any lineageTarget()</span></td><td class="desc">What Sleela.home.parent, child and parents resolve to for the VM end. Before the VM is fully initialized that is Security2 itself, afterwards the VM.</td></tr>
+<tr><td><code>currentPhase</code></td><td><span class="sig">int currentPhase()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="slcapability">SLCapability <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/security/SLCapability.sleela)</span></h2>
 <div data-u="slcapability slcapability">
 <h3 id="SLCapability">SLCapability <span class="pill">class</span></h3>
@@ -186,7 +211,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-12 11:48 UTC.
+<code>/lib</code> tree on 2026-11-12 11:51 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
