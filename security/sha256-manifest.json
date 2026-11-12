@@ -1238,6 +1238,26 @@
       "sha256": "fccf3b3045c465604989a892688baefb668998c4da7ba187a965f13305ab612e"
     },
     {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-term-potencies/01-ages-as-the-book-ages/TaPotency01AgesAsTheBookAges.sleela",
+      "sha256": "9d784f0711fdebc4f87c6cc9f3d1cdc8bca0f1808a710d47c605b7cff40ce7a2"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-term-potencies/02-fifo-sell-and-potency/TaPotency02FifoSellAndPotency.sleela",
+      "sha256": "bc9a45fd8d42510a2c3a8302fbc102745076326eedaa745fbbe7bce232d2cd64"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-term-potencies/03-honest-empty-and-invalid/TaPotency03HonestEmptyAndInvalid.sleela",
+      "sha256": "73d270a35e3d47477a2bcac20033d3798594b9f37f56cb358de94751b86a2345"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-term-potencies/04-cross-checked-portfolios/TaPotency04CrossCheckedPortfolios.sleela",
+      "sha256": "89446257b11c4958d07eae11e7ce2f5afc24dc35f9c2bcb3dc5256000d0db276"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-term-potencies/SLTermPotency.sleela",
+      "sha256": "888e208f68bdba7d736e214d0716cfe28d2d76972ed4cae400abc308fdcce037"
+    },
+    {
       "path": "lib/advantage/learner-vs-professional/series/01-registry-intake/DiRegistryIntake.sleela",
       "sha256": "6d066b0198c2c49051f8f37d4b187299b01c7e2945259c545ce9676b475616ab"
     },

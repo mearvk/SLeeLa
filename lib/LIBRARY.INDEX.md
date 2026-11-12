@@ -1,5 +1,7 @@
 # SLeeLa /lib Library Index
 
+> Revision 1.00 adds `long-term-potencies/` to the advantage courseware (`lib/advantage/learner-vs-professional/courseware/long-term-potencies/`): `SLTermPotency` defines, precisely, two basis-point ratios over an existing `SLLongBook` -- term potency (the share of held units that have crossed the long-term threshold) and age potency (how close the weighted-average age is to the oldest lot's age) -- read-only, inventing no new fact the book does not already expose via `isLongTerm`/`qtyLongTerm`/`oldestAge`/`weightedAgeFloor`. States plainly that `SLShortBook` has no `isLongTerm`/`qtyLongTerm` yet, so term potency has no short-side counterpart. Four entries: a book aging past the threshold (with the buy/check order deliberately interleaved so no query is asked about a day before the book's own last action day, a real ordering bug caught while authoring entry 1), a FIFO sell removing a lot's whole contribution to both potencies, honest -1/-2 answers for an empty book and an invalid day, and ten randomly generated portfolios cross-checked against an independent Python model. Gate: `test-suites/test-long-term-potencies.sh` (4 entries). Five new source units (counts: 13365 to **13370** sources; 13449 to **13454** total records; 121 packages).
+
 > Revision 0.99 is a general code-quality review of `trading-actions-on-verb` and its courseware, checking the code itself rather than only comparing outputs to saved expectations. Found and fixed: `SLBatchReturn.idealBatchProfit` used a magnitude-based rejection sentinel that could equal a real, legitimate large-batch loss (a silent wrong answer); `idealBatchReturnBp`'s basis-point conversion formed a product that still overflowed the exact-comparison limit even after that fix, also silently wrong, fixed by re-deriving `maxTrades`/`maxCapital`/`maxBp` together against the single tightest product; the explicit per-trade batch path had no capital bound at all, latent but reachable; a dead, inaccurate `reason()` method was removed from `SLBatchReturn`; a `maxLots()` getter existed in `SLLongBook`/`SLShortBook` but was never called (the 16-lot cap was a duplicated literal in six places across four classes, and `SLDailyCapBook` lacked the getter entirely) -- now the single source of truth in all four book classes. Both overflow fixes were confirmed genuine by reverting them and watching new boundary-case regression tests fail with the original symptom, plus a 500-sample random sweep against an independent Python model. Also corrected: a stale session learning claiming an apostrophe in an angle-bracket comment is a lexical error does not reproduce against the current `working-binaries/sleela` (1.3.2-pro) and should not be relied on. No source or symbol count change (edits only, no new files).
 
 > Revision 0.98 adds `lib/java/implementations/java/lang/JavaText.sleela`, the plain-String / Java UTF-16 text bridge used by `java.io.File` (sources 13359, symbols 13443).
@@ -71,9 +73,9 @@
 
 **Revision:** 0.82  
 **Packages:** 121  
-**SLeeLa source units:** 13365  
+**SLeeLa source units:** 13370  
 **Module-facade symbols:** 84  
-**Total symbol records:** 13449  
+**Total symbol records:** 13454  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.66 brings three big-number improvements that make a 10,000,000-digit

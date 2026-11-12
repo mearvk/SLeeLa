@@ -1,0 +1,19 @@
+== Entry 1: term and age potency as a portfolio ages ==
+  buy 40 @ 5000 on day 0 : ok
+-- day 365, before the second buy: the one lot is exactly 365 days old --
+-- (365 is NOT long term: isLongTerm needs STRICTLY more than the threshold) --
+  ok   term potency, threshold 365 = 0
+  ok   age potency (one lot, so weighted age equals oldest age) = 10000
+  ok   not yet long term at exactly 365 days
+-- day 400: add a second, younger lot --
+  buy 60 @ 5100 on day 400 : ok
+-- day 500 (the day-0 lot, 40 units, has crossed 365 days; the day-400 lot has not) --
+  ok   term potency, threshold 365 = 4000
+  ok   age potency = 5200
+  ok   still not half (40 of 100 units)
+-- day 900 (both lots have crossed 365 days: full term potency) --
+  ok   term potency, threshold 365 = 10000
+  ok   age potency = 7333
+  ok   now fully long term
+  ok   invariants hold
+  checks passed=10 failed=0

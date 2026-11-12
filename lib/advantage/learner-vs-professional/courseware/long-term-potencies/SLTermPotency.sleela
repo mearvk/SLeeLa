@@ -1,0 +1,109 @@
+<< lib/advantage/learner-vs-professional/courseware/long-term-potencies/SLTermPotency.sleela
+   SLeeLa courseware lesson.
+   Definition: Defines 'potency' precisely as two exact ratios over a long-only book's existing age data: term potency (the basis-point share of held units that have crossed the long-term threshold) and age potency (how close the weighted-average age is to the oldest lot's age), both in basis points so no cent of precision is rounded away. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< "Potency" is not a term SLeeLa's trading-actions-on-verb or courseware uses >
+< anywhere else; this class DEFINES it, plainly, as two separate, named, >
+< exact ratios so the word never floats free of a computed meaning: >
+< >
+<   TERM POTENCY = (units held that are long term) / (units held) in basis >
+<     points (10000 bp = 100%). It answers: of what is still held, what >
+<     share has crossed the long-term line (SLLongBook.isLongTerm: held >
+<     STRICTLY MORE than the threshold, so day 365 at a 365-day threshold >
+<     is NOT long term)? 0 bp when nothing is long term or nothing is held. >
+< >
+<   AGE POTENCY = weightedAgeFloor / oldestAge, in basis points. It answers: >
+<     how concentrated is the age of the book near its oldest lot, versus >
+<     spread across younger ones? 10000 bp means every held unit is exactly >
+<     as old as the oldest lot (one lot, or several lots bought the same >
+<     day); a low value means most units are much younger than the oldest. >
+< >
+< Both are read-only views over an existing SLLongBook; this class never >
+< mutates the book, and never invents a number the book does not already >
+< expose via isLongTerm/qtyLongTerm/oldestAge/weightedAgeFloor/totalQty. >
+< SHORT-SIDE GAP, stated plainly: SLShortBook has oldestAge/weightedAgeFloor/ >
+< qtyOlderThan but NO isLongTerm/qtyLongTerm, so termPotencyBp below has no >
+< short-side counterpart yet; agePotencyBp works for either book shape >
+< because it only needs the two age queries both books already share. >
+class SLTermPotency {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39350;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Term potency in basis points: long-term units / held units, or -1 when >
+  < today is invalid for the book (see SLLongBook.validToday) or -2 when the >
+  < book holds nothing (there is no share of nothing to report). >
+  int termPotencyBp(SLLongBook book, int today, int threshold) {
+    int held = book.totalQty();
+    if (held == 0) { return 0 - 2; }
+    int longTerm = book.qtyLongTerm(today, threshold);
+    if (longTerm < 0) { return 0 - 1; }
+    return longTerm * 10000 / held;
+  }
+
+  < Age potency in basis points: weightedAgeFloor / oldestAge. Returns -1 >
+  < for BOTH a flat book and an invalid today, because SLLongBook.oldestAge >
+  < itself returns -1 for both of those cases and does not distinguish them >
+  < (see its own comment); this method does not invent a finer distinction >
+  < than the book it reads from already makes. 10000 exactly when every held >
+  < unit shares the oldest lot's day (oldestAge is then 0, a zero/zero case >
+  < read as full potency: there is only one age present, so the weighted >
+  < average IS that age). >
+  int agePotencyBp(SLLongBook book, int today) {
+    int old = book.oldestAge(today);
+    if (old < 0) { return 0 - 1; }
+    if (old == 0) { return 10000; }
+    int wAge = book.weightedAgeFloor(today);
+    return wAge * 10000 / old;
+  }
+
+  < Convenience: true when term potency is at or above halfBp (so a caller >
+  < can ask "is at least half the book long term" without re-deriving the >
+  < threshold on 5000). Returns false on any invalid/empty input, never a >
+  < crash or a guess. >
+  boolean atLeastHalfLongTerm(SLLongBook book, int today, int threshold) {
+    int t = termPotencyBp(book, today, threshold);
+    return t >= 5000;
+  }
+}

@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 13365
+library-source-files: 13370
 library-packages: 121
 module-facade-symbols: 84
-total-symbol-records: 13449
+total-symbol-records: 13454
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -80,6 +80,11 @@ advantage	TaMed19ShortTokens.sleela	lib/advantage/learner-vs-professional/course
 advantage	TaMed20ShortChips.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/20-short-chips/TaMed20ShortChips.sleela	source
 advantage	SLDailyCapBook.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/SLDailyCapBook.sleela	source
 advantage	SLDailyCapShortBook.sleela	lib/advantage/learner-vs-professional/courseware/long-medium-averages/SLDailyCapShortBook.sleela	source
+advantage	TaPotency01AgesAsTheBookAges.sleela	lib/advantage/learner-vs-professional/courseware/long-term-potencies/01-ages-as-the-book-ages/TaPotency01AgesAsTheBookAges.sleela	source
+advantage	TaPotency02FifoSellAndPotency.sleela	lib/advantage/learner-vs-professional/courseware/long-term-potencies/02-fifo-sell-and-potency/TaPotency02FifoSellAndPotency.sleela	source
+advantage	TaPotency03HonestEmptyAndInvalid.sleela	lib/advantage/learner-vs-professional/courseware/long-term-potencies/03-honest-empty-and-invalid/TaPotency03HonestEmptyAndInvalid.sleela	source
+advantage	TaPotency04CrossCheckedPortfolios.sleela	lib/advantage/learner-vs-professional/courseware/long-term-potencies/04-cross-checked-portfolios/TaPotency04CrossCheckedPortfolios.sleela	source
+advantage	SLTermPotency.sleela	lib/advantage/learner-vs-professional/courseware/long-term-potencies/SLTermPotency.sleela	source
 advantage	DiRegistryIntake.sleela	lib/advantage/learner-vs-professional/series/01-registry-intake/DiRegistryIntake.sleela	source
 advantage	DiStudentInput.sleela	lib/advantage/learner-vs-professional/series/02-student-input-gate/DiStudentInput.sleela	source
 advantage	DiSystemReadiness.sleela	lib/advantage/learner-vs-professional/series/03-system-readiness/DiSystemReadiness.sleela	source

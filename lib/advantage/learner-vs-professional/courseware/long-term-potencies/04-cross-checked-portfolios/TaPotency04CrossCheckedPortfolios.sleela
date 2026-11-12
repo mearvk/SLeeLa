@@ -1,0 +1,150 @@
+<< lib/advantage/learner-vs-professional/courseware/long-term-potencies/04-cross-checked-portfolios/TaPotency04CrossCheckedPortfolios.sleela
+   SLeeLa courseware lesson.
+   Definition: Entry 4: ten randomly generated portfolios, each checked against an independent Python model of the same term-potency and age-potency formulas. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Entry 4 of 4, long-term-potencies. Ten portfolios (1 to 6 lots each, >
+< random quantities, prices and purchase days) are checked at a random >
+< day and a random long-term threshold. Every expected value was computed >
+< by a separate Python implementation of termPotencyBp and agePotencyBp, >
+< not copied from SLeeLa's own output. >
+class TaPotency04CrossCheckedPortfolios {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39354;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  int passed = 0;
+  int failed = 0;
+  void expect(String label, int got, int want) {
+    if (got == want) { print("  ok   " + label + " = " + got); passed = passed + 1; }
+    else { print("  FAIL " + label + " got " + got + " want " + want); failed = failed + 1; }
+  }
+  void expectTrue(String label, boolean got) {
+    if (got) { print("  ok   " + label); passed = passed + 1; }
+    else { print("  FAIL " + label); failed = failed + 1; }
+  }
+  void summary() { print("  checks passed=" + passed + " failed=" + failed); }
+
+
+  void act(SLLongBook b, String text, int code) {
+    print("  " + text + " : " + b.reason(code));
+  }
+
+  void main() {
+    SLTermPotency p = new SLTermPotency();
+    print("== Entry 4: exhaustive cross-check against an independent Python model ==");
+    SLLongBook book0 = new SLLongBook();
+    act(book0, "seed 1: buy 49 @ 1133 on day 36", book0.buy(36, 49, 1133, 0));
+    act(book0, "seed 1: buy 8 @ 8217 on day 52", book0.buy(52, 8, 8217, 0));
+    expect("seed 1: term potency bp (threshold 30, day 349)", p.termPotencyBp(book0, 349, 30), 10000);
+    expect("seed 1: age potency bp (day 349)", p.agePotencyBp(book0, 349), 9904);
+    expectTrue("seed 1: invariants hold", book0.invariantsHold());
+    SLLongBook book1 = new SLLongBook();
+    act(book1, "seed 2: buy 6 @ 6015 on day 5", book1.buy(5, 6, 6015, 0));
+    expect("seed 2: term potency bp (threshold 365, day 80)", p.termPotencyBp(book1, 80, 365), 0);
+    expect("seed 2: age potency bp (day 80)", p.agePotencyBp(book1, 80), 10000);
+    expectTrue("seed 2: invariants hold", book1.invariantsHold());
+    SLLongBook book2 = new SLLongBook();
+    act(book2, "seed 3: buy 35 @ 2236 on day 37", book2.buy(37, 35, 2236, 0));
+    act(book2, "seed 3: buy 39 @ 7866 on day 60", book2.buy(60, 39, 7866, 0));
+    expect("seed 3: term potency bp (threshold 30, day 425)", p.termPotencyBp(book2, 425, 30), 10000);
+    expect("seed 3: age potency bp (day 425)", p.agePotencyBp(book2, 425), 9664);
+    expectTrue("seed 3: invariants hold", book2.invariantsHold());
+    SLLongBook book3 = new SLLongBook();
+    act(book3, "seed 4: buy 7 @ 6589 on day 19", book3.buy(19, 7, 6589, 0));
+    act(book3, "seed 4: buy 10 @ 1576 on day 49", book3.buy(49, 10, 1576, 0));
+    expect("seed 4: term potency bp (threshold 365, day 540)", p.termPotencyBp(book3, 540, 365), 10000);
+    expect("seed 4: age potency bp (day 540)", p.agePotencyBp(book3, 540), 9654);
+    expectTrue("seed 4: invariants hold", book3.invariantsHold());
+    SLLongBook book4 = new SLLongBook();
+    act(book4, "seed 5: buy 48 @ 5974 on day 16", book4.buy(16, 48, 5974, 0));
+    act(book4, "seed 5: buy 45 @ 8784 on day 66", book4.buy(66, 45, 8784, 0));
+    act(book4, "seed 5: buy 30 @ 4180 on day 67", book4.buy(67, 30, 4180, 0));
+    act(book4, "seed 5: buy 4 @ 2669 on day 108", book4.buy(108, 4, 2669, 0));
+    act(book4, "seed 5: buy 24 @ 7785 on day 115", book4.buy(115, 24, 7785, 0));
+    expect("seed 5: term potency bp (threshold 365, day 564)", p.termPotencyBp(book4, 564, 365), 10000);
+    expect("seed 5: age potency bp (day 564)", p.agePotencyBp(book4, 564), 9197);
+    expectTrue("seed 5: invariants hold", book4.invariantsHold());
+    SLLongBook book5 = new SLLongBook();
+    act(book5, "seed 6: buy 6 @ 8046 on day 52", book5.buy(52, 6, 8046, 0));
+    act(book5, "seed 6: buy 17 @ 703 on day 100", book5.buy(100, 17, 703, 0));
+    act(book5, "seed 6: buy 10 @ 9708 on day 100", book5.buy(100, 10, 9708, 0));
+    act(book5, "seed 6: buy 49 @ 6213 on day 130", book5.buy(130, 49, 6213, 0));
+    act(book5, "seed 6: buy 50 @ 458 on day 150", book5.buy(150, 50, 458, 0));
+    expect("seed 6: term potency bp (threshold 30, day 513)", p.termPotencyBp(book5, 513, 30), 10000);
+    expect("seed 6: age potency bp (day 513)", p.agePotencyBp(book5, 513), 8351);
+    expectTrue("seed 6: invariants hold", book5.invariantsHold());
+    SLLongBook book6 = new SLLongBook();
+    act(book6, "seed 7: buy 10 @ 6568 on day 60", book6.buy(60, 10, 6568, 0));
+    act(book6, "seed 7: buy 4 @ 1286 on day 101", book6.buy(101, 4, 1286, 0));
+    act(book6, "seed 7: buy 35 @ 1642 on day 153", book6.buy(153, 35, 1642, 0));
+    expect("seed 7: term potency bp (threshold 90, day 279)", p.termPotencyBp(book6, 279, 90), 10000);
+    expect("seed 7: age potency bp (day 279)", p.agePotencyBp(book6, 279), 6803);
+    expectTrue("seed 7: invariants hold", book6.invariantsHold());
+    SLLongBook book7 = new SLLongBook();
+    act(book7, "seed 8: buy 25 @ 2169 on day 23", book7.buy(23, 25, 2169, 0));
+    act(book7, "seed 8: buy 46 @ 817 on day 35", book7.buy(35, 46, 817, 0));
+    expect("seed 8: term potency bp (threshold 180, day 101)", p.termPotencyBp(book7, 101, 180), 0);
+    expect("seed 8: age potency bp (day 101)", p.agePotencyBp(book7, 101), 8974);
+    expectTrue("seed 8: invariants hold", book7.invariantsHold());
+    SLLongBook book8 = new SLLongBook();
+    act(book8, "seed 9: buy 24 @ 4476 on day 39", book8.buy(39, 24, 4476, 0));
+    act(book8, "seed 9: buy 12 @ 205 on day 47", book8.buy(47, 12, 205, 0));
+    act(book8, "seed 9: buy 33 @ 7697 on day 68", book8.buy(68, 33, 7697, 0));
+    act(book8, "seed 9: buy 39 @ 1424 on day 125", book8.buy(125, 39, 1424, 0));
+    expect("seed 9: term potency bp (threshold 30, day 268)", p.termPotencyBp(book8, 268, 30), 10000);
+    expect("seed 9: age potency bp (day 268)", p.agePotencyBp(book8, 268), 8209);
+    expectTrue("seed 9: invariants hold", book8.invariantsHold());
+    SLLongBook book9 = new SLLongBook();
+    act(book9, "seed 10: buy 28 @ 8006 on day 2", book9.buy(2, 28, 8006, 0));
+    act(book9, "seed 10: buy 1 @ 3476 on day 38", book9.buy(38, 1, 3476, 0));
+    act(book9, "seed 10: buy 32 @ 4646 on day 67", book9.buy(67, 32, 4646, 0));
+    act(book9, "seed 10: buy 11 @ 663 on day 108", book9.buy(108, 11, 663, 0));
+    act(book9, "seed 10: buy 32 @ 5470 on day 141", book9.buy(141, 32, 5470, 0));
+    expect("seed 10: term potency bp (threshold 365, day 619)", p.termPotencyBp(book9, 619, 365), 10000);
+    expect("seed 10: age potency bp (day 619)", p.agePotencyBp(book9, 619), 8784);
+    expectTrue("seed 10: invariants hold", book9.invariantsHold());
+    summary();
+  }
+}
