@@ -83,12 +83,275 @@ class Long extends Number {
   static final int BYTES = 8;
   < ---- END java declarations ---- >
 
-  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
-  public Long(String s) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Long(long value) { super("constructor"); }
-  < ---- END java constructors ---- >
+
+  < ---- BEGIN java implementation (JDK 28, SLeeLa logic) ---- >
+  << java.lang.Long in SLeeLa, written from the JDK 28 API specification
+     (Java Source above). Java names, static modifiers and return types are kept.
+     The VM integer slot is 64 bits, which is exactly a Java long. The unsigned
+     view of a long is an int128 u in [0, 2^64) (slU). Bit operations are done
+     arithmetically (the VM has no bitwise operators). Malformed numbers throw
+     NumberFormatException with the JDK message text. >>
+  long value;
+
+  public Long(long value) { this.value = value; }
+  @throwable("java.lang.NumberFormatException")
+  public Long(String s) { this.value = parseLong(s, 10); }
+
+  < 64-bit helpers >
+  static int128 slTwo64() { int128 t = 4294967296; return t * 4294967296; }
+  static int128 slU(long i) { int128 u = i; if (i < 0) { u = u + slTwo64(); } return u; }
+  static long slFromU(int128 u) { int128 t = u; if (t >= slTwo64() / 2) { t = t - slTwo64(); } return (long) t; }
+  static int128 slPow2(int n) { int128 r = 1; int k = 0; while (k < n) { r = r * 2; k = k + 1; } return r; }
+  static int slDigitOf(int c, int radix) {
+    int d = -1;
+    if (c >= 48 && c <= 57) { d = c - 48; }
+    if (c >= 97 && c <= 122) { d = c - 87; }
+    if (c >= 65 && c <= 90) { d = c - 55; }
+    if (d >= radix) { return -1; }
+    return d;
+  }
+  static String slDigitChar(int d) {
+    if (d < 10) { return "" + d; }
+    return javaStringToUtf8(javaStringFromCodeUnit(87 + d));
+  }
+  static String slUnsignedText(int128 u, int radix) {
+    if (u == 0) { return "0"; }
+    String out = "";
+    int128 v = u;
+    while (v > 0) { out = slDigitChar((int) (v % radix)) + out; v = v / radix; }
+    return out;
+  }
+  static String slNfeText(String s, int radix) {
+    String m = "For input string: \"" + s + "\"";
+    if (radix != 10) { m = m + " under radix " + radix; }
+    return m;
+  }
+
+  < instance members >
+  public byte byteValue() { long m = value % 256; if (m < 0) { m = m + 256; } if (m >= 128) { m = m - 256; } return m; }
+  public short shortValue() { long m = value % 65536; if (m < 0) { m = m + 65536; } if (m >= 32768) { m = m - 65536; } return m; }
+  public int intValue() { long m = value % 4294967296; if (m < 0) { m = m + 4294967296; } if (m >= 2147483648) { m = m - 4294967296; } return m; }
+  public long longValue() { return value; }
+  public float floatValue() { double d = value; return d; }
+  public double doubleValue() { double d = value; return d; }
+  public String toString() { return toString(value, 10); }
+  public int hashCode() { return hashCode(value); }
+  public boolean equals(Any obj) {
+    if (obj instanceof Long) { Long o = (Long) obj; return o.value == value; }
+    return false;
+  }
+  public int compareTo(Any anotherLong) { Long o = (Long) anotherLong; return compare(value, o.value); }
+
+  < text conversion >
+  public static String toString(long i, int radix) {
+    int r = radix;
+    if (r < 2 || r > 36) { r = 10; }
+    int128 v = i;
+    if (i < 0) { return "-" + slUnsignedText(0 - v, r); }
+    return slUnsignedText(v, r);
+  }
+  public static String toString(long i) { return toString(i, 10); }
+  public static String toUnsignedString(long i, int radix) {
+    int r = radix;
+    if (r < 2 || r > 36) { r = 10; }
+    return slUnsignedText(slU(i), r);
+  }
+  public static String toUnsignedString(long i) { return slUnsignedText(slU(i), 10); }
+  public static String toHexString(long i) { return slUnsignedText(slU(i), 16); }
+  public static String toOctalString(long i) { return slUnsignedText(slU(i), 8); }
+  public static String toBinaryString(long i) { return slUnsignedText(slU(i), 2); }
+
+  < parsing >
+  static int128 slParseMagnitude(String s, int radix, boolean unsigned, int128 limit) {
+    if (s == null) { throw new NumberFormatException("Cannot parse null string: null"); }
+    if (radix < 2) { throw new NumberFormatException("radix " + radix + " less than Character.MIN_RADIX"); }
+    if (radix > 36) { throw new NumberFormatException("radix " + radix + " greater than Character.MAX_RADIX"); }
+    String u = javaStringFromUtf8(s);
+    int n = javaStringLength(u);
+    if (n == 0) { throw new NumberFormatException(slNfeText(s, radix)); }
+    int i = 0;
+    int first = javaStringCharAt(u, 0);
+    if (first == 45 || first == 43) {
+      if (first == 45 && unsigned) { throw new NumberFormatException("Illegal leading minus sign on unsigned string " + s + "."); }
+      i = 1;
+      if (n == 1) { throw new NumberFormatException(slNfeText(s, radix)); }
+    }
+    int128 result = 0;
+    while (i < n) {
+      int d = slDigitOf(javaStringCharAt(u, i), radix);
+      if (d < 0) { throw new NumberFormatException(slNfeText(s, radix)); }
+      result = result * radix + d;
+      if (result > limit) {
+        if (unsigned) { throw new NumberFormatException("String value " + s + " exceeds range of unsigned long."); }
+        throw new NumberFormatException(slNfeText(s, radix));
+      }
+      i = i + 1;
+    }
+    return result;
+  }
+  @throwable("java.lang.NumberFormatException")
+  public static long parseLong(String s, int radix) {
+    int128 maxPos = 9223372036854775807;
+    int128 limit = maxPos + 1;
+    int128 mag = slParseMagnitude(s, radix, false, limit);
+    boolean neg = javaStringCharAt(javaStringFromUtf8(s), 0) == 45;
+    if (neg) { mag = 0 - mag; }
+    else { if (mag > maxPos) { throw new NumberFormatException(slNfeText(s, radix)); } }
+    return (long) mag;
+  }
+  @throwable("java.lang.NumberFormatException")
+  public static long parseLong(String s) { return parseLong(s, 10); }
+  @throwable("java.lang.NumberFormatException")
+  public static long parseUnsignedLong(String s, int radix) {
+    int128 limit = slTwo64() - 1;
+    return slFromU(slParseMagnitude(s, radix, true, limit));
+  }
+  @throwable("java.lang.NumberFormatException")
+  public static long parseUnsignedLong(String s) { return parseUnsignedLong(s, 10); }
+  @throwable("java.lang.NumberFormatException")
+  public static Any valueOf(String s, int radix) { return new Long(parseLong(s, radix)); }
+  @throwable("java.lang.NumberFormatException")
+  public static Any valueOf(String s) { return new Long(parseLong(s, 10)); }
+  public static Any valueOf(long l) { return new Long(l); }
+  @throwable("java.lang.NumberFormatException")
+  public static Any decode(String nm) {
+    if (nm == null || javaStringLength(javaStringFromUtf8(nm)) == 0) { throw new NumberFormatException("Zero length string"); }
+    String u = javaStringFromUtf8(nm);
+    int n = javaStringLength(u);
+    int i = 0;
+    boolean neg = false;
+    int c0 = javaStringCharAt(u, 0);
+    if (c0 == 45 || c0 == 43) { neg = c0 == 45; i = 1; }
+    int radix = 10;
+    if (i + 1 < n && javaStringCharAt(u, i) == 48 && (javaStringCharAt(u, i + 1) == 120 || javaStringCharAt(u, i + 1) == 88)) { radix = 16; i = i + 2; }
+    else { if (i < n && javaStringCharAt(u, i) == 35) { radix = 16; i = i + 1; }
+    else { if (i + 1 < n && javaStringCharAt(u, i) == 48) { radix = 8; i = i + 1; } } }
+    String digits = "";
+    int j = i;
+    while (j < n) { digits = digits + javaStringToUtf8(javaStringFromCodeUnit(javaStringCharAt(u, j))); j = j + 1; }
+    if (neg) { digits = "-" + digits; }
+    return new Long(parseLong(digits, radix));
+  }
+  public static Any getLong(String nm) { return null; }
+  public static Any getLong(String nm, long val) { return new Long(val); }
+
+  < arithmetic and comparison >
+  public static int hashCode(long value) {
+    int128 u = slU(value);
+    int128 hi = u / 4294967296;
+    int128 lo = u % 4294967296;
+    int128 r = 0;
+    int128 bit = 1;
+    int k = 0;
+    while (k < 32) {
+      if ((hi % 2) != (lo % 2)) { r = r + bit; }
+      hi = hi / 2;
+      lo = lo / 2;
+      bit = bit * 2;
+      k = k + 1;
+    }
+    if (r >= 2147483648) { r = r - 4294967296; }
+    return (int) r;
+  }
+  public static int compare(long x, long y) { if (x < y) { return -1; } if (x == y) { return 0; } return 1; }
+  public static int compareUnsigned(long x, long y) {
+    int128 a = slU(x);
+    int128 b = slU(y);
+    if (a < b) { return -1; }
+    if (a == b) { return 0; }
+    return 1;
+  }
+  @throwable("java.lang.ArithmeticException")
+  public static long divideUnsigned(long dividend, long divisor) {
+    if (divisor == 0) { throw new ArithmeticException("/ by zero"); }
+    return slFromU(slU(dividend) / slU(divisor));
+  }
+  @throwable("java.lang.ArithmeticException")
+  public static long remainderUnsigned(long dividend, long divisor) {
+    if (divisor == 0) { throw new ArithmeticException("/ by zero"); }
+    return slFromU(slU(dividend) % slU(divisor));
+  }
+  public static int signum(long i) { if (i > 0) { return 1; } if (i < 0) { return -1; } return 0; }
+  public static long sum(long a, long b) { int128 r = a; r = r + b; return slFromU(slU(0) + (r % slTwo64() + slTwo64()) % slTwo64()); }
+  public static long max(long a, long b) { if (a > b) { return a; } return b; }
+  public static long min(long a, long b) { if (a < b) { return a; } return b; }
+
+  < bit operations over the unsigned 64-bit pattern >
+  public static int bitCount(long i) {
+    int128 u = slU(i);
+    int c = 0;
+    while (u > 0) { c = c + (int) (u % 2); u = u / 2; }
+    return c;
+  }
+  public static int numberOfLeadingZeros(long i) {
+    int128 u = slU(i);
+    int n = 64;
+    while (u > 0) { n = n - 1; u = u / 2; }
+    return n;
+  }
+  public static int numberOfTrailingZeros(long i) {
+    int128 u = slU(i);
+    if (u == 0) { return 64; }
+    int n = 0;
+    while (u % 2 == 0) { n = n + 1; u = u / 2; }
+    return n;
+  }
+  public static long highestOneBit(long i) {
+    if (i == 0) { return 0; }
+    return slFromU(slPow2(63 - numberOfLeadingZeros(i)));
+  }
+  public static long lowestOneBit(long i) {
+    if (i == 0) { return 0; }
+    return slFromU(slPow2(numberOfTrailingZeros(i)));
+  }
+  public static long rotateLeft(long i, int distance) {
+    int d = distance % 64;
+    if (d < 0) { d = d + 64; }
+    int128 u = slU(i);
+    int128 p = slPow2(d);
+    int128 q = slPow2(64 - d);
+    return slFromU((u % q) * p + u / q);
+  }
+  public static long rotateRight(long i, int distance) { return rotateLeft(i, 64 - (distance % 64)); }
+  public static long reverse(long i) {
+    int128 u = slU(i);
+    int128 r = 0;
+    int k = 0;
+    while (k < 64) { r = r * 2 + u % 2; u = u / 2; k = k + 1; }
+    return slFromU(r);
+  }
+  public static long reverseBytes(long i) {
+    int128 u = slU(i);
+    int128 r = 0;
+    int k = 0;
+    while (k < 8) { r = r * 256 + u % 256; u = u / 256; k = k + 1; }
+    return slFromU(r);
+  }
+  public static long compress(long i, long mask) {
+    int128 u = slU(i);
+    int128 m = slU(mask);
+    int128 r = 0;
+    int128 bit = 1;
+    while (m > 0) {
+      if (m % 2 == 1) { if (u % 2 == 1) { r = r + bit; } bit = bit * 2; }
+      m = m / 2;
+      u = u / 2;
+    }
+    return slFromU(r);
+  }
+  public static long expand(long i, long mask) {
+    int128 u = slU(i);
+    int128 m = slU(mask);
+    int128 r = 0;
+    int128 bit = 1;
+    while (m > 0) {
+      if (m % 2 == 1) { if (u % 2 == 1) { r = r + bit; } u = u / 2; }
+      m = m / 2;
+      bit = bit * 2;
+    }
+    return slFromU(r);
+  }
+  < ---- END java implementation ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -97,108 +360,8 @@ class Long extends Number {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public static int numberOfLeadingZeros(long i) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int numberOfTrailingZeros(long i) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int bitCount(long i) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(Any obj) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static String toString(long i) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String toString() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static String toString(long i, int radix) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int hashCode(long value) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int hashCode() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static long min(long a, long b) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static long max(long a, long b) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int signum(long i) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static long expand(long i, long mask) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int compareUnsigned(long x, long y) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static long divideUnsigned(long dividend, long divisor) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static long remainderUnsigned(long dividend, long divisor) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static long reverse(long i) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static long reverseBytes(long i) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static long compress(long i, long mask) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int compareTo(Any anotherLong) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any getLong(String nm, Any val) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any getLong(String nm) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any getLong(String nm, long val) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int compare(long x, long y) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public byte byteValue() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public short shortValue() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int intValue() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public long longValue() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public float floatValue() { return 0.0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public double doubleValue() { return 0.0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any valueOf(long l) { return null; }
-  @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
-  public static Any valueOf(String s) { return null; }
-  @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
-  public static Any valueOf(String s, int radix) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static String toHexString(long i) { return null; }
-  @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
-  public static Any decode(String nm) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
   public Any resolveConstantDesc(Any lookup) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public Any describeConstable() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static long sum(long a, long b) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static String toUnsignedString(long i) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static String toUnsignedString(long i, int radix) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static String toOctalString(long i) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static String toBinaryString(long i) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static long highestOneBit(long i) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static long lowestOneBit(long i) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static long rotateLeft(long i, int distance) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static long rotateRight(long i, int distance) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
-  public static long parseLong(String s) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
-  public static long parseLong(String s, int radix) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
-  public static long parseLong(Any s, int beginIndex, int endIndex, int radix) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
-  public static long parseUnsignedLong(String s) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
-  public static long parseUnsignedLong(String s, int radix) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
-  public static long parseUnsignedLong(Any s, int beginIndex, int endIndex, int radix) { return 0; }
   < ---- END java signatures ---- >
 }
