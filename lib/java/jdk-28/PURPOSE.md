@@ -120,7 +120,9 @@ Statuses are taken from `JDK28-PROCEDURAL-IMPLEMENTATION.md` (2026-11-10) and
      a cycle of references: `VM -> A -> B -> C -> D -> VM`.
    - `parents("")` is `Sleela.System`. More dashes than ancestors also reach
      `Sleela.System` (the cycle); this is inferred from the cycle rule.
-   - `Sleela` is reserved; `Sleela.System` is the VM reference. A translated
+   - `Sleela` is reserved; `Sleela.VM`, `Sleela.System` and `Sleela.OS` are
+     equivalent names for the VM reference. The VM hands it back as a
+     HashMap-like value holding the VM reference and the nearest descendant. A translated
      Java identifier named `Sleela` is renamed (row 27).
    - A link is set left to right: `B -> Sleela.home.parent`.
 

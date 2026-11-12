@@ -2971,8 +2971,10 @@ child fields.
 
 ### 42.1 The `Sleela` reference
 
-`Sleela` is a reserved language name. `Sleela.System` is the reference to the
-SLeeLa VM. `Sleela.home` is the implied static lineage structure of the
+`Sleela` is a reserved language name. `Sleela.VM`, `Sleela.System` and
+`Sleela.OS` are interchangeable names for the one reference to the SLeeLa VM;
+every such reference the VM offers is reachable through `Sleela`. Wherever this
+section says `Sleela.System`, `Sleela.VM` and `Sleela.OS` are equivalent. `Sleela.home` is the implied static lineage structure of the
 enclosing class and is the bean setter for its links. A source identifier named
 `Sleela` is an error; a translator renames it.
 
@@ -3001,6 +3003,14 @@ The VM links to the most-derived class and the root links back to the VM, so
 the lineage is a cycle of references: `VM -> A -> B -> C -> D -> VM`, with
 `child` running the opposite way. Walking past the root with more dashes than
 there are ancestors reaches `Sleela.System` (the cycle) and is not an error.
+
+### 42.3a What the VM returns
+
+The VM reference is map-like (a `HashMap` or similar, assumed for now). It
+holds the VM reference itself and the nearest descendant of the asking class
+(for the `child` of the most-derived class `A`, the VM; for `D` asked from the
+VM side, `A`'s lineage head). Lookup is by name through the map interface. The
+exact key names are not fixed yet.
 
 ### 42.4 Setting a link
 
