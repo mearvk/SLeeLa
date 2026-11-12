@@ -145,7 +145,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; advantage</div>
 <h1>Package <code>advantage</code></h1>
-<div class="lead">This package contains <strong>183</strong> source unit(s) defining <strong>183</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>185</strong> source unit(s) defining <strong>185</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="advantage-demo">advantage-demo <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/advantage-demo.sleela)</span></h2>
 <div data-u="advantage-demo advantagedemo">
@@ -1992,6 +1992,8 @@
 <tr><td><code>weightedAgeFloor</code></td><td><span class="sig">int weightedAgeFloor(int today)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>borrowAccrued</code></td><td><span class="sig">int borrowAccrued(int today)</span></td><td class="desc">Borrow cost accrued so far on the shares still short, not yet paid.</td></tr>
 <tr><td><code>qtyOlderThan</code></td><td><span class="sig">int qtyOlderThan(int today, int maxAge)</span></td><td class="desc">Shares short for more than maxAge days.</td></tr>
+<tr><td><code>isLongTerm</code></td><td><span class="sig">boolean isLongTerm(int i, int today, int threshold)</span></td><td class="desc">A lot is long term when it is held for MORE than threshold days. Mirrors SLLongBook.isLongTerm exactly: added so a short position has the same term vocabulary as a long one, which it previously lacked.</td></tr>
+<tr><td><code>qtyLongTerm</code></td><td><span class="sig">int qtyLongTerm(int today, int threshold)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invariantsHold</code></td><td><span class="sig">boolean invariantsHold()</span></td><td class="desc">---- Invariants ---- 1 every lot has positive quantity and price; 2 lot days never decrease and never pass the book day; 3 count is within the 16-lot capacity; 4 shares short = shares sold short - shares covered; 5 proceeds held = proceeds opened - proceeds covered.</td></tr>
 </table>
 </div>
@@ -2140,13 +2142,16 @@
 <h2 class="section" data-u="sltermpotency">SLTermPotency <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/courseware/long-term-potencies/SLTermPotency.sleela)</span></h2>
 <div data-u="sltermpotency sltermpotency">
 <h3 id="SLTermPotency">SLTermPotency <span class="pill">class</span></h3>
-<p class="desc">Defines &#x27;potency&#x27; precisely as two exact ratios over a long-only book&#x27;s existing age data: term potency (the basis-point share of held units that have crossed the long-term threshold) and age potency (how close the weighted-average age is to the oldest lot&#x27;s age), both in basis points so no cent of precision is rounded away.</p>
+<p class="desc">Defines &#x27;potency&#x27; precisely as two exact ratios over a book&#x27;s existing age data, overloaded for both SLLongBook and SLShortBook: term potency (the basis-point share of held/short units that have crossed the long-term threshold) and age potency (how close the weighted-average age is to the oldest lot&#x27;s age), both in basis points so no cent of precision is rounded away.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
 <tr><td><code>termPotencyBp</code></td><td><span class="sig">int termPotencyBp(SLLongBook book, int today, int threshold)</span></td><td class="desc">Term potency in basis points: long-term units / held units, or -1 when today is invalid for the book (see SLLongBook.validToday) or -2 when the book holds nothing (there is no share of nothing to report).</td></tr>
 <tr><td><code>agePotencyBp</code></td><td><span class="sig">int agePotencyBp(SLLongBook book, int today)</span></td><td class="desc">Age potency in basis points: weightedAgeFloor / oldestAge. Returns -1 for BOTH a flat book and an invalid today, because SLLongBook.oldestAge itself returns -1 for both of those cases and does not distinguish them (see its own comment); this method does not invent a finer distinction than the book it reads from already makes. 10000 exactly when every held unit shares the oldest lot&#x27;s day (oldestAge is then 0, a zero/zero case read as full potency: there is only one age present, so the weighted average IS that age).</td></tr>
 <tr><td><code>atLeastHalfLongTerm</code></td><td><span class="sig">boolean atLeastHalfLongTerm(SLLongBook book, int today, int threshold)</span></td><td class="desc">Convenience: true when term potency is at or above halfBp (so a caller can ask &quot;is at least half the book long term&quot; without re-deriving the threshold on 5000). Returns false on any invalid/empty input, never a crash or a guess.</td></tr>
+<tr><td><code>termPotencyBp</code></td><td><span class="sig">int termPotencyBp(SLShortBook book, int today, int threshold)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>agePotencyBp</code></td><td><span class="sig">int agePotencyBp(SLShortBook book, int today)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>atLeastHalfLongTerm</code></td><td><span class="sig">boolean atLeastHalfLongTerm(SLShortBook book, int today, int threshold)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="sltrademath">SLTradeMath <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/math/SLTradeMath.sleela)</span></h2>
@@ -3093,6 +3098,44 @@
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="tapotency05shortsidemirror">TaPotency05ShortSideMirror <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/courseware/long-term-potencies/05-short-side-mirror/TaPotency05ShortSideMirror.sleela)</span></h2>
+<div data-u="tapotency05shortsidemirror tapotency05shortsidemirror">
+<h3 id="TaPotency05ShortSideMirror">TaPotency05ShortSideMirror <span class="pill">class</span></h3>
+<p class="desc">Entry 5: the short-side overloads of term potency and age potency, mirroring entry 1&#x27;s exact lot structure and ages, confirming the formulas give identical readings on either book shape.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLShortBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tapotency06shortsidehonestyandcover">TaPotency06ShortSideHonestyAndCover <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/courseware/long-term-potencies/06-short-side-honesty-and-cover/TaPotency06ShortSideHonestyAndCover.sleela)</span></h2>
+<div data-u="tapotency06shortsidehonestyandcover tapotency06shortsidehonestyandcover">
+<h3 id="TaPotency06ShortSideHonestyAndCover">TaPotency06ShortSideHonestyAndCover <span class="pill">class</span></h3>
+<p class="desc">Entry 6: honest -1/-2 answers for an empty short book and an invalid day, then a FIFO cover removing the oldest short&#x27;s whole contribution to both potencies, mirroring entries 2 and 3 on the short side.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLShortBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="tause01openandadd">TaUse01OpenAndAdd <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading-actions-on-verb/01-open-and-add/TaUse01OpenAndAdd.sleela)</span></h2>
 <div data-u="tause01openandadd tause01openandadd">
 <h3 id="TaUse01OpenAndAdd">TaUse01OpenAndAdd <span class="pill">class</span></h3>
@@ -3759,7 +3802,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-12 00:34 UTC.
+<code>/lib</code> tree on 2026-11-12 00:49 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
