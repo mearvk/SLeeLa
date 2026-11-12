@@ -67048,6 +67048,7 @@
 <tr><td><code>File</code></td><td><span class="sig">public File(File parent, java.lang.String child)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>joinPath</code></td><td><span class="sig">String joinPath(String parent, String child)</span></td><td class="desc">path helpers</td></tr>
 <tr><td><code>normalizePath</code></td><td><span class="sig">String normalizePath(String p)</span></td><td class="desc">Unix normalization: collapse repeated slashes, drop a trailing slash; rebuilds the text only when needed</td></tr>
+<tr><td><code>hexValue</code></td><td><span class="sig">int hexValue(int h)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>parseEntries</code></td><td><span class="sig">String[] parseEntries(String json)</span></td><td class="desc">parse the entries array of an oslsListDirectory JSON reply, without . and .. ; null when the status is not 0</td></tr>
 </table>
 </div>
@@ -93276,17 +93277,16 @@
 <div data-u="javatext javatext">
 <h3 id="JavaText">JavaText <span class="pill">class</span></h3>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
-<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
-<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
-<tr><td><code>asciiTable</code></td><td><span class="sig">static String[] asciiTable = null</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-</table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
-<tr><td><code>charString</code></td><td><span class="sig">static String charString(int c)</span></td><td class="desc">the plain one-character String for an ASCII code unit</td></tr>
-<tr><td><code>buildTable</code></td><td><span class="sig">static String[] buildTable()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>utf16</code></td><td><span class="sig">static String utf16(String plain)</span></td><td class="desc">plain String to Java UTF-16 String, and back</td></tr>
+<tr><td><code>plainBlocker</code></td><td><span class="sig">static String plainBlocker(String u)</span></td><td class="desc">the reason a UTF-16 String has no plain form, or &quot;&quot; when it has one: NUL, an unpaired surrogate, or more than 65536 UTF-8 bytes</td></tr>
+<tr><td><code>utf16</code></td><td><span class="sig">static String utf16(String plain)</span></td><td class="desc">plain String to Java UTF-16 String, and back (any Unicode text)</td></tr>
 <tr><td><code>plainOf</code></td><td><span class="sig">static String plainOf(String u)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>plainIfRepresentable</code></td><td><span class="sig">static String plainIfRepresentable(String u)</span></td><td class="desc">the plain form of a UTF-16 String when every code unit has one, else the UTF-16 String itself</td></tr>
+<tr><td><code>plainIfRepresentable</code></td><td><span class="sig">static String plainIfRepresentable(String u)</span></td><td class="desc">the plain form of a UTF-16 String when it has one, else the UTF-16 String itself</td></tr>
+<tr><td><code>unitU</code></td><td><span class="sig">static String unitU(int c)</span></td><td class="desc">one code unit, or one code point (two units above U+FFFF), as a UTF-16 String</td></tr>
+<tr><td><code>codePointU</code></td><td><span class="sig">static String codePointU(int cp)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>charString</code></td><td><span class="sig">static String charString(int c)</span></td><td class="desc">the plain one-character String for a code unit (no surrogate halves, no NUL)</td></tr>
+<tr><td><code>hexUpper</code></td><td><span class="sig">static String hexUpper(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>length</code></td><td><span class="sig">static int length(String s)</span></td><td class="desc">character access on a plain String, counted in UTF-16 code units as Java does</td></tr>
 <tr><td><code>charAt</code></td><td><span class="sig">static int charAt(String s, int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>substring</code></td><td><span class="sig">static String substring(String s, int begin, int end)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -172858,7 +172858,6 @@
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.lang.StringBuffer&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>buf</code></td><td><span class="sig">String buf = javaStringFromCodeUnits()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>asciiTable</code></td><td><span class="sig">String asciiTable = javaStringFromUtf8(&quot; !?#$%&amp;&#x27;()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[?]^_`abcdefghijklmnopqrstuvwxyz{|}~&quot;)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -172944,7 +172943,6 @@
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;StringBuilder&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>buf</code></td><td><span class="sig">String buf = javaStringFromCodeUnits()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>asciiTable</code></td><td><span class="sig">String asciiTable = javaStringFromUtf8(&quot; !?#$%&amp;&#x27;()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[?]^_`abcdefghijklmnopqrstuvwxyz{|}~&quot;)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -203154,7 +203152,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-11 23:57 UTC.
+<code>/lib</code> tree on 2026-11-12 00:07 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
