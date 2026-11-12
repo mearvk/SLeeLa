@@ -263,7 +263,7 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "ad73393e952c89bab77b2bd3b365fafbe5f8ecdcfb2a7d58c8fc1873baf85645"
+      "sha256": "0430f5da11721a260571ccdffc0afa2cd4fd103cc15915346672ffc3a69c2b55"
     },
     {
       "path": "impl/core/sleela_core.h",
@@ -38155,7 +38155,7 @@
     },
     {
       "path": "lib/java/jdk-25/java/util/UUID.sleela",
-      "sha256": "8cd95e71a6f3b1b9eab8c4dbcb35d873016d12291135626da987d855db1ac8d5"
+      "sha256": "a9669d4528a904f5d9feddf09fc4173b14cef44b7a93b2ee31524a4fdf9c2ad4"
     },
     {
       "path": "lib/java/jdk-25/java/util/UnknownFormatConversionException.sleela",

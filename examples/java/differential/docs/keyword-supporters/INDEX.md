@@ -7,9 +7,9 @@ on each compile.
 
 | Keyword | Hash | Source | Enclosing | # |
 |---------|------|--------|-----------|---|
-| `try` | [`ee3b4d7f57dc2cdf`](try/ee3b4d7f57dc2cdf/SUPPORT.md) | `TimeCore.sleela` | `TimeCore::main` | 0 |
-| `catch` | [`2e6d53ab22ffb5e2`](catch/2e6d53ab22ffb5e2/SUPPORT.md) | `TimeCore.sleela` | `TimeCore::main` | 0 |
-| `try` | [`6abc4816d7156ceb`](try/6abc4816d7156ceb/SUPPORT.md) | `TimeCore.sleela` | `TimeCore::main` | 1 |
-| `catch` | [`f6d3a51d1d8bb3b6`](catch/f6d3a51d1d8bb3b6/SUPPORT.md) | `TimeCore.sleela` | `TimeCore::main` | 1 |
-| `try` | [`e1148311594d5080`](try/e1148311594d5080/SUPPORT.md) | `TimeCore.sleela` | `TimeCore::main` | 2 |
-| `catch` | [`706012411021edaf`](catch/706012411021edaf/SUPPORT.md) | `TimeCore.sleela` | `TimeCore::main` | 2 |
+| `try` | [`b818cd556bbf871d`](try/b818cd556bbf871d/SUPPORT.md) | `UUIDCore.sleela` | `UUIDCore::parse` | 0 |
+| `catch` | [`4a3d5315da9dacc8`](catch/4a3d5315da9dacc8/SUPPORT.md) | `UUIDCore.sleela` | `UUIDCore::parse` | 0 |
+| `try` | [`ffa8c68debf0e606`](try/ffa8c68debf0e606/SUPPORT.md) | `UUIDCore.sleela` | `UUIDCore::trial` | 0 |
+| `catch` | [`2677b256fca8efba`](catch/2677b256fca8efba/SUPPORT.md) | `UUIDCore.sleela` | `UUIDCore::trial` | 0 |
+| `try` | [`d594794d7856b769`](try/d594794d7856b769/SUPPORT.md) | `UUIDCore.sleela` | `UUIDCore::main` | 0 |
+| `catch` | [`7fe9913189b10b77`](catch/7fe9913189b10b77/SUPPORT.md) | `UUIDCore.sleela` | `UUIDCore::main` | 0 |

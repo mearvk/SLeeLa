@@ -61,8 +61,8 @@ Bars are 20 cells wide (each cell = 5%). **Covered** = member present with its J
 |---|---:|---|
 | Types with a SLeeLa file | 4,801 / 4,801 (100.0%) | `████████████████████` |
 | Types with SLeeLa members | 3,390 / 4,801 (70.6%) | `██████████████░░░░░░` |
-| Members covered | 23,415 / 51,554 (45.4%) | `█████████░░░░░░░░░░░` |
-| Members with working behavior | 5,148 / 51,554 (10.0%) | `██░░░░░░░░░░░░░░░░░░` |
+| Members covered | 23,427 / 51,554 (45.4%) | `█████████░░░░░░░░░░░` |
+| Members with working behavior | 5,160 / 51,554 (10.0%) | `██░░░░░░░░░░░░░░░░░░` |
 
 **Twelve largest modules**
 
@@ -234,6 +234,8 @@ never taken for a constant.
 | ~~String bridge missing~~ **done** (`javaStringToUtf8`, `javaStringFromCodeUnit`, opcodes 183-184, ABI 1.8) | Text classes carry any Unicode text; only NUL and unpaired surrogates cannot become a plain String (catchable `UnsupportedOperationException`); `java.lang.String` instance methods work on built-in strings (`JavaStringMethods`, SLEELA.syntax section 41) | Regex members and the static `String.valueOf`/`join`/`format` |
 | No lambdas or functional interfaces | No `Comparator` sorting, `compute`/`merge`, streams | Compiler |
 | No bitwise operators or `L`/`f` literal suffixes | Bit operations done arithmetically | Compiler |
+| ~~Integer comparison went through `double`~~ **done** (`OP_EQ/NE/LT/LE/GT/GE`, both operands `SL_INT` now compare as exact int64) | Before, `long` values that differ above 2^53 compared equal (`9007199254740993 == 9007199254740992`), which broke Java `long` ordering and overflow checks | — |
+| Elements of a new numeric array are `null`, and `null` in arithmetic yields a `double` | `new int[n]` read before it is written turns later `long` sums into doubles (exact only to 2^53). Library code zero-fills such arrays explicitly (see `slMd5` in `UUID`) | VM: zero-fill numeric arrays by element type |
 | Nested types (`Map.Entry`) live in `Outer.Inner.sleela` files the loader does not resolve | Not reachable by name | Loader |
 | Protected instance members | Carry `@JavaProtected`, because SLeeLa reserves `protected` for static members | Language decision |
 | ~~Prebuilt `working-binaries/sleela` predates these compiler changes~~ **done** (refreshed 2026-11-12, ABI 1.8) | Either binary works | — |
@@ -300,7 +302,9 @@ python3 tools/generate-sha256-manifest.py --root . --output security/sha256-mani
 3. **The String bridge**, which unlocks `java.lang.String` and
    `StringBuilder`.
 4. **Keep converting stubs to logic** in `java.base`, highest use first:
-   `BigDecimal`, `UUID`, `Base64`, `HexFormat`, `StringJoiner`,
-   `Calendar`/`Date`, `java.time.format`. Add a side-by-side test for each.
+   `BigDecimal`, `Base64`, `Calendar`, `java.time.format`, `MessageDigest`
+   (the MD5 inside `UUID` is the starting point). ~~`UUID`~~ done 2026-11-12
+   (15/15 members, side-by-side test `UUIDCore`, 53 lines identical).
+   Add a side-by-side test for each.
 5. ~~**Refresh `working-binaries/`** so the prebuilt toolchain carries the new
    compiler.~~ Done 2026-11-12 (VM ABI 1.8, 185 opcodes).
