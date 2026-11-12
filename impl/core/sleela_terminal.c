@@ -182,35 +182,34 @@ int slterminal_resize(SLTerminalHandle terminal, unsigned cols, unsigned rows) {
     return SUCCEEDED(hr) ? 0 : (int)hr;
 }
 
+static DWORD WINAPI close_pseudoconsole_thread(LPVOID context) {
+    ClosePseudoConsole((HPCON)context);
+    return 0;
+}
+
 static void drain_terminal_output(HANDLE output_read) {
     char buffer[4096];
-    DWORD available = 0;
     DWORD received = 0;
 
     if (!output_read) return;
-    for (;;) {
-        if (!PeekNamedPipe(output_read, NULL, 0, NULL, &available, NULL))
-            break;
-        if (available == 0) break;
-        {
-            DWORD request = available > sizeof(buffer)
-                ? (DWORD)sizeof(buffer) : available;
-            if (!ReadFile(output_read, buffer, request, &received, NULL) ||
-                received == 0)
-                break;
-        }
+    /* ClosePseudoConsole may emit a final frame and wait for the host to
+     * drain it on Windows versions before 11 24H2. This blocking reader is
+     * deliberately run concurrently with ClosePseudoConsole. */
+    while (ReadFile(output_read, buffer, (DWORD)sizeof(buffer), &received, NULL) &&
+           received > 0) {
+        /* Drain until the pseudoconsole closes its output writer. */
     }
 }
 
 int slterminal_close(SLTerminalHandle terminal) {
     SLWinTerminal* t = as_terminal(terminal);
     DWORD wait_result;
+    HANDLE close_thread = NULL;
     int rc = 0;
     if (!t) return EINVAL;
 
     /* Closing the input writer lets finite commands finish. Reap the child
-     * before closing the pseudoconsole: ClosePseudoConsole can wait for the
-     * attached process, so calling it first can deadlock the host teardown. */
+     * before beginning pseudoconsole teardown. */
     if (t->input_write && !CloseHandle(t->input_write)) rc = (int)GetLastError();
     t->input_write = NULL;
 
@@ -226,17 +225,39 @@ int slterminal_close(SLTerminalHandle terminal) {
         rc = wait_result == WAIT_FAILED ? (int)GetLastError() : ERROR_TIMEOUT;
     }
 
-    /* The child is now stopped. Drain buffered output, then close the read
-     * pipe before ClosePseudoConsole. On Windows 10 and pre-24H2 Windows 11,
-     * ClosePseudoConsole may wait indefinitely unless its output pipe is
-     * closed by the host or drained until the pseudoconsole closes it. */
-    drain_terminal_output(t->output_read);
+    /* ClosePseudoConsole can emit a final output frame and wait for the host
+     * to drain it on Windows 10 and Windows 11 before 24H2. Run the close on
+     * its own thread while this thread reads until the pseudoconsole closes
+     * its output writer. This avoids both a blocked close and a lost final
+     * frame. */
+    if (t->console && t->output_read) {
+        close_thread = CreateThread(NULL, 0, close_pseudoconsole_thread,
+                                    (LPVOID)t->console, 0, NULL);
+        if (close_thread) {
+            drain_terminal_output(t->output_read);
+            wait_result = WaitForSingleObject(close_thread, INFINITE);
+            if (wait_result != WAIT_OBJECT_0 && rc == 0)
+                rc = wait_result == WAIT_FAILED ? (int)GetLastError() : ERROR_TIMEOUT;
+            CloseHandle(close_thread);
+            close_thread = NULL;
+        } else {
+            /* Allocation failure fallback: closing the output pipe before
+             * ClosePseudoConsole is the documented non-threaded alternative. */
+            DWORD error_code = GetLastError();
+            if (rc == 0) rc = (int)error_code;
+            if (!CloseHandle(t->output_read) && rc == 0)
+                rc = (int)GetLastError();
+            t->output_read = NULL;
+            ClosePseudoConsole(t->console);
+        }
+    } else if (t->console) {
+        ClosePseudoConsole(t->console);
+    }
+    t->console = NULL;
+
     if (t->output_read && !CloseHandle(t->output_read) && rc == 0)
         rc = (int)GetLastError();
     t->output_read = NULL;
-
-    if (t->console) ClosePseudoConsole(t->console);
-    t->console = NULL;
 
     if (t->process && !CloseHandle(t->process) && rc == 0)
         rc = (int)GetLastError();
