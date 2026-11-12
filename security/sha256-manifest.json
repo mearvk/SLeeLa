@@ -72083,7 +72083,7 @@
     },
     {
       "path": "lib/security/Security2.sleela",
-      "sha256": "8db7d050535f87a9e0fa148bc3f860764d41e952ed7b89e4178afe9be4b71107"
+      "sha256": "f17c2327e93ea5872005dc5706324093de614a2dd29f9252d533573b69c498c9"
     },
     {
       "path": "lib/server-edition/SLPackage.sleela",

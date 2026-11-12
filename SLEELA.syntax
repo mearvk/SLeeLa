@@ -3051,3 +3051,8 @@ root, `Sleela.home.parents("")`, and the `Sleela.VM` / `Sleela.System` /
 `Sleela.OS` names) point to `Security2`. At phase 4 they are re-pointed to the
 VM. Status: specified; `Security2` exists as a library class, the compiler and
 VM do not yet use it.
+
+`Security2` also returns the date and time (`dateTime()` as JSON, `dateTimeHttp()`,
+`utcMillis()`, from the VM clock) and the specsheet reference
+`International Guidelines 2.0` (`specsheet()`). The specsheet location is
+`none` until a published source is recorded.

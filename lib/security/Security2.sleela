@@ -68,7 +68,31 @@ class Security2 {
   < True while Security2 shares the memory region of the VM it sits above. >
   public boolean colocated = false;
 
+  < Specsheet reference Security2 returns. The location is none because no published source is on record. >
+  public String specsheetName = "International Guidelines 2.0";
+  public String specsheetLocation = "none";
+
   public Security2() {
+  }
+
+  < Date and time as JSON from the VM clock (timeJson). >
+  String dateTime() {
+    return timeJson();
+  }
+
+  < Date and time as an HTTP date string. >
+  String dateTimeHttp() {
+    return timeHttpDate();
+  }
+
+  < UTC milliseconds since the epoch. >
+  int utcMillis() {
+    return timeUtcMillis();
+  }
+
+  < The specsheet reference: name, and where it can be read (none if unknown). >
+  String specsheet() {
+    return specsheetName + " (" + specsheetLocation + ")";
   }
 
   < The VM boots: Security2 is placed above it in colocated memory. >
