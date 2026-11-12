@@ -52,9 +52,12 @@ construct themselves; their unimplemented constructors throw); inherited field
 initializers; virtual dispatch lowered to `DUP`/`INSTANCEOF`/`JMPF`/`CALL`;
 `super.m()`; bodiless abstract/interface methods; enhanced for over arrays and
 `iterator()` objects (`ForEachStmt`); numeric literal suffixes `L`/`d`/`f` and `_`.
+Typed / multi `catch` and `finally` lowered on the existing exception opcodes
+(no VM change); `++`/`--` everywhere (lexer: `-` continues an identifier only
+before an identifier character).
 
 ## Still not supported (SLEELA.syntax 43.5)
 
-`finally`, typed `catch`, `enum`, non-static
+`enum`, return/break/continue out of a finally-protected block, non-static
 `protected` methods, runtime `getClass().getName()` (a user Throwable subclass
 prints the library class name). Add these at the interpreter/VM level.

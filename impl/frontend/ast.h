@@ -184,7 +184,9 @@ struct ThrowStmt:Stmt{ExprP value;};
 struct AssertStmt:Stmt{ExprP cond;ExprP message;};
 struct YieldStmt:Stmt{ExprP value;};
 struct SynchronizedStmt:Stmt{ExprP monitor;std::unique_ptr<Block> body;};
-struct CatchClause{std::string type,variable;std::unique_ptr<Block> body;};
+// `type` is the declared text (alternatives joined by '|'); `types` holds each
+// alternative of a multi-catch `catch (A | B e)` (SLEELA.syntax 43.6).
+struct CatchClause{std::string type,variable;std::unique_ptr<Block> body;std::vector<std::string> types;};
 struct TryStmt:Stmt{std::unique_ptr<Block> body;std::vector<CatchClause> catches;std::unique_ptr<Block> finallyBlock;};
 struct SwitchCase{bool isDefault=false;std::vector<ExprP> labels;std::vector<StmtP> statements;};
 struct SwitchStmt:Stmt{ExprP selector;std::vector<SwitchCase> cases;};

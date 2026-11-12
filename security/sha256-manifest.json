@@ -543,7 +543,7 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "630d47e10e57e0469286d2194e4b3f2f8f637f34fb9bd2a622d41e014164bd93"
+      "sha256": "52257d74d233f56ae55028acc904b0af905f1f9d62d36cc8642801f3cc1324b7"
     },
     {
       "path": "impl/frontend/common_rails_banner.hpp",
@@ -551,7 +551,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "e19b88edd24231abe53730ac437ff84aaf3ee955c264729adcc5d31381dc3701"
+      "sha256": "73336fa483b9474331f39a49e340d6e3c65ac1c5ad92ec5511c7734ca3b23d72"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -631,7 +631,7 @@
     },
     {
       "path": "impl/frontend/lexer.cpp",
-      "sha256": "e8fb43adeb6aded2f177026e2cfce55362f9dc22b3ee54b26ff34532ae18ae64"
+      "sha256": "1ef58cea67801413588db1dc71fa2624c5e7cc5bde012f77d8fe8e4b4ed54e39"
     },
     {
       "path": "impl/frontend/lexer.h",
@@ -655,7 +655,7 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "169e3a771adee4c1b5ed5a91e513514820d7281a639c7a408bc5f9eed8915595"
+      "sha256": "915395f7bccd888ec2b5dee6288776c1164ae8b6a088675fe4e5d925b4e8b930"
     },
     {
       "path": "impl/frontend/parser.h",
@@ -671,7 +671,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "61b6f42d805a8f887af97a93a196e4ddc0f2e3548e3a5a79624ccc896fd4c535"
+      "sha256": "abd76174830d38e48c57ad2ea5e05abc99897a305c5fb35d0123d6a84f7622d7"
     },
     {
       "path": "impl/frontend/semantic.h",

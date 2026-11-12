@@ -1,7 +1,8 @@
-# Backup: before Java statements (SLEELA.syntax 43.6 rules 9-10), 2026-11-12
+# Backup: before Java statements (SLEELA.syntax 43.6 rules 9-12), 2026-11-12
 
-Pre-change copies of the files edited to add the enhanced for (`ForEachStmt`)
-and Java numeric literal forms (`L`, `d`/`f`, `_`).
+Pre-change copies of the files edited to add the enhanced for (`ForEachStmt`),
+and Java numeric literal forms (`L`, `d`/`f`, `_`), typed / multi catch and
+finally, and `++` / `--` (with the lexer `-` identifier rule).
 
 - `frontend/` -- ast.h, parser.{h,cpp}, semantic.cpp, compiler.cpp, keyword_supporter.cpp, driver.cpp, lexer.cpp
 - `nordshrift/` -- lowering.cpp, native_method_emit.cpp, sleela_emit.cpp

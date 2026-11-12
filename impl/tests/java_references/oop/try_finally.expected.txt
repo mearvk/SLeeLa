@@ -1,0 +1,12 @@
+body
+fin1
+caught
+fin2
+fin3
+after fin3 y
+fin4
+from catch
+loop 0
+loop fin 0
+loop 1
+loop fin 1

@@ -2793,6 +2793,13 @@ new opcodes instead of interpreting them as existing instructions. Typed
 exception classes, rethrow semantics, selected language-fault conversion,
 and finally/abrupt completion remain future work.
 
+**Syntax 3.0 update (section 43.6 rule 11).** In a `#sleela 3.0` document the
+source compiler builds typed `catch`, multi-catch and `finally` on these same
+three opcodes, with no VM change: the VM still registers one catch-all
+handler, and the compiler tests the thrown value against each clause type
+with `OP_INSTANCEOF` and rethrows an unmatched value with `OP_THROW`. The
+restrictions above remain in force for documents below 3.0.
+
 
 
 ## 38. Syntax 3.0 — the Java signature surface and static member access
@@ -3209,6 +3216,8 @@ instance-field layout, the runtime parent link, method inheritance and the
 | Abstract and interface methods without a body | parser (synthesized default-value body) |
 | Enhanced for `for (T v : xs)` | `ForEachStmt`: parser, semantic (array or `iterator()`), compiler lowering |
 | `L`, `d`, `f` suffixes, `1_000` | lexer |
+| typed / multi `catch`, `finally` | compiler lowering on `OP_TRY_PUSH` / `OP_TRY_POP` / `OP_INSTANCEOF` / `OP_THROW` |
+| `++` / `--` | compiler (`emitAssignTo`, as `+= 1` / `-= 1`); lexer `-` rule |
 | Field inheritance | compiler instance layout, base fields first (section 42.7) |
 | Overloads and constructors | compiler overload resolution (section 40) |
 | `java.lang.String` methods, UTF-16 strings | compiler `javaString*` built-ins → `OP_JSTR_*` opcodes (166 onward) |
@@ -3225,9 +3234,13 @@ instance-field layout, the runtime parent link, method inheritance and the
   to a JVM. Equivalence is checked by output (`run-differential.sh`), not by
   comparing JVM bytecode with VM opcodes.
 - Not yet supported Java style (each fails at check time, not silently):
-  `finally`, typed `catch (SomeException e)` (only `catch (Any e)`), `enum`
-  declarations, and non-static `protected` methods (a SLeeLa rule: protected
-  methods are static).
+  `enum` declarations and non-static `protected` methods (a SLeeLa rule:
+  protected methods are static).
+- A `return`, or a `break` / `continue` that leaves the try, inside a `try`
+  or `catch` block that has a `finally` is rejected at compile time (it would
+  skip the finally). A `return` inside a try without finally is fine.
+- Ordinary VM faults (array index out of range, division by zero) are still
+  VM errors, not catchable exceptions (section 37).
 - The enhanced for is not supported by the Nordshrift C target or by `@native`
   methods (both report it); the Sleela and Java targets emit it as written.
 - A user subclass of a `/lib/java` Throwable reports the library class name in
@@ -3287,3 +3300,23 @@ on (it stays declarative, 43.2). Below 3.0 nothing in this subsection applies.
    `L` / `l` (`3000000000L`, `0xFFL`), and the floating suffixes `d` / `D` /
    `f` / `F` (`2d`, `1.5f`, a double). SLeeLa `int` is 64-bit, so `L` changes
    no value.
+11. **try / catch / finally.** `catch (T e)` catches a thrown object that is an
+   instance of class `T` or a subclass; clauses are tried in source order and
+   an unmatched value is rethrown to the next enclosing handler. `catch (A | B
+   e)` catches either. `catch (Any e)` catches everything. A catch type may be
+   qualified (`java.lang.IllegalArgumentException`) and must be a loaded
+   class. `finally` runs when the try completes normally, after a matched
+   catch body, and before an unmatched or newly thrown exception propagates.
+   A catch variable may not shadow a local variable in scope (a field is
+   fine), and the same name may be reused by later clauses and later trys.
+   Lowering: one `OP_TRY_PUSH` handler around the body; the handler stores the
+   thrown value, tests each clause with `OP_INSTANCEOF`, and ends with
+   `OP_THROW`; the finally block is emitted on each exit path (as javac does);
+   a second handler around the catch bodies runs finally for an exception
+   thrown from a catch body.
+12. **`++` and `--`.** Prefix and postfix, on a local, field, static field,
+   object field or array element of numeric type (`i++`, `++x.n`, `arr[k]--`,
+   `Box.total++`). The prefix form yields the new value, the postfix form the
+   old one. Lowered as `x += 1` / `x -= 1`. A `-` continues an identifier
+   (`jdk-25`, `version-mual`) only when an identifier character follows it, so
+   `j--`, `j-=1` and a trailing `-` end the name.

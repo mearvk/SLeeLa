@@ -357,7 +357,7 @@ private:
         else if(auto d=dynamic_cast<const DoStmt*>(s)) countInStmt(d->body.get(),n);
         else if(auto fe=dynamic_cast<const ForEachStmt*>(s)){ n+=3; /* loop variable, source, index/iterator */ countInStmt(fe->body.get(),n); }
         else if(auto sy=dynamic_cast<const SynchronizedStmt*>(s)) countInBlock(*sy->body,n);
-        else if(auto tr=dynamic_cast<const TryStmt*>(s)){countInBlock(*tr->body,n);for(const auto& c:tr->catches){n++;countInBlock(*c.body,n);}if(tr->finallyBlock)countInBlock(*tr->finallyBlock,n);}
+        else if(auto tr=dynamic_cast<const TryStmt*>(s)){n++;/* thrown-value temp */countInBlock(*tr->body,n);for(const auto& c:tr->catches){n++;countInBlock(*c.body,n);}if(tr->finallyBlock){/* finally is emitted up to 4 times (normal, after a catch, before a rethrow, from a catch body) */for(int k=0;k<4;++k)countInBlock(*tr->finallyBlock,n);}}
         else if(auto sw=dynamic_cast<const SwitchStmt*>(s)){n++;/* selector temp */for(const auto& c:sw->cases)for(const auto& st:c.statements)countInStmt(st.get(),n);}
     }
     int here(){return slvm_here(vm_);} int emit(SLOp op,int a=0){return slvm_emit(vm_,op,a);} void patch(int at,int target){slvm_patch(vm_,at,target);}
@@ -491,7 +491,7 @@ private:
         if(r.word=="mem"){emit(OP_RAN_MEM);return;}
         throw std::runtime_error("Semantic error: unknown system reference 'ran::"+r.word+"'");
     }
-    void emitReturn(const ReturnStmt& r){if(r.value){emitExpr(r.value.get());coerceToDeclared(currentRetType_);}else emit(OP_CONST,addNullConst());emit(OP_RET);}
+    void emitReturn(const ReturnStmt& r){if(finallyGuard_>0)throw std::runtime_error("Semantic error: return inside a try or catch block that has finally is not supported yet (the finally would be skipped)");if(r.value){emitExpr(r.value.get());coerceToDeclared(currentRetType_);}else emit(OP_CONST,addNullConst());emit(OP_RET);}
     void emitFieldAssign(const FieldAssign& fa){int off=-1;const StructLayout& ml=memberLayout(fa.base.get(),fa.field,off);std::string ft=(off>=0&&off<(int)ml.fieldType.size())?ml.fieldType[(size_t)off]:"";emitExpr(fa.base.get());emitExpr(fa.value.get());coerceToDeclared(ft);emit(OP_SETFIELD,off);emit(OP_POP);}
     void emitIf(const IfStmt& s){emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emitStmt(s.thenS.get());if(s.elseS){int jend=emit(OP_JMP,0);patch(jf,here());emitStmt(s.elseS.get());patch(jend,here());}else patch(jf,here());}
     // Loop context for break/continue: each enclosing loop records the jump
@@ -500,8 +500,8 @@ private:
     struct LoopCtx{std::vector<int> breaks;std::vector<int> continues;int tryDepth=0;};
     std::vector<LoopCtx> loops_;
     int tryDepth_=0;
-    void emitBreak(){if(loops_.empty())throw std::runtime_error("Semantic error: 'break' used outside a loop or switch");if(tryDepth_>loops_.back().tryDepth)throw std::runtime_error("Semantic error: break may not leave a protected try region until abrupt-completion cleanup is implemented");loops_.back().breaks.push_back(emit(OP_JMP,0));}
-    void emitContinue(){if(loops_.empty())throw std::runtime_error("Semantic error: 'continue' used outside a loop");if(tryDepth_>loops_.back().tryDepth)throw std::runtime_error("Semantic error: continue may not leave a protected try region until abrupt-completion cleanup is implemented");loops_.back().continues.push_back(emit(OP_JMP,0));}
+    void emitBreak(){if(finallyGuard_>0&&!loops_.empty()&&tryDepth_>loops_.back().tryDepth)throw std::runtime_error("Semantic error: break out of a try or catch block that has finally is not supported yet");if(loops_.empty())throw std::runtime_error("Semantic error: 'break' used outside a loop or switch");if(tryDepth_>loops_.back().tryDepth)throw std::runtime_error("Semantic error: break may not leave a protected try region until abrupt-completion cleanup is implemented");loops_.back().breaks.push_back(emit(OP_JMP,0));}
+    void emitContinue(){if(finallyGuard_>0&&!loops_.empty()&&tryDepth_>loops_.back().tryDepth)throw std::runtime_error("Semantic error: continue out of a try or catch block that has finally is not supported yet");if(loops_.empty())throw std::runtime_error("Semantic error: 'continue' used outside a loop");if(tryDepth_>loops_.back().tryDepth)throw std::runtime_error("Semantic error: continue may not leave a protected try region until abrupt-completion cleanup is implemented");loops_.back().continues.push_back(emit(OP_JMP,0));}
     // Per-iteration delay requested by a loop-timing annotation (@loopDelay /
     // @loopBudget). Emits `push <ms>; OP_SLEEP`, which the VM executes each
     // iteration. Emitted at the top of the loop body so the delay happens once
@@ -564,10 +564,12 @@ private:
     }
     void emitSynchronized(const SynchronizedStmt& s){emitExpr(s.monitor.get());emit(OP_POP);emitBlock(*s.body);}
     void emitTry(const TryStmt& s){
-        // First source-level exception milestone: one catch-all clause whose
-        // binding is Any. The VM currently dispatches catch-all handlers only;
-        // accepting a narrower declared type here would silently promise typed
-        // matching that the runtime does not implement.
+        if(syntax_<SyntaxVersion{3,0}){ emitTryMilestone(s); return; }
+        emitTryJava(s);
+    }
+    // Below syntax 3.0: the first exception milestone, unchanged -- one
+    // catch-all clause whose binding is Any, no finally.
+    void emitTryMilestone(const TryStmt& s){
         if(s.catches.size()!=1)
             throw std::runtime_error("Semantic error: this exception milestone supports exactly one catch clause");
         if(s.finallyBlock)
@@ -582,7 +584,6 @@ private:
         const bool hadPriorType=priorType!=varType_.end();
         const std::string savedType=hadPriorType?priorType->second:std::string();
         varType_[clause.variable]="Any";
-
         const int push=emit(OP_TRY_PUSH,0);
         ++tryDepth_;
         emitBlock(*s.body);
@@ -590,16 +591,97 @@ private:
         emit(OP_TRY_POP);
         const int skipHandler=emit(OP_JMP,0);
         patch(push,here());
-
         // OP_THROW restores the operand stack and pushes the thrown value for
         // the selected handler. Store it immediately so it is rooted in a
         // normal local slot before the catch body can allocate or call out.
         emit(OP_STOREL,catchSlot);
         emitBlock(*clause.body);
         patch(skipHandler,here());
-
         if(hadPriorType) varType_[clause.variable]=savedType;
         else varType_.erase(clause.variable);
+    }
+    // Syntax 3.0 Java try (SLEELA.syntax 43.6 rule 11). One VM handler catches
+    // everything; the clauses then test the thrown value with OP_INSTANCEOF in
+    // source order, and an unmatched value is rethrown with OP_THROW. finally
+    // runs on normal completion, after a matched catch body, and before any
+    // rethrow (including an exception thrown by a catch body). A return, break
+    // or continue that would leave a finally-protected block is rejected,
+    // because it would skip the finally.
+    int tryCounter_=0;
+    int finallyGuard_=0;
+    void emitTryJava(const TryStmt& s){
+        const std::string tag=std::to_string(tryCounter_++);
+        const int exSlot=ctx_->declare("__try_ex#"+tag);
+        const bool hasFinally=(bool)s.finallyBlock;
+        // Resolve each clause's alternatives to runtime type operands.
+        struct Clause{ const CatchClause* c; bool catchAll; std::vector<int> ops; std::string varType; };
+        std::vector<Clause> clauses;
+        for(const auto& c:s.catches){
+            Clause cl{&c,false,{},"Any"};
+            for(const auto& alt:c.types.empty()?std::vector<std::string>{c.type}:c.types){
+                const std::string t=javaref::resolveBaseName(lineageClasses_,alt);
+                if(t=="Any"){ cl.catchAll=true; continue; }
+                if(!structLayout_.count(t)) throw std::runtime_error("Semantic error: catch type '"+alt+"' is not a loaded class");
+                cl.ops.push_back(runtimeTypeOperand(t));
+            }
+            if(c.types.size()==1 && !cl.catchAll) cl.varType=javaref::resolveBaseName(lineageClasses_,c.types[0]);
+            clauses.push_back(std::move(cl));
+        }
+        auto emitFinally=[&]{ if(hasFinally) emitBlock(*s.finallyBlock); };
+        std::vector<int> toEnd;
+        // try body
+        const int push=emit(OP_TRY_PUSH,0);
+        ++tryDepth_; if(hasFinally) ++finallyGuard_;
+        emitBlock(*s.body);
+        --tryDepth_; if(hasFinally) --finallyGuard_;
+        emit(OP_TRY_POP);
+        emitFinally();
+        toEnd.push_back(emit(OP_JMP,0));
+        // handler
+        patch(push,here());
+        emit(OP_STOREL,exSlot);
+        int rethrowHandlerPush=-1;
+        if(hasFinally && !clauses.empty()){
+            // An exception from a catch body must still run finally.
+            rethrowHandlerPush=emit(OP_TRY_PUSH,0); ++tryDepth_;
+        }
+        for(const auto& cl:clauses){
+            std::vector<int> nextClause;
+            if(!cl.catchAll){
+                std::vector<int> matched;
+                for(size_t k=0;k<cl.ops.size();++k){
+                    emit(OP_LOADL,exSlot); emit(OP_INSTANCEOF,cl.ops[k]);
+                    if(k+1<cl.ops.size()){ const int jf=emit(OP_JMPF,0); matched.push_back(emit(OP_JMP,0)); patch(jf,here()); }
+                    else nextClause.push_back(emit(OP_JMPF,0));
+                }
+                for(int m:matched) patch(m,here());
+            }
+            const int slot=ctx_->declare(cl.c->variable);
+            const auto prior=varType_.find(cl.c->variable); const bool had=prior!=varType_.end(); const std::string saved=had?prior->second:std::string();
+            varType_[cl.c->variable]=cl.varType;
+            emit(OP_LOADL,exSlot); emit(OP_STOREL,slot);
+            if(hasFinally) ++finallyGuard_;
+            emitBlock(*cl.c->body);
+            if(hasFinally) --finallyGuard_;
+            if(had) varType_[cl.c->variable]=saved; else varType_.erase(cl.c->variable);
+            if(rethrowHandlerPush>=0) emit(OP_TRY_POP);
+            emitFinally();
+            toEnd.push_back(emit(OP_JMP,0));
+            for(int n:nextClause) patch(n,here());
+        }
+        // no clause matched: finally, then rethrow
+        if(rethrowHandlerPush>=0) emit(OP_TRY_POP);
+        emitFinally();
+        emit(OP_LOADL,exSlot); emit(OP_THROW);
+        if(rethrowHandlerPush>=0){
+            --tryDepth_;
+            // exception raised inside a catch body: finally, then propagate it
+            patch(rethrowHandlerPush,here());
+            emit(OP_STOREL,exSlot);
+            emitFinally();
+            emit(OP_LOADL,exSlot); emit(OP_THROW);
+        }
+        for(int e:toEnd) patch(e,here());
     }
     void emitSwitch(const SwitchStmt& s){
         // Lower a switch to a dispatch chain: evaluate the selector once into a
@@ -674,23 +756,27 @@ private:
     // Lower a (possibly compound) assignment expression. The result value is
     // left on the stack. Compound ops expand to `target = target <op> value`.
     void emitAssignmentExpr(const AssignmentExpr& a){
-        std::string bin = a.op.size()==2 ? std::string(1,a.op[0]) : std::string();
-        if(auto v=dynamic_cast<const VarExpr*>(a.target.get())){
+        emitAssignTo(a.target.get(), a.op.size()==2 ? std::string(1,a.op[0]) : std::string(), [&]{ emitExpr(a.value.get()); });
+    }
+    // Assign to `target` (local, field, static, member, array element), with an
+    // optional compound operator `bin`; leaves the assigned value on the stack.
+    void emitAssignTo(const Expr* target,const std::string& bin,const std::function<void()>& emitValue){
+        if(auto v=dynamic_cast<const VarExpr*>(target)){
             // Resolve the target before emitting the RHS. Assignment expressions
             // are also used for statement-level assignments, so instance fields
             // must follow the same resolution path as Assign statements.
             int slot=ctx_->slotOf(v->name);
             if(slot>=0){
-                if(!bin.empty()){emit(OP_LOADL,slot);emitExpr(a.value.get());emitBinOp(bin);}
-                else emitExpr(a.value.get());
+                if(!bin.empty()){emit(OP_LOADL,slot);emitValue();emitBinOp(bin);}
+                else emitValue();
                 {auto t=varType_.find(v->name);if(t!=varType_.end())coerceToDeclared(t->second);}
                 emit(OP_STOREL,slot);emit(OP_LOADL,slot);return;
             }
             int off=instanceFieldOffset(v->name);
             if(off>=0){
                 emitThis();                         // [this]
-                if(!bin.empty()){emit(OP_DUP);emit(OP_GETFIELD,off);emitExpr(a.value.get());emitBinOp(bin);}
-                else emitExpr(a.value.get());
+                if(!bin.empty()){emit(OP_DUP);emit(OP_GETFIELD,off);emitValue();emitBinOp(bin);}
+                else emitValue();
                 coerceToDeclared(instanceFieldType(v->name));
                 emit(OP_SETFIELD,off);              // leaves assigned value
                 return;
@@ -699,30 +785,30 @@ private:
             if(g>=0){
                 const std::string key=fieldOwner_.count(v->name)?v->name:currentClass_+"::"+v->name;
                 if(fieldProtected_[key]&&fieldOwner_[key]!=currentClass_)throw std::runtime_error("protected field access denied");
-                if(!bin.empty()){emit(OP_LOADG,g);emitExpr(a.value.get());emitBinOp(bin);}
-                else emitExpr(a.value.get());
+                if(!bin.empty()){emit(OP_LOADG,g);emitValue();emitBinOp(bin);}
+                else emitValue();
                 emit(OP_STOREG,g);emit(OP_LOADG,g);return;
             }
             throw std::runtime_error("Semantic error: assignment to undeclared variable '"+v->name+"'");
         }
-        if(auto m=dynamic_cast<const MemberAccess*>(a.target.get())){
+        if(auto m=dynamic_cast<const MemberAccess*>(target)){
             { std::string sc; if(isStaticClassRef(m->base.get(),sc)){ auto g=fieldGlobal_.find(sc+"::"+m->field);
                 if(g!=fieldGlobal_.end()){
-                    if(!bin.empty()){emit(OP_LOADG,g->second);emitExpr(a.value.get());emitBinOp(bin);}
-                    else emitExpr(a.value.get());
+                    if(!bin.empty()){emit(OP_LOADG,g->second);emitValue();emitBinOp(bin);}
+                    else emitValue();
                     emit(OP_STOREG,g->second);emit(OP_LOADG,g->second);return;
                 } } }
             int off=-1;const StructLayout& ml=memberLayout(m->base.get(),m->field,off);
             std::string ft=(off>=0&&off<(int)ml.fieldType.size())?ml.fieldType[(size_t)off]:"";
             // SETFIELD expects [struct, newval] and leaves newval on the stack.
             emitExpr(m->base.get());                 // [struct]
-            if(!bin.empty()){emit(OP_DUP);emit(OP_GETFIELD,off);emitExpr(a.value.get());emitBinOp(bin);} // [struct, newval]
-            else emitExpr(a.value.get());            // [struct, newval]
+            if(!bin.empty()){emit(OP_DUP);emit(OP_GETFIELD,off);emitValue();emitBinOp(bin);} // [struct, newval]
+            else emitValue();            // [struct, newval]
             coerceToDeclared(ft);
             emit(OP_SETFIELD,off);                   // [newval]
             return;
         }
-        if(auto aa=dynamic_cast<const ArrayAccess*>(a.target.get())){
+        if(auto aa=dynamic_cast<const ArrayAccess*>(target)){
             // OP_ARRSET expects [array, index, value] and leaves value on the stack.
             emitExpr(aa->base.get());                // [array]
             emitExpr(aa->index.get());               // [array, index]
@@ -734,10 +820,10 @@ private:
                 // second time (e.g. a[i++] += 1 would increment i twice).
                 emit(OP_DUP2);                       // [array, index, array, index]
                 emit(OP_ARRGET);                     // [array, index, cur]
-                emitExpr(a.value.get());             // [array, index, cur, val]
+                emitValue();             // [array, index, cur, val]
                 emitBinOp(bin);                      // [array, index, newval]
             } else {
-                emitExpr(a.value.get());             // [array, index, value]
+                emitValue();             // [array, index, value]
             }
             emit(OP_ARRSET);                         // [value]
             return;
@@ -1141,7 +1227,16 @@ private:
         int g=fieldSlot(v.name);if(g>=0){emit(OP_LOADG,g);return;}
         throw std::runtime_error("Semantic error: use of undeclared variable '"+v.name+"'");
     }
-    void emitUnary(const Unary& u){emitExpr(u.operand.get());if(u.op=="-")emit(OP_NEG);else if(u.op=="!")emit(OP_NOT);else throw std::runtime_error("Semantic error: unknown unary operator '"+u.op+"'");}
+    void emitUnary(const Unary& u){
+        // Java ++ / -- (SLEELA.syntax 43.6 rule 12): x += 1 leaves the new value;
+        // the postfix form then undoes the step on the stack copy (old value).
+        if(u.op=="++"||u.op=="--"||u.op=="post++"||u.op=="post--"){
+            const bool inc=(u.op=="++"||u.op=="post++"); const bool post=u.op.rfind("post",0)==0;
+            emitAssignTo(u.operand.get(), inc?"+":"-", [&]{ emit(OP_CONST,slvm_add_const_int(vm_,1)); });
+            if(post){ emit(OP_CONST,slvm_add_const_int(vm_,1)); emit(inc?OP_SUB:OP_ADD); }
+            return;
+        }
+        emitExpr(u.operand.get());if(u.op=="-")emit(OP_NEG);else if(u.op=="!")emit(OP_NOT);else throw std::runtime_error("Semantic error: unknown unary operator '"+u.op+"'");}
     void emitBinary(const Binary& b){
         const std::string&o=b.op;
         // Short-circuit boolean operators: the right side must NOT be evaluated

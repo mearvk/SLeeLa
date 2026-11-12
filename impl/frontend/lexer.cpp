@@ -153,7 +153,10 @@ Token Lexer::makeIdentOrKeyword(){
         {"new",Tok::KwNew},{"null",Tok::KwNull},{"true",Tok::KwTrue},{"false",Tok::KwFalse},{"print",Tok::KwPrint},
         {"void",Tok::KwVoid},{"int",Tok::KwIntT},{"long",Tok::KwLongT},{"int64",Tok::KwInt64T},{"int128",Tok::KwInt128T},{"double",Tok::KwDoubleT},{"boolean",Tok::KwBoolT},{"String",Tok::KwStringT}
     };
-    int L=line_,C=col_;std::string s;while(std::isalnum((unsigned char)peek())||peek()=='_'||peek()=='-')s+=advance();
+    // A '-' continues an identifier (jdk-25, version-mual) only when an identifier
+    // character follows it, so Java `j--`, `j-=1` and a trailing '-' end the name
+    // (SLEELA.syntax 43.6 rule 12).
+    int L=line_,C=col_;std::string s;while(std::isalnum((unsigned char)peek())||peek()=='_'||(peek()=='-'&&identChar(peek(1))))s+=advance();
     auto it=kw.find(s);return Token{it!=kw.end()?it->second:Tok::Ident,s,L,C};
 }
 std::vector<Token> Lexer::tokenize(){

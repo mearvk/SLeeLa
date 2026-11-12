@@ -389,7 +389,14 @@ class Analyzer{
   if(auto a=dynamic_cast<const AssertStmt*>(&s)){requireBool(expr(*a->cond),"assert condition");if(a->message)expr(*a->message);return;}
   if(auto y=dynamic_cast<const YieldStmt*>(&s)){expr(*y->value);return;}
   if(auto sy=dynamic_cast<const SynchronizedStmt*>(&s)){expr(*sy->monitor);push();block(*sy->body);pop();return;}
-  if(auto tr=dynamic_cast<const TryStmt*>(&s)){push();block(*tr->body);pop();for(const auto&c:tr->catches){push();declare(c.variable,c.type.empty()?Type{Kind::Unknown,{}}:tn(c.type));block(*c.body);pop();}if(tr->finallyBlock){push();block(*tr->finallyBlock);pop();}return;}
+  if(auto tr=dynamic_cast<const TryStmt*>(&s)){push();block(*tr->body);pop();for(const auto&c:tr->catches){push();
+   // Typed / multi-catch (43.6): each alternative must name a loaded class
+   // (or Any); a multi-catch variable is typed by its single alternative only.
+   Type ct{Kind::Unknown,{}};
+   if(c.types.size()==1){ const std::string t=g_javaClasses?javaref::resolveBaseName(*g_javaClasses,c.types[0]):c.types[0]; ct=t=="Any"?Type{Kind::Any,"Any",{}}:tn(t); }
+   if(!(syntax<SyntaxVersion{3,0})){ bool shadows=false; for(const auto& sc:scopes) if(sc.vars.count(c.variable)) shadows=true; if(shadows) err("catch variable '"+c.variable+"' shadows a local variable in scope"); }
+   if(!(syntax<SyntaxVersion{3,0})) for(const auto& a:c.types){ const std::string t=g_javaClasses?javaref::resolveBaseName(*g_javaClasses,a):a; if(t!="Any"&&!classNames.count(t)) err("catch type '"+a+"' is not a loaded class"); }
+   declare(c.variable,ct.kind==Kind::Error?Type{Kind::Unknown,{}}:ct);block(*c.body);pop();}if(tr->finallyBlock){push();block(*tr->finallyBlock);pop();}return;}
   if(auto sw=dynamic_cast<const SwitchStmt*>(&s)){expr(*sw->selector);push();for(const auto&c:sw->cases){for(const auto&l:c.labels)expr(*l);for(const auto&st:c.statements)stmt(*st);}pop();return;}
   err("unknown statement kind");
  }
@@ -493,7 +500,7 @@ class Analyzer{
    checkConstructorArgs(*n);
    return{Kind::Struct,n->typeName};}
   if(auto m=dynamic_cast<const MemberAccess*>(&e)){if(m->field=="next"&&isNextChain(*m->base))return{Kind::Int,{}};return member(*m->base,m->field);}
-  if(auto u=dynamic_cast<const Unary*>(&e)){Type t=expr(*u->operand);if(u->op=="-"&&(!numeric(t)||t.kind==Kind::Unsigned)&&t.kind!=Kind::Unknown)err("unary '-' requires signed numeric operand, got "+nameOf(t));if(u->op=="!"&&t.kind!=Kind::Bool&&t.kind!=Kind::Unknown)err("unary '!' requires bool operand, got "+nameOf(t));return t;}
+  if(auto u=dynamic_cast<const Unary*>(&e)){Type t=expr(*u->operand);if(u->op=="++"||u->op=="--"||u->op=="post++"||u->op=="post--"){if(syntax<SyntaxVersion{3,0})err("'"+u->op.substr(u->op.size()-2)+"' requires #sleela 3.0");else if(!numeric(t)&&t.kind!=Kind::Unknown)err("'"+u->op.substr(u->op.size()-2)+"' requires a numeric variable, got "+nameOf(t));else if(!dynamic_cast<const VarExpr*>(u->operand.get())&&!dynamic_cast<const MemberAccess*>(u->operand.get())&&!dynamic_cast<const ArrayAccess*>(u->operand.get()))err("'"+u->op.substr(u->op.size()-2)+"' needs a variable, field or array element");return t;}if(u->op=="-"&&(!numeric(t)||t.kind==Kind::Unsigned)&&t.kind!=Kind::Unknown)err("unary '-' requires signed numeric operand, got "+nameOf(t));if(u->op=="!"&&t.kind!=Kind::Bool&&t.kind!=Kind::Unknown)err("unary '!' requires bool operand, got "+nameOf(t));return t;}
   if(auto b=dynamic_cast<const Binary*>(&e)){return binary(*b);}
   if(auto c=dynamic_cast<const Call*>(&e)){return call(*c);}
   if(auto m=dynamic_cast<const MethodCall*>(&e)){return fluent(*m);}
