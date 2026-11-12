@@ -66,3 +66,34 @@ buy fees of shares still held. `realizedGross` excludes fees.
 model counts days only. Real tax rules (for example 26 U.S.C. 1222 uses a
 holding period of more than one year) count calendar dates and vary by country
 and year. Treat this as an illustration of the boundary, not as tax advice.
+
+**Batch return (`SLBatchReturn`).** Computes the total return over a batch of
+N independent, non-compounding trades (each re-stakes the same capital) from
+stated win-rate/size inputs or an explicit per-trade list, plus the exact
+per-trade average a stated total implies. A quality review (below) found and
+fixed two real bugs in an earlier version of this class, both instructive:
+
+- A magnitude-based sentinel does not work for a signed quantity that can be
+  legitimately as large as the sentinel itself. The original
+  `idealBatchProfit` signaled "input rejected" by returning
+  `-(maxCapital + 1)`, but a real, in-range batch of up to `maxTrades` trades
+  can lose up to `maxTrades * maxCapital` in magnitude — far past that
+  sentinel — so a genuine large loss was indistinguishable from a rejection.
+  The fix: `idealBatchInRange(...)` is an explicit boolean check, called
+  *before* reading a profit, never inferred from the profit's size.
+- Bounds must be verified against **every** product the class actually forms,
+  including ones several calls deep. The original `maxTrades`/`maxCapital`/
+  `maxBp` were sized only against `idealBatchProfit`'s own internal products;
+  `idealBatchReturnBp`'s conversion to basis points forms `profit * 10000`,
+  a *larger* product that the original bounds let overflow silently (it
+  returned a wrong number, not an error). The three bounds are now derived
+  together against the single tightest constraint,
+  `maxTrades * maxCapital * 10000 <= 2^53 - 1`, which is documented at the
+  bound declarations rather than re-derived ad hoc per method. The explicit
+  per-trade path has its own, separately derived `maxExplicitCapital` for the
+  same reason, since it is capped at 64 trades rather than `maxTrades`.
+  Use case 27's regression tests exercise both classes' true worst-case
+  corner (maximum trades at maximum capital) to keep this from regressing
+  silently again; a sweep of 500 random in-range inputs, independently
+  checked against a Python model, additionally confirmed no other input
+  combination overflows.

@@ -21,8 +21,19 @@ claim from "20% per trade, 2,000 times."
 
 ## Part 2: What "20% every trade, 2,000 times" would actually mean
 
-Using `SLBatchReturn.idealBatchProfit`, with every trade re-staking the same
-$10,000 (so this is **not** compounding — see Part 3):
+The table below uses $10,000 to keep the arithmetic easy to follow by hand;
+it is the same `profit = capital x return%` arithmetic `idealBatchProfit`
+computes, with every trade re-staking the same capital (so this is **not**
+compounding — see Part 3). $10,000 (1,000,000 cents) happens to be above the
+live class's own `maxCapital` bound (400,000 cents = $4,000 at the time of
+writing, chosen so that converting a batch of up to 2,000,000 trades into
+exact basis points never exceeds the runtime's exact-comparison limit — see
+[`ENGINEERING.md`](../../../../trading-actions-on-verb/ENGINEERING.md)), so
+calling `idealBatchProfit(2000, 1000000, ...)` directly would be refused by
+`idealBatchInRange`. The table's $10,000 figures are illustrative arithmetic
+for the reader, not a literal method call; use case 27 proves the identical
+relationship at the class's real, smaller bound (and separately at the
+class's own maximum capital and trade count together).
 
 | assumption | result (on $10,000 capital, 2,000 trades) |
 |---|---|

@@ -23,9 +23,15 @@ gasoline;
 < EXACT fraction, not a rounded float. SLeeLa int is 64-bit and exact for >
 < + - * / %, but comparisons are exact only up to 2^53 - 1, so bounds are >
 < sized to keep every product under that limit. >
-< Status codes: 0 ok, 1 bad trade count, 2 bad basis-points input, >
-< 3 win/loss counts do not sum to the trade count, 4 a size bound would be >
-< passed, 5 no trades recorded yet. >
+< The idealized-batch methods (idealBatchProfit, idealBatchReturnBp, >
+< averagePerTradeBp) use an explicit validity check (idealBatchInRange / >
+< the n and bp bounds in averagePerTradeBp) rather than a status code or a >
+< magnitude sentinel, because a real batch can legitimately produce a loss >
+< whose magnitude is as large as any sentinel this class could choose -- see >
+< idealBatchInRange's comment. Callers must check validity BEFORE reading a >
+< profit, the same way every sentinel-returning method here is documented. >
+< addTrade (the explicit-batch path) returns a small status code instead: >
+< 0 ok, 1 the 64-trade cap is full, 2 the basis-points input is out of range. >
 < Illustrative only: nothing here is trading advice, and no claim is made >
 < that any real trader achieves any input used here. >
 class SLBatchReturn {
@@ -70,42 +76,81 @@ class SLBatchReturn {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
+  < These three bounds are chosen TOGETHER so that EVERY product formed >
+  < anywhere in this class stays at or below the exact-comparison limit >
+  < 9,007,199,254,740,991 (2^53 - 1), proven once here rather than guarded >
+  < ad hoc inside each method (an earlier version guarded the wrong product >
+  < per call and both rejected some valid large-loss inputs AND still let a >
+  < different product, in idealBatchReturnBp, silently overflow -- see use >
+  < case 27's regression tests for both exact inputs that caught this): >
+  <   maxTrades * maxCapital * 10000 = 8,000,000,000,000,000 (<= the limit) >
+  <     -- this is the TIGHTEST bound: it is what idealBatchReturnBp needs >
+  <     to convert the largest possible profit into exact basis points. >
+  <   maxCapital * maxBp             =   400,000,000,000     (<= the limit) >
+  <   maxTrades * maxCapital         =   800,000,000,000     (<= the limit) >
+  < maxBp = 1,000,000 bp is a 100x move per trade, already far above the >
+  < largest multiple used anywhere else in this folder (12x, use case 6). >
+  < maxCapital is modest (400,000 cents = $4,000) because this class must >
+  < support up to maxTrades trades AND exact basis-point conversion of the >
+  < resulting total; a single-trade class (SLLongBook) can and does allow >
+  < far larger capital because it never multiplies a profit by 10000. >
   int maxTrades = 2000000;
-  int maxBp = 100000000;
-  int maxCapital = 1000000000000;
+  int maxBp = 1000000;
+  int maxCapital = 400000;
 
-  String reason(int code) {
+  < The reason addTrade refused, for the three codes it can return. >
+  String addTradeReason(int code) {
     if (code == 0) { return "ok"; }
-    if (code == 1) { return "refused: trade count must be a whole number above zero"; }
-    if (code == 2) { return "refused: a basis-points input is out of range"; }
-    if (code == 3) { return "refused: win count + loss count does not equal the trade count"; }
-    if (code == 4) { return "refused: a size bound would be passed"; }
-    return "refused: no trades recorded yet";
+    if (code == 1) { return "refused: the 64-trade explicit batch is full"; }
+    return "refused: a basis-points input is out of range";
   }
 
   < ---- Idealized batch: winRate (bp of n), winBp, lossBp as percent moves --- >
+  < True exactly when every input is in range and no internal product can >
+  < pass maxCapital. Callers (and idealBatchReturnBp below) check this >
+  < BEFORE reading idealBatchProfit, rather than inferring validity from the >
+  < size of the returned profit: a real batch of up to maxTrades trades can >
+  < legitimately lose up to maxTrades * maxCapital, which is far larger in >
+  < magnitude than any single sentinel value could safely sit outside of, >
+  < so no magnitude-based sentinel is used for this method's result. >
+  < Checks only the four INPUT bounds. No further per-call overflow guard is >
+  < needed: maxTrades, maxCapital and maxBp are chosen together (see their >
+  < declaration above) so every product idealBatchProfit can form is already >
+  < safe for any n, capital, winBp, lossBp within these four checks -- an >
+  < earlier version re-derived an overflow guard per call and got it wrong >
+  < (it rejected some valid, large-loss inputs as if they were out of range; >
+  < see use case 27's regression test for the exact input that caught this). >
+  boolean idealBatchInRange(int n, int capital, int winRateBp, int winBp, int lossBp) {
+    if (n <= 0 || n > maxTrades) { return false; }
+    if (capital <= 0 || capital > maxCapital) { return false; }
+    if (winRateBp < 0 || winRateBp > 10000) { return false; }
+    if (winBp < 0 || winBp > maxBp || lossBp < 0 || lossBp > maxBp) { return false; }
+    return true;
+  }
+
   < returns net profit, in capital units, for an idealized batch of n trades >
   < each re-staking `capital`. winRateBp is in basis points OF n (so 10000 bp >
   < = all wins). winBp/lossBp are the per-trade percent move in basis points >
-  < (lossBp is given as a POSITIVE magnitude; it is subtracted). >
+  < (lossBp is given as a POSITIVE magnitude; it is subtracted). The caller >
+  < MUST check idealBatchInRange first; this method trusts that check and >
+  < does not itself distinguish "rejected" from "a real, large loss" in its >
+  < return value (there is no safe sentinel for that -- see above). >
   int idealBatchProfit(int n, int capital, int winRateBp, int winBp, int lossBp) {
-    if (n <= 0 || n > maxTrades) { return 0 - maxCapital - 1; }
-    if (capital <= 0 || capital > maxCapital) { return 0 - maxCapital - 1; }
-    if (winRateBp < 0 || winRateBp > 10000) { return 0 - maxCapital - 1; }
-    if (winBp < 0 || winBp > maxBp || lossBp < 0 || lossBp > maxBp) { return 0 - maxCapital - 1; }
     int wins = n * winRateBp / 10000;
     int losses = n - wins;
     int winProfit = capital * winBp / 10000;
     int lossProfit = capital * lossBp / 10000;
-    if (wins > 0 && winProfit > maxCapital / wins) { return 0 - maxCapital - 1; }
-    if (losses > 0 && lossProfit > maxCapital / losses) { return 0 - maxCapital - 1; }
     return wins * winProfit - losses * lossProfit;
   }
 
   < The batch return, in basis points of (n * capital), exact (floor). >
+  < Returns -1 only for an out-of-range input (checked explicitly via >
+  < idealBatchInRange, never inferred from the profit magnitude) or a zero >
+  < stake; every in-range input returns its true signed basis-point value, >
+  < however large the loss. >
   int idealBatchReturnBp(int n, int capital, int winRateBp, int winBp, int lossBp) {
+    if (!idealBatchInRange(n, capital, winRateBp, winBp, lossBp)) { return 0 - 1; }
     int profit = idealBatchProfit(n, capital, winRateBp, winBp, lossBp);
-    if (profit < 0 - maxCapital) { return 0 - 1; }
     int staked = n * capital;
     if (staked <= 0) { return 0 - 1; }
     if (profit >= 0) { return profit * 10000 / staked; }
@@ -125,11 +170,31 @@ class SLBatchReturn {
 
   < ---- Explicit batch: up to 64 stated per-trade percent moves (bp), signed >
   < (a loss is a negative bp). Each trade re-stakes the same capital. ---- >
+  < maxExplicitCapital is bounded so that 64 (the most trades this path can >
+  < hold) * maxExplicitCapital * 10000 stays at or below the exact- >
+  < comparison limit, the same product idealBatchReturnBp depends on above; >
+  < this path allows a far larger per-trade capital than the idealized path >
+  < because it is capped at 64 trades rather than maxTrades (2,000,000). >
+  int maxExplicitCapital = 14000000000;
   int[] trades = new int[64];
   int tradeCount = 0;
   int explicitCapital = 0;
+  boolean explicitBatchValid = false;
 
-  void startExplicitBatch(int capitalPerTrade) { explicitCapital = capitalPerTrade; tradeCount = 0; }
+  < Result: false when capitalPerTrade is out of range (0 or above >
+  < maxExplicitCapital); explicitBatchProfit/explicitBatchReturnBp return a >
+  < sentinel (-1) in that case instead of computing with an unsafe capital. >
+  boolean startExplicitBatch(int capitalPerTrade) {
+    tradeCount = 0;
+    if (capitalPerTrade <= 0 || capitalPerTrade > maxExplicitCapital) {
+      explicitCapital = 0;
+      explicitBatchValid = false;
+      return false;
+    }
+    explicitCapital = capitalPerTrade;
+    explicitBatchValid = true;
+    return true;
+  }
 
   < Result codes: 0 accepted, 1 full (64 already recorded), 2 bp out of range. >
   int addTrade(int signedBp) {
@@ -140,7 +205,11 @@ class SLBatchReturn {
     return 0;
   }
 
+  < Returns 0 (not a usable profit) when startExplicitBatch was never called >
+  < successfully; callers should check explicitBatchValid or the return of >
+  < startExplicitBatch before trusting this. >
   int explicitBatchProfit() {
+    if (!explicitBatchValid) { return 0; }
     int sum = 0;
     int i = 0;
     while (i < tradeCount) {
@@ -151,7 +220,7 @@ class SLBatchReturn {
   }
 
   int explicitBatchReturnBp() {
-    if (tradeCount == 0) { return 0 - 1; }
+    if (!explicitBatchValid || tradeCount == 0) { return 0 - 1; }
     int staked = tradeCount * explicitCapital;
     if (staked <= 0) { return 0 - 1; }
     int profit = explicitBatchProfit();

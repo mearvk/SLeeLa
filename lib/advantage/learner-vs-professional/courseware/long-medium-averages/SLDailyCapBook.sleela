@@ -78,6 +78,8 @@ class SLDailyCapBook {
   int[] lotPrice = new int[16];
   int[] lotDay = new int[16];
   int count = 0;
+
+  int maxLots() { return 16; }
   int lastDay = 0;
   int boughtQty = 0;
   int soldQty = 0;
@@ -154,7 +156,7 @@ class SLDailyCapBook {
     if (day < lastDay) { return 5; }
     if (qty > maxQty || price > maxPrice || fee > maxFee || day > maxDay) { return 8; }
     if (!admitAction(day)) { return 10; }
-    if (count >= 16) { return 4; }
+    if (count >= maxLots()) { return 4; }
     if (boughtCost + qty * price > maxTotal || feesPaid + fee > maxTotal) { return 8; }
     lotQty[count] = qty;
     lotPrice[count] = price;
@@ -233,7 +235,7 @@ class SLDailyCapBook {
   int fees() { return feesPaid; }
 
   boolean invariantsHold() {
-    if (count < 0 || count > 16) { return false; }
+    if (count < 0 || count > maxLots()) { return false; }
     int i = 0;
     int prev = 0;
     while (i < count) {

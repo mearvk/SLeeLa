@@ -155,7 +155,7 @@ class SLShortBook {
     if (fee < 0) { return 6; }
     if (day < lastDay) { return 5; }
     if (qty > maxQty || price > maxPrice || fee > maxFee || day > maxDay) { return 8; }
-    if (count >= 16) { return 4; }
+    if (count >= maxLots()) { return 4; }
     if (openedProceeds + qty * price > maxTotal || feesPaid + fee > maxTotal) { return 8; }
     if (openedQty + qty > maxTotal) { return 8; }
     lotQty[count] = qty;
@@ -311,7 +311,7 @@ class SLShortBook {
   < short = shares sold short - shares covered; 5 proceeds held = proceeds >
   < opened - proceeds covered. >
   boolean invariantsHold() {
-    if (count < 0 || count > 16) { return false; }
+    if (count < 0 || count > maxLots()) { return false; }
     int i = 0;
     int prev = 0;
     while (i < count) {

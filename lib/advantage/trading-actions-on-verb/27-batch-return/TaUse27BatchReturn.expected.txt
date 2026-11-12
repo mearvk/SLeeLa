@@ -1,16 +1,17 @@
 == Use case 27: batch return over N independent trades ==
 -- idealized batches: winRate/winBp/lossBp, against an independent Python model --
-  ok   n=2000 cap=1000000 winRateBp=10000 winBp=20 lossBp=0: profit = 4000000
+  ok   all six idealized inputs below are in range
+  ok   n=2000 cap=100000 winRateBp=10000 winBp=20 lossBp=0: profit = 400000
   ok     -> return (bp of staked capital) = 20
-  ok   n=2000 cap=1000000 winRateBp=5000 winBp=100 lossBp=80: profit = 2000000
+  ok   n=2000 cap=100000 winRateBp=5000 winBp=100 lossBp=80: profit = 200000
   ok     -> return (bp of staked capital) = 10
-  ok   n=2000 cap=1000000 winRateBp=6000 winBp=50 lossBp=50: profit = 2000000
+  ok   n=2000 cap=100000 winRateBp=6000 winBp=50 lossBp=50: profit = 200000
   ok     -> return (bp of staked capital) = 10
-  ok   n=100 cap=500000 winRateBp=7000 winBp=200 lossBp=150: profit = 475000
+  ok   n=100 cap=50000 winRateBp=7000 winBp=200 lossBp=150: profit = 47500
   ok     -> return (bp of staked capital) = 95
-  ok   n=1 cap=1000000 winRateBp=10000 winBp=500 lossBp=0: profit = 50000
+  ok   n=1 cap=100000 winRateBp=10000 winBp=500 lossBp=0: profit = 5000
   ok     -> return (bp of staked capital) = 500
-  ok   n=2000 cap=1000000 winRateBp=0 winBp=0 lossBp=100: profit = -20000000
+  ok   n=2000 cap=100000 winRateBp=0 winBp=0 lossBp=100: profit = -2000000
   ok     -> return (bp of staked capital) = -100
 -- average-per-trade is an exact division of the total, never equal to the total --
   ok   averagePerTradeBp(2000, 2000) = 1
@@ -34,13 +35,24 @@
 -- an impossible trade (-100%) is correctly refused by the real book, not silently wrong --
   ok   crossCheckOutcome when a trade cannot be represented = -1
 -- refusals: out-of-range inputs leave no ambiguous result --
-  ok   negative trade count = -1000000000001
-  ok   winRateBp above 10000 = -1000000000001
+  ok   negative trade count is out of range
+  ok   winRateBp above 10000 is out of range
+  ok   out-of-range input: idealBatchReturnBp refuses (no sentinel collision) = -1
+-- a huge, legitimate loss at the full trades/capital bound is NOT mistaken for a refusal --
+  ok   maxTrades trades at maxCapital, all 100% losses is a VALID input
+  ok   its exact profit (a real, large loss, not a sentinel) = -800000000000
+  ok   its exact return in basis points is a real value, -10000 (a 100% loss), not an overflow or a refusal = -10000
+  ok   capital one above the bound is out of range
+  ok   winBp one above the bound is out of range
+-- the explicit-batch path also bounds its capital, and the boundary is checked too --
+  ok   a capital within the explicit-batch bound is accepted
+  ok   a capital one above the explicit-batch bound is refused
+  ok   explicitBatchProfit after a refused start is 0, not a stale or overflowed value = 0
   ok   addTrade beyond the 64-trade cap = 1
-  ok   averagePerTradeBp with n=0 is refused, not a crash = -100000001
+  ok   averagePerTradeBp with n=0 is refused, not a crash = -1000001
 -- the batch return does NOT mean a repeatable per-trade edge of that size --
   (see ../../learner-vs-professional/courseware/ORGANIZED.md and
    ../../learner-vs-professional/courseware/reading/ages-18-plus/06-single-trade-sensitivity.md
    for why a stated total batch return is not evidence of a sustainable per-trade or
    per-day rate; this class computes an exact total, nothing more.)
-  checks passed=33 failed=0
+  checks passed=43 failed=0

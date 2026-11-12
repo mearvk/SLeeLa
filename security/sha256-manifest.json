@@ -1231,11 +1231,11 @@
     },
     {
       "path": "lib/advantage/learner-vs-professional/courseware/long-medium-averages/SLDailyCapBook.sleela",
-      "sha256": "55b5976009b18d9ae711cdeff55b8d0666d8bd4280fe816138f31f0cd9b99f2f"
+      "sha256": "309743bda0f5313d68423de0dd771c46cd7434986612667b7537d499b5959991"
     },
     {
       "path": "lib/advantage/learner-vs-professional/courseware/long-medium-averages/SLDailyCapShortBook.sleela",
-      "sha256": "6393cf87921b036376539070b10bd61b2ec5f8c006072f90793035d8d0f53190"
+      "sha256": "fccf3b3045c465604989a892688baefb668998c4da7ba187a965f13305ab612e"
     },
     {
       "path": "lib/advantage/learner-vs-professional/series/01-registry-intake/DiRegistryIntake.sleela",
@@ -1567,11 +1567,11 @@
     },
     {
       "path": "lib/advantage/trading-actions-on-verb/27-batch-return/TaUse27BatchReturn.sleela",
-      "sha256": "150364f227fc407301545ca7707fea07a3f049545589cf65dc8ea16346096891"
+      "sha256": "74d9d77349901ae693703360c5af670d44b8082d29dfdab778bbec30774afd80"
     },
     {
       "path": "lib/advantage/trading-actions-on-verb/SLBatchReturn.sleela",
-      "sha256": "03b9c971a2c1bed4eaec346fe85acb20f28c8e605b4b52f12d91a25e9086c055"
+      "sha256": "f57763b9b600cd525b7c9c5775b68ba41de41a907467f7a0aa4b87dc922c8b4c"
     },
     {
       "path": "lib/advantage/trading-actions-on-verb/SLEuclid.sleela",
@@ -1579,11 +1579,11 @@
     },
     {
       "path": "lib/advantage/trading-actions-on-verb/SLLongBook.sleela",
-      "sha256": "77afd43918c835a51bc0a06c7950776a0bb65ffd9ab08c3dc21d68e29bb79a47"
+      "sha256": "4c22e82aaeeee7abd4038aa262f535522b1239b25a194af52d58d1e1d2903766"
     },
     {
       "path": "lib/advantage/trading-actions-on-verb/SLShortBook.sleela",
-      "sha256": "b623ae75c71ac67b8989bfd53a5bc497abef7e57629ea0e89932569a23107e7a"
+      "sha256": "b8b4026cb4cd8653576c2bd7b41eec88e05448f5c6b1899f89b3f5777a21dc19"
     },
     {
       "path": "lib/advantage/trading-actions-on-verb/SLShortMargin.sleela",

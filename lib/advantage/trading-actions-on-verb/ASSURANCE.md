@@ -24,8 +24,14 @@ Six independent layers:
    whose midpoint rounds up never terminates; that mutation was caught as a hang,
    so the gate runs every case under `timeout` (default 300 seconds) and fails
    instead of waiting forever.
-6. **Expected-output gate.** `test-suites/test-trading-actions.sh` runs all
-   twenty-six, compares each with its `.expected.txt`, and fails on any `FAIL` line.
+6. **Mutation checks and a worst-case corner sweep on the batch class.** An
+   unsafe division in `idealBatchReturnBp` (found during a general code-quality
+   review, not by a use case) was confirmed by reverting the fix and watching
+   the regression test fail with the exact overflow symptom; a 500-sample
+   random sweep across the full valid input space, independently checked
+   against a Python model, found no other overflow.
+7. **Expected-output gate.** `test-suites/test-trading-actions.sh` runs all
+   twenty-seven, compares each with its `.expected.txt`, and fails on any `FAIL` line.
 
 ```
 bash test-suites/test-trading-actions.sh
@@ -48,6 +54,30 @@ measured on the committed `working-binaries/sleela`, not proven from its source.
 | time queries accepted a day before the book day | negative ages | -1 answer |
 | `canFill` scanned up to c/a times | cost grows with order size | O(log) closed form; scan kept as the reference |
 | use case 4 compared a hash of the book | collision could hide a change | five values compared separately |
-| `cap` was a mutable field beside fixed 16-slot arrays | out-of-bounds risk | fixed `maxLots()` |
+| `cap` was a mutable field beside fixed 16-slot arrays | out-of-bounds risk | a `maxLots()` getter was added |
 | `realizedNet` meaning was implicit | misreading | documented as a cash view |
 | README said "no sum can pass 2,000,000,000" | false claim | corrected |
+
+## Review log (general code-quality pass)
+
+A later pass checked the actual code (not just that outputs matched their
+saved expectations) across every class built in this folder and its
+courseware. Findings:
+
+| finding | severity | fix |
+|---------|----------|-----|
+| `idealBatchProfit`'s rejection sentinel (`-(maxCapital + 1)`) could equal a real, legitimate large-batch loss, so the real loss would be misread as a refusal | **wrong answer, silently** | explicit `idealBatchInRange()` check, called before reading a profit, never inferred from its magnitude |
+| `idealBatchReturnBp` formed `(-profit) * 10000` directly; at the corrected bound this still overflowed the exact-comparison limit, returning a wrong basis-point value (`-776` instead of `-10000` in the worst-case test) | **wrong answer, silently** | `maxTrades`, `maxCapital` and `maxBp` re-derived together against the single tightest product, `maxTrades * maxCapital * 10000 <= 2^53 - 1`, documented at the bound declarations |
+| the explicit per-trade batch path (`startExplicitBatch`) had no bound at all on its capital argument, so the same overflow was reachable there too, just unnoticed because no test used a large enough capital | **latent wrong answer** | added `maxExplicitCapital`, derived for its own 64-trade cap; `startExplicitBatch` now returns `false` and resets state on an out-of-range input |
+| `reason()` in `SLBatchReturn` documented five status codes (0-5) that no method in the class actually returned, and was never called from anywhere | dead/misleading code | removed; replaced with `addTradeReason()`, documenting only `addTrade`'s three real codes |
+| `maxLots()` existed as a getter in `SLLongBook` and `SLShortBook` (added in the review above) but was never actually called; the `16`-lot cap was duplicated as a raw literal in 2-3 places per class across four classes, and `SLDailyCapBook` (courseware) did not even have the getter | duplication / inconsistency | `maxLots()` is now the single source of truth, called from every cap check and `invariantsHold()`, in all four long-only/short-only book classes |
+| a session learning claimed an apostrophe inside an angle-bracket comment is a lexical error on this toolchain | **stale documentation, not a code bug** | re-tested directly against the committed `working-binaries/sleela` (1.3.2-pro): apostrophes in comments, including the exact example from the learning, check and run cleanly; the claim does not reproduce on the current build and should not be treated as current |
+
+The batch-return bugs were caught by writing new boundary-case regression
+tests (the class's own worst-case corner: maximum trades at maximum capital)
+rather than by the use case's original hand-picked examples, which never
+exercised a value large enough to overflow. A 500-sample random sweep across
+the full valid input space, independently checked against a Python model,
+found no further overflow after the fix. Both fixes were confirmed genuine
+by reverting them and watching the regression tests fail with the original
+symptom.
