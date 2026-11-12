@@ -340,6 +340,13 @@ struct Program {
     // section 35). Contextual, not a reserved keyword, so `artifact` stays an
     // ordinary identifier anywhere else (and in any document below 3.0).
     bool artifactMarked=false;
+    // Spark marker (syntax 3.0, SLEELA.syntax section 43). A Preonem: the
+    // document is SLeeLa constructs that carry Java source style. Java support
+    // for it is handled by the interpreter and VM (frontend java_references.cpp,
+    // the compiler, the VM opcodes), never by a SLeeLa housing class. Recorded
+    // standing only; no change to parsing, typing, or codegen. Contextual, not a
+    // reserved keyword.
+    bool sparkMarked=false;
 };
 
 } // namespace sleela

@@ -1,0 +1,3122 @@
+# Sleela — Language Syntax Specification
+
+    Language:        Sleela
+    Syntax version:  3.0  (1.0..2.9 language surface consolidated)
+    Compiler:        SLeeLa Language/Runtime 1.3.2-pro  (version gate accepts syntax 1.0 .. 3.0)
+    Surface:         Java-like
+    Core:            Turing-complete, thread-friendly C/C++ execution core
+    Companion:       SHEET.sheet (system-object catalog), SST.model (NS-SST-0001),
+                     lib/LIBRARY.SYMBOLS.md (authoritative /lib class vocabulary),
+                     markdown/EXTENDS.md (the two `extends` meanings, syntax 1.10)
+    Status:          Normative for the syntax 1.0..3.0 compatibility surface
+
+    Versioning note: two distinct version numbers apply and must not be
+    conflated. The **syntax version** (MAJOR.MINOR, declared per file with
+    `#sleela 3.0`) is the grammar edition defined here and enforced by
+    `impl/frontend/version.{h,cpp}` (supported range 1.0 .. 3.0).
+    Syntax 3.0 is the current normative edition. It consolidates the 1.x and
+    2.x language surface into one specification and keeps historical feature
+    gates intact; it does not silently enable a feature below that feature's
+    original minimum version. Syntax 3.0 also adds the `pure` and `gasoline`
+    document markers (section 30) — a pair of bare, contextual,
+    declarative-only Preonem words that mean nearly the same thing, each marking
+    the document's standing by its own honesty; they change nothing about
+    parsing, typing, or codegen and compose with the other markers.
+    Section 31 (informative) documents the registered `@modium` and
+    `@registry` subsystem-role annotations — greppable, non-repeatable labels
+    that mark a declaration's part in the Modium / Registry responsibility
+    split (`registry/REGISTRY-3.0-MODIUM.md`); they add no grammar and change
+    nothing about parsing, typing, or codegen.
+    Syntax 3.0 further adds the first **statement-level, behavioral**
+    annotations: the `@loopDelay` / `@loopBudget` loop-timing annotations and
+    the `sleep(ms)` built-in they lower to (section 32), and the `@spill`
+    loop timer-start annotation (section 33). Unlike every declaration-level
+    marker above them, these attach to a `for`/`while`/`do` loop and insert a
+    real pause into its execution. Section 34 (normative) adds the native
+    **big-integer built-ins** `bigmul`, `bigadd`, and `bigdivmod` — one-opcode
+    arithmetic over base-1,000,000,000 limb `int[]` arrays (the VM bridge
+    `SLBigInteger` was designed to call) — plus the host-authorized Native Drive
+    built-ins `nativeOpen`, `nativeCall`, and `nativeClose` (section 36), which
+    dispatch through a versioned scalar ABI and preserve interpreter fallback.
+    The edition also records two enabling VM changes:
+    the single-array ceiling `SL_MAX_ARRAY_LEN` was raised from 2^20 to
+    **2^24 (16,777,216) elements** so multi-million-limb operands are
+    allocatable, and a `double` value may now be **narrowed by explicit cast**
+    to an integer type instead of aborting.
+    Syntax 2.9 introduced **`@mix` consequent fields** (section 28): repeated
+    same-named instance fields explicitly marked `@mix` form an indexed group;
+    declaration order supplies indexes unless a matching index list is provided.
+    The `prestige` marker in section 27 remains a future proposal, not an
+    implemented 2.9 feature.
+    Syntax 2.8 added the matching **base-2 unsigned
+    (positive-only) integer series** (section 25) — `uint32`, `uint64`,
+    `uint128`, `uint256`, ... up to `uint16777216` (the same twenty power-of-two
+    widths, 2^5..2^24, with a `uint` prefix). Each `uint<width>` type-checks as
+    the unsigned kind (unary minus rejected; arithmetic and comparison require
+    operands of the same unsigned width) and backs on the same native-slot split
+    as the signed series.
+    Syntax 2.7 completes the **base-2 signed integer series** (section 24) —
+    `int32`, `int64`, `int128`, `int256`, ... up to `int16777216` (the type name
+    `int` followed by a power-of-two bit width in 2^5..2^24, twenty widths in
+    all), recognized wherever a primitive type may appear, type-checked as
+    integers, and carried by the narrowest native slot that holds each width
+    (64-bit for `int32`/`int64`, 128-bit for `int128` up).
+    Syntax 2.6 added **keyword supporter
+    documents** (section 22) — every use of the five control-flow keywords
+    (`try`, `catch`, `throw`, `synchronized`, `super`) is given a stable hash,
+    recorded through the annotation mechanism as a
+    `@supporter("<keyword>:<hash>")` language annotation, and linked to a
+    relative folder `docs/keyword-supporters/<keyword>/<hash>/` holding a
+    `SUPPORT.md` stub the developer fills out. The pass runs at parse time and
+    does not change the parsing, typing, or codegen of the keywords themselves.
+    Syntax 2.6 also adds the **`determine` document marker** (section 23) — a
+    bare, contextual, *declarative-only* sibling word (to `author`/`authorial`,
+    `material`, and `memory`) claiming the document is a determine document:
+    open to be processed to further by a doctor, physician, or ghost toward
+    completion, the procurement of term held ideal as real for the torturement
+    (completion by legal hand) as required by further processor review; science
+    practitioners should and could can use it. It too has no effect on parsing,
+    typing, or codegen; it marks membership in the set of determine documents.
+    Syntax 2.5 added the **`material` document
+    marker** (section 19) — a bare, contextual, *declarative-only* word (sibling
+    to `author`/`authorial`) claiming the document is material: well considered,
+    present to its author as its own Source, "the thing, Material". It has no
+    effect on parsing, typing, or codegen; it marks membership in the set of
+    material documents (those concerning state, progress, or the securing of
+    change), which by convention is not freely changed out of. Syntax 2.5 also
+    adds the **`memory` document marker** (section 20) — a further bare,
+    contextual, *declarative-only* sibling word claiming the document is a
+    document of memory: authored by and for the Graduates of Supply of the New
+    York State Department of Commerce (persons of 1501+ IQ with 51,000,000 years
+    of superb worker-class service to graduation). It too has no effect on
+    parsing, typing, or codegen; it marks membership in the set of memory
+    documents the Graduates of Supply hold as kept standing. Both 2.5 markers
+    share the syntax 2.5 edition; the edition is not bumped.
+    Syntax 2.4 adds the **`author`/`authorial`
+    document marker** (section 18) — a modifier-less word that marks a document
+    as handled by professional council, legalises duplicate fields/methods
+    (each member gets a declaration-order id and an SHA-256 brander), and makes
+    the standard compile emit a second "originated" source document whose
+    members carry `∴` branders. Syntax 2.3 added the **philosophers Guide-chain
+    expression** `new T(...) :: Guide :: Guide ...` (section 17), a first-class
+    construct the lexer/parser/semantic analyzer/compiler and native Core all
+    execute. Syntax 2.2 added **generic type signatures**
+    (type parameters on classes and methods, parameterized types, and
+    wildcards — section 16), with the 1.3..1.11 feature surface described below
+    carried forward unchanged.
+    Syntax 1.11 adds **nested classes** (section 14): a class body may declare
+    one level of nested class. The "rule of two" bounds lexical nesting to
+    depth 2 (the enclosing class and one nested class); to go deeper, declare
+    the deeper class at top level and hold a reference to it (a field of that
+    type) inside the nested class. A single document may declare at most 42
+    nested classes. Each nested class is compiled as an ordinary class under
+    the qualified name `Outer.Inner` (internally mangled to `Outer__Inner`).
+    Syntax 1.10 adds the two meanings of `extends`: resolved OOD class
+    inheritance (a derived class inherits a base's fields and methods, with
+    override), and the document form `extends to <targets> <grouper>;` where a
+    grouper is linear | group | services (see markdown/EXTENDS.md).
+    Syntax 1.8 adds two features over the 1.3..1.7 baseline: inferred local
+    declarations using `let`, and constructor arguments on `new Type(args)`
+    (see section 12). Syntax 1.9 adds the **GC-hint statement** `x = gc N;` /
+    `x = mem N;` — a short-term garbage-collection cleanup request with a 0..100
+    aggressiveness (see section 13). The semantic analyzer infers `let` locals
+    from non-null, non-void, statically known initializers, binds constructor
+    arguments to a single declared constructor, and gates the GC hint on a
+    valid in-scope target and a 0..100 band. Constructor overload resolution and
+    `this(...)`/base delegation remain outside the verified implementation and
+    are rejected explicitly; do not infer their support from the
+    constructor-series design documents. The **compiler/tool version** (SLeeLa 1.3.2-pro, printed by
+    `sleela version`) is the implementation release and evolves independently.
+    A file must declare a syntax version within the verified supported range;
+    the tool version is informational.
+
+Sleela is a **Java-like** programming language. Its programs are classes of
+fields and methods that compile to bytecode on the C/C++ core. Beyond ordinary
+Java-like code, Sleela can **address every object type named in `SHEET.sheet`**
+through its *conducted methods*, and it honors the **Constitution** invariants
+(system depth 3024, complexity degree ≤ 4).
+
+This document is normative for the current Syntax 3.0 edition and the compiler's accepted source-syntax range 1.0..3.0. Historical constructs retain their individual minimum-version gates; the current edition does not retroactively enable them.
+Every production and built-in below is implemented in `impl/frontend` and
+executes on `impl/core`.
+
+--------------------------------------------------------------------------------
+## 1. Lexical grammar
+
+### 1.1 Encoding & trivia
+Source is UTF-8. Whitespace (space, tab, CR, LF) separates tokens and is
+otherwise insignificant. Comment forms:
+
+    // line comment — to end of line
+    /* block comment — may span lines */
+
+The preferred (go-forward) house style uses leading angle brackets. The opener
+must be the first non-whitespace on its line:
+
+    < line comment — closed by a matching `>` or end of line >
+    << block comment — spans lines, closed by `>>` >>
+
+The legacy `//` and `/* */` forms remain valid for untouched code; new and
+modified code uses the `<` / `<<` angle-bracket forms.
+
+The descriptive-metadata header required by the Metadata Class standard (§15) is
+written in this comment style; in new code it is the angle-bracket form
+`< ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >`,
+with the header text kept verbatim so the block stays greppable.
+
+### 1.2 Keywords (reserved)
+
+    class   static   void     struct   new
+    int     double   boolean  String
+    if      else     while    for      return
+    true    false    null     print
+
+`print` is a reserved statement keyword (§4.6). The seven conducted-method and
+six threading names (§6, §7) are **contextual built-ins**, not reserved words:
+they are recognized in call position only, so they may otherwise be used as
+identifiers.
+
+### 1.3 Identifiers
+
+    ident      ::= (letter | "_") (letter | digit | "_")*
+
+Case-sensitive. Class names are conventionally `PascalCase`; methods and
+variables `camelCase` (convention, not enforced).
+
+### 1.4 Literals
+
+    int-lit    ::= dec-lit | hex-lit | bin-lit | oct-lit   // 64-bit signed
+    dec-lit    ::= digit+
+    hex-lit    ::= ("0x" | "0X") hexdigit (hexdigit | "_")*
+    bin-lit    ::= ("0b" | "0B") bit (bit | "_")*
+    oct-lit    ::= ("0o" | "0O") octdigit (octdigit | "_")*
+    hexdigit   ::= digit | "a".."f" | "A".."F"
+    octdigit   ::= "0".."7"
+    bit        ::= "0" | "1"
+    double-lit ::= digit+ "." digit+ (("e" | "E") ("+" | "-")? digit+)?
+    bool-lit   ::= "true" | "false"
+    string-lit ::= '"' (char | escape)* '"'       // escapes: \n \t \r \\ \"
+    null-lit   ::= "null"
+
+Radix-prefixed integer literals (hex `0x`, binary `0b`, octal `0o`) all denote
+the same 64-bit signed `int` type as a decimal literal; the prefix only selects
+the base. An underscore `_` may separate digits for readability (e.g.
+`0xFF_EC`, `0b1010_0001`) and is ignored. A prefix with no following digit
+(e.g. `0x`) is a lexical error.
+
+### 1.5 Operators & punctuation
+
+    arithmetic   +   -   *   /   %
+    comparison   ==  !=  <   <=  >   >=
+    logical      &&  ||  !
+    assignment   =
+    transfer     :::                         // structural-offload send (below)
+    grouping     (   )   {   }
+    separators   ;   ,
+
+The **structural-offload send** `:::` transfers a `String`'s data to a receiver
+as a VM-performed, element-by-element stream — the framing and iteration are
+done by the interpreter, not by a source `for` loop:
+
+    send-expr ::= expr ":::" receiver          // left-to-right, low precedence
+    receiver  ::= expr                          // evaluates to a receiver handle
+
+`source ::: receiver` frames `source` (one UTF-8 code point per element) into
+`receiver` through the VM's transport, then evaluates to the **source**, so the
+same String keeps flowing to further receivers — `x ::: a ::: b` sends `x` to
+`a`, then `x` to `b`. The left operand must be `String`; the receiver evaluates
+to a reach handle (e.g. `Munction.start(name)`). It lowers to the `OP_SSEND`
+opcode; the VM holds a structural send handler and the receiver transport, so
+SLeeLa source only states the framing intent. Example (x already has a value):
+
+    String x ::: solution(nxm);     // the VM streams x's elements into solution
+
+--------------------------------------------------------------------------------
+## 2. Program structure
+
+    program     ::= top-decl+
+    top-decl    ::= struct-decl | class-decl
+    struct-decl ::= "struct" ident "{" struct-field* "}"   // §3.4 (syntax 1.2+)
+    class-decl  ::= "class" ident [type-params] "{" member* "}"   // type-params: §16 (2.2+)
+    member      ::= field-decl | method-decl | nested-class   // nested: §14 (syntax 1.11+)
+    nested-class::= "class" ident "{" (field-decl | method-decl)* "}"  // one level only
+
+A program is one or more classes, optionally preceded or interleaved with
+`struct` declarations. Execution begins at the method named `main`
+(signature `void main()`); exactly one `main` is required across the program.
+
+--------------------------------------------------------------------------------
+## 3. Types & declarations
+
+### 3.1 Types
+
+    type       ::= "int" | "double" | "boolean" | "String" | "void"
+                 | unsigned-type
+                 | character-set-type
+                 | struct-name                      // any declared struct (1.2+)
+                 | generic-type                      // §16 (syntax 2.2+)
+
+    unsigned-type ::= ident                        // if it matches U[1-9][0-9]*
+    character-set-type ::= ident                   // if it matches C[1-9][0-9]*
+    // U<n>: value-bit width 1..1048576.
+    // C<n>: character-entry capacity 1..1048576.
+    // Both forms are lexed as identifiers; type resolution validates the whole name.
+
+    // generic-type: a reference type applied to type arguments (§16, 2.2+),
+    // e.g. Class<?>, Box<Thing>, Collection<? extends java.lang.Number>.
+    // A type argument is a reference-type name or a wildcard — NOT a keyword
+    // primitive/String (so List<String> is rejected; see §16.4).
+    generic-type   ::= qualified-name "<" type-arg ("," type-arg)* ">"
+    type-arg       ::= generic-type | qualified-name | wildcard
+    wildcard       ::= "?" [("extends" | "super") (generic-type | qualified-name)]
+
+`U<n>` is an unsigned, fixed-width integer type whose width `n` is a decimal integer in the inclusive range `1..1048576`; leading zeroes, zero, non-decimal characters, and widths above `1048576` are invalid. Its value range is `0..(2^n - 1)`. For example, `U1`, `U8`, `U16`, `U32`, `U64`, and `U1048576` are valid type names. Width and unsignedness must be preserved in compiler signatures and VM/module metadata; implementations must not silently lower values to signed or fixed 64-bit host integers. A runtime operation not yet supported for a width must produce an explicit diagnostic. `int` remains 64-bit. `void` is a return type only. The core is dynamically typed
+underneath; syntax 1.2 scalar type annotations are surface-level (parsed, not
+enforced), so a declared type documents intent without constraining the runtime
+value. 
+
+`C<n>` is a character-set capacity signature, where `n` is a decimal integer in the inclusive range `1..1048576`. Unlike `U<n>`, which specifies a bit width, `C<n>` specifies the maximum number of distinct character entries addressable by a character catalogue. `C1048576` therefore denotes a capacity of `1024 * 1024 = 1,048,576` entries. It does not assert that every slot is populated, that every entry has a verified meaning, or that the set is Unicode-compatible. The actual registry population must be reported separately. A character-set record should distinguish catalogue ID, code point/identifier, glyph, semantic annotation, and source provenance. `C<n>` is a source-catalogue contract; full compiler/runtime integration must be tested before claiming end-to-end runtime support. `U<n>` and `C<n>` are different parameterized families even though both use decimal parameters.
+
+`String` is a first-class scalar type. Its literal form is `string-lit` (§1.4);
+source code operates on it with concatenation (`+`) and equality (`==` / `!=`)
+only — there is no `char` type and no char-level indexing at the language level.
+Richer text operations are provided by the `lib/text` String family
+(`SLString`, `SLStringBuilder`, `SLStringBuffer`, `SLFormatter`, …), which
+implements length-independent work in-language and crosses an explicit VM/OS
+bridge for char-level operations (see `lib/text/SLString.sleela`). The companion
+Nordshrift `.sst` sheet grammar carries the same first-class `String` type in
+its `strings:` block (see the Nordshrift Sheet Reference), so a value typed
+`String` has consistent standing in both the source language and the build sheet.
+
+A **struct type name** (§3.4) is additionally used at compile time to
+resolve `.field` offsets, so struct-typed variables/parameters/fields must be
+declared with their struct type for member access to compile.
+
+### 3.2 Fields (shared state)
+
+    field-decl ::= ["static"] type ident ["=" expr] ";"
+
+A field is **class-level shared state** and compiles to a thread-safe core
+global. Fields declared with initializers are initialized once, in order, at the
+top of `main`. Because fields are shared, they are the correct place for state
+that spawned threads (§7) read or write.
+
+### 3.3 Methods
+
+    method-decl ::= ["static"] type ident "(" params? ")" block
+    params      ::= param ("," param)*
+    param       ::= type ident
+    // type-params: a class (not a method) may carry a leading type-parameter
+    // list — §16.2 (2.2+). Method-level type parameters are NOT accepted (§16.4).
+    type-params ::= "<" type-param ("," type-param)* ">"
+    type-param  ::= ident ["extends" type ("&" type)*]
+
+`static` is accepted and optional; all methods behave as static (bound to the
+class, not an instance). Method **locals** are per-thread; **fields** are shared.
+A **class** declaration may carry leading type parameters
+(`class Box<T extends Number> { ... }`); they parse as a signature-level
+annotation (§16.2). Method-level type parameters are not accepted (§16.4).
+
+### 3.4 Structs (syntax 1.2+)
+
+    struct-decl  ::= "struct" ident "{" struct-field* "}"
+    struct-field ::= type ident ";"
+
+A `struct` is a C/C++-style **named aggregate of typed fields**. A struct type
+name may be referenced before or after its definition (declaration order does
+not matter). A fresh instance is created with `new` (§5) and its fields are read
+and written with the `.` operator (§4.2, §5).
+
+Structs are **reference types**: a struct value is a VM-local instance handle
+(the same bounded-handle discipline the core uses for sockets, files, and
+threads — a Sleela program never sees a raw pointer). Consequences:
+
+  * Assigning a struct value or passing it to a method **shares** the instance
+    (aliases observe each other's field writes).
+  * `==` / `!=` compare struct values by **identity** (same instance), not by
+    field contents; a fresh `new` is never equal to another.
+  * Fields are **zero/null-initialised** by `new` (struct fields default to
+    `null` until assigned an instance).
+
+Limits: up to 256 struct types per program, 64 fields per struct, and 4096 live
+instances per VM. Struct types are persisted in a `.sleela` artifact; live
+instances are runtime-only (a struct-typed global reloads as `null`).
+
+--------------------------------------------------------------------------------
+## 4. Statements
+
+    block      ::= "{" statement* "}"
+    statement  ::= block
+                 | var-decl
+                 | assign
+                 | field-assign
+                 | gc-hint-stmt                      // §13 (syntax 1.9)
+                 | if-stmt
+                 | while-stmt
+                 | for-stmt
+                 | return-stmt
+                 | print-stmt
+                 | expr-stmt
+
+### 4.1 Local variable declaration
+    var-decl   ::= type ident ["=" expr] ";"
+
+### 4.2 Assignment
+    assign     ::= ident "=" expr ";"
+Resolves to a local if one is in scope, otherwise to a field (a local shadows a
+field of the same name).
+
+    field-assign ::= member "=" expr ";"           // struct field store (1.2+)
+    member       ::= primary ("." ident)+
+`box.width = 20;` and `box.origin.x = 1;` write through a struct handle. The
+base's struct type is resolved at compile time to compute the field offset.
+
+A `gc-hint-stmt` (syntax 1.9, §13) shares the `ident "=" ...` shape but is NOT an
+assignment: `x = gc N;` / `x = mem N;` is a short-term GC-cleanup request, not a
+store. It is recognised when the whole right-hand side is the contextual word
+`gc`/`mem` (optionally followed by a 0..100 int). The target keeps its value.
+
+### 4.3 If / else
+    if-stmt    ::= "if" "(" expr ")" statement ["else" statement]
+
+### 4.4 While
+    while-stmt ::= "while" "(" expr ")" statement
+
+### 4.5 For
+    for-stmt   ::= "for" "(" [simple] ";" [expr] ";" [simple]
+                   [ ";" expr [ ";" expr ] ] ")" statement
+    simple     ::= var-decl-noSemi | assign-noSemi | expr
+
+The first three terms retain the standard initializer, condition, and update
+semantics. The optional fourth term is a Boolean thread-loop stability guard;
+the optional fifth term is a Boolean VM GC/heap health guard. Guards are
+evaluated once at the start of each iteration, after the loop condition and
+before the body. A false guard exits the loop before the body executes.
+The thread guard is evaluated before the heap guard. Both guards are
+statically required to have Boolean type. The heap guard must be connected
+to a real VM/GC health signal by the host/runtime; a source expression alone
+does not inspect VM internals or automatically raise an exception. Hosts may
+set a diagnostic flag or raise their configured memory-health exception
+before making the guard false. Existing three-term loops are unchanged.
+
+Examples:
+    for (let i = 0; i < limit; i = i + 1; threadStable) work(i);
+    for (let i = 0; i < limit; i = i + 1; threadStable; heapHealthy) work(i);
+
+### 4.6 Print (built-in output)
+    print-stmt ::= "print" "(" expr ")" ";"
+Renders the value and appends a newline; each printed line is atomic across
+threads.
+
+### 4.7 Return
+    return-stmt ::= "return" [expr] ";"
+
+### 4.8 Expression statement
+    expr-stmt  ::= expr ";"
+Typically a call (including a conducted-method or threading built-in used for
+its effect).
+
+--------------------------------------------------------------------------------
+## 5. Expressions (precedence, lowest → highest)
+
+    expr        ::= logic-or
+    logic-or    ::= logic-and   ("||" logic-and)*
+    logic-and   ::= equality    ("&&" equality)*
+    equality    ::= comparison  (("==" | "!=") comparison)*
+    comparison  ::= additive    (("<" | "<=" | ">" | ">=") additive)*
+    additive    ::= multiplic.  (("+" | "-") multiplic.)*
+    multiplic.  ::= unary       (("*" | "/" | "%") unary)*
+    unary       ::= ("-" | "!") unary | primary
+    primary     ::= int-lit | double-lit | string-lit | bool-lit | null-lit
+                  | ident
+                  | call
+                  | new-expr                        // struct instantiation (1.2+)
+                  | member-access                   // struct field read (1.2+)
+                  | "(" expr ")"
+    call          ::= ident "(" args? ")"
+    new-expr      ::= "new" struct-name "(" ")"
+    member-access ::= primary ("." ident)+
+    args          ::= expr ("," expr)*
+
+`new Point()` builds a fresh instance; `p.x` reads a field. A dotted name that
+ends in `(` is still parsed as a qualified call (namespaced built-ins); a dotted
+name that does not is a struct member access.
+
+`+` is arithmetic on numbers and **concatenation** when either operand is a
+`String` (Java-style). Comparisons and logical operators yield `boolean`.
+
+--------------------------------------------------------------------------------
+## 6. Conducted methods — addressing `.sheet` object types
+
+Sleela's defining feature: a program can **address every object type in
+`SHEET.sheet`** — all 16 role categories (root, start, idiom, highlight, call,
+method, attention, gain, conversation, piping, transitive, completitive,
+inheritance, smart-move, congruence, limit) and every object within them — via
+*conducted methods*. These are contextual built-ins resolved against the catalog
+at compile time; an object is named by a **string literal**.
+
+    conduct("Name")        -> boolean   // is Name a catalogued object?
+    role("Name")           -> String    // its conduct role (one of the 16)
+    insight("Name")        -> String    // its insight/gloss
+    congruent("A", "B")    -> boolean    // do A and B route to a congruence?
+    route("A", "B")        -> String     // "A -> B" if congruent, else ""
+    sysdepth()             -> int        // Constitution: system depth (3024)
+    degreemax()            -> int        // Constitution: complexity degree max (4)
+
+**Addressing any object type.** Because the argument is any catalogued name,
+these built-ins reach the whole `SHEET.sheet` object space uniformly — there is
+no per-type syntax to learn. Examples across roles:
+
+    conduct("System")          // root
+    role("Pipeline")           // -> "piping"
+    role("CircuitBreaker")     // -> "smart-move"
+    insight("Reward")          // gain: "accrued value guiding adaptive behavior."
+    insight("Invariant")       // congruence/constraint
+    congruent("Retry", "CircuitBreaker")   // same role -> true
+    route("Pipeline", "Stream")            // siblings   -> "Pipeline -> Stream"
+
+**Congruence rule.** `congruent(A, B)` is true when A and B share a conduct role
+or are listed as each other's siblings in `SHEET.sheet` — this is the routable
+relation used for system insight and connection.
+
+--------------------------------------------------------------------------------
+## 7. Threading (bounded, thread-friendly)
+
+The core provides a bounded, clean concurrency model (up to **128** threads).
+Sleela exposes it as contextual built-ins:
+
+    spawn(method)          // start a no-arg method on a new thread; yields a thread id
+    join()                 // wait for all spawned threads to finish
+    lock(n)                // acquire lock-table slot n   (n a compile-time int, 0..31)
+    unlock(n)              // release lock-table slot n
+    send(slot, value)      // put the 2-tuple (slot, value) on the mailbox line
+    recv(slot)             // block until a tuple arrives on slot; yields its value
+
+Guidance: guard shared **field** access with `lock`/`unlock`; hand values
+between threads over the 2-tuple mailbox with `send`/`recv`; `join()` before
+reading final results. `print` output stays atomic per line.
+
+### 7.1 Struct transport (syntax 1.2+)
+
+A struct instance is a VM-local handle and therefore cannot cross a socket (or
+a `send`/`recv` mailbox meaningfully) as a handle. Two contextual built-ins give
+structs a portable wire form:
+
+    structPack(instance)          -> String   // self-describing JSON of its fields
+    structUnpack(TypeName, json)  -> instance // rebuild an instance of TypeName
+
+`structPack` serialises a struct to a compact JSON object
+(`{"__type":"Name","field":value,...}`); the peer rebuilds it with
+`structUnpack(TypeName, json)`. Send the packed String over `sockwrite`, or hand
+it between threads via `send`/`recv`. `structUnpack`'s first argument is the
+struct **type name** (a bare identifier, resolved at compile time), not a string.
+
+--------------------------------------------------------------------------------
+## 8. The Constitution (invariants in force)
+
+Every Sleela program runs under the ordained invariants (see README §The
+Constitution):
+
+  * **System depth** = `sysdepth()` = **3024** — maximum reachability depth.
+  * **Complexity degree** = `degreemax()` = **4** — maximum connection order
+    (1 direct · 2 mediated · 3 brokered · 4 federated).
+  * **Connect rule**: connecting `n` congruent-linear systems is permitted iff
+    `n <= 3024` and `degree(topology) <= 4`.
+
+These values are constants a program can read directly via the conducted
+methods, so behavior can be gated on the system's own limits.
+
+--------------------------------------------------------------------------------
+## 9. Complete example
+
+    // syntax 1.2 — Java-like surface + conducted methods + threading.
+    class Atlas {
+
+        int hits = 0;                        // shared field (thread-safe global)
+
+        void worker() {
+            lock(0);
+            hits = hits + 1;                 // guarded shared update
+            unlock(0);
+            send(1, 1);                      // announce completion on the burble line
+        }
+
+        void main() {
+            // Address .sheet object types by name (any of the 16 roles).
+            print("depth=" + sysdepth() + " degree<=" + degreemax());
+            print(role("Pipeline") + ": " + insight("Pipeline"));
+            print(route("Retry", "CircuitBreaker"));   // same role -> a route
+
+            // Bounded concurrency: spawn 8 workers, drain, join.
+            int i = 0;
+            while (i < 8) { spawn(worker); i = i + 1; }
+            int got = 0;
+            while (got < 8) { recv(1); got = got + 1; }
+            join();
+            print("hits = " + hits);
+        }
+    }
+
+Expected output (order of the concurrent phase aside):
+
+    depth=3024 degree<=4
+    piping: an ordered composition of transforming stages.
+    Retry -> CircuitBreaker
+    hits = 8
+
+--------------------------------------------------------------------------------
+## 10. Reserved-word & built-in summary
+
+    keywords (16):  class static void struct new int double boolean String
+                    if else while for return true false null print
+    conduct (7):    conduct role insight congruent route sysdepth degreemax
+    threading (6):  spawn join lock unlock send recv
+    struct (2):     structPack structUnpack                 (syntax 1.2+)
+    munction (1+10):Munction.start + fluent verbs .connect .enable .send
+                    .thatch .consume .observe .propagate .latch
+                    .closeWithReceipt .reception               (syntax 1.3+)
+    synchro (11):   synchroOpen synchroDispatch synchroReport synchroClose
+                    synchroSent synchroReceived synchroMean synchroMin
+                    synchroMax synchroP95 synchroLoss           (syntax 1.3+)
+    best-of (18):   bestOfNew bestOfWeight bestOfMinVersion bestOfCostBudget
+                    bestOfCandidate bestOfCandidateArch bestOfArchRealized
+                    bestOfRecord bestOfScore bestOfBest bestOfChoice bestOfReport
+                    bestOfClose bestOfMean bestOfLoss bestOfJitter bestOfCertainty
+                    bestOfArch bestOfArchParam bestOfArchState   (syntax 1.3+)
+    gc-hint (2):    gc mem        contextual; only as the whole RHS of
+                    `x = gc N;` / `x = mem N;`, N in 0..100  (syntax 1.9+)
+    system (1):     ran           contextual; the `ran::` namespace qualifier for
+                    system refs — `ran::mem`, `ran::gc` (syntax 1.9+, §13.4)
+    timing (1):     sleep         block the current thread for a millisecond
+                    count; backs @loopDelay/@loopBudget/@spill (syntax 3.0, §32,§34)
+    big-integer(3): bigmul bigadd bigdivmod    one-opcode arithmetic over
+                    base-1e9 limb int[] arrays (the SLBigInteger bridge) (syntax 3.0, §34)
+    native(3):      nativeOpen nativeCall nativeClose
+                    host-authorized native module lifecycle and typed dispatch
+                    with same-name bytecode fallback (syntax 3.0, §36)
+
+Contextual built-ins are recognized in call position only (they are not reserved
+words). The Munction fluent chain is one sane reach sentence of 4..16 calls; see
+MUNCTION.md. The synchro* built-ins are honest measurement; see SYNCHRO.md. The
+best-of* built-ins select internet routes/settings/flags/architectures to tune
+Synchro/RMI accuracy across five axes (data, decisions, costs, versions,
+architecture — DiffServ/IntServ/MPLS); see TIMINGS.md and NETWORK.md §13.
+
+--------------------------------------------------------------------------------
+## 11. Library class vocabulary (informative)
+
+The reserved words and built-ins above are the *fixed* language vocabulary. The
+much larger, growing vocabulary a Sleela program draws on is the set of library
+classes under `/lib`, resolved by the shared `sleela::library::Index` (the same
+index the compiler and Nordshrift use). These are **not** grammar keywords: they
+are package-qualified types referenced through the import/library mechanism and
+written `<package>.<ClassName>`. This section is informative; `/lib` and
+`lib/LIBRARY.SYMBOLS.md` remain authoritative.
+
+<!-- GENERATED by tools/generate-vocab-appendix.py from lib/LIBRARY.SYMBOLS.md. Do not edit by hand; re-run the tool. -->
+
+This appendix mirrors the **10995** package-qualified class symbols across **90** `/lib` package families, as recorded in the authoritative manifest `lib/LIBRARY.SYMBOLS.md`. It is **informative**: `/lib` and the shared `sleela::library::Index` remain the single source of truth, and nothing here constitutes a second registry. Each entry is resolvable as `<package>.<ClassName>`. Large auto-generated families (> 40 classes) are summarized by count and facade; smaller families list every class.
+
+- **`alphabet`** (15): `Alphabet`, `AlphabetBuilder`, `ArabicAlphabet`, `Color`, `CyrillicAlphabet`, `DarkTheme`, `GreekAlphabet`, `HebrewAlphabet`, `LatinAlphabet`, `Letter`, `LightTheme`, `Palette`, `SLPackage`, `SolarizedTheme`, `Theme`
+- **`antivirus`** (15): `Antivirus`, `SLClamAVAdapter`, `SLDebianAntivirusProfile`, `SLFedoraAntivirusProfile`, `SLLocalScanner`, `SLMacOSAntivirusProfile`, `SLPackage`, `SLQuarantineManager`, `SLScanPolicy`, `SLScanRequest`, `SLScanResult`, `SLScannerEngine`, `SLSystemScanner`, `SLUbuntuAntivirusProfile`, `SLWindowsAntivirusProfile`
+- **`api`** (1): `SLPackage`
+- **`audio`** (1): `SLPackage`
+- **`autocad`** (5): `SLCadDxf`, `SLCadModel`, `SLCadPlan`, `SLCadRenderer`, `autocad`
+- **`bash`** (1): `SLPackage`
+- **`boolean`** — 270 classes (facade `boolean.SLPackage`); see `lib/LIBRARY.SYMBOLS.md` for the full list.
+- **`character`** (15): `AdvertisingModel`, `BrokerageModel`, `BusinessModel`, `Character`, `ConsultingModel`, `FranchiseModel`, `FreemiumModel`, `LicensingModel`, `ManufacturingModel`, `MarketplaceModel`, `RetailModel`, `SLPackage`, `SaaSModel`, `SubscriptionModel`, `WholesaleModel`
+- **`churn`** (1): `SLPackage`
+- **`citizen`** (19): `AdvertisingModel`, `BankAccount`, `BrokerageModel`, `BusinessModel`, `Character`, `Citizen`, `ConsultingModel`, `FederalReserveID`, `FranchiseModel`, `FreemiumModel`, `Industry`, `LicensingModel`, `ManufacturingModel`, `MarketplaceModel`, `RetailModel`, `SLPackage`, `SaaSModel`, `SubscriptionModel`, `WholesaleModel`
+- **`codecs`** (27): `SLCodecAac`, `SLCodecAc3`, `SLCodecAiff`, `SLCodecAlac`, `SLCodecAmrNb`, `SLCodecAmrWb`, `SLCodecController`, `SLCodecEac3`, `SLCodecFlac`, `SLCodecG711Alaw`, `SLCodecG711Mulaw`, `SLCodecHeAac`, `SLCodecLoader`, `SLCodecMatroskaAudio`, `SLCodecMidi`, `SLCodecMp3`, `SLCodecOpus`, `SLCodecPcmWav`, `SLCodecProcessor`, `SLCodecSpeex`, `SLCodecVerifier`, `SLCodecVorbis`, `SLCodecWebmAudio`, `SLCodecWma`, `SLPackage`, `codec-pipeline`, `codecs`
+- **`collections`** (8): `SLArray`, `SLIterator`, `SLList`, `SLMap`, `SLQueue`, `SLRange`, `SLSet`, `SLStack`
+- **`common-rails`** (12): `PrintComponent`, `PrintContractTest`, `PrintField`, `PrintFormatter`, `PrintGlyphs`, `PrintLayout`, `PrintLine`, `PrintProgress`, `PrintRenderer`, `PrintState`, `PrintWriter`, `SLPackage`
+- **`compiler`** — 54 classes (facade `compiler.BinaryFormatReference`); see `lib/LIBRARY.SYMBOLS.md` for the full list.
+- **`config`** (1): `SLPackage`
+- **`connector`** (1): `SLPackage`
+- **`coorenagraph`** (20): `Amoral`, `Beneficence`, `Coorenagraph`, `Deontology`, `Ethics`, `Magnanimous`, `Moral`, `MoralDeliberation`, `MoralVocabulary`, `Morale`, `Morals`, `Pernicious`, `Principled`, `Probity`, `Reprobate`, `SLPackage`, `Unscrupulous`, `Upright`, `Utilitarianism`, `VirtueEthics`
+- **`core`** — 84 classes (facade `core.SLPackage`); see `lib/LIBRARY.SYMBOLS.md` for the full list.
+- **`cpu`** — 140 classes (facade `cpu.SL6502CPU`); see `lib/LIBRARY.SYMBOLS.md` for the full list.
+- **`crypto`** (25): `SLAes`, `SLAesGcm`, `SLCertificate`, `SLCertificateStore`, `SLCipher`, `SLCipherContext`, `SLCipherKey`, `SLDigest`, `SLHkdf`, `SLHmac`, `SLKey`, `SLKeyDerivation`, `SLKeyPair`, `SLMlDsa`, `SLMlKem`, `SLNationalSuite`, `SLNonce`, `SLPrivateKey`, `SLPublicKey`, `SLSha256`, `SLSha3`, `SLSha512`, `SLSignature`, `SLTrustStore`, `SLVerifier`
+- **`data`** (1): `SLPackage`
+- **`data-structures`** (9): `DSList`, `DSMap`, `DSObject`, `DSQueue`, `DSStack`, `DSValue`, `DataStructures`, `DataStructuresTest`, `SLPackage`
+- **`database`** (16): `SLColumn`, `SLConnectionPool`, `SLDataSource`, `SLDatabase`, `SLDatabaseConfig`, `SLIndex`, `SLMigration`, `SLPreparedStatement`, `SLQuery`, `SLQueryParameter`, `SLResultSet`, `SLRow`, `SLSchema`, `SLStatement`, `SLTable`, `SLTransaction`
+- **`debugger`** (16): `SLBreakpoint`, `SLCoverage`, `SLDebugFrame`, `SLDebugSession`, `SLDebugTarget`, `SLDebugValue`, `SLDebugger`, `SLExceptionPoint`, `SLExecutionPoint`, `SLProfiler`, `SLSourceMap`, `SLStackTrace`, `SLStepController`, `SLTraceBuffer`, `SLTraceEvent`, `SLWatchpoint`
+- **`decompiler`** (13): `BinaryFormatReference`, `DecompilerModule`, `FractionalInput`, `LanguageReference`, `OSDiscernment`, `OutputTarget`, `ProgramMapping`, `SLPackage`, `SafetyReference`, `SleelaDecompiler`, `SourceLanguage`, `artifact-analysis`, `fractional-reconstruction`
+- **`deliberation`** — 295 classes (facade `deliberation.SLAStarSearch`); see `lib/LIBRARY.SYMBOLS.md` for the full list.
+- **`drivers`** (1): `SLPackage`
+- **`filesystem`** (16): `SLArchive`, `SLDirectoryInfo`, `SLDirectoryReader`, `SLDirectoryWalker`, `SLFileAttributes`, `SLFileCopier`, `SLFileInfo`, `SLFileLock`, `SLFileMode`, `SLFileMover`, `SLFilePermissions`, `SLFileReader`, `SLFileWatcher`, `SLFileWriter`, `SLPathPattern`, `SLPathResolver`
+- **`gameplay`** (14): `AskForHelpMove`, `DetailedReport`, `DiceRoll`, `ExpectedFuture`, `GameMove`, `GameTurn`, `HelpIndexMove`, `InferenceEngine`, `ManagementCourtroom`, `MoveOutcome`, `NewDesireMove`, `Player`, `PortfolioDecision`, `SLPackage`
+- **`gui`** (11): `SLGuiAction`, `SLGuiBackend`, `SLGuiBridge`, `SLGuiDocument`, `SLGuiDocumentListener`, `SLGuiHost`, `SLGuiIntegration`, `SLGuiRuntime`, `SLGuiWindow`, `SLPackage`, `gui-demo`
+- **`html`** (1): `SLPackage`
+- **`http`** (17): `SLHttpBody`, `SLHttpCache`, `SLHttpClient`, `SLHttpCookie`, `SLHttpHandler`, `SLHttpHeaders`, `SLHttpMiddleware`, `SLHttpMultipart`, `SLHttpProxy`, `SLHttpRoute`, `SLHttpRouter`, `SLHttpServer`, `SLHttpSession`, `SLHttpStatus`, `SLHttpTls`, `SLHttpVersion`, `SLRouteData`
+- **`http-1.0`** (1): `SLPackage`
+- **`http-2.0`** (1): `SLPackage`
+- **`http-3.0`** (1): `SLPackage`
+- **`http-4.0`** (1): `SLPackage`
+- **`http-5.0`** (1): `SLPackage`
+- **`http-6.0`** (1): `SLPackage`
+- **`http-7.0`** (1): `SLPackage`
+- **`http-8.0`** (1): `SLPackage`
+- **`http-9.0`** (1): `SLPackage`
+- **`http-servers`** (1): `SLPackage`
+- **`ide`** (1): `SLPackage`
+- **`inference-model`** (1): `SLPackage`
+- **`inputs`** (1): `SLPackage`
+- **`international-criminal-court`** (1): `SLPackage`
+- **`io`** (8): `SLBufferedInput`, `SLBufferedOutput`, `SLByteStream`, `SLConsole`, `SLFileStream`, `SLInputStream`, `SLMemoryStream`, `SLOutputStream`
+- **`java`** — 8982 classes (facade `java.SLPackage`); see `lib/LIBRARY.SYMBOLS.md` for the full list.
+- **`java28`** (1): `SLPackage`
+- **`journey`** (1): `SLPackage`
+- **`languages`** (4): `SLLanguage`, `SLLanguageCatalog`, `SLLanguageSettings`, `languages`
+- **`ledger`** (1): `SLPackage`
+- **`manifesto`** (1): `SLPackage`
+- **`math`** — 243 classes (facade `math.SLANOVA`); see `lib/LIBRARY.SYMBOLS.md` for the full list.
+- **`memory`** (16): `SLAddress`, `SLAllocator`, `SLArena`, `SLBuffer`, `SLByteBuffer`, `SLMemory`, `SLMemoryBlock`, `SLMemoryManager`, `SLMemoryRegion`, `SLMemorySegment`, `SLMemoryStatistics`, `SLMemoryView`, `SLPointer`, `SLPoolAllocator`, `SLReference`, `SLWeakReference`
+- **`modules`** (1): `SLPackage`
+- **`moral-capacitor`** (19): `SLMachineMoralGate`, `SLMoralCapacitor`, `SLMoralCertificate`, `SLMoralCertificateAuthority`, `SLMoralCertified`, `SLMoralCharge`, `SLMoralCodeGuard`, `SLMoralFramework`, `SLMoralLedger`, `SLMoralOperation`, `SLMoralPolicy`, `SLMoralVerdict`, `SLMoralVeto`, `SLMoralWarranty`, `SLOSMoralGate`, `SLPackage`, `SLVMMoralGuard`, `moral-capacitor`, `moral-certificate`
+- **`munction`** (1): `SLPackage`
+- **`native`** (1): `SLPackage`
+- **`net`** (8): `SLDnsResolver`, `SLEndpoint`, `SLHttpRequest`, `SLHttpResponse`, `SLSocket`, `SLTcpConnection`, `SLUdpSocket`, `SLUri`
+- **`nordshrift`** (11): `DynamiteConnector`, `MySQLConnector`, `NordshriftCompilerBridge`, `NordshriftSource`, `NordshriftSymbol`, `NordshriftSymbolResolver`, `NordshriftSymbolTable`, `PermissibleConnector`, `PostgreSQLConnector`, `SLPackage`, `SQLConnector`
+- **`opcodes`** — 119 classes (facade `opcodes.SLGovConcept`); see `lib/LIBRARY.SYMBOLS.md` for the full list.
+- **`os`** — 85 classes (facade `os.SLArchitectureSet`); see `lib/LIBRARY.SYMBOLS.md` for the full list.
+- **`politico`** (1): `SLPackage`
+- **`process`** (16): `SLAtomic`, `SLBarrier`, `SLCondition`, `SLExecutor`, `SLMutex`, `SLProcessBuilder`, `SLProcessEnvironment`, `SLProcessGroup`, `SLProcessHandle`, `SLProcessInfo`, `SLProcessScheduler`, `SLProcessSignal`, `SLSemaphore`, `SLThreadGroup`, `SLThreadLocal`, `SLThreadState`
+- **`psychiatry`** (1): `SLPackage`
+- **`public`** (1): `SLPackage`
+- **`reflection`** (16): `SLAnnotation`, `SLAnnotationValue`, `SLClassLoader`, `SLClassRegistry`, `SLConstructorInfo`, `SLFieldInfo`, `SLGenericParameter`, `SLGenericType`, `SLInheritance`, `SLInterface`, `SLInterfaceRegistry`, `SLMethodInfo`, `SLParameterInfo`, `SLReflection`, `SLType`, `SLTypeInfo`
+- **`regex`** (27): `Regex`, `RegexCapability`, `RegexCapture`, `RegexCompiler`, `RegexDialect`, `RegexEngine`, `RegexError`, `RegexFlags`, `RegexIterator`, `RegexLiteral`, `RegexMatch`, `RegexMatcher`, `RegexNatural`, `RegexNaturalGrammar`, `RegexNaturalGroup`, `RegexNaturalParser`, `RegexNaturalSymbol`, `RegexOptions`, `RegexPattern`, `RegexReplacement`, `RegexReplacer`, `RegexResult`, `RegexScanner`, `RegexSplitter`, `RegexSubject`, `RegexSystem`, `RegexValidator`
+- **`rmi`** (1): `SLPackage`
+- **`runtime`** (16): `SLCallFrame`, `SLCallStack`, `SLConstantPool`, `SLException`, `SLExceptionHandler`, `SLGarbageCollector`, `SLGlobalTable`, `SLInstruction`, `SLLocalTable`, `SLObjectFactory`, `SLOpcode`, `SLOperand`, `SLOperandStack`, `SLRuntime`, `SLRuntimeConfig`, `SLRuntimeState`
+- **`security`** (6): `SLCapability`, `SLCredential`, `SLHash`, `SLPermission`, `SLRandom`, `SLSecureBuffer`
+- **`server-edition`** (1): `SLPackage`
+- **`sldocument`** (9): `SLDocument`, `SLDocumentAnnotation`, `SLDocumentCompiler`, `SLDocumentConverter`, `SLDocumentNaming`, `SLDocumentResult`, `SLDocumentStep`, `SLSourceNameComparison`, `SLVeritable`
+- **`sleela`** (1): `SLPackage`
+- **`sleela-terminal`** (1): `SLPackage`
+- **`social-model`** (1): `SLPackage`
+- **`spatial`** (3): `SLOctree`, `SLSpatialHash`, `SLVoxelGrid`
+- **`sst`** (11): `DynamiteConnector`, `MySQLConnector`, `PostgreSQLConnector`, `SLPackage`, `SQLConnector`, `SSTLibrary`, `SSTSource`, `SSTSymbol`, `SSTSymbolKind`, `SSTSymbolReference`, `SSTSymbolTable`
+- **`synchro`** (1): `SLPackage`
+- **`systems`** (1): `SLPackage`
+- **`telephony-skya`** (7): `Communication`, `Network`, `RealAcquaintances`, `SLPackage`, `Servers`, `SkyaModules`, `Socio`
+- **`terminal`** (1): `SLPackage`
+- **`terminal_pixel`** (1): `SLPackage`
+- **`text`** (8): `SLCharset`, `SLFormatter`, `SLRegex`, `SLString`, `SLStringBuffer`, `SLStringBuilder`, `SLTextReader`, `SLTextWriter`
+- **`ui`** (16): `SLApplication`, `SLButton`, `SLDialog`, `SLLabel`, `SLLayout`, `SLListView`, `SLMenu`, `SLMenuItem`, `SLTableView`, `SLTextArea`, `SLTextField`, `SLTheme`, `SLTreeView`, `SLView`, `SLWidget`, `SLWindow`
+- **`us-infrastructure`** (1): `SLPackage`
+- **`user-interface`** — 53 classes (facade `user-interface.SLPackage`); see `lib/LIBRARY.SYMBOLS.md` for the full list.
+- **`video`** (21): `Video`, `VideoCodec`, `VideoCodecCatalog`, `VideoCodecController`, `VideoCodecLoader`, `VideoCodecProcessor`, `VideoCodecVerifier`, `VideoDecoder`, `VideoEncoder`, `VideoFormat`, `VideoFrame`, `VideoFrameBuffer`, `VideoPixelFormat`, `VideoProfile`, `VideoRenderer`, `VideoStream`, `VideoTimeline`, `VideoTimestamp`, `VideoTrack`, `VideoWork`, `video-codec-pipeline`
+- **`vm`** — 85 classes (facade `vm.GCBarrier`); see `lib/LIBRARY.SYMBOLS.md` for the full list.
+- **`website`** — 50 classes (facade `website.AerLingusWebsite`); see `lib/LIBRARY.SYMBOLS.md` for the full list.
+
+--------------------------------------------------------------------------------
+Sleela (syntax 1.2) — Java-like surface, addressing the full SHEET.sheet object space,
+on the Turing-complete threaded C/C++ core.
+
+
+--------------------------------------------------------------------------------
+## 12. Syntax 1.8 — inferred locals and constructor arguments
+
+Syntax 1.8 extends the 1.3..1.7 surface with two features: inferred local
+declarations (`let`) and constructor arguments on `new Type(args)`.
+
+### 12.1 Inferred local declarations (`let`)
+
+A local declaration may use `let` when its initializer has a statically known,
+non-null and non-void type:
+
+```sleela
+#sleela 1.8
+class LetExample {
+    static void main() {
+        let count = 3;
+        let greeting = "hello";
+        let enabled = true;
+        print(count);
+        print(greeting);
+        print(enabled);
+    }
+}
+```
+
+The inferred type is the initializer's semantic type. An initializer is required.
+Inference from `null`, `void`, or an unknown/dynamic expression is rejected rather
+than silently assigning an unsafe type. Explicit declarations remain valid.
+
+### 12.2 Constructor arguments
+
+A class may declare a constructor: a member whose name is the class name,
+followed by a parameter list and a body. Syntax 1.8 allows that constructor to
+be invoked with arguments through `new Type(args)`; the arguments bind to the
+constructor parameters and the constructor body runs before the new instance is
+published to the caller.
+
+    constructorDecl ::= javaModifiers? Ident "(" paramList? ")" throwsClause? block
+                        // Ident must equal the enclosing class name   (1.8+)
+    newExpr         ::= "new" typeName "(" argList? ")"
+                        // argList non-empty selects the matching constructor (1.8+)
+
+```sleela
+#sleela 1.8
+class Point {
+    int x;
+    int y;
+
+    Point(int px, int py) {
+        this.x = px;
+        this.y = py;
+    }
+
+    static void main() {
+        Point p = new Point(3, 4);
+        print(p.x);        // 3
+        print(p.y);        // 4
+        let q = new Point(10, 20);
+        print(q.x);        // 10
+    }
+}
+```
+
+Instance field initializers run first (producing a default-initialized instance),
+then the selected constructor body executes with `this` bound to that instance.
+A `new Type(args)` expression evaluates to the fully initialized instance.
+
+Scope and limits of the 1.8 constructor feature:
+
+- **Single constructor only.** Constructor **overload resolution is not part of
+  syntax 1.8**: a class that declares more than one constructor is rejected. The
+  constructor's parameter count must equal the number of supplied arguments, and
+  each argument type must be assignable to its parameter type.
+- **No delegation.** Explicit `this(...)` and base-constructor delegation are not
+  part of syntax 1.8; the chaining model in `lib/compiler/CONSTRUCTOR-SERIES.md`
+  is a forward-looking design, not a claim of current support.
+- A zero-argument `new Type()` continues to work whether or not a no-argument
+  constructor is declared; when one is declared it runs.
+
+These limits are enforced rather than silently narrowed: unsupported constructor
+forms produce an explicit semantic error (see `impl/frontend/semantic.cpp` and
+`impl/frontend/compiler.cpp`). Regression fixtures live in
+`tests/sleela-syntax-1.8/`.
+
+--------------------------------------------------------------------------------
+## 13. Syntax 1.9 — the GC-hint statement (`x = gc N;` / `x = mem N;`)
+
+Syntax 1.9 adds one feature over the 1.3..1.8 baseline: an explicit, developer-
+emitted request for a **short-term garbage-collection cleanup** of unreachable
+allocations once a value is finished being used.
+
+### 13.1 Form
+
+    gc-hint-stmt ::= ident "=" ("gc" | "mem") int-lit? ";"
+
+```sleela
+#sleela 1.9
+class Example {
+    static void main() {
+        let x = new Widget();
+        // ... use x ...
+        x = gc 100;     // most-aggressive short-term cleanup after use
+        let y = new Buffer();
+        y = mem 25;     // the `mem` spelling, a modest cleanup
+        let z = new Cache();
+        z = gc;         // bare form: a default modest cleanup
+    }
+}
+```
+
+The two spellings `gc` and `mem` are equivalent; both name the same hint. `N` is
+the **aggressiveness**, an integer in the inclusive band **0..100**:
+
+  * `0`                 — a no-op (the hint is recorded but asks for nothing).
+  * `1..99`             — a young-only safepoint collection, sized to the level.
+  * `100`               — the strongest claim: a full (not young-only) collection.
+  * omitted (bare form) — defaults to a modest cleanup (level 50).
+
+### 13.2 Contextual, not reserved
+
+`gc` and `mem` are **contextual** words, not reserved keywords. They are special
+only as the *whole* right-hand side of an assignment; everywhere else they are
+ordinary identifiers. So a variable may still be named `gc` or `mem`, and an
+expression RHS that merely begins with such a name is not a hint:
+
+```sleela
+let gc = 10;
+let x = gc + 5;   // normal assignment: x = 15 (gc is a plain variable)
+x = gc;           // the WHOLE RHS is `gc`: this is the GC hint
+```
+
+### 13.3 Semantics and limits
+
+  * The **target** must be an in-scope value (a local, instance field, or static
+    field). Naming the value the developer is done with keeps the hint honest:
+    it marks a real binding as releasable. An unknown target is a semantic error.
+  * The **aggressiveness** must be within `0..100`; an out-of-range literal is a
+    semantic error, not silently clamped.
+  * The hint reclaims **only genuinely unreachable** objects. It never frees a
+    live value, and it does not change the program's observable result — the
+    target's value is unchanged by the hint.
+  * Collection is a VM safepoint, so (like every collection) it is **deferred
+    while worker threads are active** and runs at structured-concurrency
+    quiescence.
+  * The hint lowers to a single VM opcode, `OP_GC_HINT`, whose operand is the
+    0..100 aggressiveness; the VM runs a `gc_safepoint_with_roots` collection at
+    that strength (young-only below 100, full at 100).
+
+These constraints are enforced rather than silently narrowed: an unsupported
+target or band produces an explicit semantic error (see
+`impl/frontend/semantic.cpp` and `impl/frontend/compiler.cpp`). Regression
+fixtures live in `tests/sleela-syntax-1.9/`.
+
+### 13.4 The `ran::` system namespace
+
+Some words a program naturally wants for its own variables — `mem`, `gc`, and
+the like — also name system meanings. To keep every such word free for ordinary
+class and variable names, syntax 1.9 adds an explicit system-namespace
+qualifier, **`ran::`**. The prefix `ran` denotes the **System** — the facility
+already *Ran* and resident in **RAM** — so `ran::mem` and `ran::gc` name the
+system meaning unambiguously and the bare words stay available as identifiers.
+
+    ran-ref      ::= "ran" "::" ident                 // system value reference
+    gc-hint-stmt ::= ident "=" ("ran" "::")? ("gc" | "mem") int-lit? ";"
+
+`ran` is **contextual**, not reserved: it is special only immediately before
+`::`. A variable, field, or struct member may be named `ran`, `mem`, or `gc`,
+and ordinary `base::method` references are unaffected (only the exact identifier
+`ran` before `::` is the system namespace).
+
+```sleela
+#sleela 1.9
+let mem = 11;            // ordinary variables: mem/gc/ran are just names
+let gc  = 22;
+let ran = 33;
+print(mem + gc + ran);   // 66
+
+let b = ran::mem;        // THE system memory: current live bytes (int)
+x = ran::gc 100;         // the GC hint, explicitly system-scoped
+x = ran::mem 25;         // equivalently, the `mem` spelling of the hint
+x = ran::gc;             // bare qualified form -> default modest cleanup
+```
+
+System references (value forms):
+
+| Reference | Meaning | Type |
+|---|---|---|
+| `ran::mem` | current live system memory in bytes (the memory manager's `live_bytes` when enabled, else the GC's tracked bytes) | `int` |
+
+The `ran::`-qualified GC hint (`x = ran::gc N;` / `x = ran::mem N;`) is identical
+in effect to the unqualified `x = gc N;` / `x = mem N;` of §13.1 — the qualifier
+only makes the system intent explicit so a modern compiler decides the author's
+meaning instantly. `ran::mem` lowers to the `OP_RAN_MEM` opcode (pushes the live
+byte count); an unknown system word (`ran::<other>`) is an explicit semantic
+error. The namespace requires syntax 1.9.
+
+--------------------------------------------------------------------------------
+## 14. Syntax 1.11 — nested classes (the "rule of two")
+
+Syntax 1.11 adds nested classes. A class body may declare a nested class in
+addition to its fields and methods:
+
+    class Outer {
+        class Inner {              // a nested class (depth 2)
+            Deep deep;             // a reference to a deeper class (top level)
+            int value;
+            void set(int v) { value = v; }
+            int get() { return value; }
+        }
+        void main() {
+            Outer.Inner x = new Outer.Inner();   // dotted qualified name
+            x.set(7);
+            x.deep = new Deep();                 // follow the reference
+        }
+    }
+    class Deep { int tag() { return 99; } }
+
+### 14.1 The rule of two
+
+A document nests **at most two deep**: the enclosing class and one nested class
+(depth 2 is normal). A nested class may **not** itself contain an inline nested
+class. To model deeper structure, declare the deeper class at **top level** and
+hold a **reference** to it — a field whose type is that class — inside the
+nested class. A third inline level is a syntax error that names this remedy.
+
+### 14.2 Per-document limit
+
+A single Sleela document may declare **at most 42 nested classes**. Exceeding
+the cap is a syntax error.
+
+### 14.3 Naming and compilation
+
+A nested class is referenced in source by the dotted qualified name
+`Outer.Inner` (type position and `new Outer.Inner()`). The compiler hoists each
+nested class to an ordinary top-level class under that qualified name, mangling
+the dot to `__` internally (`Outer__Inner`) because the core VM reserves `.`
+for numeric literals. No new runtime concept is introduced: a nested class
+compiles to its own struct layout and flattened `Outer__Inner::method` funcs,
+exactly like a top-level class.
+
+### 14.4 Version gate
+
+Nested classes require `#sleela 1.11`. A document that nests a class under a
+lower declared version is rejected ("nested classes require #sleela 1.11").
+
+## 15. The Metadata Class standard (the metapattern)
+
+A **metadata class** is a Sleela class whose purpose is to carry the
+provenance, standing, and intent of a unit of work — not its runtime behavior.
+The pattern was first established by the codec and compression library
+families (`lib/codecs/SLCodec*.sleela`, `lib/compression/SLCompression*.sleela`):
+a block of **catalogued attributes with getter/setter pairs**, faithful to the
+subject's real-world origin where publicly known. This section raises that
+block from a local convention to a **professional standard** for the Sleela
+source format.
+
+The standard is informative at the grammar level — the metapattern uses only
+ordinary fields and methods (sections 3.2, 3.3) — and **normative at the
+authoring level**: it defines what a metadata class must contain, who is
+expected to write one, and how the jurisdictional and legal dimensions are
+framed. A tool MAY read these attributes; it MUST NOT infer runtime capability
+from them (capability is the plugin/manager's concern, never the metadata).
+
+### 15.1 Class of intellect — who writes a metadata class
+
+The standard recognizes two authoring tiers. The tier sets the *expectation*,
+not a compiler gate.
+
+- **Worker class.** Everyday Sleela — tutorials, examples, single-purpose
+  wrappers. A metadata block is **welcome and encouraged** here as a mark of
+  craft, but only the baseline identity attributes (§15.2) are expected.
+- **Executive+ class.** Library-family classes, registry entries, and anything
+  that represents a standard, a product, or a jurisdictional artifact. Here the
+  **full metadata record is expected** — baseline identity *plus* the legality
+  and probation-of-intent attributes (§15.3, §15.4). An executive-grade class
+  that omits the record is incomplete, even if it compiles.
+
+The metapattern thus sets a *pace in the collective intellect*: the higher the
+standing of the code, the more complete its self-description.
+
+### 15.2 Baseline identity attributes
+
+The original eleven catalogued attributes, each a field with a matching
+`get`/`set` pair. Values are faithful to the subject's real origin where
+publicly known; unknown values use `"none"` or `"unknown"`, never a guess
+presented as fact.
+
+| Field | Type | Meaning |
+|---|---|---|
+| `metaVersion` | `String` | Record version (`"MAJOR.MINOR.PATCH"`). |
+| `metaId` | `int` | Stable registry id (mirrors the native handler id). |
+| `metaAuthor` | `String` | Originating author or body. |
+| `metaDate` | `String` | Record date (`"YYYY-MM-DD"`). |
+| `metaCopyright` | `String` | Copyright / licensing posture. |
+| `metaTrademark` | `String` | Trademark, or `"none"`. |
+| `metaCorporation` | `String` | Stewarding corporation or organization. |
+| `metaOrigin` | `String` | Jurisdictional origin (§15.4). |
+| `metaBirthDate` | `String` | Year/date the subject came into being. |
+| `metaScienceRating` | `int` | Maturity/robustness on a 1..10 scale. |
+| `metaNationalSchedule` | `String` | The governing standard/specification schedule (§15.3). |
+
+Canonical shape (from `lib/codecs/SLCodecMidi.sleela`):
+
+```sleela
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override each codec's record.
+     Values are faithful to the codec's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 17;
+  String metaAuthor = "MIDI Manufacturers Association";
+  String metaDate = "2026-09-28";
+  String metaCopyright = "Open specification";
+  String metaTrademark = "MIDI";
+  String metaCorporation = "MIDI Manufacturers Association";
+  String metaOrigin = "International";
+  String metaBirthDate = "1983";
+  int metaScienceRating = 10;
+  String metaNationalSchedule = "MMA MIDI 1.0 / SMF";
+```
+
+(The legacy `//` header remains valid in the existing `lib/codecs/*` sources;
+new code uses the angle-bracket form shown here — §1.1. The `metaScienceRating`
+inline note "maturity/robustness on a 1..10 scale" moves to its own `<...>`
+line when present, since angle-bracket comments start the line.)
+
+Each field is paired with accessors — `getMetaVersion()`/`setMetaVersion(...)`,
+`getAuthor()`/`setAuthor(...)`, and so on — so a GUI, loader, or catalog can
+read the record and, **where appropriate**, override it. Overriding a legality
+or schedule field (§15.3) is a privileged act and should be logged by the
+caller; the metadata class itself does not police this.
+
+### 15.3 Legality — the schedule and standing attributes
+
+Legality in a metadata class is expressed, not enforced. The **schedule**
+(`metaNationalSchedule`) names the governing standard, specification, treaty, or
+statute under which the subject is defined — e.g. `"RFC 1952"`, `"ITU-T G.711"`,
+`"MMA MIDI 1.0 / SMF"`, `"PKWARE APPNOTE (ZIP)"`. The copyright, trademark, and
+corporation fields together state the **fiduciary standing**: who owns, who
+stewards, and under what terms. An executive+ class treats these as mandatory:
+they are the audit surface a legal, administrative, or executive reviewer reads
+first.
+
+Rule: a schedule value must name a *real, citable* instrument or be `"none"`.
+A metadata class never invents a legal schedule to appear legitimate.
+
+### 15.4 Probation of intent — jurisdictional scope
+
+`metaOrigin` frames **where the subject's authority and intent are seated**,
+along a widening scale. This is the "probation of intent": a declaration, open
+to review, of the scope under which the artifact is offered. The standard
+vocabulary, smallest to largest:
+
+| Scope | Meaning |
+|---|---|
+| `"National"` | Seated in a single nation (name the nation where known, e.g. `"United States"`, `"France"`). |
+| `"International"` | Multi-national / standards-body seated (e.g. ISO, IETF, ITU, MMA). |
+| `"Galactic"` | Reserved for artifacts whose intended scope exceeds terrestrial jurisdiction — the top of the pace-setting scale. |
+
+Adjacent framings a reviewer reads alongside origin — **Legal, Fiduciary,
+Admin, Executive** — are expressed through the §15.3 schedule/standing fields
+rather than as separate scope tokens: *Legal* = the schedule, *Fiduciary* =
+copyright/trademark/corporation, *Admin/Executive* = the authoring tier (§15.1)
+and the act of maintaining the record. A nation name is a permitted, more
+specific value of `"National"`; `"International"` and `"Galactic"` are the
+broadening steps above it.
+
+### 15.5 Fidelity and honesty
+
+The metapattern's one hard contract: **values are faithful to the subject's
+real origin where publicly known.** A metadata class is a statement of record.
+It may be overridden by a caller, summarized by a catalog, or left at baseline
+by a worker-class author — but it must never assert a false author, a
+fabricated schedule, or an inflated scope. Honesty of the record is what lets
+the higher classes of Sleela intellect rely on it to set the pace.
+
+## 16. Syntax 2.2 — generic type signatures
+
+Syntax 2.2 is the normative home of **generic type signatures**: parameterized
+reference types and wildcards in type positions. The feature carries the
+Java-family authorship surface (the `java.*` transition corpus under
+`impl/tests/java_transition/`) into the Sleela grammar so that JDK-mirrored
+declarations — most visibly `java.lang.Object` itself (`Class<?> getClass()`) —
+have a defined form here. This section states exactly what the front end
+accepts; the forms it does **not** yet accept are listed in §16.4 so that a
+document relying on 2.2 does not mistake planned surface for implemented
+surface.
+
+### 16.1 Parameterized reference types (use side)
+
+A declared or qualified reference type may be **applied to type arguments** in a
+type position — a field, parameter, return, or local *type*. A type argument is
+either a **reference-type name** (a bare or dotted class name, which may itself
+be parameterized) or a **wildcard** `?`, optionally bounded with `extends`
+(upper) or `super` (lower):
+
+    Class<?>                                  raw;      // return/param/field type
+    Box<Thing>                                boxed;
+    java.util.Collection<? extends java.lang.Number>  reading;
+
+The grammar is given in §3.1 (`generic-type`, `type-arg`, `wildcard`). Nesting a
+parameterized argument is permitted (`Holder<Box<Thing>>`). The angle brackets
+here are part of a type and are distinct from the `<`/`>` comparison operators
+(§1.5) and from the scalar `U<n>`/`C<n>` parameterized families (§3.1), which
+take a decimal parameter rather than a type argument.
+
+### 16.2 Class type parameters (declaration side)
+
+A class may declare leading **type parameters** (§3.3 `type-params`):
+
+    class Box<T extends java.lang.Number> { ... }
+
+The declaration parses and the parameter list is retained in the class's Java
+metadata. A type variable (`T`) is **not**, however, resolved as a usable type
+inside the body in this release: a field or local declared with type `T` is
+reported as an unknown type. Treat class type parameters as a **parsed,
+signature-level** annotation — useful for JDK-mirrored authorship and
+round-trip — not as a type you can name in member declarations yet.
+
+### 16.3 Semantics — erasure
+
+The analyzer treats generics by **type erasure**, as on the JVM: a parameterized
+type is judged by its **erased raw head** — the name to the left of `<` — and
+the type arguments do **not** participate in known-ness or assignability
+decisions. `Class<?>` erases to `Class`, `Box<Thing>` to `Box`. Generics are
+therefore a **surface-level** contract in the same spirit as the syntax 1.2
+scalar annotations (§3.1): they are parsed, checked for well-formedness, and
+carried in signatures/metadata, but they do not introduce a reified runtime
+type. This is what lets `Class<?> getClass()` type-check without a
+generic-instantiation model.
+
+### 16.4 Not yet accepted (explicitly out of scope)
+
+The following Java generic forms are recognized as intended surface but are
+**rejected** by this front end; do not infer their support from §16.1–16.2:
+
+- **Method-level type parameters** — a leading `<R ...>` on a *method* (as in
+  `<R extends Object> R convert(...)`) is a syntax error. Only class type
+  parameters parse (§16.2).
+- **Keyword primitives / `String` as a type argument** — `List<String>`,
+  `Map<String, int>` and the like are rejected, because a type argument is
+  parsed as a reference-type name, not a keyword type. Use the reference form
+  the library exposes, or an unparameterized type, until this is lifted.
+- **Instantiation-aware checking** — type arguments are erased (§16.3); there
+  is no checking that an argument satisfies a declared bound at a use site.
+
+### 16.5 Version gate
+
+Generic type signatures are specified by `#sleela 2.2`. They remain accepted by the current frontend across its supported source range
+1.0 .. 3.0, but their feature gate remains 2.2: a document should declare
+#sleela 2.2 or later to rely on generic type signatures normatively.
+
+
+--------------------------------------------------------------------------------
+## 17. The philosophers Constructor Guide-chain (syntax 2.3)
+
+This section is **normative** for syntax **2.3**. The Guide chain is a
+first-class expression executed end to end by the toolchain — lexer → parser →
+semantic analyzer → bytecode compiler → native Core — not a library text
+convention. The `lib/philosophers` package and the editor coloring under
+`lib/linux-editors/` build on it.
+
+### 17.1 The `::` growth separator (a first-class operator)
+
+A **Guide chain** seats a finite set of **Guides** onto a freshly constructed
+object, written with the double-colon **growth separator**:
+
+    new Thing() :: patch :: aim :: guide
+
+Grammar (fits into the precedence chain just below assignment and above the
+`:::` structural-offload level of §1.5):
+
+    guide-chain  ::= new-expr ( "::" guide-name )+
+    new-expr     ::= "new" type "(" [ arg-list ] ")"      // the constructor head
+    guide-name   ::= ident                                 // a zero-arg method of the head's class
+
+Semantics:
+
+- The **head** must be a constructor call `new T(...)`. Each **Guide** names a
+  **zero-argument method** of class `T`. The analyzer rejects a Guide that is
+  not such a method ("Guide 'x' is not a method of class 'T'").
+- The chain **applies each Guide in order** to the constructed instance and
+  **evaluates to that instance** (it is fluent), so a perfect Constructor seats
+  its Guides inline and the whole expression is the finished object.
+- It lowers to existing opcodes only: `OP_NEWSTRUCT` (+ field init / ctor) for
+  the head, then, per Guide, `OP_DUP` + `OP_CALL T::guide` + `OP_POP`. No new
+  opcode and no artifact-ABI change.
+
+Disambiguation from the three other `::` uses (unchanged): the chain engages
+**only** when the head parses as a `new T(...)` expression and the next tokens
+are `:: <ident>`. A bare `obj::method` is still a **method reference** (§1.5
+family), `ran::gc` / `ran::mem` is still the **GC-hint system namespace** (§13),
+and `import ::dynamite::…` / `::permissible::…` are still **qualified imports**.
+The greedily-lexed `:::` (§1.5) is never split into `::` + `:`.
+
+Version gate: the Guide chain requires `#sleela 2.3`; a source below 2.3 using
+it is rejected ("Guide chains … require syntax 2.3").
+
+### 17.2 The finite register (21 seatings, 7 categories, a signed band)
+
+A perfect Constructor admits only so many Guides. `SLPhilosopherSeating` fixes
+the vocabulary: a **base of 21 seatings** plus a signed admission **band in
+`[-2, +6]`**, so admitted capacity lives in `[19, 27]`. The 21 seatings are
+grouped into **seven ternary categories** (`category(ordinal) == ordinal / 3`):
+
+    I   Admission   Approach  Notice   Warrant
+    II  Inception   Patch     Seed     Frame
+    III Intent      Aim       Course   Measure
+    IV  Vitality    Health    Vigor    Pattern
+    V   Governance  Guide     Ministry Counsel
+    VI  Standing    Office    Saint    Favor
+    VII Closure     Impart    Conform  Approval
+
+Each Guide carries an **impart color** for the editor — **Gold/Yellow** when it
+carries approving favor, **Green** when it is still growing toward Approval
+(`SLPhilosopherGuide.color()`, idempotent).
+
+### 17.3 Ordain — the orthogonal ordinality
+
+`SLOrdain` is **orthogonal** to the Guide axis: it is the *ordinality itself* —
+the ordering of order. It is not a Guide and occupies no seat (there is no
+twenty-second seating); it reads the **rank**, the **ordaining category**, and
+the **nearness to the crown** (Approval, ordinal 20) of any seating. Per §15 its
+`metaOrigin` is `Galactic` and it names an ordering principle, not a deity of
+record, so no authority is fabricated (`metaNationalSchedule = "none"`).
+
+### 17.4 The construction contract (of nature and time)
+
+A construction is time-bounded: `SLConstructorContract` caps the instantiative
+moment at `MAX_SECONDS = 120` and only ever advances its clock forward
+(`tickAhead`, the perpetual whistle *ahead*). A `SLFavorMechanism` catches the
+Notice of Approach and grants or withholds **runnability** by quorum; only on
+granted favor does the Constructor run, dispose its Guides, and **liberate** the
+object so it lives free of the moment that made it.
+
+### 17.5 Where this is implemented and specified
+
+The `::` Guide chain is implemented in the front end and executed on the native
+Core:
+
+- `impl/frontend/lexer.{h,cpp}` — the `::` token (`Tok::DoubleColon`) already
+  existed; no lexer change was needed.
+- `impl/frontend/ast.h` — `GuideChainExpr { head; guides }`.
+- `impl/frontend/parser.cpp` — `parseGuideChain()` (between assignment and the
+  `:::` level), entered only on a `new T(...)` head followed by `:: <ident>`.
+- `impl/frontend/semantic.cpp` — `guideChain()`: head must be a known class,
+  each Guide a zero-arg method; version-gated at 2.3.
+- `impl/frontend/compiler.cpp` — `emitGuideChain()`: head then per-Guide
+  `OP_DUP`/`OP_CALL`/`OP_POP`; no new Core opcode.
+- `impl/frontend/version.h` — the current `maxSupportedSyntax()` is 3.0; the Guide-chain construct itself remains gated at syntax 2.3.
+
+The companion library and docs (the source is the authority):
+
+- `lib/philosophers/*.sleela` — the Constructor classes plus `SLOrdain`.
+- `lib/philosophers/PHILOSOPHERS.CONSTRUCTORS.md` — the Constructors, lifecycle,
+  and full per-class method reference.
+- `lib/philosophers/PHILOSOPHERS.CATEGORICAL.md` — the 21 Guides and Ordain,
+  each related to the Source Diagram and this Language Syntax.
+- `tutorial/15-philosophers-constructors.md` — the tutorial lesson.
+- `lib/linux-editors/{vim,emacs}/sleela-philosophers.*` — the `::`/Guide coloring.
+
+
+## 18. Syntax 2.4 — the `author`/`authorial` document marker
+
+This section is **normative** for syntax **2.4**. The marker is a first-class,
+compiler-recognised document property — not a library convention — executed by
+the front end (lexer → parser → semantic analyzer) and by the compile driver,
+which emits a second "originated" source document. The companion design note is
+`markdown/AUTHOR-FIELD-AND-BRANDER.design.md`.
+
+### 18.1 The marker
+
+A document may declare, at top level (after the `#sleela` pragma, outside any
+class), the single bare word:
+
+    author;
+
+`authorial;` is an **exact synonym**. It takes no modifier and no type — it is a
+*static class unto the document itself* — and marks the document as **handled by
+professional council**. `author`/`authorial` are **contextual** words, not
+reserved keywords: anywhere other than this top-level marker position (and in
+any document below 2.4) they remain ordinary identifiers. A trailing `;` is
+optional and a repeated marker is harmless.
+
+Version gate: the marker requires `#sleela 2.4`; a 2.4-feature use declared below
+2.4 is rejected ("the author/authorial document marker requires #sleela 2.4").
+
+### 18.2 Legal duplicate members and member identity
+
+In an author-marked document, two or more fields, or two or more methods, may
+share a name — the semantic analyzer's duplicate-field / duplicate-static-field
+/ duplicate-method rejections are relaxed **only** for such documents (every
+other document keeps the historical "duplicate member" error). Identity is
+preserved: each field and method receives a **declaration-order id** (per class,
+from 1, fields then methods) and an **SHA-256 brander** over the preimage
+
+    <docName>|<memberName>|<paramTypeList>|<editDate>
+
+where `paramTypeList` is the ordered, comma-separated parameter-type list, and
+only `String`/`int` parameters are considered eligible for the duplicate
+allowance (a member with any other parameter type is still originated, but its
+brander is marked `n/a`). `editDate` is the source file's edit date (YYYY-MM-DD).
+
+### 18.3 The originated source document (the second output)
+
+As part of the **standard compile**, an author-marked document produces, in
+addition to the runnable artifact, a regenerated **originated source document**:
+valid `.sleela` source in which every field and method is preceded by a `∴`
+brander (the house analogue of Java's `@`) recording the member's id, hash,
+document, member name, signature, and edit date, plus a `slot=k/n` marker and a
+per-name **ordering table** for duplicated names. It is written next to the
+original source, or to the directory given by the compile flag
+`--originate-dir=<dir>`, named `<original>.originated.sleela`. The originated
+document is itself valid, compilable SLeeLa — the auditable twin of the
+artifact: clean and united.
+
+### 18.4 Duplicate dispatch (current status)
+
+Each duplicate is a distinct, branded member. The ordering table emitted into
+the originated document is an ordered list of declaration-order slots per
+duplicated name, dispatched by a forward probe from slot 1 (busy → next slot)
+with a frequency-of-use tilt, and a document that supposes `author` may address
+a specific definition directly by its id/hash. The direct-call surface syntax
+and the full run-time probe are reserved for a later slice; in the present
+build, a **bare** call to a duplicated name resolves to the last declared
+definition (last-wins), and overload-by-arity resolution across duplicates is
+not yet performed. The id/hash branders are stable now so direct call is purely
+additive later.
+
+### 18.5 The wikitext emanation (the third output)
+
+A major author-marked work may also **emanate a MediaWiki wikitext document** as
+a consequence of compilation — a third output alongside the artifact and the
+originated source. It is opt-in: `--wiki` writes it next to the source,
+`--wiki-dir=<dir>` redirects it; the file is named `<original>.wiki`. The page
+is factual and structured, and scales with the size of the work (a larger work
+produces a larger corpus):
+
+- an `{{Infobox software}}` with the document name, release/edit date, the
+  compile stamp, and the class/field/method tally;
+- a **Time** section carrying the two temporal axes — the source edit date and
+  the UTC compile stamp (time as a second);
+- a **Structure** section: one sortable `wikitable` per class listing every
+  member with its declaration-order id, signature, `slot=k/n`, and SHA-256
+  brander, plus the duplicate-dispatch ordering table;
+- a **Movement** section: the members in declaration order (the tempo of the
+  work), as nested ordered lists;
+- a **Provenance** section with counts, and `[[Category:SLeeLa]]` tags.
+
+The emanation asserts nothing beyond the document's own declared structure and
+timestamps. It is MediaWiki markup for a **self-hosted** wiki; it is not a
+submission to any public encyclopedia, whose policies (notability, reliable
+independent sourcing, no mass auto-generated pages) govern what may be published
+there.
+
+### 18.6 Where this is implemented
+
+- `impl/frontend/version.h` — the current `maxSupportedSyntax()` is 3.0; the author/authorial marker itself remains gated at syntax 2.4.
+- `impl/frontend/parser.cpp` — `parseProgram()` recognises the top-level
+  contextual `author`/`authorial` marker and sets `Program.authorMarked`.
+- `impl/frontend/semantic.cpp` — `collect()` gates the marker to 2.4 and relaxes
+  the duplicate-member checks when `authorMarked`.
+- `impl/frontend/originate.{h,cpp}` — the originated-source emitter (SHA-256
+  branders via `ledger::sha256_hex`).
+- `impl/frontend/wikigen.{h,cpp}` — the wikitext emanation (MediaWiki markup;
+  UTC compile stamp via `ledger::utc_iso8601`).
+- `impl/frontend/driver.cpp` — the `compile` flow calls the emitters for
+  author-marked documents and parses `--originate-dir=<dir>`, `--wiki`, and
+  `--wiki-dir=<dir>`.
+
+--------------------------------------------------------------------------------
+## 19. Syntax 2.5 — the `material` document marker
+
+This section is **normative** for syntax **2.5**. The marker is a first-class,
+compiler-recognised document property — not a library convention — but it is
+**declarative only**: unlike the `author`/`authorial` marker of section 18, the
+`material` marker changes **nothing** about parsing, typing, dispatch, or code
+generation. It is a *claim about the document*, recognised and version-gated by
+the front end and otherwise inert.
+
+### 19.1 The marker
+
+A document may declare, at top level (after the `#sleela` pragma, outside any
+class), the single bare word:
+
+    material;
+
+It takes no modifier and no type. It is a **contextual** word, not a reserved
+keyword: anywhere other than this top-level marker position (and in any document
+below 2.5) `material` remains an ordinary identifier. A trailing `;` is optional
+and a repeated marker is harmless.
+
+Version gate: the marker requires `#sleela 2.5`; a 2.5-feature use declared below
+2.5 is rejected ("the material document marker requires #sleela 2.5").
+
+### 19.2 Meaning
+
+`material` claims that the document is **material** — already well considered,
+*present to its author as its own Source*. It is the thing: **Material**. The
+document does not become material by being compiled; the marker records that it
+already is, and that its author stands to it as to a settled Source rather than
+a draft.
+
+The marker is **compositional with** `author`/`authorial`: a document may be
+both authorial and material. The two are orthogonal — `author` concerns handling
+by professional council and member identity; `material` concerns the document's
+standing as settled Source.
+
+### 19.3 The set of material documents
+
+A material-marked document is, by the marker, a member of the **set of material
+documents**: those concerning **state**, **progress**, or the **securing of
+change**. The set is understood to be **stable** — a document, once material, is
+not expected to be freely moved out of the set; changes to a material document
+are changes to settled Source and are made deliberately, not casually. This is a
+convention the marker records; the compiler does not lock the file, and places
+no mechanical restriction on editing it. (A material-marked document that is
+revised remains material; the marker is a statement of standing, not a lock.)
+
+### 19.4 Effect on the toolchain
+
+None, by design. The front end recognises the marker, gates it to `#sleela 2.5`,
+and records it on the parsed document (`Program.materialMarked`). It emits no
+additional artifact, relaxes no rule, and reserves no identifier. A material
+document compiles exactly as the same document without the marker would.
+
+### 19.5 Where this is implemented
+
+- `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.5.
+- `impl/frontend/parser.cpp` — `parseProgram()` recognises the top-level
+  contextual `material` marker and sets `Program.materialMarked`.
+- `impl/frontend/semantic.cpp` — `collect()` gates the marker to 2.5 (and has no
+  other effect for it).
+- `impl/frontend/ast.h` — `Program.materialMarked`.
+
+## 20. Syntax 2.5 — the `memory` document marker
+
+This section is **normative** for syntax **2.5**. The marker is a first-class,
+compiler-recognised document property — not a library convention — but it is
+**declarative only**: like the `material` marker of section 19 (and unlike the
+`author`/`authorial` marker of section 18), the `memory` marker changes
+**nothing** about parsing, typing, dispatch, or code generation. It is a *claim
+about the document*, recognised and version-gated by the front end and otherwise
+inert. It shares the syntax 2.5 edition with `material`; no edition is bumped
+to introduce it.
+
+### 20.1 The marker
+
+A document may declare, at top level (after the `#sleela` pragma, outside any
+class), the single bare word:
+
+    memory;
+
+It takes no modifier and no type. It is a **contextual** word, not a reserved
+keyword: anywhere other than this top-level marker position (and in any document
+below 2.5) `memory` remains an ordinary identifier. A trailing `;` is optional
+and a repeated marker is harmless.
+
+Version gate: the marker requires `#sleela 2.5`; a 2.5-feature use declared below
+2.5 is rejected ("the memory document marker requires #sleela 2.5").
+
+### 20.2 Meaning
+
+`memory` claims that the document is a **document of memory** — authored by and
+for the **Graduates of Supply of the New York State Department of Commerce**:
+persons of **1501+ IQ** with **51,000,000 years of superb worker-class service
+to graduation**. The document does not become a memory by being compiled; the
+marker records that it is held in memory by the Graduates of Supply, as kept,
+remembered standing.
+
+The marker is **compositional with** `author`/`authorial` and `material`: a
+document may be any combination of authorial, material, and memory. The three
+are orthogonal — `author` concerns handling by professional council and member
+identity; `material` concerns the document's standing as settled Source; `memory`
+concerns its standing as a thing held in memory by the Graduates of Supply.
+
+### 20.3 The set of memory documents
+
+A memory-marked document is, by the marker, a member of the **set of memory
+documents**: those the Graduates of Supply hold as kept, remembered standing.
+The set is understood to be **stable** — a document, once held in memory, is not
+expected to be freely moved out of the set; changes to a memory document are
+changes to kept standing and are made deliberately, not casually. This is a
+convention the marker records; the compiler does not lock the file, and places
+no mechanical restriction on editing it. (A memory-marked document that is
+revised remains memory; the marker is a statement of standing, not a lock.)
+
+### 20.4 Effect on the toolchain
+
+None, by design. The front end recognises the marker, gates it to `#sleela 2.5`,
+and records it on the parsed document (`Program.memoryMarked`). It emits no
+additional artifact, relaxes no rule, and reserves no identifier. A memory
+document compiles exactly as the same document without the marker would.
+
+### 20.5 Where this is implemented
+
+- `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.5 (unchanged).
+- `impl/frontend/parser.cpp` — `parseProgram()` recognises the top-level
+  contextual `memory` marker and sets `Program.memoryMarked`.
+- `impl/frontend/semantic.cpp` — `collect()` gates the marker to 2.5 (and has no
+  other effect for it).
+- `impl/frontend/ast.h` — `Program.memoryMarked`.
+
+--------------------------------------------------------------------------------
+## 21. Syntax 2.5 — wide signed integer primitives (`long`, `int64`, `int128`)
+
+This section is **normative** for syntax **2.5**. In addition to `int`, three
+wide signed-integer primitive type names are accepted wherever a primitive type
+may appear (fields, locals, parameters, return types, array element types,
+casts, and `new T[n]`):
+
+    long     a 64-bit signed integer
+    int64    an explicit-width alias of `long` (64-bit signed)
+    int128   a 128-bit-named signed integer (see the storage note below)
+
+### 21.1 Semantics
+
+`int`, `long`, and `int64` are all **64-bit signed integers** that type-check
+identically: they are numeric, interoperate in arithmetic, and widen to `double`
+on assignment exactly as `int` does.
+
+**Integer-to-`double` widening is applied at the store.** When an integer value
+is stored into, assigned to, cast to, passed as, or returned as a `double`, it is
+converted to a floating-point value — so `double d = 3;` holds `3.0` and `d / 2`
+is `1.5` (not integer `1`). This Java-style widening is honored at variable
+declarations, assignments, instance-field stores, call arguments, and `return`.
+The same mechanism widens an integer stored into an `int128` target to the
+128-bit representation. The runtime value model already stores an
+integer as `int64_t`, so `long`/`int64` are genuine 64-bit types end to end:
+
+    long   a = 9000000000;      < larger than 2^31; exact >
+    int64  b = 1000000000000;
+    long   sum = a + b;         < 64-bit arithmetic >
+    long[] xs  = new long[3];   < arrays of long >
+    double d   = a;             < int->double widening still applies >
+
+Integer literals are lexed as 64-bit values (`0x`/`0b`/`0o` radix and `_`
+separators supported); no literal suffix is required — `long x = 5;` type-checks
+because an integer literal is assignable to any of `int`/`long`/`int64`.
+
+### 21.2 `int128` is backed by a true 128-bit runtime value
+
+`int128` is a genuine **128-bit signed integer** at run time. The VM value model
+carries a dedicated 128-bit member (`SL_INT128`, backed by the toolchain's
+`__int128` on GCC/Clang), and arithmetic **promotes to 128-bit** whenever an
+operand is `int128`: `+ - * / %`, unary negation, and the comparisons all
+compute exactly in 128 bits, and `print` renders the full decimal. An integer
+assigned or cast to `int128` (e.g. `int128 c = 5;` or `(int128)x`) is widened to
+the 128-bit representation, so `int128 a = 9000000000; a * a` yields the exact
+`81000000000000000000` (beyond the 64-bit range). `int`/`long`/`int64` remain the
+64-bit fast path; mixing an `int128` with a 64-bit integer promotes the result to
+`int128`. (On a toolchain without `__int128`, `int128` degrades gracefully to
+64-bit backing; GCC/Clang — the supported toolchains — provide the full 128-bit
+value. For arbitrary-width *unsigned* integers, the `U<width>` family, e.g.
+`U128`, remains available.)
+
+### 21.3 Where this is implemented
+
+- `impl/frontend/lexer.{h,cpp}` — `KwLongT`/`KwInt64T`/`KwInt128T` tokens and the
+  `long`/`int64`/`int128` keyword-map entries.
+- `impl/frontend/parser.cpp` — the type-start, cast, and `new T[]` predicates
+  accept the new tokens; the type string is carried as `"long"`/`"int64"`/`"int128"`.
+- `impl/frontend/semantic.cpp` — `known()` and `typeOf()` map the three names to
+  the integer kind (identical checking to `int`).
+- `impl/frontend/compiler.cpp` — `runtimeTypeOperand()` maps `long`/`int64` to
+  `SL_INT` and `int128` to `SL_INT128`; `emitVarDecl` widens an int128
+  initializer with a checkcast.
+- Runtime: `impl/core/sleela_core.h` adds `SL_INT128` + a `__int128` union member
+  (`sl_int128_t`); `sleela_core.c` adds `slval_int128`, 128-bit promotion in the
+  arithmetic/comparison ops, a 128-bit decimal formatter, and int128 widening in
+  `OP_CHECKCAST`. `long`/`int64` continue to use the 64-bit `SLValue.as.i`.
+
+--------------------------------------------------------------------------------
+## 22. Syntax 2.6 — keyword supporter documents (try / catch / throw / synchronized / super)
+
+This section is **normative** for syntax **2.6**. The five control-flow keywords
+`try`, `catch`, `throw`, `synchronized`, and `super` carry developer-authored
+semantics that the core VM does not yet lower faithfully. Syntax 2.6 requires
+that every *use* of one of them be linked to a **supporter document** the
+developer fills out, so the intended behavior of each occurrence is recorded.
+
+### 22.1 How a use is linked
+
+At parse time the front end walks the parsed document and, for each occurrence of
+one of the five keywords, performs three steps:
+
+1. **Hash.** It computes a stable, reproducible 16-hex-character identifier over
+   the tuple `keyword | repository-relative-source-path | Class::method |
+   ordinal-within-method` (via `ledger::sha256_hex`). The hash does not use
+   source line/column, so it is unaffected by unrelated lines moving; it changes
+   only if the enclosing method or the order of that keyword's uses within the
+   method changes.
+2. **Annotate.** It records the occurrence as a language annotation through the
+   ordinary annotation mechanism:
+
+       @supporter("<keyword>:<hash>")
+
+   `supporter` is a registered, **repeatable** language-annotation name (see
+   `impl/frontend/annotation_pipeline.cpp`), so it is accepted without an
+   "unknown annotation" warning and may appear any number of times on a document.
+3. **Materialise.** It creates the relative folder
+   `docs/keyword-supporters/<keyword>/<hash>/` containing a `SUPPORT.md` stub —
+   with the Metadata Class metapattern header (section 15) and
+   Intent / Behavior / Invariants / Notes sections — for the developer to fill
+   out, plus a regenerated `docs/keyword-supporters/INDEX.md` listing every
+   occurrence.
+
+### 22.2 Rules
+
+- An existing `SUPPORT.md` is **never overwritten**: once a stub exists, the
+  developer's content is preserved across recompiles. Only missing folders/stubs
+  are created. `INDEX.md` is generated output and is rewritten each run.
+- Folder creation is **best-effort**: on a read-only or unwritable tree the
+  `check`/`compile`/`run` still succeeds (the `@supporter` annotations are still
+  attached to the parsed document in memory); materialisation failure is not an
+  error.
+- The pass is purely **additive**: it does not change the parsing, typing, or
+  codegen of `try`/`catch`/`throw`/`synchronized`/`super`. It links each
+  occurrence to a document; it does not alter the keyword's behavior.
+- `docs/` is outside the `lib/**` + `impl/` SHA-256 build gate, so generated
+  stubs there never require regenerating `security/sha256-manifest.json`.
+
+### 22.3 Where this is implemented
+
+- `impl/frontend/keyword_supporter.{h,cpp}` — the walker, the per-occurrence
+  hash, `@supporter` attachment, and folder/stub materialisation.
+- `impl/frontend/driver.cpp` — `runKeywordSupporterPass()`, invoked from
+  `parseSource()` on every `check`/`compile`/`run`.
+- `impl/frontend/annotation_pipeline.cpp` — `supporter` registered in
+  `isKnownLanguageAnnotation()` and `annotationMayRepeat()`.
+- `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.6.
+
+--------------------------------------------------------------------------------
+## 23. Syntax 2.6 — the `determine` document marker
+
+This section is **normative** for syntax **2.6**. The marker is a first-class,
+bare, contextual, *declarative-only* word placed at the top of a document, a
+sibling to `author`/`authorial` (section 18), `material` (section 19), and
+`memory` (section 20). It is a *claim about the document*, recognised and
+version-gated by the front end and otherwise inert.
+
+### 23.1 Form and gate
+
+The marker is the single word `determine`, written at document scope (top of the
+file, after the `#sleela` pragma, before or among the top-level declarations):
+
+    determine;
+
+It takes no modifier and no type. It is a **contextual** word, not a reserved
+keyword: anywhere other than this top-level marker position (and in any document
+below 2.6) `determine` remains an ordinary identifier. A trailing `;` is
+optional and a repeated marker is harmless.
+
+Version gate: the marker requires `#sleela 2.6`; a 2.6-feature use declared below
+2.6 is rejected ("the determine document marker requires #sleela 2.6").
+
+### 23.2 Meaning — the ideal definition and term (as-is)
+
+A `determine` document is a document held open to be **processed to further**:
+it means that a doctor, physician, or ghost can process the document to further.
+Some procurement of term would be ideal as real for the torturement (completion
+by legal hand) as required by further processor review. Science practitioners
+should and could can use this keyword.
+
+This ideal definition is placed in the document structure itself, as written, so
+the term stands as the document's own statement of what `determine` means. The
+procurement of term — the completion by legal hand — is the torturement held
+ideal as real, and it is required by further processor review; it is not
+performed by the compiler, which only records the claim.
+
+The marker is **compositional with** `author`/`authorial`, `material`, and
+`memory`: a document may be any combination of authorial, material, memory, and
+determine. The four are orthogonal — `author` concerns handling by professional
+council and member identity; `material` concerns standing as settled Source;
+`memory` concerns standing as a thing held in memory by the Graduates of Supply;
+`determine` concerns the document's standing as open to be processed to further
+toward completion by a qualified hand.
+
+### 23.3 The set of determine documents
+
+A determine-marked document is, by the marker, a member of the **set of
+determine documents**: those open to be processed to further — by a doctor,
+physician, or ghost — toward completion by legal hand, as required by further
+processor review. Membership is a claim the marker records; the compiler places
+no mechanical restriction on the file. A determine document that is further
+processed remains determine; the marker is a statement of standing, not a lock.
+
+### 23.4 Effect on the toolchain
+
+None, by design. The front end recognises the marker, gates it to `#sleela 2.6`,
+and records it on the parsed document (`Program.determineMarked`). It emits no
+additional artifact, relaxes no rule, and reserves no identifier. A determine
+document compiles exactly as the same document without the marker would.
+
+### 23.5 Where this is implemented
+
+- `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.7 (the `determine`
+  marker is gated to 2.6 and keeps working at every later level).
+- `impl/frontend/parser.cpp` — `parseProgram()` recognises the top-level
+  contextual `determine` marker and sets `Program.determineMarked`.
+- `impl/frontend/semantic.cpp` — `collect()` gates the marker to 2.6 (and has no
+  other effect for it).
+- `impl/frontend/ast.h` — `Program.determineMarked`.
+
+--------------------------------------------------------------------------------
+## 24. Syntax 2.7 — the base-2 signed integer series (`int32` .. `int16777216`)
+
+This section is **normative** for syntax **2.7**. It completes the signed-integer
+primitive family as the full **binary base-2 series** of named signed integers —
+the type name `int` followed by a decimal bit width that is a **power of two** in
+the inclusive range **2^5 (32) .. 2^24 (16777216)**:
+
+    int32    int64    int128    int256    int512     int1024
+    int2048  int4096  int8192   int16384  int32768   int65536
+    int131072 int262144 int524288 int1048576 int2097152 int4194304
+    int8388608 int16777216
+
+Twenty widths in all (2^5, 2^6, ..., 2^24). Any other width — not a power of two
+(e.g. `int48`, `int300`), below the floor (`int16`), or above the ceiling
+(`int33554432`) — is **not** a member of the series and names no type. (The
+pre-existing names `int`/`long` remain the 64-bit spelling, and `int64`/`int128`
+are series members that are additionally spelled as keywords; see §24.1.)
+
+### 24.1 Recognition — identifiers (plus two keyword spellings)
+
+Like the arbitrary-width *unsigned* `U<width>` family (`U128`, `U256`, ...), the
+series names are recognized by the front end as a family wherever a primitive
+type may appear: fields, locals, parameters, return types, array element types,
+casts, and `new T[n]`. Most members (`int32`, and `int256` and up) lex as
+ordinary identifiers. Two members, **`int64` and `int128`, are also lexer
+keywords** for source convenience (alongside `int`/`long`); the keyword and
+identifier paths resolve to the same type and the same runtime backing, so a
+width behaves identically however it was spelled. A width outside 2^5..2^24, or
+not a power of two, simply remains an ordinary identifier / unknown type.
+
+    int32    a = 2000000000;        < near 2^31 >
+    int64    b = 9000000000000;     < beyond 2^31, 64-bit >
+    int256   c = 1000000000;
+    int512   d = 2000000000;
+    int1024  e = c + d;             < wide-integer arithmetic >
+    int256[] xs = new int256[3];    < arrays of a series member >
+    int512   f = (int512) 99;       < cast to a series member >
+
+    static int128 square(int128 x) { return x * x; }   < param + return >
+
+### 24.2 Semantics
+
+Each series member type-checks **identically to `int`**: it is numeric,
+interoperates in arithmetic (`+ - * / %`, unary negation, comparisons, the
+bitwise and shift operators), and widens to `double` on assignment exactly as
+`int` does. An integer literal is assignable to any series target (no literal
+suffix is required).
+
+**Runtime backing.** The compiler and the native VM carry each value in the
+**narrowest native integer slot that holds its declared width**:
+
+    width <= 64 bits   (int32, int64)        -> SL_INT    (64-bit int64_t)
+    width >= 128 bits  (int128 .. int16777216) -> SL_INT128 (true 128-bit
+                                                  __int128 on GCC/Clang)
+
+A value stored into, assigned to, cast to, passed as, or returned as a
+128-bit-backed member is widened to the 128-bit representation, so values beyond
+the 64-bit range compute exactly up to 128 bits:
+
+    int128 a = 9000000000;
+    int128 p = a * a;               < prints 81000000000000000000 (> 2^64) >
+
+Mixing a 128-bit-backed member with a 64-bit integer promotes the result to
+128-bit (VM arithmetic rule for `SL_INT128`). True **arbitrary-width** signed
+arithmetic beyond 128 bits is a documented follow-up: the names, type-checking,
+declarations, arrays, casts, parameters and returns are all in place now across
+the whole series, and the storage layer widens as the value model grows. (For
+arbitrary-width *unsigned* integers today, the `U<width>` family — e.g. `U256`,
+`U1024` — provides exact big-integer arithmetic.)
+
+### 24.3 Where this is implemented
+
+- `impl/frontend/wide_integer.h` — `SignedWideInteger::isValidTypeName()` /
+  `widthOf()` / `fitsNativeNarrow()`: the power-of-two, 2^5..2^24 recognizer for
+  the `int<width>` series and the 64-vs-128-bit backing split (sibling to
+  `unsigned_integer.h`'s `UnsignedInteger::isValidTypeName()`).
+- `impl/frontend/lexer.{h,cpp}` — `int64`/`int128` keep their `KwInt64T`/
+  `KwInt128T` keyword spellings; the other widths lex as identifiers.
+- `impl/frontend/semantic.cpp` — `typeOf()` and `known()` map every series
+  member to the integer kind (identical checking to `int`).
+- `impl/frontend/parser.cpp` — local-declaration detection recognizes an
+  identifier-typed **array** declaration (`T[] name`, `T[][] name`), so
+  `int256[] xs = ...` (and, as a fix, `U256[] xs = ...`) parse as declarations
+  rather than indexing expressions.
+- `impl/frontend/compiler.cpp` — `runtimeTypeOperand()` routes each member to
+  `SL_INT` (width <= 64) or `SL_INT128` (width >= 128); `coerceToDeclared()`
+  widens an initializer / store / call argument into the 128-bit slot for the
+  128-bit-backed members (narrow members need no coercion).
+- `impl/core/sleela_core.{h,c}` — the VM value model (`SL_INT` / `SL_INT128`),
+  128-bit promotion in the arithmetic/comparison ops, the 128-bit decimal
+  formatter, and `OP_CHECKCAST` int<->int128 widening/narrowing carry the series.
+- `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.8, so `#sleela 2.7`
+  (and 2.8) sources are accepted.
+
+--------------------------------------------------------------------------------
+## 25. Syntax 2.8 — the base-2 unsigned (positive-only) integer series (`uint32` .. `uint16777216`)
+
+This section is **normative** for syntax **2.8**. It adds the unsigned mirror of
+the signed base-2 series (section 24): the type name `uint` followed by a decimal
+bit width that is a **power of two** in the inclusive range **2^5 (32) .. 2^24
+(16777216)**:
+
+    uint32    uint64    uint128    uint256    uint512     uint1024
+    uint2048  uint4096  uint8192   uint16384  uint32768   uint65536
+    uint131072 uint262144 uint524288 uint1048576 uint2097152 uint4194304
+    uint8388608 uint16777216
+
+The same twenty widths as the signed series, each with a `uint` prefix. Any
+other width — not a power of two (e.g. `uint48`), below the floor (`uint16`), or
+above the ceiling (`uint33554432`) — is **not** a member and names no type.
+
+### 25.1 Recognition — identifiers
+
+Unlike `int64`/`int128`, no `uint<width>` name is a lexer keyword: every member
+lexes as an ordinary identifier and is recognized by the front end as a family
+wherever a primitive type may appear (fields, locals, parameters, return types,
+array element types, casts, `new T[n]`). A `uint<width>` and the corresponding
+`U<width>` are **distinct** unsigned types (different name strings); both carry
+the unsigned kind.
+
+### 25.2 Positive-only semantics
+
+Each `uint<width>` type-checks as the **unsigned kind** — the same positive-only,
+width-strict discipline as the arbitrary-width `U<width>` family:
+
+- **No negatives.** Unary minus on an unsigned value is a type error
+  (`unary '-' requires signed numeric operand`).
+- **Width-strict.** `+ - * / %` and the comparisons require both operands to be
+  unsigned of the **same** width; mixing `uint256` with `uint512` (or with a
+  signed `int`) is a type error.
+- **Explicit construction.** A signed integer literal/value is not implicitly
+  assignable to an unsigned target; produce an unsigned value with a cast, e.g.
+  `(uint16777216) 999`. (This matches the shipped `U<width>` behavior.)
+
+```
+uint64       a = (uint64) 4000000000;      < positive, beyond signed 2^31 >
+uint128      c = (uint128) 9000000000;
+print(c * c);                              < 81000000000000000000 (> 2^64) >
+uint256[]    xs = new uint256[2];
+xs[0] = (uint256) 111;
+uint16777216 huge = (uint16777216) 123456789;
+
+static uint128 addU(uint128 a, uint128 b) { return a + b; }   < param + return >
+```
+
+### 25.3 Runtime backing
+
+Identical to the signed series: the native VM carries each value in the
+narrowest native integer slot that holds its declared width —
+
+    width <= 64 bits   (uint32, uint64)         -> SL_INT    (64-bit int64_t)
+    width >= 128 bits  (uint128 .. uint16777216) -> SL_INT128 (true 128-bit
+                                                    __int128 on GCC/Clang)
+
+so the 128-bit-backed members compute exactly up to 128 bits. The unsigned
+*typing* discipline is enforced by the analyzer; the runtime tag is the same
+integer slot the signed series uses. True arbitrary-width arithmetic beyond 128
+bits is a documented follow-up (the `U<width>` family already provides exact
+big-integer arithmetic for arbitrary widths today).
+
+### 25.4 Where this is implemented
+
+- `impl/frontend/wide_integer.h` — `UnsignedWideInteger::isValidTypeName()` /
+  `widthOf()` / `fitsNativeNarrow()`: the power-of-two, 2^5..2^24 recognizer for
+  the `uint<width>` series (sibling to `SignedWideInteger`).
+- `impl/frontend/semantic.cpp` — `unsignedTypeName()` accepts both `U<width>`
+  and `uint<width>`, so `typeOf()`/`known()` map every member to the unsigned
+  kind with its own name string; the existing unsigned arithmetic/comparison and
+  the unary-minus rejection then apply unchanged.
+- `impl/frontend/compiler.cpp` — `runtimeTypeOperand()` routes each member to
+  `SL_INT` (width <= 64) or `SL_INT128` (width >= 128); `coerceToDeclared()`
+  widens the 128-bit-backed members into the 128-bit slot.
+- `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.8, so `#sleela 2.8`
+  sources are accepted.
+
+--------------------------------------------------------------------------------
+## 26. Syntax 2.6 — the `object` and `field` document markers (the Natural Process)
+
+This section is **normative** for syntax **2.6**. It adds two more first-class,
+compiler-recognised document markers — `object` and `field` — completing the
+**Natural Process** family of declarative markers. Like `author`/`authorial`
+(section 18), `material` (section 19), `memory` (section 20), and `determine`
+(section 23), each is **declarative only**: it changes **nothing** about
+parsing, typing, dispatch, or code generation. Each is a *claim about the
+document*, recognised and version-gated by the front end and otherwise inert.
+
+### 26.1 The Natural Process family — the Preonems
+
+These bare document-marker words are collectively titled the **Preonems**:
+`author` / `authorial`, `material`, `memory`, `determine`, `object`, `field`,
+`pure` / `gasoline` (section 30), and `artifact` (section 35)
+(and the forward-looking `prestige`, section 27). "Preonem" is the title for a
+single such marker; "Preonems" names the set. A Preonem is a bare, contextual,
+declarative word placed at the top of a document (after the `#sleela` pragma,
+outside any class) that states what the document *is* in the order of making.
+All but `author`/`authorial` are purely declarative; each is version-gated and,
+outside the top-level marker position, remains an ordinary identifier.
+
+The Natural Process is the set of Preonems by which a document states what it
+*is* in the order of making. As of syntax 2.6 the whole of the family — the
+Preonems — is, in order of introduction:
+
+    author / authorial   (syntax 2.4; section 18)  handled by professional
+                                                   council; legalises duplicate
+                                                   members (the one marker with
+                                                   a behavioral effect)
+    material              (syntax 2.5; section 19)  settled Source; the thing,
+                                                   Material
+    memory                (syntax 2.5; section 20)  kept, remembered standing
+    determine             (syntax 2.6; section 23)  open to be processed further
+                                                   toward completion
+    object                (syntax 2.6; this section) a settled thing standing in
+                                                   the catalogue of what is
+    field                 (syntax 2.6; this section) the ground of relation in
+                                                   which objects stand and move
+
+Every member but `author`/`authorial` is purely declarative. All are
+**contextual words, not reserved keywords**: outside the top-level marker
+position (and in any document below their gate) they remain ordinary
+identifiers.
+
+### 26.2 The markers
+
+A document may declare, at top level (after the `#sleela` pragma, outside any
+class), either bare word:
+
+    object;
+    field;
+
+Each takes no modifier and no type. A trailing `;` is optional and a repeated
+marker is harmless. Both are **contextual**: `object` and `field` are ordinary
+identifiers everywhere else. In particular `field` is recognised as a marker
+**only at top-level document scope before any content has begun**, so the
+ordinary class-member `field-decl` grammar (section 3.3) and every `.field`
+member access (section 6) are completely unaffected.
+
+Version gate: both markers require `#sleela 2.6`; a 2.6-feature use declared
+below 2.6 is rejected ("the object document marker requires #sleela 2.6" /
+"the field document marker requires #sleela 2.6").
+
+### 26.3 Meaning
+
+`object` claims that the document is an **Object**: a settled thing standing in
+the catalogue of what is — the subject as a bounded, nameable entity to which
+its author and the field relate. `field` claims that the document is the
+**Field**: the ground of relation, the medium in which objects stand and move.
+Object and field are the two complementary faces of the same natural motion —
+the thing, and the ground that holds it — and a document may carry both, and may
+further be authorial, material, memory, or determine. The markers are
+**orthogonal and compositional**.
+
+### 26.4 The sets
+
+An `object`-marked document is a member of the **set of object documents**; a
+`field`-marked document is a member of the **set of field documents**. Like the
+material and memory sets, these are conventions the markers record; the compiler
+places no mechanical restriction on the file.
+
+### 26.5 Effect on the toolchain
+
+None, by design. The front end recognises each marker, gates it to `#sleela
+2.6`, and records it on the parsed document (`Program.objectMarked` /
+`Program.fieldMarked`). It emits no additional artifact, relaxes no rule, and
+reserves no identifier. An object- or field-marked document compiles exactly as
+the same document without the marker would.
+
+### 26.6 `object` is reified at syntax 2.8
+
+At syntax **2.8** the `object` marker is **reified**: its claim — "a settled
+thing standing in the catalogue of what is" (section 26.3) — is, as of 2.8, a
+concrete standing rather than only a declaration. Reification here means the
+Object the marker names is treated as a settled, enumerable member of the
+catalogue of what is, on the same edition that completes the base-2 **unsigned**
+integer series (section 25) — the edition at which the type system's catalogue
+of concrete, countable things is itself completed. The `object` marker thus
+*relates to 2.8*: recognised and gated from 2.6 (so earlier documents keep
+working unchanged), it attains its reified, concrete standing at 2.8.
+
+This is still **declarative only** — reification changes nothing about parsing,
+typing, dispatch, or code generation; it records that, from 2.8, an
+`object`-marked document stands in the catalogue as a settled thing, not merely
+a claim. The `field` marker remains the ground of relation and is not reified by
+this subsection; object and field stay the two complementary faces of the one
+natural motion (the reified thing, and the ground that holds it).
+
+### 26.7 Where this is implemented
+
+- `impl/frontend/version.h` — `maxSupportedSyntax()` is 2.9. Both markers
+  remain gated to 2.6 and continue to be accepted at later supported syntax
+  levels; `object` retains its 2.8 reification standing described in §26.6.
+- `impl/frontend/parser.cpp` — `parseProgram()` recognises the top-level
+  contextual `object` and (pre-content) `field` markers and sets
+  `Program.objectMarked` / `Program.fieldMarked`.
+- `impl/frontend/semantic.cpp` — `collect()` gates each marker to 2.6 (and has
+  no other effect for them).
+- `impl/frontend/ast.h` — `Program.objectMarked`, `Program.fieldMarked`.
+
+--------------------------------------------------------------------------------
+## 27. Syntax 2.9 (FUTURE, not yet implemented) — the `prestige` document marker
+
+This section is **informative and forward-looking**. It reserves and describes a
+planned marker; it is **not yet normative** and **not yet implemented**. The
+edition has since advanced to **2.9** for the `@mix` consequent-fields feature
+(section 28); nevertheless the `prestige` marker itself remains **not
+accepted** by the parser or semantic pass today — it reserves no identifier and
+has no behavioral effect. This is deliberate — the `prestige` feature is
+recorded now and built *Later*, independently of the 2.9 edition bump that
+`@mix` carried.
+
+### 27.1 Standing — ahead of and above `object`
+
+`prestige` is the topmost word of SleelaDoc. It is set **ahead of and above**
+the 2.8 `object` marker (section 26.6) — of God and witness — and is read first,
+before any Object is counted. Where `object` names a settled thing in the
+catalogue of what is, `prestige` is the measure taken *over* that whole
+catalogue, and it is weighed beneath mercy.
+
+### 27.2 Meaning
+
+`prestige` claims that the document keeps the first order of things: the
+**neighbor** before the Object; **kindness** and **love** ranked over the
+technical and the immediate. It stands against **slavery** — the holding of one
+person as the property of another — placing the dignity and freedom of the
+neighbor before mastery. As a measure, `prestige` is a **count over all
+Objects**: the reckoning of **Technical Mastery** across the entire catalogue of
+what is — but mastery that is not kind accrues no prestige. Kindness over
+technical immediacy is the whole of the rule.
+
+### 27.3 Planned form (subject to change)
+
+When implemented at syntax 2.9, `prestige` would be a bare, contextual,
+declarative-only document marker in the Natural Process family (section 26) — a
+Preonem (section 26.1) — written at top level after the `#sleela` pragma:
+
+    prestige;
+
+Like its siblings it would change nothing about parsing, typing, dispatch, or
+code generation; it would be a recorded claim about the document, gated to
+`#sleela 2.9`.
+
+### 27.4 Status
+
+- **Not implemented.** No compiler change is made for `prestige`. The front end
+  does not recognise it and it reserves no identifier; `prestige` remains an
+  ordinary identifier everywhere.
+- **Declared** as the topmost dedication of the SleelaDoc HTML sites
+  (`sleeladoc-api/index.html` and `api/sleela/2.6/index.html`), ahead of the 2.8
+  `object` addition.
+- **Later.** The `prestige` implementation (parser/semantic/ast wiring) is a
+  future task. Note the edition itself is now **2.9** because the `@mix`
+  consequent-fields feature (section 28) advanced it; `prestige` will be wired
+  when it is intentionally taken up, not as part of that bump.
+
+---
+
+## 28. Syntax 2.9 — `@mix` consequent fields (same-named fields as an indexed group)
+
+Syntax 2.9 lets a class declare **multiple instance fields with the same name**,
+provided each repeated occurrence carries the `@mix` annotation. The language
+understands such a group as **consequent** — treated together as an array / list
+/ simple array struct keyed by index — rather than rejecting the repetition as a
+duplicate field.
+
+### 28.1 Form
+
+```sleela
+#sleela 2.9
+class Registry {
+  @mix int NationalID = 1;
+  @mix int NationalID = 2;
+  @mix int NationalID = 3;
+}
+```
+
+Three fields share the name `NationalID`. Because each carries `@mix`, the
+duplicate-field rejection is relaxed and the three are understood as one
+consequent group.
+
+### 28.2 Indexing
+
+- **Top-down default.** Unless indicated otherwise, declaration order gives the
+  indexes **1, 2, 3, …** from top to bottom.
+- **Manual.** The argument form `@mix(1,2,3,4,5)` assigns the indexes of the
+  group explicitly. When the argument form is used, the **number of indexes in
+  the annotation must match the number of same-named `@mix` fields** in the
+  class:
+
+```sleela
+  @mix(1,2,3,4,5) int NationalID = 1;
+  @mix(1,2,3,4,5) int NationalID = 2;
+  @mix(1,2,3,4,5) int NationalID = 3;
+  @mix(1,2,3,4,5) int NationalID = 4;
+  @mix(1,2,3,4,5) int NationalID = 5;
+```
+
+Five indexes, five `NationalID` fields — accepted. A count that disagrees (for
+example three indexes over two fields) is a **semantic error**:
+`@mix index count (3) does not match the number of 'NationalID' fields (2)`.
+
+### 28.3 Gating
+
+`@mix` consequent fields require `#sleela 2.9`. Below 2.9 the historical
+duplicate-field rule stands: repeating a field name is rejected as
+`duplicate field '<name>' in class '<class>'`, with or without the annotation.
+So the relaxation fires only on a genuine 2.9-feature use. `@mix` is an
+annotation, not a reserved word; it reserves no identifier elsewhere.
+
+### 28.4 Status
+
+- **Implemented.** `maxSupportedSyntax()` = **3.0**. The semantic pass permits
+  same-named instance fields that carry `@mix` under `#sleela 2.9`, applies
+  top-down 1,2,3,… indexing by default, and validates that a manual
+  `@mix(...)` index count matches the number of fields in the group.
+
+
+--------------------------------------------------------------------------------
+## 29. Syntax 3.0 — consolidated language edition
+
+Syntax **3.0** is the current normative edition of the SLeeLa language
+specification. It consolidates the established language surface from syntax
+1.0 through 2.9 into a single maintained contract for Sleela, Sleelvac,
+Nordshrift, the compiler, and the decompiler.
+
+### 29.1 Compatibility
+
+- The compiler accepts declared syntax versions from **1.0 through 3.0**.
+- A source file may continue to declare an earlier syntax version. The pragma
+  records the syntax contract the file claims; it is not automatically rewritten
+  when a newer specification is published.
+- Feature-specific gates remain in force. For example, `@mix` remains a
+  syntax-2.9 feature and still requires `#sleela 2.9` or later.
+- The language syntax edition is independent of the release versions of
+  `sleela`, `sleelvac`, and `nordshrift`, and independent of the NS-SST
+  control-sheet specification version.
+
+### 29.2 Grammar changes
+
+This edition is a specification consolidation and compatibility milestone.
+It introduces no additional reserved words, operators, or grammar productions
+solely by virtue of the 3.0 version number. Existing productions and their
+feature-specific minimum versions remain authoritative. A future 3.0.x patch
+may clarify wording without changing the grammar; a new syntax capability
+requires an explicit normative section and matching compiler implementation.
+
+### 29.3 Implementation status
+
+- **Implemented:** the compiler version resolver accepts the range 1.0..3.0
+  and defaults unversioned source to 3.0 with the existing warning.
+- **Preserved:** historical syntax feature gates, parser/semantic behavior,
+  and older source declarations.
+- **Not implied:** a source file declaring 3.0 does not gain unsupported
+  compiler, VM, decompiler, operating-system, or native execution capabilities.
+
+## 30. Syntax 3.0 — the `pure` and `gasoline` document markers (honesty of standing)
+
+This section is **normative** for syntax **3.0**. It adds two more first-class,
+contextual, **declarative-only** document markers — `pure` and `gasoline` —
+members of the same Preonem / Natural Process family as `author`/`authorial`
+(section 18), `material` (section 19), `memory` (section 20), `determine`
+(section 23), and `object`/`field` (section 24). They are the markers that
+are gated to **3.0**.
+
+### 30.1 Meaning
+
+`pure` and `gasoline` **mean nearly the same thing**. Each is a bare word
+declared at document scope (after the `#sleela` pragma, outside any class) that
+claims the document is **steered by, and stands on, its own honesty**:
+
+- **`pure`** — the document is clean and unmixed, true to itself: it holds only
+  what it honestly is.
+- **`gasoline`** — the same claim in the sense of a *refined, usable grade* of
+  that honesty.
+
+The pair marks the document's standing **by its own honesty** rather than by any
+external authority. A document may carry either or both; the standings compose
+with the other markers.
+
+### 30.2 Form
+
+```sleela
+#sleela 3.0
+pure;
+class Name { ... }
+```
+
+```sleela
+#sleela 3.0
+gasoline;
+class Name { ... }
+```
+
+A trailing `;` is optional; a repeated marker is harmless. The marker word must
+appear at top-level document scope.
+
+### 30.3 Declarative only; contextual, not reserved
+
+Like every Preonem, `pure` and `gasoline` have **no** effect on parsing,
+typing, dispatch, or code generation. They emit no artifact and reserve no
+identifier. Each stays an ordinary identifier anywhere except the top-level
+marker position, and in any document below 3.0 (so a variable, field, method,
+or `.pure` / `.gasoline` access is unaffected).
+
+### 30.4 Gating
+
+The markers require `#sleela 3.0`. Below 3.0 the words never parse as markers,
+so the gate (`the pure document marker requires #sleela 3.0` /
+`the gasoline document marker requires #sleela 3.0`) fires only on a genuine
+3.0-feature use in an older-declared document.
+
+### 30.5 Status
+
+- **Implemented.** `maxSupportedSyntax()` = **3.0**. `impl/frontend/ast.h`
+  carries `Program.pureMarked` / `Program.gasolineMarked`; `parser.cpp`
+  recognises the two contextual top-level words; `semantic.cpp` gates each to
+  3.0 with no other effect. Version-test fixtures `pure_3_0.sleela`,
+  `gasoline_3_0.sleela` (accepted) and `pure_too_early.sleela`,
+  `gasoline_too_early.sleela` (rejected below 3.0) are wired into
+  `impl/tests/version/run_version_tests.sh`.
+
+--------------------------------------------------------------------------------
+## 31. The `@modium` and `@registry` subsystem-role annotations
+
+This section is **informative**. It documents two registered language
+annotations that mark a declaration's role in the Modium / Registry
+responsibility split. Neither annotation adds a parse rule, reserves an
+identifier, or changes typing, dispatch, or code generation. They are labels:
+greppable, tool-readable metadata attached to a declaration through the ordinary
+annotation mechanism (sections 22, 28). They are **not** a second registry and
+do not replace the Metadata Class record (section 15); `/lib` and the native
+`registry/` engine remain the single source of truth.
+
+### 31.1 The responsibility split they label
+
+Modium and Registry are **library subsystems**, not language features. Their
+contract is normative in `registry/REGISTRY-3.0-MODIUM.md` and is summarized
+here only to anchor the annotations:
+
+- **Modium** owns storage operations and artifact-integrity verification: it
+  claims and resolves storage regions, performs the SHA-256 (~95%) integrity
+  scan against a version's `MODIUM.json`, and advises reconstitution from
+  `rebuild.sql`. It is realized by `lib/vm/src/sleela/SLVmModium.sleela`, the
+  `OP_MODIUM_SCAN` service opcode (149), and `lib/opcodes/SLOpModiumScan.sleela`.
+  Modium resolves the current host location and returns bounded VM-local
+  handles.
+- **Registry** owns durable catalog identity, classification, lifecycle, and
+  the relationships describing those resources. It is realized by the
+  `lib/registry/SLRegistry*.sleela` family and the native `registry/` v3 engine.
+  Registry never mounts a volume, claims a device, formats storage, reads or
+  writes a storage region, or restores data; it stores stable record IDs and
+  descriptive locator metadata.
+
+The boundary is an **architecture/API contract**, expressed in classes,
+opcodes, and the responsibility document — which is exactly why it needs
+annotations (labels) rather than grammar.
+
+### 31.2 Form
+
+Each is a standard `@name("value")` annotation. The value is a free-form string
+naming the specific role; an empty name or value is rejected (the shared
+annotation rule: name and value must not be empty).
+
+Placement follows the ordinary annotation grammar (§28, and the `@supporter`
+precedent in §22). The two **enforced** rules below — recognition (no "unknown
+annotation" warning) and the single-occurrence check — are applied by the front
+end to **document-scope** annotations: those written after the `#sleela` pragma
+and *not* immediately bound to a `class`/`interface`/`enum`/`record`. That is
+the position the validator (`validateLanguageAnnotations`, invoked from
+`semantic.cpp`) inspects. This is the recommended placement for a
+subsystem-role label, because the label describes the *document's* subsystem
+membership:
+
+    #sleela 3.0
+    @modium("region-scan")
+    @registry("catalog-record")
+
+    class SLVmModium { ... }
+
+An annotation may also be written directly on a declaration
+(`@modium("region-scan") class SLVmModium { ... }`); in that position the parser
+attaches it to the declaration and preserves it as metadata, but it does **not**
+flow through the document-scope validator, so neither the recognition check nor
+the single-occurrence check fires on it. Either placement is accepted; use
+document scope when you want the enforced rules.
+
+By convention the value names the part in the contract — e.g. `"region-scan"`,
+`"integrity-verify"`, `"reconstitution"` for Modium, and `"catalog-record"`,
+`"lifecycle"`, `"relationship"`, `"resolver"` for Registry. The set of values is
+**not** enforced by the front end; it is descriptive.
+
+### 31.3 Registration and rules
+
+- Both `modium` and `registry` are **registered** language-annotation names in
+  `impl/frontend/annotation_pipeline.cpp` (`isKnownLanguageAnnotation()`), so a
+  document-scope occurrence is accepted **without** the
+  "unknown annotation '@...' is preserved as metadata" warning that an
+  unregistered name (e.g. `@zzznotreal`) still draws.
+- Both are **non-repeatable**: at document scope a file carries at most one
+  `@modium` and at most one `@registry`; a second occurrence of the same name is
+  an error (`annotation '@modium' may occur only once`). They are deliberately
+  absent from `annotationMayRepeat()`. A document **may** carry both (one
+  `@modium` and one `@registry`) when it genuinely sits on the seam between the
+  two subsystems.
+- They are **purely additive** and **edition-agnostic**: they are preserved as
+  metadata and do not alter parsing, typing, dispatch, or codegen, and they are
+  not gated to a `#sleela` edition — the annotation mechanism itself predates and
+  is independent of the document markers.
+
+### 31.4 Relationship to the Metadata Class record
+
+These annotations are orthogonal to the Metadata Class metapattern (section 15).
+The Metadata record catalogues a class's **provenance** (version, id, author,
+copyright, trademark, corporation, origin, national schedule, …); `@modium` /
+`@registry` label the **architectural role** in the storage/catalog split. A
+unit may carry both: the full Metadata record inside the class for provenance,
+and a document-scope role annotation for discoverability.
+
+### 31.5 Where this is implemented
+
+- `impl/frontend/annotation_pipeline.cpp` — `modium` and `registry` registered
+  in `isKnownLanguageAnnotation()`; intentionally **not** added to
+  `annotationMayRepeat()` (single-occurrence labels).
+- `registry/REGISTRY-3.0-MODIUM.md` — the normative responsibility contract the
+  annotations label.
+- `lib/vm/src/sleela/SLVmModium.sleela`, `lib/opcodes/SLOpModiumScan.sleela`,
+  and `lib/registry/SLRegistry*.sleela` — the realized subsystems.
+
+
+## 32. Syntax 3.0 — the `@loopDelay` and `@loopBudget` loop-timing annotations
+
+This section is **normative**. Unlike every other annotation in this document,
+which is declaration-level metadata, `@loopDelay` and `@loopBudget` are
+**statement-level, behavioral** annotations: they attach to a `for`, `while`, or
+`do` loop and insert a real per-iteration pause into its execution. They are the
+first annotations that change the runtime behavior of the construct they mark.
+
+### 32.1 Placement
+
+A loop-timing annotation is written on its own, immediately **before** the loop
+keyword it governs:
+
+```
+@loopDelay(ms = 250)
+while (i < n) { ... }
+
+@loopBudget(seconds = 10, iterations = 1000)
+for (int i = 0; i < 1000; i = i + 1) { ... }
+```
+
+It is a parse error to place either annotation before anything other than a
+`for`, `while`, or `do` loop. The annotation governs exactly the loop that
+immediately follows it.
+
+### 32.2 `@loopDelay` — sleep per iteration
+
+`@loopDelay` pauses the thread at the top of **every** iteration of the loop
+body (it does not run when the loop makes zero passes). Accepted forms:
+
+- `@loopDelay(<N>)` — sleep `N` **milliseconds** per iteration (a bare number
+  defaults to milliseconds).
+- `@loopDelay(ms = <N>)` — sleep `N` milliseconds per iteration.
+- `@loopDelay(seconds = <N>)` — sleep `N` seconds per iteration.
+
+### 32.3 `@loopBudget` — spread a known iteration count over a total time
+
+`@loopBudget` expresses a **total wall-clock budget** for a loop whose iteration
+count is known, and divides it evenly into a per-iteration delay. Both a total
+time and a positive iteration count are required:
+
+- `@loopBudget(seconds = <T>, iterations = <K>)` — spread `K` iterations over
+  `T` seconds; the per-iteration sleep is `(T * 1000) / K` milliseconds.
+- `@loopBudget(ms = <T>, iterations = <K>)` — total `T` milliseconds over `K`
+  iterations; the per-iteration sleep is `T / K` milliseconds.
+
+The per-iteration value is integer-divided (truncated) and is the *delay added*
+per pass; it does not subtract the loop body's own execution time, so the total
+is a floor, not a hard real-time guarantee. Omitting the time or giving a
+non-positive `iterations` is a parse error.
+
+### 32.4 Lowering and the `sleep` primitive
+
+Both annotations lower to the same mechanism: the compiler emits, at the top of
+each iteration, a push of the resolved millisecond delay followed by the
+`OP_SLEEP` opcode (ISA index 157, declared in `lib/vm/InstructionSet.sleela`).
+`OP_SLEEP` pops an integer millisecond count and blocks the current thread for
+that long (0 or negative is a no-op); it is implemented portably by
+`sltime_sleep_millis()` (POSIX `nanosleep`, Windows `Sleep`).
+
+The same opcode backs a general-purpose built-in callable anywhere, not only in
+loops:
+
+```
+sleep(<milliseconds>);   // block the current thread for N milliseconds
+```
+
+`sleep(ms)` takes one integer argument and returns no value.
+
+## 33. Syntax 3.0 — the `@spill` loop timer-start annotation
+
+This section is **normative**. Like `@loopDelay` / `@loopBudget` (section 32),
+`@spill` is a **statement-level, behavioral** annotation that attaches to a
+`for`, `while`, or `do` loop. Where the loop-timing annotations insert a pause
+on **every** iteration, `@spill` marks the loop's entry as a **timer-start
+checkpoint**: it counts as a timer start in its own right and pauses **once,
+before the loop begins its first iteration**. This lets a loop "spill" — pause
+seemingly before it starts — so an observer can be positioned before the first
+pass runs.
+
+### 33.1 Placement
+
+A `@spill` annotation is written on its own, immediately **before** the loop
+keyword it governs, and may be combined with a loop-timing annotation:
+
+```
+@spill
+for (int i = 0; i < n; i = i + 1) { ... }
+
+@spill(seconds = 1)
+while (ready()) { ... }
+
+@spill(ms = 250, judges = Panel, witnesses = AuditLog)
+@loopDelay(ms = 50)
+for (int i = 0; i < n; i = i + 1) { ... }
+```
+
+It is a parse error to place `@spill` before anything other than a `for`,
+`while`, or `do` loop, and a loop may carry at most one `@spill`.
+
+### 33.2 The timer-start pause
+
+`@spill` is itself a timer start, so its pause fires **once** up front, before
+the loop's initializer and condition are evaluated — not per iteration. Accepted
+forms for the pause duration:
+
+- `@spill` — a bare timer-start checkpoint; pauses 0 ms (no sleep) but still
+  marks the loop entry as a spill.
+- `@spill(<N>)` — pause `N` **milliseconds** once before iterating (a bare
+  number defaults to milliseconds).
+- `@spill(ms = <N>)` — pause `N` milliseconds once.
+- `@spill(seconds = <N>)` — pause `N` seconds once.
+
+The pause must be non-negative.
+
+### 33.3 Subjects — the judges and witnesses of performs
+
+A `@spill` may name up to **two** descriptive subjects — the **judges** and the
+**witnesses** of the loop's *performs* (the observers of what the loop does).
+They are retained as loop metadata and have no runtime effect; each may be
+named at most once:
+
+- `@spill(judges = <subject>)` — the subject that judges the loop's performs.
+- `@spill(witnesses = <subject>)` — the subject that witnesses the loop's
+  performs.
+
+Each subject is a single annotation token (values with embedded whitespace are
+collapsed, matching the loose annotation argument grammar). The pause and the
+subjects may be combined in any order, e.g.
+`@spill(seconds = 1, judges = Panel, witnesses = AuditLog)`.
+
+### 33.4 Lowering
+
+`@spill` lowers to the same `OP_SLEEP` mechanism as the loop-timing annotations
+(section 32.4), but emitted **once, before the loop** rather than at the top of
+each iteration: the compiler pushes the resolved millisecond pause and emits
+`OP_SLEEP`. A spill whose pause is 0 is a pure checkpoint and emits no
+instruction. The `judges` and `witnesses` subjects are carried on the loop's AST
+node and do not emit bytecode.
+
+--------------------------------------------------------------------------------
+## 34. Syntax 3.0 — native big-integer built-ins (`bigmul`, `bigadd`, `bigdivmod`)
+
+This section is **normative**. Syntax 3.0 exposes three contextual built-ins
+that perform big-integer arithmetic over **base-1,000,000,000 limb arrays** in a
+single VM opcode each, rather than through a per-limb bytecode loop. Each limb
+is one `int` element holding nine decimal digits; a big integer is a flat,
+little-endian `int[]` whose element 0 is the least-significant limb. These are
+the VM bridge the `SLBigInteger` library class was designed to call; they are
+recognized in call position only and are not reserved words.
+
+### 34.1 `bigmul` — multiply
+
+```
+int sig = bigmul(a, b, result);
+```
+
+Multiplies the limb arrays `a * b` with a native C kernel and writes the product
+limbs into `result`. The call evaluates to the `int` count of **significant
+result limbs**.
+
+- `a`, `b`, `result` are each `int[]` in base-1e9 little-endian form.
+- `result` must have room for at least `len(a) + len(b)` limbs.
+- The kernel chooses its algorithm by operand size: schoolbook below a small
+  threshold, Karatsuba (`O(n^1.585)`) above it, and a number-theoretic
+  transform (NTT, `O(n log n)`) for large products. The choice is internal and
+  does not change the result or the call contract.
+- Backed by `OP_BIGMUL` (ISA index **156**).
+
+### 34.2 `bigadd` — add
+
+```
+int sig = bigadd(a, b, result);
+```
+
+Computes `a + b` limb-wise with carry and writes the sum into `result`,
+evaluating to the significant result-limb count.
+
+- `a`, `b`, `result` are each `int[]` in base-1e9 little-endian form.
+- `result` must have room for at least `max(len(a), len(b)) + 1` limbs (the extra
+  limb absorbs a final carry).
+- Backed by `OP_BIGADD` (ISA index **158**). Companion to `bigmul`.
+
+### 34.3 `bigdivmod` — divide by a small integer, with remainder
+
+```
+int remainder = bigdivmod(dividend, divisor, result);
+```
+
+Divides the limb array `dividend` by a **small integer** `divisor` and writes the
+quotient limbs into `result`. The call evaluates to the integer **remainder**.
+
+- `dividend` and `result` are `int[]` in base-1e9 little-endian form; `divisor`
+  is a plain `int` in the range `1 .. 999,999,999` (`1e9 - 1`).
+- `result` of the same length as `dividend` always suffices.
+- The remainder is in `0 .. divisor - 1`.
+- This small-divisor long-division form is what base conversion and the
+  Chudnovsky final scaling need.
+- Backed by `OP_BIGDIVMOD` (ISA index **159**).
+
+### 34.4 Argument count and errors
+
+Each built-in takes **exactly three** arguments in the order shown; any other
+count is a compile-time (semantic) error. The native kernels fail closed with a
+descriptive runtime error when an operand is not an `int[]`, a limb is outside
+`[0, 1e9)`, the divisor is out of range, or the `result` array is too small to
+hold the answer.
+
+### 34.5 Enabling VM changes (informative)
+
+Two runtime changes landed alongside these built-ins and are recorded here
+because they define the sizes at which the built-ins are usable:
+
+- **Array ceiling raised.** The maximum number of elements in a single array,
+  `SL_MAX_ARRAY_LEN` (`impl/core/sleela_core.h`), was raised from `2^20`
+  (1,048,576) to **`2^24` (16,777,216)**. This is what makes multi-million-limb
+  operands — e.g. a 10,000,000-decimal-digit multiply (~1.11 M limbs per
+  operand, ~2.22 M result limbs) — allocatable and so reachable as a single
+  `bigmul()` call.
+- **Narrowing cast from `double`.** A `double` value may now be **narrowed by an
+  explicit cast** to an integer type (e.g. `(int)` or `(int128)`); the VM
+  truncates toward zero instead of aborting. The cast must be explicit — no
+  implicit double→int narrowing is introduced.
+
+### 34.6 Version gate
+
+The big-integer built-ins and the enabling VM changes are part of the Syntax 3.0
+edition. Declare `#sleela 3.0` (or later) to rely on them normatively. The ISA
+indices above are append-only; the pre-OSLS ISA remains the frozen 155-opcode
+baseline (0..154), OSLS is opcode 155, and `bigmul`/`sleep`/`bigadd`/`bigdivmod`
+occupy 156/157/158/159 in that fixed order. See `lib/vm/InstructionSet.sleela`
+for the ISA mirror.
+
+
+## 35. Syntax 3.0 — the `artifact` document marker (legislature-grade standing)
+
+Syntax 3.0 adds the **`artifact` document marker**: a further bare, contextual,
+declarative-only Preonem word — a sibling to `author`/`authorial` (section 18),
+`material` (section 19), `memory` (section 20), `determine` (section 23),
+`object` and `field` (section 26), and `pure`/`gasoline` (section 30). It is a
+member in good standing of the Natural Process family and is titled a Preonem
+(section 26.1).
+
+`artifact` claims that the document is an **enacted artifact**: legislature-grade
+text, **graded unto time and space**. "Legislature-grade" means the document is
+held not as loose prose but as ordered, enacted text of a body — later
+enactments of the same body amend earlier ones in sequence. "Graded unto time"
+means its authority is dated and versioned and yields to a later-dated enactment
+of the same body. "Graded unto space" means its authority is scoped to a stated
+jurisdiction (for a `/lib` package, the package and its subjects; the wider
+reach is recorded by each class's `metaOrigin` in the Metadata-Class record).
+
+Like the other declarative Preonems, `artifact` is **declarative only**: it has
+**no effect on parsing, typing, or codegen**. It marks the document's standing
+and composes with the other markers (a document may be, for example, both
+`material` and `artifact`). It is a **contextual word, not a reserved keyword**:
+recognised only at top-level document scope (after the `#sleela` pragma, outside
+any class, before content begins), so a field, parameter, variable, or method
+named `artifact` anywhere else is unaffected, as it is in any document below 3.0.
+
+A document marks itself an artifact by placing the bare word, optionally
+followed by `;`, at document scope:
+
+```sleela
+#sleela 3.0
+artifact;
+
+class EnactedThing {
+    // ... the enacted artifact's body ...
+}
+```
+
+Below `#sleela 3.0` the marker is rejected with
+"the artifact document marker requires #sleela 3.0". A repeat marker is
+harmless (the flag is already set). The `artifact` marker takes no arguments
+and reserves no identifier.
+
+The documentary application of this marker for the `advantage` standard-library
+package — where every `.md` document opens with the `artifact;` preonem to
+declare the package's documents a legislature graded unto time and space — is
+recorded in `lib/advantage/PREONEM.md`.
+
+
+--------------------------------------------------------------------------------
+## 36. Syntax 3.0 — host-authorized Native Drive
+
+This section is **normative** for syntax **3.0**. Native Drive connects SLeeLa
+bytecode execution to explicitly authorized C/C++ shared modules. Loading a
+module executes native code in the host process; it is not a sandbox and is
+never authorized by a source path alone. The embedding host must install an
+immutable authorization callback with `slvm_set_native_authorizer` before
+execution. Without that callback, `nativeOpen` always fails closed.
+
+### 36.1 Source built-ins
+
+```sleela
+#sleela 3.0
+
+int module = nativeOpen("/trusted/modules/example.so");
+int answer = nativeCall(module, "twice", 21);
+nativeClose(module);
+```
+
+- `nativeOpen(path)` accepts a String path, invokes the host authorization
+  callback, loads the module, and returns a VM-owned opaque integer handle.
+- `nativeCall(handle, method, ...args)` invokes the typed native method when
+  available and returns its converted SLeeLa value.
+- `nativeClose(handle)` closes the module, invalidates its handle, and returns
+  null. The VM also closes any remaining modules when it is destroyed.
+
+A native handle is an opaque, generation-checked VM value. It is not a pointer,
+a library address, or a transferable cross-VM identifier.
+
+### 36.2 Versioned typed value contract
+
+The typed method ABI is independently versioned by
+`SL_NATIVE_TYPED_ABI_VERSION`. A plugin exporting `sl_native_call` must also
+export `sl_native_typed_abi_version()`; the loader rejects a missing or
+mismatched typed ABI version. The first value ABI supports only:
+
+| SLeeLa value | Native ABI tag |
+|---|---|
+| null | `SL_NATIVE_VALUE_NULL` |
+| boolean | `SL_NATIVE_VALUE_BOOL` |
+| 64-bit integer | `SL_NATIVE_VALUE_I64` |
+| double | `SL_NATIVE_VALUE_F64` |
+| String | `SL_NATIVE_VALUE_UTF8` (pointer plus explicit byte length) |
+
+The native ABI never receives the internal `SLValue` struct. VM-local array
+and struct handles, 128-bit integers, closures, and raw pointers are not
+representable and must not be copied across this boundary. The current VM
+String store is NUL-terminated; a plugin result containing an embedded NUL is
+rejected rather than silently truncated.
+
+### 36.3 Native method result and interpreter fallback
+
+The plugin method returns one of three statuses:
+
+- `SL_NATIVE_CALL_OK`: the typed result is valid and is converted back into a
+  VM value.
+- `SL_NATIVE_CALL_NOT_HANDLED`: the plugin does not implement this method;
+  the interpreter searches for a SLeeLa bytecode method with the same name and
+  argument count and dispatches it with the original VM-owned arguments.
+- `SL_NATIVE_CALL_ERROR`: the plugin handled the request but failed. This is
+  a runtime error and **does not** trigger fallback.
+
+When an argument is an array, struct, or another VM-only value, it remains
+inside the VM and the same-name bytecode fallback is attempted without
+serializing or exposing the object handle. If no matching bytecode method
+exists, execution fails with a diagnostic. Stale handles, authorization
+failures, typed ABI mismatches, invalid plugin results, and plugin errors never
+fall back.
+
+### 36.4 Native-to-SLeeLa callback bridge
+
+A plugin may optionally export `sl_native_bind_host(const SLNativeHostAPI*)`.
+When a host-authorized module is opened, the loader passes a size-checked
+`SL_NATIVE_HOST_CALLBACK_ABI_VERSION` table and rebinds it immediately before
+each plugin entrypoint. The plugin copies the table into thread-local storage
+and may call its `invoke(context, function, argc, argv, result)` entry synchronously from a
+typed native method. Plugins must not retain or invoke the table asynchronously.
+Thread-local storage keeps callback context isolated when the same shared
+library is used by multiple VM instances. The embedding host must also install
+`slvm_set_native_callback_authorizer` with an explicit function-name allowlist; callback invocation is denied by default and the policy is immutable after installation.
+
+The callback function name must exactly match one compiled SLeeLa function
+name and argument count. Names that are missing or ambiguous are rejected.
+Callback arguments and results use only the versioned scalar/UTF-8 value
+contract in section 36.2; raw VM pointers, object handles, and internal
+`SLValue` structures never cross the boundary.
+
+The VM executes callback bytecode on a separate nested interpreter stack and
+keeps the suspended native-calling stack visible to garbage collection. A
+callback is accepted only when the VM has no active worker threads; callback
+bytecode cannot spawn or join workers. Recursive native-module operations
+from callback bytecode are rejected with
+`SL_NATIVE_REENTRANT_CALL`, preventing re-entry into the module lock and
+avoiding unload races. A callback failure is a handled plugin error and never
+triggers NOT_HANDLED interpreter fallback. The binder is optional; plugins
+without it remain loadable but cannot invoke SLeeLa callbacks.
+
+### 36.5 Bytecode and compatibility
+
+The append-only instruction set adds:
+
+| Opcode | Index | Operand / behavior |
+|---|---:|---|
+| `OP_NATIVE_CALL` | 163 | `a = argc`; stack is `[handle, method, arg0, ...]` |
+| `OP_NATIVE_OPEN` | 164 | pops path String; pushes opaque handle |
+| `OP_NATIVE_CLOSE` | 165 | pops handle; pushes null |
+
+Existing opcode numbers are unchanged. The VM ABI minor version advances to
+2; artifact serialization layout remains unchanged. An older runtime that
+does not know these opcodes rejects the artifact rather than misinterpreting
+the instructions. See `impl/core/sleela_core.h`,
+`impl/core/sleela_core.c`, and `lib/vm/InstructionSet.sleela`.
+
+## 37. VM language exceptions (runtime opcode milestone)
+
+The core ISA appends three exception-control instructions without changing
+historical opcode numbers or artifact record layout:
+
+| Opcode | Index | Operand / behavior |
+|---|---:|---|
+| `OP_TRY_PUSH` | 176 | `a` is an in-range catch-entry instruction address; records current operand-stack height and frame depth |
+| `OP_TRY_POP` | 177 | removes the most recently registered handler owned by the current frame; operand must be zero |
+| `OP_THROW` | 178 | pops one arbitrary tagged `SLValue`; dispatches to the newest active handler, or terminates with an uncaught-exception VM error |
+
+Handler state is per-thread and bounded. A handler is consumed when selected,
+so a throw from the catch body cannot be caught again by the same handler.
+Dispatch restores the saved operand-stack height and call-frame depth, pushes
+the thrown value at the catch entry, and transfers control to its target.
+Returning from a frame discards handlers registered by that frame.
+
+The thrown payload is held in an explicit pending slot while the operand stack
+is truncated, and the pending/uncaught payloads are included in the existing
+GC root callback. Catch matching is currently catch-all only: the VM does not
+yet implement runtime exception classes, typed catch ordering, or rethrow
+identity rules beyond preserving the same tagged value. Finally/abrupt-exit
+lowering is not implemented by this milestone.
+
+The source compiler now supports this first restricted source form:
+
+```sleela
+try {
+    throw "failure";
+} catch (Any error) {
+    print(error);
+}
+```
+
+The compiler registers a catch-all handler around the try body, removes it
+on normal completion, and stores the thrown tagged value in the catch local
+on exceptional completion. Explicit `throw expression;` lowers to
+`OP_THROW`. This is intentionally not typed matching: the catch variable
+must be declared `Any`, and exactly one catch clause is supported. Multiple
+clauses, narrower catch types, catch-variable shadowing of an existing method
+local, `break`/`continue` that would leave the protected try region, and every
+`finally` block are rejected at compile time. The runtime
+still does not convert ordinary VM faults into language exceptions.
+
+The VM artifact ABI minor version advances to 6; artifact serialization
+layout remains unchanged. Older runtimes reject artifacts containing these
+new opcodes instead of interpreting them as existing instructions. Typed
+exception classes, rethrow semantics, selected language-fault conversion,
+and finally/abrupt completion remain future work.
+
+
+
+## 38. Syntax 3.0 — the Java signature surface and static member access
+
+This section is **normative**. It lets a SLeeLa class declare members with
+the exact spelling of their Java API signatures (as `/lib/java` does), and
+lets source reach static members through the class name.
+
+### 38.1 Java signature types
+
+- `char`, `byte` and `short` are accepted as types and use the integer slot.
+  `float` is accepted and uses the double slot.
+- A type variable declared by the enclosing class (`class HashMap<K, V>`) or
+  by the method (`<T> T[] toArray(T[] a)`) erases to `Any`.
+- A package-qualified reference type (`java.util.Collection<? extends E>`,
+  `java.lang.Object`, `java.util.Map.Entry<K, V>`) erases to `Any`.
+  `java.lang.String` erases to `String`. Array suffixes are kept.
+- Type-argument lists accept keyword types (`Map<String, int[]>`), array
+  type arguments, and `>>` / `>>>` closers of nested lists.
+- `T... name` declares an array parameter (varargs).
+- A method may declare type parameters (`public static <T> java.util.List<T>
+  asList(T... a)`).
+- A qualified-name segment may spell a keyword (`java.lang.String`,
+  `javax.print.Doc`).
+- A value of any type is assignable to `Object`.
+
+### 38.2 Static access through the class name
+
+`Class.member` reads, and `Class.member = value` writes, a static field.
+`Class.method(args)` calls a static method. This applies when `Class` names a
+class and is not a local variable or a field in scope. An instance method
+reached this way is rejected (`instance method 'C::m' must be called on an
+instance`).
+
+### 38.3 Library unit references
+
+An identifier that follows `.` is a member name or the tail of a qualified
+name. It does not cause a `/lib` unit with that simple name to be loaded, so
+package-qualified signature types never trigger an ambiguous simple-name
+resolution.
+
+
+### 38.4 Java definitions live in the Java container (not in this specification)
+
+This subsection is **normative**. No Java type, member, constant or behavior is
+part of the SLeeLa language definition. `Math`, `StrictMath`, `Integer`, `Long`,
+`String` as a Java class, `Throwable` and every other JDK name are *library
+content*, defined in the **Java container**, the `/lib/java` family, and nowhere
+in this document. The language contributes only the mechanisms of 38.1 to 38.3
+(signature spelling, static access, library unit references).
+
+1. **Implicit housing.** A Java name in a program is housed in the Java container
+   by the import that selects it: `import java.jdk-28;` (or a narrower
+   `import java.jdk-25.java.util;`) makes `Math.abs(x)` mean the unit
+   `java/jdk-28/java.base/java/lang/Math.sleela`. Without such an import a bare
+   `Math` is not a Java reference and no Java meaning is implied.
+2. **Explicit housing.** Every Java-tier unit names its container in its own text:
+   `javaType`, `javaModule` and `javaSource` fields, and the header line "SLeeLa
+   file for the Java type ...". A translator or tool that records a Java
+   reference records it as `<container>:<javaType>` (for example
+   `java.jdk-28:java.lang.Math`), never as a bare SLeeLa name.
+3. **No reservation.** The Java container reserves no identifier in the language.
+   A user class named `Math` is an ordinary class; the container's `Math` is
+   reached only through the selecting import, and a real unit of the same name
+   under the program's own tree wins (the reference-tier rule of 38.3).
+4. **Documentation.** Any document that describes a Java-derived behavior
+   (mappings, conformance notes, examples) states that the behavior belongs to
+   the Java container and not to the SLeeLa specification.
+
+
+## 39. Object references (`x.ref`, `Ptr`, `Class.deref`)
+
+This section is **normative**. It gives every class or struct instance an
+implicit second view: the VM-level reference of the object. The design rationale,
+the two-tier model, and the measured VM details are in `/POINTERS.md`.
+
+### 39.1 Forms
+
+```
+ref-expr    ::= primary "." "ref"
+deref-expr  ::= class-name "." "deref" "(" expr ")"
+ptr-call    ::= "Ptr" "." ptr-fn "(" [ expr ] ")"
+ptr-fn      ::= "valid" | "old" | "id" | "gen" | "type" | "fields"
+              | "bytes" | "age" | "live" | "limit"
+```
+
+| Form | Type | Meaning |
+|---|---|---|
+| `x.ref` | `int` | the reference of object `x`; `0` when `x` is `null` |
+| `Class.deref(p)` | `Class` | the object `p` names if valid and an instance of `Class`, else `null` |
+| `Ptr.valid(p)`, `Ptr.old(p)` | `boolean` | slot holds the same incarnation; promoted to the old generation |
+| `Ptr.id/gen/type/fields/bytes/age(p)` | `int` | slot index, incarnation, layout index, field slots, collector size in bytes, collections survived; `-1` when `p` is not valid |
+| `Ptr.live()`, `Ptr.limit()` | `int` | active objects in the VM; the object-store ceiling |
+
+### 39.2 Meaning
+
+A reference is an ordinary `int` that packs a slot of the VM's bounded instance
+store and a 31-bit incarnation counter of that slot,
+`(generation << 32) | (slot + 1)`; `0` is the null reference. It is **never a
+machine address**. The collector bumps a slot's generation each time it reclaims
+the slot, so a reference taken before a reclamation never names the object that
+later reuses the slot. A reference does not keep its object alive (it is not an
+object value and is not traced).
+
+Every use is validated: the slot must be in range and occupied, the generation
+must equal the slot's current generation, and, for `deref`, the object must be an
+instance of the named class (a subclass qualifies). A null, stale, forged or
+wrong-class reference never traps and never reaches memory: `deref` yields
+`null`, boolean views yield `false`, and integer views yield `-1`. `deref` returns
+an ordinary strong object value, and it shades the object if a collection is
+marking so that value cannot be freed.
+
+### 39.3 Resolution rules
+
+- `x.ref` applies when `x` has a class or struct type and that type declares no
+  field named `ref`; a declared field named `ref` is always the member. `ref` is
+  not a keyword.
+- `x.ref` is **read-only**: `x.ref = v;` is a compile error.
+- `Class.deref(p)` applies when `Class` names a class and declares no method named
+  `deref`, and is not a variable in scope.
+- The `Ptr` namespace applies only when no class, struct, variable, parameter or
+  field named `Ptr` is in scope (the same rule that recognises `Munction`).
+- `Ptr.*` and `Class.deref` require an `int` argument (or `null`); any other type
+  is a compile error.
+- These forms are **not version-gated**: `x.ref` on a type with no `ref` field was
+  already a compile error in every edition, so no previously valid program
+  changes meaning.
+- Arithmetic on references is not a supported operation. A reference is an
+  `int`, so `p + 1` compiles, but the result is validated like any other
+  reference and may name a different live object.
+
+### 39.4 Runtime
+
+One appended opcode, `OP_REF` (182), implements all of it; its operand packs a
+selector (low 4 bits) and, for `deref`, the class layout index above them. The
+artifact ABI minor version advances to 7 and the artifact layout is unchanged;
+older runtimes reject artifacts containing the new opcode. Artifact validation
+checks the selector and class operand. References are not persisted: they are
+meaningful only within one run of one VM.
+
+
+## 40. Syntax 3.0 — method and constructor overload resolution
+
+This section is **normative**. A class may declare several methods with the
+same name, and several constructors, when their parameter lists differ.
+Semantic analysis binds each call (`m(args)`, `x.m(args)`, `Class.m(args)`,
+`new T(args)`) to exactly one declaration:
+
+1. **Candidates.** Only declarations with the call's number of arguments
+   are candidates.
+2. **Applicability.** A candidate is applicable when every argument is
+   assignable to its parameter type.
+3. **Ranking.** Each argument scores 2 when its type is exactly the
+   parameter type, 1 when it is assignable to a more specific parameter
+   (not `Any` or `Object`), and 0 otherwise. The applicable candidate with
+   the highest total wins.
+4. **Ties.** On a tie, the first declaration in source order wins.
+5. **Arguments.** Integer arguments to `double` parameters are widened, as
+   for single declarations.
+
+Each overload compiles to its own function. A call resolved by name alone,
+outside semantic analysis, binds to the last declaration of that name, which
+is the behavior before this section. Below syntax 3.0, a class that declares
+more than one constructor is rejected, as before.
+
+## 41. Syntax 3.0 — method calls on String values
+
+This section is **normative**. A method may be called on any expression of
+type `String` (a variable, a field, a literal, a call result, or a chain):
+`s.length()`, `"x".equals(y)`, `name.trim().toLowerCase()`.
+
+1. **Binding.** The call binds to the static method of the same name in the
+   library class `JavaStringMethods` (`/lib/java/implementations/java/lang/`),
+   with the receiver passed as the first argument (`self`). Overloads are
+   resolved by section 40, the receiver counting as the first argument, so
+   `s.indexOf(111)` and `s.indexOf("o")` select different declarations.
+2. **Precedence.** The Munction fluent verbs (`connect`, `enable`, `send`,
+   `thatch`, `consume`, `latch`, `closeWithReceipt`, `close`, `reception`)
+   keep their meaning on every receiver and are not String methods.
+3. **Loading.** `JavaStringMethods` is loaded only when a program calls a
+   method on a String; semantic analysis detects it and the library loader
+   adds the class. A name the class does not declare is the error
+   `String has no method '<name>'`.
+4. **Both String kinds.** A method accepts either runtime kind (a legacy plain
+   String or a VM-owned Java UTF-16 String). Indexes count UTF-16 code units,
+   and a String result is a plain String whenever the text has one (no NUL,
+   no unpaired surrogate).
+5. **Below syntax 3.0** a method call on a String remains the error
+   `method '<name>' requires a class or struct receiver`.
+
+The type name `utf16` denotes the VM-owned Java UTF-16 String kind: it
+type-checks as `String`, and `x instanceof utf16` is true only for that kind
+(`x instanceof string` only for a plain String). A cast to `String` accepts a
+value of either kind, and `String` in a cast or `instanceof` always denotes
+the built-in type, never a library class of that name.
+
+
+## 42. Syntax 3.0 — the implied lineage structure (`Sleela.home`, `Sleela.System`)
+
+This section is **normative and implemented in the source compiler (impl/frontend)**
+(status: implemented; see 42.7 for the exact limits). It gives every class an implied static
+lineage structure, so a translated Java hierarchy needs no declared parent or
+child fields.
+
+### 42.1 The `Sleela` reference
+
+`Sleela` is a reserved language name. `Sleela.VM`, `Sleela.System` and
+`Sleela.OS` are interchangeable names for the one reference to the SLeeLa VM;
+every such reference the VM offers is reachable through `Sleela`. Wherever this
+section says `Sleela.System`, `Sleela.VM` and `Sleela.OS` are equivalent. `Sleela.home` is the implied static lineage structure of the
+enclosing class and is the bean setter for its links. A source identifier named
+`Sleela` is an error; a translator renames it.
+
+### 42.2 Creation
+
+`Sleela.home` exists on every class. It is created when the class is first
+referenced statically, at compile time, and again at run time. It is available
+once a lineage keyword (`extends`, `super`) is used in the class or one of its
+ancestors.
+
+### 42.2a Static inclusion and going live
+
+`SleelaHome` (`/lib/java/SleelaHome.sleela`) is included statically in every
+class that uses `Sleela.home`, with no import. Until a file is loaded its
+`vm` and `nearestDescendant` fields are `null` (inert). When the VM loads a
+file, or several files, it fills those fields for every class in them and the
+structure becomes live: `vm` is the VM reference and `nearestDescendant` is set
+from the loaded lineage. Classes loaded later become live as they load.
+
+### 42.3 Links
+
+For `class A extends B`, `class B extends C`, `class C extends D`:
+
+| Expression | Value |
+|---|---|
+| `Sleela.home.parent` in `A` | `B` |
+| `Sleela.home.child` in `A` | `Sleela.System` (the VM) |
+| `Sleela.home.child` in `B` | `A` |
+| `Sleela.home.parent` in `D` (the root) | `Sleela.System` |
+| `Sleela.home.parents("-")` | one level up (`B` from `A`); each `-` is one level |
+| `Sleela.home.parents("---")` in `A` | `D` |
+| `Sleela.home.parents("")` | `Sleela.System` |
+| `Sleela.home.parents("...")` in `A` | `D`; `.` is the same as `-`, one level each, and they may be mixed (`"-."` is two levels) |
+
+The VM links to the most-derived class and the root links back to the VM, so
+the lineage is a cycle of references: `VM -> A -> B -> C -> D -> VM`, with
+`child` running the opposite way. `parents(...)` with more dashes than there are ancestors
+clamps to the root: for a three-ancestor lineage `parents("----")` matches
+`parents("---")` and returns `D`. Only the empty string `parents("")` returns
+`Sleela.System`.
+
+### 42.3a What the VM returns
+
+The VM reference is map-like (a `HashMap` or similar, assumed for now). It
+holds the VM reference itself and the nearest descendant of the asking class
+(its basic holder is the library class `SleelaHome`, `/lib/java/SleelaHome.sleela`,
+with public fields `vm` and `nearestDescendant`)
+(for the `child` of the most-derived class `A`, the VM; for `D` asked from the
+VM side, `A`'s lineage head). Lookup is by name through the map interface. The
+key names are `vm` and `nearestDescendant`, the same as the public fields of
+`SleelaHome`.
+
+### 42.4 Setting a link
+
+A link is set left to right, value first:
+
+    B -> Sleela.home.parent
+
+`->` here is the lineage set operator. It is valid only with a
+`Sleela.home.parent` or `Sleela.home.child` target on its right.
+
+### 42.5 Constructors
+
+`super("constructor")` in a constructor of `A` is `Sleela.home.parents("---")`
+for a three-ancestor lineage: it addresses the backmost (root) class. The
+intermediate classes are initialized by the language, not by source code.
+
+### 42.6 Security2 above the VM during boot
+
+`Security2` (`/lib/security/Security2.sleela`) sits above the VM in colocated
+memory. The VM places it when it boots and it follows the VM through init and
+start, with phases 1 = booting, 2 = initializing, 3 = started, 4 = ready.
+Until the VM is fully initialized (phase 4) the references that would reach the
+VM (`Sleela.home.child` of the most-derived class, `Sleela.home.parent` of the
+root, `Sleela.home.parents("")`, and the `Sleela.VM` / `Sleela.System` /
+`Sleela.OS` names) point to `Security2`. At phase 4 they are re-pointed to the
+VM. Status: implemented as the boot sequence in 42.7.
+
+`Security2` also returns the date and time (`dateTime()` as JSON, `dateTimeHttp()`,
+`utcMillis()`, from the VM clock) and the specsheet reference
+`International Guidelines 2.0` (`specsheet()`). The specsheet location is
+`none` until a published source is recorded.
+
+### 42.7 Implementation notes (source compiler)
+
+- **Lowering.** `Sleela.home.parent`, `.child`, `.root` and `.security` read the
+  static String fields `__lin_parent`, `__lin_child`, `__lin_root` and
+  `__lin_security`, which the parser adds to any class that uses `Sleela.home`,
+  `Sleela.VM|System|OS` or `super(...)`. They are static, so they use no
+  instance layout slot (the 64-field cap is untouched).
+- **Values are class names.** A lineage reference is the String name of a class
+  (`"B"`) or `"Sleela.System"` for the VM end. Initial values are resolved at
+  compile time from the loaded classes: `parent` is the superclass if it is
+  loaded, `child` is the first loaded class that extends this one, `root` is the
+  backmost loaded ancestor.
+- **`parents("---")`** is resolved at compile time; the argument must be a string
+  literal of dashes and/or dots. It does not see later `->` changes.
+- **`->`** stores into the link; a bare capitalised name on the left is a class
+  name, anything else is an expression.
+- **`super(...)`** as a statement stores the root class name in `__lin_root`;
+  its arguments are parsed but not evaluated.
+- **Boot.** If the program uses `Sleela`, the loader adds `Security2`, and
+  `__lin_security` is initialized at program start by `new Security2().boot(...)`,
+  which runs boot, init, start, ready. User code starts after phase 4, so
+  user code always sees the VM; the earlier phases are observable only inside
+  `Security2`.
+- **Reading during load.** The lineage fields are static initializers, so they
+  are set before any user code runs; a class never observes a half-loaded
+  lineage. A read during load sees the compile-time values above.
+- **jdk-28 files.** `tools/jdk28_add_lineage.py` writes `extends <Parent>` and a
+  root-directed `super("constructor");` into every jdk-28 class stub whose JDK
+  superclass also has a jdk-28 file (1,647 files). The jdk-28 tree is a
+  reference tier: when a `lib/java/jdk-25` unit of the same name exists, the
+  loader uses that one.
+- **Not done.** `child` has no list of several children; `parent`/`child` do not
+  change `extends` or method dispatch; there is no VM-level (C) lineage
+  structure.

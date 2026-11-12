@@ -517,6 +517,18 @@ Program Parser::parseProgram(){
             accept(Tok::Semicolon);
             p.artifactMarked=true;
         }
+        else if(check(Tok::Ident)&&cur().text=="spark"&&!contentStarted){
+            // Spark marker (syntax 3.0, SLEELA.syntax section 43). A Preonem
+            // declaring the document SLeeLa constructs written in Java source
+            // style. The Java support is the interpreter/VM's (java_references.cpp
+            // and the compiler), not a SLeeLa housing class. Declarative: no
+            // change to parsing/typing/codegen. Only before content begins, so a
+            // `spark` identifier elsewhere is untouched. ';' optional; a repeat
+            // marker is harmless.
+            ++i_;
+            accept(Tok::Semicolon);
+            p.sparkMarked=true;
+        }
         else {
             unsigned mods=parseJavaModifiers();
             if(check(Tok::KwClass)||check(Tok::KwInterface)||check(Tok::KwEnum)||check(Tok::KwRecord)){

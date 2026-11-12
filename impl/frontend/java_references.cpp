@@ -24,6 +24,8 @@ std::string superclassOf(const ClassIndex& byName,const ClassDecl& cls){
     return resolveBaseName(byName,cls.java.superclass);
 }
 
+bool sparkDocument(const Program& p){ return p.sparkMarked; }
+
 std::string lineageParentOf(const ClassIndex& classes,const std::string& n){
     auto it=classes.find(n);
     if(it==classes.end()) return "";

@@ -16,3 +16,9 @@ Restore: copy the three files back over `impl/`, delete
 `lineageParentOf` / `lineageRootOf` / `lineageValue` were then moved from
 `compiler.cpp` into `java_references.cpp` (`javaref::lineage*`). The original
 `frontend/compiler.cpp` here already contains the pre-move versions.
+
+## Addendum: spark Preonem (`spark/`)
+
+`spark/` holds the pre-change `ast.h`, `parser.cpp`, `semantic.cpp`,
+`java_references.{h,cpp}` and `SLEELA.syntax` (base commit and SHA256SUMS inside)
+from before the `spark` marker and SLEELA.syntax section 43 were added.

@@ -3104,6 +3104,9 @@ VM. Status: implemented as the boot sequence in 42.7.
   name, anything else is an expression.
 - **`super(...)`** as a statement stores the root class name in `__lin_root`;
   its arguments are parsed but not evaluated.
+- **Where.** The lineage resolution (`parent`, `root`, `child`, `parents`) is in
+  `impl/frontend/java_references.cpp` (`javaref::lineage*`) and follows the same
+  `extends` resolution as the rest of the frontend (section 43.3).
 - **Boot.** If the program uses `Sleela`, the loader adds `Security2`, and
   `__lin_security` is initialized at program start by `new Security2().boot(...)`,
   which runs boot, init, start, ready. User code starts after phase 4, so
@@ -3120,3 +3123,99 @@ VM. Status: implemented as the boot sequence in 42.7.
 - **Not done.** `child` has no list of several children; `parent`/`child` do not
   change `extends` or method dispatch; there is no VM-level (C) lineage
   structure.
+
+
+## 43. Syntax 3.0 — Java support (the `spark` Preonem; interpreter/VM level)
+
+This section is **normative**. It states how SLeeLa supports Java source style.
+It extends section 38 (the Java signature surface and the Java container) and
+does not move any Java definition into this specification (38.4 still holds).
+
+### 43.1 The method
+
+1. **SLeeLa constructs.** Java source style is written as ordinary SLeeLa
+   constructs: classes, `extends`, constructors, overloads (section 40), String
+   method calls (section 41), `instanceof`, casts, `try`/`catch`/`throw`
+   (section 37) and the lineage of section 42. There is no second language
+   inside a SLeeLa document.
+2. **Interpreter and VM level, no housing class.** Java support is the work of
+   the interpreter (frontend: parser, semantic analysis, compiler) and of the
+   VM (its opcodes). It is **not** provided by a SLeeLa housing, wrapper, or
+   dispatcher class that a program must route through. A translator or tool
+   must not invent such a class to carry Java meaning; it lowers the construct
+   to the frontend and VM mechanisms named in 43.4.
+3. **Artifacts are kept, relative to the document.** The supporting Java-style
+   artifacts are kept as they are and are read relative to the document that
+   uses them and to their own documents: the Java container units under
+   `/lib/java` with their `javaType` / `javaModule` / `javaSource` fields and
+   header line (38.4), the container documents (`lib/java/README.md`,
+   `STATUS.md`, `COVERAGE.md`, `JDK28-SOURCE-ENVELOPE.md`), and the differential
+   tests (`examples/java/differential/`). They are reference material and test
+   oracles, not runtime housing.
+
+### 43.2 The `spark` Preonem
+
+    #sleela 3.0
+    spark;
+    material;
+    import java.jdk-28;
+
+    class Box extends java.lang.Object { ... }
+
+`spark` is a Preonem (document marker, see the Preonem family of sections 18,
+27, 30 and 35). It declares that the document is **SLeeLa constructs carrying
+Java source style**, supported under 43.1. Rules:
+
+- A single, modifier-less, type-less word at document scope, **before any
+  content** (before the first import, class, struct or `extends to`). A trailing
+  `;` is optional and a repeat marker is harmless.
+- It requires `#sleela 3.0`; in an older-declared document it is the error
+  "the spark document marker requires #sleela 3.0".
+- It is contextual, not a reserved keyword: `spark` stays an ordinary
+  identifier everywhere else (a field named `spark`, as in `churn/5`, is
+  unaffected).
+- It is **declarative**: it records the document's standing and changes nothing
+  about parsing, typing or code generation. A document without it gets the same
+  Java support; the marker states the intent and lets tools find such
+  documents. It grants no execution authority and claims no external status.
+- The name follows the `/5` Spark (`churn/5/SPARKS.md`): a guiding note, not
+  evidence. VALUE is not SPARK: the marker is not a conformance claim; the
+  differential tests are.
+
+### 43.3 Extends and the qualified Java name
+
+`class D extends java.lang.Throwable` and `class D extends Throwable` resolve
+to the same base when `Throwable` is a `/lib` unit. A qualified name falls back
+to its simple name **only** for a class loaded from `/lib`, so a local class
+named `Object` cannot impersonate `java.lang.Object`. Semantic analysis, the
+instance-field layout, the runtime parent link, method inheritance and the
+`Sleela.home` lineage all resolve the edge the same way, so `sleela check` and
+`sleela run` agree.
+
+### 43.4 Where the support lives (source compiler)
+
+| Java source style | Interpreter / VM mechanism |
+|---|---|
+| `extends` (simple or qualified), lineage, `super("constructor")` | `impl/frontend/java_references.cpp` (`javaref::resolveBaseName`, `superclassOf`, `lineage*`); VM parent link `slvm_set_struct_parent` |
+| Field inheritance | compiler instance layout, base fields first (section 42.7) |
+| Overloads and constructors | compiler overload resolution (section 40) |
+| `java.lang.String` methods, UTF-16 strings | compiler `javaString*` built-ins → `OP_JSTR_*` opcodes (166 onward) |
+| `instanceof`, casts | `OP_INSTANCEOF`, `OP_CHECKCAST` |
+| `try` / `catch` / `throw` | `OP_TRY_PUSH`, `OP_TRY_POP`, `OP_THROW` (section 37) |
+| Generics | erasure to `Any` (38.1); type arguments kept as data |
+| Source-level Java rules (conversions, promotion, overload/override, inference) | `impl/frontend/java_equivalence.cpp` model |
+
+### 43.5 Not done
+
+- The `java_equivalence` model is built but not yet called by semantic
+  analysis; `java_flow.cpp` and `java_exceptions.cpp` are not yet linked.
+- There is no direct Java-bytecode path: `sleela run Foo.java` hands the file
+  to a JVM. Equivalence is checked by output (`run-differential.sh`), not by
+  comparing JVM bytecode with VM opcodes.
+- `super(message)` in a user subclass does not forward its arguments: under
+  42.7 a `super(...)` statement records the lineage root and its arguments are
+  not evaluated, so `new AppError("boom").getMessage()` is `null` while
+  `new IllegalStateException("boom").getMessage()` is `"boom"`. Java-style
+  argument forwarding to a base constructor is future interpreter work.
+- `spark` has no behavioral effect; any future effect must be added here first.
+- Regression test: `bash impl/tests/java_references/spark/run_spark_tests.sh`.

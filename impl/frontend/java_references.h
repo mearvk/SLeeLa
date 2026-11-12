@@ -35,6 +35,12 @@ std::string resolveBaseName(const ClassIndex& byName,const std::string& declared
 // Resolved superclass of a class ("" when it has none).
 std::string superclassOf(const ClassIndex& byName,const ClassDecl& cls);
 
+// ---- spark Preonem (SLEELA.syntax section 43) ----------------------------
+// True when the document carries the `spark` marker: SLeeLa constructs in Java
+// source style, supported at the interpreter/VM level (this module, the
+// compiler, the VM), never through a SLeeLa housing class.
+bool sparkDocument(const Program& p);
+
 // ---- Sleela.home lineage (SLEELA.syntax section 42) ----------------------
 // Resolved at compile time against the loaded classes; every extends edge goes
 // through resolveBaseName above.
