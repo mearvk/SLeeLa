@@ -1,0 +1,148 @@
+<< lib/java/jdk-28/docs/api/java.base/java/time/OffsetDateTime.sleela
+   SLeeLa file for the Java type java.time.OffsetDateTime (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/time/OffsetDateTime.html
+   Java kind: class; extends java.lang.Object; implements java.time.temporal.Temporal, java.time.temporal.TemporalAdjuster, java.lang.Comparable, java.io.Serializable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class OffsetDateTime {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 6695;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.time.OffsetDateTime";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/time/OffsetDateTime.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static Any MIN = null;
+  static Any MAX = null;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public int get(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.get(java.time.temporal.TemporalField)"); }
+  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.equals(java.lang.Object)"); }
+  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.toString()"); }
+  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.hashCode()"); }
+  public int compareTo(java.time.OffsetDateTime other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.compareTo(java.time.OffsetDateTime)"); }
+  public long getLong(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.getLong(java.time.temporal.TemporalField)"); }
+  public static java.time.OffsetDateTime of(java.time.LocalDateTime dateTime, java.time.ZoneOffset offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.of(java.time.LocalDateTime, java.time.ZoneOffset)"); }
+  public static java.time.OffsetDateTime of(int year, int month, int dayOfMonth, int hour, int minute, int second, int nanoOfSecond, java.time.ZoneOffset offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.of(int, int, int, int, int, int, int, java.time.ZoneOffset)"); }
+  public static java.time.OffsetDateTime of(java.time.LocalDate date, java.time.LocalTime time, java.time.ZoneOffset offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.of(java.time.LocalDate, java.time.LocalTime, java.time.ZoneOffset)"); }
+  public java.lang.String format(java.time.format.DateTimeFormatter formatter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.format(java.time.format.DateTimeFormatter)"); }
+  public static java.time.OffsetDateTime from(java.time.temporal.TemporalAccessor temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.from(java.time.temporal.TemporalAccessor)"); }
+  public boolean isSupported(java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.isSupported(java.time.temporal.TemporalUnit)"); }
+  public static java.time.OffsetDateTime parse(java.lang.CharSequence text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.parse(java.lang.CharSequence)"); }
+  public static java.time.OffsetDateTime parse(java.lang.CharSequence text, java.time.format.DateTimeFormatter formatter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.parse(java.lang.CharSequence, java.time.format.DateTimeFormatter)"); }
+  public java.time.OffsetDateTime with(java.time.temporal.TemporalField field, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.with(java.time.temporal.TemporalField, long)"); }
+  public java.time.OffsetDateTime with(java.time.temporal.TemporalAdjuster adjuster) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.with(java.time.temporal.TemporalAdjuster)"); }
+  public <R> R query(java.time.temporal.TemporalQuery<R> query) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.query(java.time.temporal.TemporalQuery<R>)"); }
+  public java.time.ZoneOffset getOffset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.getOffset()"); }
+  public java.time.temporal.ValueRange range(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.range(java.time.temporal.TemporalField)"); }
+  public static java.time.OffsetDateTime now() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.now()"); }
+  public static java.time.OffsetDateTime now(java.time.Clock clock) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.now(java.time.Clock)"); }
+  public boolean isEqual(java.time.OffsetDateTime other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.isEqual(java.time.OffsetDateTime)"); }
+  public int getNano() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.getNano()"); }
+  public java.time.Instant toInstant() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.toInstant()"); }
+  public int getYear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.getYear()"); }
+  public int getMonthValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.getMonthValue()"); }
+  public int getDayOfMonth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.getDayOfMonth()"); }
+  public int getHour() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.getHour()"); }
+  public int getMinute() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.getMinute()"); }
+  public int getSecond() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.getSecond()"); }
+  public java.time.OffsetDateTime minus(long amountToSubtract, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.minus(long, java.time.temporal.TemporalUnit)"); }
+  public java.time.OffsetDateTime minus(java.time.temporal.TemporalAmount amountToSubtract) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.minus(java.time.temporal.TemporalAmount)"); }
+  public java.time.OffsetDateTime plus(long amountToAdd, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.plus(long, java.time.temporal.TemporalUnit)"); }
+  public java.time.OffsetDateTime plus(java.time.temporal.TemporalAmount amountToAdd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.plus(java.time.temporal.TemporalAmount)"); }
+  public long until(java.time.temporal.Temporal endExclusive, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.until(java.time.temporal.Temporal, java.time.temporal.TemporalUnit)"); }
+  public java.time.OffsetDateTime plusNanos(long nanos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.plusNanos(long)"); }
+  public java.time.OffsetDateTime plusSeconds(long seconds) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.plusSeconds(long)"); }
+  public java.time.OffsetDateTime plusDays(long days) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.plusDays(long)"); }
+  public java.time.OffsetDateTime plusHours(long hours) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.plusHours(long)"); }
+  public java.time.OffsetDateTime plusMinutes(long minutes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.plusMinutes(long)"); }
+  public java.time.OffsetDateTime minusDays(long days) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.minusDays(long)"); }
+  public java.time.OffsetDateTime minusHours(long hours) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.minusHours(long)"); }
+  public java.time.OffsetDateTime minusMinutes(long minutes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.minusMinutes(long)"); }
+  public java.time.OffsetDateTime minusSeconds(long seconds) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.minusSeconds(long)"); }
+  public java.time.OffsetDateTime minusNanos(long nanos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.minusNanos(long)"); }
+  public java.time.OffsetDateTime truncatedTo(java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.truncatedTo(java.time.temporal.TemporalUnit)"); }
+  public java.time.temporal.Temporal adjustInto(java.time.temporal.Temporal temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.adjustInto(java.time.temporal.Temporal)"); }
+  public static java.time.OffsetDateTime ofInstant(java.time.Instant instant, java.time.ZoneId zone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.ofInstant(java.time.Instant, java.time.ZoneId)"); }
+  public boolean isAfter(java.time.OffsetDateTime other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.isAfter(java.time.OffsetDateTime)"); }
+  public boolean isBefore(java.time.OffsetDateTime other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.isBefore(java.time.OffsetDateTime)"); }
+  public java.time.Month getMonth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.getMonth()"); }
+  public java.time.DayOfWeek getDayOfWeek() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.getDayOfWeek()"); }
+  public int getDayOfYear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.getDayOfYear()"); }
+  public java.time.OffsetDateTime withDayOfMonth(int dayOfMonth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.withDayOfMonth(int)"); }
+  public java.time.OffsetDateTime withDayOfYear(int dayOfYear) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.withDayOfYear(int)"); }
+  public java.time.OffsetDateTime plusWeeks(long weeks) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.plusWeeks(long)"); }
+  public java.time.OffsetDateTime withMonth(int month) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.withMonth(int)"); }
+  public java.time.OffsetDateTime plusMonths(long months) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.plusMonths(long)"); }
+  public java.time.OffsetDateTime withYear(int year) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.withYear(int)"); }
+  public java.time.OffsetDateTime plusYears(long years) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.plusYears(long)"); }
+  public java.time.OffsetDateTime minusMonths(long months) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.minusMonths(long)"); }
+  public java.time.LocalTime toLocalTime() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.toLocalTime()"); }
+  public java.time.OffsetDateTime minusYears(long years) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.minusYears(long)"); }
+  public java.time.OffsetDateTime minusWeeks(long weeks) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.minusWeeks(long)"); }
+  public long toEpochSecond() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.toEpochSecond()"); }
+  public static java.util.Comparator<java.time.OffsetDateTime> timeLineOrder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.timeLineOrder()"); }
+  public java.time.LocalDateTime toLocalDateTime() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.toLocalDateTime()"); }
+  public java.time.OffsetDateTime withHour(int hour) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.withHour(int)"); }
+  public java.time.OffsetDateTime withMinute(int minute) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.withMinute(int)"); }
+  public java.time.OffsetDateTime withSecond(int second) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.withSecond(int)"); }
+  public java.time.OffsetDateTime withNano(int nanoOfSecond) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.withNano(int)"); }
+  public java.time.LocalDate toLocalDate() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.toLocalDate()"); }
+  public java.time.ZonedDateTime toZonedDateTime() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.toZonedDateTime()"); }
+  public java.time.OffsetDateTime withOffsetSameInstant(java.time.ZoneOffset offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.withOffsetSameInstant(java.time.ZoneOffset)"); }
+  public java.time.OffsetDateTime withOffsetSameLocal(java.time.ZoneOffset offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.withOffsetSameLocal(java.time.ZoneOffset)"); }
+  public java.time.ZonedDateTime atZoneSameInstant(java.time.ZoneId zone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.atZoneSameInstant(java.time.ZoneId)"); }
+  public java.time.ZonedDateTime atZoneSimilarLocal(java.time.ZoneId zone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.atZoneSimilarLocal(java.time.ZoneId)"); }
+  public java.time.OffsetTime toOffsetTime() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetDateTime.toOffsetTime()"); }
+  < ---- END java signatures ---- >
+}

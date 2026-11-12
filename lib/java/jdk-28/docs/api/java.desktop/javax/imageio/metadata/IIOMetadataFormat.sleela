@@ -1,0 +1,116 @@
+<< lib/java/jdk-28/docs/api/java.desktop/javax/imageio/metadata/IIOMetadataFormat.sleela
+   SLeeLa file for the Java type javax.imageio.metadata.IIOMetadataFormat (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/imageio/metadata/IIOMetadataFormat.html
+   Java kind: interface
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class IIOMetadataFormat {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 4462;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.imageio.metadata.IIOMetadataFormat";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/imageio/metadata/IIOMetadataFormat.html";
+  String javaKind = "interface";
+  String javaSuper = "";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static final int CHILD_POLICY_EMPTY = 0;
+  static final int CHILD_POLICY_ALL = 1;
+  static final int CHILD_POLICY_SOME = 2;
+  static final int CHILD_POLICY_CHOICE = 3;
+  static final int CHILD_POLICY_SEQUENCE = 4;
+  static final int CHILD_POLICY_REPEAT = 5;
+  static final int CHILD_POLICY_MAX = 5;
+  static final int VALUE_NONE = 0;
+  static final int VALUE_ARBITRARY = 1;
+  static final int VALUE_RANGE = 2;
+  static final int VALUE_RANGE_MIN_INCLUSIVE_MASK = 4;
+  static final int VALUE_RANGE_MAX_INCLUSIVE_MASK = 8;
+  static final int VALUE_RANGE_MIN_INCLUSIVE = 6;
+  static final int VALUE_RANGE_MAX_INCLUSIVE = 10;
+  static final int VALUE_RANGE_MIN_MAX_INCLUSIVE = 14;
+  static final int VALUE_ENUMERATION = 16;
+  static final int VALUE_LIST = 32;
+  static final int DATATYPE_STRING = 0;
+  static final int DATATYPE_BOOLEAN = 1;
+  static final int DATATYPE_INTEGER = 2;
+  static final int DATATYPE_FLOAT = 3;
+  static final int DATATYPE_DOUBLE = 4;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public abstract java.lang.String getRootName() { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getRootName()"); }
+  public abstract java.lang.String[] getAttributeNames(java.lang.String elementName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getAttributeNames(java.lang.String)"); }
+  public abstract boolean canNodeAppear(java.lang.String elementName, javax.imageio.ImageTypeSpecifier imageType) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.canNodeAppear(java.lang.String, javax.imageio.ImageTypeSpecifier)"); }
+  public abstract int getElementMinChildren(java.lang.String elementName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getElementMinChildren(java.lang.String)"); }
+  public abstract int getElementMaxChildren(java.lang.String elementName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getElementMaxChildren(java.lang.String)"); }
+  public abstract java.lang.String getElementDescription(java.lang.String elementName, java.util.Locale locale) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getElementDescription(java.lang.String, java.util.Locale)"); }
+  public abstract int getChildPolicy(java.lang.String elementName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getChildPolicy(java.lang.String)"); }
+  public abstract java.lang.String[] getChildNames(java.lang.String elementName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getChildNames(java.lang.String)"); }
+  public abstract int getAttributeValueType(java.lang.String elementName, java.lang.String attrName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getAttributeValueType(java.lang.String, java.lang.String)"); }
+  public abstract int getAttributeDataType(java.lang.String elementName, java.lang.String attrName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getAttributeDataType(java.lang.String, java.lang.String)"); }
+  public abstract boolean isAttributeRequired(java.lang.String elementName, java.lang.String attrName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.isAttributeRequired(java.lang.String, java.lang.String)"); }
+  public abstract java.lang.String getAttributeDefaultValue(java.lang.String elementName, java.lang.String attrName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getAttributeDefaultValue(java.lang.String, java.lang.String)"); }
+  public abstract java.lang.String[] getAttributeEnumerations(java.lang.String elementName, java.lang.String attrName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getAttributeEnumerations(java.lang.String, java.lang.String)"); }
+  public abstract java.lang.String getAttributeMinValue(java.lang.String elementName, java.lang.String attrName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getAttributeMinValue(java.lang.String, java.lang.String)"); }
+  public abstract java.lang.String getAttributeMaxValue(java.lang.String elementName, java.lang.String attrName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getAttributeMaxValue(java.lang.String, java.lang.String)"); }
+  public abstract int getAttributeListMinLength(java.lang.String elementName, java.lang.String attrName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getAttributeListMinLength(java.lang.String, java.lang.String)"); }
+  public abstract int getAttributeListMaxLength(java.lang.String elementName, java.lang.String attrName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getAttributeListMaxLength(java.lang.String, java.lang.String)"); }
+  public abstract java.lang.String getAttributeDescription(java.lang.String elementName, java.lang.String attrName, java.util.Locale locale) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getAttributeDescription(java.lang.String, java.lang.String, java.util.Locale)"); }
+  public abstract int getObjectValueType(java.lang.String elementName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getObjectValueType(java.lang.String)"); }
+  public abstract java.lang.Class<?> getObjectClass(java.lang.String elementName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getObjectClass(java.lang.String)"); }
+  public abstract java.lang.Object getObjectDefaultValue(java.lang.String elementName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getObjectDefaultValue(java.lang.String)"); }
+  public abstract java.lang.Object[] getObjectEnumerations(java.lang.String elementName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getObjectEnumerations(java.lang.String)"); }
+  public abstract java.lang.Comparable<?> getObjectMinValue(java.lang.String elementName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getObjectMinValue(java.lang.String)"); }
+  public abstract java.lang.Comparable<?> getObjectMaxValue(java.lang.String elementName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getObjectMaxValue(java.lang.String)"); }
+  public abstract int getObjectArrayMinLength(java.lang.String elementName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getObjectArrayMinLength(java.lang.String)"); }
+  public abstract int getObjectArrayMaxLength(java.lang.String elementName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getObjectArrayMaxLength(java.lang.String)"); }
+  < ---- END java signatures ---- >
+}

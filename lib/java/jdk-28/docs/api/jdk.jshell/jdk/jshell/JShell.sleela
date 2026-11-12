@@ -1,0 +1,84 @@
+<< lib/java/jdk-28/docs/api/jdk.jshell/jdk/jshell/JShell.sleela
+   SLeeLa file for the Java type jdk.jshell.JShell (module jdk.jshell). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/jdk.jshell/jdk/jshell/JShell.html
+   Java kind: class; extends java.lang.Object; implements java.lang.AutoCloseable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class JShell {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 5071;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "jdk.jshell.JShell";
+  String javaModule = "jdk.jshell";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/jdk.jshell/jdk/jshell/JShell.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public static jdk.jshell.JShell.Builder builder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.builder()"); }
+  public java.util.stream.Stream<jdk.jshell.MethodSnippet> methods() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.methods()"); }
+  public jdk.jshell.Snippet.Status status(jdk.jshell.Snippet snippet) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.status(jdk.jshell.Snippet)"); }
+  public void stop() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.stop()"); }
+  public static jdk.jshell.JShell create() throws java.lang.IllegalStateException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.create()"); }
+  public java.util.stream.Stream<jdk.jshell.TypeDeclSnippet> types() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.types()"); }
+  public java.util.stream.Stream<jdk.jshell.ImportSnippet> imports() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.imports()"); }
+  public java.util.List<jdk.jshell.SnippetEvent> drop(jdk.jshell.Snippet snippet) throws java.lang.IllegalStateException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.drop(jdk.jshell.Snippet)"); }
+  public java.util.stream.Stream<jdk.jshell.Diag> diagnostics(jdk.jshell.Snippet snippet) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.diagnostics(jdk.jshell.Snippet)"); }
+  public jdk.jshell.JShell.Subscription onShutdown(java.util.function.Consumer<jdk.jshell.JShell> listener) throws java.lang.IllegalStateException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.onShutdown(java.util.function.Consumer<jdk.jshell.JShell>)"); }
+  public java.util.List<jdk.jshell.SnippetEvent> eval(java.lang.String input) throws java.lang.IllegalStateException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.eval(java.lang.String)"); }
+  public java.util.stream.Stream<jdk.jshell.VarSnippet> variables() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.variables()"); }
+  public jdk.jshell.SourceCodeAnalysis sourceCodeAnalysis() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.sourceCodeAnalysis()"); }
+  public void addToClasspath(java.lang.String path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.addToClasspath(java.lang.String)"); }
+  public java.util.stream.Stream<jdk.jshell.Snippet> snippets() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.snippets()"); }
+  public java.lang.String varValue(jdk.jshell.VarSnippet snippet) throws java.lang.IllegalStateException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.varValue(jdk.jshell.VarSnippet)"); }
+  public java.util.stream.Stream<java.lang.String> unresolvedDependencies(jdk.jshell.DeclarationSnippet snippet) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.unresolvedDependencies(jdk.jshell.DeclarationSnippet)"); }
+  public jdk.jshell.JShell.Subscription onSnippetEvent(java.util.function.Consumer<jdk.jshell.SnippetEvent> listener) throws java.lang.IllegalStateException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.onSnippetEvent(java.util.function.Consumer<jdk.jshell.SnippetEvent>)"); }
+  public void unsubscribe(jdk.jshell.JShell.Subscription token) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.unsubscribe(jdk.jshell.JShell.Subscription)"); }
+  < ---- END java signatures ---- >
+}

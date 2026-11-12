@@ -1,0 +1,122 @@
+<< lib/java/jdk-28/docs/api/java.base/java/time/DayOfWeek.sleela
+   SLeeLa file for the Java type java.time.DayOfWeek (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/time/DayOfWeek.html
+   Java kind: enum; extends java.lang.Enum; implements java.time.temporal.TemporalAccessor, java.time.temporal.TemporalAdjuster
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class DayOfWeek {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 3026;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.time.DayOfWeek";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/time/DayOfWeek.html";
+  String javaKind = "enum";
+  String javaSuper = "java.lang.Enum";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  << Complete enum: one static final instance per constant (so identity
+     and == hold for values / valueOf / the constants), with the
+     java.lang.Enum behavior. values() and valueOf(name) are static, as
+     in Java: DayOfWeek.valueOf(...), DayOfWeek.values(), and the constants are
+     static final fields. >>
+  static final DayOfWeek MONDAY = new DayOfWeek("MONDAY", 0);
+  static final DayOfWeek TUESDAY = new DayOfWeek("TUESDAY", 1);
+  static final DayOfWeek WEDNESDAY = new DayOfWeek("WEDNESDAY", 2);
+  static final DayOfWeek THURSDAY = new DayOfWeek("THURSDAY", 3);
+  static final DayOfWeek FRIDAY = new DayOfWeek("FRIDAY", 4);
+  static final DayOfWeek SATURDAY = new DayOfWeek("SATURDAY", 5);
+  static final DayOfWeek SUNDAY = new DayOfWeek("SUNDAY", 6);
+  String enumName;
+  int enumOrdinal;
+  DayOfWeek(String name, int ordinal) { this.enumName = name; this.enumOrdinal = ordinal; }
+  String name() { return this.enumName; }
+  int ordinal() { return this.enumOrdinal; }
+  String toString() { return this.enumName; }
+  int compareTo(DayOfWeek o) { return this.enumOrdinal - o.enumOrdinal; }
+  boolean equals(Any other) { return this == other; }
+  int hashCode() { return this.enumOrdinal * 31 + 17; }
+  public static DayOfWeek[] values() {
+    DayOfWeek[] v = new DayOfWeek[7];
+    v[0] = MONDAY;
+    v[1] = TUESDAY;
+    v[2] = WEDNESDAY;
+    v[3] = THURSDAY;
+    v[4] = FRIDAY;
+    v[5] = SATURDAY;
+    v[6] = SUNDAY;
+    return v;
+  }
+  public static DayOfWeek valueOf(String name) {
+    if (name == null) { throw new NullPointerException("Name is null"); }
+    if (name == "MONDAY") { return MONDAY; }
+    if (name == "TUESDAY") { return TUESDAY; }
+    if (name == "WEDNESDAY") { return WEDNESDAY; }
+    if (name == "THURSDAY") { return THURSDAY; }
+    if (name == "FRIDAY") { return FRIDAY; }
+    if (name == "SATURDAY") { return SATURDAY; }
+    if (name == "SUNDAY") { return SUNDAY; }
+    throw new IllegalArgumentException("No enum constant java.time.DayOfWeek." + name);
+  }
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public int get(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.DayOfWeek.get(java.time.temporal.TemporalField)"); }
+  public long getLong(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.DayOfWeek.getLong(java.time.temporal.TemporalField)"); }
+  public static java.time.DayOfWeek of(int dayOfWeek) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.DayOfWeek.of(int)"); }
+  public int getValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.DayOfWeek.getValue()"); }
+  public static java.time.DayOfWeek from(java.time.temporal.TemporalAccessor temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.DayOfWeek.from(java.time.temporal.TemporalAccessor)"); }
+  public boolean isSupported(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.DayOfWeek.isSupported(java.time.temporal.TemporalField)"); }
+  public <R> R query(java.time.temporal.TemporalQuery<R> query) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.DayOfWeek.query(java.time.temporal.TemporalQuery<R>)"); }
+  public java.time.temporal.ValueRange range(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.DayOfWeek.range(java.time.temporal.TemporalField)"); }
+  public java.lang.String getDisplayName(java.time.format.TextStyle style, java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.DayOfWeek.getDisplayName(java.time.format.TextStyle, java.util.Locale)"); }
+  public java.time.DayOfWeek minus(long days) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.DayOfWeek.minus(long)"); }
+  public java.time.DayOfWeek plus(long days) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.DayOfWeek.plus(long)"); }
+  public java.time.temporal.Temporal adjustInto(java.time.temporal.Temporal temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.DayOfWeek.adjustInto(java.time.temporal.Temporal)"); }
+  < ---- END java signatures ---- >
+}

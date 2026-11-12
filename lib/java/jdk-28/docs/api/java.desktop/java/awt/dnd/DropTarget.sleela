@@ -1,0 +1,101 @@
+<< lib/java/jdk-28/docs/api/java.desktop/java/awt/dnd/DropTarget.sleela
+   SLeeLa file for the Java type java.awt.dnd.DropTarget (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/awt/dnd/DropTarget.html
+   Java kind: class; extends java.lang.Object; implements java.awt.dnd.DropTargetListener, java.io.Serializable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class DropTarget {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 3437;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.awt.dnd.DropTarget";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/awt/dnd/DropTarget.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public DropTarget(java.awt.Component c, int ops, java.awt.dnd.DropTargetListener dtl) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.<init>(java.awt.Component, int, java.awt.dnd.DropTargetListener)"); }
+  public DropTarget(java.awt.Component c, java.awt.dnd.DropTargetListener dtl) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.<init>(java.awt.Component, java.awt.dnd.DropTargetListener)"); }
+  public DropTarget() throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.<init>()"); }
+  public DropTarget(java.awt.Component c, int ops, java.awt.dnd.DropTargetListener dtl, boolean act) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.<init>(java.awt.Component, int, java.awt.dnd.DropTargetListener, boolean)"); }
+  public DropTarget(java.awt.Component c, int ops, java.awt.dnd.DropTargetListener dtl, boolean act, java.awt.datatransfer.FlavorMap fm) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.<init>(java.awt.Component, int, java.awt.dnd.DropTargetListener, boolean, java.awt.datatransfer.FlavorMap)"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public boolean isActive() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.isActive()"); }
+  public synchronized java.awt.Component getComponent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.getComponent()"); }
+  public synchronized void drop(java.awt.dnd.DropTargetDropEvent dtde) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.drop(java.awt.dnd.DropTargetDropEvent)"); }
+  public synchronized void setComponent(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.setComponent(java.awt.Component)"); }
+  @JavaProtected
+  java.awt.dnd.DropTargetContext createDropTargetContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.createDropTargetContext()"); }
+  public void setDefaultActions(int ops) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.setDefaultActions(int)"); }
+  public synchronized void addDropTargetListener(java.awt.dnd.DropTargetListener dtl) throws java.util.TooManyListenersException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.addDropTargetListener(java.awt.dnd.DropTargetListener)"); }
+  public synchronized void setActive(boolean isActive) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.setActive(boolean)"); }
+  @JavaProtected
+  void clearAutoscroll() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.clearAutoscroll()"); }
+  public java.awt.dnd.DropTargetContext getDropTargetContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.getDropTargetContext()"); }
+  public synchronized void dragEnter(java.awt.dnd.DropTargetDragEvent dtde) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.dragEnter(java.awt.dnd.DropTargetDragEvent)"); }
+  @JavaProtected
+  void initializeAutoscrolling(java.awt.Point p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.initializeAutoscrolling(java.awt.Point)"); }
+  public synchronized void dragOver(java.awt.dnd.DropTargetDragEvent dtde) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.dragOver(java.awt.dnd.DropTargetDragEvent)"); }
+  @JavaProtected
+  void updateAutoscroll(java.awt.Point dragCursorLocn) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.updateAutoscroll(java.awt.Point)"); }
+  public synchronized void dropActionChanged(java.awt.dnd.DropTargetDragEvent dtde) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.dropActionChanged(java.awt.dnd.DropTargetDragEvent)"); }
+  public synchronized void dragExit(java.awt.dnd.DropTargetEvent dte) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.dragExit(java.awt.dnd.DropTargetEvent)"); }
+  @JavaProtected
+  java.awt.dnd.DropTarget.DropTargetAutoScroller createDropTargetAutoScroller(java.awt.Component c, java.awt.Point p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.createDropTargetAutoScroller(java.awt.Component, java.awt.Point)"); }
+  public int getDefaultActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.getDefaultActions()"); }
+  public synchronized void removeDropTargetListener(java.awt.dnd.DropTargetListener dtl) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.removeDropTargetListener(java.awt.dnd.DropTargetListener)"); }
+  public void setFlavorMap(java.awt.datatransfer.FlavorMap fm) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.setFlavorMap(java.awt.datatransfer.FlavorMap)"); }
+  public java.awt.datatransfer.FlavorMap getFlavorMap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.getFlavorMap()"); }
+  public void addNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.addNotify()"); }
+  public void removeNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.removeNotify()"); }
+  < ---- END java signatures ---- >
+}

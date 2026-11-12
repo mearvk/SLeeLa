@@ -1,0 +1,87 @@
+<< lib/java/jdk-28/docs/api/java.desktop/java/awt/image/PixelGrabber.sleela
+   SLeeLa file for the Java type java.awt.image.PixelGrabber (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/awt/image/PixelGrabber.html
+   Java kind: class; extends java.lang.Object; implements java.awt.image.ImageConsumer
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class PixelGrabber {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 7016;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.awt.image.PixelGrabber";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/awt/image/PixelGrabber.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public PixelGrabber(java.awt.Image img, int x, int y, int w, int h, boolean forceRGB) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PixelGrabber.<init>(java.awt.Image, int, int, int, int, boolean)"); }
+  public PixelGrabber(java.awt.image.ImageProducer ip, int x, int y, int w, int h, int[] pix, int off, int scansize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PixelGrabber.<init>(java.awt.image.ImageProducer, int, int, int, int, int[], int, int)"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public void setProperties(java.util.Hashtable<?, ?> props) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PixelGrabber.setProperties(java.util.Hashtable<?, ?>)"); }
+  public synchronized int status() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PixelGrabber.status()"); }
+  public synchronized int getHeight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PixelGrabber.getHeight()"); }
+  public synchronized java.awt.image.ColorModel getColorModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PixelGrabber.getColorModel()"); }
+  public synchronized int getStatus() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PixelGrabber.getStatus()"); }
+  public synchronized java.lang.Object getPixels() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PixelGrabber.getPixels()"); }
+  public void setPixels(int srcX, int srcY, int srcW, int srcH, java.awt.image.ColorModel model, int[] pixels, int srcOff, int srcScan) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PixelGrabber.setPixels(int, int, int, int, java.awt.image.ColorModel, int[], int, int)"); }
+  public void setPixels(int srcX, int srcY, int srcW, int srcH, java.awt.image.ColorModel model, byte[] pixels, int srcOff, int srcScan) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PixelGrabber.setPixels(int, int, int, int, java.awt.image.ColorModel, byte[], int, int)"); }
+  public synchronized int getWidth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PixelGrabber.getWidth()"); }
+  public void setHints(int hints) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PixelGrabber.setHints(int)"); }
+  public void setDimensions(int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PixelGrabber.setDimensions(int, int)"); }
+  public void setColorModel(java.awt.image.ColorModel model) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PixelGrabber.setColorModel(java.awt.image.ColorModel)"); }
+  public synchronized void imageComplete(int status) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PixelGrabber.imageComplete(int)"); }
+  public synchronized boolean grabPixels(long ms) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PixelGrabber.grabPixels(long)"); }
+  public boolean grabPixels() throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PixelGrabber.grabPixels()"); }
+  public synchronized void startGrabbing() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PixelGrabber.startGrabbing()"); }
+  public synchronized void abortGrabbing() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PixelGrabber.abortGrabbing()"); }
+  < ---- END java signatures ---- >
+}

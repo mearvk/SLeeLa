@@ -1,0 +1,103 @@
+<< lib/java/jdk-28/docs/api/java.desktop/javax/swing/DefaultListModel.sleela
+   SLeeLa file for the Java type javax.swing.DefaultListModel (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/DefaultListModel.html
+   Java kind: class; extends javax.swing.AbstractListModel
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class DefaultListModel<E> {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 3094;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.swing.DefaultListModel";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/DefaultListModel.html";
+  String javaKind = "class";
+  String javaSuper = "javax.swing.AbstractListModel";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public DefaultListModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public E remove(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.remove(int)"); }
+  public int size() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.size()"); }
+  public E get(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.get(int)"); }
+  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.toString()"); }
+  public int indexOf(java.lang.Object elem) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.indexOf(java.lang.Object)"); }
+  public int indexOf(java.lang.Object elem, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.indexOf(java.lang.Object, int)"); }
+  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.clear()"); }
+  public int lastIndexOf(java.lang.Object elem) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.lastIndexOf(java.lang.Object)"); }
+  public int lastIndexOf(java.lang.Object elem, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.lastIndexOf(java.lang.Object, int)"); }
+  public boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.isEmpty()"); }
+  public void add(int index, E element) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.add(int, E)"); }
+  public java.lang.Object[] toArray() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.toArray()"); }
+  public boolean contains(java.lang.Object elem) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.contains(java.lang.Object)"); }
+  public java.util.Enumeration<E> elements() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.elements()"); }
+  public void addAll(java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.addAll(java.util.Collection<? extends E>)"); }
+  public void addAll(int index, java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.addAll(int, java.util.Collection<? extends E>)"); }
+  public void trimToSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.trimToSize()"); }
+  public E set(int index, E element) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.set(int, E)"); }
+  public int getSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.getSize()"); }
+  public int capacity() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.capacity()"); }
+  public void ensureCapacity(int minCapacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.ensureCapacity(int)"); }
+  public E elementAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.elementAt(int)"); }
+  public void removeRange(int fromIndex, int toIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.removeRange(int, int)"); }
+  public void copyInto(java.lang.Object[] anArray) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.copyInto(java.lang.Object[])"); }
+  public void setSize(int newSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.setSize(int)"); }
+  public E firstElement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.firstElement()"); }
+  public E lastElement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.lastElement()"); }
+  public void setElementAt(E element, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.setElementAt(E, int)"); }
+  public void insertElementAt(E element, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.insertElementAt(E, int)"); }
+  public void removeElementAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.removeElementAt(int)"); }
+  public void removeAllElements() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.removeAllElements()"); }
+  public void addElement(E element) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.addElement(E)"); }
+  public boolean removeElement(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.removeElement(java.lang.Object)"); }
+  public E getElementAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.getElementAt(int)"); }
+  < ---- END java signatures ---- >
+}

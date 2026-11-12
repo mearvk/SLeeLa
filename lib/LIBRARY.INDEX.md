@@ -1,5 +1,7 @@
 # SLeeLa /lib Library Index
 
+> Revision 1.03 adds `lib/java/jdk-28/`: one SLeeLa file per public Java SE / JDK 28 type (4,721 files, 1:1), at the online API path `lib/java/jdk-28/docs/api/<module>/<package>/<Type>.sleela`, each naming its JDK 28 API page as Java Source. The `docs/api` segment keeps the real `lib/java/java/...` units preferred by the loader, so no existing program becomes ambiguous. 4,721 new source units (counts: 13373 to **18094** sources; 13457 to **18178** total records; 121 packages).
+>
 > Revision 1.02 adds `lib/java/implementations/java/lang/JavaStringMethods.sleela`, the `java.lang.String` instance methods for built-in Strings (SLEELA.syntax section 41; sources 13373, symbols 13457).
 >
 > Revision 1.01 closes the short-side gap left by revision 1.00: `SLShortBook.isLongTerm`/`qtyLongTerm` (`lib/advantage/trading-actions-on-verb/SLShortBook.sleela`) mirror `SLLongBook`'s wording and behavior exactly, and `SLTermPotency`'s three methods (`termPotencyBp`, `agePotencyBp`, `atLeastHalfLongTerm`) are each overloaded for both book types (SLeeLa 3.0 overload resolution by argument type). Two new courseware entries (5-6) exercise the short-side overloads, including a direct check that the short-side readings exactly match the long-side readings at identical lot structure and ages -- the two overloads of each method are proven consistent with each other, not just independently correct -- plus the short-side counterpart of the empty-book/invalid-day and FIFO-cover entries. Gate `test-suites/test-long-term-potencies.sh` now covers 6 entries. Two new source units (counts: 13370 to **13372** sources; 13454 to **13456** total records; 121 packages).
@@ -77,9 +79,9 @@
 
 **Revision:** 0.82  
 **Packages:** 121  
-**SLeeLa source units:** 13373  
+**SLeeLa source units:** 18094  
 **Module-facade symbols:** 84  
-**Total symbol records:** 13457  
+**Total symbol records:** 18178  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.66 brings three big-number improvements that make a 10,000,000-digit

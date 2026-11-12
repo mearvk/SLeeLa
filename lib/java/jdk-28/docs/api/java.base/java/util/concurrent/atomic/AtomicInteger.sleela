@@ -1,0 +1,104 @@
+<< lib/java/jdk-28/docs/api/java.base/java/util/concurrent/atomic/AtomicInteger.sleela
+   SLeeLa file for the Java type java.util.concurrent.atomic.AtomicInteger (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/atomic/AtomicInteger.html
+   Java kind: class; extends java.lang.Number; implements java.io.Serializable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class AtomicInteger {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 1459;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.concurrent.atomic.AtomicInteger";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/atomic/AtomicInteger.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Number";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public AtomicInteger(int initialValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.<init>(int)"); }
+  public AtomicInteger() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public final int get() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.get()"); }
+  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.toString()"); }
+  public int intValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.intValue()"); }
+  public long longValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.longValue()"); }
+  public float floatValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.floatValue()"); }
+  public double doubleValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.doubleValue()"); }
+  public final void set(int newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.set(int)"); }
+  public final int getOpaque() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.getOpaque()"); }
+  public final void setOpaque(int newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.setOpaque(int)"); }
+  public final int getAcquire() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.getAcquire()"); }
+  public final void setRelease(int newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.setRelease(int)"); }
+  public final boolean compareAndSet(int expectedValue, int newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.compareAndSet(int, int)"); }
+  public final int compareAndExchange(int expectedValue, int newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.compareAndExchange(int, int)"); }
+  public final int compareAndExchangeAcquire(int expectedValue, int newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.compareAndExchangeAcquire(int, int)"); }
+  public final int compareAndExchangeRelease(int expectedValue, int newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.compareAndExchangeRelease(int, int)"); }
+  public final boolean weakCompareAndSetPlain(int expectedValue, int newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.weakCompareAndSetPlain(int, int)"); }
+  public final boolean weakCompareAndSet(int expectedValue, int newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.weakCompareAndSet(int, int)"); }
+  public final boolean weakCompareAndSetAcquire(int expectedValue, int newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.weakCompareAndSetAcquire(int, int)"); }
+  public final boolean weakCompareAndSetRelease(int expectedValue, int newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.weakCompareAndSetRelease(int, int)"); }
+  public final int getAndSet(int newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.getAndSet(int)"); }
+  public final int getAndAdd(int delta) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.getAndAdd(int)"); }
+  public final int incrementAndGet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.incrementAndGet()"); }
+  public final boolean weakCompareAndSetVolatile(int expectedValue, int newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.weakCompareAndSetVolatile(int, int)"); }
+  public final void lazySet(int newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.lazySet(int)"); }
+  public final int getAndIncrement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.getAndIncrement()"); }
+  public final int getAndDecrement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.getAndDecrement()"); }
+  public final int decrementAndGet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.decrementAndGet()"); }
+  public final int addAndGet(int delta) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.addAndGet(int)"); }
+  public final int getAndUpdate(java.util.function.IntUnaryOperator updateFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.getAndUpdate(java.util.function.IntUnaryOperator)"); }
+  public final int updateAndGet(java.util.function.IntUnaryOperator updateFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.updateAndGet(java.util.function.IntUnaryOperator)"); }
+  public final int getAndAccumulate(int x, java.util.function.IntBinaryOperator accumulatorFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.getAndAccumulate(int, java.util.function.IntBinaryOperator)"); }
+  public final int accumulateAndGet(int x, java.util.function.IntBinaryOperator accumulatorFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.accumulateAndGet(int, java.util.function.IntBinaryOperator)"); }
+  public final int getPlain() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.getPlain()"); }
+  public final void setPlain(int newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicInteger.setPlain(int)"); }
+  < ---- END java signatures ---- >
+}

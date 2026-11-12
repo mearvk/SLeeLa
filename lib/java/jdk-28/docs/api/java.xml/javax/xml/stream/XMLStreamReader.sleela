@@ -1,0 +1,108 @@
+<< lib/java/jdk-28/docs/api/java.xml/javax/xml/stream/XMLStreamReader.sleela
+   SLeeLa file for the Java type javax.xml.stream.XMLStreamReader (module java.xml). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.xml/javax/xml/stream/XMLStreamReader.html
+   Java kind: interface; implements javax.xml.stream.XMLStreamConstants
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class XMLStreamReader {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9884;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.xml.stream.XMLStreamReader";
+  String javaModule = "java.xml";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.xml/javax/xml/stream/XMLStreamReader.html";
+  String javaKind = "interface";
+  String javaSuper = "";
+
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public abstract javax.xml.namespace.QName getName() { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getName()"); }
+  public abstract java.lang.Object getProperty(java.lang.String name) throws java.lang.IllegalArgumentException { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getProperty(java.lang.String)"); }
+  public abstract boolean hasNext() throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.hasNext()"); }
+  public abstract int next() throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.next()"); }
+  public abstract javax.xml.stream.Location getLocation() { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getLocation()"); }
+  public abstract java.lang.String getEncoding() { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getEncoding()"); }
+  public abstract int nextTag() throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.nextTag()"); }
+  public abstract java.lang.String getText() { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getText()"); }
+  public abstract boolean isStandalone() { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.isStandalone()"); }
+  public abstract java.lang.String getVersion() { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getVersion()"); }
+  public abstract int getTextLength() { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getTextLength()"); }
+  public abstract boolean hasName() { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.hasName()"); }
+  public abstract java.lang.String getPrefix() { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getPrefix()"); }
+  public abstract javax.xml.namespace.QName getAttributeName(int index) { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getAttributeName(int)"); }
+  public abstract int getAttributeCount() { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getAttributeCount()"); }
+  public abstract java.lang.String getAttributeType(int index) { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getAttributeType(int)"); }
+  public abstract int getEventType() { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getEventType()"); }
+  public abstract boolean isStartElement() { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.isStartElement()"); }
+  public abstract boolean isEndElement() { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.isEndElement()"); }
+  public abstract boolean isCharacters() { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.isCharacters()"); }
+  public abstract java.lang.String getElementText() throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getElementText()"); }
+  public abstract boolean isWhiteSpace() { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.isWhiteSpace()"); }
+  public abstract java.lang.String getAttributeValue(java.lang.String namespaceURI, java.lang.String localName) { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getAttributeValue(java.lang.String, java.lang.String)"); }
+  public abstract java.lang.String getAttributeValue(int index) { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getAttributeValue(int)"); }
+  public abstract java.lang.String getAttributeNamespace(int index) { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getAttributeNamespace(int)"); }
+  public abstract java.lang.String getAttributeLocalName(int index) { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getAttributeLocalName(int)"); }
+  public abstract java.lang.String getAttributePrefix(int index) { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getAttributePrefix(int)"); }
+  public abstract boolean isAttributeSpecified(int index) { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.isAttributeSpecified(int)"); }
+  public abstract int getNamespaceCount() { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getNamespaceCount()"); }
+  public abstract java.lang.String getNamespacePrefix(int index) { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getNamespacePrefix(int)"); }
+  public abstract javax.xml.namespace.NamespaceContext getNamespaceContext() { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getNamespaceContext()"); }
+  public abstract char[] getTextCharacters() { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getTextCharacters()"); }
+  public abstract int getTextCharacters(int sourceStart, char[] target, int targetStart, int length) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getTextCharacters(int, char[], int, int)"); }
+  public abstract int getTextStart() { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getTextStart()"); }
+  public abstract boolean hasText() { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.hasText()"); }
+  public abstract boolean standaloneSet() { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.standaloneSet()"); }
+  public abstract java.lang.String getCharacterEncodingScheme() { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getCharacterEncodingScheme()"); }
+  public abstract java.lang.String getPITarget() { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getPITarget()"); }
+  public abstract java.lang.String getPIData() { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getPIData()"); }
+  public abstract java.lang.String getNamespaceURI(int index) { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getNamespaceURI(int)"); }
+  public abstract java.lang.String getNamespaceURI() { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getNamespaceURI()"); }
+  public abstract java.lang.String getNamespaceURI(java.lang.String prefix) { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getNamespaceURI(java.lang.String)"); }
+  public abstract java.lang.String getLocalName() { throw new AbstractMethodError("javax.xml.stream.XMLStreamReader.getLocalName()"); }
+  < ---- END java signatures ---- >
+}

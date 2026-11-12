@@ -1,0 +1,94 @@
+<< lib/java/jdk-28/docs/api/java.management.rmi/javax/management/remote/rmi/RMIConnectionImpl_Stub.sleela
+   SLeeLa file for the Java type javax.management.remote.rmi.RMIConnectionImpl_Stub (module java.management.rmi). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.management.rmi/javax/management/remote/rmi/RMIConnectionImpl_Stub.html
+   Java kind: class; extends java.rmi.server.RemoteStub; implements javax.management.remote.rmi.RMIConnection
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class RMIConnectionImpl_Stub {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 7372;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.management.remote.rmi.RMIConnectionImpl_Stub";
+  String javaModule = "java.management.rmi";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.management.rmi/javax/management/remote/rmi/RMIConnectionImpl_Stub.html";
+  String javaKind = "class";
+  String javaSuper = "java.rmi.server.RemoteStub";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public RMIConnectionImpl_Stub(java.rmi.server.RemoteRef ref) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectionImpl_Stub.<init>(java.rmi.server.RemoteRef)"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public boolean isRegistered(javax.management.ObjectName $param_ObjectName_1, javax.security.auth.Subject $param_Subject_2) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectionImpl_Stub.isRegistered(javax.management.ObjectName, javax.security.auth.Subject)"); }
+  public javax.management.AttributeList getAttributes(javax.management.ObjectName $param_ObjectName_1, java.lang.String[] $param_arrayOf_String_2, javax.security.auth.Subject $param_Subject_3) throws java.io.IOException, javax.management.InstanceNotFoundException, javax.management.ReflectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectionImpl_Stub.getAttributes(javax.management.ObjectName, java.lang.String[], javax.security.auth.Subject)"); }
+  public void setAttribute(javax.management.ObjectName $param_ObjectName_1, java.rmi.MarshalledObject $param_MarshalledObject_2, javax.security.auth.Subject $param_Subject_3) throws java.io.IOException, javax.management.AttributeNotFoundException, javax.management.InstanceNotFoundException, javax.management.InvalidAttributeValueException, javax.management.MBeanException, javax.management.ReflectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectionImpl_Stub.setAttribute(javax.management.ObjectName, java.rmi.MarshalledObject, javax.security.auth.Subject)"); }
+  public java.lang.Object getAttribute(javax.management.ObjectName $param_ObjectName_1, java.lang.String $param_String_2, javax.security.auth.Subject $param_Subject_3) throws java.io.IOException, javax.management.AttributeNotFoundException, javax.management.InstanceNotFoundException, javax.management.MBeanException, javax.management.ReflectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectionImpl_Stub.getAttribute(javax.management.ObjectName, java.lang.String, javax.security.auth.Subject)"); }
+  public javax.management.AttributeList setAttributes(javax.management.ObjectName $param_ObjectName_1, java.rmi.MarshalledObject $param_MarshalledObject_2, javax.security.auth.Subject $param_Subject_3) throws java.io.IOException, javax.management.InstanceNotFoundException, javax.management.ReflectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectionImpl_Stub.setAttributes(javax.management.ObjectName, java.rmi.MarshalledObject, javax.security.auth.Subject)"); }
+  public java.lang.String getConnectionId() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectionImpl_Stub.getConnectionId()"); }
+  public java.lang.Integer[] addNotificationListeners(javax.management.ObjectName[] $param_arrayOf_ObjectName_1, java.rmi.MarshalledObject[] $param_arrayOf_MarshalledObject_2, javax.security.auth.Subject[] $param_arrayOf_Subject_3) throws java.io.IOException, javax.management.InstanceNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectionImpl_Stub.addNotificationListeners(javax.management.ObjectName[], java.rmi.MarshalledObject[], javax.security.auth.Subject[])"); }
+  public void removeNotificationListeners(javax.management.ObjectName $param_ObjectName_1, java.lang.Integer[] $param_arrayOf_Integer_2, javax.security.auth.Subject $param_Subject_3) throws java.io.IOException, javax.management.InstanceNotFoundException, javax.management.ListenerNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectionImpl_Stub.removeNotificationListeners(javax.management.ObjectName, java.lang.Integer[], javax.security.auth.Subject)"); }
+  public javax.management.remote.NotificationResult fetchNotifications(long $param_long_1, int $param_int_2, long $param_long_3) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectionImpl_Stub.fetchNotifications(long, int, long)"); }
+  public java.util.Set queryNames(javax.management.ObjectName $param_ObjectName_1, java.rmi.MarshalledObject $param_MarshalledObject_2, javax.security.auth.Subject $param_Subject_3) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectionImpl_Stub.queryNames(javax.management.ObjectName, java.rmi.MarshalledObject, javax.security.auth.Subject)"); }
+  public javax.management.ObjectInstance createMBean(java.lang.String $param_String_1, javax.management.ObjectName $param_ObjectName_2, javax.management.ObjectName $param_ObjectName_3, javax.security.auth.Subject $param_Subject_4) throws java.io.IOException, javax.management.InstanceAlreadyExistsException, javax.management.InstanceNotFoundException, javax.management.MBeanException, javax.management.MBeanRegistrationException, javax.management.NotCompliantMBeanException, javax.management.ReflectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectionImpl_Stub.createMBean(java.lang.String, javax.management.ObjectName, javax.management.ObjectName, javax.security.auth.Subject)"); }
+  public javax.management.ObjectInstance createMBean(java.lang.String $param_String_1, javax.management.ObjectName $param_ObjectName_2, javax.security.auth.Subject $param_Subject_3) throws java.io.IOException, javax.management.InstanceAlreadyExistsException, javax.management.MBeanException, javax.management.MBeanRegistrationException, javax.management.NotCompliantMBeanException, javax.management.ReflectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectionImpl_Stub.createMBean(java.lang.String, javax.management.ObjectName, javax.security.auth.Subject)"); }
+  public javax.management.ObjectInstance createMBean(java.lang.String $param_String_1, javax.management.ObjectName $param_ObjectName_2, java.rmi.MarshalledObject $param_MarshalledObject_3, java.lang.String[] $param_arrayOf_String_4, javax.security.auth.Subject $param_Subject_5) throws java.io.IOException, javax.management.InstanceAlreadyExistsException, javax.management.MBeanException, javax.management.MBeanRegistrationException, javax.management.NotCompliantMBeanException, javax.management.ReflectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectionImpl_Stub.createMBean(java.lang.String, javax.management.ObjectName, java.rmi.MarshalledObject, java.lang.String[], javax.security.auth.Subject)"); }
+  public javax.management.ObjectInstance createMBean(java.lang.String $param_String_1, javax.management.ObjectName $param_ObjectName_2, javax.management.ObjectName $param_ObjectName_3, java.rmi.MarshalledObject $param_MarshalledObject_4, java.lang.String[] $param_arrayOf_String_5, javax.security.auth.Subject $param_Subject_6) throws java.io.IOException, javax.management.InstanceAlreadyExistsException, javax.management.InstanceNotFoundException, javax.management.MBeanException, javax.management.MBeanRegistrationException, javax.management.NotCompliantMBeanException, javax.management.ReflectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectionImpl_Stub.createMBean(java.lang.String, javax.management.ObjectName, javax.management.ObjectName, java.rmi.MarshalledObject, java.lang.String[], javax.security.auth.Subject)"); }
+  public void unregisterMBean(javax.management.ObjectName $param_ObjectName_1, javax.security.auth.Subject $param_Subject_2) throws java.io.IOException, javax.management.InstanceNotFoundException, javax.management.MBeanRegistrationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectionImpl_Stub.unregisterMBean(javax.management.ObjectName, javax.security.auth.Subject)"); }
+  public javax.management.ObjectInstance getObjectInstance(javax.management.ObjectName $param_ObjectName_1, javax.security.auth.Subject $param_Subject_2) throws java.io.IOException, javax.management.InstanceNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectionImpl_Stub.getObjectInstance(javax.management.ObjectName, javax.security.auth.Subject)"); }
+  public java.util.Set queryMBeans(javax.management.ObjectName $param_ObjectName_1, java.rmi.MarshalledObject $param_MarshalledObject_2, javax.security.auth.Subject $param_Subject_3) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectionImpl_Stub.queryMBeans(javax.management.ObjectName, java.rmi.MarshalledObject, javax.security.auth.Subject)"); }
+  public java.lang.Integer getMBeanCount(javax.security.auth.Subject $param_Subject_1) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectionImpl_Stub.getMBeanCount(javax.security.auth.Subject)"); }
+  public java.lang.String getDefaultDomain(javax.security.auth.Subject $param_Subject_1) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectionImpl_Stub.getDefaultDomain(javax.security.auth.Subject)"); }
+  public java.lang.String[] getDomains(javax.security.auth.Subject $param_Subject_1) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectionImpl_Stub.getDomains(javax.security.auth.Subject)"); }
+  public void addNotificationListener(javax.management.ObjectName $param_ObjectName_1, javax.management.ObjectName $param_ObjectName_2, java.rmi.MarshalledObject $param_MarshalledObject_3, java.rmi.MarshalledObject $param_MarshalledObject_4, javax.security.auth.Subject $param_Subject_5) throws java.io.IOException, javax.management.InstanceNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectionImpl_Stub.addNotificationListener(javax.management.ObjectName, javax.management.ObjectName, java.rmi.MarshalledObject, java.rmi.MarshalledObject, javax.security.auth.Subject)"); }
+  public void removeNotificationListener(javax.management.ObjectName $param_ObjectName_1, javax.management.ObjectName $param_ObjectName_2, javax.security.auth.Subject $param_Subject_3) throws java.io.IOException, javax.management.InstanceNotFoundException, javax.management.ListenerNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectionImpl_Stub.removeNotificationListener(javax.management.ObjectName, javax.management.ObjectName, javax.security.auth.Subject)"); }
+  public void removeNotificationListener(javax.management.ObjectName $param_ObjectName_1, javax.management.ObjectName $param_ObjectName_2, java.rmi.MarshalledObject $param_MarshalledObject_3, java.rmi.MarshalledObject $param_MarshalledObject_4, javax.security.auth.Subject $param_Subject_5) throws java.io.IOException, javax.management.InstanceNotFoundException, javax.management.ListenerNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectionImpl_Stub.removeNotificationListener(javax.management.ObjectName, javax.management.ObjectName, java.rmi.MarshalledObject, java.rmi.MarshalledObject, javax.security.auth.Subject)"); }
+  public javax.management.MBeanInfo getMBeanInfo(javax.management.ObjectName $param_ObjectName_1, javax.security.auth.Subject $param_Subject_2) throws java.io.IOException, javax.management.InstanceNotFoundException, javax.management.IntrospectionException, javax.management.ReflectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectionImpl_Stub.getMBeanInfo(javax.management.ObjectName, javax.security.auth.Subject)"); }
+  public boolean isInstanceOf(javax.management.ObjectName $param_ObjectName_1, java.lang.String $param_String_2, javax.security.auth.Subject $param_Subject_3) throws java.io.IOException, javax.management.InstanceNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectionImpl_Stub.isInstanceOf(javax.management.ObjectName, java.lang.String, javax.security.auth.Subject)"); }
+  < ---- END java signatures ---- >
+}

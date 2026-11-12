@@ -1,0 +1,101 @@
+<< lib/java/jdk-28/docs/api/java.base/java/util/Date.sleela
+   SLeeLa file for the Java type java.util.Date (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/Date.html
+   Java kind: class; extends java.lang.Object; implements java.io.Serializable, java.lang.Cloneable, java.lang.Comparable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Date {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 2990;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.Date";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/Date.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public Date(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.<init>(java.lang.String)"); }
+  public Date(int year, int month, int date, int hrs, int min, int sec) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.<init>(int, int, int, int, int, int)"); }
+  public Date(int year, int month, int date, int hrs, int min) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.<init>(int, int, int, int, int)"); }
+  public Date() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.<init>()"); }
+  public Date(long date) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.<init>(long)"); }
+  public Date(int year, int month, int date) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.<init>(int, int, int)"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.equals(java.lang.Object)"); }
+  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.toString()"); }
+  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.hashCode()"); }
+  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.clone()"); }
+  public int compareTo(java.util.Date anotherDate) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.compareTo(java.util.Date)"); }
+  public static java.util.Date from(java.time.Instant instant) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.from(java.time.Instant)"); }
+  public static long parse(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.parse(java.lang.String)"); }
+  public boolean before(java.util.Date when) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.before(java.util.Date)"); }
+  public boolean after(java.util.Date when) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.after(java.util.Date)"); }
+  public java.time.Instant toInstant() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.toInstant()"); }
+  public static long UTC(int year, int month, int date, int hrs, int min, int sec) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.UTC(int, int, int, int, int, int)"); }
+  public int getYear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.getYear()"); }
+  public long getTime() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.getTime()"); }
+  public void setTime(long time) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.setTime(long)"); }
+  public int getSeconds() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.getSeconds()"); }
+  public int getMonth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.getMonth()"); }
+  public void setMonth(int month) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.setMonth(int)"); }
+  public int getHours() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.getHours()"); }
+  public void setHours(int hours) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.setHours(int)"); }
+  public int getMinutes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.getMinutes()"); }
+  public void setMinutes(int minutes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.setMinutes(int)"); }
+  public void setSeconds(int seconds) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.setSeconds(int)"); }
+  public void setYear(int year) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.setYear(int)"); }
+  public int getDay() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.getDay()"); }
+  public java.lang.String toLocaleString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.toLocaleString()"); }
+  public java.lang.String toGMTString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.toGMTString()"); }
+  public int getTimezoneOffset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.getTimezoneOffset()"); }
+  < ---- END java signatures ---- >
+}

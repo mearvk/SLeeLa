@@ -1,0 +1,99 @@
+<< lib/java/jdk-28/docs/api/java.base/java/util/TreeSet.sleela
+   SLeeLa file for the Java type java.util.TreeSet (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/TreeSet.html
+   Java kind: class; extends java.util.AbstractSet; implements java.util.NavigableSet, java.lang.Cloneable, java.io.Serializable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class TreeSet<E> {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9284;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.TreeSet";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/TreeSet.html";
+  String javaKind = "class";
+  String javaSuper = "java.util.AbstractSet";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public TreeSet(java.util.SortedSet<E> s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.<init>(java.util.SortedSet<E>)"); }
+  public TreeSet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public boolean remove(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.remove(java.lang.Object)"); }
+  public int size() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.size()"); }
+  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.clone()"); }
+  public E floor(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.floor(E)"); }
+  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.clear()"); }
+  public boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.isEmpty()"); }
+  public boolean add(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.add(E)"); }
+  public java.util.Iterator<E> iterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.iterator()"); }
+  public boolean contains(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.contains(java.lang.Object)"); }
+  public E last() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.last()"); }
+  public java.util.Spliterator<E> spliterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.spliterator()"); }
+  public boolean addAll(java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.addAll(java.util.Collection<? extends E>)"); }
+  public E first() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.first()"); }
+  public void addFirst(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.addFirst(E)"); }
+  public void addLast(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.addLast(E)"); }
+  public E lower(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.lower(E)"); }
+  public java.util.Comparator<? super E> comparator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.comparator()"); }
+  public E pollFirst() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.pollFirst()"); }
+  public E pollLast() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.pollLast()"); }
+  public java.util.Iterator<E> descendingIterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.descendingIterator()"); }
+  public java.util.NavigableSet<E> descendingSet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.descendingSet()"); }
+  public E ceiling(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.ceiling(E)"); }
+  public E higher(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.higher(E)"); }
+  public java.util.NavigableSet<E> subSet(E fromElement, boolean fromInclusive, E toElement, boolean toInclusive) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.subSet(E, boolean, E, boolean)"); }
+  public java.util.SortedSet<E> subSet(E fromElement, E toElement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.subSet(E, E)"); }
+  public java.util.NavigableSet<E> headSet(E toElement, boolean inclusive) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.headSet(E, boolean)"); }
+  public java.util.SortedSet<E> headSet(E toElement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.headSet(E)"); }
+  public java.util.NavigableSet<E> tailSet(E fromElement, boolean inclusive) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.tailSet(E, boolean)"); }
+  public java.util.SortedSet<E> tailSet(E fromElement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.tailSet(E)"); }
+  < ---- END java signatures ---- >
+}

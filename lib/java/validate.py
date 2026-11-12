@@ -15,7 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 LIB = ROOT / "lib" / "java"
 MANIFEST_PATH = LIB / "MANIFEST.json"
-EXPECTED_SOURCE_BASELINE = 10255
+EXPECTED_SOURCE_BASELINE = 14982
 CONTROL_FILES = {"lib/java/README.md", "lib/java/MANIFEST.json", "lib/java/validate.py", "lib/java/validate.sh"}
 
 

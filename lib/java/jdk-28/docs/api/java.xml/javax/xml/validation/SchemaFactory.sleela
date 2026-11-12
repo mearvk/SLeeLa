@@ -1,0 +1,85 @@
+<< lib/java/jdk-28/docs/api/java.xml/javax/xml/validation/SchemaFactory.sleela
+   SLeeLa file for the Java type javax.xml.validation.SchemaFactory (module java.xml). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.xml/javax/xml/validation/SchemaFactory.html
+   Java kind: class; extends java.lang.Object
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class SchemaFactory {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 8008;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.xml.validation.SchemaFactory";
+  String javaModule = "java.xml";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.xml/javax/xml/validation/SchemaFactory.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  @JavaProtected
+  SchemaFactory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.SchemaFactory.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public java.lang.Object getProperty(java.lang.String name) throws org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.SchemaFactory.getProperty(java.lang.String)"); }
+  public static javax.xml.validation.SchemaFactory newInstance(java.lang.String schemaLanguage, java.lang.String factoryClassName, java.lang.ClassLoader classLoader) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.SchemaFactory.newInstance(java.lang.String, java.lang.String, java.lang.ClassLoader)"); }
+  public static javax.xml.validation.SchemaFactory newInstance(java.lang.String schemaLanguage) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.SchemaFactory.newInstance(java.lang.String)"); }
+  public void setProperty(java.lang.String name, java.lang.Object object) throws org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.SchemaFactory.setProperty(java.lang.String, java.lang.Object)"); }
+  public abstract void setResourceResolver(org.w3c.dom.ls.LSResourceResolver resourceResolver) { throw new AbstractMethodError("javax.xml.validation.SchemaFactory.setResourceResolver(org.w3c.dom.ls.LSResourceResolver)"); }
+  public abstract org.w3c.dom.ls.LSResourceResolver getResourceResolver() { throw new AbstractMethodError("javax.xml.validation.SchemaFactory.getResourceResolver()"); }
+  public abstract boolean isSchemaLanguageSupported(java.lang.String schemaLanguage) { throw new AbstractMethodError("javax.xml.validation.SchemaFactory.isSchemaLanguageSupported(java.lang.String)"); }
+  public javax.xml.validation.Schema newSchema(javax.xml.transform.Source schema) throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.SchemaFactory.newSchema(javax.xml.transform.Source)"); }
+  public abstract javax.xml.validation.Schema newSchema(javax.xml.transform.Source[] schemas) throws org.xml.sax.SAXException { throw new AbstractMethodError("javax.xml.validation.SchemaFactory.newSchema(javax.xml.transform.Source[])"); }
+  public abstract javax.xml.validation.Schema newSchema() throws org.xml.sax.SAXException { throw new AbstractMethodError("javax.xml.validation.SchemaFactory.newSchema()"); }
+  public static javax.xml.validation.SchemaFactory newDefaultInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.SchemaFactory.newDefaultInstance()"); }
+  public abstract org.xml.sax.ErrorHandler getErrorHandler() { throw new AbstractMethodError("javax.xml.validation.SchemaFactory.getErrorHandler()"); }
+  public abstract void setErrorHandler(org.xml.sax.ErrorHandler errorHandler) { throw new AbstractMethodError("javax.xml.validation.SchemaFactory.setErrorHandler(org.xml.sax.ErrorHandler)"); }
+  public boolean getFeature(java.lang.String name) throws org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.SchemaFactory.getFeature(java.lang.String)"); }
+  public void setFeature(java.lang.String name, boolean value) throws org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.SchemaFactory.setFeature(java.lang.String, boolean)"); }
+  < ---- END java signatures ---- >
+}

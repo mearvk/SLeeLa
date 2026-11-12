@@ -1,0 +1,128 @@
+<< lib/java/jdk-28/docs/api/java.desktop/javax/swing/plaf/metal/MetalTheme.sleela
+   SLeeLa file for the Java type javax.swing.plaf.metal.MetalTheme (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/plaf/metal/MetalTheme.html
+   Java kind: class; extends java.lang.Object
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class MetalTheme {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 6002;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.swing.plaf.metal.MetalTheme";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/plaf/metal/MetalTheme.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  @JavaProtected
+  MetalTheme() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public abstract java.lang.String getName() { throw new AbstractMethodError("javax.swing.plaf.metal.MetalTheme.getName()"); }
+  public javax.swing.plaf.ColorUIResource getControl() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getControl()"); }
+  public javax.swing.plaf.ColorUIResource getFocusColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getFocusColor()"); }
+  @JavaProtected
+  abstract javax.swing.plaf.ColorUIResource getPrimary1() { throw new AbstractMethodError("javax.swing.plaf.metal.MetalTheme.getPrimary1()"); }
+  @JavaProtected
+  abstract javax.swing.plaf.ColorUIResource getPrimary2() { throw new AbstractMethodError("javax.swing.plaf.metal.MetalTheme.getPrimary2()"); }
+  @JavaProtected
+  abstract javax.swing.plaf.ColorUIResource getPrimary3() { throw new AbstractMethodError("javax.swing.plaf.metal.MetalTheme.getPrimary3()"); }
+  @JavaProtected
+  abstract javax.swing.plaf.ColorUIResource getSecondary1() { throw new AbstractMethodError("javax.swing.plaf.metal.MetalTheme.getSecondary1()"); }
+  @JavaProtected
+  abstract javax.swing.plaf.ColorUIResource getSecondary2() { throw new AbstractMethodError("javax.swing.plaf.metal.MetalTheme.getSecondary2()"); }
+  @JavaProtected
+  abstract javax.swing.plaf.ColorUIResource getSecondary3() { throw new AbstractMethodError("javax.swing.plaf.metal.MetalTheme.getSecondary3()"); }
+  public abstract javax.swing.plaf.FontUIResource getControlTextFont() { throw new AbstractMethodError("javax.swing.plaf.metal.MetalTheme.getControlTextFont()"); }
+  public abstract javax.swing.plaf.FontUIResource getSystemTextFont() { throw new AbstractMethodError("javax.swing.plaf.metal.MetalTheme.getSystemTextFont()"); }
+  public abstract javax.swing.plaf.FontUIResource getUserTextFont() { throw new AbstractMethodError("javax.swing.plaf.metal.MetalTheme.getUserTextFont()"); }
+  public abstract javax.swing.plaf.FontUIResource getMenuTextFont() { throw new AbstractMethodError("javax.swing.plaf.metal.MetalTheme.getMenuTextFont()"); }
+  public abstract javax.swing.plaf.FontUIResource getWindowTitleFont() { throw new AbstractMethodError("javax.swing.plaf.metal.MetalTheme.getWindowTitleFont()"); }
+  public abstract javax.swing.plaf.FontUIResource getSubTextFont() { throw new AbstractMethodError("javax.swing.plaf.metal.MetalTheme.getSubTextFont()"); }
+  @JavaProtected
+  javax.swing.plaf.ColorUIResource getBlack() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getBlack()"); }
+  @JavaProtected
+  javax.swing.plaf.ColorUIResource getWhite() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getWhite()"); }
+  public javax.swing.plaf.ColorUIResource getControlInfo() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getControlInfo()"); }
+  public javax.swing.plaf.ColorUIResource getControlDisabled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getControlDisabled()"); }
+  public javax.swing.plaf.ColorUIResource getControlTextColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getControlTextColor()"); }
+  public javax.swing.plaf.ColorUIResource getDesktopColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getDesktopColor()"); }
+  public javax.swing.plaf.ColorUIResource getControlShadow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getControlShadow()"); }
+  public javax.swing.plaf.ColorUIResource getControlDarkShadow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getControlDarkShadow()"); }
+  public javax.swing.plaf.ColorUIResource getControlHighlight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getControlHighlight()"); }
+  public javax.swing.plaf.ColorUIResource getPrimaryControl() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getPrimaryControl()"); }
+  public javax.swing.plaf.ColorUIResource getPrimaryControlShadow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getPrimaryControlShadow()"); }
+  public javax.swing.plaf.ColorUIResource getPrimaryControlDarkShadow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getPrimaryControlDarkShadow()"); }
+  public javax.swing.plaf.ColorUIResource getPrimaryControlInfo() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getPrimaryControlInfo()"); }
+  public javax.swing.plaf.ColorUIResource getPrimaryControlHighlight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getPrimaryControlHighlight()"); }
+  public javax.swing.plaf.ColorUIResource getSystemTextColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getSystemTextColor()"); }
+  public javax.swing.plaf.ColorUIResource getInactiveControlTextColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getInactiveControlTextColor()"); }
+  public javax.swing.plaf.ColorUIResource getInactiveSystemTextColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getInactiveSystemTextColor()"); }
+  public javax.swing.plaf.ColorUIResource getUserTextColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getUserTextColor()"); }
+  public javax.swing.plaf.ColorUIResource getTextHighlightColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getTextHighlightColor()"); }
+  public javax.swing.plaf.ColorUIResource getHighlightedTextColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getHighlightedTextColor()"); }
+  public javax.swing.plaf.ColorUIResource getWindowBackground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getWindowBackground()"); }
+  public javax.swing.plaf.ColorUIResource getWindowTitleBackground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getWindowTitleBackground()"); }
+  public javax.swing.plaf.ColorUIResource getWindowTitleForeground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getWindowTitleForeground()"); }
+  public javax.swing.plaf.ColorUIResource getWindowTitleInactiveBackground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getWindowTitleInactiveBackground()"); }
+  public javax.swing.plaf.ColorUIResource getWindowTitleInactiveForeground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getWindowTitleInactiveForeground()"); }
+  public javax.swing.plaf.ColorUIResource getMenuBackground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getMenuBackground()"); }
+  public javax.swing.plaf.ColorUIResource getMenuForeground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getMenuForeground()"); }
+  public javax.swing.plaf.ColorUIResource getMenuSelectedBackground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getMenuSelectedBackground()"); }
+  public javax.swing.plaf.ColorUIResource getMenuSelectedForeground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getMenuSelectedForeground()"); }
+  public javax.swing.plaf.ColorUIResource getMenuDisabledForeground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getMenuDisabledForeground()"); }
+  public javax.swing.plaf.ColorUIResource getSeparatorBackground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getSeparatorBackground()"); }
+  public javax.swing.plaf.ColorUIResource getSeparatorForeground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getSeparatorForeground()"); }
+  public javax.swing.plaf.ColorUIResource getAcceleratorForeground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getAcceleratorForeground()"); }
+  public javax.swing.plaf.ColorUIResource getAcceleratorSelectedForeground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.getAcceleratorSelectedForeground()"); }
+  public void addCustomEntriesToTable(javax.swing.UIDefaults table) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTheme.addCustomEntriesToTable(javax.swing.UIDefaults)"); }
+  < ---- END java signatures ---- >
+}

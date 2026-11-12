@@ -1,0 +1,98 @@
+<< lib/java/jdk-28/docs/api/java.base/java/util/concurrent/locks/StampedLock.sleela
+   SLeeLa file for the Java type java.util.concurrent.locks.StampedLock (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/locks/StampedLock.html
+   Java kind: class; extends java.lang.Object; implements java.io.Serializable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class StampedLock {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 8535;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.concurrent.locks.StampedLock";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/locks/StampedLock.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public StampedLock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.toString()"); }
+  public boolean validate(long stamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.validate(long)"); }
+  public void unlock(long stamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.unlock(long)"); }
+  public long readLock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.readLock()"); }
+  public long writeLock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.writeLock()"); }
+  public int getReadLockCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.getReadLockCount()"); }
+  public boolean isWriteLocked() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.isWriteLocked()"); }
+  public long tryReadLock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.tryReadLock()"); }
+  public long tryReadLock(long time, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.tryReadLock(long, java.util.concurrent.TimeUnit)"); }
+  public long tryWriteLock(long time, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.tryWriteLock(long, java.util.concurrent.TimeUnit)"); }
+  public long tryWriteLock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.tryWriteLock()"); }
+  public void unlockWrite(long stamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.unlockWrite(long)"); }
+  public void unlockRead(long stamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.unlockRead(long)"); }
+  public long writeLockInterruptibly() throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.writeLockInterruptibly()"); }
+  public long readLockInterruptibly() throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.readLockInterruptibly()"); }
+  public long tryOptimisticRead() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.tryOptimisticRead()"); }
+  public long tryConvertToWriteLock(long stamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.tryConvertToWriteLock(long)"); }
+  public long tryConvertToReadLock(long stamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.tryConvertToReadLock(long)"); }
+  public long tryConvertToOptimisticRead(long stamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.tryConvertToOptimisticRead(long)"); }
+  public boolean tryUnlockWrite() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.tryUnlockWrite()"); }
+  public boolean tryUnlockRead() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.tryUnlockRead()"); }
+  public boolean isReadLocked() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.isReadLocked()"); }
+  public static boolean isWriteLockStamp(long stamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.isWriteLockStamp(long)"); }
+  public static boolean isReadLockStamp(long stamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.isReadLockStamp(long)"); }
+  public static boolean isLockStamp(long stamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.isLockStamp(long)"); }
+  public static boolean isOptimisticReadStamp(long stamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.isOptimisticReadStamp(long)"); }
+  public java.util.concurrent.locks.Lock asReadLock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.asReadLock()"); }
+  public java.util.concurrent.locks.Lock asWriteLock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.asWriteLock()"); }
+  public java.util.concurrent.locks.ReadWriteLock asReadWriteLock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.asReadWriteLock()"); }
+  < ---- END java signatures ---- >
+}

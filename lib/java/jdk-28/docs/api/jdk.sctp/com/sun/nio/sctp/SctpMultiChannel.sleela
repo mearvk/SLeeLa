@@ -1,0 +1,86 @@
+<< lib/java/jdk-28/docs/api/jdk.sctp/com/sun/nio/sctp/SctpMultiChannel.sleela
+   SLeeLa file for the Java type com.sun.nio.sctp.SctpMultiChannel (module jdk.sctp). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/jdk.sctp/com/sun/nio/sctp/SctpMultiChannel.html
+   Java kind: class; extends java.nio.channels.spi.AbstractSelectableChannel
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class SctpMultiChannel {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 8055;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "com.sun.nio.sctp.SctpMultiChannel";
+  String javaModule = "jdk.sctp";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/jdk.sctp/com/sun/nio/sctp/SctpMultiChannel.html";
+  String javaKind = "class";
+  String javaSuper = "java.nio.channels.spi.AbstractSelectableChannel";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  @JavaProtected
+  SctpMultiChannel(java.nio.channels.spi.SelectorProvider provider) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.nio.sctp.SctpMultiChannel.<init>(java.nio.channels.spi.SelectorProvider)"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public abstract com.sun.nio.sctp.SctpMultiChannel shutdown(com.sun.nio.sctp.Association association) throws java.io.IOException { throw new AbstractMethodError("com.sun.nio.sctp.SctpMultiChannel.shutdown(com.sun.nio.sctp.Association)"); }
+  public static com.sun.nio.sctp.SctpMultiChannel open() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.nio.sctp.SctpMultiChannel.open()"); }
+  public final com.sun.nio.sctp.SctpMultiChannel bind(java.net.SocketAddress local) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.nio.sctp.SctpMultiChannel.bind(java.net.SocketAddress)"); }
+  public abstract com.sun.nio.sctp.SctpMultiChannel bind(java.net.SocketAddress local, int backlog) throws java.io.IOException { throw new AbstractMethodError("com.sun.nio.sctp.SctpMultiChannel.bind(java.net.SocketAddress, int)"); }
+  public abstract com.sun.nio.sctp.SctpChannel branch(com.sun.nio.sctp.Association association) throws java.io.IOException { throw new AbstractMethodError("com.sun.nio.sctp.SctpMultiChannel.branch(com.sun.nio.sctp.Association)"); }
+  public abstract <T> com.sun.nio.sctp.SctpMultiChannel setOption(com.sun.nio.sctp.SctpSocketOption<T> name, T value, com.sun.nio.sctp.Association association) throws java.io.IOException { throw new AbstractMethodError("com.sun.nio.sctp.SctpMultiChannel.setOption(com.sun.nio.sctp.SctpSocketOption<T>, T, com.sun.nio.sctp.Association)"); }
+  public abstract <T> T getOption(com.sun.nio.sctp.SctpSocketOption<T> name, com.sun.nio.sctp.Association association) throws java.io.IOException { throw new AbstractMethodError("com.sun.nio.sctp.SctpMultiChannel.getOption(com.sun.nio.sctp.SctpSocketOption<T>, com.sun.nio.sctp.Association)"); }
+  public abstract java.util.Set<com.sun.nio.sctp.SctpSocketOption<?>> supportedOptions() { throw new AbstractMethodError("com.sun.nio.sctp.SctpMultiChannel.supportedOptions()"); }
+  public final int validOps() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.nio.sctp.SctpMultiChannel.validOps()"); }
+  public abstract com.sun.nio.sctp.SctpMultiChannel bindAddress(java.net.InetAddress address) throws java.io.IOException { throw new AbstractMethodError("com.sun.nio.sctp.SctpMultiChannel.bindAddress(java.net.InetAddress)"); }
+  public abstract com.sun.nio.sctp.SctpMultiChannel unbindAddress(java.net.InetAddress address) throws java.io.IOException { throw new AbstractMethodError("com.sun.nio.sctp.SctpMultiChannel.unbindAddress(java.net.InetAddress)"); }
+  public abstract java.util.Set<java.net.SocketAddress> getAllLocalAddresses() throws java.io.IOException { throw new AbstractMethodError("com.sun.nio.sctp.SctpMultiChannel.getAllLocalAddresses()"); }
+  public abstract java.util.Set<java.net.SocketAddress> getRemoteAddresses(com.sun.nio.sctp.Association association) throws java.io.IOException { throw new AbstractMethodError("com.sun.nio.sctp.SctpMultiChannel.getRemoteAddresses(com.sun.nio.sctp.Association)"); }
+  public abstract int send(java.nio.ByteBuffer buffer, com.sun.nio.sctp.MessageInfo messageInfo) throws java.io.IOException { throw new AbstractMethodError("com.sun.nio.sctp.SctpMultiChannel.send(java.nio.ByteBuffer, com.sun.nio.sctp.MessageInfo)"); }
+  public abstract <T> com.sun.nio.sctp.MessageInfo receive(java.nio.ByteBuffer buffer, T attachment, com.sun.nio.sctp.NotificationHandler<T> handler) throws java.io.IOException { throw new AbstractMethodError("com.sun.nio.sctp.SctpMultiChannel.receive(java.nio.ByteBuffer, T, com.sun.nio.sctp.NotificationHandler<T>)"); }
+  public abstract java.util.Set<com.sun.nio.sctp.Association> associations() throws java.io.IOException { throw new AbstractMethodError("com.sun.nio.sctp.SctpMultiChannel.associations()"); }
+  < ---- END java signatures ---- >
+}

@@ -1,0 +1,119 @@
+<< lib/java/jdk-28/docs/api/jdk.compiler/com/sun/source/util/SimpleDocTreeVisitor.sleela
+   SLeeLa file for the Java type com.sun.source.util.SimpleDocTreeVisitor (module jdk.compiler). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/jdk.compiler/com/sun/source/util/SimpleDocTreeVisitor.html
+   Java kind: class; extends java.lang.Object; implements com.sun.source.doctree.DocTreeVisitor
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class SimpleDocTreeVisitor<R, P> {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 8312;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "com.sun.source.util.SimpleDocTreeVisitor";
+  String javaModule = "jdk.compiler";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/jdk.compiler/com/sun/source/util/SimpleDocTreeVisitor.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < public and protected instance fields >
+  Any DEFAULT_VALUE;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  @JavaProtected
+  SimpleDocTreeVisitor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.<init>()"); }
+  @JavaProtected
+  SimpleDocTreeVisitor(R defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.<init>(R)"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public final R visit(com.sun.source.doctree.DocTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visit(com.sun.source.doctree.DocTree, P)"); }
+  public R visitReturn(com.sun.source.doctree.ReturnTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitReturn(com.sun.source.doctree.ReturnTree, P)"); }
+  public R visitIdentifier(com.sun.source.doctree.IdentifierTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitIdentifier(com.sun.source.doctree.IdentifierTree, P)"); }
+  public R visitLiteral(com.sun.source.doctree.LiteralTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitLiteral(com.sun.source.doctree.LiteralTree, P)"); }
+  public R visitProvides(com.sun.source.doctree.ProvidesTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitProvides(com.sun.source.doctree.ProvidesTree, P)"); }
+  public R visitUses(com.sun.source.doctree.UsesTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitUses(com.sun.source.doctree.UsesTree, P)"); }
+  public R visitOther(com.sun.source.doctree.DocTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitOther(com.sun.source.doctree.DocTree, P)"); }
+  public R visitErroneous(com.sun.source.doctree.ErroneousTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitErroneous(com.sun.source.doctree.ErroneousTree, P)"); }
+  public R visitAuthor(com.sun.source.doctree.AuthorTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitAuthor(com.sun.source.doctree.AuthorTree, P)"); }
+  public R visitReference(com.sun.source.doctree.ReferenceTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitReference(com.sun.source.doctree.ReferenceTree, P)"); }
+  @JavaProtected
+  R defaultAction(com.sun.source.doctree.DocTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.defaultAction(com.sun.source.doctree.DocTree, P)"); }
+  public R visitText(com.sun.source.doctree.TextTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitText(com.sun.source.doctree.TextTree, P)"); }
+  public R visitRawText(com.sun.source.doctree.RawTextTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitRawText(com.sun.source.doctree.RawTextTree, P)"); }
+  public R visitComment(com.sun.source.doctree.CommentTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitComment(com.sun.source.doctree.CommentTree, P)"); }
+  public R visitDeprecated(com.sun.source.doctree.DeprecatedTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitDeprecated(com.sun.source.doctree.DeprecatedTree, P)"); }
+  public R visitDocComment(com.sun.source.doctree.DocCommentTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitDocComment(com.sun.source.doctree.DocCommentTree, P)"); }
+  public R visitDocRoot(com.sun.source.doctree.DocRootTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitDocRoot(com.sun.source.doctree.DocRootTree, P)"); }
+  public R visitDocType(com.sun.source.doctree.DocTypeTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitDocType(com.sun.source.doctree.DocTypeTree, P)"); }
+  public R visitEndElement(com.sun.source.doctree.EndElementTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitEndElement(com.sun.source.doctree.EndElementTree, P)"); }
+  public R visitEntity(com.sun.source.doctree.EntityTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitEntity(com.sun.source.doctree.EntityTree, P)"); }
+  public R visitEscape(com.sun.source.doctree.EscapeTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitEscape(com.sun.source.doctree.EscapeTree, P)"); }
+  public R visitHidden(com.sun.source.doctree.HiddenTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitHidden(com.sun.source.doctree.HiddenTree, P)"); }
+  public R visitIndex(com.sun.source.doctree.IndexTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitIndex(com.sun.source.doctree.IndexTree, P)"); }
+  public R visitInheritDoc(com.sun.source.doctree.InheritDocTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitInheritDoc(com.sun.source.doctree.InheritDocTree, P)"); }
+  public R visitLink(com.sun.source.doctree.LinkTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitLink(com.sun.source.doctree.LinkTree, P)"); }
+  public R visitParam(com.sun.source.doctree.ParamTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitParam(com.sun.source.doctree.ParamTree, P)"); }
+  public R visitSee(com.sun.source.doctree.SeeTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitSee(com.sun.source.doctree.SeeTree, P)"); }
+  public R visitSerial(com.sun.source.doctree.SerialTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitSerial(com.sun.source.doctree.SerialTree, P)"); }
+  public R visitSerialData(com.sun.source.doctree.SerialDataTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitSerialData(com.sun.source.doctree.SerialDataTree, P)"); }
+  public R visitSerialField(com.sun.source.doctree.SerialFieldTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitSerialField(com.sun.source.doctree.SerialFieldTree, P)"); }
+  public R visitSince(com.sun.source.doctree.SinceTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitSince(com.sun.source.doctree.SinceTree, P)"); }
+  public R visitSnippet(com.sun.source.doctree.SnippetTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitSnippet(com.sun.source.doctree.SnippetTree, P)"); }
+  public R visitSpec(com.sun.source.doctree.SpecTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitSpec(com.sun.source.doctree.SpecTree, P)"); }
+  public R visitStartElement(com.sun.source.doctree.StartElementTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitStartElement(com.sun.source.doctree.StartElementTree, P)"); }
+  public R visitSummary(com.sun.source.doctree.SummaryTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitSummary(com.sun.source.doctree.SummaryTree, P)"); }
+  public R visitSystemProperty(com.sun.source.doctree.SystemPropertyTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitSystemProperty(com.sun.source.doctree.SystemPropertyTree, P)"); }
+  public R visitThrows(com.sun.source.doctree.ThrowsTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitThrows(com.sun.source.doctree.ThrowsTree, P)"); }
+  public R visitUnknownBlockTag(com.sun.source.doctree.UnknownBlockTagTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitUnknownBlockTag(com.sun.source.doctree.UnknownBlockTagTree, P)"); }
+  public R visitUnknownInlineTag(com.sun.source.doctree.UnknownInlineTagTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitUnknownInlineTag(com.sun.source.doctree.UnknownInlineTagTree, P)"); }
+  public R visitValue(com.sun.source.doctree.ValueTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitValue(com.sun.source.doctree.ValueTree, P)"); }
+  public R visitVersion(com.sun.source.doctree.VersionTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitVersion(com.sun.source.doctree.VersionTree, P)"); }
+  public R visitAttribute(com.sun.source.doctree.AttributeTree node, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.SimpleDocTreeVisitor.visitAttribute(com.sun.source.doctree.AttributeTree, P)"); }
+  < ---- END java signatures ---- >
+}

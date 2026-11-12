@@ -1,0 +1,96 @@
+<< lib/java/jdk-28/docs/api/java.desktop/javax/swing/JDesktopPane.sleela
+   SLeeLa file for the Java type javax.swing.JDesktopPane (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/JDesktopPane.html
+   Java kind: class; extends javax.swing.JLayeredPane; implements javax.accessibility.Accessible
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class JDesktopPane {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 4977;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.swing.JDesktopPane";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/JDesktopPane.html";
+  String javaKind = "class";
+  String javaSuper = "javax.swing.JLayeredPane";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static final int LIVE_DRAG_MODE = 0;
+  static final int OUTLINE_DRAG_MODE = 1;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public JDesktopPane() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDesktopPane.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public void remove(java.awt.Component comp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDesktopPane.remove(java.awt.Component)"); }
+  public void remove(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDesktopPane.remove(int)"); }
+  @JavaProtected
+  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDesktopPane.paramString()"); }
+  public void removeAll() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDesktopPane.removeAll()"); }
+  public void setComponentZOrder(java.awt.Component comp, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDesktopPane.setComponentZOrder(java.awt.Component, int)"); }
+  public void updateUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDesktopPane.updateUI()"); }
+  public void setUI(javax.swing.plaf.DesktopPaneUI ui) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDesktopPane.setUI(javax.swing.plaf.DesktopPaneUI)"); }
+  public javax.swing.plaf.DesktopPaneUI getUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDesktopPane.getUI()"); }
+  public java.lang.String getUIClassID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDesktopPane.getUIClassID()"); }
+  public javax.swing.JInternalFrame selectFrame(boolean forward) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDesktopPane.selectFrame(boolean)"); }
+  public javax.swing.JInternalFrame getSelectedFrame() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDesktopPane.getSelectedFrame()"); }
+  public void setSelectedFrame(javax.swing.JInternalFrame f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDesktopPane.setSelectedFrame(javax.swing.JInternalFrame)"); }
+  public int getDragMode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDesktopPane.getDragMode()"); }
+  public javax.swing.JInternalFrame[] getAllFrames() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDesktopPane.getAllFrames()"); }
+  public void setDragMode(int dragMode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDesktopPane.setDragMode(int)"); }
+  public javax.swing.DesktopManager getDesktopManager() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDesktopPane.getDesktopManager()"); }
+  public void setDesktopManager(javax.swing.DesktopManager d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDesktopPane.setDesktopManager(javax.swing.DesktopManager)"); }
+  public javax.swing.JInternalFrame[] getAllFramesInLayer(int layer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDesktopPane.getAllFramesInLayer(int)"); }
+  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDesktopPane.getAccessibleContext()"); }
+  @JavaProtected
+  void addImpl(java.awt.Component comp, java.lang.Object constraints, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDesktopPane.addImpl(java.awt.Component, java.lang.Object, int)"); }
+  < ---- END java signatures ---- >
+}

@@ -1,0 +1,113 @@
+<< lib/java/jdk-28/docs/api/java.base/java/util/List.sleela
+   SLeeLa file for the Java type java.util.List (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/List.html
+   Java kind: interface; implements java.util.SequencedCollection
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class List<E> {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 5531;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.List";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/List.html";
+  String javaKind = "interface";
+  String javaSuper = "";
+
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public abstract E remove(int index) { throw new AbstractMethodError("java.util.List.remove(int)"); }
+  public abstract boolean remove(java.lang.Object o) { throw new AbstractMethodError("java.util.List.remove(java.lang.Object)"); }
+  public abstract int size() { throw new AbstractMethodError("java.util.List.size()"); }
+  public abstract E get(int index) { throw new AbstractMethodError("java.util.List.get(int)"); }
+  public abstract boolean equals(java.lang.Object o) { throw new AbstractMethodError("java.util.List.equals(java.lang.Object)"); }
+  public abstract int hashCode() { throw new AbstractMethodError("java.util.List.hashCode()"); }
+  public static <E> java.util.List<E> copyOf(java.util.Collection<? extends E> coll) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.copyOf(java.util.Collection<? extends E>)"); }
+  public default void sort(java.util.Comparator<? super E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.sort(java.util.Comparator<? super E>)"); }
+  public abstract int indexOf(java.lang.Object o) { throw new AbstractMethodError("java.util.List.indexOf(java.lang.Object)"); }
+  public abstract void clear() { throw new AbstractMethodError("java.util.List.clear()"); }
+  public static <E> java.util.List<E> of(E e1) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.of(E)"); }
+  public static <E> java.util.List<E> of(E e1, E e2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.of(E, E)"); }
+  public static <E> java.util.List<E> of(E e1, E e2, E e3) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.of(E, E, E)"); }
+  public static <E> java.util.List<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8, E e9) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.of(E, E, E, E, E, E, E, E, E)"); }
+  public static <E> java.util.List<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8, E e9, E e10) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.of(E, E, E, E, E, E, E, E, E, E)"); }
+  public static <E> java.util.List<E> of(E... elements) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.of(E...)"); }
+  public static <E> java.util.List<E> of() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.of()"); }
+  public static <E> java.util.List<E> of(E e1, E e2, E e3, E e4, E e5) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.of(E, E, E, E, E)"); }
+  public static <E> java.util.List<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.of(E, E, E, E, E, E, E, E)"); }
+  public static <E> java.util.List<E> of(E e1, E e2, E e3, E e4, E e5, E e6) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.of(E, E, E, E, E, E)"); }
+  public static <E> java.util.List<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E e7) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.of(E, E, E, E, E, E, E)"); }
+  public static <E> java.util.List<E> of(E e1, E e2, E e3, E e4) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.of(E, E, E, E)"); }
+  public abstract int lastIndexOf(java.lang.Object o) { throw new AbstractMethodError("java.util.List.lastIndexOf(java.lang.Object)"); }
+  public abstract boolean isEmpty() { throw new AbstractMethodError("java.util.List.isEmpty()"); }
+  public default void replaceAll(java.util.function.UnaryOperator<E> operator) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.replaceAll(java.util.function.UnaryOperator<E>)"); }
+  public abstract void add(int index, E element) { throw new AbstractMethodError("java.util.List.add(int, E)"); }
+  public abstract boolean add(E e) { throw new AbstractMethodError("java.util.List.add(E)"); }
+  public abstract java.util.List<E> subList(int fromIndex, int toIndex) { throw new AbstractMethodError("java.util.List.subList(int, int)"); }
+  public abstract java.lang.Object[] toArray() { throw new AbstractMethodError("java.util.List.toArray()"); }
+  public abstract <T> T[] toArray(T[] a) { throw new AbstractMethodError("java.util.List.toArray(T[])"); }
+  public abstract java.util.Iterator<E> iterator() { throw new AbstractMethodError("java.util.List.iterator()"); }
+  public abstract boolean contains(java.lang.Object o) { throw new AbstractMethodError("java.util.List.contains(java.lang.Object)"); }
+  public default java.util.Spliterator<E> spliterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.spliterator()"); }
+  public abstract boolean addAll(java.util.Collection<? extends E> c) { throw new AbstractMethodError("java.util.List.addAll(java.util.Collection<? extends E>)"); }
+  public abstract boolean addAll(int index, java.util.Collection<? extends E> c) { throw new AbstractMethodError("java.util.List.addAll(int, java.util.Collection<? extends E>)"); }
+  public abstract E set(int index, E element) { throw new AbstractMethodError("java.util.List.set(int, E)"); }
+  public default E getFirst() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.getFirst()"); }
+  public default E getLast() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.getLast()"); }
+  public default void addFirst(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.addFirst(E)"); }
+  public default void addLast(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.addLast(E)"); }
+  public default E removeFirst() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.removeFirst()"); }
+  public default E removeLast() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.removeLast()"); }
+  public abstract boolean removeAll(java.util.Collection<?> c) { throw new AbstractMethodError("java.util.List.removeAll(java.util.Collection<?>)"); }
+  public abstract boolean retainAll(java.util.Collection<?> c) { throw new AbstractMethodError("java.util.List.retainAll(java.util.Collection<?>)"); }
+  public abstract java.util.ListIterator<E> listIterator() { throw new AbstractMethodError("java.util.List.listIterator()"); }
+  public abstract java.util.ListIterator<E> listIterator(int index) { throw new AbstractMethodError("java.util.List.listIterator(int)"); }
+  public default java.util.List<E> reversed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.reversed()"); }
+  public abstract boolean containsAll(java.util.Collection<?> c) { throw new AbstractMethodError("java.util.List.containsAll(java.util.Collection<?>)"); }
+  < ---- END java signatures ---- >
+}

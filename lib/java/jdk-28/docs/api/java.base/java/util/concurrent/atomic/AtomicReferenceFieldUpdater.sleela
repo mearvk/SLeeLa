@@ -1,0 +1,81 @@
+<< lib/java/jdk-28/docs/api/java.base/java/util/concurrent/atomic/AtomicReferenceFieldUpdater.sleela
+   SLeeLa file for the Java type java.util.concurrent.atomic.AtomicReferenceFieldUpdater (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/atomic/AtomicReferenceFieldUpdater.html
+   Java kind: class; extends java.lang.Object
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class AtomicReferenceFieldUpdater<T, V> {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 1479;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.concurrent.atomic.AtomicReferenceFieldUpdater";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/atomic/AtomicReferenceFieldUpdater.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  @JavaProtected
+  AtomicReferenceFieldUpdater() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceFieldUpdater.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public abstract V get(T obj) { throw new AbstractMethodError("java.util.concurrent.atomic.AtomicReferenceFieldUpdater.get(T)"); }
+  public abstract void set(T obj, V newValue) { throw new AbstractMethodError("java.util.concurrent.atomic.AtomicReferenceFieldUpdater.set(T, V)"); }
+  public abstract boolean compareAndSet(T obj, V expect, V update) { throw new AbstractMethodError("java.util.concurrent.atomic.AtomicReferenceFieldUpdater.compareAndSet(T, V, V)"); }
+  public abstract boolean weakCompareAndSet(T obj, V expect, V update) { throw new AbstractMethodError("java.util.concurrent.atomic.AtomicReferenceFieldUpdater.weakCompareAndSet(T, V, V)"); }
+  public V getAndSet(T obj, V newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceFieldUpdater.getAndSet(T, V)"); }
+  public abstract void lazySet(T obj, V newValue) { throw new AbstractMethodError("java.util.concurrent.atomic.AtomicReferenceFieldUpdater.lazySet(T, V)"); }
+  public final V getAndUpdate(T obj, java.util.function.UnaryOperator<V> updateFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceFieldUpdater.getAndUpdate(T, java.util.function.UnaryOperator<V>)"); }
+  public final V updateAndGet(T obj, java.util.function.UnaryOperator<V> updateFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceFieldUpdater.updateAndGet(T, java.util.function.UnaryOperator<V>)"); }
+  public final V getAndAccumulate(T obj, V x, java.util.function.BinaryOperator<V> accumulatorFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceFieldUpdater.getAndAccumulate(T, V, java.util.function.BinaryOperator<V>)"); }
+  public final V accumulateAndGet(T obj, V x, java.util.function.BinaryOperator<V> accumulatorFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceFieldUpdater.accumulateAndGet(T, V, java.util.function.BinaryOperator<V>)"); }
+  public static <U, W> java.util.concurrent.atomic.AtomicReferenceFieldUpdater<U, W> newUpdater(java.lang.Class<U> tclass, java.lang.Class<W> vclass, java.lang.String fieldName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceFieldUpdater.newUpdater(java.lang.Class<U>, java.lang.Class<W>, java.lang.String)"); }
+  < ---- END java signatures ---- >
+}

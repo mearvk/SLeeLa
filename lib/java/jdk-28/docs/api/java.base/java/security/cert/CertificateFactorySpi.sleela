@@ -1,0 +1,76 @@
+<< lib/java/jdk-28/docs/api/java.base/java/security/cert/CertificateFactorySpi.sleela
+   SLeeLa file for the Java type java.security.cert.CertificateFactorySpi (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/security/cert/CertificateFactorySpi.html
+   Java kind: class; extends java.lang.Object
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class CertificateFactorySpi {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 2212;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.security.cert.CertificateFactorySpi";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/security/cert/CertificateFactorySpi.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public CertificateFactorySpi() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertificateFactorySpi.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public abstract java.security.cert.Certificate engineGenerateCertificate(java.io.InputStream inStream) throws java.security.cert.CertificateException { throw new AbstractMethodError("java.security.cert.CertificateFactorySpi.engineGenerateCertificate(java.io.InputStream)"); }
+  public java.util.Iterator<java.lang.String> engineGetCertPathEncodings() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertificateFactorySpi.engineGetCertPathEncodings()"); }
+  public java.security.cert.CertPath engineGenerateCertPath(java.util.List<? extends java.security.cert.Certificate> certificates) throws java.security.cert.CertificateException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertificateFactorySpi.engineGenerateCertPath(java.util.List<? extends java.security.cert.Certificate>)"); }
+  public java.security.cert.CertPath engineGenerateCertPath(java.io.InputStream inStream, java.lang.String encoding) throws java.security.cert.CertificateException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertificateFactorySpi.engineGenerateCertPath(java.io.InputStream, java.lang.String)"); }
+  public abstract java.util.Collection<? extends java.security.cert.Certificate> engineGenerateCertificates(java.io.InputStream inStream) throws java.security.cert.CertificateException { throw new AbstractMethodError("java.security.cert.CertificateFactorySpi.engineGenerateCertificates(java.io.InputStream)"); }
+  public abstract java.security.cert.CRL engineGenerateCRL(java.io.InputStream inStream) throws java.security.cert.CRLException { throw new AbstractMethodError("java.security.cert.CertificateFactorySpi.engineGenerateCRL(java.io.InputStream)"); }
+  public abstract java.util.Collection<? extends java.security.cert.CRL> engineGenerateCRLs(java.io.InputStream inStream) throws java.security.cert.CRLException { throw new AbstractMethodError("java.security.cert.CertificateFactorySpi.engineGenerateCRLs(java.io.InputStream)"); }
+  < ---- END java signatures ---- >
+}

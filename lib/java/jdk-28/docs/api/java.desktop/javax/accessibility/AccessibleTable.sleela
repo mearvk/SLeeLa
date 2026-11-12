@@ -1,0 +1,87 @@
+<< lib/java/jdk-28/docs/api/java.desktop/javax/accessibility/AccessibleTable.sleela
+   SLeeLa file for the Java type javax.accessibility.AccessibleTable (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/accessibility/AccessibleTable.html
+   Java kind: interface
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class AccessibleTable {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 1222;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.accessibility.AccessibleTable";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/accessibility/AccessibleTable.html";
+  String javaKind = "interface";
+  String javaSuper = "";
+
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public abstract javax.accessibility.Accessible getAccessibleCaption() { throw new AbstractMethodError("javax.accessibility.AccessibleTable.getAccessibleCaption()"); }
+  public abstract void setAccessibleCaption(javax.accessibility.Accessible a) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.setAccessibleCaption(javax.accessibility.Accessible)"); }
+  public abstract javax.accessibility.Accessible getAccessibleSummary() { throw new AbstractMethodError("javax.accessibility.AccessibleTable.getAccessibleSummary()"); }
+  public abstract void setAccessibleSummary(javax.accessibility.Accessible a) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.setAccessibleSummary(javax.accessibility.Accessible)"); }
+  public abstract int getAccessibleRowCount() { throw new AbstractMethodError("javax.accessibility.AccessibleTable.getAccessibleRowCount()"); }
+  public abstract int getAccessibleColumnCount() { throw new AbstractMethodError("javax.accessibility.AccessibleTable.getAccessibleColumnCount()"); }
+  public abstract int getAccessibleRowExtentAt(int r, int c) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.getAccessibleRowExtentAt(int, int)"); }
+  public abstract int getAccessibleColumnExtentAt(int r, int c) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.getAccessibleColumnExtentAt(int, int)"); }
+  public abstract javax.accessibility.AccessibleTable getAccessibleRowHeader() { throw new AbstractMethodError("javax.accessibility.AccessibleTable.getAccessibleRowHeader()"); }
+  public abstract void setAccessibleRowHeader(javax.accessibility.AccessibleTable table) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.setAccessibleRowHeader(javax.accessibility.AccessibleTable)"); }
+  public abstract javax.accessibility.AccessibleTable getAccessibleColumnHeader() { throw new AbstractMethodError("javax.accessibility.AccessibleTable.getAccessibleColumnHeader()"); }
+  public abstract void setAccessibleColumnHeader(javax.accessibility.AccessibleTable table) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.setAccessibleColumnHeader(javax.accessibility.AccessibleTable)"); }
+  public abstract javax.accessibility.Accessible getAccessibleRowDescription(int r) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.getAccessibleRowDescription(int)"); }
+  public abstract void setAccessibleRowDescription(int r, javax.accessibility.Accessible a) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.setAccessibleRowDescription(int, javax.accessibility.Accessible)"); }
+  public abstract javax.accessibility.Accessible getAccessibleColumnDescription(int c) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.getAccessibleColumnDescription(int)"); }
+  public abstract void setAccessibleColumnDescription(int c, javax.accessibility.Accessible a) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.setAccessibleColumnDescription(int, javax.accessibility.Accessible)"); }
+  public abstract boolean isAccessibleSelected(int r, int c) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.isAccessibleSelected(int, int)"); }
+  public abstract boolean isAccessibleRowSelected(int r) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.isAccessibleRowSelected(int)"); }
+  public abstract boolean isAccessibleColumnSelected(int c) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.isAccessibleColumnSelected(int)"); }
+  public abstract int[] getSelectedAccessibleRows() { throw new AbstractMethodError("javax.accessibility.AccessibleTable.getSelectedAccessibleRows()"); }
+  public abstract int[] getSelectedAccessibleColumns() { throw new AbstractMethodError("javax.accessibility.AccessibleTable.getSelectedAccessibleColumns()"); }
+  public abstract javax.accessibility.Accessible getAccessibleAt(int r, int c) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.getAccessibleAt(int, int)"); }
+  < ---- END java signatures ---- >
+}

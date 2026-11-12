@@ -1,0 +1,307 @@
+<< lib/java/jdk-28/docs/api/java.desktop/javax/swing/plaf/basic/BasicTreeUI.sleela
+   SLeeLa file for the Java type javax.swing.plaf.basic.BasicTreeUI (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/plaf/basic/BasicTreeUI.html
+   Java kind: class; extends javax.swing.plaf.TreeUI
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class BasicTreeUI {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 1759;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.swing.plaf.basic.BasicTreeUI";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/plaf/basic/BasicTreeUI.html";
+  String javaKind = "class";
+  String javaSuper = "javax.swing.plaf.TreeUI";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < public and protected instance fields >
+  Any collapsedIcon;
+  Any expandedIcon;
+  int leftChildIndent;
+  int rightChildIndent;
+  int totalChildIndent;
+  Any preferredMinSize;
+  int lastSelectedRow;
+  Any tree;
+  Any currentCellRenderer;
+  boolean createdRenderer;
+  Any cellEditor;
+  boolean createdCellEditor;
+  boolean stopEditingInCompleteEditing;
+  Any rendererPane;
+  Any preferredSize;
+  boolean validCachedPreferredSize;
+  Any treeState;
+  Any drawingCache;
+  boolean largeModel;
+  Any nodeDimensions;
+  Any treeModel;
+  Any treeSelectionModel;
+  int depthOffset;
+  Any editingComponent;
+  Any editingPath;
+  int editingRow;
+  boolean editorHasDifferentSize;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public BasicTreeUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  @JavaProtected
+  boolean isLeaf(int row) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.isLeaf(int)"); }
+  @JavaProtected
+  void installListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.installListeners()"); }
+  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getPreferredSize(javax.swing.JComponent)"); }
+  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c, boolean checkConsistency) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getPreferredSize(javax.swing.JComponent, boolean)"); }
+  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getMinimumSize(javax.swing.JComponent)"); }
+  @JavaProtected
+  void setSelectionModel(javax.swing.tree.TreeSelectionModel newLSM) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.setSelectionModel(javax.swing.tree.TreeSelectionModel)"); }
+  @JavaProtected
+  javax.swing.tree.TreeSelectionModel getSelectionModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getSelectionModel()"); }
+  public void installUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.installUI(javax.swing.JComponent)"); }
+  public void uninstallUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.uninstallUI(javax.swing.JComponent)"); }
+  @JavaProtected
+  java.awt.event.MouseListener createMouseListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.createMouseListener()"); }
+  @JavaProtected
+  void updateSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.updateSize()"); }
+  public int getRowForPath(javax.swing.JTree tree, javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getRowForPath(javax.swing.JTree, javax.swing.tree.TreePath)"); }
+  public javax.swing.tree.TreePath getClosestPathForLocation(javax.swing.JTree tree, int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getClosestPathForLocation(javax.swing.JTree, int, int)"); }
+  public boolean isEditing(javax.swing.JTree tree) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.isEditing(javax.swing.JTree)"); }
+  public boolean stopEditing(javax.swing.JTree tree) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.stopEditing(javax.swing.JTree)"); }
+  public void cancelEditing(javax.swing.JTree tree) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.cancelEditing(javax.swing.JTree)"); }
+  public void startEditingAtPath(javax.swing.JTree tree, javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.startEditingAtPath(javax.swing.JTree, javax.swing.tree.TreePath)"); }
+  public javax.swing.tree.TreePath getEditingPath(javax.swing.JTree tree) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getEditingPath(javax.swing.JTree)"); }
+  @JavaProtected
+  int getRowHeight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getRowHeight()"); }
+  @JavaProtected
+  void setRowHeight(int rowHeight) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.setRowHeight(int)"); }
+  @JavaProtected
+  void setCellRenderer(javax.swing.tree.TreeCellRenderer tcr) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.setCellRenderer(javax.swing.tree.TreeCellRenderer)"); }
+  @JavaProtected
+  void setCellEditor(javax.swing.tree.TreeCellEditor editor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.setCellEditor(javax.swing.tree.TreeCellEditor)"); }
+  @JavaProtected
+  boolean isRootVisible() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.isRootVisible()"); }
+  @JavaProtected
+  boolean getShowsRootHandles() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getShowsRootHandles()"); }
+  @JavaProtected
+  void setLargeModel(boolean largeModel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.setLargeModel(boolean)"); }
+  @JavaProtected
+  boolean isLargeModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.isLargeModel()"); }
+  @JavaProtected
+  int getLeadSelectionRow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getLeadSelectionRow()"); }
+  @JavaProtected
+  javax.swing.tree.TreeCellRenderer getCellRenderer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getCellRenderer()"); }
+  @JavaProtected
+  void setRootVisible(boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.setRootVisible(boolean)"); }
+  @JavaProtected
+  void setShowsRootHandles(boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.setShowsRootHandles(boolean)"); }
+  @JavaProtected
+  javax.swing.tree.TreeCellEditor getCellEditor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getCellEditor()"); }
+  @JavaProtected
+  javax.swing.event.TreeModelListener createTreeModelListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.createTreeModelListener()"); }
+  public javax.swing.tree.TreePath getPathForRow(javax.swing.JTree tree, int row) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getPathForRow(javax.swing.JTree, int)"); }
+  public int getRowCount(javax.swing.JTree tree) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getRowCount(javax.swing.JTree)"); }
+  public java.awt.Rectangle getPathBounds(javax.swing.JTree tree, javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getPathBounds(javax.swing.JTree, javax.swing.tree.TreePath)"); }
+  @JavaProtected
+  java.awt.event.ComponentListener createComponentListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.createComponentListener()"); }
+  @JavaProtected
+  void paintDropLine(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.paintDropLine(java.awt.Graphics)"); }
+  @JavaProtected
+  java.awt.Rectangle getDropLineRect(javax.swing.JTree.DropLocation loc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getDropLineRect(javax.swing.JTree.DropLocation)"); }
+  @JavaProtected
+  void setEditable(boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.setEditable(boolean)"); }
+  @JavaProtected
+  boolean isEditable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.isEditable()"); }
+  public int getBaseline(javax.swing.JComponent c, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getBaseline(javax.swing.JComponent, int, int)"); }
+  public java.awt.Component.BaselineResizeBehavior getBaselineResizeBehavior(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getBaselineResizeBehavior(javax.swing.JComponent)"); }
+  @JavaProtected
+  boolean startEditing(javax.swing.tree.TreePath path, java.awt.event.MouseEvent event) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.startEditing(javax.swing.tree.TreePath, java.awt.event.MouseEvent)"); }
+  @JavaProtected
+  javax.swing.tree.TreeModel getModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getModel()"); }
+  @JavaProtected
+  void setModel(javax.swing.tree.TreeModel model) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.setModel(javax.swing.tree.TreeModel)"); }
+  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.createUI(javax.swing.JComponent)"); }
+  @JavaProtected
+  void completeEditing() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.completeEditing()"); }
+  @JavaProtected
+  void completeEditing(boolean messageStop, boolean messageCancel, boolean messageTree) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.completeEditing(boolean, boolean, boolean)"); }
+  @JavaProtected
+  javax.swing.tree.AbstractLayoutCache createLayoutCache() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.createLayoutCache()"); }
+  @JavaProtected
+  void configureLayoutCache() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.configureLayoutCache()"); }
+  @JavaProtected
+  void updateDepthOffset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.updateDepthOffset()"); }
+  @JavaProtected
+  void updateCellEditor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.updateCellEditor()"); }
+  @JavaProtected
+  void prepareForUIInstall() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.prepareForUIInstall()"); }
+  @JavaProtected
+  void completeUIInstall() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.completeUIInstall()"); }
+  @JavaProtected
+  java.awt.Color getHashColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getHashColor()"); }
+  @JavaProtected
+  void setHashColor(java.awt.Color color) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.setHashColor(java.awt.Color)"); }
+  public void setExpandedIcon(javax.swing.Icon newG) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.setExpandedIcon(javax.swing.Icon)"); }
+  public void setCollapsedIcon(javax.swing.Icon newG) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.setCollapsedIcon(javax.swing.Icon)"); }
+  public void setLeftChildIndent(int newAmount) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.setLeftChildIndent(int)"); }
+  public void setRightChildIndent(int newAmount) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.setRightChildIndent(int)"); }
+  @JavaProtected
+  javax.swing.event.TreeExpansionListener createTreeExpansionListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.createTreeExpansionListener()"); }
+  @JavaProtected
+  java.beans.PropertyChangeListener createSelectionModelPropertyChangeListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.createSelectionModelPropertyChangeListener()"); }
+  @JavaProtected
+  javax.swing.event.TreeSelectionListener createTreeSelectionListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.createTreeSelectionListener()"); }
+  @JavaProtected
+  javax.swing.CellRendererPane createCellRendererPane() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.createCellRendererPane()"); }
+  @JavaProtected
+  void prepareForUIUninstall() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.prepareForUIUninstall()"); }
+  @JavaProtected
+  void completeUIUninstall() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.completeUIUninstall()"); }
+  @JavaProtected
+  javax.swing.tree.TreeCellRenderer createDefaultCellRenderer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.createDefaultCellRenderer()"); }
+  @JavaProtected
+  void paintVerticalPartOfLeg(java.awt.Graphics g, java.awt.Rectangle clipBounds, java.awt.Insets insets, javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.paintVerticalPartOfLeg(java.awt.Graphics, java.awt.Rectangle, java.awt.Insets, javax.swing.tree.TreePath)"); }
+  @JavaProtected
+  void paintHorizontalPartOfLeg(java.awt.Graphics g, java.awt.Rectangle clipBounds, java.awt.Insets insets, java.awt.Rectangle bounds, javax.swing.tree.TreePath path, int row, boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.paintHorizontalPartOfLeg(java.awt.Graphics, java.awt.Rectangle, java.awt.Insets, java.awt.Rectangle, javax.swing.tree.TreePath, int, boolean, boolean, boolean)"); }
+  @JavaProtected
+  boolean shouldPaintExpandControl(javax.swing.tree.TreePath path, int row, boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.shouldPaintExpandControl(javax.swing.tree.TreePath, int, boolean, boolean, boolean)"); }
+  @JavaProtected
+  void paintExpandControl(java.awt.Graphics g, java.awt.Rectangle clipBounds, java.awt.Insets insets, java.awt.Rectangle bounds, javax.swing.tree.TreePath path, int row, boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.paintExpandControl(java.awt.Graphics, java.awt.Rectangle, java.awt.Insets, java.awt.Rectangle, javax.swing.tree.TreePath, int, boolean, boolean, boolean)"); }
+  @JavaProtected
+  void paintRow(java.awt.Graphics g, java.awt.Rectangle clipBounds, java.awt.Insets insets, java.awt.Rectangle bounds, javax.swing.tree.TreePath path, int row, boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.paintRow(java.awt.Graphics, java.awt.Rectangle, java.awt.Insets, java.awt.Rectangle, javax.swing.tree.TreePath, int, boolean, boolean, boolean)"); }
+  @JavaProtected
+  boolean isDropLine(javax.swing.JTree.DropLocation loc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.isDropLine(javax.swing.JTree.DropLocation)"); }
+  public int getRightChildIndent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getRightChildIndent()"); }
+  @JavaProtected
+  int getHorizontalLegBuffer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getHorizontalLegBuffer()"); }
+  @JavaProtected
+  void paintHorizontalLine(java.awt.Graphics g, javax.swing.JComponent c, int y, int left, int right) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.paintHorizontalLine(java.awt.Graphics, javax.swing.JComponent, int, int, int)"); }
+  @JavaProtected
+  int getRowX(int row, int depth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getRowX(int, int)"); }
+  @JavaProtected
+  javax.swing.tree.TreePath getLastChildPath(javax.swing.tree.TreePath parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getLastChildPath(javax.swing.tree.TreePath)"); }
+  @JavaProtected
+  int getVerticalLegBuffer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getVerticalLegBuffer()"); }
+  @JavaProtected
+  void paintVerticalLine(java.awt.Graphics g, javax.swing.JComponent c, int x, int top, int bottom) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.paintVerticalLine(java.awt.Graphics, javax.swing.JComponent, int, int, int)"); }
+  public javax.swing.Icon getExpandedIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getExpandedIcon()"); }
+  @JavaProtected
+  void drawCentered(java.awt.Component c, java.awt.Graphics graphics, javax.swing.Icon icon, int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.drawCentered(java.awt.Component, java.awt.Graphics, javax.swing.Icon, int, int)"); }
+  public javax.swing.Icon getCollapsedIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getCollapsedIcon()"); }
+  @JavaProtected
+  void drawDashedVerticalLine(java.awt.Graphics g, int x, int y1, int y2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.drawDashedVerticalLine(java.awt.Graphics, int, int, int)"); }
+  @JavaProtected
+  void drawDashedHorizontalLine(java.awt.Graphics g, int y, int x1, int x2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.drawDashedHorizontalLine(java.awt.Graphics, int, int, int)"); }
+  @JavaProtected
+  void updateExpandedDescendants(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.updateExpandedDescendants(javax.swing.tree.TreePath)"); }
+  @JavaProtected
+  void updateLayoutCacheExpandedNodes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.updateLayoutCacheExpandedNodes()"); }
+  @JavaProtected
+  void updateLeadSelectionRow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.updateLeadSelectionRow()"); }
+  @JavaProtected
+  javax.swing.tree.TreeCellEditor createDefaultCellEditor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.createDefaultCellEditor()"); }
+  @JavaProtected
+  javax.swing.event.CellEditorListener createCellEditorListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.createCellEditorListener()"); }
+  @JavaProtected
+  javax.swing.tree.AbstractLayoutCache.NodeDimensions createNodeDimensions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.createNodeDimensions()"); }
+  public java.awt.Dimension getPreferredMinSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getPreferredMinSize()"); }
+  @JavaProtected
+  void updateCachedPreferredSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.updateCachedPreferredSize()"); }
+  @JavaProtected
+  boolean isLocationInExpandControl(javax.swing.tree.TreePath path, int mouseX, int mouseY) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.isLocationInExpandControl(javax.swing.tree.TreePath, int, int)"); }
+  @JavaProtected
+  void handleExpandControlClick(javax.swing.tree.TreePath path, int mouseX, int mouseY) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.handleExpandControlClick(javax.swing.tree.TreePath, int, int)"); }
+  @JavaProtected
+  void toggleExpandState(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.toggleExpandState(javax.swing.tree.TreePath)"); }
+  @JavaProtected
+  void ensureRowsAreVisible(int beginRow, int endRow) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.ensureRowsAreVisible(int, int)"); }
+  @JavaProtected
+  boolean isMultiSelectEvent(java.awt.event.MouseEvent event) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.isMultiSelectEvent(java.awt.event.MouseEvent)"); }
+  @JavaProtected
+  boolean isToggleSelectionEvent(java.awt.event.MouseEvent event) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.isToggleSelectionEvent(java.awt.event.MouseEvent)"); }
+  @JavaProtected
+  boolean isToggleEvent(java.awt.event.MouseEvent event) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.isToggleEvent(java.awt.event.MouseEvent)"); }
+  public int getLeftChildIndent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getLeftChildIndent()"); }
+  @JavaProtected
+  void pathWasExpanded(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.pathWasExpanded(javax.swing.tree.TreePath)"); }
+  @JavaProtected
+  void pathWasCollapsed(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.pathWasCollapsed(javax.swing.tree.TreePath)"); }
+  public void setPreferredMinSize(java.awt.Dimension newSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.setPreferredMinSize(java.awt.Dimension)"); }
+  @JavaProtected
+  void checkForClickInExpandControl(javax.swing.tree.TreePath path, int mouseX, int mouseY) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.checkForClickInExpandControl(javax.swing.tree.TreePath, int, int)"); }
+  @JavaProtected
+  void selectPathForEvent(javax.swing.tree.TreePath path, java.awt.event.MouseEvent event) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.selectPathForEvent(javax.swing.tree.TreePath, java.awt.event.MouseEvent)"); }
+  @JavaProtected
+  void updateRenderer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.updateRenderer()"); }
+  @JavaProtected
+  void installKeyboardActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.installKeyboardActions()"); }
+  @JavaProtected
+  void uninstallKeyboardActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.uninstallKeyboardActions()"); }
+  @JavaProtected
+  void installDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.installDefaults()"); }
+  @JavaProtected
+  java.awt.event.KeyListener createKeyListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.createKeyListener()"); }
+  @JavaProtected
+  void uninstallListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.uninstallListeners()"); }
+  @JavaProtected
+  void uninstallDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.uninstallDefaults()"); }
+  @JavaProtected
+  void installComponents() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.installComponents()"); }
+  @JavaProtected
+  java.beans.PropertyChangeListener createPropertyChangeListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.createPropertyChangeListener()"); }
+  @JavaProtected
+  void uninstallComponents() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.uninstallComponents()"); }
+  @JavaProtected
+  java.awt.event.FocusListener createFocusListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.createFocusListener()"); }
+  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.getMaximumSize(javax.swing.JComponent)"); }
+  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTreeUI.paint(java.awt.Graphics, javax.swing.JComponent)"); }
+  < ---- END java signatures ---- >
+}

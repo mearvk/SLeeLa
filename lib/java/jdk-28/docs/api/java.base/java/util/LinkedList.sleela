@@ -1,0 +1,111 @@
+<< lib/java/jdk-28/docs/api/java.base/java/util/LinkedList.sleela
+   SLeeLa file for the Java type java.util.LinkedList (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/LinkedList.html
+   Java kind: class; extends java.util.AbstractSequentialList; implements java.util.List, java.util.Deque, java.lang.Cloneable, java.io.Serializable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class LinkedList<E> {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 5521;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.LinkedList";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/LinkedList.html";
+  String javaKind = "class";
+  String javaSuper = "java.util.AbstractSequentialList";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public LinkedList() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.<init>()"); }
+  public LinkedList(java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.<init>(java.util.Collection<? extends E>)"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public E remove() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.remove()"); }
+  public boolean remove(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.remove(java.lang.Object)"); }
+  public E remove(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.remove(int)"); }
+  public int size() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.size()"); }
+  public E get(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.get(int)"); }
+  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.clone()"); }
+  public int indexOf(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.indexOf(java.lang.Object)"); }
+  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.clear()"); }
+  public int lastIndexOf(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.lastIndexOf(java.lang.Object)"); }
+  public void add(int index, E element) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.add(int, E)"); }
+  public boolean add(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.add(E)"); }
+  public java.lang.Object[] toArray() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.toArray()"); }
+  public <T> T[] toArray(T[] a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.toArray(T[])"); }
+  public boolean contains(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.contains(java.lang.Object)"); }
+  public java.util.Spliterator<E> spliterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.spliterator()"); }
+  public boolean addAll(int index, java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.addAll(int, java.util.Collection<? extends E>)"); }
+  public boolean addAll(java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.addAll(java.util.Collection<? extends E>)"); }
+  public E set(int index, E element) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.set(int, E)"); }
+  public E peek() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.peek()"); }
+  public E getFirst() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.getFirst()"); }
+  public E getLast() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.getLast()"); }
+  public E element() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.element()"); }
+  public void addFirst(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.addFirst(E)"); }
+  public void addLast(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.addLast(E)"); }
+  public E removeFirst() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.removeFirst()"); }
+  public E removeLast() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.removeLast()"); }
+  public java.util.ListIterator<E> listIterator(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.listIterator(int)"); }
+  public java.util.LinkedList<E> reversed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.reversed()"); }
+  public E poll() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.poll()"); }
+  public boolean offer(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.offer(E)"); }
+  public void push(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.push(E)"); }
+  public E pop() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.pop()"); }
+  public E pollFirst() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.pollFirst()"); }
+  public E pollLast() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.pollLast()"); }
+  public boolean offerLast(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.offerLast(E)"); }
+  public E peekFirst() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.peekFirst()"); }
+  public boolean removeFirstOccurrence(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.removeFirstOccurrence(java.lang.Object)"); }
+  public boolean offerFirst(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.offerFirst(E)"); }
+  public E peekLast() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.peekLast()"); }
+  public boolean removeLastOccurrence(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.removeLastOccurrence(java.lang.Object)"); }
+  public java.util.Iterator<E> descendingIterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedList.descendingIterator()"); }
+  < ---- END java signatures ---- >
+}

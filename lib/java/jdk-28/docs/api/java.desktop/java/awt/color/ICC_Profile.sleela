@@ -1,0 +1,204 @@
+<< lib/java/jdk-28/docs/api/java.desktop/java/awt/color/ICC_Profile.sleela
+   SLeeLa file for the Java type java.awt.color.ICC_Profile (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/awt/color/ICC_Profile.html
+   Java kind: class; extends java.lang.Object; implements java.io.Serializable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class ICC_Profile {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 4442;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.awt.color.ICC_Profile";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/awt/color/ICC_Profile.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static final int CLASS_INPUT = 0;
+  static final int CLASS_DISPLAY = 1;
+  static final int CLASS_OUTPUT = 2;
+  static final int CLASS_DEVICELINK = 3;
+  static final int CLASS_COLORSPACECONVERSION = 4;
+  static final int CLASS_ABSTRACT = 5;
+  static final int CLASS_NAMEDCOLOR = 6;
+  static final int icSigXYZData = 1482250784;
+  static final int icSigLabData = 1281450528;
+  static final int icSigLuvData = 1282766368;
+  static final int icSigYCbCrData = 1497588338;
+  static final int icSigYxyData = 1501067552;
+  static final int icSigRgbData = 1380401696;
+  static final int icSigGrayData = 1196573017;
+  static final int icSigHsvData = 1213421088;
+  static final int icSigHlsData = 1212961568;
+  static final int icSigCmykData = 1129142603;
+  static final int icSigCmyData = 1129142560;
+  static final int icSigSpace2CLR = 843271250;
+  static final int icSigSpace3CLR = 860048466;
+  static final int icSigSpace4CLR = 876825682;
+  static final int icSigSpace5CLR = 893602898;
+  static final int icSigSpace6CLR = 910380114;
+  static final int icSigSpace7CLR = 927157330;
+  static final int icSigSpace8CLR = 943934546;
+  static final int icSigSpace9CLR = 960711762;
+  static final int icSigSpaceACLR = 1094929490;
+  static final int icSigSpaceBCLR = 1111706706;
+  static final int icSigSpaceCCLR = 1128483922;
+  static final int icSigSpaceDCLR = 1145261138;
+  static final int icSigSpaceECLR = 1162038354;
+  static final int icSigSpaceFCLR = 1178815570;
+  static final int icSigInputClass = 1935896178;
+  static final int icSigDisplayClass = 1835955314;
+  static final int icSigOutputClass = 1886549106;
+  static final int icSigLinkClass = 1818848875;
+  static final int icSigAbstractClass = 1633842036;
+  static final int icSigColorSpaceClass = 1936744803;
+  static final int icSigNamedColorClass = 1852662636;
+  static final int icPerceptual = 0;
+  static final int icRelativeColorimetric = 1;
+  static final int icMediaRelativeColorimetric = 1;
+  static final int icSaturation = 2;
+  static final int icAbsoluteColorimetric = 3;
+  static final int icICCAbsoluteColorimetric = 3;
+  static final int icSigHead = 1751474532;
+  static final int icSigAToB0Tag = 1093812784;
+  static final int icSigAToB1Tag = 1093812785;
+  static final int icSigAToB2Tag = 1093812786;
+  static final int icSigBlueColorantTag = 1649957210;
+  static final int icSigBlueMatrixColumnTag = 1649957210;
+  static final int icSigBlueTRCTag = 1649693251;
+  static final int icSigBToA0Tag = 1110589744;
+  static final int icSigBToA1Tag = 1110589745;
+  static final int icSigBToA2Tag = 1110589746;
+  static final int icSigCalibrationDateTimeTag = 1667329140;
+  static final int icSigCharTargetTag = 1952543335;
+  static final int icSigCopyrightTag = 1668313716;
+  static final int icSigCrdInfoTag = 1668441193;
+  static final int icSigDeviceMfgDescTag = 1684893284;
+  static final int icSigDeviceModelDescTag = 1684890724;
+  static final int icSigDeviceSettingsTag = 1684371059;
+  static final int icSigGamutTag = 1734438260;
+  static final int icSigGrayTRCTag = 1800688195;
+  static final int icSigGreenColorantTag = 1733843290;
+  static final int icSigGreenMatrixColumnTag = 1733843290;
+  static final int icSigGreenTRCTag = 1733579331;
+  static final int icSigLuminanceTag = 1819635049;
+  static final int icSigMeasurementTag = 1835360627;
+  static final int icSigMediaBlackPointTag = 1651208308;
+  static final int icSigMediaWhitePointTag = 2004119668;
+  static final int icSigNamedColor2Tag = 1852009522;
+  static final int icSigOutputResponseTag = 1919251312;
+  static final int icSigPreview0Tag = 1886545200;
+  static final int icSigPreview1Tag = 1886545201;
+  static final int icSigPreview2Tag = 1886545202;
+  static final int icSigProfileDescriptionTag = 1684370275;
+  static final int icSigProfileSequenceDescTag = 1886610801;
+  static final int icSigPs2CRD0Tag = 1886610480;
+  static final int icSigPs2CRD1Tag = 1886610481;
+  static final int icSigPs2CRD2Tag = 1886610482;
+  static final int icSigPs2CRD3Tag = 1886610483;
+  static final int icSigPs2CSATag = 1886597747;
+  static final int icSigPs2RenderingIntentTag = 1886597737;
+  static final int icSigRedColorantTag = 1918392666;
+  static final int icSigRedMatrixColumnTag = 1918392666;
+  static final int icSigRedTRCTag = 1918128707;
+  static final int icSigScreeningDescTag = 1935897188;
+  static final int icSigScreeningTag = 1935897198;
+  static final int icSigTechnologyTag = 1952801640;
+  static final int icSigUcrBgTag = 1650877472;
+  static final int icSigViewingCondDescTag = 1987405156;
+  static final int icSigViewingConditionsTag = 1986618743;
+  static final int icSigChromaticityTag = 1667789421;
+  static final int icSigChromaticAdaptationTag = 1667785060;
+  static final int icSigColorantOrderTag = 1668051567;
+  static final int icSigColorantTableTag = 1668051572;
+  static final int icHdrSize = 0;
+  static final int icHdrCmmId = 4;
+  static final int icHdrVersion = 8;
+  static final int icHdrDeviceClass = 12;
+  static final int icHdrColorSpace = 16;
+  static final int icHdrPcs = 20;
+  static final int icHdrDate = 24;
+  static final int icHdrMagic = 36;
+  static final int icHdrPlatform = 40;
+  static final int icHdrFlags = 44;
+  static final int icHdrManufacturer = 48;
+  static final int icHdrModel = 52;
+  static final int icHdrAttributes = 56;
+  static final int icHdrRenderingIntent = 64;
+  static final int icHdrIlluminant = 68;
+  static final int icHdrCreator = 80;
+  static final int icHdrProfileID = 84;
+  static final int icTagType = 0;
+  static final int icTagReserved = 4;
+  static final int icCurveCount = 8;
+  static final int icCurveData = 12;
+  static final int icXYZNumberX = 8;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public static java.awt.color.ICC_Profile getInstance(byte[] data) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ICC_Profile.getInstance(byte[])"); }
+  public static java.awt.color.ICC_Profile getInstance(java.io.InputStream s) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ICC_Profile.getInstance(java.io.InputStream)"); }
+  public static java.awt.color.ICC_Profile getInstance(java.lang.String fileName) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ICC_Profile.getInstance(java.lang.String)"); }
+  public static java.awt.color.ICC_Profile getInstance(int cspace) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ICC_Profile.getInstance(int)"); }
+  public void write(java.lang.String fileName) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ICC_Profile.write(java.lang.String)"); }
+  public void write(java.io.OutputStream s) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ICC_Profile.write(java.io.OutputStream)"); }
+  @JavaProtected
+  java.lang.Object readResolve() throws java.io.ObjectStreamException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ICC_Profile.readResolve()"); }
+  public int getMajorVersion() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ICC_Profile.getMajorVersion()"); }
+  public int getMinorVersion() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ICC_Profile.getMinorVersion()"); }
+  public byte[] getData() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ICC_Profile.getData()"); }
+  public byte[] getData(int tagSignature) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ICC_Profile.getData(int)"); }
+  public void setData(int tagSignature, byte[] tagData) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ICC_Profile.setData(int, byte[])"); }
+  public int getColorSpaceType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ICC_Profile.getColorSpaceType()"); }
+  public int getProfileClass() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ICC_Profile.getProfileClass()"); }
+  public int getPCSType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ICC_Profile.getPCSType()"); }
+  public int getNumComponents() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ICC_Profile.getNumComponents()"); }
+  < ---- END java signatures ---- >
+}

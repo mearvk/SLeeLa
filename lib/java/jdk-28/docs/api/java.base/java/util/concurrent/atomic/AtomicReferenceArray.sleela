@@ -1,0 +1,95 @@
+<< lib/java/jdk-28/docs/api/java.base/java/util/concurrent/atomic/AtomicReferenceArray.sleela
+   SLeeLa file for the Java type java.util.concurrent.atomic.AtomicReferenceArray (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/atomic/AtomicReferenceArray.html
+   Java kind: class; extends java.lang.Object; implements java.io.Serializable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class AtomicReferenceArray<E> {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 1477;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.concurrent.atomic.AtomicReferenceArray";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/atomic/AtomicReferenceArray.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public AtomicReferenceArray(int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.<init>(int)"); }
+  public AtomicReferenceArray(E[] array) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.<init>(E[])"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public final E get(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.get(int)"); }
+  public final int length() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.length()"); }
+  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.toString()"); }
+  public final void set(int i, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.set(int, E)"); }
+  public final E getOpaque(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.getOpaque(int)"); }
+  public final void setOpaque(int i, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.setOpaque(int, E)"); }
+  public final E getAcquire(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.getAcquire(int)"); }
+  public final void setRelease(int i, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.setRelease(int, E)"); }
+  public final boolean compareAndSet(int i, E expectedValue, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.compareAndSet(int, E, E)"); }
+  public final E compareAndExchange(int i, E expectedValue, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.compareAndExchange(int, E, E)"); }
+  public final E compareAndExchangeAcquire(int i, E expectedValue, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.compareAndExchangeAcquire(int, E, E)"); }
+  public final E compareAndExchangeRelease(int i, E expectedValue, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.compareAndExchangeRelease(int, E, E)"); }
+  public final boolean weakCompareAndSetPlain(int i, E expectedValue, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.weakCompareAndSetPlain(int, E, E)"); }
+  public final boolean weakCompareAndSet(int i, E expectedValue, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.weakCompareAndSet(int, E, E)"); }
+  public final boolean weakCompareAndSetAcquire(int i, E expectedValue, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.weakCompareAndSetAcquire(int, E, E)"); }
+  public final boolean weakCompareAndSetRelease(int i, E expectedValue, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.weakCompareAndSetRelease(int, E, E)"); }
+  public final E getAndSet(int i, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.getAndSet(int, E)"); }
+  public final boolean weakCompareAndSetVolatile(int i, E expectedValue, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.weakCompareAndSetVolatile(int, E, E)"); }
+  public final void lazySet(int i, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.lazySet(int, E)"); }
+  public final E getAndUpdate(int i, java.util.function.UnaryOperator<E> updateFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.getAndUpdate(int, java.util.function.UnaryOperator<E>)"); }
+  public final E updateAndGet(int i, java.util.function.UnaryOperator<E> updateFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.updateAndGet(int, java.util.function.UnaryOperator<E>)"); }
+  public final E getAndAccumulate(int i, E x, java.util.function.BinaryOperator<E> accumulatorFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.getAndAccumulate(int, E, java.util.function.BinaryOperator<E>)"); }
+  public final E accumulateAndGet(int i, E x, java.util.function.BinaryOperator<E> accumulatorFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.accumulateAndGet(int, E, java.util.function.BinaryOperator<E>)"); }
+  public final E getPlain(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.getPlain(int)"); }
+  public final void setPlain(int i, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.setPlain(int, E)"); }
+  < ---- END java signatures ---- >
+}

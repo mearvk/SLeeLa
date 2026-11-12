@@ -1,0 +1,117 @@
+<< lib/java/jdk-28/docs/api/java.base/java/util/TreeMap.sleela
+   SLeeLa file for the Java type java.util.TreeMap (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/TreeMap.html
+   Java kind: class; extends java.util.AbstractMap; implements java.util.NavigableMap, java.lang.Cloneable, java.io.Serializable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class TreeMap<K, V> {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9263;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.TreeMap";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/TreeMap.html";
+  String javaKind = "class";
+  String javaSuper = "java.util.AbstractMap";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public TreeMap(java.util.SortedMap<K, ? extends V> m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.<init>(java.util.SortedMap<K, ? extends V>)"); }
+  public TreeMap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public V remove(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.remove(java.lang.Object)"); }
+  public int size() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.size()"); }
+  public V get(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.get(java.lang.Object)"); }
+  public V put(K key, V value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.put(K, V)"); }
+  public java.util.Collection<V> values() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.values()"); }
+  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.clone()"); }
+  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.clear()"); }
+  public boolean replace(K key, V oldValue, V newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.replace(K, V, V)"); }
+  public V replace(K key, V value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.replace(K, V)"); }
+  public void replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V> function) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V>)"); }
+  public V merge(K key, V value, java.util.function.BiFunction<? super V, ? super V, ? extends V> remappingFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.merge(K, V, java.util.function.BiFunction<? super V, ? super V, ? extends V>)"); }
+  public java.util.Set<java.util.Map.Entry<K, V>> entrySet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.entrySet()"); }
+  public void putAll(java.util.Map<? extends K, ? extends V> map) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.putAll(java.util.Map<? extends K, ? extends V>)"); }
+  public V putIfAbsent(K key, V value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.putIfAbsent(K, V)"); }
+  public V compute(K key, java.util.function.BiFunction<? super K, ? super V, ? extends V> remappingFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.compute(K, java.util.function.BiFunction<? super K, ? super V, ? extends V>)"); }
+  public V computeIfAbsent(K key, java.util.function.Function<? super K, ? extends V> mappingFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.computeIfAbsent(K, java.util.function.Function<? super K, ? extends V>)"); }
+  public void forEach(java.util.function.BiConsumer<? super K, ? super V> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.forEach(java.util.function.BiConsumer<? super K, ? super V>)"); }
+  public java.util.Set<K> keySet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.keySet()"); }
+  public boolean containsValue(java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.containsValue(java.lang.Object)"); }
+  public boolean containsKey(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.containsKey(java.lang.Object)"); }
+  public V computeIfPresent(K key, java.util.function.BiFunction<? super K, ? super V, ? extends V> remappingFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.computeIfPresent(K, java.util.function.BiFunction<? super K, ? super V, ? extends V>)"); }
+  public java.util.Comparator<? super K> comparator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.comparator()"); }
+  public K firstKey() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.firstKey()"); }
+  public V putFirst(K k, V v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.putFirst(K, V)"); }
+  public V putLast(K k, V v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.putLast(K, V)"); }
+  public java.util.Map.Entry<K, V> firstEntry() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.firstEntry()"); }
+  public java.util.Map.Entry<K, V> lastEntry() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.lastEntry()"); }
+  public java.util.Map.Entry<K, V> pollFirstEntry() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.pollFirstEntry()"); }
+  public java.util.Map.Entry<K, V> pollLastEntry() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.pollLastEntry()"); }
+  public java.util.NavigableMap<K, V> descendingMap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.descendingMap()"); }
+  public java.util.Map.Entry<K, V> lowerEntry(K key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.lowerEntry(K)"); }
+  public K lowerKey(K key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.lowerKey(K)"); }
+  public java.util.Map.Entry<K, V> floorEntry(K key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.floorEntry(K)"); }
+  public K floorKey(K key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.floorKey(K)"); }
+  public java.util.Map.Entry<K, V> ceilingEntry(K key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.ceilingEntry(K)"); }
+  public K ceilingKey(K key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.ceilingKey(K)"); }
+  public java.util.Map.Entry<K, V> higherEntry(K key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.higherEntry(K)"); }
+  public K higherKey(K key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.higherKey(K)"); }
+  public java.util.NavigableSet<K> navigableKeySet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.navigableKeySet()"); }
+  public java.util.NavigableSet<K> descendingKeySet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.descendingKeySet()"); }
+  public java.util.SortedMap<K, V> subMap(K fromKey, K toKey) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.subMap(K, K)"); }
+  public java.util.NavigableMap<K, V> subMap(K fromKey, boolean fromInclusive, K toKey, boolean toInclusive) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.subMap(K, boolean, K, boolean)"); }
+  public java.util.NavigableMap<K, V> headMap(K toKey, boolean inclusive) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.headMap(K, boolean)"); }
+  public java.util.SortedMap<K, V> headMap(K toKey) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.headMap(K)"); }
+  public java.util.SortedMap<K, V> tailMap(K fromKey) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.tailMap(K)"); }
+  public java.util.NavigableMap<K, V> tailMap(K fromKey, boolean inclusive) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.tailMap(K, boolean)"); }
+  public K lastKey() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeMap.lastKey()"); }
+  < ---- END java signatures ---- >
+}

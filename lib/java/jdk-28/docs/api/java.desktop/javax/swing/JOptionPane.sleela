@@ -1,0 +1,178 @@
+<< lib/java/jdk-28/docs/api/java.desktop/javax/swing/JOptionPane.sleela
+   SLeeLa file for the Java type javax.swing.JOptionPane (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/JOptionPane.html
+   Java kind: class; extends javax.swing.JComponent; implements javax.accessibility.Accessible
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class JOptionPane {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 5041;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.swing.JOptionPane";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/JOptionPane.html";
+  String javaKind = "class";
+  String javaSuper = "javax.swing.JComponent";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static Any UNINITIALIZED_VALUE = null;
+  static final int DEFAULT_OPTION = -1;
+  static final int YES_NO_OPTION = 0;
+  static final int YES_NO_CANCEL_OPTION = 1;
+  static final int OK_CANCEL_OPTION = 2;
+  static final int YES_OPTION = 0;
+  static final int NO_OPTION = 1;
+  static final int CANCEL_OPTION = 2;
+  static final int OK_OPTION = 0;
+  static final int CLOSED_OPTION = -1;
+  static final int ERROR_MESSAGE = 0;
+  static final int INFORMATION_MESSAGE = 1;
+  static final int WARNING_MESSAGE = 2;
+  static final int QUESTION_MESSAGE = 3;
+  static final int PLAIN_MESSAGE = -1;
+  static final String ICON_PROPERTY = "icon";
+  static final String MESSAGE_PROPERTY = "message";
+  static final String VALUE_PROPERTY = "value";
+  static final String OPTIONS_PROPERTY = "options";
+  static final String INITIAL_VALUE_PROPERTY = "initialValue";
+  static final String MESSAGE_TYPE_PROPERTY = "messageType";
+  static final String OPTION_TYPE_PROPERTY = "optionType";
+  static final String SELECTION_VALUES_PROPERTY = "selectionValues";
+  static final String INITIAL_SELECTION_VALUE_PROPERTY = "initialSelectionValue";
+  static final String INPUT_VALUE_PROPERTY = "inputValue";
+  static final String WANTS_INPUT_PROPERTY = "wantsInput";
+  < public and protected instance fields >
+  Any icon;
+  Any message;
+  Any[] options;
+  Any initialValue;
+  int messageType;
+  int optionType;
+  Any value;
+  Any[] selectionValues;
+  Any inputValue;
+  Any initialSelectionValue;
+  boolean wantsInput;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public JOptionPane(java.lang.Object message, int messageType, int optionType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.<init>(java.lang.Object, int, int)"); }
+  public JOptionPane(java.lang.Object message, int messageType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.<init>(java.lang.Object, int)"); }
+  public JOptionPane(java.lang.Object message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.<init>(java.lang.Object)"); }
+  public JOptionPane() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.<init>()"); }
+  public JOptionPane(java.lang.Object message, int messageType, int optionType, javax.swing.Icon icon) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.<init>(java.lang.Object, int, int, javax.swing.Icon)"); }
+  public JOptionPane(java.lang.Object message, int messageType, int optionType, javax.swing.Icon icon, java.lang.Object[] options) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.<init>(java.lang.Object, int, int, javax.swing.Icon, java.lang.Object[])"); }
+  public JOptionPane(java.lang.Object message, int messageType, int optionType, javax.swing.Icon icon, java.lang.Object[] options, java.lang.Object initialValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.<init>(java.lang.Object, int, int, javax.swing.Icon, java.lang.Object[], java.lang.Object)"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public java.lang.Object getValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.getValue()"); }
+  public java.lang.Object getMessage() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.getMessage()"); }
+  public void setValue(java.lang.Object newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.setValue(java.lang.Object)"); }
+  @JavaProtected
+  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.paramString()"); }
+  public void setInitialValue(java.lang.Object newInitialValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.setInitialValue(java.lang.Object)"); }
+  public void setOptions(java.lang.Object[] newOptions) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.setOptions(java.lang.Object[])"); }
+  public void setMessage(java.lang.Object newMessage) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.setMessage(java.lang.Object)"); }
+  public void updateUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.updateUI()"); }
+  public void setUI(javax.swing.plaf.OptionPaneUI ui) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.setUI(javax.swing.plaf.OptionPaneUI)"); }
+  public javax.swing.plaf.OptionPaneUI getUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.getUI()"); }
+  public java.lang.String getUIClassID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.getUIClassID()"); }
+  public int getMessageType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.getMessageType()"); }
+  public int getOptionType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.getOptionType()"); }
+  public javax.swing.JDialog createDialog(java.lang.String title) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.createDialog(java.lang.String)"); }
+  public javax.swing.JDialog createDialog(java.awt.Component parentComponent, java.lang.String title) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.createDialog(java.awt.Component, java.lang.String)"); }
+  public static java.lang.String showInputDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.Object initialSelectionValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.showInputDialog(java.awt.Component, java.lang.Object, java.lang.Object)"); }
+  public static java.lang.String showInputDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int messageType) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.showInputDialog(java.awt.Component, java.lang.Object, java.lang.String, int)"); }
+  public static java.lang.Object showInputDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int messageType, javax.swing.Icon icon, java.lang.Object[] selectionValues, java.lang.Object initialSelectionValue) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.showInputDialog(java.awt.Component, java.lang.Object, java.lang.String, int, javax.swing.Icon, java.lang.Object[], java.lang.Object)"); }
+  public static java.lang.String showInputDialog(java.awt.Component parentComponent, java.lang.Object message) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.showInputDialog(java.awt.Component, java.lang.Object)"); }
+  public static java.lang.String showInputDialog(java.lang.Object message) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.showInputDialog(java.lang.Object)"); }
+  public void setWantsInput(boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.setWantsInput(boolean)"); }
+  public void setSelectionValues(java.lang.Object[] newValues) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.setSelectionValues(java.lang.Object[])"); }
+  public void setInitialSelectionValue(java.lang.Object newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.setInitialSelectionValue(java.lang.Object)"); }
+  public static java.awt.Frame getRootFrame() throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.getRootFrame()"); }
+  public void selectInitialValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.selectInitialValue()"); }
+  public java.lang.Object getInputValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.getInputValue()"); }
+  public static void showMessageDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int messageType, javax.swing.Icon icon) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.showMessageDialog(java.awt.Component, java.lang.Object, java.lang.String, int, javax.swing.Icon)"); }
+  public static void showMessageDialog(java.awt.Component parentComponent, java.lang.Object message) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.showMessageDialog(java.awt.Component, java.lang.Object)"); }
+  public static void showMessageDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int messageType) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.showMessageDialog(java.awt.Component, java.lang.Object, java.lang.String, int)"); }
+  public static int showOptionDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int optionType, int messageType, javax.swing.Icon icon, java.lang.Object[] options, java.lang.Object initialValue) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.showOptionDialog(java.awt.Component, java.lang.Object, java.lang.String, int, int, javax.swing.Icon, java.lang.Object[], java.lang.Object)"); }
+  public static int showConfirmDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int optionType, int messageType, javax.swing.Icon icon) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.showConfirmDialog(java.awt.Component, java.lang.Object, java.lang.String, int, int, javax.swing.Icon)"); }
+  public static int showConfirmDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int optionType, int messageType) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.showConfirmDialog(java.awt.Component, java.lang.Object, java.lang.String, int, int)"); }
+  public static int showConfirmDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int optionType) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.showConfirmDialog(java.awt.Component, java.lang.Object, java.lang.String, int)"); }
+  public static int showConfirmDialog(java.awt.Component parentComponent, java.lang.Object message) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.showConfirmDialog(java.awt.Component, java.lang.Object)"); }
+  public static void showInternalMessageDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int messageType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.showInternalMessageDialog(java.awt.Component, java.lang.Object, java.lang.String, int)"); }
+  public static void showInternalMessageDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int messageType, javax.swing.Icon icon) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.showInternalMessageDialog(java.awt.Component, java.lang.Object, java.lang.String, int, javax.swing.Icon)"); }
+  public static void showInternalMessageDialog(java.awt.Component parentComponent, java.lang.Object message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.showInternalMessageDialog(java.awt.Component, java.lang.Object)"); }
+  public static int showInternalOptionDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int optionType, int messageType, javax.swing.Icon icon, java.lang.Object[] options, java.lang.Object initialValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.showInternalOptionDialog(java.awt.Component, java.lang.Object, java.lang.String, int, int, javax.swing.Icon, java.lang.Object[], java.lang.Object)"); }
+  public static int showInternalConfirmDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int optionType, int messageType, javax.swing.Icon icon) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.showInternalConfirmDialog(java.awt.Component, java.lang.Object, java.lang.String, int, int, javax.swing.Icon)"); }
+  public static int showInternalConfirmDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int optionType, int messageType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.showInternalConfirmDialog(java.awt.Component, java.lang.Object, java.lang.String, int, int)"); }
+  public static int showInternalConfirmDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int optionType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.showInternalConfirmDialog(java.awt.Component, java.lang.Object, java.lang.String, int)"); }
+  public static int showInternalConfirmDialog(java.awt.Component parentComponent, java.lang.Object message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.showInternalConfirmDialog(java.awt.Component, java.lang.Object)"); }
+  public javax.swing.JInternalFrame createInternalFrame(java.awt.Component parentComponent, java.lang.String title) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.createInternalFrame(java.awt.Component, java.lang.String)"); }
+  public static java.lang.String showInternalInputDialog(java.awt.Component parentComponent, java.lang.Object message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.showInternalInputDialog(java.awt.Component, java.lang.Object)"); }
+  public static java.lang.String showInternalInputDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int messageType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.showInternalInputDialog(java.awt.Component, java.lang.Object, java.lang.String, int)"); }
+  public static java.lang.Object showInternalInputDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int messageType, javax.swing.Icon icon, java.lang.Object[] selectionValues, java.lang.Object initialSelectionValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.showInternalInputDialog(java.awt.Component, java.lang.Object, java.lang.String, int, javax.swing.Icon, java.lang.Object[], java.lang.Object)"); }
+  public static javax.swing.JDesktopPane getDesktopPaneForComponent(java.awt.Component parentComponent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.getDesktopPaneForComponent(java.awt.Component)"); }
+  public static java.awt.Frame getFrameForComponent(java.awt.Component parentComponent) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.getFrameForComponent(java.awt.Component)"); }
+  public void setMessageType(int newType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.setMessageType(int)"); }
+  public void setOptionType(int newType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.setOptionType(int)"); }
+  public static void setRootFrame(java.awt.Frame newRootFrame) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.setRootFrame(java.awt.Frame)"); }
+  public java.lang.Object getInitialValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.getInitialValue()"); }
+  public java.lang.Object[] getSelectionValues() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.getSelectionValues()"); }
+  public java.lang.Object getInitialSelectionValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.getInitialSelectionValue()"); }
+  public void setInputValue(java.lang.Object newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.setInputValue(java.lang.Object)"); }
+  public int getMaxCharactersPerLineCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.getMaxCharactersPerLineCount()"); }
+  public boolean getWantsInput() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.getWantsInput()"); }
+  public javax.swing.Icon getIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.getIcon()"); }
+  public void setIcon(javax.swing.Icon newIcon) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.setIcon(javax.swing.Icon)"); }
+  public java.lang.Object[] getOptions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.getOptions()"); }
+  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JOptionPane.getAccessibleContext()"); }
+  < ---- END java signatures ---- >
+}
