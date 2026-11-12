@@ -50707,7 +50707,7 @@
     },
     {
       "path": "lib/java/jdk-28/java.base/java/lang/Math.sleela",
-      "sha256": "b7e69f200742ef71549e3646e368a3945170b0c4e1cd30599c3e72093a8c081b"
+      "sha256": "7427fef47dac5aa192fc8efee10a3853d34fb64623002d9ac3372818d4dac53a"
     },
     {
       "path": "lib/java/jdk-28/java.base/java/lang/Module.sleela",
@@ -50879,7 +50879,7 @@
     },
     {
       "path": "lib/java/jdk-28/java.base/java/lang/StrictMath.sleela",
-      "sha256": "7778edae1c855c4e24ad9bfe97ebbc448bd92cf0d47938cd266c47191c7aba0b"
+      "sha256": "e908d5fc3525cd83663d73c02c0c0b5c7009b7ef44eae8094b2a6bcf2ed9845b"
     },
     {
       "path": "lib/java/jdk-28/java.base/java/lang/String.sleela",

@@ -85,9 +85,7 @@ class StrictMath {
   << Every static StrictMath member is mapped to the SLeeLa function of the same
      name in Math (java.lang.Math, this directory). SLeeLa Math is already
      deterministic pure SLeeLa, so StrictMath needs no separate algorithm: a
-     StrictMath call is the Math call. The four members Math has not
-     implemented yet (powExact, unsignedPowExact, unsignedMultiplyExact,
-     unsignedMultiplyHigh) are mapped too, so they gain logic the day Math does. >>
+     StrictMath call is the Math call. >>
   public static float abs(float a) { return Math.abs(a); }
   public static long abs(long a) { return Math.abs(a); }
   public static int abs(int a) { return Math.abs(a); }
@@ -135,7 +133,6 @@ class StrictMath {
   @throwable("java.lang.ArithmeticException")
   public static long multiplyExact(long x, long y) { return Math.multiplyExact(x, y); }
   public static long multiplyHigh(long x, long y) { return Math.multiplyHigh(x, y); }
-  @throwable("java.lang.UnsupportedOperationException")
   public static long unsignedMultiplyHigh(long x, long y) { return Math.unsignedMultiplyHigh(x, y); }
   @throwable("java.lang.ArithmeticException")
   public static long negateExact(long a) { return Math.negateExact(a); }
@@ -180,11 +177,11 @@ class StrictMath {
   public static double hypot(double x, double y) { return Math.hypot(x, y); }
   public static double expm1(double x) { return Math.expm1(x); }
   public static double log1p(double x) { return Math.log1p(x); }
-  @throwable("java.lang.UnsupportedOperationException")
+  @throwable("java.lang.ArithmeticException")
   public static int unsignedMultiplyExact(int x, int y) { return Math.unsignedMultiplyExact(x, y); }
-  @throwable("java.lang.UnsupportedOperationException")
+  @throwable("java.lang.ArithmeticException")
   public static long unsignedMultiplyExact(long x, int y) { return Math.unsignedMultiplyExact(x, y); }
-  @throwable("java.lang.UnsupportedOperationException")
+  @throwable("java.lang.ArithmeticException")
   public static long unsignedMultiplyExact(long x, long y) { return Math.unsignedMultiplyExact(x, y); }
   public static double toRadians(double angdeg) { return Math.toRadians(angdeg); }
   public static double toDegrees(double angrad) { return Math.toDegrees(angrad); }
@@ -216,13 +213,13 @@ class StrictMath {
   public static double nextUp(double d) { return Math.nextUp(d); }
   public static double nextDown(double d) { return Math.nextDown(d); }
   public static float nextDown(float f) { return Math.nextDown(f); }
-  @throwable("java.lang.UnsupportedOperationException")
+  @throwable("java.lang.ArithmeticException")
   public static long powExact(long x, int n) { return Math.powExact(x, n); }
-  @throwable("java.lang.UnsupportedOperationException")
+  @throwable("java.lang.ArithmeticException")
   public static int powExact(int x, int n) { return Math.powExact(x, n); }
-  @throwable("java.lang.UnsupportedOperationException")
+  @throwable("java.lang.ArithmeticException")
   public static long unsignedPowExact(long x, int n) { return Math.unsignedPowExact(x, n); }
-  @throwable("java.lang.UnsupportedOperationException")
+  @throwable("java.lang.ArithmeticException")
   public static int unsignedPowExact(int x, int n) { return Math.unsignedPowExact(x, n); }
   < ---- END java implementation ---- >
 }
