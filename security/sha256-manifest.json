@@ -567,7 +567,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "833a46fc8f07a815ca8ea380962f5ee6725dd8790e30edc99426fc053b6ced10"
+      "sha256": "d4794430c261b0371effcf8a34428fdfa66e489af1c9548088c4368278c4824c"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -69023,11 +69023,11 @@
     },
     {
       "path": "lib/java/support/SLJavaBits.sleela",
-      "sha256": "cf9578c50b1e1aa22cad060e270d83cbc5cd36f726b3b04ab1523887a6b3acfe"
+      "sha256": "9939fce7225678afecf6f82bad3546e783bc7a2a3916b22e3863b11bf2a6cd2e"
     },
     {
       "path": "lib/java/support/SLJavaHex.sleela",
-      "sha256": "0f49ef72137b932b5b5c5f6363db53cd797da4e3258a37eb9feadf3df94cb70e"
+      "sha256": "16560d03a241f566b46a4dfe68b8853ffa8cca1c1e8518b4f62401cfd677d589"
     },
     {
       "path": "lib/java/support/SLJavaMd5.sleela",

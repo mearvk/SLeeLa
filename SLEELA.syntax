@@ -3225,6 +3225,15 @@ instance-field layout, the runtime parent link, method inheritance and the
 | `try` / `catch` / `throw` | `OP_TRY_PUSH`, `OP_TRY_POP`, `OP_THROW` (section 37) |
 | Generics | erasure to `Any` (38.1); type arguments kept as data |
 | Source-level Java rules (conversions, promotion, overload/override, inference) | `impl/frontend/java_equivalence.cpp` model |
+| `import java.jdk-28;` tier selection | `impl/frontend/driver.cpp` library loader: when the program's preferred roots include `java/jdk-28` and a JDK 28 file of the requested name exists, that file wins over every other unit of the name |
+| Exact `long` comparison | `OP_EQ`/`OP_NE`/`OP_LT`/`OP_LE`/`OP_GT`/`OP_GE` compare two `SL_INT` operands as int64, not through `double` |
+
+**JDK 28 tier rule.** `import java.jdk-28;` is authoritative for every name that
+has a JDK 28 file. Before this rule, an import carried by an earlier library unit
+(for example `import java.jdk-25.java.util;` in `KeyValueHolder`, a JDK-internal
+helper with no JDK 28 file) added a second preferred root, and its real unit then
+beat the JDK 28 file for every later name (`TreeMap`, `Vector`, `LinkedList`).
+A name with no JDK 28 file still resolves as before.
 
 ### 43.5 Not done
 

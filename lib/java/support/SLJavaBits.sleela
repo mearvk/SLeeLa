@@ -110,4 +110,14 @@ class SLJavaBits {
     if (r < 0) { r = r + m; }
     return r;
   }
+
+  < wrap x to a signed two-complement value of the given width (8, 16, 32) >
+  static long wrap(long x, int bits) {
+    long m = 1;
+    int i = 0;
+    while (i < bits) { m = m * 2; i = i + 1; }
+    long r = mod(x, m);
+    if (r >= m / 2) { r = r - m; }
+    return r;
+  }
 }

@@ -2108,8 +2108,18 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
                     hasNonDocumentationMatch=true;
                 if(isJdk28Reference(symbol)) hasJdk28Match=true;
             }
+            // `import java.jdk-28;` selects the JDK 28 tier (SLEELA.syntax 43):
+            // when a JDK 28 file of this name exists it wins outright. Without
+            // this, an import carried by an earlier library unit (for example
+            // `import java.jdk-25.java.util;` in a JDK-internal helper that has
+            // no JDK 28 file) adds another preferred root, and its real unit
+            // would then beat the JDK 28 file for every later name.
+            const bool jdk28Selected=std::find(preferredRoots.begin(),preferredRoots.end(),std::string("java/jdk-28"))!=preferredRoots.end();
+            const bool onlyJdk28=jdk28Selected && hasJdk28Match;
+            if(onlyJdk28) hasNonDocumentationMatch=false;
             for(const auto& symbol:index.symbols()){
                 if(symbol.name!=name) continue;
+                if(onlyJdk28 && !isJdk28Reference(symbol)) continue;
                 if(hasPreferredMatch && !underPreferredRoot(symbol)) continue;
                 if(hasNonDocumentationMatch && isReferenceUnit(symbol)) continue;
                 if(!hasNonDocumentationMatch && hasJdk28Match && !isJdk28Reference(symbol)) continue;
