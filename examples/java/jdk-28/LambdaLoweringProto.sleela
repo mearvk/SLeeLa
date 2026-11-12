@@ -1,0 +1,45 @@
+#sleela 3.0
+material;
+
+< Java container: see /lib/java/jdk-28/LOWERING.md section 2. Not part of the SLeeLa specification. >
+
+<< Prototype: Java lambdas lowered to (id, env) with one dispatcher. No new syntax.
+   Java: int k = 3; Function f = x -> x * k; f.apply(14);       prints 42
+   Java: Comparator c = (a, b) -> b - a; c.compare(5, 9);       prints 4 >>
+class SLJavaLambda {
+  int id;
+  Any[] env;
+  SLJavaLambda(int id_, Any[] env_) {
+    this.id = id_;
+    this.env = env_;
+  }
+  Any apply(Any a) {
+    return LambdaTable.call(this.id, this.env, a, null);
+  }
+  Any applyBi(Any a, Any b) {
+    return LambdaTable.call(this.id, this.env, a, b);
+  }
+  int compare(Any a, Any b) {
+    return (int) LambdaTable.call(this.id, this.env, a, b);
+  }
+}
+
+class LambdaTable {
+  static Any call(int id, Any[] env, Any a, Any b) {
+    if (id == 1) { return (int) a * (int) env[0]; }
+    if (id == 2) { return (int) b - (int) a; }
+    return null;
+  }
+}
+
+class LambdaLoweringProto {
+  void main() {
+    int k = 3;
+    Any[] env = new Any[1];
+    env[0] = k;
+    SLJavaLambda times = new SLJavaLambda(1, env);
+    print(times.apply(14));
+    SLJavaLambda desc = new SLJavaLambda(2, new Any[0]);
+    print(desc.compare(5, 9));
+  }
+}
