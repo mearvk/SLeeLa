@@ -1,0 +1,138 @@
+<< jdk-28/java.base/java/nio/ByteBuffer.sleela
+   SLeeLa file for the Java type java.nio.ByteBuffer (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/nio/ByteBuffer.html
+   Java kind: class; extends java.nio.Buffer; implements java.lang.Comparable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class ByteBuffer {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 1993;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.nio.ByteBuffer";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/nio/ByteBuffer.html";
+  String javaKind = "class";
+  String javaSuper = "java.nio.Buffer";
+
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public java.nio.ByteBuffer reset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.reset()"); }
+  public java.nio.ByteBuffer get(byte[] dst) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.get(byte[])"); }
+  public abstract byte get(int index) { throw new AbstractMethodError("java.nio.ByteBuffer.get(int)"); }
+  public abstract byte get() { throw new AbstractMethodError("java.nio.ByteBuffer.get()"); }
+  public java.nio.ByteBuffer get(byte[] dst, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.get(byte[], int, int)"); }
+  public java.nio.ByteBuffer get(int index, byte[] dst) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.get(int, byte[])"); }
+  public java.nio.ByteBuffer get(int index, byte[] dst, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.get(int, byte[], int, int)"); }
+  public abstract java.nio.ByteBuffer put(int index, byte b) { throw new AbstractMethodError("java.nio.ByteBuffer.put(int, byte)"); }
+  public java.nio.ByteBuffer put(java.nio.ByteBuffer src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.put(java.nio.ByteBuffer)"); }
+  public java.nio.ByteBuffer put(int index, java.nio.ByteBuffer src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.put(int, java.nio.ByteBuffer, int, int)"); }
+  public final java.nio.ByteBuffer put(byte[] src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.put(byte[])"); }
+  public java.nio.ByteBuffer put(int index, byte[] src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.put(int, byte[])"); }
+  public java.nio.ByteBuffer put(int index, byte[] src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.put(int, byte[], int, int)"); }
+  public java.nio.ByteBuffer put(byte[] src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.put(byte[], int, int)"); }
+  public abstract java.nio.ByteBuffer put(byte b) { throw new AbstractMethodError("java.nio.ByteBuffer.put(byte)"); }
+  public boolean equals(java.lang.Object ob) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.equals(java.lang.Object)"); }
+  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.toString()"); }
+  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.hashCode()"); }
+  public int compareTo(java.nio.ByteBuffer that) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.compareTo(java.nio.ByteBuffer)"); }
+  public abstract short getShort() { throw new AbstractMethodError("java.nio.ByteBuffer.getShort()"); }
+  public abstract short getShort(int index) { throw new AbstractMethodError("java.nio.ByteBuffer.getShort(int)"); }
+  public abstract java.nio.ByteBuffer putShort(int index, short value) { throw new AbstractMethodError("java.nio.ByteBuffer.putShort(int, short)"); }
+  public abstract java.nio.ByteBuffer putShort(short value) { throw new AbstractMethodError("java.nio.ByteBuffer.putShort(short)"); }
+  public abstract char getChar(int index) { throw new AbstractMethodError("java.nio.ByteBuffer.getChar(int)"); }
+  public abstract char getChar() { throw new AbstractMethodError("java.nio.ByteBuffer.getChar()"); }
+  public abstract java.nio.ByteBuffer putChar(int index, char value) { throw new AbstractMethodError("java.nio.ByteBuffer.putChar(int, char)"); }
+  public abstract java.nio.ByteBuffer putChar(char value) { throw new AbstractMethodError("java.nio.ByteBuffer.putChar(char)"); }
+  public abstract int getInt(int index) { throw new AbstractMethodError("java.nio.ByteBuffer.getInt(int)"); }
+  public abstract int getInt() { throw new AbstractMethodError("java.nio.ByteBuffer.getInt()"); }
+  public abstract java.nio.ByteBuffer putInt(int index, int value) { throw new AbstractMethodError("java.nio.ByteBuffer.putInt(int, int)"); }
+  public abstract java.nio.ByteBuffer putInt(int value) { throw new AbstractMethodError("java.nio.ByteBuffer.putInt(int)"); }
+  public abstract long getLong(int index) { throw new AbstractMethodError("java.nio.ByteBuffer.getLong(int)"); }
+  public abstract long getLong() { throw new AbstractMethodError("java.nio.ByteBuffer.getLong()"); }
+  public abstract java.nio.ByteBuffer putLong(long value) { throw new AbstractMethodError("java.nio.ByteBuffer.putLong(long)"); }
+  public abstract java.nio.ByteBuffer putLong(int index, long value) { throw new AbstractMethodError("java.nio.ByteBuffer.putLong(int, long)"); }
+  public abstract float getFloat() { throw new AbstractMethodError("java.nio.ByteBuffer.getFloat()"); }
+  public abstract float getFloat(int index) { throw new AbstractMethodError("java.nio.ByteBuffer.getFloat(int)"); }
+  public abstract java.nio.ByteBuffer putFloat(float value) { throw new AbstractMethodError("java.nio.ByteBuffer.putFloat(float)"); }
+  public abstract java.nio.ByteBuffer putFloat(int index, float value) { throw new AbstractMethodError("java.nio.ByteBuffer.putFloat(int, float)"); }
+  public abstract double getDouble(int index) { throw new AbstractMethodError("java.nio.ByteBuffer.getDouble(int)"); }
+  public abstract double getDouble() { throw new AbstractMethodError("java.nio.ByteBuffer.getDouble()"); }
+  public abstract java.nio.ByteBuffer putDouble(int index, double value) { throw new AbstractMethodError("java.nio.ByteBuffer.putDouble(int, double)"); }
+  public abstract java.nio.ByteBuffer putDouble(double value) { throw new AbstractMethodError("java.nio.ByteBuffer.putDouble(double)"); }
+  public java.nio.ByteBuffer clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.clear()"); }
+  public static java.nio.ByteBuffer wrap(byte[] array, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.wrap(byte[], int, int)"); }
+  public static java.nio.ByteBuffer wrap(byte[] array) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.wrap(byte[])"); }
+  public java.nio.ByteBuffer position(int newPosition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.position(int)"); }
+  public int mismatch(java.nio.ByteBuffer that) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.mismatch(java.nio.ByteBuffer)"); }
+  public java.nio.ByteBuffer limit(int newLimit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.limit(int)"); }
+  public abstract boolean isDirect() { throw new AbstractMethodError("java.nio.ByteBuffer.isDirect()"); }
+  public final boolean hasArray() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.hasArray()"); }
+  public final byte[] array() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.array()"); }
+  public final int arrayOffset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.arrayOffset()"); }
+  public java.nio.ByteBuffer mark() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.mark()"); }
+  public java.nio.ByteBuffer flip() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.flip()"); }
+  public java.nio.ByteBuffer rewind() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.rewind()"); }
+  public abstract java.nio.ByteBuffer slice(int index, int length) { throw new AbstractMethodError("java.nio.ByteBuffer.slice(int, int)"); }
+  public abstract java.nio.ByteBuffer slice() { throw new AbstractMethodError("java.nio.ByteBuffer.slice()"); }
+  public abstract java.nio.ByteBuffer duplicate() { throw new AbstractMethodError("java.nio.ByteBuffer.duplicate()"); }
+  public static java.nio.ByteBuffer allocate(int capacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.allocate(int)"); }
+  public final int alignmentOffset(int index, int unitSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.alignmentOffset(int, int)"); }
+  public static java.nio.ByteBuffer allocateDirect(int capacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.allocateDirect(int)"); }
+  public abstract java.nio.ByteBuffer asReadOnlyBuffer() { throw new AbstractMethodError("java.nio.ByteBuffer.asReadOnlyBuffer()"); }
+  public abstract java.nio.ByteBuffer compact() { throw new AbstractMethodError("java.nio.ByteBuffer.compact()"); }
+  public final java.nio.ByteBuffer order(java.nio.ByteOrder bo) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.order(java.nio.ByteOrder)"); }
+  public final java.nio.ByteOrder order() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.order()"); }
+  public final java.nio.ByteBuffer alignedSlice(int unitSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.alignedSlice(int)"); }
+  public abstract java.nio.CharBuffer asCharBuffer() { throw new AbstractMethodError("java.nio.ByteBuffer.asCharBuffer()"); }
+  public abstract java.nio.ShortBuffer asShortBuffer() { throw new AbstractMethodError("java.nio.ByteBuffer.asShortBuffer()"); }
+  public abstract java.nio.IntBuffer asIntBuffer() { throw new AbstractMethodError("java.nio.ByteBuffer.asIntBuffer()"); }
+  public abstract java.nio.LongBuffer asLongBuffer() { throw new AbstractMethodError("java.nio.ByteBuffer.asLongBuffer()"); }
+  public abstract java.nio.FloatBuffer asFloatBuffer() { throw new AbstractMethodError("java.nio.ByteBuffer.asFloatBuffer()"); }
+  public abstract java.nio.DoubleBuffer asDoubleBuffer() { throw new AbstractMethodError("java.nio.ByteBuffer.asDoubleBuffer()"); }
+  < ---- END java signatures ---- >
+}

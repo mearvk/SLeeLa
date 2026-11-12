@@ -1,0 +1,109 @@
+<< jdk-28/java.base/java/io/ObjectInputStream.sleela
+   SLeeLa file for the Java type java.io.ObjectInputStream (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/io/ObjectInputStream.html
+   Java kind: class; extends java.io.InputStream; implements java.io.ObjectInput, java.io.ObjectStreamConstants
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class ObjectInputStream {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 6625;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.io.ObjectInputStream";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/io/ObjectInputStream.html";
+  String javaKind = "class";
+  String javaSuper = "java.io.InputStream";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public ObjectInputStream(java.io.InputStream in) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.<init>(java.io.InputStream)"); }
+  @JavaProtected
+  ObjectInputStream() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  @JavaProtected
+  java.lang.Class<?> resolveClass(java.io.ObjectStreamClass desc) throws java.io.IOException, java.lang.ClassNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.resolveClass(java.io.ObjectStreamClass)"); }
+  public void defaultReadObject() throws java.io.IOException, java.lang.ClassNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.defaultReadObject()"); }
+  public final java.lang.Object readObject() throws java.io.IOException, java.lang.ClassNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.readObject()"); }
+  public java.io.ObjectInputStream.GetField readFields() throws java.io.IOException, java.lang.ClassNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.readFields()"); }
+  public java.lang.String readLine() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.readLine()"); }
+  public int readInt() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.readInt()"); }
+  public int read(byte[] buf, int off, int len) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.read(byte[], int, int)"); }
+  public int read() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.read()"); }
+  public java.lang.String readUTF() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.readUTF()"); }
+  public long readLong() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.readLong()"); }
+  public byte readByte() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.readByte()"); }
+  public short readShort() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.readShort()"); }
+  public int readUnsignedShort() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.readUnsignedShort()"); }
+  public char readChar() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.readChar()"); }
+  public float readFloat() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.readFloat()"); }
+  public double readDouble() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.readDouble()"); }
+  public void readFully(byte[] buf) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.readFully(byte[])"); }
+  public void readFully(byte[] buf, int off, int len) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.readFully(byte[], int, int)"); }
+  public int skipBytes(int len) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.skipBytes(int)"); }
+  public boolean readBoolean() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.readBoolean()"); }
+  public int readUnsignedByte() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.readUnsignedByte()"); }
+  @JavaProtected
+  void readStreamHeader() throws java.io.IOException, java.io.StreamCorruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.readStreamHeader()"); }
+  @JavaProtected
+  java.lang.Object readObjectOverride() throws java.io.IOException, java.lang.ClassNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.readObjectOverride()"); }
+  @JavaProtected
+  java.lang.Object resolveObject(java.lang.Object obj) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.resolveObject(java.lang.Object)"); }
+  @JavaProtected
+  java.lang.Class<?> resolveProxyClass(java.lang.String[] interfaces) throws java.io.IOException, java.lang.ClassNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.resolveProxyClass(java.lang.String[])"); }
+  @JavaProtected
+  java.io.ObjectStreamClass readClassDescriptor() throws java.io.IOException, java.lang.ClassNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.readClassDescriptor()"); }
+  public java.lang.Object readUnshared() throws java.io.IOException, java.lang.ClassNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.readUnshared()"); }
+  public void registerValidation(java.io.ObjectInputValidation obj, int prio) throws java.io.NotActiveException, java.io.InvalidObjectException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.registerValidation(java.io.ObjectInputValidation, int)"); }
+  @JavaProtected
+  boolean enableResolveObject(boolean enable) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.enableResolveObject(boolean)"); }
+  public final java.io.ObjectInputFilter getObjectInputFilter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.getObjectInputFilter()"); }
+  public final void setObjectInputFilter(java.io.ObjectInputFilter filter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.setObjectInputFilter(java.io.ObjectInputFilter)"); }
+  < ---- END java signatures ---- >
+}

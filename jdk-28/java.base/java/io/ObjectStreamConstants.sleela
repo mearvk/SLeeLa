@@ -1,0 +1,92 @@
+<< jdk-28/java.base/java/io/ObjectStreamConstants.sleela
+   SLeeLa file for the Java type java.io.ObjectStreamConstants (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/io/ObjectStreamConstants.html
+   Java kind: interface
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class ObjectStreamConstants {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 6642;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.io.ObjectStreamConstants";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/io/ObjectStreamConstants.html";
+  String javaKind = "interface";
+  String javaSuper = "";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static final int STREAM_MAGIC = -21267;
+  static final int STREAM_VERSION = 5;
+  static final int TC_BASE = 112;
+  static final int TC_NULL = 112;
+  static final int TC_REFERENCE = 113;
+  static final int TC_CLASSDESC = 114;
+  static final int TC_OBJECT = 115;
+  static final int TC_STRING = 116;
+  static final int TC_ARRAY = 117;
+  static final int TC_CLASS = 118;
+  static final int TC_BLOCKDATA = 119;
+  static final int TC_ENDBLOCKDATA = 120;
+  static final int TC_RESET = 121;
+  static final int TC_BLOCKDATALONG = 122;
+  static final int TC_EXCEPTION = 123;
+  static final int TC_LONGSTRING = 124;
+  static final int TC_PROXYCLASSDESC = 125;
+  static final int TC_ENUM = 126;
+  static final int TC_MAX = 126;
+  static final int baseWireHandle = 8257536;
+  static final int SC_WRITE_METHOD = 1;
+  static final int SC_BLOCK_DATA = 8;
+  static final int SC_SERIALIZABLE = 2;
+  static final int SC_EXTERNALIZABLE = 4;
+  static final int SC_ENUM = 16;
+  static Any SUBSTITUTION_PERMISSION = null;
+  static Any SUBCLASS_IMPLEMENTATION_PERMISSION = null;
+  static Any SERIAL_FILTER_PERMISSION = null;
+  static final int PROTOCOL_VERSION_1 = 1;
+  static final int PROTOCOL_VERSION_2 = 2;
+  < ---- END java declarations ---- >
+}

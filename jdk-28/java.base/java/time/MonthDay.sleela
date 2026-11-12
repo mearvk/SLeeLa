@@ -1,0 +1,93 @@
+<< jdk-28/java.base/java/time/MonthDay.sleela
+   SLeeLa file for the Java type java.time.MonthDay (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/time/MonthDay.html
+   Java kind: class; extends java.lang.Object; implements java.time.temporal.TemporalAccessor, java.time.temporal.TemporalAdjuster, java.lang.Comparable, java.io.Serializable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class MonthDay {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 6231;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.time.MonthDay";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/time/MonthDay.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public int get(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.get(java.time.temporal.TemporalField)"); }
+  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.equals(java.lang.Object)"); }
+  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.toString()"); }
+  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.hashCode()"); }
+  public int compareTo(java.time.MonthDay other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.compareTo(java.time.MonthDay)"); }
+  public long getLong(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.getLong(java.time.temporal.TemporalField)"); }
+  public static java.time.MonthDay of(int month, int dayOfMonth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.of(int, int)"); }
+  public static java.time.MonthDay of(java.time.Month month, int dayOfMonth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.of(java.time.Month, int)"); }
+  public java.lang.String format(java.time.format.DateTimeFormatter formatter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.format(java.time.format.DateTimeFormatter)"); }
+  public static java.time.MonthDay from(java.time.temporal.TemporalAccessor temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.from(java.time.temporal.TemporalAccessor)"); }
+  public boolean isSupported(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.isSupported(java.time.temporal.TemporalField)"); }
+  public static java.time.MonthDay parse(java.lang.CharSequence text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.parse(java.lang.CharSequence)"); }
+  public static java.time.MonthDay parse(java.lang.CharSequence text, java.time.format.DateTimeFormatter formatter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.parse(java.lang.CharSequence, java.time.format.DateTimeFormatter)"); }
+  public java.time.MonthDay with(java.time.Month month) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.with(java.time.Month)"); }
+  public <R> R query(java.time.temporal.TemporalQuery<R> query) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.query(java.time.temporal.TemporalQuery<R>)"); }
+  public java.time.temporal.ValueRange range(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.range(java.time.temporal.TemporalField)"); }
+  public static java.time.MonthDay now(java.time.Clock clock) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.now(java.time.Clock)"); }
+  public static java.time.MonthDay now() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.now()"); }
+  public int getMonthValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.getMonthValue()"); }
+  public int getDayOfMonth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.getDayOfMonth()"); }
+  public java.time.temporal.Temporal adjustInto(java.time.temporal.Temporal temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.adjustInto(java.time.temporal.Temporal)"); }
+  public boolean isAfter(java.time.MonthDay other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.isAfter(java.time.MonthDay)"); }
+  public boolean isBefore(java.time.MonthDay other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.isBefore(java.time.MonthDay)"); }
+  public java.time.Month getMonth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.getMonth()"); }
+  public java.time.MonthDay withDayOfMonth(int dayOfMonth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.withDayOfMonth(int)"); }
+  public java.time.MonthDay withMonth(int month) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.withMonth(int)"); }
+  public boolean isValidYear(int year) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.isValidYear(int)"); }
+  public java.time.LocalDate atYear(int year) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.atYear(int)"); }
+  < ---- END java signatures ---- >
+}

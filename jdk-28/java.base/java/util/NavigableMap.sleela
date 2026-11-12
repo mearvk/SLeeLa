@@ -1,0 +1,87 @@
+<< jdk-28/java.base/java/util/NavigableMap.sleela
+   SLeeLa file for the Java type java.util.NavigableMap (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/NavigableMap.html
+   Java kind: interface; implements java.util.SortedMap
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class NavigableMap<K, V> {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 6427;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.NavigableMap";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/NavigableMap.html";
+  String javaKind = "interface";
+  String javaSuper = "";
+
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public default java.util.NavigableMap<K, V> reversed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.NavigableMap.reversed()"); }
+  public abstract java.util.Map.Entry<K, V> firstEntry() { throw new AbstractMethodError("java.util.NavigableMap.firstEntry()"); }
+  public abstract java.util.Map.Entry<K, V> lastEntry() { throw new AbstractMethodError("java.util.NavigableMap.lastEntry()"); }
+  public abstract java.util.Map.Entry<K, V> pollFirstEntry() { throw new AbstractMethodError("java.util.NavigableMap.pollFirstEntry()"); }
+  public abstract java.util.Map.Entry<K, V> pollLastEntry() { throw new AbstractMethodError("java.util.NavigableMap.pollLastEntry()"); }
+  public abstract java.util.NavigableMap<K, V> descendingMap() { throw new AbstractMethodError("java.util.NavigableMap.descendingMap()"); }
+  public abstract java.util.Map.Entry<K, V> lowerEntry(K key) { throw new AbstractMethodError("java.util.NavigableMap.lowerEntry(K)"); }
+  public abstract K lowerKey(K key) { throw new AbstractMethodError("java.util.NavigableMap.lowerKey(K)"); }
+  public abstract java.util.Map.Entry<K, V> floorEntry(K key) { throw new AbstractMethodError("java.util.NavigableMap.floorEntry(K)"); }
+  public abstract K floorKey(K key) { throw new AbstractMethodError("java.util.NavigableMap.floorKey(K)"); }
+  public abstract java.util.Map.Entry<K, V> ceilingEntry(K key) { throw new AbstractMethodError("java.util.NavigableMap.ceilingEntry(K)"); }
+  public abstract K ceilingKey(K key) { throw new AbstractMethodError("java.util.NavigableMap.ceilingKey(K)"); }
+  public abstract java.util.Map.Entry<K, V> higherEntry(K key) { throw new AbstractMethodError("java.util.NavigableMap.higherEntry(K)"); }
+  public abstract K higherKey(K key) { throw new AbstractMethodError("java.util.NavigableMap.higherKey(K)"); }
+  public abstract java.util.NavigableSet<K> navigableKeySet() { throw new AbstractMethodError("java.util.NavigableMap.navigableKeySet()"); }
+  public abstract java.util.NavigableSet<K> descendingKeySet() { throw new AbstractMethodError("java.util.NavigableMap.descendingKeySet()"); }
+  public abstract java.util.SortedMap<K, V> subMap(K fromKey, K toKey) { throw new AbstractMethodError("java.util.NavigableMap.subMap(K, K)"); }
+  public abstract java.util.NavigableMap<K, V> subMap(K fromKey, boolean fromInclusive, K toKey, boolean toInclusive) { throw new AbstractMethodError("java.util.NavigableMap.subMap(K, boolean, K, boolean)"); }
+  public abstract java.util.NavigableMap<K, V> headMap(K toKey, boolean inclusive) { throw new AbstractMethodError("java.util.NavigableMap.headMap(K, boolean)"); }
+  public abstract java.util.SortedMap<K, V> headMap(K toKey) { throw new AbstractMethodError("java.util.NavigableMap.headMap(K)"); }
+  public abstract java.util.NavigableMap<K, V> tailMap(K fromKey, boolean inclusive) { throw new AbstractMethodError("java.util.NavigableMap.tailMap(K, boolean)"); }
+  public abstract java.util.SortedMap<K, V> tailMap(K fromKey) { throw new AbstractMethodError("java.util.NavigableMap.tailMap(K)"); }
+  < ---- END java signatures ---- >
+}

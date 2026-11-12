@@ -1,0 +1,107 @@
+<< jdk-28/java.base/java/lang/StringBuilder.sleela
+   SLeeLa file for the Java type java.lang.StringBuilder (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/StringBuilder.html
+   Java kind: class; extends java.lang.AbstractStringBuilder; implements java.lang.Appendable, java.io.Serializable, java.lang.Comparable, java.lang.CharSequence
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class StringBuilder {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 8651;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.lang.StringBuilder";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/StringBuilder.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.AbstractStringBuilder";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public StringBuilder(java.lang.CharSequence seq) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.<init>(java.lang.CharSequence)"); }
+  public StringBuilder(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.<init>(java.lang.String)"); }
+  public StringBuilder(int capacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.<init>(int)"); }
+  public StringBuilder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.toString()"); }
+  public java.lang.StringBuilder append(java.lang.CharSequence s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(java.lang.CharSequence)"); }
+  public java.lang.StringBuilder append(java.lang.CharSequence s, int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(java.lang.CharSequence, int, int)"); }
+  public java.lang.StringBuilder append(char[] str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(char[])"); }
+  public java.lang.StringBuilder append(char[] str, int offset, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(char[], int, int)"); }
+  public java.lang.StringBuilder append(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(java.lang.String)"); }
+  public java.lang.StringBuilder append(long lng) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(long)"); }
+  public java.lang.StringBuilder append(float f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(float)"); }
+  public java.lang.StringBuilder append(double d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(double)"); }
+  public java.lang.StringBuilder append(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(boolean)"); }
+  public java.lang.StringBuilder append(char c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(char)"); }
+  public java.lang.StringBuilder append(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(int)"); }
+  public java.lang.StringBuilder reverse() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.reverse()"); }
+  public int compareTo(java.lang.StringBuilder another) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.compareTo(java.lang.StringBuilder)"); }
+  public int indexOf(java.lang.String str, int fromIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.indexOf(java.lang.String, int)"); }
+  public int indexOf(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.indexOf(java.lang.String)"); }
+  public java.lang.StringBuilder insert(int dstOffset, java.lang.CharSequence s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, java.lang.CharSequence)"); }
+  public java.lang.StringBuilder insert(int offset, java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, java.lang.String)"); }
+  public java.lang.StringBuilder insert(int offset, char[] str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, char[])"); }
+  public java.lang.StringBuilder insert(int offset, int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, int)"); }
+  public java.lang.StringBuilder insert(int offset, double d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, double)"); }
+  public java.lang.StringBuilder insert(int offset, float f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, float)"); }
+  public java.lang.StringBuilder insert(int offset, long l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, long)"); }
+  public java.lang.StringBuilder insert(int offset, char c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, char)"); }
+  public java.lang.StringBuilder insert(int offset, boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, boolean)"); }
+  public java.lang.StringBuilder insert(int dstOffset, java.lang.CharSequence s, int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, java.lang.CharSequence, int, int)"); }
+  public java.lang.StringBuilder insert(int index, char[] str, int offset, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, char[], int, int)"); }
+  public int lastIndexOf(java.lang.String str, int fromIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.lastIndexOf(java.lang.String, int)"); }
+  public int lastIndexOf(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.lastIndexOf(java.lang.String)"); }
+  public java.lang.StringBuilder replace(int start, int end, java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.replace(int, int, java.lang.String)"); }
+  public java.lang.StringBuilder repeat(int codePoint, int count) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.repeat(int, int)"); }
+  public java.lang.StringBuilder repeat(java.lang.CharSequence cs, int count) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.repeat(java.lang.CharSequence, int)"); }
+  public java.lang.StringBuilder appendCodePoint(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.appendCodePoint(int)"); }
+  public java.lang.StringBuilder delete(int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.delete(int, int)"); }
+  public java.lang.StringBuilder deleteCharAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.deleteCharAt(int)"); }
+  < ---- END java signatures ---- >
+}

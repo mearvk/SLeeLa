@@ -1,0 +1,107 @@
+<< jdk-28/java.base/java/util/concurrent/locks/AbstractQueuedLongSynchronizer.sleela
+   SLeeLa file for the Java type java.util.concurrent.locks.AbstractQueuedLongSynchronizer (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/locks/AbstractQueuedLongSynchronizer.html
+   Java kind: class; extends java.util.concurrent.locks.AbstractOwnableSynchronizer; implements java.io.Serializable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class AbstractQueuedLongSynchronizer {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 1097;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.concurrent.locks.AbstractQueuedLongSynchronizer";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/locks/AbstractQueuedLongSynchronizer.html";
+  String javaKind = "class";
+  String javaSuper = "java.util.concurrent.locks.AbstractOwnableSynchronizer";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public AbstractQueuedLongSynchronizer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.toString()"); }
+  @JavaProtected
+  final long getState() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.getState()"); }
+  @JavaProtected
+  final boolean compareAndSetState(long expect, long update) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.compareAndSetState(long, long)"); }
+  @JavaProtected
+  final void setState(long newState) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.setState(long)"); }
+  public final boolean release(long arg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.release(long)"); }
+  @JavaProtected
+  boolean isHeldExclusively() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.isHeldExclusively()"); }
+  public final boolean hasQueuedThreads() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.hasQueuedThreads()"); }
+  public final boolean isQueued(java.lang.Thread thread) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.isQueued(java.lang.Thread)"); }
+  public final int getQueueLength() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.getQueueLength()"); }
+  public final java.util.Collection<java.lang.Thread> getQueuedThreads() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.getQueuedThreads()"); }
+  public final boolean hasWaiters(java.util.concurrent.locks.AbstractQueuedLongSynchronizer.ConditionObject condition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.hasWaiters(java.util.concurrent.locks.AbstractQueuedLongSynchronizer.ConditionObject)"); }
+  public final int getWaitQueueLength(java.util.concurrent.locks.AbstractQueuedLongSynchronizer.ConditionObject condition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.getWaitQueueLength(java.util.concurrent.locks.AbstractQueuedLongSynchronizer.ConditionObject)"); }
+  public final java.util.Collection<java.lang.Thread> getWaitingThreads(java.util.concurrent.locks.AbstractQueuedLongSynchronizer.ConditionObject condition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.getWaitingThreads(java.util.concurrent.locks.AbstractQueuedLongSynchronizer.ConditionObject)"); }
+  public final void acquireSharedInterruptibly(long arg) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.acquireSharedInterruptibly(long)"); }
+  public final boolean tryAcquireSharedNanos(long arg, long nanosTimeout) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.tryAcquireSharedNanos(long, long)"); }
+  public final boolean releaseShared(long arg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.releaseShared(long)"); }
+  public final void acquire(long arg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.acquire(long)"); }
+  @JavaProtected
+  long tryAcquireShared(long arg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.tryAcquireShared(long)"); }
+  @JavaProtected
+  boolean tryAcquire(long arg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.tryAcquire(long)"); }
+  @JavaProtected
+  boolean tryRelease(long arg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.tryRelease(long)"); }
+  @JavaProtected
+  boolean tryReleaseShared(long arg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.tryReleaseShared(long)"); }
+  public final java.lang.Thread getFirstQueuedThread() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.getFirstQueuedThread()"); }
+  public final boolean owns(java.util.concurrent.locks.AbstractQueuedLongSynchronizer.ConditionObject condition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.owns(java.util.concurrent.locks.AbstractQueuedLongSynchronizer.ConditionObject)"); }
+  public final void acquireInterruptibly(long arg) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.acquireInterruptibly(long)"); }
+  public final boolean tryAcquireNanos(long arg, long nanosTimeout) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.tryAcquireNanos(long, long)"); }
+  public final void acquireShared(long arg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.acquireShared(long)"); }
+  public final boolean hasContended() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.hasContended()"); }
+  public final boolean hasQueuedPredecessors() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.hasQueuedPredecessors()"); }
+  public final java.util.Collection<java.lang.Thread> getExclusiveQueuedThreads() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.getExclusiveQueuedThreads()"); }
+  public final java.util.Collection<java.lang.Thread> getSharedQueuedThreads() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.AbstractQueuedLongSynchronizer.getSharedQueuedThreads()"); }
+  < ---- END java signatures ---- >
+}

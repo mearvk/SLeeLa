@@ -1,0 +1,89 @@
+<< jdk-28/java.base/java/lang/foreign/SegmentAllocator.sleela
+   SLeeLa file for the Java type java.lang.foreign.SegmentAllocator (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/foreign/SegmentAllocator.html
+   Java kind: interface
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class SegmentAllocator {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 8105;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.lang.foreign.SegmentAllocator";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/foreign/SegmentAllocator.html";
+  String javaKind = "interface";
+  String javaSuper = "";
+
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public default java.lang.foreign.MemorySegment allocate(java.lang.foreign.MemoryLayout layout) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocate(java.lang.foreign.MemoryLayout)"); }
+  public default java.lang.foreign.MemorySegment allocate(java.lang.foreign.MemoryLayout elementLayout, long count) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocate(java.lang.foreign.MemoryLayout, long)"); }
+  public default java.lang.foreign.MemorySegment allocate(long byteSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocate(long)"); }
+  public abstract java.lang.foreign.MemorySegment allocate(long byteSize, long byteAlignment) { throw new AbstractMethodError("java.lang.foreign.SegmentAllocator.allocate(long, long)"); }
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfChar elementLayout, char... elements) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfChar, char...)"); }
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfInt elementLayout, int... elements) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfInt, int...)"); }
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfShort elementLayout, short... elements) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfShort, short...)"); }
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfByte elementLayout, byte... elements) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfByte, byte...)"); }
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfFloat elementLayout, float... elements) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfFloat, float...)"); }
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfLong elementLayout, long... elements) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfLong, long...)"); }
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfDouble elementLayout, double... elements) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfDouble, double...)"); }
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfInt layout, int value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfInt, int)"); }
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfShort layout, short value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfShort, short)"); }
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfChar layout, char value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfChar, char)"); }
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfByte layout, byte value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfByte, byte)"); }
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.String str, java.nio.charset.Charset charset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.String, java.nio.charset.Charset)"); }
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.String)"); }
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout elementLayout, java.lang.foreign.MemorySegment source, java.lang.foreign.ValueLayout sourceElementLayout, long sourceOffset, long elementCount) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout, java.lang.foreign.MemorySegment, java.lang.foreign.ValueLayout, long, long)"); }
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.AddressLayout layout, java.lang.foreign.MemorySegment value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.AddressLayout, java.lang.foreign.MemorySegment)"); }
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfDouble layout, double value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfDouble, double)"); }
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfLong layout, long value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfLong, long)"); }
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfFloat layout, float value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfFloat, float)"); }
+  public static java.lang.foreign.SegmentAllocator slicingAllocator(java.lang.foreign.MemorySegment segment) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.slicingAllocator(java.lang.foreign.MemorySegment)"); }
+  public static java.lang.foreign.SegmentAllocator prefixAllocator(java.lang.foreign.MemorySegment segment) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.prefixAllocator(java.lang.foreign.MemorySegment)"); }
+  < ---- END java signatures ---- >
+}

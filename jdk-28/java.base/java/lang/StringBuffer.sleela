@@ -1,0 +1,122 @@
+<< jdk-28/java.base/java/lang/StringBuffer.sleela
+   SLeeLa file for the Java type java.lang.StringBuffer (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/StringBuffer.html
+   Java kind: class; extends java.lang.AbstractStringBuilder; implements java.lang.Appendable, java.io.Serializable, java.lang.Comparable, java.lang.CharSequence
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class StringBuffer {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 8648;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.lang.StringBuffer";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/StringBuffer.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.AbstractStringBuilder";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public StringBuffer(java.lang.CharSequence seq) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.<init>(java.lang.CharSequence)"); }
+  public StringBuffer(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.<init>(java.lang.String)"); }
+  public StringBuffer(int capacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.<init>(int)"); }
+  public StringBuffer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public synchronized int length() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.length()"); }
+  public synchronized java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.toString()"); }
+  public synchronized java.lang.StringBuffer append(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.append(int)"); }
+  public synchronized java.lang.StringBuffer append(long lng) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.append(long)"); }
+  public synchronized java.lang.StringBuffer append(float f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.append(float)"); }
+  public synchronized java.lang.StringBuffer append(char[] str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.append(char[])"); }
+  public synchronized java.lang.StringBuffer append(char[] str, int offset, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.append(char[], int, int)"); }
+  public synchronized java.lang.StringBuffer append(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.append(boolean)"); }
+  public synchronized java.lang.StringBuffer append(char c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.append(char)"); }
+  public synchronized java.lang.StringBuffer append(double d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.append(double)"); }
+  public synchronized java.lang.StringBuffer append(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.append(java.lang.String)"); }
+  public synchronized java.lang.StringBuffer append(java.lang.StringBuffer sb) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.append(java.lang.StringBuffer)"); }
+  public synchronized java.lang.StringBuffer append(java.lang.CharSequence s, int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.append(java.lang.CharSequence, int, int)"); }
+  public synchronized java.lang.StringBuffer reverse() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.reverse()"); }
+  public synchronized void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.getChars(int, int, char[], int)"); }
+  public synchronized int compareTo(java.lang.StringBuffer another) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.compareTo(java.lang.StringBuffer)"); }
+  public synchronized int indexOf(java.lang.String str, int fromIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.indexOf(java.lang.String, int)"); }
+  public int indexOf(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.indexOf(java.lang.String)"); }
+  public synchronized java.lang.StringBuffer insert(int offset, java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.insert(int, java.lang.Object)"); }
+  public synchronized java.lang.StringBuffer insert(int index, char[] str, int offset, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.insert(int, char[], int, int)"); }
+  public synchronized java.lang.StringBuffer insert(int offset, char[] str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.insert(int, char[])"); }
+  public java.lang.StringBuffer insert(int offset, float f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.insert(int, float)"); }
+  public java.lang.StringBuffer insert(int offset, long l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.insert(int, long)"); }
+  public synchronized java.lang.StringBuffer insert(int offset, java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.insert(int, java.lang.String)"); }
+  public synchronized java.lang.StringBuffer insert(int dstOffset, java.lang.CharSequence s, int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.insert(int, java.lang.CharSequence, int, int)"); }
+  public java.lang.StringBuffer insert(int offset, boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.insert(int, boolean)"); }
+  public java.lang.StringBuffer insert(int offset, double d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.insert(int, double)"); }
+  public synchronized java.lang.StringBuffer insert(int offset, char c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.insert(int, char)"); }
+  public java.lang.StringBuffer insert(int offset, int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.insert(int, int)"); }
+  public synchronized char charAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.charAt(int)"); }
+  public synchronized int codePointAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.codePointAt(int)"); }
+  public synchronized int codePointBefore(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.codePointBefore(int)"); }
+  public synchronized int codePointCount(int beginIndex, int endIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.codePointCount(int, int)"); }
+  public synchronized int offsetByCodePoints(int index, int codePointOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.offsetByCodePoints(int, int)"); }
+  public synchronized int lastIndexOf(java.lang.String str, int fromIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.lastIndexOf(java.lang.String, int)"); }
+  public int lastIndexOf(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.lastIndexOf(java.lang.String)"); }
+  public synchronized java.lang.String substring(int start) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.substring(int)"); }
+  public synchronized java.lang.String substring(int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.substring(int, int)"); }
+  public synchronized java.lang.StringBuffer replace(int start, int end, java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.replace(int, int, java.lang.String)"); }
+  public synchronized java.lang.StringBuffer repeat(java.lang.CharSequence cs, int count) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.repeat(java.lang.CharSequence, int)"); }
+  public synchronized java.lang.StringBuffer repeat(int codePoint, int count) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.repeat(int, int)"); }
+  public synchronized java.lang.CharSequence subSequence(int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.subSequence(int, int)"); }
+  public synchronized void trimToSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.trimToSize()"); }
+  public synchronized void setLength(int newLength) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.setLength(int)"); }
+  public synchronized int capacity() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.capacity()"); }
+  public synchronized void ensureCapacity(int minimumCapacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.ensureCapacity(int)"); }
+  public synchronized void setCharAt(int index, char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.setCharAt(int, char)"); }
+  public synchronized java.lang.StringBuffer appendCodePoint(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.appendCodePoint(int)"); }
+  public synchronized java.lang.StringBuffer delete(int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.delete(int, int)"); }
+  public synchronized java.lang.StringBuffer deleteCharAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.deleteCharAt(int)"); }
+  < ---- END java signatures ---- >
+}

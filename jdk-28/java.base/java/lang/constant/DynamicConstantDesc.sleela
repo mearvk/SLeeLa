@@ -1,0 +1,83 @@
+<< jdk-28/java.base/java/lang/constant/DynamicConstantDesc.sleela
+   SLeeLa file for the Java type java.lang.constant.DynamicConstantDesc (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/constant/DynamicConstantDesc.html
+   Java kind: class; extends java.lang.Object; implements java.lang.constant.ConstantDesc
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class DynamicConstantDesc<T> {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 3465;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.lang.constant.DynamicConstantDesc";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/constant/DynamicConstantDesc.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  @JavaProtected
+  DynamicConstantDesc(java.lang.constant.DirectMethodHandleDesc bootstrapMethod, java.lang.String constantName, java.lang.constant.ClassDesc constantType, java.lang.constant.ConstantDesc... bootstrapArgs) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicConstantDesc.<init>(java.lang.constant.DirectMethodHandleDesc, java.lang.String, java.lang.constant.ClassDesc, java.lang.constant.ConstantDesc...)"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public final boolean equals(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicConstantDesc.equals(java.lang.Object)"); }
+  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicConstantDesc.toString()"); }
+  public final int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicConstantDesc.hashCode()"); }
+  public static <T> java.lang.constant.DynamicConstantDesc<T> of(java.lang.constant.DirectMethodHandleDesc bootstrapMethod, java.lang.constant.ConstantDesc... bootstrapArgs) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicConstantDesc.of(java.lang.constant.DirectMethodHandleDesc, java.lang.constant.ConstantDesc...)"); }
+  public static <T> java.lang.constant.DynamicConstantDesc<T> of(java.lang.constant.DirectMethodHandleDesc bootstrapMethod) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicConstantDesc.of(java.lang.constant.DirectMethodHandleDesc)"); }
+  public T resolveConstantDesc(java.lang.invoke.MethodHandles.Lookup lookup) throws java.lang.ReflectiveOperationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicConstantDesc.resolveConstantDesc(java.lang.invoke.MethodHandles.Lookup)"); }
+  public java.lang.constant.DirectMethodHandleDesc bootstrapMethod() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicConstantDesc.bootstrapMethod()"); }
+  public static <T> java.lang.constant.DynamicConstantDesc<T> ofNamed(java.lang.constant.DirectMethodHandleDesc bootstrapMethod, java.lang.String constantName, java.lang.constant.ClassDesc constantType, java.lang.constant.ConstantDesc... bootstrapArgs) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicConstantDesc.ofNamed(java.lang.constant.DirectMethodHandleDesc, java.lang.String, java.lang.constant.ClassDesc, java.lang.constant.ConstantDesc...)"); }
+  public java.lang.String constantName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicConstantDesc.constantName()"); }
+  public java.lang.constant.ClassDesc constantType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicConstantDesc.constantType()"); }
+  public java.lang.constant.ConstantDesc[] bootstrapArgs() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicConstantDesc.bootstrapArgs()"); }
+  public static <T> java.lang.constant.ConstantDesc ofCanonical(java.lang.constant.DirectMethodHandleDesc bootstrapMethod, java.lang.String constantName, java.lang.constant.ClassDesc constantType, java.lang.constant.ConstantDesc[] bootstrapArgs) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicConstantDesc.ofCanonical(java.lang.constant.DirectMethodHandleDesc, java.lang.String, java.lang.constant.ClassDesc, java.lang.constant.ConstantDesc[])"); }
+  public java.util.List<java.lang.constant.ConstantDesc> bootstrapArgsList() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicConstantDesc.bootstrapArgsList()"); }
+  < ---- END java signatures ---- >
+}

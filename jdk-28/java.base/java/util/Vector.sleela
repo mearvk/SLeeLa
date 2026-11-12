@@ -1,0 +1,129 @@
+<< jdk-28/java.base/java/util/Vector.sleela
+   SLeeLa file for the Java type java.util.Vector (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/Vector.html
+   Java kind: class; extends java.util.AbstractList; implements java.util.List, java.util.RandomAccess, java.lang.Cloneable, java.io.Serializable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Vector<E> {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9643;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.Vector";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/Vector.html";
+  String javaKind = "class";
+  String javaSuper = "java.util.AbstractList";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < public and protected instance fields >
+  Any[] elementData;
+  int elementCount;
+  int capacityIncrement;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public Vector(java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.<init>(java.util.Collection<? extends E>)"); }
+  public Vector() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.<init>()"); }
+  public Vector(int initialCapacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.<init>(int)"); }
+  public Vector(int initialCapacity, int capacityIncrement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.<init>(int, int)"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public synchronized E remove(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.remove(int)"); }
+  public boolean remove(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.remove(java.lang.Object)"); }
+  public synchronized int size() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.size()"); }
+  public synchronized E get(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.get(int)"); }
+  public synchronized boolean equals(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.equals(java.lang.Object)"); }
+  public synchronized java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.toString()"); }
+  public synchronized int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.hashCode()"); }
+  public synchronized java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.clone()"); }
+  public synchronized void sort(java.util.Comparator<? super E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.sort(java.util.Comparator<? super E>)"); }
+  public int indexOf(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.indexOf(java.lang.Object)"); }
+  public synchronized int indexOf(java.lang.Object o, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.indexOf(java.lang.Object, int)"); }
+  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.clear()"); }
+  public synchronized int lastIndexOf(java.lang.Object o, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.lastIndexOf(java.lang.Object, int)"); }
+  public synchronized int lastIndexOf(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.lastIndexOf(java.lang.Object)"); }
+  public synchronized boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.isEmpty()"); }
+  public synchronized void replaceAll(java.util.function.UnaryOperator<E> operator) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.replaceAll(java.util.function.UnaryOperator<E>)"); }
+  public synchronized boolean add(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.add(E)"); }
+  public void add(int index, E element) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.add(int, E)"); }
+  public synchronized java.util.List<E> subList(int fromIndex, int toIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.subList(int, int)"); }
+  public synchronized <T> T[] toArray(T[] a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.toArray(T[])"); }
+  public synchronized java.lang.Object[] toArray() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.toArray()"); }
+  public synchronized java.util.Iterator<E> iterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.iterator()"); }
+  public boolean contains(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.contains(java.lang.Object)"); }
+  public java.util.Enumeration<E> elements() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.elements()"); }
+  public java.util.Spliterator<E> spliterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.spliterator()"); }
+  public synchronized boolean addAll(int index, java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.addAll(int, java.util.Collection<? extends E>)"); }
+  public boolean addAll(java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.addAll(java.util.Collection<? extends E>)"); }
+  public synchronized void trimToSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.trimToSize()"); }
+  public synchronized E set(int index, E element) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.set(int, E)"); }
+  public synchronized void forEach(java.util.function.Consumer<? super E> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.forEach(java.util.function.Consumer<? super E>)"); }
+  public synchronized int capacity() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.capacity()"); }
+  public synchronized void ensureCapacity(int minCapacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.ensureCapacity(int)"); }
+  public synchronized E elementAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.elementAt(int)"); }
+  public boolean removeIf(java.util.function.Predicate<? super E> filter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.removeIf(java.util.function.Predicate<? super E>)"); }
+  @JavaProtected
+  synchronized void removeRange(int fromIndex, int toIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.removeRange(int, int)"); }
+  public boolean removeAll(java.util.Collection<?> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.removeAll(java.util.Collection<?>)"); }
+  public boolean retainAll(java.util.Collection<?> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.retainAll(java.util.Collection<?>)"); }
+  public synchronized java.util.ListIterator<E> listIterator(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.listIterator(int)"); }
+  public synchronized java.util.ListIterator<E> listIterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.listIterator()"); }
+  public synchronized boolean containsAll(java.util.Collection<?> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.containsAll(java.util.Collection<?>)"); }
+  public synchronized void copyInto(java.lang.Object[] anArray) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.copyInto(java.lang.Object[])"); }
+  public synchronized void setSize(int newSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.setSize(int)"); }
+  public synchronized E firstElement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.firstElement()"); }
+  public synchronized E lastElement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.lastElement()"); }
+  public synchronized void setElementAt(E obj, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.setElementAt(E, int)"); }
+  public synchronized void insertElementAt(E obj, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.insertElementAt(E, int)"); }
+  public synchronized void removeElementAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.removeElementAt(int)"); }
+  public synchronized void removeAllElements() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.removeAllElements()"); }
+  public synchronized void addElement(E obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.addElement(E)"); }
+  public synchronized boolean removeElement(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Vector.removeElement(java.lang.Object)"); }
+  < ---- END java signatures ---- >
+}

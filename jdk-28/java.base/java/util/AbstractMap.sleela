@@ -1,0 +1,87 @@
+<< jdk-28/java.base/java/util/AbstractMap.sleela
+   SLeeLa file for the Java type java.util.AbstractMap (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/AbstractMap.html
+   Java kind: class; extends java.lang.Object; implements java.util.Map
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class AbstractMap<K, V> {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 1079;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.AbstractMap";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/AbstractMap.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  @JavaProtected
+  AbstractMap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractMap.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public V remove(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractMap.remove(java.lang.Object)"); }
+  public int size() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractMap.size()"); }
+  public V get(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractMap.get(java.lang.Object)"); }
+  public V put(K key, V value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractMap.put(K, V)"); }
+  public boolean equals(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractMap.equals(java.lang.Object)"); }
+  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractMap.toString()"); }
+  public java.util.Collection<V> values() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractMap.values()"); }
+  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractMap.hashCode()"); }
+  @JavaProtected
+  java.lang.Object clone() throws java.lang.CloneNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractMap.clone()"); }
+  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractMap.clear()"); }
+  public boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractMap.isEmpty()"); }
+  public abstract java.util.Set<java.util.Map.Entry<K, V>> entrySet() { throw new AbstractMethodError("java.util.AbstractMap.entrySet()"); }
+  public void putAll(java.util.Map<? extends K, ? extends V> m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractMap.putAll(java.util.Map<? extends K, ? extends V>)"); }
+  public java.util.Set<K> keySet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractMap.keySet()"); }
+  public boolean containsValue(java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractMap.containsValue(java.lang.Object)"); }
+  public boolean containsKey(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractMap.containsKey(java.lang.Object)"); }
+  < ---- END java signatures ---- >
+}

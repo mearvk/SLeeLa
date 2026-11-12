@@ -1,0 +1,93 @@
+<< jdk-28/java.base/java/security/KeyRep.Type.sleela
+   SLeeLa file for the Java type java.security.KeyRep.Type (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/security/KeyRep.Type.html
+   Java kind: enum; extends java.lang.Enum
+   Status: members from the JDK 28 API (exact signatures).
+   Nested Java type: the file keeps the documented name KeyRep.Type.
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Type {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9308;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.security.KeyRep.Type";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/security/KeyRep.Type.html";
+  String javaKind = "enum";
+  String javaSuper = "java.lang.Enum";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  << Complete enum: one static final instance per constant (so identity
+     and == hold for values / valueOf / the constants), with the
+     java.lang.Enum behavior. values() and valueOf(name) are static, as
+     in Java: Type.valueOf(...), Type.values(), and the constants are
+     static final fields. >>
+  static final Type SECRET = new Type("SECRET", 0);
+  static final Type PUBLIC = new Type("PUBLIC", 1);
+  static final Type PRIVATE = new Type("PRIVATE", 2);
+  String enumName;
+  int enumOrdinal;
+  Type(String name, int ordinal) { this.enumName = name; this.enumOrdinal = ordinal; }
+  String name() { return this.enumName; }
+  int ordinal() { return this.enumOrdinal; }
+  String toString() { return this.enumName; }
+  int compareTo(Type o) { return this.enumOrdinal - o.enumOrdinal; }
+  boolean equals(Any other) { return this == other; }
+  int hashCode() { return this.enumOrdinal * 31 + 17; }
+  public static Type[] values() {
+    Type[] v = new Type[3];
+    v[0] = SECRET;
+    v[1] = PUBLIC;
+    v[2] = PRIVATE;
+    return v;
+  }
+  public static Type valueOf(String name) {
+    if (name == null) { throw new NullPointerException("Name is null"); }
+    if (name == "SECRET") { return SECRET; }
+    if (name == "PUBLIC") { return PUBLIC; }
+    if (name == "PRIVATE") { return PRIVATE; }
+    throw new IllegalArgumentException("No enum constant java.security.KeyRep.Type." + name);
+  }
+  < ---- END java declarations ---- >
+}

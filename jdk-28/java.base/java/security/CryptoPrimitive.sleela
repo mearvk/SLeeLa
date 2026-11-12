@@ -1,0 +1,113 @@
+<< jdk-28/java.base/java/security/CryptoPrimitive.sleela
+   SLeeLa file for the Java type java.security.CryptoPrimitive (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/security/CryptoPrimitive.html
+   Java kind: enum; extends java.lang.Enum
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class CryptoPrimitive {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 2836;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.security.CryptoPrimitive";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/security/CryptoPrimitive.html";
+  String javaKind = "enum";
+  String javaSuper = "java.lang.Enum";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  << Complete enum: one static final instance per constant (so identity
+     and == hold for values / valueOf / the constants), with the
+     java.lang.Enum behavior. values() and valueOf(name) are static, as
+     in Java: CryptoPrimitive.valueOf(...), CryptoPrimitive.values(), and the constants are
+     static final fields. >>
+  static final CryptoPrimitive MESSAGE_DIGEST = new CryptoPrimitive("MESSAGE_DIGEST", 0);
+  static final CryptoPrimitive SECURE_RANDOM = new CryptoPrimitive("SECURE_RANDOM", 1);
+  static final CryptoPrimitive BLOCK_CIPHER = new CryptoPrimitive("BLOCK_CIPHER", 2);
+  static final CryptoPrimitive STREAM_CIPHER = new CryptoPrimitive("STREAM_CIPHER", 3);
+  static final CryptoPrimitive MAC = new CryptoPrimitive("MAC", 4);
+  static final CryptoPrimitive KEY_WRAP = new CryptoPrimitive("KEY_WRAP", 5);
+  static final CryptoPrimitive PUBLIC_KEY_ENCRYPTION = new CryptoPrimitive("PUBLIC_KEY_ENCRYPTION", 6);
+  static final CryptoPrimitive SIGNATURE = new CryptoPrimitive("SIGNATURE", 7);
+  static final CryptoPrimitive KEY_ENCAPSULATION = new CryptoPrimitive("KEY_ENCAPSULATION", 8);
+  static final CryptoPrimitive KEY_AGREEMENT = new CryptoPrimitive("KEY_AGREEMENT", 9);
+  String enumName;
+  int enumOrdinal;
+  CryptoPrimitive(String name, int ordinal) { this.enumName = name; this.enumOrdinal = ordinal; }
+  String name() { return this.enumName; }
+  int ordinal() { return this.enumOrdinal; }
+  String toString() { return this.enumName; }
+  int compareTo(CryptoPrimitive o) { return this.enumOrdinal - o.enumOrdinal; }
+  boolean equals(Any other) { return this == other; }
+  int hashCode() { return this.enumOrdinal * 31 + 17; }
+  public static CryptoPrimitive[] values() {
+    CryptoPrimitive[] v = new CryptoPrimitive[10];
+    v[0] = MESSAGE_DIGEST;
+    v[1] = SECURE_RANDOM;
+    v[2] = BLOCK_CIPHER;
+    v[3] = STREAM_CIPHER;
+    v[4] = MAC;
+    v[5] = KEY_WRAP;
+    v[6] = PUBLIC_KEY_ENCRYPTION;
+    v[7] = SIGNATURE;
+    v[8] = KEY_ENCAPSULATION;
+    v[9] = KEY_AGREEMENT;
+    return v;
+  }
+  public static CryptoPrimitive valueOf(String name) {
+    if (name == null) { throw new NullPointerException("Name is null"); }
+    if (name == "MESSAGE_DIGEST") { return MESSAGE_DIGEST; }
+    if (name == "SECURE_RANDOM") { return SECURE_RANDOM; }
+    if (name == "BLOCK_CIPHER") { return BLOCK_CIPHER; }
+    if (name == "STREAM_CIPHER") { return STREAM_CIPHER; }
+    if (name == "MAC") { return MAC; }
+    if (name == "KEY_WRAP") { return KEY_WRAP; }
+    if (name == "PUBLIC_KEY_ENCRYPTION") { return PUBLIC_KEY_ENCRYPTION; }
+    if (name == "SIGNATURE") { return SIGNATURE; }
+    if (name == "KEY_ENCAPSULATION") { return KEY_ENCAPSULATION; }
+    if (name == "KEY_AGREEMENT") { return KEY_AGREEMENT; }
+    throw new IllegalArgumentException("No enum constant java.security.CryptoPrimitive." + name);
+  }
+  < ---- END java declarations ---- >
+}

@@ -1,0 +1,732 @@
+<< jdk-28/java.base/java/lang/classfile/Opcode.sleela
+   SLeeLa file for the Java type java.lang.classfile.Opcode (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/classfile/Opcode.html
+   Java kind: enum; extends java.lang.Enum
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Opcode {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 6702;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.lang.classfile.Opcode";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/classfile/Opcode.html";
+  String javaKind = "enum";
+  String javaSuper = "java.lang.Enum";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  << Complete enum: one static final instance per constant (so identity
+     and == hold for values / valueOf / the constants), with the
+     java.lang.Enum behavior. values() and valueOf(name) are static, as
+     in Java: Opcode.valueOf(...), Opcode.values(), and the constants are
+     static final fields. >>
+  static final Opcode NOP = new Opcode("NOP", 0);
+  static final Opcode ACONST_NULL = new Opcode("ACONST_NULL", 1);
+  static final Opcode ICONST_M1 = new Opcode("ICONST_M1", 2);
+  static final Opcode ICONST_0 = new Opcode("ICONST_0", 3);
+  static final Opcode ICONST_1 = new Opcode("ICONST_1", 4);
+  static final Opcode ICONST_2 = new Opcode("ICONST_2", 5);
+  static final Opcode ICONST_3 = new Opcode("ICONST_3", 6);
+  static final Opcode ICONST_4 = new Opcode("ICONST_4", 7);
+  static final Opcode ICONST_5 = new Opcode("ICONST_5", 8);
+  static final Opcode LCONST_0 = new Opcode("LCONST_0", 9);
+  static final Opcode LCONST_1 = new Opcode("LCONST_1", 10);
+  static final Opcode FCONST_0 = new Opcode("FCONST_0", 11);
+  static final Opcode FCONST_1 = new Opcode("FCONST_1", 12);
+  static final Opcode FCONST_2 = new Opcode("FCONST_2", 13);
+  static final Opcode DCONST_0 = new Opcode("DCONST_0", 14);
+  static final Opcode DCONST_1 = new Opcode("DCONST_1", 15);
+  static final Opcode BIPUSH = new Opcode("BIPUSH", 16);
+  static final Opcode SIPUSH = new Opcode("SIPUSH", 17);
+  static final Opcode LDC = new Opcode("LDC", 18);
+  static final Opcode LDC_W = new Opcode("LDC_W", 19);
+  static final Opcode LDC2_W = new Opcode("LDC2_W", 20);
+  static final Opcode ILOAD = new Opcode("ILOAD", 21);
+  static final Opcode LLOAD = new Opcode("LLOAD", 22);
+  static final Opcode FLOAD = new Opcode("FLOAD", 23);
+  static final Opcode DLOAD = new Opcode("DLOAD", 24);
+  static final Opcode ALOAD = new Opcode("ALOAD", 25);
+  static final Opcode ILOAD_0 = new Opcode("ILOAD_0", 26);
+  static final Opcode ILOAD_1 = new Opcode("ILOAD_1", 27);
+  static final Opcode ILOAD_2 = new Opcode("ILOAD_2", 28);
+  static final Opcode ILOAD_3 = new Opcode("ILOAD_3", 29);
+  static final Opcode LLOAD_0 = new Opcode("LLOAD_0", 30);
+  static final Opcode LLOAD_1 = new Opcode("LLOAD_1", 31);
+  static final Opcode LLOAD_2 = new Opcode("LLOAD_2", 32);
+  static final Opcode LLOAD_3 = new Opcode("LLOAD_3", 33);
+  static final Opcode FLOAD_0 = new Opcode("FLOAD_0", 34);
+  static final Opcode FLOAD_1 = new Opcode("FLOAD_1", 35);
+  static final Opcode FLOAD_2 = new Opcode("FLOAD_2", 36);
+  static final Opcode FLOAD_3 = new Opcode("FLOAD_3", 37);
+  static final Opcode DLOAD_0 = new Opcode("DLOAD_0", 38);
+  static final Opcode DLOAD_1 = new Opcode("DLOAD_1", 39);
+  static final Opcode DLOAD_2 = new Opcode("DLOAD_2", 40);
+  static final Opcode DLOAD_3 = new Opcode("DLOAD_3", 41);
+  static final Opcode ALOAD_0 = new Opcode("ALOAD_0", 42);
+  static final Opcode ALOAD_1 = new Opcode("ALOAD_1", 43);
+  static final Opcode ALOAD_2 = new Opcode("ALOAD_2", 44);
+  static final Opcode ALOAD_3 = new Opcode("ALOAD_3", 45);
+  static final Opcode IALOAD = new Opcode("IALOAD", 46);
+  static final Opcode LALOAD = new Opcode("LALOAD", 47);
+  static final Opcode FALOAD = new Opcode("FALOAD", 48);
+  static final Opcode DALOAD = new Opcode("DALOAD", 49);
+  static final Opcode AALOAD = new Opcode("AALOAD", 50);
+  static final Opcode BALOAD = new Opcode("BALOAD", 51);
+  static final Opcode CALOAD = new Opcode("CALOAD", 52);
+  static final Opcode SALOAD = new Opcode("SALOAD", 53);
+  static final Opcode ISTORE = new Opcode("ISTORE", 54);
+  static final Opcode LSTORE = new Opcode("LSTORE", 55);
+  static final Opcode FSTORE = new Opcode("FSTORE", 56);
+  static final Opcode DSTORE = new Opcode("DSTORE", 57);
+  static final Opcode ASTORE = new Opcode("ASTORE", 58);
+  static final Opcode ISTORE_0 = new Opcode("ISTORE_0", 59);
+  static final Opcode ISTORE_1 = new Opcode("ISTORE_1", 60);
+  static final Opcode ISTORE_2 = new Opcode("ISTORE_2", 61);
+  static final Opcode ISTORE_3 = new Opcode("ISTORE_3", 62);
+  static final Opcode LSTORE_0 = new Opcode("LSTORE_0", 63);
+  static final Opcode LSTORE_1 = new Opcode("LSTORE_1", 64);
+  static final Opcode LSTORE_2 = new Opcode("LSTORE_2", 65);
+  static final Opcode LSTORE_3 = new Opcode("LSTORE_3", 66);
+  static final Opcode FSTORE_0 = new Opcode("FSTORE_0", 67);
+  static final Opcode FSTORE_1 = new Opcode("FSTORE_1", 68);
+  static final Opcode FSTORE_2 = new Opcode("FSTORE_2", 69);
+  static final Opcode FSTORE_3 = new Opcode("FSTORE_3", 70);
+  static final Opcode DSTORE_0 = new Opcode("DSTORE_0", 71);
+  static final Opcode DSTORE_1 = new Opcode("DSTORE_1", 72);
+  static final Opcode DSTORE_2 = new Opcode("DSTORE_2", 73);
+  static final Opcode DSTORE_3 = new Opcode("DSTORE_3", 74);
+  static final Opcode ASTORE_0 = new Opcode("ASTORE_0", 75);
+  static final Opcode ASTORE_1 = new Opcode("ASTORE_1", 76);
+  static final Opcode ASTORE_2 = new Opcode("ASTORE_2", 77);
+  static final Opcode ASTORE_3 = new Opcode("ASTORE_3", 78);
+  static final Opcode IASTORE = new Opcode("IASTORE", 79);
+  static final Opcode LASTORE = new Opcode("LASTORE", 80);
+  static final Opcode FASTORE = new Opcode("FASTORE", 81);
+  static final Opcode DASTORE = new Opcode("DASTORE", 82);
+  static final Opcode AASTORE = new Opcode("AASTORE", 83);
+  static final Opcode BASTORE = new Opcode("BASTORE", 84);
+  static final Opcode CASTORE = new Opcode("CASTORE", 85);
+  static final Opcode SASTORE = new Opcode("SASTORE", 86);
+  static final Opcode POP = new Opcode("POP", 87);
+  static final Opcode POP2 = new Opcode("POP2", 88);
+  static final Opcode DUP = new Opcode("DUP", 89);
+  static final Opcode DUP_X1 = new Opcode("DUP_X1", 90);
+  static final Opcode DUP_X2 = new Opcode("DUP_X2", 91);
+  static final Opcode DUP2 = new Opcode("DUP2", 92);
+  static final Opcode DUP2_X1 = new Opcode("DUP2_X1", 93);
+  static final Opcode DUP2_X2 = new Opcode("DUP2_X2", 94);
+  static final Opcode SWAP = new Opcode("SWAP", 95);
+  static final Opcode IADD = new Opcode("IADD", 96);
+  static final Opcode LADD = new Opcode("LADD", 97);
+  static final Opcode FADD = new Opcode("FADD", 98);
+  static final Opcode DADD = new Opcode("DADD", 99);
+  static final Opcode ISUB = new Opcode("ISUB", 100);
+  static final Opcode LSUB = new Opcode("LSUB", 101);
+  static final Opcode FSUB = new Opcode("FSUB", 102);
+  static final Opcode DSUB = new Opcode("DSUB", 103);
+  static final Opcode IMUL = new Opcode("IMUL", 104);
+  static final Opcode LMUL = new Opcode("LMUL", 105);
+  static final Opcode FMUL = new Opcode("FMUL", 106);
+  static final Opcode DMUL = new Opcode("DMUL", 107);
+  static final Opcode IDIV = new Opcode("IDIV", 108);
+  static final Opcode LDIV = new Opcode("LDIV", 109);
+  static final Opcode FDIV = new Opcode("FDIV", 110);
+  static final Opcode DDIV = new Opcode("DDIV", 111);
+  static final Opcode IREM = new Opcode("IREM", 112);
+  static final Opcode LREM = new Opcode("LREM", 113);
+  static final Opcode FREM = new Opcode("FREM", 114);
+  static final Opcode DREM = new Opcode("DREM", 115);
+  static final Opcode INEG = new Opcode("INEG", 116);
+  static final Opcode LNEG = new Opcode("LNEG", 117);
+  static final Opcode FNEG = new Opcode("FNEG", 118);
+  static final Opcode DNEG = new Opcode("DNEG", 119);
+  static final Opcode ISHL = new Opcode("ISHL", 120);
+  static final Opcode LSHL = new Opcode("LSHL", 121);
+  static final Opcode ISHR = new Opcode("ISHR", 122);
+  static final Opcode LSHR = new Opcode("LSHR", 123);
+  static final Opcode IUSHR = new Opcode("IUSHR", 124);
+  static final Opcode LUSHR = new Opcode("LUSHR", 125);
+  static final Opcode IAND = new Opcode("IAND", 126);
+  static final Opcode LAND = new Opcode("LAND", 127);
+  static final Opcode IOR = new Opcode("IOR", 128);
+  static final Opcode LOR = new Opcode("LOR", 129);
+  static final Opcode IXOR = new Opcode("IXOR", 130);
+  static final Opcode LXOR = new Opcode("LXOR", 131);
+  static final Opcode IINC = new Opcode("IINC", 132);
+  static final Opcode I2L = new Opcode("I2L", 133);
+  static final Opcode I2F = new Opcode("I2F", 134);
+  static final Opcode I2D = new Opcode("I2D", 135);
+  static final Opcode L2I = new Opcode("L2I", 136);
+  static final Opcode L2F = new Opcode("L2F", 137);
+  static final Opcode L2D = new Opcode("L2D", 138);
+  static final Opcode F2I = new Opcode("F2I", 139);
+  static final Opcode F2L = new Opcode("F2L", 140);
+  static final Opcode F2D = new Opcode("F2D", 141);
+  static final Opcode D2I = new Opcode("D2I", 142);
+  static final Opcode D2L = new Opcode("D2L", 143);
+  static final Opcode D2F = new Opcode("D2F", 144);
+  static final Opcode I2B = new Opcode("I2B", 145);
+  static final Opcode I2C = new Opcode("I2C", 146);
+  static final Opcode I2S = new Opcode("I2S", 147);
+  static final Opcode LCMP = new Opcode("LCMP", 148);
+  static final Opcode FCMPL = new Opcode("FCMPL", 149);
+  static final Opcode FCMPG = new Opcode("FCMPG", 150);
+  static final Opcode DCMPL = new Opcode("DCMPL", 151);
+  static final Opcode DCMPG = new Opcode("DCMPG", 152);
+  static final Opcode IFEQ = new Opcode("IFEQ", 153);
+  static final Opcode IFNE = new Opcode("IFNE", 154);
+  static final Opcode IFLT = new Opcode("IFLT", 155);
+  static final Opcode IFGE = new Opcode("IFGE", 156);
+  static final Opcode IFGT = new Opcode("IFGT", 157);
+  static final Opcode IFLE = new Opcode("IFLE", 158);
+  static final Opcode IF_ICMPEQ = new Opcode("IF_ICMPEQ", 159);
+  static final Opcode IF_ICMPNE = new Opcode("IF_ICMPNE", 160);
+  static final Opcode IF_ICMPLT = new Opcode("IF_ICMPLT", 161);
+  static final Opcode IF_ICMPGE = new Opcode("IF_ICMPGE", 162);
+  static final Opcode IF_ICMPGT = new Opcode("IF_ICMPGT", 163);
+  static final Opcode IF_ICMPLE = new Opcode("IF_ICMPLE", 164);
+  static final Opcode IF_ACMPEQ = new Opcode("IF_ACMPEQ", 165);
+  static final Opcode IF_ACMPNE = new Opcode("IF_ACMPNE", 166);
+  static final Opcode GOTO = new Opcode("GOTO", 167);
+  static final Opcode JSR = new Opcode("JSR", 168);
+  static final Opcode RET = new Opcode("RET", 169);
+  static final Opcode TABLESWITCH = new Opcode("TABLESWITCH", 170);
+  static final Opcode LOOKUPSWITCH = new Opcode("LOOKUPSWITCH", 171);
+  static final Opcode IRETURN = new Opcode("IRETURN", 172);
+  static final Opcode LRETURN = new Opcode("LRETURN", 173);
+  static final Opcode FRETURN = new Opcode("FRETURN", 174);
+  static final Opcode DRETURN = new Opcode("DRETURN", 175);
+  static final Opcode ARETURN = new Opcode("ARETURN", 176);
+  static final Opcode RETURN = new Opcode("RETURN", 177);
+  static final Opcode GETSTATIC = new Opcode("GETSTATIC", 178);
+  static final Opcode PUTSTATIC = new Opcode("PUTSTATIC", 179);
+  static final Opcode GETFIELD = new Opcode("GETFIELD", 180);
+  static final Opcode PUTFIELD = new Opcode("PUTFIELD", 181);
+  static final Opcode INVOKEVIRTUAL = new Opcode("INVOKEVIRTUAL", 182);
+  static final Opcode INVOKESPECIAL = new Opcode("INVOKESPECIAL", 183);
+  static final Opcode INVOKESTATIC = new Opcode("INVOKESTATIC", 184);
+  static final Opcode INVOKEINTERFACE = new Opcode("INVOKEINTERFACE", 185);
+  static final Opcode INVOKEDYNAMIC = new Opcode("INVOKEDYNAMIC", 186);
+  static final Opcode NEW = new Opcode("NEW", 187);
+  static final Opcode NEWARRAY = new Opcode("NEWARRAY", 188);
+  static final Opcode ANEWARRAY = new Opcode("ANEWARRAY", 189);
+  static final Opcode ARRAYLENGTH = new Opcode("ARRAYLENGTH", 190);
+  static final Opcode ATHROW = new Opcode("ATHROW", 191);
+  static final Opcode CHECKCAST = new Opcode("CHECKCAST", 192);
+  static final Opcode INSTANCEOF = new Opcode("INSTANCEOF", 193);
+  static final Opcode MONITORENTER = new Opcode("MONITORENTER", 194);
+  static final Opcode MONITOREXIT = new Opcode("MONITOREXIT", 195);
+  static final Opcode MULTIANEWARRAY = new Opcode("MULTIANEWARRAY", 196);
+  static final Opcode IFNULL = new Opcode("IFNULL", 197);
+  static final Opcode IFNONNULL = new Opcode("IFNONNULL", 198);
+  static final Opcode GOTO_W = new Opcode("GOTO_W", 199);
+  static final Opcode JSR_W = new Opcode("JSR_W", 200);
+  static final Opcode ILOAD_W = new Opcode("ILOAD_W", 201);
+  static final Opcode LLOAD_W = new Opcode("LLOAD_W", 202);
+  static final Opcode FLOAD_W = new Opcode("FLOAD_W", 203);
+  static final Opcode DLOAD_W = new Opcode("DLOAD_W", 204);
+  static final Opcode ALOAD_W = new Opcode("ALOAD_W", 205);
+  static final Opcode ISTORE_W = new Opcode("ISTORE_W", 206);
+  static final Opcode LSTORE_W = new Opcode("LSTORE_W", 207);
+  static final Opcode FSTORE_W = new Opcode("FSTORE_W", 208);
+  static final Opcode DSTORE_W = new Opcode("DSTORE_W", 209);
+  static final Opcode ASTORE_W = new Opcode("ASTORE_W", 210);
+  static final Opcode RET_W = new Opcode("RET_W", 211);
+  static final Opcode IINC_W = new Opcode("IINC_W", 212);
+  String enumName;
+  int enumOrdinal;
+  Opcode(String name, int ordinal) { this.enumName = name; this.enumOrdinal = ordinal; }
+  String name() { return this.enumName; }
+  int ordinal() { return this.enumOrdinal; }
+  String toString() { return this.enumName; }
+  int compareTo(Opcode o) { return this.enumOrdinal - o.enumOrdinal; }
+  boolean equals(Any other) { return this == other; }
+  int hashCode() { return this.enumOrdinal * 31 + 17; }
+  public static Opcode[] values() {
+    Opcode[] v = new Opcode[213];
+    v[0] = NOP;
+    v[1] = ACONST_NULL;
+    v[2] = ICONST_M1;
+    v[3] = ICONST_0;
+    v[4] = ICONST_1;
+    v[5] = ICONST_2;
+    v[6] = ICONST_3;
+    v[7] = ICONST_4;
+    v[8] = ICONST_5;
+    v[9] = LCONST_0;
+    v[10] = LCONST_1;
+    v[11] = FCONST_0;
+    v[12] = FCONST_1;
+    v[13] = FCONST_2;
+    v[14] = DCONST_0;
+    v[15] = DCONST_1;
+    v[16] = BIPUSH;
+    v[17] = SIPUSH;
+    v[18] = LDC;
+    v[19] = LDC_W;
+    v[20] = LDC2_W;
+    v[21] = ILOAD;
+    v[22] = LLOAD;
+    v[23] = FLOAD;
+    v[24] = DLOAD;
+    v[25] = ALOAD;
+    v[26] = ILOAD_0;
+    v[27] = ILOAD_1;
+    v[28] = ILOAD_2;
+    v[29] = ILOAD_3;
+    v[30] = LLOAD_0;
+    v[31] = LLOAD_1;
+    v[32] = LLOAD_2;
+    v[33] = LLOAD_3;
+    v[34] = FLOAD_0;
+    v[35] = FLOAD_1;
+    v[36] = FLOAD_2;
+    v[37] = FLOAD_3;
+    v[38] = DLOAD_0;
+    v[39] = DLOAD_1;
+    v[40] = DLOAD_2;
+    v[41] = DLOAD_3;
+    v[42] = ALOAD_0;
+    v[43] = ALOAD_1;
+    v[44] = ALOAD_2;
+    v[45] = ALOAD_3;
+    v[46] = IALOAD;
+    v[47] = LALOAD;
+    v[48] = FALOAD;
+    v[49] = DALOAD;
+    v[50] = AALOAD;
+    v[51] = BALOAD;
+    v[52] = CALOAD;
+    v[53] = SALOAD;
+    v[54] = ISTORE;
+    v[55] = LSTORE;
+    v[56] = FSTORE;
+    v[57] = DSTORE;
+    v[58] = ASTORE;
+    v[59] = ISTORE_0;
+    v[60] = ISTORE_1;
+    v[61] = ISTORE_2;
+    v[62] = ISTORE_3;
+    v[63] = LSTORE_0;
+    v[64] = LSTORE_1;
+    v[65] = LSTORE_2;
+    v[66] = LSTORE_3;
+    v[67] = FSTORE_0;
+    v[68] = FSTORE_1;
+    v[69] = FSTORE_2;
+    v[70] = FSTORE_3;
+    v[71] = DSTORE_0;
+    v[72] = DSTORE_1;
+    v[73] = DSTORE_2;
+    v[74] = DSTORE_3;
+    v[75] = ASTORE_0;
+    v[76] = ASTORE_1;
+    v[77] = ASTORE_2;
+    v[78] = ASTORE_3;
+    v[79] = IASTORE;
+    v[80] = LASTORE;
+    v[81] = FASTORE;
+    v[82] = DASTORE;
+    v[83] = AASTORE;
+    v[84] = BASTORE;
+    v[85] = CASTORE;
+    v[86] = SASTORE;
+    v[87] = POP;
+    v[88] = POP2;
+    v[89] = DUP;
+    v[90] = DUP_X1;
+    v[91] = DUP_X2;
+    v[92] = DUP2;
+    v[93] = DUP2_X1;
+    v[94] = DUP2_X2;
+    v[95] = SWAP;
+    v[96] = IADD;
+    v[97] = LADD;
+    v[98] = FADD;
+    v[99] = DADD;
+    v[100] = ISUB;
+    v[101] = LSUB;
+    v[102] = FSUB;
+    v[103] = DSUB;
+    v[104] = IMUL;
+    v[105] = LMUL;
+    v[106] = FMUL;
+    v[107] = DMUL;
+    v[108] = IDIV;
+    v[109] = LDIV;
+    v[110] = FDIV;
+    v[111] = DDIV;
+    v[112] = IREM;
+    v[113] = LREM;
+    v[114] = FREM;
+    v[115] = DREM;
+    v[116] = INEG;
+    v[117] = LNEG;
+    v[118] = FNEG;
+    v[119] = DNEG;
+    v[120] = ISHL;
+    v[121] = LSHL;
+    v[122] = ISHR;
+    v[123] = LSHR;
+    v[124] = IUSHR;
+    v[125] = LUSHR;
+    v[126] = IAND;
+    v[127] = LAND;
+    v[128] = IOR;
+    v[129] = LOR;
+    v[130] = IXOR;
+    v[131] = LXOR;
+    v[132] = IINC;
+    v[133] = I2L;
+    v[134] = I2F;
+    v[135] = I2D;
+    v[136] = L2I;
+    v[137] = L2F;
+    v[138] = L2D;
+    v[139] = F2I;
+    v[140] = F2L;
+    v[141] = F2D;
+    v[142] = D2I;
+    v[143] = D2L;
+    v[144] = D2F;
+    v[145] = I2B;
+    v[146] = I2C;
+    v[147] = I2S;
+    v[148] = LCMP;
+    v[149] = FCMPL;
+    v[150] = FCMPG;
+    v[151] = DCMPL;
+    v[152] = DCMPG;
+    v[153] = IFEQ;
+    v[154] = IFNE;
+    v[155] = IFLT;
+    v[156] = IFGE;
+    v[157] = IFGT;
+    v[158] = IFLE;
+    v[159] = IF_ICMPEQ;
+    v[160] = IF_ICMPNE;
+    v[161] = IF_ICMPLT;
+    v[162] = IF_ICMPGE;
+    v[163] = IF_ICMPGT;
+    v[164] = IF_ICMPLE;
+    v[165] = IF_ACMPEQ;
+    v[166] = IF_ACMPNE;
+    v[167] = GOTO;
+    v[168] = JSR;
+    v[169] = RET;
+    v[170] = TABLESWITCH;
+    v[171] = LOOKUPSWITCH;
+    v[172] = IRETURN;
+    v[173] = LRETURN;
+    v[174] = FRETURN;
+    v[175] = DRETURN;
+    v[176] = ARETURN;
+    v[177] = RETURN;
+    v[178] = GETSTATIC;
+    v[179] = PUTSTATIC;
+    v[180] = GETFIELD;
+    v[181] = PUTFIELD;
+    v[182] = INVOKEVIRTUAL;
+    v[183] = INVOKESPECIAL;
+    v[184] = INVOKESTATIC;
+    v[185] = INVOKEINTERFACE;
+    v[186] = INVOKEDYNAMIC;
+    v[187] = NEW;
+    v[188] = NEWARRAY;
+    v[189] = ANEWARRAY;
+    v[190] = ARRAYLENGTH;
+    v[191] = ATHROW;
+    v[192] = CHECKCAST;
+    v[193] = INSTANCEOF;
+    v[194] = MONITORENTER;
+    v[195] = MONITOREXIT;
+    v[196] = MULTIANEWARRAY;
+    v[197] = IFNULL;
+    v[198] = IFNONNULL;
+    v[199] = GOTO_W;
+    v[200] = JSR_W;
+    v[201] = ILOAD_W;
+    v[202] = LLOAD_W;
+    v[203] = FLOAD_W;
+    v[204] = DLOAD_W;
+    v[205] = ALOAD_W;
+    v[206] = ISTORE_W;
+    v[207] = LSTORE_W;
+    v[208] = FSTORE_W;
+    v[209] = DSTORE_W;
+    v[210] = ASTORE_W;
+    v[211] = RET_W;
+    v[212] = IINC_W;
+    return v;
+  }
+  public static Opcode valueOf(String name) {
+    if (name == null) { throw new NullPointerException("Name is null"); }
+    if (name == "NOP") { return NOP; }
+    if (name == "ACONST_NULL") { return ACONST_NULL; }
+    if (name == "ICONST_M1") { return ICONST_M1; }
+    if (name == "ICONST_0") { return ICONST_0; }
+    if (name == "ICONST_1") { return ICONST_1; }
+    if (name == "ICONST_2") { return ICONST_2; }
+    if (name == "ICONST_3") { return ICONST_3; }
+    if (name == "ICONST_4") { return ICONST_4; }
+    if (name == "ICONST_5") { return ICONST_5; }
+    if (name == "LCONST_0") { return LCONST_0; }
+    if (name == "LCONST_1") { return LCONST_1; }
+    if (name == "FCONST_0") { return FCONST_0; }
+    if (name == "FCONST_1") { return FCONST_1; }
+    if (name == "FCONST_2") { return FCONST_2; }
+    if (name == "DCONST_0") { return DCONST_0; }
+    if (name == "DCONST_1") { return DCONST_1; }
+    if (name == "BIPUSH") { return BIPUSH; }
+    if (name == "SIPUSH") { return SIPUSH; }
+    if (name == "LDC") { return LDC; }
+    if (name == "LDC_W") { return LDC_W; }
+    if (name == "LDC2_W") { return LDC2_W; }
+    if (name == "ILOAD") { return ILOAD; }
+    if (name == "LLOAD") { return LLOAD; }
+    if (name == "FLOAD") { return FLOAD; }
+    if (name == "DLOAD") { return DLOAD; }
+    if (name == "ALOAD") { return ALOAD; }
+    if (name == "ILOAD_0") { return ILOAD_0; }
+    if (name == "ILOAD_1") { return ILOAD_1; }
+    if (name == "ILOAD_2") { return ILOAD_2; }
+    if (name == "ILOAD_3") { return ILOAD_3; }
+    if (name == "LLOAD_0") { return LLOAD_0; }
+    if (name == "LLOAD_1") { return LLOAD_1; }
+    if (name == "LLOAD_2") { return LLOAD_2; }
+    if (name == "LLOAD_3") { return LLOAD_3; }
+    if (name == "FLOAD_0") { return FLOAD_0; }
+    if (name == "FLOAD_1") { return FLOAD_1; }
+    if (name == "FLOAD_2") { return FLOAD_2; }
+    if (name == "FLOAD_3") { return FLOAD_3; }
+    if (name == "DLOAD_0") { return DLOAD_0; }
+    if (name == "DLOAD_1") { return DLOAD_1; }
+    if (name == "DLOAD_2") { return DLOAD_2; }
+    if (name == "DLOAD_3") { return DLOAD_3; }
+    if (name == "ALOAD_0") { return ALOAD_0; }
+    if (name == "ALOAD_1") { return ALOAD_1; }
+    if (name == "ALOAD_2") { return ALOAD_2; }
+    if (name == "ALOAD_3") { return ALOAD_3; }
+    if (name == "IALOAD") { return IALOAD; }
+    if (name == "LALOAD") { return LALOAD; }
+    if (name == "FALOAD") { return FALOAD; }
+    if (name == "DALOAD") { return DALOAD; }
+    if (name == "AALOAD") { return AALOAD; }
+    if (name == "BALOAD") { return BALOAD; }
+    if (name == "CALOAD") { return CALOAD; }
+    if (name == "SALOAD") { return SALOAD; }
+    if (name == "ISTORE") { return ISTORE; }
+    if (name == "LSTORE") { return LSTORE; }
+    if (name == "FSTORE") { return FSTORE; }
+    if (name == "DSTORE") { return DSTORE; }
+    if (name == "ASTORE") { return ASTORE; }
+    if (name == "ISTORE_0") { return ISTORE_0; }
+    if (name == "ISTORE_1") { return ISTORE_1; }
+    if (name == "ISTORE_2") { return ISTORE_2; }
+    if (name == "ISTORE_3") { return ISTORE_3; }
+    if (name == "LSTORE_0") { return LSTORE_0; }
+    if (name == "LSTORE_1") { return LSTORE_1; }
+    if (name == "LSTORE_2") { return LSTORE_2; }
+    if (name == "LSTORE_3") { return LSTORE_3; }
+    if (name == "FSTORE_0") { return FSTORE_0; }
+    if (name == "FSTORE_1") { return FSTORE_1; }
+    if (name == "FSTORE_2") { return FSTORE_2; }
+    if (name == "FSTORE_3") { return FSTORE_3; }
+    if (name == "DSTORE_0") { return DSTORE_0; }
+    if (name == "DSTORE_1") { return DSTORE_1; }
+    if (name == "DSTORE_2") { return DSTORE_2; }
+    if (name == "DSTORE_3") { return DSTORE_3; }
+    if (name == "ASTORE_0") { return ASTORE_0; }
+    if (name == "ASTORE_1") { return ASTORE_1; }
+    if (name == "ASTORE_2") { return ASTORE_2; }
+    if (name == "ASTORE_3") { return ASTORE_3; }
+    if (name == "IASTORE") { return IASTORE; }
+    if (name == "LASTORE") { return LASTORE; }
+    if (name == "FASTORE") { return FASTORE; }
+    if (name == "DASTORE") { return DASTORE; }
+    if (name == "AASTORE") { return AASTORE; }
+    if (name == "BASTORE") { return BASTORE; }
+    if (name == "CASTORE") { return CASTORE; }
+    if (name == "SASTORE") { return SASTORE; }
+    if (name == "POP") { return POP; }
+    if (name == "POP2") { return POP2; }
+    if (name == "DUP") { return DUP; }
+    if (name == "DUP_X1") { return DUP_X1; }
+    if (name == "DUP_X2") { return DUP_X2; }
+    if (name == "DUP2") { return DUP2; }
+    if (name == "DUP2_X1") { return DUP2_X1; }
+    if (name == "DUP2_X2") { return DUP2_X2; }
+    if (name == "SWAP") { return SWAP; }
+    if (name == "IADD") { return IADD; }
+    if (name == "LADD") { return LADD; }
+    if (name == "FADD") { return FADD; }
+    if (name == "DADD") { return DADD; }
+    if (name == "ISUB") { return ISUB; }
+    if (name == "LSUB") { return LSUB; }
+    if (name == "FSUB") { return FSUB; }
+    if (name == "DSUB") { return DSUB; }
+    if (name == "IMUL") { return IMUL; }
+    if (name == "LMUL") { return LMUL; }
+    if (name == "FMUL") { return FMUL; }
+    if (name == "DMUL") { return DMUL; }
+    if (name == "IDIV") { return IDIV; }
+    if (name == "LDIV") { return LDIV; }
+    if (name == "FDIV") { return FDIV; }
+    if (name == "DDIV") { return DDIV; }
+    if (name == "IREM") { return IREM; }
+    if (name == "LREM") { return LREM; }
+    if (name == "FREM") { return FREM; }
+    if (name == "DREM") { return DREM; }
+    if (name == "INEG") { return INEG; }
+    if (name == "LNEG") { return LNEG; }
+    if (name == "FNEG") { return FNEG; }
+    if (name == "DNEG") { return DNEG; }
+    if (name == "ISHL") { return ISHL; }
+    if (name == "LSHL") { return LSHL; }
+    if (name == "ISHR") { return ISHR; }
+    if (name == "LSHR") { return LSHR; }
+    if (name == "IUSHR") { return IUSHR; }
+    if (name == "LUSHR") { return LUSHR; }
+    if (name == "IAND") { return IAND; }
+    if (name == "LAND") { return LAND; }
+    if (name == "IOR") { return IOR; }
+    if (name == "LOR") { return LOR; }
+    if (name == "IXOR") { return IXOR; }
+    if (name == "LXOR") { return LXOR; }
+    if (name == "IINC") { return IINC; }
+    if (name == "I2L") { return I2L; }
+    if (name == "I2F") { return I2F; }
+    if (name == "I2D") { return I2D; }
+    if (name == "L2I") { return L2I; }
+    if (name == "L2F") { return L2F; }
+    if (name == "L2D") { return L2D; }
+    if (name == "F2I") { return F2I; }
+    if (name == "F2L") { return F2L; }
+    if (name == "F2D") { return F2D; }
+    if (name == "D2I") { return D2I; }
+    if (name == "D2L") { return D2L; }
+    if (name == "D2F") { return D2F; }
+    if (name == "I2B") { return I2B; }
+    if (name == "I2C") { return I2C; }
+    if (name == "I2S") { return I2S; }
+    if (name == "LCMP") { return LCMP; }
+    if (name == "FCMPL") { return FCMPL; }
+    if (name == "FCMPG") { return FCMPG; }
+    if (name == "DCMPL") { return DCMPL; }
+    if (name == "DCMPG") { return DCMPG; }
+    if (name == "IFEQ") { return IFEQ; }
+    if (name == "IFNE") { return IFNE; }
+    if (name == "IFLT") { return IFLT; }
+    if (name == "IFGE") { return IFGE; }
+    if (name == "IFGT") { return IFGT; }
+    if (name == "IFLE") { return IFLE; }
+    if (name == "IF_ICMPEQ") { return IF_ICMPEQ; }
+    if (name == "IF_ICMPNE") { return IF_ICMPNE; }
+    if (name == "IF_ICMPLT") { return IF_ICMPLT; }
+    if (name == "IF_ICMPGE") { return IF_ICMPGE; }
+    if (name == "IF_ICMPGT") { return IF_ICMPGT; }
+    if (name == "IF_ICMPLE") { return IF_ICMPLE; }
+    if (name == "IF_ACMPEQ") { return IF_ACMPEQ; }
+    if (name == "IF_ACMPNE") { return IF_ACMPNE; }
+    if (name == "GOTO") { return GOTO; }
+    if (name == "JSR") { return JSR; }
+    if (name == "RET") { return RET; }
+    if (name == "TABLESWITCH") { return TABLESWITCH; }
+    if (name == "LOOKUPSWITCH") { return LOOKUPSWITCH; }
+    if (name == "IRETURN") { return IRETURN; }
+    if (name == "LRETURN") { return LRETURN; }
+    if (name == "FRETURN") { return FRETURN; }
+    if (name == "DRETURN") { return DRETURN; }
+    if (name == "ARETURN") { return ARETURN; }
+    if (name == "RETURN") { return RETURN; }
+    if (name == "GETSTATIC") { return GETSTATIC; }
+    if (name == "PUTSTATIC") { return PUTSTATIC; }
+    if (name == "GETFIELD") { return GETFIELD; }
+    if (name == "PUTFIELD") { return PUTFIELD; }
+    if (name == "INVOKEVIRTUAL") { return INVOKEVIRTUAL; }
+    if (name == "INVOKESPECIAL") { return INVOKESPECIAL; }
+    if (name == "INVOKESTATIC") { return INVOKESTATIC; }
+    if (name == "INVOKEINTERFACE") { return INVOKEINTERFACE; }
+    if (name == "INVOKEDYNAMIC") { return INVOKEDYNAMIC; }
+    if (name == "NEW") { return NEW; }
+    if (name == "NEWARRAY") { return NEWARRAY; }
+    if (name == "ANEWARRAY") { return ANEWARRAY; }
+    if (name == "ARRAYLENGTH") { return ARRAYLENGTH; }
+    if (name == "ATHROW") { return ATHROW; }
+    if (name == "CHECKCAST") { return CHECKCAST; }
+    if (name == "INSTANCEOF") { return INSTANCEOF; }
+    if (name == "MONITORENTER") { return MONITORENTER; }
+    if (name == "MONITOREXIT") { return MONITOREXIT; }
+    if (name == "MULTIANEWARRAY") { return MULTIANEWARRAY; }
+    if (name == "IFNULL") { return IFNULL; }
+    if (name == "IFNONNULL") { return IFNONNULL; }
+    if (name == "GOTO_W") { return GOTO_W; }
+    if (name == "JSR_W") { return JSR_W; }
+    if (name == "ILOAD_W") { return ILOAD_W; }
+    if (name == "LLOAD_W") { return LLOAD_W; }
+    if (name == "FLOAD_W") { return FLOAD_W; }
+    if (name == "DLOAD_W") { return DLOAD_W; }
+    if (name == "ALOAD_W") { return ALOAD_W; }
+    if (name == "ISTORE_W") { return ISTORE_W; }
+    if (name == "LSTORE_W") { return LSTORE_W; }
+    if (name == "FSTORE_W") { return FSTORE_W; }
+    if (name == "DSTORE_W") { return DSTORE_W; }
+    if (name == "ASTORE_W") { return ASTORE_W; }
+    if (name == "RET_W") { return RET_W; }
+    if (name == "IINC_W") { return IINC_W; }
+    throw new IllegalArgumentException("No enum constant java.lang.classfile.Opcode." + name);
+  }
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public java.lang.classfile.Opcode.Kind kind() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.Opcode.kind()"); }
+  public int bytecode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.Opcode.bytecode()"); }
+  public boolean isWide() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.Opcode.isWide()"); }
+  public int sizeIfFixed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.Opcode.sizeIfFixed()"); }
+  < ---- END java signatures ---- >
+}

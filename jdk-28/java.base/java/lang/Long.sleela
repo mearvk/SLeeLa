@@ -1,0 +1,130 @@
+<< jdk-28/java.base/java/lang/Long.sleela
+   SLeeLa file for the Java type java.lang.Long (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/Long.html
+   Java kind: class; extends java.lang.Number; implements java.lang.Comparable, java.lang.constant.Constable, java.lang.constant.ConstantDesc
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Long {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 5658;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.lang.Long";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/Long.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Number";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static final long MIN_VALUE = -9223372036854775807 - 1;
+  static final long MAX_VALUE = 9223372036854775807;
+  static Any TYPE = null;
+  static final int SIZE = 64;
+  static final int BYTES = 8;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public Long(java.lang.String s) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.<init>(java.lang.String)"); }
+  public Long(long value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.<init>(long)"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public static int numberOfLeadingZeros(long i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.numberOfLeadingZeros(long)"); }
+  public static int numberOfTrailingZeros(long i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.numberOfTrailingZeros(long)"); }
+  public static int bitCount(long i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.bitCount(long)"); }
+  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.equals(java.lang.Object)"); }
+  public static java.lang.String toString(long i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.toString(long)"); }
+  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.toString()"); }
+  public static java.lang.String toString(long i, int radix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.toString(long, int)"); }
+  public static int hashCode(long value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.hashCode(long)"); }
+  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.hashCode()"); }
+  public static long min(long a, long b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.min(long, long)"); }
+  public static long max(long a, long b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.max(long, long)"); }
+  public static int signum(long i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.signum(long)"); }
+  public static long expand(long i, long mask) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.expand(long, long)"); }
+  public static int compareUnsigned(long x, long y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.compareUnsigned(long, long)"); }
+  public static long divideUnsigned(long dividend, long divisor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.divideUnsigned(long, long)"); }
+  public static long remainderUnsigned(long dividend, long divisor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.remainderUnsigned(long, long)"); }
+  public static long reverse(long i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.reverse(long)"); }
+  public static long reverseBytes(long i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.reverseBytes(long)"); }
+  public static long compress(long i, long mask) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.compress(long, long)"); }
+  public int compareTo(java.lang.Long anotherLong) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.compareTo(java.lang.Long)"); }
+  public static java.lang.Long getLong(java.lang.String nm, java.lang.Long val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.getLong(java.lang.String, java.lang.Long)"); }
+  public static java.lang.Long getLong(java.lang.String nm) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.getLong(java.lang.String)"); }
+  public static java.lang.Long getLong(java.lang.String nm, long val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.getLong(java.lang.String, long)"); }
+  public static int compare(long x, long y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.compare(long, long)"); }
+  public byte byteValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.byteValue()"); }
+  public short shortValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.shortValue()"); }
+  public int intValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.intValue()"); }
+  public long longValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.longValue()"); }
+  public float floatValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.floatValue()"); }
+  public double doubleValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.doubleValue()"); }
+  public static java.lang.Long valueOf(long l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.valueOf(long)"); }
+  public static java.lang.Long valueOf(java.lang.String s) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.valueOf(java.lang.String)"); }
+  public static java.lang.Long valueOf(java.lang.String s, int radix) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.valueOf(java.lang.String, int)"); }
+  public static java.lang.String toHexString(long i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.toHexString(long)"); }
+  public static java.lang.Long decode(java.lang.String nm) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.decode(java.lang.String)"); }
+  public java.lang.Long resolveConstantDesc(java.lang.invoke.MethodHandles.Lookup lookup) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.resolveConstantDesc(java.lang.invoke.MethodHandles.Lookup)"); }
+  public java.util.Optional<java.lang.Long> describeConstable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.describeConstable()"); }
+  public static long sum(long a, long b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.sum(long, long)"); }
+  public static java.lang.String toUnsignedString(long i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.toUnsignedString(long)"); }
+  public static java.lang.String toUnsignedString(long i, int radix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.toUnsignedString(long, int)"); }
+  public static java.lang.String toOctalString(long i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.toOctalString(long)"); }
+  public static java.lang.String toBinaryString(long i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.toBinaryString(long)"); }
+  public static long highestOneBit(long i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.highestOneBit(long)"); }
+  public static long lowestOneBit(long i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.lowestOneBit(long)"); }
+  public static long rotateLeft(long i, int distance) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.rotateLeft(long, int)"); }
+  public static long rotateRight(long i, int distance) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.rotateRight(long, int)"); }
+  public static long parseLong(java.lang.String s) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.parseLong(java.lang.String)"); }
+  public static long parseLong(java.lang.String s, int radix) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.parseLong(java.lang.String, int)"); }
+  public static long parseLong(java.lang.CharSequence s, int beginIndex, int endIndex, int radix) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.parseLong(java.lang.CharSequence, int, int, int)"); }
+  public static long parseUnsignedLong(java.lang.String s) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.parseUnsignedLong(java.lang.String)"); }
+  public static long parseUnsignedLong(java.lang.String s, int radix) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.parseUnsignedLong(java.lang.String, int)"); }
+  public static long parseUnsignedLong(java.lang.CharSequence s, int beginIndex, int endIndex, int radix) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Long.parseUnsignedLong(java.lang.CharSequence, int, int, int)"); }
+  < ---- END java signatures ---- >
+}

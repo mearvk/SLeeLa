@@ -1,0 +1,74 @@
+<< jdk-28/java.base/javax/crypto/KEM.sleela
+   SLeeLa file for the Java type javax.crypto.KEM (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/javax/crypto/KEM.html
+   Java kind: class; extends java.lang.Object
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class KEM {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 5257;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.crypto.KEM";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/javax/crypto/KEM.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public static javax.crypto.KEM getInstance(java.lang.String algorithm, java.security.Provider provider) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KEM.getInstance(java.lang.String, java.security.Provider)"); }
+  public static javax.crypto.KEM getInstance(java.lang.String algorithm, java.lang.String provider) throws java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KEM.getInstance(java.lang.String, java.lang.String)"); }
+  public static javax.crypto.KEM getInstance(java.lang.String algorithm) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KEM.getInstance(java.lang.String)"); }
+  public java.lang.String getAlgorithm() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KEM.getAlgorithm()"); }
+  public javax.crypto.KEM.Encapsulator newEncapsulator(java.security.PublicKey publicKey, java.security.SecureRandom secureRandom) throws java.security.InvalidKeyException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KEM.newEncapsulator(java.security.PublicKey, java.security.SecureRandom)"); }
+  public javax.crypto.KEM.Encapsulator newEncapsulator(java.security.PublicKey publicKey) throws java.security.InvalidKeyException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KEM.newEncapsulator(java.security.PublicKey)"); }
+  public javax.crypto.KEM.Encapsulator newEncapsulator(java.security.PublicKey publicKey, java.security.spec.AlgorithmParameterSpec spec, java.security.SecureRandom secureRandom) throws java.security.InvalidAlgorithmParameterException, java.security.InvalidKeyException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KEM.newEncapsulator(java.security.PublicKey, java.security.spec.AlgorithmParameterSpec, java.security.SecureRandom)"); }
+  public javax.crypto.KEM.Decapsulator newDecapsulator(java.security.PrivateKey privateKey, java.security.spec.AlgorithmParameterSpec spec) throws java.security.InvalidAlgorithmParameterException, java.security.InvalidKeyException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KEM.newDecapsulator(java.security.PrivateKey, java.security.spec.AlgorithmParameterSpec)"); }
+  public javax.crypto.KEM.Decapsulator newDecapsulator(java.security.PrivateKey privateKey) throws java.security.InvalidKeyException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KEM.newDecapsulator(java.security.PrivateKey)"); }
+  < ---- END java signatures ---- >
+}

@@ -1,0 +1,88 @@
+<< jdk-28/java.base/java/security/cert/X509CRL.sleela
+   SLeeLa file for the Java type java.security.cert.X509CRL (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/security/cert/X509CRL.html
+   Java kind: class; extends java.security.cert.CRL; implements java.security.cert.X509Extension, java.security.DEREncodable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class X509CRL {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9783;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.security.cert.X509CRL";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/security/cert/X509CRL.html";
+  String javaKind = "class";
+  String javaSuper = "java.security.cert.CRL";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  @JavaProtected
+  X509CRL() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.X509CRL.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public boolean equals(java.lang.Object other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.X509CRL.equals(java.lang.Object)"); }
+  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.X509CRL.hashCode()"); }
+  public abstract byte[] getSignature() { throw new AbstractMethodError("java.security.cert.X509CRL.getSignature()"); }
+  public abstract byte[] getEncoded() throws java.security.cert.CRLException { throw new AbstractMethodError("java.security.cert.X509CRL.getEncoded()"); }
+  public void verify(java.security.PublicKey key, java.security.Provider sigProvider) throws java.security.cert.CRLException, java.security.NoSuchAlgorithmException, java.security.InvalidKeyException, java.security.SignatureException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.X509CRL.verify(java.security.PublicKey, java.security.Provider)"); }
+  public abstract void verify(java.security.PublicKey key, java.lang.String sigProvider) throws java.security.cert.CRLException, java.security.NoSuchAlgorithmException, java.security.InvalidKeyException, java.security.NoSuchProviderException, java.security.SignatureException { throw new AbstractMethodError("java.security.cert.X509CRL.verify(java.security.PublicKey, java.lang.String)"); }
+  public abstract void verify(java.security.PublicKey key) throws java.security.cert.CRLException, java.security.NoSuchAlgorithmException, java.security.InvalidKeyException, java.security.NoSuchProviderException, java.security.SignatureException { throw new AbstractMethodError("java.security.cert.X509CRL.verify(java.security.PublicKey)"); }
+  public abstract int getVersion() { throw new AbstractMethodError("java.security.cert.X509CRL.getVersion()"); }
+  public abstract java.lang.String getSigAlgName() { throw new AbstractMethodError("java.security.cert.X509CRL.getSigAlgName()"); }
+  public abstract byte[] getSigAlgParams() { throw new AbstractMethodError("java.security.cert.X509CRL.getSigAlgParams()"); }
+  public abstract java.security.Principal getIssuerDN() { throw new AbstractMethodError("java.security.cert.X509CRL.getIssuerDN()"); }
+  public abstract java.lang.String getSigAlgOID() { throw new AbstractMethodError("java.security.cert.X509CRL.getSigAlgOID()"); }
+  public abstract byte[] getTBSCertList() throws java.security.cert.CRLException { throw new AbstractMethodError("java.security.cert.X509CRL.getTBSCertList()"); }
+  public abstract java.security.cert.X509CRLEntry getRevokedCertificate(java.math.BigInteger serialNumber) { throw new AbstractMethodError("java.security.cert.X509CRL.getRevokedCertificate(java.math.BigInteger)"); }
+  public abstract java.util.Date getThisUpdate() { throw new AbstractMethodError("java.security.cert.X509CRL.getThisUpdate()"); }
+  public abstract java.util.Date getNextUpdate() { throw new AbstractMethodError("java.security.cert.X509CRL.getNextUpdate()"); }
+  public abstract java.util.Set<? extends java.security.cert.X509CRLEntry> getRevokedCertificates() { throw new AbstractMethodError("java.security.cert.X509CRL.getRevokedCertificates()"); }
+  public javax.security.auth.x500.X500Principal getIssuerX500Principal() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.X509CRL.getIssuerX500Principal()"); }
+  < ---- END java signatures ---- >
+}

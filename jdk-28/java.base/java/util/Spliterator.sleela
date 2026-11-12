@@ -1,0 +1,84 @@
+<< jdk-28/java.base/java/util/Spliterator.sleela
+   SLeeLa file for the Java type java.util.Spliterator (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/Spliterator.html
+   Java kind: interface
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Spliterator<T> {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 8494;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.Spliterator";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/Spliterator.html";
+  String javaKind = "interface";
+  String javaSuper = "";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static final int ORDERED = 16;
+  static final int DISTINCT = 1;
+  static final int SORTED = 4;
+  static final int SIZED = 64;
+  static final int NONNULL = 256;
+  static final int IMMUTABLE = 1024;
+  static final int CONCURRENT = 4096;
+  static final int SUBSIZED = 16384;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public default void forEachRemaining(java.util.function.Consumer<? super T> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Spliterator.forEachRemaining(java.util.function.Consumer<? super T>)"); }
+  public abstract int characteristics() { throw new AbstractMethodError("java.util.Spliterator.characteristics()"); }
+  public default boolean hasCharacteristics(int characteristics) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Spliterator.hasCharacteristics(int)"); }
+  public abstract java.util.Spliterator<T> trySplit() { throw new AbstractMethodError("java.util.Spliterator.trySplit()"); }
+  public abstract boolean tryAdvance(java.util.function.Consumer<? super T> action) { throw new AbstractMethodError("java.util.Spliterator.tryAdvance(java.util.function.Consumer<? super T>)"); }
+  public abstract long estimateSize() { throw new AbstractMethodError("java.util.Spliterator.estimateSize()"); }
+  public default java.util.Comparator<? super T> getComparator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Spliterator.getComparator()"); }
+  public default long getExactSizeIfKnown() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Spliterator.getExactSizeIfKnown()"); }
+  < ---- END java signatures ---- >
+}

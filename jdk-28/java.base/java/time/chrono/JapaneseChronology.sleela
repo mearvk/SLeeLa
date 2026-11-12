@@ -1,0 +1,89 @@
+<< jdk-28/java.base/java/time/chrono/JapaneseChronology.sleela
+   SLeeLa file for the Java type java.time.chrono.JapaneseChronology (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/time/chrono/JapaneseChronology.html
+   Java kind: class; extends java.time.chrono.AbstractChronology; implements java.io.Serializable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class JapaneseChronology {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 5109;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.time.chrono.JapaneseChronology";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/time/chrono/JapaneseChronology.html";
+  String javaKind = "class";
+  String javaSuper = "java.time.chrono.AbstractChronology";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static Any INSTANCE = null;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public java.lang.String getId() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.JapaneseChronology.getId()"); }
+  public java.time.temporal.ValueRange range(java.time.temporal.ChronoField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.JapaneseChronology.range(java.time.temporal.ChronoField)"); }
+  public java.time.chrono.JapaneseDate date(int prolepticYear, int month, int dayOfMonth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.JapaneseChronology.date(int, int, int)"); }
+  public java.time.chrono.JapaneseDate date(java.time.temporal.TemporalAccessor temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.JapaneseChronology.date(java.time.temporal.TemporalAccessor)"); }
+  public java.time.chrono.JapaneseDate date(java.time.chrono.Era era, int yearOfEra, int month, int dayOfMonth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.JapaneseChronology.date(java.time.chrono.Era, int, int, int)"); }
+  public java.util.List<java.time.chrono.Era> eras() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.JapaneseChronology.eras()"); }
+  public boolean isLeapYear(long prolepticYear) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.JapaneseChronology.isLeapYear(long)"); }
+  public java.time.chrono.JapaneseEra eraOf(int eraValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.JapaneseChronology.eraOf(int)"); }
+  public java.time.chrono.ChronoLocalDateTime<java.time.chrono.JapaneseDate> localDateTime(java.time.temporal.TemporalAccessor temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.JapaneseChronology.localDateTime(java.time.temporal.TemporalAccessor)"); }
+  public java.lang.String getCalendarType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.JapaneseChronology.getCalendarType()"); }
+  public java.time.chrono.JapaneseDate dateEpochDay(long epochDay) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.JapaneseChronology.dateEpochDay(long)"); }
+  public java.time.chrono.JapaneseDate dateNow(java.time.Clock clock) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.JapaneseChronology.dateNow(java.time.Clock)"); }
+  public java.time.chrono.JapaneseDate dateNow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.JapaneseChronology.dateNow()"); }
+  public int prolepticYear(java.time.chrono.Era era, int yearOfEra) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.JapaneseChronology.prolepticYear(java.time.chrono.Era, int)"); }
+  public java.time.chrono.JapaneseDate dateYearDay(java.time.chrono.Era era, int yearOfEra, int dayOfYear) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.JapaneseChronology.dateYearDay(java.time.chrono.Era, int, int)"); }
+  public java.time.chrono.JapaneseDate dateYearDay(int prolepticYear, int dayOfYear) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.JapaneseChronology.dateYearDay(int, int)"); }
+  public java.time.chrono.JapaneseDate resolveDate(java.util.Map<java.time.temporal.TemporalField, java.lang.Long> fieldValues, java.time.format.ResolverStyle resolverStyle) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.JapaneseChronology.resolveDate(java.util.Map<java.time.temporal.TemporalField, java.lang.Long>, java.time.format.ResolverStyle)"); }
+  public java.time.chrono.ChronoZonedDateTime<java.time.chrono.JapaneseDate> zonedDateTime(java.time.Instant instant, java.time.ZoneId zone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.JapaneseChronology.zonedDateTime(java.time.Instant, java.time.ZoneId)"); }
+  public java.time.chrono.ChronoZonedDateTime<java.time.chrono.JapaneseDate> zonedDateTime(java.time.temporal.TemporalAccessor temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.JapaneseChronology.zonedDateTime(java.time.temporal.TemporalAccessor)"); }
+  public boolean isIsoBased() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.JapaneseChronology.isIsoBased()"); }
+  < ---- END java signatures ---- >
+}

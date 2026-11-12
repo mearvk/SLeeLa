@@ -1,0 +1,113 @@
+<< jdk-28/java.base/java/util/stream/IntStream.sleela
+   SLeeLa file for the Java type java.util.stream.IntStream (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/stream/IntStream.html
+   Java kind: interface; implements java.util.stream.BaseStream
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class IntStream {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 4779;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.stream.IntStream";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/stream/IntStream.html";
+  String javaKind = "interface";
+  String javaSuper = "";
+
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public abstract java.util.OptionalInt min() { throw new AbstractMethodError("java.util.stream.IntStream.min()"); }
+  public abstract java.util.OptionalInt max() { throw new AbstractMethodError("java.util.stream.IntStream.max()"); }
+  public static java.util.stream.IntStream of(int t) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.IntStream.of(int)"); }
+  public static java.util.stream.IntStream of(int... values) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.IntStream.of(int...)"); }
+  public abstract int[] toArray() { throw new AbstractMethodError("java.util.stream.IntStream.toArray()"); }
+  public abstract java.util.PrimitiveIterator.OfInt iterator() { throw new AbstractMethodError("java.util.stream.IntStream.iterator()"); }
+  public abstract java.util.stream.IntStream map(java.util.function.IntUnaryOperator mapper) { throw new AbstractMethodError("java.util.stream.IntStream.map(java.util.function.IntUnaryOperator)"); }
+  public abstract <R> R collect(java.util.function.Supplier<R> supplier, java.util.function.ObjIntConsumer<R> accumulator, java.util.function.BiConsumer<R, R> combiner) { throw new AbstractMethodError("java.util.stream.IntStream.collect(java.util.function.Supplier<R>, java.util.function.ObjIntConsumer<R>, java.util.function.BiConsumer<R, R>)"); }
+  public abstract long count() { throw new AbstractMethodError("java.util.stream.IntStream.count()"); }
+  public static java.util.stream.IntStream.Builder builder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.IntStream.builder()"); }
+  public static java.util.stream.IntStream concat(java.util.stream.IntStream a, java.util.stream.IntStream b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.IntStream.concat(java.util.stream.IntStream, java.util.stream.IntStream)"); }
+  public abstract java.util.stream.IntStream limit(long maxSize) { throw new AbstractMethodError("java.util.stream.IntStream.limit(long)"); }
+  public abstract java.util.Spliterator.OfInt spliterator() { throw new AbstractMethodError("java.util.stream.IntStream.spliterator()"); }
+  public abstract java.util.stream.IntStream filter(java.util.function.IntPredicate predicate) { throw new AbstractMethodError("java.util.stream.IntStream.filter(java.util.function.IntPredicate)"); }
+  public static java.util.stream.IntStream empty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.IntStream.empty()"); }
+  public abstract boolean anyMatch(java.util.function.IntPredicate predicate) { throw new AbstractMethodError("java.util.stream.IntStream.anyMatch(java.util.function.IntPredicate)"); }
+  public abstract void forEach(java.util.function.IntConsumer action) { throw new AbstractMethodError("java.util.stream.IntStream.forEach(java.util.function.IntConsumer)"); }
+  public abstract java.util.OptionalInt findAny() { throw new AbstractMethodError("java.util.stream.IntStream.findAny()"); }
+  public abstract java.util.stream.IntStream skip(long n) { throw new AbstractMethodError("java.util.stream.IntStream.skip(long)"); }
+  public abstract java.util.stream.IntStream peek(java.util.function.IntConsumer action) { throw new AbstractMethodError("java.util.stream.IntStream.peek(java.util.function.IntConsumer)"); }
+  public abstract int sum() { throw new AbstractMethodError("java.util.stream.IntStream.sum()"); }
+  public abstract java.util.OptionalInt reduce(java.util.function.IntBinaryOperator op) { throw new AbstractMethodError("java.util.stream.IntStream.reduce(java.util.function.IntBinaryOperator)"); }
+  public abstract int reduce(int identity, java.util.function.IntBinaryOperator op) { throw new AbstractMethodError("java.util.stream.IntStream.reduce(int, java.util.function.IntBinaryOperator)"); }
+  public static java.util.stream.IntStream range(int startInclusive, int endExclusive) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.IntStream.range(int, int)"); }
+  public abstract java.util.stream.IntStream parallel() { throw new AbstractMethodError("java.util.stream.IntStream.parallel()"); }
+  public static java.util.stream.IntStream iterate(int seed, java.util.function.IntPredicate hasNext, java.util.function.IntUnaryOperator next_) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.IntStream.iterate(int, java.util.function.IntPredicate, java.util.function.IntUnaryOperator)"); }
+  public static java.util.stream.IntStream iterate(int seed, java.util.function.IntUnaryOperator f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.IntStream.iterate(int, java.util.function.IntUnaryOperator)"); }
+  public abstract java.util.stream.IntStream flatMap(java.util.function.IntFunction<? extends java.util.stream.IntStream> mapper) { throw new AbstractMethodError("java.util.stream.IntStream.flatMap(java.util.function.IntFunction<? extends java.util.stream.IntStream>)"); }
+  public abstract boolean allMatch(java.util.function.IntPredicate predicate) { throw new AbstractMethodError("java.util.stream.IntStream.allMatch(java.util.function.IntPredicate)"); }
+  public abstract java.util.stream.IntStream distinct() { throw new AbstractMethodError("java.util.stream.IntStream.distinct()"); }
+  public abstract java.util.OptionalInt findFirst() { throw new AbstractMethodError("java.util.stream.IntStream.findFirst()"); }
+  public abstract boolean noneMatch(java.util.function.IntPredicate predicate) { throw new AbstractMethodError("java.util.stream.IntStream.noneMatch(java.util.function.IntPredicate)"); }
+  public abstract java.util.stream.IntStream sorted() { throw new AbstractMethodError("java.util.stream.IntStream.sorted()"); }
+  public static java.util.stream.IntStream generate(java.util.function.IntSupplier s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.IntStream.generate(java.util.function.IntSupplier)"); }
+  public abstract void forEachOrdered(java.util.function.IntConsumer action) { throw new AbstractMethodError("java.util.stream.IntStream.forEachOrdered(java.util.function.IntConsumer)"); }
+  public abstract java.util.stream.LongStream mapToLong(java.util.function.IntToLongFunction mapper) { throw new AbstractMethodError("java.util.stream.IntStream.mapToLong(java.util.function.IntToLongFunction)"); }
+  public abstract java.util.stream.DoubleStream mapToDouble(java.util.function.IntToDoubleFunction mapper) { throw new AbstractMethodError("java.util.stream.IntStream.mapToDouble(java.util.function.IntToDoubleFunction)"); }
+  public default java.util.stream.IntStream mapMulti(java.util.stream.IntStream.IntMapMultiConsumer mapper) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.IntStream.mapMulti(java.util.stream.IntStream.IntMapMultiConsumer)"); }
+  public default java.util.stream.IntStream takeWhile(java.util.function.IntPredicate predicate) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.IntStream.takeWhile(java.util.function.IntPredicate)"); }
+  public default java.util.stream.IntStream dropWhile(java.util.function.IntPredicate predicate) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.IntStream.dropWhile(java.util.function.IntPredicate)"); }
+  public abstract java.util.stream.IntStream sequential() { throw new AbstractMethodError("java.util.stream.IntStream.sequential()"); }
+  public abstract <U> java.util.stream.Stream<U> mapToObj(java.util.function.IntFunction<? extends U> mapper) { throw new AbstractMethodError("java.util.stream.IntStream.mapToObj(java.util.function.IntFunction<? extends U>)"); }
+  public static java.util.stream.IntStream rangeClosed(int startInclusive, int endInclusive) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.IntStream.rangeClosed(int, int)"); }
+  public abstract java.util.stream.Stream<java.lang.Integer> boxed() { throw new AbstractMethodError("java.util.stream.IntStream.boxed()"); }
+  public abstract java.util.OptionalDouble average() { throw new AbstractMethodError("java.util.stream.IntStream.average()"); }
+  public abstract java.util.IntSummaryStatistics summaryStatistics() { throw new AbstractMethodError("java.util.stream.IntStream.summaryStatistics()"); }
+  public abstract java.util.stream.LongStream asLongStream() { throw new AbstractMethodError("java.util.stream.IntStream.asLongStream()"); }
+  public abstract java.util.stream.DoubleStream asDoubleStream() { throw new AbstractMethodError("java.util.stream.IntStream.asDoubleStream()"); }
+  < ---- END java signatures ---- >
+}

@@ -1,0 +1,78 @@
+<< jdk-28/java.base/java/lang/constant/DynamicCallSiteDesc.sleela
+   SLeeLa file for the Java type java.lang.constant.DynamicCallSiteDesc (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/constant/DynamicCallSiteDesc.html
+   Java kind: class; extends java.lang.Object
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class DynamicCallSiteDesc {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 3463;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.lang.constant.DynamicCallSiteDesc";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/constant/DynamicCallSiteDesc.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public final boolean equals(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicCallSiteDesc.equals(java.lang.Object)"); }
+  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicCallSiteDesc.toString()"); }
+  public final int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicCallSiteDesc.hashCode()"); }
+  public static java.lang.constant.DynamicCallSiteDesc of(java.lang.constant.DirectMethodHandleDesc bootstrapMethod, java.lang.String invocationName, java.lang.constant.MethodTypeDesc invocationType, java.lang.constant.ConstantDesc... bootstrapArgs) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicCallSiteDesc.of(java.lang.constant.DirectMethodHandleDesc, java.lang.String, java.lang.constant.MethodTypeDesc, java.lang.constant.ConstantDesc...)"); }
+  public static java.lang.constant.DynamicCallSiteDesc of(java.lang.constant.DirectMethodHandleDesc bootstrapMethod, java.lang.String invocationName, java.lang.constant.MethodTypeDesc invocationType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicCallSiteDesc.of(java.lang.constant.DirectMethodHandleDesc, java.lang.String, java.lang.constant.MethodTypeDesc)"); }
+  public static java.lang.constant.DynamicCallSiteDesc of(java.lang.constant.DirectMethodHandleDesc bootstrapMethod, java.lang.constant.MethodTypeDesc invocationType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicCallSiteDesc.of(java.lang.constant.DirectMethodHandleDesc, java.lang.constant.MethodTypeDesc)"); }
+  public java.lang.constant.MethodTypeDesc invocationType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicCallSiteDesc.invocationType()"); }
+  public java.lang.constant.MethodHandleDesc bootstrapMethod() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicCallSiteDesc.bootstrapMethod()"); }
+  public java.lang.constant.ConstantDesc[] bootstrapArgs() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicCallSiteDesc.bootstrapArgs()"); }
+  public java.lang.String invocationName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicCallSiteDesc.invocationName()"); }
+  public java.lang.constant.DynamicCallSiteDesc withArgs(java.lang.constant.ConstantDesc... bootstrapArgs) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicCallSiteDesc.withArgs(java.lang.constant.ConstantDesc...)"); }
+  public java.lang.constant.DynamicCallSiteDesc withNameAndType(java.lang.String invocationName, java.lang.constant.MethodTypeDesc invocationType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicCallSiteDesc.withNameAndType(java.lang.String, java.lang.constant.MethodTypeDesc)"); }
+  public java.lang.invoke.CallSite resolveCallSiteDesc(java.lang.invoke.MethodHandles.Lookup lookup) throws java.lang.Throwable { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.DynamicCallSiteDesc.resolveCallSiteDesc(java.lang.invoke.MethodHandles.Lookup)"); }
+  < ---- END java signatures ---- >
+}

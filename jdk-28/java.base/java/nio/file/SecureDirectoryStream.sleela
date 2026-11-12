@@ -1,0 +1,72 @@
+<< jdk-28/java.base/java/nio/file/SecureDirectoryStream.sleela
+   SLeeLa file for the Java type java.nio.file.SecureDirectoryStream (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/nio/file/SecureDirectoryStream.html
+   Java kind: interface; implements java.nio.file.DirectoryStream
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class SecureDirectoryStream<T> {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 8080;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.nio.file.SecureDirectoryStream";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/nio/file/SecureDirectoryStream.html";
+  String javaKind = "interface";
+  String javaSuper = "";
+
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public abstract java.nio.channels.SeekableByteChannel newByteChannel(T path, java.util.Set<? extends java.nio.file.OpenOption> options, java.nio.file.attribute.FileAttribute<?>... attrs) throws java.io.IOException { throw new AbstractMethodError("java.nio.file.SecureDirectoryStream.newByteChannel(T, java.util.Set<? extends java.nio.file.OpenOption>, java.nio.file.attribute.FileAttribute<?>...)"); }
+  public abstract java.nio.file.SecureDirectoryStream<T> newDirectoryStream(T path, java.nio.file.LinkOption... options) throws java.io.IOException { throw new AbstractMethodError("java.nio.file.SecureDirectoryStream.newDirectoryStream(T, java.nio.file.LinkOption...)"); }
+  public abstract void move(T srcpath, java.nio.file.SecureDirectoryStream<T> targetdir, T targetpath) throws java.io.IOException { throw new AbstractMethodError("java.nio.file.SecureDirectoryStream.move(T, java.nio.file.SecureDirectoryStream<T>, T)"); }
+  public abstract <V extends java.nio.file.attribute.FileAttributeView> V getFileAttributeView(java.lang.Class<V> type) { throw new AbstractMethodError("java.nio.file.SecureDirectoryStream.getFileAttributeView(java.lang.Class<V>)"); }
+  public abstract <V extends java.nio.file.attribute.FileAttributeView> V getFileAttributeView(T path, java.lang.Class<V> type, java.nio.file.LinkOption... options) { throw new AbstractMethodError("java.nio.file.SecureDirectoryStream.getFileAttributeView(T, java.lang.Class<V>, java.nio.file.LinkOption...)"); }
+  public abstract void deleteFile(T path) throws java.io.IOException { throw new AbstractMethodError("java.nio.file.SecureDirectoryStream.deleteFile(T)"); }
+  public abstract void deleteDirectory(T path) throws java.io.IOException { throw new AbstractMethodError("java.nio.file.SecureDirectoryStream.deleteDirectory(T)"); }
+  < ---- END java signatures ---- >
+}

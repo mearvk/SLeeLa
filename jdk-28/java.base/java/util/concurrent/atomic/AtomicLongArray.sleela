@@ -1,0 +1,101 @@
+<< jdk-28/java.base/java/util/concurrent/atomic/AtomicLongArray.sleela
+   SLeeLa file for the Java type java.util.concurrent.atomic.AtomicLongArray (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/atomic/AtomicLongArray.html
+   Java kind: class; extends java.lang.Object; implements java.io.Serializable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class AtomicLongArray {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 1467;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.concurrent.atomic.AtomicLongArray";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/atomic/AtomicLongArray.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public AtomicLongArray(int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.<init>(int)"); }
+  public AtomicLongArray(long[] array) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.<init>(long[])"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public final long get(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.get(int)"); }
+  public final int length() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.length()"); }
+  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.toString()"); }
+  public final void set(int i, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.set(int, long)"); }
+  public final long getOpaque(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.getOpaque(int)"); }
+  public final void setOpaque(int i, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.setOpaque(int, long)"); }
+  public final long getAcquire(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.getAcquire(int)"); }
+  public final void setRelease(int i, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.setRelease(int, long)"); }
+  public final boolean compareAndSet(int i, long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.compareAndSet(int, long, long)"); }
+  public final long compareAndExchange(int i, long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.compareAndExchange(int, long, long)"); }
+  public final long compareAndExchangeAcquire(int i, long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.compareAndExchangeAcquire(int, long, long)"); }
+  public final long compareAndExchangeRelease(int i, long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.compareAndExchangeRelease(int, long, long)"); }
+  public final boolean weakCompareAndSetPlain(int i, long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.weakCompareAndSetPlain(int, long, long)"); }
+  public final boolean weakCompareAndSet(int i, long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.weakCompareAndSet(int, long, long)"); }
+  public final boolean weakCompareAndSetAcquire(int i, long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.weakCompareAndSetAcquire(int, long, long)"); }
+  public final boolean weakCompareAndSetRelease(int i, long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.weakCompareAndSetRelease(int, long, long)"); }
+  public final long getAndSet(int i, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.getAndSet(int, long)"); }
+  public final long getAndAdd(int i, long delta) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.getAndAdd(int, long)"); }
+  public final long incrementAndGet(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.incrementAndGet(int)"); }
+  public final boolean weakCompareAndSetVolatile(int i, long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.weakCompareAndSetVolatile(int, long, long)"); }
+  public final void lazySet(int i, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.lazySet(int, long)"); }
+  public final long getAndIncrement(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.getAndIncrement(int)"); }
+  public final long getAndDecrement(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.getAndDecrement(int)"); }
+  public final long decrementAndGet(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.decrementAndGet(int)"); }
+  public long addAndGet(int i, long delta) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.addAndGet(int, long)"); }
+  public final long getAndUpdate(int i, java.util.function.LongUnaryOperator updateFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.getAndUpdate(int, java.util.function.LongUnaryOperator)"); }
+  public final long updateAndGet(int i, java.util.function.LongUnaryOperator updateFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.updateAndGet(int, java.util.function.LongUnaryOperator)"); }
+  public final long getAndAccumulate(int i, long x, java.util.function.LongBinaryOperator accumulatorFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.getAndAccumulate(int, long, java.util.function.LongBinaryOperator)"); }
+  public final long accumulateAndGet(int i, long x, java.util.function.LongBinaryOperator accumulatorFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.accumulateAndGet(int, long, java.util.function.LongBinaryOperator)"); }
+  public final long getPlain(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.getPlain(int)"); }
+  public final void setPlain(int i, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.setPlain(int, long)"); }
+  < ---- END java signatures ---- >
+}
