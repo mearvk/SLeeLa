@@ -33,7 +33,10 @@ Repo-scoped, always-on. Normative source: `SLEELA.syntax` section 43.
   43.5 not-done list); `spark` must stay declarative unless 43 says otherwise.
 - Back up edited frontend files under `impl/backup/<topic>-<date>/` with
   `BASE-COMMIT.txt` and `SHA256SUMS`.
-- Regenerate `security/sha256-manifest.json`, rebuild `impl/build/sleela`, then run:
+- Regenerate `security/sha256-manifest.json`, rebuild `impl/build/sleela`, then run
+  the fast checks and the program you changed. The full list below is the
+  occasional suite (see `validation-cadence.md`): run it only when asked, at a
+  milestone, or after a broad compiler/VM change:
   `bash impl/tests/java_references/spark/run_spark_tests.sh`,
   `bash impl/tests/java_references/oop/run_oop_tests.sh` (sets `SLEELA_LIB`;
   without it, runs from under `impl/tests` cannot find `/lib`),
