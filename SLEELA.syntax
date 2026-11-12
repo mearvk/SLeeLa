@@ -2985,6 +2985,15 @@ referenced statically, at compile time, and again at run time. It is available
 once a lineage keyword (`extends`, `super`) is used in the class or one of its
 ancestors.
 
+### 42.2a Static inclusion and going live
+
+`SleelaHome` (`/lib/java/SleelaHome.sleela`) is included statically in every
+class that uses `Sleela.home`, with no import. Until a file is loaded its
+`vm` and `nearestDescendant` fields are `null` (inert). When the VM loads a
+file, or several files, it fills those fields for every class in them and the
+structure becomes live: `vm` is the VM reference and `nearestDescendant` is set
+from the loaded lineage. Classes loaded later become live as they load.
+
 ### 42.3 Links
 
 For `class A extends B`, `class B extends C`, `class C extends D`:

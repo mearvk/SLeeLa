@@ -127,6 +127,9 @@ Statuses are taken from `JDK28-PROCEDURAL-IMPLEMENTATION.md` (2026-11-10) and
      basic holder is `lib/java/SleelaHome.sleela`, public fields `vm` and
      `nearestDescendant`. A translated
      Java identifier named `Sleela` is renamed (row 27).
+   - `SleelaHome` is included statically in every class, with no import. It is
+     inert (`vm` and `nearestDescendant` are null) until the VM loads a file or
+     files; loading makes it live. A translator therefore emits no setup code.
    - A link is set left to right: `B -> Sleela.home.parent`.
 
 ## 2. Value and library conventions the translator must follow today
