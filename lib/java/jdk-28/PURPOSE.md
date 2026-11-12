@@ -80,6 +80,28 @@ Statuses are taken from `JDK28-PROCEDURAL-IMPLEMENTATION.md` (2026-11-10) and
 | 45 | Entry point | `public static void main(String[] args)` | `main` method required in the run unit (a library class alone reports "no 'main' method found") | Rule | Translator emits a `main` wrapper passing `args`. |
 | 46 | Multi-file programs | javac compiles the whole tree | `run` resolves library units per file and duplicates them; use one main file and let the loader pull `/lib` units | Gap | Fix multi-file duplication (item 13). |
 
+## 1a. Decided rules: stubs, `super`, and the lineage list
+
+1. **`@throwable` on the method.** Until a member has SLeeLa logic, its stub
+   carries `@throwable("<java exception>")` on the method or constructor itself
+   (as the generated files already do) and returns the Java default value. The
+   annotation names what Java would throw; a `throw` statement in the body is
+   not used for stubs.
+2. **`super(...)` goes to the backmost class.** For `A extends B extends C
+   extends D`, a `super("constructor")` written in `A` means: set the reference
+   to `D`, the root. `B` and `C` are not called by hand; they are implied by
+   the SLeeLa language definition (the chain is walked by the language, not by
+   translated code). The translator therefore emits one root-directed `super`
+   per constructor and never a hand-written chain.
+3. **Parent and child are a doubly linked list.** Every instance holds a
+   reference to its parent and to its child, so the lineage `A <-> B <-> C <->
+   D` can be walked in both directions from any member. This replaces the
+   ad hoc inherited-state initialization noted in rows 7 and 9.
+4. **Open items for rows 7–9:** where the two links live (VM struct header via
+   `slvm_set_struct_parent`, or two declared fields; the 64-field class cap
+   favors the header), and how a child is attached when `A` is constructed
+   (at `new A`, with `B`/`C` created implicitly, or lazily).
+
 ## 2. Value and library conventions the translator must follow today
 
 1. **Static call.** `Math.abs(x)` becomes `Class.method(x)` when the class is converted, else `new Math().abs(x)`.
