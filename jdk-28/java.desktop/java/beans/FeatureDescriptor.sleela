@@ -1,0 +1,85 @@
+<< jdk-28/java.desktop/java/beans/FeatureDescriptor.sleela
+   SLeeLa file for the Java type java.beans.FeatureDescriptor (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/beans/FeatureDescriptor.html
+   Java kind: class; extends java.lang.Object
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class FeatureDescriptor {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 3828;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.beans.FeatureDescriptor";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/beans/FeatureDescriptor.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public FeatureDescriptor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.getName()"); }
+  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.toString()"); }
+  public boolean isHidden() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.isHidden()"); }
+  public java.lang.Object getValue(java.lang.String attributeName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.getValue(java.lang.String)"); }
+  public void setName(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.setName(java.lang.String)"); }
+  public void setValue(java.lang.String attributeName, java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.setValue(java.lang.String, java.lang.Object)"); }
+  public java.lang.String getDisplayName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.getDisplayName()"); }
+  public void setHidden(boolean hidden) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.setHidden(boolean)"); }
+  public void setDisplayName(java.lang.String displayName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.setDisplayName(java.lang.String)"); }
+  public boolean isExpert() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.isExpert()"); }
+  public void setExpert(boolean expert) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.setExpert(boolean)"); }
+  public boolean isPreferred() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.isPreferred()"); }
+  public java.lang.String getShortDescription() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.getShortDescription()"); }
+  public java.util.Enumeration<java.lang.String> attributeNames() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.attributeNames()"); }
+  public void setPreferred(boolean preferred) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.setPreferred(boolean)"); }
+  public void setShortDescription(java.lang.String text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.setShortDescription(java.lang.String)"); }
+  < ---- END java signatures ---- >
+}

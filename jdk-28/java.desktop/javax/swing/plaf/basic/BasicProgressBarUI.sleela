@@ -1,0 +1,134 @@
+<< jdk-28/java.desktop/javax/swing/plaf/basic/BasicProgressBarUI.sleela
+   SLeeLa file for the Java type javax.swing.plaf.basic.BasicProgressBarUI (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/plaf/basic/BasicProgressBarUI.html
+   Java kind: class; extends javax.swing.plaf.ProgressBarUI
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class BasicProgressBarUI {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 1711;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.swing.plaf.basic.BasicProgressBarUI";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/plaf/basic/BasicProgressBarUI.html";
+  String javaKind = "class";
+  String javaSuper = "javax.swing.plaf.ProgressBarUI";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < public and protected instance fields >
+  Any progressBar;
+  Any changeListener;
+  Any boxRect;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public BasicProgressBarUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  @JavaProtected
+  void installListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.installListeners()"); }
+  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getPreferredSize(javax.swing.JComponent)"); }
+  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getMinimumSize(javax.swing.JComponent)"); }
+  @JavaProtected
+  void paintIndeterminate(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.paintIndeterminate(java.awt.Graphics, javax.swing.JComponent)"); }
+  @JavaProtected
+  void paintDeterminate(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.paintDeterminate(java.awt.Graphics, javax.swing.JComponent)"); }
+  @JavaProtected
+  int getAnimationIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getAnimationIndex()"); }
+  @JavaProtected
+  int getBoxLength(int availableLength, int otherDimension) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getBoxLength(int, int)"); }
+  @JavaProtected
+  java.awt.Rectangle getBox(java.awt.Rectangle r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getBox(java.awt.Rectangle)"); }
+  @JavaProtected
+  int getCellLength() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getCellLength()"); }
+  @JavaProtected
+  int getCellSpacing() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getCellSpacing()"); }
+  @JavaProtected
+  int getAmountFull(java.awt.Insets b, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getAmountFull(java.awt.Insets, int, int)"); }
+  @JavaProtected
+  java.awt.Point getStringPlacement(java.awt.Graphics g, java.lang.String progressString, int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getStringPlacement(java.awt.Graphics, java.lang.String, int, int, int, int)"); }
+  @JavaProtected
+  java.awt.Dimension getPreferredInnerHorizontal() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getPreferredInnerHorizontal()"); }
+  @JavaProtected
+  java.awt.Dimension getPreferredInnerVertical() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getPreferredInnerVertical()"); }
+  @JavaProtected
+  void setAnimationIndex(int newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.setAnimationIndex(int)"); }
+  @JavaProtected
+  void startAnimationTimer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.startAnimationTimer()"); }
+  @JavaProtected
+  void stopAnimationTimer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.stopAnimationTimer()"); }
+  @JavaProtected
+  void setCellLength(int cellLen) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.setCellLength(int)"); }
+  @JavaProtected
+  void setCellSpacing(int cellSpace) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.setCellSpacing(int)"); }
+  @JavaProtected
+  final int getFrameCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getFrameCount()"); }
+  @JavaProtected
+  void incrementAnimationIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.incrementAnimationIndex()"); }
+  public void installUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.installUI(javax.swing.JComponent)"); }
+  public void uninstallUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.uninstallUI(javax.swing.JComponent)"); }
+  @JavaProtected
+  java.awt.Color getSelectionForeground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getSelectionForeground()"); }
+  @JavaProtected
+  java.awt.Color getSelectionBackground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getSelectionBackground()"); }
+  @JavaProtected
+  void paintString(java.awt.Graphics g, int x, int y, int width, int height, int amountFull, java.awt.Insets b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.paintString(java.awt.Graphics, int, int, int, int, int, java.awt.Insets)"); }
+  public int getBaseline(javax.swing.JComponent c, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getBaseline(javax.swing.JComponent, int, int)"); }
+  public java.awt.Component.BaselineResizeBehavior getBaselineResizeBehavior(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getBaselineResizeBehavior(javax.swing.JComponent)"); }
+  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.createUI(javax.swing.JComponent)"); }
+  @JavaProtected
+  void installDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.installDefaults()"); }
+  @JavaProtected
+  void uninstallListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.uninstallListeners()"); }
+  @JavaProtected
+  void uninstallDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.uninstallDefaults()"); }
+  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getMaximumSize(javax.swing.JComponent)"); }
+  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.paint(java.awt.Graphics, javax.swing.JComponent)"); }
+  < ---- END java signatures ---- >
+}

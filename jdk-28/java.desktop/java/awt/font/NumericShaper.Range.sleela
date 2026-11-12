@@ -1,0 +1,195 @@
+<< jdk-28/java.desktop/java/awt/font/NumericShaper.Range.sleela
+   SLeeLa file for the Java type java.awt.font.NumericShaper.Range (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/awt/font/NumericShaper.Range.html
+   Java kind: enum; extends java.lang.Enum
+   Status: members from the JDK 28 API (exact signatures).
+   Nested Java type: the file keeps the documented name NumericShaper.Range.
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Range {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 7441;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.awt.font.NumericShaper.Range";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/awt/font/NumericShaper.Range.html";
+  String javaKind = "enum";
+  String javaSuper = "java.lang.Enum";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  << Complete enum: one static final instance per constant (so identity
+     and == hold for values / valueOf / the constants), with the
+     java.lang.Enum behavior. values() and valueOf(name) are static, as
+     in Java: Range.valueOf(...), Range.values(), and the constants are
+     static final fields. >>
+  static final Range EUROPEAN = new Range("EUROPEAN", 0);
+  static final Range ARABIC = new Range("ARABIC", 1);
+  static final Range EASTERN_ARABIC = new Range("EASTERN_ARABIC", 2);
+  static final Range DEVANAGARI = new Range("DEVANAGARI", 3);
+  static final Range BENGALI = new Range("BENGALI", 4);
+  static final Range GURMUKHI = new Range("GURMUKHI", 5);
+  static final Range GUJARATI = new Range("GUJARATI", 6);
+  static final Range ORIYA = new Range("ORIYA", 7);
+  static final Range TAMIL = new Range("TAMIL", 8);
+  static final Range TELUGU = new Range("TELUGU", 9);
+  static final Range KANNADA = new Range("KANNADA", 10);
+  static final Range MALAYALAM = new Range("MALAYALAM", 11);
+  static final Range THAI = new Range("THAI", 12);
+  static final Range LAO = new Range("LAO", 13);
+  static final Range TIBETAN = new Range("TIBETAN", 14);
+  static final Range MYANMAR = new Range("MYANMAR", 15);
+  static final Range ETHIOPIC = new Range("ETHIOPIC", 16);
+  static final Range KHMER = new Range("KHMER", 17);
+  static final Range MONGOLIAN = new Range("MONGOLIAN", 18);
+  static final Range NKO = new Range("NKO", 19);
+  static final Range MYANMAR_SHAN = new Range("MYANMAR_SHAN", 20);
+  static final Range LIMBU = new Range("LIMBU", 21);
+  static final Range NEW_TAI_LUE = new Range("NEW_TAI_LUE", 22);
+  static final Range BALINESE = new Range("BALINESE", 23);
+  static final Range SUNDANESE = new Range("SUNDANESE", 24);
+  static final Range LEPCHA = new Range("LEPCHA", 25);
+  static final Range OL_CHIKI = new Range("OL_CHIKI", 26);
+  static final Range VAI = new Range("VAI", 27);
+  static final Range SAURASHTRA = new Range("SAURASHTRA", 28);
+  static final Range KAYAH_LI = new Range("KAYAH_LI", 29);
+  static final Range CHAM = new Range("CHAM", 30);
+  static final Range TAI_THAM_HORA = new Range("TAI_THAM_HORA", 31);
+  static final Range TAI_THAM_THAM = new Range("TAI_THAM_THAM", 32);
+  static final Range JAVANESE = new Range("JAVANESE", 33);
+  static final Range MEETEI_MAYEK = new Range("MEETEI_MAYEK", 34);
+  static final Range SINHALA = new Range("SINHALA", 35);
+  static final Range MYANMAR_TAI_LAING = new Range("MYANMAR_TAI_LAING", 36);
+  String enumName;
+  int enumOrdinal;
+  Range(String name, int ordinal) { this.enumName = name; this.enumOrdinal = ordinal; }
+  String name() { return this.enumName; }
+  int ordinal() { return this.enumOrdinal; }
+  String toString() { return this.enumName; }
+  int compareTo(Range o) { return this.enumOrdinal - o.enumOrdinal; }
+  boolean equals(Any other) { return this == other; }
+  int hashCode() { return this.enumOrdinal * 31 + 17; }
+  public static Range[] values() {
+    Range[] v = new Range[37];
+    v[0] = EUROPEAN;
+    v[1] = ARABIC;
+    v[2] = EASTERN_ARABIC;
+    v[3] = DEVANAGARI;
+    v[4] = BENGALI;
+    v[5] = GURMUKHI;
+    v[6] = GUJARATI;
+    v[7] = ORIYA;
+    v[8] = TAMIL;
+    v[9] = TELUGU;
+    v[10] = KANNADA;
+    v[11] = MALAYALAM;
+    v[12] = THAI;
+    v[13] = LAO;
+    v[14] = TIBETAN;
+    v[15] = MYANMAR;
+    v[16] = ETHIOPIC;
+    v[17] = KHMER;
+    v[18] = MONGOLIAN;
+    v[19] = NKO;
+    v[20] = MYANMAR_SHAN;
+    v[21] = LIMBU;
+    v[22] = NEW_TAI_LUE;
+    v[23] = BALINESE;
+    v[24] = SUNDANESE;
+    v[25] = LEPCHA;
+    v[26] = OL_CHIKI;
+    v[27] = VAI;
+    v[28] = SAURASHTRA;
+    v[29] = KAYAH_LI;
+    v[30] = CHAM;
+    v[31] = TAI_THAM_HORA;
+    v[32] = TAI_THAM_THAM;
+    v[33] = JAVANESE;
+    v[34] = MEETEI_MAYEK;
+    v[35] = SINHALA;
+    v[36] = MYANMAR_TAI_LAING;
+    return v;
+  }
+  public static Range valueOf(String name) {
+    if (name == null) { throw new NullPointerException("Name is null"); }
+    if (name == "EUROPEAN") { return EUROPEAN; }
+    if (name == "ARABIC") { return ARABIC; }
+    if (name == "EASTERN_ARABIC") { return EASTERN_ARABIC; }
+    if (name == "DEVANAGARI") { return DEVANAGARI; }
+    if (name == "BENGALI") { return BENGALI; }
+    if (name == "GURMUKHI") { return GURMUKHI; }
+    if (name == "GUJARATI") { return GUJARATI; }
+    if (name == "ORIYA") { return ORIYA; }
+    if (name == "TAMIL") { return TAMIL; }
+    if (name == "TELUGU") { return TELUGU; }
+    if (name == "KANNADA") { return KANNADA; }
+    if (name == "MALAYALAM") { return MALAYALAM; }
+    if (name == "THAI") { return THAI; }
+    if (name == "LAO") { return LAO; }
+    if (name == "TIBETAN") { return TIBETAN; }
+    if (name == "MYANMAR") { return MYANMAR; }
+    if (name == "ETHIOPIC") { return ETHIOPIC; }
+    if (name == "KHMER") { return KHMER; }
+    if (name == "MONGOLIAN") { return MONGOLIAN; }
+    if (name == "NKO") { return NKO; }
+    if (name == "MYANMAR_SHAN") { return MYANMAR_SHAN; }
+    if (name == "LIMBU") { return LIMBU; }
+    if (name == "NEW_TAI_LUE") { return NEW_TAI_LUE; }
+    if (name == "BALINESE") { return BALINESE; }
+    if (name == "SUNDANESE") { return SUNDANESE; }
+    if (name == "LEPCHA") { return LEPCHA; }
+    if (name == "OL_CHIKI") { return OL_CHIKI; }
+    if (name == "VAI") { return VAI; }
+    if (name == "SAURASHTRA") { return SAURASHTRA; }
+    if (name == "KAYAH_LI") { return KAYAH_LI; }
+    if (name == "CHAM") { return CHAM; }
+    if (name == "TAI_THAM_HORA") { return TAI_THAM_HORA; }
+    if (name == "TAI_THAM_THAM") { return TAI_THAM_THAM; }
+    if (name == "JAVANESE") { return JAVANESE; }
+    if (name == "MEETEI_MAYEK") { return MEETEI_MAYEK; }
+    if (name == "SINHALA") { return SINHALA; }
+    if (name == "MYANMAR_TAI_LAING") { return MYANMAR_TAI_LAING; }
+    throw new IllegalArgumentException("No enum constant java.awt.font.NumericShaper.Range." + name);
+  }
+  < ---- END java declarations ---- >
+}

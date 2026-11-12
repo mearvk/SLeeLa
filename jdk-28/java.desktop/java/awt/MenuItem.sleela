@@ -1,0 +1,98 @@
+<< jdk-28/java.desktop/java/awt/MenuItem.sleela
+   SLeeLa file for the Java type java.awt.MenuItem (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/awt/MenuItem.html
+   Java kind: class; extends java.awt.MenuComponent; implements javax.accessibility.Accessible
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class MenuItem {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 5904;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.awt.MenuItem";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/awt/MenuItem.html";
+  String javaKind = "class";
+  String javaSuper = "java.awt.MenuComponent";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public MenuItem(java.lang.String label, java.awt.MenuShortcut s) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.<init>(java.lang.String, java.awt.MenuShortcut)"); }
+  public MenuItem(java.lang.String label) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.<init>(java.lang.String)"); }
+  public MenuItem() throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public boolean isEnabled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.isEnabled()"); }
+  public java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.paramString()"); }
+  public synchronized void enable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.enable()"); }
+  public void enable(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.enable(boolean)"); }
+  public java.lang.String getLabel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.getLabel()"); }
+  public synchronized void disable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.disable()"); }
+  public synchronized void setEnabled(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.setEnabled(boolean)"); }
+  public synchronized void setLabel(java.lang.String label) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.setLabel(java.lang.String)"); }
+  @JavaProtected
+  void processActionEvent(java.awt.event.ActionEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.processActionEvent(java.awt.event.ActionEvent)"); }
+  public synchronized void addActionListener(java.awt.event.ActionListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.addActionListener(java.awt.event.ActionListener)"); }
+  public void setActionCommand(java.lang.String command) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.setActionCommand(java.lang.String)"); }
+  public synchronized void removeActionListener(java.awt.event.ActionListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.removeActionListener(java.awt.event.ActionListener)"); }
+  public synchronized java.awt.event.ActionListener[] getActionListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.getActionListeners()"); }
+  public java.awt.MenuShortcut getShortcut() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.getShortcut()"); }
+  public void setShortcut(java.awt.MenuShortcut s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.setShortcut(java.awt.MenuShortcut)"); }
+  public void deleteShortcut() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.deleteShortcut()"); }
+  @JavaProtected
+  final void disableEvents(long eventsToDisable) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.disableEvents(long)"); }
+  public java.lang.String getActionCommand() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.getActionCommand()"); }
+  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.getAccessibleContext()"); }
+  public void addNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.addNotify()"); }
+  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.getListeners(java.lang.Class<T>)"); }
+  @JavaProtected
+  void processEvent(java.awt.AWTEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.processEvent(java.awt.AWTEvent)"); }
+  @JavaProtected
+  final void enableEvents(long eventsToEnable) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.enableEvents(long)"); }
+  < ---- END java signatures ---- >
+}

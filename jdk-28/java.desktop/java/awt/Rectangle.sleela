@@ -1,0 +1,115 @@
+<< jdk-28/java.desktop/java/awt/Rectangle.sleela
+   SLeeLa file for the Java type java.awt.Rectangle (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/awt/Rectangle.html
+   Java kind: class; extends java.awt.geom.Rectangle2D; implements java.awt.Shape, java.io.Serializable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Rectangle {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 7516;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.awt.Rectangle";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/awt/Rectangle.html";
+  String javaKind = "class";
+  String javaSuper = "java.awt.geom.Rectangle2D";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < public and protected instance fields >
+  int x;
+  int y;
+  int width;
+  int height;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public Rectangle(int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.<init>(int, int)"); }
+  public Rectangle(java.awt.Point p, java.awt.Dimension d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.<init>(java.awt.Point, java.awt.Dimension)"); }
+  public Rectangle(java.awt.Point p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.<init>(java.awt.Point)"); }
+  public Rectangle() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.<init>()"); }
+  public Rectangle(int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.<init>(int, int, int, int)"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.equals(java.lang.Object)"); }
+  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.toString()"); }
+  public boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.isEmpty()"); }
+  public void add(java.awt.Point pt) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.add(java.awt.Point)"); }
+  public void add(int newx, int newy) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.add(int, int)"); }
+  public boolean contains(java.awt.Rectangle r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.contains(java.awt.Rectangle)"); }
+  public boolean contains(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.contains(int, int)"); }
+  public boolean contains(int X, int Y, int W, int H) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.contains(int, int, int, int)"); }
+  public java.awt.Rectangle getBounds() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.getBounds()"); }
+  public java.awt.Point getLocation() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.getLocation()"); }
+  public java.awt.Dimension getSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.getSize()"); }
+  public void grow(int h, int v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.grow(int, int)"); }
+  public void resize(int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.resize(int, int)"); }
+  public void move(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.move(int, int)"); }
+  public boolean intersects(java.awt.Rectangle r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.intersects(java.awt.Rectangle)"); }
+  public void setSize(int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.setSize(int, int)"); }
+  public void setSize(java.awt.Dimension d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.setSize(java.awt.Dimension)"); }
+  public java.awt.Rectangle union(java.awt.Rectangle r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.union(java.awt.Rectangle)"); }
+  public void setBounds(java.awt.Rectangle r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.setBounds(java.awt.Rectangle)"); }
+  public void setBounds(int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.setBounds(int, int, int, int)"); }
+  public void translate(int dx, int dy) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.translate(int, int)"); }
+  public java.awt.Rectangle intersection(java.awt.Rectangle r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.intersection(java.awt.Rectangle)"); }
+  public double getX() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.getX()"); }
+  public double getY() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.getY()"); }
+  public double getHeight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.getHeight()"); }
+  public boolean inside(int X, int Y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.inside(int, int)"); }
+  public void reshape(int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.reshape(int, int, int, int)"); }
+  public void setRect(double x, double y, double width, double height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.setRect(double, double, double, double)"); }
+  public int outcode(double x, double y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.outcode(double, double)"); }
+  public java.awt.geom.Rectangle2D createIntersection(java.awt.geom.Rectangle2D r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.createIntersection(java.awt.geom.Rectangle2D)"); }
+  public java.awt.geom.Rectangle2D createUnion(java.awt.geom.Rectangle2D r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.createUnion(java.awt.geom.Rectangle2D)"); }
+  public java.awt.geom.Rectangle2D getBounds2D() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.getBounds2D()"); }
+  public double getWidth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.getWidth()"); }
+  public void setLocation(java.awt.Point p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.setLocation(java.awt.Point)"); }
+  public void setLocation(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Rectangle.setLocation(int, int)"); }
+  < ---- END java signatures ---- >
+}

@@ -1,0 +1,79 @@
+<< jdk-28/java.desktop/java/awt/Taskbar.sleela
+   SLeeLa file for the Java type java.awt.Taskbar (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/awt/Taskbar.html
+   Java kind: class; extends java.lang.Object
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Taskbar {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 8997;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.awt.Taskbar";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/awt/Taskbar.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public boolean isSupported(java.awt.Taskbar.Feature feature) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.isSupported(java.awt.Taskbar.Feature)"); }
+  public java.awt.Image getIconImage() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.getIconImage()"); }
+  public java.awt.PopupMenu getMenu() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.getMenu()"); }
+  public void setIconImage(java.awt.Image image) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.setIconImage(java.awt.Image)"); }
+  public static boolean isTaskbarSupported() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.isTaskbarSupported()"); }
+  public void requestUserAttention(boolean enabled, boolean critical) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.requestUserAttention(boolean, boolean)"); }
+  public void requestWindowUserAttention(java.awt.Window w) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.requestWindowUserAttention(java.awt.Window)"); }
+  public void setMenu(java.awt.PopupMenu menu) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.setMenu(java.awt.PopupMenu)"); }
+  public void setIconBadge(java.lang.String badge) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.setIconBadge(java.lang.String)"); }
+  public void setWindowIconBadge(java.awt.Window w, java.awt.Image badge) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.setWindowIconBadge(java.awt.Window, java.awt.Image)"); }
+  public void setProgressValue(int value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.setProgressValue(int)"); }
+  public void setWindowProgressValue(java.awt.Window w, int value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.setWindowProgressValue(java.awt.Window, int)"); }
+  public void setWindowProgressState(java.awt.Window w, java.awt.Taskbar.State state) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.setWindowProgressState(java.awt.Window, java.awt.Taskbar.State)"); }
+  public static synchronized java.awt.Taskbar getTaskbar() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.getTaskbar()"); }
+  < ---- END java signatures ---- >
+}

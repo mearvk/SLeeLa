@@ -1,0 +1,111 @@
+<< jdk-28/java.desktop/javax/swing/SwingUtilities.sleela
+   SLeeLa file for the Java type javax.swing.SwingUtilities (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/SwingUtilities.html
+   Java kind: class; extends java.lang.Object; implements javax.swing.SwingConstants
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class SwingUtilities {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 8756;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.swing.SwingUtilities";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/SwingUtilities.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public static java.awt.Component getRoot(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.getRoot(java.awt.Component)"); }
+  public static java.awt.Component getDeepestComponentAt(java.awt.Component parent, int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.getDeepestComponentAt(java.awt.Component, int, int)"); }
+  public static final boolean isRectangleContainingRectangle(java.awt.Rectangle a, java.awt.Rectangle b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.isRectangleContainingRectangle(java.awt.Rectangle, java.awt.Rectangle)"); }
+  public static java.awt.Rectangle getLocalBounds(java.awt.Component aComponent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.getLocalBounds(java.awt.Component)"); }
+  public static java.awt.Container getAncestorNamed(java.lang.String name, java.awt.Component comp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.getAncestorNamed(java.lang.String, java.awt.Component)"); }
+  public static java.awt.event.MouseEvent convertMouseEvent(java.awt.Component source, java.awt.event.MouseEvent sourceEvent, java.awt.Component destination) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.convertMouseEvent(java.awt.Component, java.awt.event.MouseEvent, java.awt.Component)"); }
+  public static java.awt.Window windowForComponent(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.windowForComponent(java.awt.Component)"); }
+  public static boolean isLeftMouseButton(java.awt.event.MouseEvent anEvent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.isLeftMouseButton(java.awt.event.MouseEvent)"); }
+  public static boolean isMiddleMouseButton(java.awt.event.MouseEvent anEvent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.isMiddleMouseButton(java.awt.event.MouseEvent)"); }
+  public static boolean isRightMouseButton(java.awt.event.MouseEvent anEvent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.isRightMouseButton(java.awt.event.MouseEvent)"); }
+  public static int computeStringWidth(java.awt.FontMetrics fm, java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.computeStringWidth(java.awt.FontMetrics, java.lang.String)"); }
+  public static void replaceUIInputMap(javax.swing.JComponent component, int type, javax.swing.InputMap uiInputMap) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.replaceUIInputMap(javax.swing.JComponent, int, javax.swing.InputMap)"); }
+  public static void replaceUIActionMap(javax.swing.JComponent component, javax.swing.ActionMap uiActionMap) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.replaceUIActionMap(javax.swing.JComponent, javax.swing.ActionMap)"); }
+  public static javax.swing.InputMap getUIInputMap(javax.swing.JComponent component, int condition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.getUIInputMap(javax.swing.JComponent, int)"); }
+  public static javax.swing.ActionMap getUIActionMap(javax.swing.JComponent component) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.getUIActionMap(javax.swing.JComponent)"); }
+  public static java.awt.Rectangle calculateInnerArea(javax.swing.JComponent c, java.awt.Rectangle r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.calculateInnerArea(javax.swing.JComponent, java.awt.Rectangle)"); }
+  public static int getAccessibleChildrenCount(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.getAccessibleChildrenCount(java.awt.Component)"); }
+  public static javax.accessibility.Accessible getAccessibleChild(java.awt.Component c, int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.getAccessibleChild(java.awt.Component, int)"); }
+  public static javax.accessibility.Accessible getAccessibleAt(java.awt.Component c, java.awt.Point p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.getAccessibleAt(java.awt.Component, java.awt.Point)"); }
+  public static int getAccessibleIndexInParent(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.getAccessibleIndexInParent(java.awt.Component)"); }
+  public static java.awt.Rectangle computeUnion(int x, int y, int width, int height, java.awt.Rectangle dest) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.computeUnion(int, int, int, int, java.awt.Rectangle)"); }
+  public static java.awt.Window getWindowAncestor(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.getWindowAncestor(java.awt.Component)"); }
+  public static java.awt.Rectangle computeIntersection(int x, int y, int width, int height, java.awt.Rectangle dest) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.computeIntersection(int, int, int, int, java.awt.Rectangle)"); }
+  public static void paintComponent(java.awt.Graphics g, java.awt.Component c, java.awt.Container p, java.awt.Rectangle r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.paintComponent(java.awt.Graphics, java.awt.Component, java.awt.Container, java.awt.Rectangle)"); }
+  public static void paintComponent(java.awt.Graphics g, java.awt.Component c, java.awt.Container p, int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.paintComponent(java.awt.Graphics, java.awt.Component, java.awt.Container, int, int, int, int)"); }
+  public static boolean processKeyBindings(java.awt.event.KeyEvent event) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.processKeyBindings(java.awt.event.KeyEvent)"); }
+  public static boolean notifyAction(javax.swing.Action action, javax.swing.KeyStroke ks, java.awt.event.KeyEvent event, java.lang.Object sender, int modifiers) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.notifyAction(javax.swing.Action, javax.swing.KeyStroke, java.awt.event.KeyEvent, java.lang.Object, int)"); }
+  public static java.awt.Rectangle convertRectangle(java.awt.Component source, java.awt.Rectangle aRectangle, java.awt.Component destination) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.convertRectangle(java.awt.Component, java.awt.Rectangle, java.awt.Component)"); }
+  public static java.awt.Container getAncestorOfClass(java.lang.Class<?> c, java.awt.Component comp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.getAncestorOfClass(java.lang.Class<?>, java.awt.Component)"); }
+  public static java.awt.Component getUnwrappedView(javax.swing.JViewport viewport) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.getUnwrappedView(javax.swing.JViewport)"); }
+  public static boolean isDescendingFrom(java.awt.Component a, java.awt.Component b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.isDescendingFrom(java.awt.Component, java.awt.Component)"); }
+  public static void invokeAndWait(java.lang.Runnable doRun) throws java.lang.InterruptedException, java.lang.reflect.InvocationTargetException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.invokeAndWait(java.lang.Runnable)"); }
+  public static javax.swing.JRootPane getRootPane(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.getRootPane(java.awt.Component)"); }
+  public static java.awt.Point convertPoint(java.awt.Component source, java.awt.Point aPoint, java.awt.Component destination) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.convertPoint(java.awt.Component, java.awt.Point, java.awt.Component)"); }
+  public static java.awt.Point convertPoint(java.awt.Component source, int x, int y, java.awt.Component destination) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.convertPoint(java.awt.Component, int, int, java.awt.Component)"); }
+  public static void convertPointToScreen(java.awt.Point p, java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.convertPointToScreen(java.awt.Point, java.awt.Component)"); }
+  public static void convertPointFromScreen(java.awt.Point p, java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.convertPointFromScreen(java.awt.Point, java.awt.Component)"); }
+  public static void updateComponentTreeUI(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.updateComponentTreeUI(java.awt.Component)"); }
+  public static java.awt.Container getUnwrappedParent(java.awt.Component component) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.getUnwrappedParent(java.awt.Component)"); }
+  public static java.awt.Component findFocusOwner(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.findFocusOwner(java.awt.Component)"); }
+  public static javax.accessibility.AccessibleStateSet getAccessibleStateSet(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.getAccessibleStateSet(java.awt.Component)"); }
+  public static java.lang.String layoutCompoundLabel(java.awt.FontMetrics fm, java.lang.String text, javax.swing.Icon icon, int verticalAlignment, int horizontalAlignment, int verticalTextPosition, int horizontalTextPosition, java.awt.Rectangle viewR, java.awt.Rectangle iconR, java.awt.Rectangle textR, int textIconGap) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.layoutCompoundLabel(java.awt.FontMetrics, java.lang.String, javax.swing.Icon, int, int, int, int, java.awt.Rectangle, java.awt.Rectangle, java.awt.Rectangle, int)"); }
+  public static java.lang.String layoutCompoundLabel(javax.swing.JComponent c, java.awt.FontMetrics fm, java.lang.String text, javax.swing.Icon icon, int verticalAlignment, int horizontalAlignment, int verticalTextPosition, int horizontalTextPosition, java.awt.Rectangle viewR, java.awt.Rectangle iconR, java.awt.Rectangle textR, int textIconGap) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.layoutCompoundLabel(javax.swing.JComponent, java.awt.FontMetrics, java.lang.String, javax.swing.Icon, int, int, int, int, java.awt.Rectangle, java.awt.Rectangle, java.awt.Rectangle, int)"); }
+  public static boolean isEventDispatchThread() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.isEventDispatchThread()"); }
+  public static java.awt.Rectangle[] computeDifference(java.awt.Rectangle rectA, java.awt.Rectangle rectB) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.computeDifference(java.awt.Rectangle, java.awt.Rectangle)"); }
+  public static void invokeLater(java.lang.Runnable doRun) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingUtilities.invokeLater(java.lang.Runnable)"); }
+  < ---- END java signatures ---- >
+}

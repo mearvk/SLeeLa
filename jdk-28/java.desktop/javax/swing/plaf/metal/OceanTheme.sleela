@@ -1,0 +1,89 @@
+<< jdk-28/java.desktop/javax/swing/plaf/metal/OceanTheme.sleela
+   SLeeLa file for the Java type javax.swing.plaf.metal.OceanTheme (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/plaf/metal/OceanTheme.html
+   Java kind: class; extends javax.swing.plaf.metal.DefaultMetalTheme
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class OceanTheme {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 6658;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.swing.plaf.metal.OceanTheme";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/plaf/metal/OceanTheme.html";
+  String javaKind = "class";
+  String javaSuper = "javax.swing.plaf.metal.DefaultMetalTheme";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public OceanTheme() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.getName()"); }
+  @JavaProtected
+  javax.swing.plaf.ColorUIResource getPrimary1() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.getPrimary1()"); }
+  @JavaProtected
+  javax.swing.plaf.ColorUIResource getPrimary2() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.getPrimary2()"); }
+  @JavaProtected
+  javax.swing.plaf.ColorUIResource getPrimary3() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.getPrimary3()"); }
+  @JavaProtected
+  javax.swing.plaf.ColorUIResource getSecondary1() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.getSecondary1()"); }
+  @JavaProtected
+  javax.swing.plaf.ColorUIResource getSecondary2() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.getSecondary2()"); }
+  @JavaProtected
+  javax.swing.plaf.ColorUIResource getSecondary3() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.getSecondary3()"); }
+  @JavaProtected
+  javax.swing.plaf.ColorUIResource getBlack() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.getBlack()"); }
+  public javax.swing.plaf.ColorUIResource getControlTextColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.getControlTextColor()"); }
+  public javax.swing.plaf.ColorUIResource getDesktopColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.getDesktopColor()"); }
+  public javax.swing.plaf.ColorUIResource getInactiveControlTextColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.getInactiveControlTextColor()"); }
+  public javax.swing.plaf.ColorUIResource getMenuDisabledForeground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.getMenuDisabledForeground()"); }
+  public void addCustomEntriesToTable(javax.swing.UIDefaults table) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.addCustomEntriesToTable(javax.swing.UIDefaults)"); }
+  < ---- END java signatures ---- >
+}

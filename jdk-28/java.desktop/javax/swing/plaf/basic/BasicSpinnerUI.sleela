@@ -1,0 +1,104 @@
+<< jdk-28/java.desktop/javax/swing/plaf/basic/BasicSpinnerUI.sleela
+   SLeeLa file for the Java type javax.swing.plaf.basic.BasicSpinnerUI (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/plaf/basic/BasicSpinnerUI.html
+   Java kind: class; extends javax.swing.plaf.SpinnerUI
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class BasicSpinnerUI {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 1728;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.swing.plaf.basic.BasicSpinnerUI";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/plaf/basic/BasicSpinnerUI.html";
+  String javaKind = "class";
+  String javaSuper = "javax.swing.plaf.SpinnerUI";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < public and protected instance fields >
+  Any spinner;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public BasicSpinnerUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSpinnerUI.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  @JavaProtected
+  void installListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSpinnerUI.installListeners()"); }
+  public void installUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSpinnerUI.installUI(javax.swing.JComponent)"); }
+  public void uninstallUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSpinnerUI.uninstallUI(javax.swing.JComponent)"); }
+  @JavaProtected
+  java.awt.Component createNextButton() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSpinnerUI.createNextButton()"); }
+  @JavaProtected
+  java.awt.Component createPreviousButton() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSpinnerUI.createPreviousButton()"); }
+  @JavaProtected
+  void installPreviousButtonListeners(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSpinnerUI.installPreviousButtonListeners(java.awt.Component)"); }
+  @JavaProtected
+  void installNextButtonListeners(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSpinnerUI.installNextButtonListeners(java.awt.Component)"); }
+  @JavaProtected
+  void replaceEditor(javax.swing.JComponent oldEditor, javax.swing.JComponent newEditor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSpinnerUI.replaceEditor(javax.swing.JComponent, javax.swing.JComponent)"); }
+  @JavaProtected
+  java.awt.LayoutManager createLayout() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSpinnerUI.createLayout()"); }
+  @JavaProtected
+  javax.swing.JComponent createEditor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSpinnerUI.createEditor()"); }
+  public int getBaseline(javax.swing.JComponent c, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSpinnerUI.getBaseline(javax.swing.JComponent, int, int)"); }
+  public java.awt.Component.BaselineResizeBehavior getBaselineResizeBehavior(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSpinnerUI.getBaselineResizeBehavior(javax.swing.JComponent)"); }
+  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSpinnerUI.createUI(javax.swing.JComponent)"); }
+  @JavaProtected
+  void installKeyboardActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSpinnerUI.installKeyboardActions()"); }
+  @JavaProtected
+  void installDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSpinnerUI.installDefaults()"); }
+  @JavaProtected
+  void uninstallListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSpinnerUI.uninstallListeners()"); }
+  @JavaProtected
+  void uninstallDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSpinnerUI.uninstallDefaults()"); }
+  @JavaProtected
+  java.beans.PropertyChangeListener createPropertyChangeListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSpinnerUI.createPropertyChangeListener()"); }
+  < ---- END java signatures ---- >
+}

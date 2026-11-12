@@ -1,0 +1,212 @@
+<< jdk-28/java.desktop/javax/imageio/plugins/tiff/BaselineTIFFTagSet.sleela
+   SLeeLa file for the Java type javax.imageio.plugins.tiff.BaselineTIFFTagSet (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/imageio/plugins/tiff/BaselineTIFFTagSet.html
+   Java kind: class; extends javax.imageio.plugins.tiff.TIFFTagSet
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class BaselineTIFFTagSet {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 1628;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.imageio.plugins.tiff.BaselineTIFFTagSet";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/imageio/plugins/tiff/BaselineTIFFTagSet.html";
+  String javaKind = "class";
+  String javaSuper = "javax.imageio.plugins.tiff.TIFFTagSet";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static final int TAG_NEW_SUBFILE_TYPE = 254;
+  static final int NEW_SUBFILE_TYPE_REDUCED_RESOLUTION = 1;
+  static final int NEW_SUBFILE_TYPE_SINGLE_PAGE = 2;
+  static final int NEW_SUBFILE_TYPE_TRANSPARENCY = 4;
+  static final int TAG_SUBFILE_TYPE = 255;
+  static final int SUBFILE_TYPE_FULL_RESOLUTION = 1;
+  static final int SUBFILE_TYPE_REDUCED_RESOLUTION = 2;
+  static final int SUBFILE_TYPE_SINGLE_PAGE = 3;
+  static final int TAG_IMAGE_WIDTH = 256;
+  static final int TAG_IMAGE_LENGTH = 257;
+  static final int TAG_BITS_PER_SAMPLE = 258;
+  static final int TAG_COMPRESSION = 259;
+  static final int COMPRESSION_NONE = 1;
+  static final int COMPRESSION_CCITT_RLE = 2;
+  static final int COMPRESSION_CCITT_T_4 = 3;
+  static final int COMPRESSION_CCITT_T_6 = 4;
+  static final int COMPRESSION_LZW = 5;
+  static final int COMPRESSION_OLD_JPEG = 6;
+  static final int COMPRESSION_JPEG = 7;
+  static final int COMPRESSION_ZLIB = 8;
+  static final int COMPRESSION_PACKBITS = 32773;
+  static final int COMPRESSION_DEFLATE = 32946;
+  static final int TAG_PHOTOMETRIC_INTERPRETATION = 262;
+  static final int PHOTOMETRIC_INTERPRETATION_WHITE_IS_ZERO = 0;
+  static final int PHOTOMETRIC_INTERPRETATION_BLACK_IS_ZERO = 1;
+  static final int PHOTOMETRIC_INTERPRETATION_RGB = 2;
+  static final int PHOTOMETRIC_INTERPRETATION_PALETTE_COLOR = 3;
+  static final int PHOTOMETRIC_INTERPRETATION_TRANSPARENCY_MASK = 4;
+  static final int PHOTOMETRIC_INTERPRETATION_CMYK = 5;
+  static final int PHOTOMETRIC_INTERPRETATION_Y_CB_CR = 6;
+  static final int PHOTOMETRIC_INTERPRETATION_CIELAB = 8;
+  static final int PHOTOMETRIC_INTERPRETATION_ICCLAB = 9;
+  static final int TAG_THRESHHOLDING = 263;
+  static final int THRESHHOLDING_NONE = 1;
+  static final int THRESHHOLDING_ORDERED_DITHER = 2;
+  static final int THRESHHOLDING_RANDOMIZED_DITHER = 3;
+  static final int TAG_CELL_WIDTH = 264;
+  static final int TAG_CELL_LENGTH = 265;
+  static final int TAG_FILL_ORDER = 266;
+  static final int FILL_ORDER_LEFT_TO_RIGHT = 1;
+  static final int FILL_ORDER_RIGHT_TO_LEFT = 2;
+  static final int TAG_DOCUMENT_NAME = 269;
+  static final int TAG_IMAGE_DESCRIPTION = 270;
+  static final int TAG_MAKE = 271;
+  static final int TAG_MODEL = 272;
+  static final int TAG_STRIP_OFFSETS = 273;
+  static final int TAG_ORIENTATION = 274;
+  static final int ORIENTATION_ROW_0_TOP_COLUMN_0_LEFT = 1;
+  static final int ORIENTATION_ROW_0_TOP_COLUMN_0_RIGHT = 2;
+  static final int ORIENTATION_ROW_0_BOTTOM_COLUMN_0_RIGHT = 3;
+  static final int ORIENTATION_ROW_0_BOTTOM_COLUMN_0_LEFT = 4;
+  static final int ORIENTATION_ROW_0_LEFT_COLUMN_0_TOP = 5;
+  static final int ORIENTATION_ROW_0_RIGHT_COLUMN_0_TOP = 6;
+  static final int ORIENTATION_ROW_0_RIGHT_COLUMN_0_BOTTOM = 7;
+  static final int ORIENTATION_ROW_0_LEFT_COLUMN_0_BOTTOM = 8;
+  static final int TAG_SAMPLES_PER_PIXEL = 277;
+  static final int TAG_ROWS_PER_STRIP = 278;
+  static final int TAG_STRIP_BYTE_COUNTS = 279;
+  static final int TAG_MIN_SAMPLE_VALUE = 280;
+  static final int TAG_MAX_SAMPLE_VALUE = 281;
+  static final int TAG_X_RESOLUTION = 282;
+  static final int TAG_Y_RESOLUTION = 283;
+  static final int TAG_PLANAR_CONFIGURATION = 284;
+  static final int PLANAR_CONFIGURATION_CHUNKY = 1;
+  static final int PLANAR_CONFIGURATION_PLANAR = 2;
+  static final int TAG_PAGE_NAME = 285;
+  static final int TAG_X_POSITION = 286;
+  static final int TAG_Y_POSITION = 287;
+  static final int TAG_FREE_OFFSETS = 288;
+  static final int TAG_FREE_BYTE_COUNTS = 289;
+  static final int TAG_GRAY_RESPONSE_UNIT = 290;
+  static final int GRAY_RESPONSE_UNIT_TENTHS = 1;
+  static final int GRAY_RESPONSE_UNIT_HUNDREDTHS = 2;
+  static final int GRAY_RESPONSE_UNIT_THOUSANDTHS = 3;
+  static final int GRAY_RESPONSE_UNIT_TEN_THOUSANDTHS = 4;
+  static final int GRAY_RESPONSE_UNIT_HUNDRED_THOUSANDTHS = 5;
+  static final int TAG_GRAY_RESPONSE_CURVE = 291;
+  static final int TAG_T4_OPTIONS = 292;
+  static final int T4_OPTIONS_2D_CODING = 1;
+  static final int T4_OPTIONS_UNCOMPRESSED = 2;
+  static final int T4_OPTIONS_EOL_BYTE_ALIGNED = 4;
+  static final int TAG_T6_OPTIONS = 293;
+  static final int T6_OPTIONS_UNCOMPRESSED = 2;
+  static final int TAG_RESOLUTION_UNIT = 296;
+  static final int RESOLUTION_UNIT_NONE = 1;
+  static final int RESOLUTION_UNIT_INCH = 2;
+  static final int RESOLUTION_UNIT_CENTIMETER = 3;
+  static final int TAG_PAGE_NUMBER = 297;
+  static final int TAG_TRANSFER_FUNCTION = 301;
+  static final int TAG_SOFTWARE = 305;
+  static final int TAG_DATE_TIME = 306;
+  static final int TAG_ARTIST = 315;
+  static final int TAG_HOST_COMPUTER = 316;
+  static final int TAG_PREDICTOR = 317;
+  static final int PREDICTOR_NONE = 1;
+  static final int PREDICTOR_HORIZONTAL_DIFFERENCING = 2;
+  static final int TAG_WHITE_POINT = 318;
+  static final int TAG_PRIMARY_CHROMATICITES = 319;
+  static final int TAG_COLOR_MAP = 320;
+  static final int TAG_HALFTONE_HINTS = 321;
+  static final int TAG_TILE_WIDTH = 322;
+  static final int TAG_TILE_LENGTH = 323;
+  static final int TAG_TILE_OFFSETS = 324;
+  static final int TAG_TILE_BYTE_COUNTS = 325;
+  static final int TAG_INK_SET = 332;
+  static final int INK_SET_CMYK = 1;
+  static final int INK_SET_NOT_CMYK = 2;
+  static final int TAG_INK_NAMES = 333;
+  static final int TAG_NUMBER_OF_INKS = 334;
+  static final int TAG_DOT_RANGE = 336;
+  static final int TAG_TARGET_PRINTER = 337;
+  static final int TAG_EXTRA_SAMPLES = 338;
+  static final int EXTRA_SAMPLES_UNSPECIFIED = 0;
+  static final int EXTRA_SAMPLES_ASSOCIATED_ALPHA = 1;
+  static final int EXTRA_SAMPLES_UNASSOCIATED_ALPHA = 2;
+  static final int TAG_SAMPLE_FORMAT = 339;
+  static final int SAMPLE_FORMAT_UNSIGNED_INTEGER = 1;
+  static final int SAMPLE_FORMAT_SIGNED_INTEGER = 2;
+  static final int SAMPLE_FORMAT_FLOATING_POINT = 3;
+  static final int SAMPLE_FORMAT_UNDEFINED = 4;
+  static final int TAG_S_MIN_SAMPLE_VALUE = 340;
+  static final int TAG_S_MAX_SAMPLE_VALUE = 341;
+  static final int TAG_TRANSFER_RANGE = 342;
+  static final int TAG_JPEG_TABLES = 347;
+  static final int TAG_JPEG_PROC = 512;
+  static final int JPEG_PROC_BASELINE = 1;
+  static final int JPEG_PROC_LOSSLESS = 14;
+  static final int TAG_JPEG_INTERCHANGE_FORMAT = 513;
+  static final int TAG_JPEG_INTERCHANGE_FORMAT_LENGTH = 514;
+  static final int TAG_JPEG_RESTART_INTERVAL = 515;
+  static final int TAG_JPEG_LOSSLESS_PREDICTORS = 517;
+  static final int TAG_JPEG_POINT_TRANSFORMS = 518;
+  static final int TAG_JPEG_Q_TABLES = 519;
+  static final int TAG_JPEG_DC_TABLES = 520;
+  static final int TAG_JPEG_AC_TABLES = 521;
+  static final int TAG_Y_CB_CR_COEFFICIENTS = 529;
+  static final int TAG_Y_CB_CR_SUBSAMPLING = 530;
+  static final int TAG_Y_CB_CR_POSITIONING = 531;
+  static final int Y_CB_CR_POSITIONING_CENTERED = 1;
+  static final int Y_CB_CR_POSITIONING_COSITED = 2;
+  static final int TAG_REFERENCE_BLACK_WHITE = 532;
+  static final int TAG_COPYRIGHT = 33432;
+  static final int TAG_ICC_PROFILE = 34675;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public static synchronized javax.imageio.plugins.tiff.BaselineTIFFTagSet getInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.BaselineTIFFTagSet.getInstance()"); }
+  < ---- END java signatures ---- >
+}
