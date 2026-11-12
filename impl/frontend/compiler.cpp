@@ -326,7 +326,29 @@ private:
     // double/int128-typed store. Other target types need no coercion (int, long,
     // int64 share the 64-bit representation; class/array/String stores are
     // exact).
-    void coerceToDeclared(const std::string& declType){
+    // Java operand semantics for the fixed-width integral types. SLeeLa keeps
+    // every integer in one 64-bit slot, so the Java widths byte (8), short (16),
+    // char (16, unsigned) and int32 (32) are enforced where a value is stored
+    // into, or cast to, one of those types. Signed widths sign-extend by shifting
+    // left then arithmetic-right (existing OP_BSHL/OP_BSHR); char masks to 16 bits.
+    // `int` and `long` are unchanged: `int` stays the 64-bit workhorse the rest of
+    // the library relies on, so Java 32-bit `int` wrap-around is requested with
+    // int32 or an explicit (int32) cast.
+    static int javaNarrowBits(const std::string& t){
+        if(t=="byte") return 8;
+        if(t=="short") return 16;
+        if(t=="int32") return 32;
+        return 0;
+    }
+    void emitJavaNarrow(const std::string& t){
+        if(t=="char"){ emit(OP_CONST,slvm_add_const_int(vm_,0xFFFF)); emit(OP_BAND); return; }
+        const int bits=javaNarrowBits(t);
+        if(!bits) return;
+        emit(OP_CONST,slvm_add_const_int(vm_,64-bits)); emit(OP_BSHL);
+        emit(OP_CONST,slvm_add_const_int(vm_,64-bits)); emit(OP_BSHR);
+    }
+    void coerceToDeclared(const std::string& declType, bool narrow=true){
+        if(narrow && (declType=="char" || javaNarrowBits(declType))){ emitJavaNarrow(declType); return; }
         // Widen into a double, or into a 128-bit-backed signed integer (int128
         // and the wider base-2 series members int256..int16777216). Narrow
         // series members (int32, int64) share the 64-bit representation and need
@@ -538,14 +560,14 @@ private:
             emit(OP_CONST,slvm_add_const_int(vm_,0)); emit(OP_STOREL,curSlot);
             top=here();
             emit(OP_LOADL,curSlot); emit(OP_LOADL,srcSlot); emit(OP_ARRLEN); emit(OP_LT); exits.push_back(emit(OP_JMPF,0));
-            emit(OP_LOADL,srcSlot); emit(OP_LOADL,curSlot); emit(OP_ARRGET); coerceToDeclared(s.type); emit(OP_STOREL,vSlot);
+            emit(OP_LOADL,srcSlot); emit(OP_LOADL,curSlot); emit(OP_ARRGET); coerceToDeclared(s.type,false); emit(OP_STOREL,vSlot);
         } else {
             if(!s.iteratorM||!s.hasNextM||!s.nextM) throw std::runtime_error("Semantic error: enhanced for over '"+s.iterableType+"' was not resolved");
             emitInstanceCall(s.iterableType,s.iteratorM,methodFuncIndex(s.iterableType,s.iteratorM),noArgs);
             emit(OP_STOREL,curSlot);
             top=here();
             emit(OP_LOADL,curSlot); emitInstanceCall(s.iteratorType,s.hasNextM,methodFuncIndex(s.iteratorType,s.hasNextM),noArgs); exits.push_back(emit(OP_JMPF,0));
-            emit(OP_LOADL,curSlot); emitInstanceCall(s.iteratorType,s.nextM,methodFuncIndex(s.iteratorType,s.nextM),noArgs); coerceToDeclared(s.type); emit(OP_STOREL,vSlot);
+            emit(OP_LOADL,curSlot); emitInstanceCall(s.iteratorType,s.nextM,methodFuncIndex(s.iteratorType,s.nextM),noArgs); coerceToDeclared(s.type,false); emit(OP_STOREL,vSlot);
         }
         emitStmt(s.body.get());
         const int contTarget=here(); for(int c:loops_.back().continues) patch(c,contTarget);
@@ -739,6 +761,9 @@ private:
         if(auto x=dynamic_cast<const CastExpr*>(e)){
              emitExpr(x->operand.get());
              if(x->typeName!="Any") emit(OP_CHECKCAST,runtimeTypeOperand(x->typeName));
+             // Java narrowing cast: (byte)/(short)/(char)/(int32) wrap to their width
+             // after the double->integer truncation that OP_CHECKCAST(int) performs.
+             if(x->typeName=="char" || javaNarrowBits(x->typeName)) emitJavaNarrow(x->typeName);
              return;
          }
         if(auto x=dynamic_cast<const InstanceOfExpr*>(e)){

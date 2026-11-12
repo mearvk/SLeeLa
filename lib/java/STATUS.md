@@ -233,7 +233,8 @@ never taken for a constant.
 | Only `catch (Any e)`; no `finally` | Callers test with `instanceof` | VM exception milestone |
 | ~~String bridge missing~~ **done** (`javaStringToUtf8`, `javaStringFromCodeUnit`, opcodes 183-184, ABI 1.8) | Text classes carry any Unicode text; only NUL and unpaired surrogates cannot become a plain String (catchable `UnsupportedOperationException`); `java.lang.String` instance methods work on built-in strings (`JavaStringMethods`, SLEELA.syntax section 41) | Regex members and the static `String.valueOf`/`join`/`format` |
 | No lambdas or functional interfaces | No `Comparator` sorting, `compute`/`merge`, streams | Compiler |
-| No bitwise operators or `L`/`f` literal suffixes | Bit operations done arithmetically | Compiler |
+| ~~No bitwise operators or `L`/`f` literal suffixes~~ **done** (`& | ^ ~ << >> >>>`, compound forms, `L`/`f` suffixes, `0x`/`0b` and `_` literals all compile) | — | — |
+| ~~Java fixed-width operand semantics~~ **done for `byte`, `short`, `char`, `int32` and explicit casts** (section 8) | Stores into those types and `(byte)`/`(short)`/`(char)`/`(int32)` casts wrap at the Java width, 189 lines identical to a real JDK. Plain `int` stays 64-bit by design, so Java 32-bit `int` arithmetic and shifts come from `lib/java/JavaOperands`. | Open: `char` literals (`'a'`), `float` 32-bit precision, `Infinity`/`NaN` text for doubles (prints `inf`), static-type-driven `int` wrap |
 | ~~Integer comparison went through `double`~~ **done** (`OP_EQ/NE/LT/LE/GT/GE`, both operands `SL_INT` now compare as exact int64) | Before, `long` values that differ above 2^53 compared equal (`9007199254740993 == 9007199254740992`), which broke Java `long` ordering and overflow checks | — |
 | Elements of a new numeric array are `null`, and `null` in arithmetic yields a `double` | `new int[n]` read before it is written turns later `long` sums into doubles (exact only to 2^53). Library code zero-fills such arrays explicitly (see `slMd5` in `UUID`) | VM: zero-fill numeric arrays by element type |
 | Nested types (`Map.Entry`) live in `Outer.Inner.sleela` files the loader does not resolve | Not reachable by name | Loader |
@@ -317,3 +318,30 @@ Java types need, so none carries a private copy. `UUID` uses it; `MessageDigest`
    Add a side-by-side test for each.
 5. ~~**Refresh `working-binaries/`** so the prebuilt toolchain carries the new
    compiler.~~ Done 2026-11-12 (VM ABI 1.8, 185 opcodes).
+
+---
+
+## 8. Java operand semantics (2026-11-12)
+
+SLeeLa keeps every integer in one 64-bit slot, and `int` is the 64-bit workhorse
+of the whole library, so `int` itself is not narrowed. Java widths attach to the
+Java-width types instead:
+
+| Construct | Behavior | Example |
+|---|---|---|
+| Store into `byte` / `short` / `char` / `int32` (local, field, parameter, return, assignment) | Wraps at 8 / 16 / 16 unsigned / 32 bits | `byte b = 127; b = b + 1;` gives `-128` |
+| Cast `(byte)` `(short)` `(char)` `(int32)` | Truncates a double first, then wraps | `(byte) 200` gives `-56`, `(short) 70000` gives `4464` |
+| `JavaOperands.addInt` `subInt` `mulInt` `negInt` `divInt` `remInt` | Java `int` result, `ArithmeticException` on `/ 0` | `addInt(2147483647, 1)` gives `-2147483648` |
+| `JavaOperands.shlInt` `shrInt` `ushrInt` | Shift count masked to 5 bits, result wrapped | `ushrInt(-1, 1)` gives `2147483647` |
+| `JavaOperands.divLong` `remLong` `shlLong` `shrLong` `ushrLong` | MIN_VALUE / -1 wraps, count masked to 6 bits | |
+| `JavaOperands.d2i` `d2l` `d2b` `d2s` `d2c` | NaN is 0, out of range saturates (JLS 5.1.3) | `d2i(1e10)` gives `2147483647` |
+
+Implementation: `emitJavaNarrow` in `impl/frontend/compiler.cpp` lowers the
+narrowing to the existing `OP_BSHL`/`OP_BSHR` (and `OP_BAND` for `char`), so no
+opcode, ABI or VM change. Array-element and iterator loads are not narrowed,
+because a new numeric array element reads as `null` (section 6).
+
+Verification: `examples/java/differential/OperandSemantics` (189 lines, identical
+to OpenJDK 25.0.2), plus the 9 conformance programs and the 18 earlier
+differential tests, all unchanged.
+

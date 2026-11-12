@@ -551,7 +551,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "029930e50c48d44e5bc4b48ff7eec97bdee69dd6cced3a3223951bc3968c0a67"
+      "sha256": "b45962412258a954d8221095ac6df40a04949e1ab8a80c3118ab8cfb5a9ec9a4"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -9276,6 +9276,10 @@
     {
       "path": "lib/java/JavaObject.sleela",
       "sha256": "049891b8f391c23b6d00cfb09b9f430ecc55c3e7fba60f4e1a19be6d2e6b5d59"
+    },
+    {
+      "path": "lib/java/JavaOperands.sleela",
+      "sha256": "70037cf564a034bfd14e07f4fbd558ccc005cd50c884321c4a178e131bf3063c"
     },
     {
       "path": "lib/java/JavaType.sleela",

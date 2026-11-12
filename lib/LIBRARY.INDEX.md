@@ -2,6 +2,8 @@
 
 > Revision 1.04 moves the `lib/java/jdk-28/` module folders up from `docs/api/` to `lib/java/jdk-28/<module>/<package>/<Type>.sleela` and adds the 16 JDK 28 modules that export no packages (`java.se`, `jdk.jlink`, `jdk.zipfs`, ...) as folders holding a `module-summary.md`: 58 module folders and 386 folders in all. The /lib loader (`impl/frontend/driver.cpp`) now treats `java/jdk-28/` as a reference tier like `docs/api/`, so a real `lib/java/java/...` unit always wins; `working-binaries/sleela` was rebuilt with that rule. No source or symbol count change (moves only).
 >
+> Revision 1.08 adds `lib/java/JavaOperands.sleela`, the Java operand-semantics class: 32-bit `int` arithmetic and shifts, `byte`/`short`/`char` narrowing, the `long` MIN_VALUE / -1 corner, and the JLS 5.1.3 floating point to integer conversions, verified against a real JDK by `examples/java/differential/OperandSemantics`. One new source unit (counts: 18104 to **18105** sources; 18188 to **18189** symbols).
+>
 > Revision 1.07 adds five Java-container support units to `lib/java/support/`: `SLJavaLambda` and `SLJavaLambdaTable` (lowered lambdas), `SLJavaBeanEvents` (java.beans event delivery), and `SLJavaProperty` and `SLJavaPropertyModel` (the general Java property model). Five new source units (counts: 18099 to **18104** sources; 18183 to **18188** total records; 121 packages).
 >
 > Revision 1.06 adds `lib/java/support/` (`SLJavaBits`, `SLJavaHex`, `SLJavaMd5`), the shared helper classes of the Java container. Three new source units (counts: 18096 to **18099** sources; 18180 to **18183** total records; 121 packages).
@@ -88,9 +90,9 @@
 
 **Revision:** 0.82  
 **Packages:** 121  
-**SLeeLa source units:** 18104  
+**SLeeLa source units:** 18105  
 **Module-facade symbols:** 84  
-**Total symbol records:** 18188  
+**Total symbol records:** 18189  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.66 brings three big-number improvements that make a 10,000,000-digit

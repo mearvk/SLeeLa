@@ -1,0 +1,120 @@
+<< lib/java/JavaOperands.sleela
+   Java operand semantics for SLeeLa.
+   Definition: The Java operators and conversions whose results depend on the
+   fixed width of Java primitives: 32-bit int arithmetic and shifts, byte, short
+   and char narrowing, the long division corner, and the floating point to integer
+   conversions of JLS 5.1.3. SLeeLa int is a 64-bit slot, so these methods give a
+   Java int result without changing what int means for the rest of the library.
+   Inputs to the int methods are expected to already be in the Java int range.
+   Verified line for line against a real JDK by
+   examples/java/differential/OperandSemantics.java and .sleela. >>
+#sleela 3.0
+material;
+
+class JavaOperands {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for worker-class library code. The Java rules that this
+     class reproduces are those of JLS chapters 4, 5 and 15 (Java SE 28). >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "The Java Language Specification, Java SE 28 Edition (JLS 4, 5, 15)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- Narrowing conversions (JLS 5.1.3): wrap to the target width ---- >
+  < Stores into int32, short, byte and char wrap, so the store is the conversion. >
+  static int toInt(long x) { int32 r = x; return r; }
+  static int toShort(long x) { short r = x; return r; }
+  static int toByte(long x) { byte r = x; return r; }
+  static int toChar(long x) { char r = x; return r; }
+
+  < ---- 32-bit int arithmetic (JLS 15.17, 15.18) ---- >
+  static int addInt(int x, int y) { return toInt(x + y); }
+  static int subInt(int x, int y) { return toInt(x - y); }
+  static int mulInt(int x, int y) { return toInt(x * y); }
+  static int negInt(int x) { return toInt(0 - x); }
+
+  @throwable("java.lang.ArithmeticException")
+  static int divInt(int x, int y) {
+    if (y == 0) { throw new ArithmeticException("/ by zero"); }
+    return toInt(x / y);
+  }
+
+  @throwable("java.lang.ArithmeticException")
+  static int remInt(int x, int y) {
+    if (y == 0) { throw new ArithmeticException("/ by zero"); }
+    return x % y;
+  }
+
+  < ---- 64-bit long division: the MIN_VALUE / -1 corner wraps, it does not trap ---- >
+  @throwable("java.lang.ArithmeticException")
+  static long divLong(long x, long y) {
+    if (y == 0) { throw new ArithmeticException("/ by zero"); }
+    if (y == -1) { return 0 - x; }
+    return x / y;
+  }
+
+  @throwable("java.lang.ArithmeticException")
+  static long remLong(long x, long y) {
+    if (y == 0) { throw new ArithmeticException("/ by zero"); }
+    if (y == -1) { return 0; }
+    return x % y;
+  }
+
+  < ---- Shifts (JLS 15.19): int masks the count to 5 bits, long to 6 bits ---- >
+  static int shlInt(int x, int n) { return toInt(x << (n & 31)); }
+  static int shrInt(int x, int n) { return x >> (n & 31); }
+  static int ushrInt(int x, int n) { return toInt((x & 4294967295) >>> (n & 31)); }
+  static long shlLong(long x, int n) { return x << (n & 63); }
+  static long shrLong(long x, int n) { return x >> (n & 63); }
+  static long ushrLong(long x, int n) { return x >>> (n & 63); }
+
+  < ---- Floating point to integer (JLS 5.1.3): NaN is 0, out of range saturates ---- >
+  static int d2i(double d) {
+    if (d != d) { return 0; }
+    if (d >= 2147483647.0) { return 2147483647; }
+    if (d <= -2147483648.0) { return -2147483648; }
+    return (int) d;
+  }
+
+  static long d2l(double d) {
+    if (d != d) { return 0; }
+    if (d >= 9223372036854775807.0) { return 9223372036854775807L; }
+    if (d <= -9223372036854775808.0) { return -9223372036854775807L - 1; }
+    return (long) d;
+  }
+
+  < d2b, d2s, d2c go through int first, exactly as the JLS narrows them >
+  static int d2b(double d) { return toByte(d2i(d)); }
+  static int d2s(double d) { return toShort(d2i(d)); }
+  static int d2c(double d) { return toChar(d2i(d)); }
+}
