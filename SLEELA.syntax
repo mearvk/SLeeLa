@@ -2835,6 +2835,34 @@ package-qualified signature types never trigger an ambiguous simple-name
 resolution.
 
 
+### 38.4 Java definitions live in the Java container (not in this specification)
+
+This subsection is **normative**. No Java type, member, constant or behavior is
+part of the SLeeLa language definition. `Math`, `StrictMath`, `Integer`, `Long`,
+`String` as a Java class, `Throwable` and every other JDK name are *library
+content*, defined in the **Java container**, the `/lib/java` family, and nowhere
+in this document. The language contributes only the mechanisms of 38.1 to 38.3
+(signature spelling, static access, library unit references).
+
+1. **Implicit housing.** A Java name in a program is housed in the Java container
+   by the import that selects it: `import java.jdk-28;` (or a narrower
+   `import java.jdk-25.java.util;`) makes `Math.abs(x)` mean the unit
+   `java/jdk-28/java.base/java/lang/Math.sleela`. Without such an import a bare
+   `Math` is not a Java reference and no Java meaning is implied.
+2. **Explicit housing.** Every Java-tier unit names its container in its own text:
+   `javaType`, `javaModule` and `javaSource` fields, and the header line "SLeeLa
+   file for the Java type ...". A translator or tool that records a Java
+   reference records it as `<container>:<javaType>` (for example
+   `java.jdk-28:java.lang.Math`), never as a bare SLeeLa name.
+3. **No reservation.** The Java container reserves no identifier in the language.
+   A user class named `Math` is an ordinary class; the container's `Math` is
+   reached only through the selecting import, and a real unit of the same name
+   under the program's own tree wins (the reference-tier rule of 38.3).
+4. **Documentation.** Any document that describes a Java-derived behavior
+   (mappings, conformance notes, examples) states that the behavior belongs to
+   the Java container and not to the SLeeLa specification.
+
+
 ## 39. Object references (`x.ref`, `Ptr`, `Class.deref`)
 
 This section is **normative**. It gives every class or struct instance an

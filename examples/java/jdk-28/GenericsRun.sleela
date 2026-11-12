@@ -2,6 +2,8 @@
 import java.jdk-28;
 material;
 
+< Java container: the names used here are housed in /lib/java (selected by the import above) and are not part of the SLeeLa specification, see SLEELA.syntax 38.4. >
+
 << Shows the SLeeLa generics method on lib/java/jdk-28 types: classes carry no
    Java type parameters (erasure to Any); each records them as data, and an
    instance can record the type arguments its caller means. >>

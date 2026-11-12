@@ -8,6 +8,8 @@
 #sleela 3.0
 import java.jdk-28;
 material;
+
+< Java container: the names used here are housed in /lib/java (selected by the import above) and are not part of the SLeeLa specification, see SLEELA.syntax 38.4. >
 class MathStatics {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Baseline identity for a worker-class differential test. >>

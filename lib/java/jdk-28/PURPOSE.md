@@ -1,5 +1,21 @@
 # /lib/java/jdk-28: Purpose — translating Java source to SLeeLa, based on JDK 28
 
+## Container rule: Java is housed, never specified
+
+Everything in this directory is **Java container** content. None of it is part of
+the SLeeLa specification (`SLEELA.syntax` section 38.4): the language defines the
+mechanisms (signature spelling, static access, library unit references), and the
+container defines `Math`, `Integer`, `Long` and the rest.
+
+- **Implicit.** A Java name is housed by the import that selects it
+  (`import java.jdk-28;`). A bare `Math` without that import is not a Java
+  reference.
+- **Explicit.** Each unit states its container in its own text (`javaType`,
+  `javaModule`, `javaSource`, and the "SLeeLa file for the Java type" header).
+  Translators record a Java reference as `java.jdk-28:java.lang.Math`.
+- **Documents.** Every mapping, example and conformance note here describes the
+  Java container, not the language.
+
 ## Purpose
 
 `jdk-28/` exists so that **Java procedural source code can be translated into

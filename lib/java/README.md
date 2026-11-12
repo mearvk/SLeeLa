@@ -19,6 +19,14 @@ The collection is a native SLeeLa source surface for Java-facing language and fr
 
 The inventory is deliberately distinguished from a copy of the Java implementation. A file in this directory represents a SLeeLa-side language object, binding, contract, facade, or interoperability definition unless its documentation explicitly identifies another role.
 
+## The Java container
+
+`/lib/java` is the **Java container**. Java definitions (`Math`, `Integer`,
+`ArrayList`, ...) are library content housed here, implicitly by the import that
+selects a tier (`import java.jdk-28;`) and explicitly in each unit's own
+`javaType` / `javaModule` / `javaSource` fields. They are **not part of the
+SLeeLa specification**; see `SLEELA.syntax` section 38.4.
+
 ## JDK 28, one SLeeLa file per Java type
 
 [`jdk-28/`](jdk-28/README.md) holds one SLeeLa file for each of the 4,721 public

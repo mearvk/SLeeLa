@@ -1,5 +1,11 @@
 # Mapping Java static `Math` / `StrictMath` references to SLeeLa
 
+> **Container.** Every `Math` / `StrictMath` name in this document is housed in the
+> Java container (`/lib/java/jdk-28`, selected by `import java.jdk-28;`). It is not
+> part of the SLeeLa specification (`SLEELA.syntax` section 38.4). A bare `Math`
+> without that import is not a Java reference. A translator records the reference
+> as `java.jdk-28:java.lang.Math`.
+
 Rule (PURPOSE.md, row 5): a static `Math` reference is **mapped, not rewritten**.
 The translator keeps the call as written and the SLeeLa function of the same name
 answers it.
